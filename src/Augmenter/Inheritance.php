@@ -57,7 +57,7 @@ class Inheritance implements PipeInterface
                 continue;
             }
 
-            $existingProperties = array_map(fn (OA\Property $p): ?string => $p->property, $schema->properties ?? []);
+            $existingProperties = array_map(fn (OA\Property $property): ?string => $property->property, $schema->properties ?? []);
             $this->expandParents($schema, $reflector, $schemaMap, $existingProperties);
             $this->expandTraits($schema, $reflector, $schemaMap, $existingProperties);
             $this->expandInterfaces($schema, $reflector, $schemaMap, $existingProperties);
@@ -94,6 +94,7 @@ class Inheritance implements PipeInterface
         while ($parent !== false) {
             if (isset($schemaMap[$parent->getName()])) {
                 $this->addAllOfRef($schema, $schemaMap[$parent->getName()]);
+                // stop on first schema ancestor
                 break;
             }
 
@@ -161,9 +162,13 @@ class Inheritance implements PipeInterface
         $members = $this->attributeFactory->membersOf($class);
         $merged = [];
         foreach ($members as $member) {
-            if ($member instanceof OA\Property && !in_array($member->property, $existingProperties, true)) {
-                $existingProperties[] = $member->property;
-                $merged[] = $member;
+            if ($member instanceof OA\Property) {
+                // fallback to reflector if name not (yet) set
+                $propertyName = $member->property ?? ($member->getReflector() instanceof \ReflectionProperty ? $member->getReflector()->name : null);
+                if (!in_array($propertyName, $existingProperties, true)) {
+                    $existingProperties[] = $propertyName;
+                    $merged[] = $member;
+                }
             }
         }
 
