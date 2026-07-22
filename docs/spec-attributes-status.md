@@ -361,10 +361,6 @@ class C { use T; public string $y; }
 // ReflectionClass("C")->getProperty("x")->getDeclaringClass()->getName() === "C"
 ```
 
-### Resolution direction
-
-The spec path's `Builder::doBuildSpec()` already runs `TokenScanner` but discards the per-class details (only uses FQDN keys for class discovery). Making this data available — either to `AttributeFactory::membersOf()` as a property whitelist, or to the `Inheritance` augmenter for accurate own-vs-trait discrimination — would close the gap with the classic path.
-
 ## PathItem design
 
 PathItem is both an OpenAPI spec concept (path-level parameters, summary, description, servers) and a controller-grouping mechanism (prefix composition, shared tags/security). The DTO unifies both roles.
