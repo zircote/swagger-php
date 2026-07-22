@@ -105,6 +105,7 @@ class TokenScanner
                 'enums' => [],
                 'methods' => [],
                 'properties' => [],
+                'consts' => [],
             ];
         };
         $result = [];
@@ -155,6 +156,12 @@ class TokenScanner
         foreach ($stmt->getTraitUses() as $traitUse) {
             foreach ($traitUse->traits as $trait) {
                 $details['traits'][] = $resolve((string) $trait);
+            }
+        }
+
+        foreach ($stmt->getConstants() as $const) {
+            foreach ($const->consts as $c) {
+                $details['consts'][] = (string) $c->name;
             }
         }
 

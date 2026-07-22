@@ -26,6 +26,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => ['stuff', 'other', 'another'],
                     'properties' => [],
+                    'consts' => [],
                 ],
             ],
         ];
@@ -44,6 +45,7 @@ final class TokenScannerTest extends OpenApiTestCase
                         'return_ref',
                     ],
                     'properties' => [],
+                    'consts' => [],
                 ],
             ],
         ];
@@ -63,6 +65,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => [],
                     'properties' => [],
+                    'consts' => [],
                 ],
                 'OpenApi\Tests\Fixtures\PHP\GenericAttr' => [
                     'uses' => [],
@@ -71,6 +74,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => ['__construct'],
                     'properties' => [],
+                    'consts' => [],
                 ],
                 'OpenApi\Tests\Fixtures\PHP\Decorated' => [
                     'uses' => [],
@@ -79,6 +83,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => ['foo', 'bar'],
                     'properties' => [],
+                    'consts' => [],
                 ],
             ],
         ];
@@ -93,6 +98,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => ['extendsClassFunc'],
                     'properties' => ['extendsClassProp'],
+                    'consts' => [],
                 ],
             ],
         ];
@@ -107,6 +113,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => [],
                     'properties' => [],
+                    'consts' => [],
                 ],
             ],
         ];
@@ -121,6 +128,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => ['firstname', 'secondname', 'thirdname', 'fourthname', 'lastname', 'tags', 'submittedBy', 'friends', 'bestFriend'],
                     'properties' => [],
+                    'consts' => [],
                 ],
             ],
         ];
@@ -138,6 +146,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => [],
                     'properties' => [],
+                    'consts' => [],
                 ],
             ],
         ];
@@ -156,6 +165,9 @@ final class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => ['getFirstName'],
                     'properties' => [],
+                    'consts' => [
+                        'CONSTANT',
+                    ],
                 ],
             ],
         ];
@@ -176,6 +188,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => [],
                     'properties' => ['greet'],
+                    'consts' => [],
                 ],
             ],
         ];
@@ -193,6 +206,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => ['__construct'],
                     'properties' => ['labels', 'tags', 'id'],
+                    'consts' => [],
                 ],
             ],
         ];
@@ -209,6 +223,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => ['useFoo', 'foo'],
                     'properties' => [],
+                    'consts' => [],
                 ],
                 'OpenApi\Tests\Fixtures\PHP\ReservedWordsAttr' => [
                     'uses' => [
@@ -219,6 +234,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => ['__construct'],
                     'properties' => [],
+                    'consts' => [],
                 ],
                 'OpenApi\Tests\Fixtures\PHP\UserlandClass' => [
                     'uses' => [
@@ -228,6 +244,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'traits' => [],
                     'enums' => [],
                     'methods' => [],
+                    'consts' => [],
                     'properties' => [],
                 ],
             ],
@@ -253,6 +270,7 @@ final class TokenScannerTest extends OpenApiTestCase
                         'curlyOpen',
                     ],
                     'properties' => [],
+                    'consts' => [],
                 ],
             ],
         ];
@@ -272,6 +290,7 @@ final class TokenScannerTest extends OpenApiTestCase
                         'second',
                     ],
                     'properties' => [],
+                    'consts' => [],
                 ],
             ],
         ];
@@ -286,6 +305,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => [],
                     'properties' => [],
+                    'consts' => [],
                 ],
                 'Bar\BarClass' => [
                     'uses' => [],
@@ -294,6 +314,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => [],
                     'properties' => [],
+                    'consts' => [],
                 ],
             ],
         ];
@@ -308,6 +329,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'traits' => [],
                     'methods' => [],
                     'properties' => [],
+                    'consts' => [],
                 ],
                 'Bar\BarClass' => [
                     'uses' => [],
@@ -316,6 +338,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => [],
                     'properties' => [],
+                    'consts' => [],
                 ],
             ],
         ];
@@ -330,6 +353,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => [],
                     'properties' => [],
+                    'consts' => [],
                 ],
             ],
         ];
@@ -344,6 +368,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => [],
                     'properties' => [],
+                    'consts' => [],
                 ],
                 'OpenApi\Tests\Fixtures\PHP\MultiNamespace' => [
                     'uses' => [],
@@ -352,6 +377,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'enums' => [],
                     'methods' => [],
                     'properties' => [],
+                    'consts' => [],
                 ],
             ],
         ];
@@ -368,6 +394,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'traits' => [],
                     'methods' => [],
                     'properties' => [],
+                    'consts' => [],
                 ],
             ],
         ];
@@ -384,6 +411,7 @@ final class TokenScannerTest extends OpenApiTestCase
                     'traits' => [],
                     'methods' => [],
                     'properties' => [],
+                    'consts' => [],
                 ],
             ],
         ];
