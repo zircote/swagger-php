@@ -19,5 +19,5 @@ class TrickyProduct extends SimpleProduct
      */
     #[OA\Property]
     #[OA\Schema(example: 'recite poem')]
-    public string $trick;
+    public $trick;
 }

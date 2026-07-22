@@ -15,5 +15,6 @@ trait Colour
      * The colour.
      */
     #[OA\Property]
-    public string $colour;
+    #[OA\Schema(example: 'red')]
+    public $colour;
 }

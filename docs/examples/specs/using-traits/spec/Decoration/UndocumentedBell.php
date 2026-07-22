@@ -8,5 +8,5 @@ namespace OpenApi\Examples\Specs\UsingTraits\Spec\Decoration;
 
 trait UndocumentedBell
 {
-    public string $undocumentedBell;
+    public $undocumentedBell;
 }
