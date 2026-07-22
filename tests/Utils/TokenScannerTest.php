@@ -395,4 +395,35 @@ final class TokenScannerTest extends OpenApiTestCase
         $result = (new TokenScanner())->scanFile($this->fixture($fixture));
         $this->assertEquals($expected, $result);
     }
+
+    public function testScanFileCachesResults(): void
+    {
+        $scanner = new TokenScanner();
+        $filename = $this->fixture('PHP/AbstractKeyword.php');
+
+        $first = $scanner->scanFile($filename);
+        $second = $scanner->scanFile($filename);
+
+        $this->assertSame($first, $second);
+    }
+
+    public function testDetailsForReturnsMatchingEntry(): void
+    {
+        $scanner = new TokenScanner();
+        $rc = new \ReflectionClass(\OpenApi\Tests\Fixtures\PHP\Inheritance\ExtendsClass::class);
+
+        $details = $scanner->detailsFor($rc);
+
+        $this->assertNotNull($details);
+        $this->assertSame(['extendsClassProp'], $details['properties']);
+        $this->assertSame(['extendsClassFunc'], $details['methods']);
+    }
+
+    public function testDetailsForReturnsNullForInternalClass(): void
+    {
+        $scanner = new TokenScanner();
+        $rc = new \ReflectionClass(\stdClass::class);
+
+        $this->assertNull($scanner->detailsFor($rc));
+    }
 }

@@ -10,6 +10,7 @@ use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Utils\AttributeFactory;
 use OpenApi\Utils\PipeInterface;
+use OpenApi\Utils\TokenScanner;
 
 /**
  * Expands PHP class hierarchy into OpenAPI composition (allOf).
@@ -27,7 +28,18 @@ class Inheritance implements PipeInterface
 {
     public function __construct(
         protected AttributeFactory $factory = new AttributeFactory(),
+        protected TokenScanner $tokenScanner = new TokenScanner(),
     ) {
+    }
+
+    public function setFactory(AttributeFactory $factory): void
+    {
+        $this->factory = $factory;
+    }
+
+    public function setTokenScanner(TokenScanner $tokenScanner): void
+    {
+        $this->tokenScanner = $tokenScanner;
     }
 
     public function group(): string|\BackedEnum

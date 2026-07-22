@@ -240,6 +240,86 @@ How each classic processor maps to the new pipeline:
 3. Property merging into parent schema → Assembler via `merge()`/`contains()` (done)
 4. allOf merge when both properties + allOf exist → Compiler (done)
 
+## Inheritance expansion
+
+### Authoritative rules (derived from classic behavior)
+
+These rules define the agreed upon inheritance behavior. The classic path implements them via TokenScanner-filtered definitions; the spec path must produce identical results.
+
+The rules mirror PHP inheritance: a schema inherits everything its PHP class inherits. The same rule applies uniformly to parents, traits, and interfaces.
+
+#### Property ownership
+
+Each property belongs to exactly one source — the class-like that physically declares it:
+
+- A class's **own properties** are those declared in its class body (including promoted constructor parameters), but **not** properties contributed by traits.
+- Trait properties belong to the trait, not to the class that uses it.
+- Parent class properties belong to the parent.
+
+This matches PHP's source-level declaration. Trait properties appear on the using class at runtime, but for schema purposes they belong to the trait.
+
+#### The one rule
+
+For each parent, trait, or interface that a schema's class relates to:
+
+- **Has a schema** → add `$ref` to `allOf` (composition via reference)
+- **Has no schema** → merge its own members into the current schema (inlining)
+
+This rule is the same for all three relationship types. The only differences are PHP language constraints:
+
+- **Interfaces** can only contribute methods (PHP interfaces cannot declare properties)
+- **Parents** are walked linearly; stop at the first ancestor with a schema (everything above is inherited transitively through that ref)
+- **Traits on non-schema ancestors** are also processed (stop at the first ancestor with a schema)
+
+#### Deduplication of merged properties
+
+A running list of already-merged property names prevents duplicates. A property is merged only if its name is not already present on the schema.
+
+#### allOf refs are not deduplicated
+
+Refs are added for each direct relationship, without checking whether the referenced schema is already reachable transitively through another ref. This is unavoidable — we compose with predefined schemas and cannot inspect their contents to determine overlap.
+
+Example:
+```php
+#[Schema(schema: "Timestamps")]
+trait HasTimestamps { public string $createdAt; }
+
+#[Schema]
+class BaseModel { use HasTimestamps; public int $id; }
+
+#[Schema]
+class User extends BaseModel { use HasTimestamps; public string $email; }
+```
+
+Output for `User`:
+```yaml
+User:
+  allOf:
+    - $ref: '#/components/schemas/BaseModel'    # parent (which itself refs Timestamps)
+    - $ref: '#/components/schemas/Timestamps'   # direct trait usage
+    - properties: { email: ... }               # own properties only
+```
+
+The `$ref: Timestamps` is semantically redundant (already composed via BaseModel) but present because User explicitly declares `use HasTimestamps`. The alternative — inspecting ref targets for transitive overlap — would require resolving the full schema graph and is not feasible at this stage.
+
+#### allOf finalization
+
+After inheritance expansion, if a schema has both `allOf` refs **and** own properties, the properties are wrapped in a dedicated `allOf` entry (`type: object`) to produce a pure allOf composition.
+
+### Reflection limitation: trait member ownership
+
+PHP reflection lies about trait members: `getDeclaringClass()` for a trait property returns the **using class**, not the trait. This means `ReflectionClass::getProperties()` + `getDeclaringClass()` cannot distinguish a class's own properties from trait-contributed ones.
+
+```php
+trait T { public string $x; }
+class C { use T; public string $y; }
+// ReflectionClass("C")->getProperty("x")->getDeclaringClass()->getName() === "C"
+```
+
+### Resolution direction
+
+The spec path's `Builder::doBuildSpec()` already runs `TokenScanner` but discards the per-class details (only uses FQDN keys for class discovery). Making this data available — either to `AttributeFactory::membersOf()` as a property whitelist, or to the `Inheritance` augmenter for accurate own-vs-trait discrimination — would close the gap with the classic path.
+
 ## PathItem design
 
 PathItem is both an OpenAPI spec concept (path-level parameters, summary, description, servers) and a controller-grouping mechanism (prefix composition, shared tags/security). The DTO unifies both roles.

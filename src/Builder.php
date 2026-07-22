@@ -180,7 +180,7 @@ class Builder
     {
         $files = $this->resolveFiles();
         $tokenScanner = new TokenScanner();
-        $assembler = new Assembler();
+        $assembler = new Assembler(tokenScanner: $tokenScanner);
 
         foreach ($files as $file) {
             require_once $file;
@@ -193,6 +193,8 @@ class Builder
 
         $specification = $assembler->getSpecification();
 
+        // share the token scanner cache ...
+        $this->getAugmenters()->get(Augmenter\Inheritance::class)?->setTokenScanner($tokenScanner);
         $this->getAugmenters()->process($specification);
 
         $version = $this->version ?? $specification->openapi->version ?? '3.1.0';
