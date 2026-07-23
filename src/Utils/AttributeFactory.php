@@ -6,7 +6,9 @@
 
 namespace OpenApi\Utils;
 
+use OpenApi\Assembler\DefaultAttributeTranslator;
 use OpenApi\AttributeInterface;
+use OpenApi\AttributeTranslatorInterface;
 use OpenApi\OpenApiException;
 use OpenApi\Spec as OA;
 
@@ -20,6 +22,48 @@ use OpenApi\Spec as OA;
  */
 class AttributeFactory
 {
+    /**
+     * @var TypedList<AttributeTranslatorInterface>
+     */
+    protected TypedList $translators;
+
+    public function __construct()
+    {
+        /** @var list<AttributeTranslatorInterface> $translators */
+        $translators = [
+            new DefaultAttributeTranslator(),
+        ];
+        $this->translators = new TypedList($translators);
+    }
+
+    /**
+     * @return TypedList<AttributeTranslatorInterface>
+     */
+    public function getTranslators(): TypedList
+    {
+        return $this->translators;
+    }
+
+    /**
+     * @param TypedList<AttributeTranslatorInterface> $translators
+     */
+    public function setTranslators(TypedList $translators): static
+    {
+        $this->translators = $translators;
+
+        return $this;
+    }
+
+    /**
+     * @param callable(TypedList<AttributeTranslatorInterface>): void $hook
+     */
+    public function withTranslators(callable $hook): static
+    {
+        $hook($this->translators);
+
+        return $this;
+    }
+
     /**
      * Read and resolve attributes from a single member reflector.
      *
@@ -95,7 +139,7 @@ class AttributeFactory
      */
     public function hasAttributes(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): bool
     {
-        return $reflector->getAttributes(AttributeInterface::class, \ReflectionAttribute::IS_INSTANCEOF) !== [];
+        return $this->readAttributes($reflector) !== [];
     }
 
     /**
@@ -103,14 +147,13 @@ class AttributeFactory
      */
     public function hasOnlyProperties(\ReflectionMethod $method): bool
     {
-        $reflectionAttributes = $method->getAttributes(AttributeInterface::class, \ReflectionAttribute::IS_INSTANCEOF);
-        if ($reflectionAttributes === []) {
+        $attributes = $this->readAttributes($method);
+        if ($attributes === []) {
             return false;
         }
 
-        foreach ($reflectionAttributes as $reflectionAttribute) {
-            $name = $reflectionAttribute->getName();
-            if (!is_a($name, OA\Property::class, true) && !is_a($name, OA\Schema::class, true)) {
+        foreach ($attributes as $attribute) {
+            if (!$attribute instanceof OA\Property && !$attribute instanceof OA\Schema) {
                 return false;
             }
         }
@@ -275,32 +318,29 @@ class AttributeFactory
      */
     protected function readAttributes(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
     {
-        $attributes = $reflector->getAttributes(
-            AttributeInterface::class,
-            \ReflectionAttribute::IS_INSTANCEOF,
-        );
+        $attributes = [];
+        foreach ($this->translators as $translator) {
+            foreach ($translator->getAttributes($reflector) as $attribute) {
+                try {
+                    $instance = $attribute->newInstance();
+                } catch (\Error $e) {
+                    throw OpenApiException::fromSource(
+                        sprintf('Failed to instantiate attribute "%s": %s', $attribute->getName(), $e->getMessage()),
+                        SourceLocation::fromReflector($reflector),
+                        $e,
+                    );
+                }
 
-        $result = [];
-        foreach ($attributes as $attribute) {
-            if (!class_exists($attribute->getName())) {
-                continue;
+                if ($instance instanceof AttributeInterface) {
+                    $instance->setReflector($reflector);
+                }
+
+                $attributes[] = $instance;
             }
 
-            try {
-                $instance = $attribute->newInstance();
-            } catch (\Error $e) {
-                throw OpenApiException::fromSource(
-                    sprintf('Failed to instantiate attribute "%s": %s', $attribute->getName(), $e->getMessage()),
-                    SourceLocation::fromReflector($reflector),
-                    $e,
-                );
-            }
-
-            $instance->setReflector($reflector);
-
-            $result[] = $instance;
+            $attributes = $translator->translate($attributes);
         }
 
-        return $result;
+        return array_values(array_filter($attributes, static fn (object $item): bool => $item instanceof AttributeInterface));
     }
 }

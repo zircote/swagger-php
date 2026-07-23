@@ -85,12 +85,13 @@ final class PipelineTest extends TestCase
     {
         $keep = $this->namedPipe('keep');
         $remove = $this->namedPipe('remove');
+        /** @var Pipeline<object> $pipeline */
         $pipeline = new Pipeline([$keep, $remove]);
 
         $pipeline->remove(null, fn ($pipe): bool => $pipe->name !== 'remove');
 
         $found = [];
-        $pipeline->walk(function ($pipe) use (&$found): void {
+        $pipeline->walk(function (object $pipe) use (&$found): void {
             $found[] = $pipe->name;
         });
         $this->assertSame(['keep'], $found);
@@ -132,10 +133,11 @@ final class PipelineTest extends TestCase
     {
         $a = $this->namedPipe('a');
         $b = $this->namedPipe('b');
+        /** @var Pipeline<object> $pipeline */
         $pipeline = new Pipeline([$a, $b]);
 
         $names = [];
-        $pipeline->walk(function ($pipe) use (&$names): void {
+        $pipeline->walk(function (object $pipe) use (&$names): void {
             $names[] = $pipe->name;
         });
 

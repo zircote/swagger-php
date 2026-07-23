@@ -8,6 +8,7 @@ namespace OpenApi;
 
 use OpenApi\Builder\Mode;
 use OpenApi\Builder\Result;
+use OpenApi\Utils\AttributeFactory;
 use OpenApi\Utils\CollectingLogger;
 use OpenApi\Utils\PipeInterface;
 use OpenApi\Utils\SourceScanner;
@@ -42,7 +43,11 @@ class Builder
 
     protected ?CompilerInterface $compiler = null;
 
-    /** @var Utils\Pipeline<Specification>|null */
+    protected ?AttributeFactory $attributeFactory = null;
+
+    /**
+     * @var Utils\Pipeline<Specification>|null
+     */
     protected ?Utils\Pipeline $augmenters = null;
 
     /** @var callable|null */
@@ -93,6 +98,32 @@ class Builder
         return $this;
     }
 
+    public function getAttributeFactory(): AttributeFactory
+    {
+        $this->attributeFactory ??= new AttributeFactory();
+
+        return $this->attributeFactory;
+    }
+
+    public function setAttributeFactory(AttributeFactory $attributeFactory): static
+    {
+        $this->attributeFactory = $attributeFactory;
+
+        return $this;
+    }
+
+    /**
+     * Configure the attribute factory via callable.
+     *
+     * @param callable(AttributeFactory): void $hook
+     */
+    public function withAttributeFactory(callable $hook): static
+    {
+        $hook($this->getAttributeFactory());
+
+        return $this;
+    }
+
     /**
      * @return Utils\Pipeline<Specification>
      */
@@ -108,6 +139,9 @@ class Builder
         return $this->augmenters;
     }
 
+    /**
+     * @param Utils\Pipeline<Specification> $augmenters
+     */
     public function setAugmenters(Utils\Pipeline $augmenters): static
     {
         $this->augmenters = $augmenters;
@@ -118,7 +152,7 @@ class Builder
     /**
      * Configure the augmenter pipeline via callable.
      *
-     * @param callable(Utils\Pipeline): void $hook
+     * @param callable(Utils\Pipeline<Specification>): void $hook
      */
     public function withAugmenters(callable $hook): static
     {
@@ -180,7 +214,11 @@ class Builder
     {
         $files = $this->resolveFiles();
         $tokenScanner = new TokenScanner();
-        $assembler = new Assembler(tokenScanner: $tokenScanner);
+        $assembler = new Assembler(attributeFactory: $this->getAttributeFactory());
+        $assembler = new Assembler(
+            attributeFactory: $this->getAttributeFactory(),
+            tokenScanner: $tokenScanner,
+        );
 
         foreach ($files as $file) {
             require_once $file;
@@ -269,7 +307,7 @@ class Builder
     protected function getDefaultAugmenters(): array
     {
         return [
-            new Augmenter\Inheritance(),
+            new Augmenter\Inheritance(attributeFactory: $this->getAttributeFactory()),
             new Augmenter\Names(),
             new Augmenter\Enums(),
             new Augmenter\PathItems(),

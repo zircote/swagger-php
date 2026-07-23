@@ -27,14 +27,14 @@ use OpenApi\Utils\TokenScanner;
 class Inheritance implements PipeInterface
 {
     public function __construct(
-        protected AttributeFactory $factory = new AttributeFactory(),
+        protected AttributeFactory $attributeFactory = new AttributeFactory(),
         protected TokenScanner $tokenScanner = new TokenScanner(),
     ) {
     }
 
-    public function setFactory(AttributeFactory $factory): void
+    public function setAttributeFactory(AttributeFactory $attributeFactory): void
     {
-        $this->factory = $factory;
+        $this->attributeFactory = $attributeFactory;
     }
 
     public function setTokenScanner(TokenScanner $tokenScanner): void
@@ -163,7 +163,7 @@ class Inheritance implements PipeInterface
 
     protected function mergeMembers(OA\Schema $schema, \ReflectionClass $class): void
     {
-        $members = $this->factory->membersOf($class);
+        $members = $this->attributeFactory->membersOf($class);
         $merged = [];
         foreach ($members as $member) {
             if ($member instanceof OA\Property) {
