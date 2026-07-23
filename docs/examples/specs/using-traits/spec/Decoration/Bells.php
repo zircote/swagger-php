@@ -15,5 +15,6 @@ trait Bells
      * The bell (clashes with Product::bell).
      */
     #[OA\Property]
-    public string $bell;
+    #[OA\Schema(example: 'chime')]
+    public $bell;
 }

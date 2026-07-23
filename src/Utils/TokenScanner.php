@@ -19,10 +19,20 @@ use PhpParser\ParserFactory;
 
 /**
  * High-level, PHP-token-based, scanner.
+ *
+ * @phpstan-type ScannerDetails array{
+ *     uses: array<string, class-string>,
+ *     interfaces: list<class-string>,
+ *     traits: list<class-string>,
+ *     enums: list<class-string>,
+ *     methods: list<string>,
+ *     properties: list<string>,
+ *     consts: list<string>,
+ * }
  */
 class TokenScanner
 {
-    /** @var array<string, array<class-string, array{uses: array<string, class-string>, interfaces: list<class-string>, traits: list<class-string>, enums: list<class-string>, methods: list<string>, properties: list<string>}>> */
+    /** @var array<string, array<class-string, ScannerDetails>> */
     protected array $cache = [];
 
     /**
@@ -30,14 +40,7 @@ class TokenScanner
      *
      * Results are cached by filename — repeated calls with the same path return the cached result.
      *
-     * @return array<class-string, array{
-     *     uses: array<string, class-string>,
-     *     interfaces: list<class-string>,
-     *     traits: list<class-string>,
-     *     enums: list<class-string>,
-     *     methods: list<string>,
-     *     properties: list<string>,
-     * }>
+     * @return array<class-string, ScannerDetails>
      */
     public function scanFile(string $filename): array
     {
@@ -72,7 +75,7 @@ class TokenScanner
      *
      * Scans the file on demand if not already cached.
      *
-     * @return array{uses: array<string, class-string>, interfaces: list<class-string>, traits: list<class-string>, enums: list<class-string>, methods: list<string>, properties: list<string>}|null
+     * @return ScannerDetails|null
      */
     public function detailsFor(\ReflectionClass $class): ?array
     {
@@ -105,6 +108,7 @@ class TokenScanner
                 'enums' => [],
                 'methods' => [],
                 'properties' => [],
+                'consts' => [],
             ];
         };
         $result = [];
@@ -155,6 +159,12 @@ class TokenScanner
         foreach ($stmt->getTraitUses() as $traitUse) {
             foreach ($traitUse->traits as $trait) {
                 $details['traits'][] = $resolve((string) $trait);
+            }
+        }
+
+        foreach ($stmt->getConstants() as $const) {
+            foreach ($const->consts as $c) {
+                $details['consts'][] = (string) $c->name;
             }
         }
 

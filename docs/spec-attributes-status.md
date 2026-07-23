@@ -223,31 +223,12 @@ $warnings = $result->warnings(); // any non-fatal issues
 | `EnumDescriptions` | augment | Generates descriptions for enum-based properties (BETA, disabled by default) | Done |
 | `PathItems` | resolve | Prefix composition, clone-down of tags/security/responses, path inference | Done |
 
-## Example coverage
+## Test coverage
 
-All 10 example specs now have spec-attribute versions. Most produce identical output across classic, spec, and hybrid modes (shared yaml fixtures). Hybrid mode is tested for all examples and passes except using-refs (ref-path difference).
-
-| Example | Shared fixture | Spec-specific fixture | Notes                                                                                     |
-|---|---|---|-------------------------------------------------------------------------------------------|
-| api | ✓ | — | Original spec example                                                                     |
-| misc | ✓ | — | Callbacks, security, enums                                                                |
-| nesting | ✓ | — | Multi-level class inheritance                                                             |
-| petstore | ✓ | — | Classic CRUD example                                                                      |
-| polymorphism | ✓ | — | oneOf/allOf/discriminator                                                                 |
-| using-interfaces | ✓ | — | Interface-based allOf composition                                                         |
-| using-links | ✓ | — | Response links                                                                            |
-| using-refs | — | ✓ | Resolving of property refs that got moved into allOf still needs resolving                |
-| using-traits | — | ✓ | Trait inheritance needs to be refactored since reflection is too limited as only solution |
-| webhooks | ✓ | — | 3.1+ webhooks                                                                             |
-
-### Behavioral differences from classic
-
-Intentional improvements or corrections in the spec/hybrid pipeline that produce different output from classic:
-
-| Difference | Classic | Spec/Hybrid | Rationale |
-|---|---|---|---|
-| Empty `tags` | Always emits `tags: []` | Omits when empty | Per OpenAPI spec, optional fields should be omitted when empty |
-| Empty flow `scopes` | Emits `scopes: {}` | Was omitting empty scopes | Bug fix in compiler — scopes is required per OpenAPI spec |
+* New code is covered by new tests.
+* All examples tests pass in all modes (`CLASSIC`, `HYBRID` and `SPEC`). Spec versions have been added to all examples.
+* All tests that now rely on `Generator` or `AbstractAnnotation` specific features are passing in `HYBRID` mode.
+* Spec version of the performance test is passing and way faster than classic.
 
 ## Classic processor mapping
 
@@ -360,10 +341,6 @@ trait T { public string $x; }
 class C { use T; public string $y; }
 // ReflectionClass("C")->getProperty("x")->getDeclaringClass()->getName() === "C"
 ```
-
-### Resolution direction
-
-The spec path's `Builder::doBuildSpec()` already runs `TokenScanner` but discards the per-class details (only uses FQDN keys for class discovery). Making this data available — either to `AttributeFactory::membersOf()` as a property whitelist, or to the `Inheritance` augmenter for accurate own-vs-trait discrimination — would close the gap with the classic path.
 
 ## PathItem design
 
@@ -481,7 +458,6 @@ class Model {
 
 - Dedicated test coverage for `HybridBridge` (currently exercised only indirectly via examples)
 - Migrate scratch tests and doc snippet tests to run in spec and/or hybrid modes
-- Broad hybrid validation by forcing existing classic tests to use `setMode('hybrid')` on their Builder — most classic tests should pass through hybrid unchanged, exposing gaps
 
 ### Testing
 

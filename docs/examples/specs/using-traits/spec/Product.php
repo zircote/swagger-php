@@ -26,5 +26,5 @@ class Product
      */
     #[OA\Property]
     #[OA\Schema(example: 'gong')]
-    public string $bell;
+    public $bell;
 }

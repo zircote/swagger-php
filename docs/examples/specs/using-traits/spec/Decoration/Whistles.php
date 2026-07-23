@@ -15,5 +15,6 @@ trait Whistles
      * The bell.
      */
     #[OA\Property]
-    public string $whistle;
+    #[OA\Schema(example: 'bone whistle')]
+    public $whistle;
 }

@@ -15,5 +15,6 @@ trait Blink
      * The frequency.
      */
     #[OA\Property]
-    public int $frequency;
+    #[OA\Schema(example: 1)]
+    public $frequency;
 }

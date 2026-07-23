@@ -27,12 +27,13 @@ class AttributeFactory
      */
     protected TypedList $translators;
 
-    public function __construct()
+    public function __construct(protected TokenScanner $tokenScanner = new TokenScanner())
     {
         /** @var list<AttributeTranslatorInterface> $translators */
         $translators = [
             new DefaultAttributeTranslator(),
         ];
+
         $this->translators = new TypedList($translators);
     }
 
@@ -97,11 +98,16 @@ class AttributeFactory
     public function membersOf(\ReflectionClass $class): array
     {
         $inner = [];
+        $scannerDetails = $this->tokenScanner->detailsFor($class);
 
         foreach ($class->getProperties() as $property) {
-            if ($property->isPromoted() || $property->getDeclaringClass()->getName() !== $class->getName()) {
+            if ($property->isPromoted()
+                || $property->getDeclaringClass()->getName() !== $class->getName()
+                || ($scannerDetails && !in_array($property->getName(), $scannerDetails['properties'], true))
+            ) {
                 continue;
             }
+
             array_push($inner, ...$this->resolveNesting($this->readAttributes($property)));
         }
 
@@ -113,16 +119,23 @@ class AttributeFactory
         }
 
         foreach ($class->getReflectionConstants() as $constant) {
-            if ($constant->getDeclaringClass()->getName() !== $class->getName()) {
+            if ($constant->getDeclaringClass()->getName() !== $class->getName()
+                || ($scannerDetails && !in_array($constant->getName(), $scannerDetails['consts'], true))
+            ) {
                 continue;
             }
+
             array_push($inner, ...$this->resolveNesting($this->readAttributes($constant)));
         }
 
         foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            if ($method->isConstructor() || $method->getDeclaringClass()->getName() !== $class->getName()) {
+            if ($method->isConstructor()
+                || $method->getDeclaringClass()->getName() !== $class->getName()
+                || ($scannerDetails && !in_array($method->getName(), $scannerDetails['methods'], true))
+            ) {
                 continue;
             }
+
             $resolved = $this->resolveNesting($this->readAttributes($method));
             foreach ($resolved as $attribute) {
                 if ($attribute instanceof OA\Property) {
