@@ -43,8 +43,6 @@ class Builder
 
     protected ?CompilerInterface $compiler = null;
 
-    protected ?AttributeFactory $attributeFactory = null;
-
     /**
      * @var Utils\Pipeline<Specification>|null
      */
@@ -94,32 +92,6 @@ class Builder
     public function setCompiler(CompilerInterface $compiler): static
     {
         $this->compiler = $compiler;
-
-        return $this;
-    }
-
-    public function getAttributeFactory(): AttributeFactory
-    {
-        $this->attributeFactory ??= new AttributeFactory();
-
-        return $this->attributeFactory;
-    }
-
-    public function setAttributeFactory(AttributeFactory $attributeFactory): static
-    {
-        $this->attributeFactory = $attributeFactory;
-
-        return $this;
-    }
-
-    /**
-     * Configure the attribute factory via callable.
-     *
-     * @param callable(AttributeFactory): void $hook
-     */
-    public function withAttributeFactory(callable $hook): static
-    {
-        $hook($this->getAttributeFactory());
 
         return $this;
     }
@@ -213,9 +185,11 @@ class Builder
     protected function doBuildSpec(): Result
     {
         $files = $this->resolveFiles();
+
         $tokenScanner = new TokenScanner();
+        $attributeFactory = new AttributeFactory($tokenScanner);
         $assembler = new Assembler(
-            attributeFactory: $this->getAttributeFactory(),
+            attributeFactory: $attributeFactory,
             tokenScanner: $tokenScanner,
         );
 
@@ -234,6 +208,7 @@ class Builder
         $this->getAugmenters()->get(Augmenter\Inheritance::class)
             ?->setTokenScanner($tokenScanner)
             ->setAttributeFactory($attributeFactory);
+
         $this->getAugmenters()->process($specification);
 
         $version = $this->version ?? $specification->openapi->version ?? '3.1.0';
@@ -308,7 +283,7 @@ class Builder
     protected function getDefaultAugmenters(): array
     {
         return [
-            new Augmenter\Inheritance(attributeFactory: $this->getAttributeFactory()),
+            new Augmenter\Inheritance(),
             new Augmenter\Names(),
             new Augmenter\Enums(),
             new Augmenter\PathItems(),
