@@ -9,9 +9,12 @@ namespace OpenApi\Utils;
 use OpenApi\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use ReflectionAttribute;
 
 /**
  * Traversal helpers for walking the Specification tree.
+ *
+ * @phpstan-type RefAttributeTypes OA\Schema|OA\Parameter|OA\Response|OA\Header|OA\RequestBody|OA\Link|OA\Example|OA\Security\Scheme
  */
 class SpecificationWalker
 {
@@ -33,7 +36,7 @@ class SpecificationWalker
     /**
      * Walk every ref-bearing attribute in the specification.
      *
-     * @param callable(OA\Schema|OA\Parameter|OA\Response|OA\Header|OA\RequestBody|OA\Link|OA\Example|OA\Security\Scheme): void $visitor
+     * @param callable(RefAttributeTypes): void $visitor
      */
     public function eachRef(callable $visitor): void
     {

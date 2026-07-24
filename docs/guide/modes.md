@@ -25,6 +25,8 @@ use OpenApi\Builder;
 $result = (new Builder())
     ->addSource('src/')
     ->build();
+
+$result->toYaml();
 ```
 
 Classic mode gives you access to the full `Generator` API including custom processors, analysers, and configuration options via `withGenerator()`.
@@ -46,6 +48,8 @@ $result = (new Builder())
     ->setMode(Mode::SPEC)
     ->addSource('src/')
     ->build();
+
+$result->toYaml();
 ```
 
 Spec mode uses the `OpenApi\Spec` namespace (`use OpenApi\Spec as OA;`) with a cleaner attribute API. See [Using Spec Attributes](/guide/spec-attributes) for a full guide.
@@ -68,6 +72,8 @@ $result = (new Builder())
     ->setMode(Mode::HYBRID)
     ->addSource('src/')
     ->build();
+
+$result->toYaml();
 ```
 
 Hybrid mode is the recommended transition path for existing projects that want to benefit from the new pipeline incrementally.
@@ -98,14 +104,13 @@ $builder->setMode(Mode::SPEC);
 
 The three modes produce equivalent OpenAPI output for the same logical API. However, there are some differences in how they process source code:
 
-| Behavior | Classic | Hybrid | Spec |
-|---|---|---|---|
-| Annotation support (`/** @OA\... */`) | Yes | Yes | No |
-| `MergeJsonContent` / `MergeXmlContent` | Yes | Yes | No (use `MediaType` directly) |
-| Processor chain (`withGenerator()`) | Yes | Scanning only | No |
-| Augmenter pipeline (`withAugmenters()`) | No | Yes | Yes |
-| Attribute factory (`withAttributeFactory()`) | No | No | Yes |
-| Version-aware compilation | No (single serializer) | Yes | Yes |
+| Behavior | Classic | Hybrid                                               | Spec |
+|---|---|------------------------------------------------------|---|
+| Annotation support (`/** @OA\... */`) | Yes | Yes                                                  | No |
+| `MergeJsonContent` / `MergeXmlContent` | Yes | Yes                                                  | No (use `MediaType` directly) |
+| Processor chain (`withGenerator()`) | Yes | Scanning only (`MergeJsonContent`/`MergeXmlContent`) | No |
+| Augmenter pipeline (`withAugmenters()`) | No | Yes                                                  | Yes |
+| Version-aware compilation | No (single serializer) | Yes                                                  | Yes |
 
 ## Migration path
 
@@ -119,5 +124,6 @@ The recommended migration path is:
 
 ::: tip Version timeline
 - **v6** — spec/hybrid ship as opt-in beta. Classic remains default.
-- **v7** (future) — spec becomes the default mode. Classic still available.
+- **v7** — hybrid becomes the default mode. Classic still available. `setMode()` and all classic code deprecated
+- **v8** — classic removed. `setMode()` removed. Spec becomes default. spec code might move to `OpenApi\Attributes`.
 :::

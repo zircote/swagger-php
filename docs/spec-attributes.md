@@ -399,3 +399,16 @@ Need to document the general pattern for shortcut attributes: how they participa
 - Version-specific logic is contained in individual compilers rather than scattered across processors
 - The two-pass assembly model is simpler to reason about than the current processor chain
 - Augmenters can be developed and tested independently of the core pipeline
+
+### TODO/evaluate
+
+Re-evaluate support for convenience attributes that reduce boilerplate in common patterns:
+
+- **`Items`** — shorthand for array item schema declaration; this probably should be extending `OA\Items` and get a dedicated `PipeInterface` augmenter.
+- **`JsonContent`** / **`XmlContent`** — shorthand for wrapping a schema in a media type with the appropriate content type; a new `AttributeTranslatorInterface` should be implemented to handle the translation of these attributes.
+- Optional `OA\Property` if `OA\Schema` present and the default property name is used (empty `#[OA\Property])`)
+- Adjust attribute parameter types to aid downstream projects?
+- A `OA\Schema\Ref` attribute (with title/description 3.1.0+), $ref required attribute - extends `OA\Schema`
+- test to verify merges()/contains() consistency (with property type checks)
+- attachable example/test
+- review [] property types that could also accept a single: type|list<type>

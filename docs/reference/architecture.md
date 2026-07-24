@@ -100,6 +100,18 @@ class CustomAugmenter implements PipeInterface
             // enrich schemas...
         }
 
+        // or
+
+        // the walker will walk all attributes (including nested) of the specification
+        $specification->getWalker()->visit(OA\Property::class, function (OA\Property $property) {
+            // ...
+        });
+
+        // or walk all attributes with $ref set
+        $specification->getWalker()->eachRef(funtion () {
+            // $attribute->ref = ...
+        });
+
         return $specification;
     }
 }
@@ -109,11 +121,11 @@ class CustomAugmenter implements PipeInterface
 
 Each OpenAPI version has its own compiler that handles version-specific output differences:
 
-| Compiler | Version | Key differences |
-|---|---|---|
-| `Compiler30` | 3.0.x | `nullable` as property, `exclusiveMinimum` as boolean |
+| Compiler | Version | Key differences                                                   |
+|---|---|-------------------------------------------------------------------|
+| `Compiler30` | 3.0.x | `nullable` as property, `exclusiveMinimum` as boolean             |
 | `Compiler31` | 3.1.x | `nullable` via type array, `exclusiveMinimum` as number, webhooks |
-| `Compiler32` | 3.2.x | Extends 3.1 with additional features |
+| `Compiler32` | 3.2.x | Extends 3.1 (currently without additional features)               |
 
 The compiler transforms a Specification into a plain PHP array representing the OpenAPI document. Version selection is automatic based on `Builder::setVersion()` or the `#[OA\OpenApi(version: '...')]` attribute.
 
