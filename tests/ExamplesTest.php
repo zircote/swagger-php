@@ -38,7 +38,8 @@ final class ExamplesTest extends OpenApiTestCase
         $implementations = [
             'annotations',
             'attributes',
-            'mixed', // classic annotations + attributes
+            'mixed',   // classic annotations + attributes
+            'hybrid',  // classic attributes + spec
             'spec',
         ];
         $versions = [
@@ -64,6 +65,7 @@ final class ExamplesTest extends OpenApiTestCase
                             if (
                                 ($implementation === 'spec' && in_array($mode, [Mode::CLASSIC, Mode::HYBRID], true))
                                 || ($implementation !== 'spec' && $mode === Mode::SPEC)
+                                || ($implementation === 'hybrid' && $mode !== Mode::HYBRID)
                                 || ($typeResolver instanceof LegacyTypeResolver && $mode !== Mode::CLASSIC)
                             ) {
                                 continue;

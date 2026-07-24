@@ -14,10 +14,8 @@ namespace OpenApi;
  */
 class HybridBridge
 {
-    public function fromAnalysis(Analysis $analysis): Specification
+    public function fromAnalysis(Analysis $analysis, Specification $specification = new Specification()): Specification
     {
-        $spec = new Specification();
-
         $classSchemas = [];
         $memberProperties = [];
 
@@ -27,34 +25,34 @@ class HybridBridge
             }
 
             match (true) {
-                $annotation instanceof Annotations\OpenApi => $this->convertOpenApiMeta($annotation, $spec),
-                $annotation instanceof Annotations\Info => $spec->info = $this->convertInfo($annotation),
-                $annotation instanceof Annotations\Server => $spec->servers[] = $this->convertServer($annotation),
-                $annotation instanceof Annotations\Tag => $spec->tags[] = $this->convertTag($annotation),
-                $annotation instanceof Annotations\SecurityScheme => $spec->securitySchemes[] = $this->convertSecurityScheme($annotation),
-                $annotation instanceof Annotations\PathItem && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->path) && !($annotation instanceof Annotations\Webhook) => $spec->pathItems[] = $this->convertPathItem($annotation),
-                $annotation instanceof Annotations\Components && !$annotation->_context->is('nested') => $this->convertComponents($annotation, $spec),
-                $annotation instanceof Annotations\Operation => $spec->operations[] = $this->convertOperation($annotation, $this->val($annotation->path), $this->methodFromAnnotation($annotation)),
+                $annotation instanceof Annotations\OpenApi => $this->convertOpenApiMeta($annotation, $specification),
+                $annotation instanceof Annotations\Info => $specification->info = $this->convertInfo($annotation),
+                $annotation instanceof Annotations\Server => $specification->servers[] = $this->convertServer($annotation),
+                $annotation instanceof Annotations\Tag => $specification->tags[] = $this->convertTag($annotation),
+                $annotation instanceof Annotations\SecurityScheme => $specification->securitySchemes[] = $this->convertSecurityScheme($annotation),
+                $annotation instanceof Annotations\PathItem && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->path) && !($annotation instanceof Annotations\Webhook) => $specification->pathItems[] = $this->convertPathItem($annotation),
+                $annotation instanceof Annotations\Components && !$annotation->_context->is('nested') => $this->convertComponents($annotation, $specification),
+                $annotation instanceof Annotations\Operation => $specification->operations[] = $this->convertOperation($annotation, $this->val($annotation->path), $this->methodFromAnnotation($annotation)),
                 $annotation instanceof Annotations\Schema && $annotation->_context->reflector instanceof \ReflectionClass && !$annotation->_context->is('nested') => $classSchemas[$annotation->_context->reflector->getName()] = $annotation,
                 $annotation instanceof Annotations\Property && $this->isClassMember($annotation) => $memberProperties[] = $annotation,
-                $annotation instanceof Annotations\Response && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->response) => $spec->responses[] = $this->convertResponse($annotation),
-                $annotation instanceof Annotations\RequestBody && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->request) => $spec->requestBodies[] = $this->convertRequestBody($annotation),
-                $annotation instanceof Annotations\Parameter && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->parameter) => $spec->parameters[] = $this->convertParameter($annotation),
-                $annotation instanceof Annotations\Header && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->header) => $spec->headers[] = $this->convertHeader($annotation),
-                $annotation instanceof Annotations\Link && !$annotation->_context->is('nested') => $spec->links[] = $this->convertLink($annotation),
-                $annotation instanceof Annotations\ExternalDocumentation && !$annotation->_context->is('nested') => $spec->externalDocs[] = $this->convertExternalDocs($annotation),
+                $annotation instanceof Annotations\Response && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->response) => $specification->responses[] = $this->convertResponse($annotation),
+                $annotation instanceof Annotations\RequestBody && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->request) => $specification->requestBodies[] = $this->convertRequestBody($annotation),
+                $annotation instanceof Annotations\Parameter && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->parameter) => $specification->parameters[] = $this->convertParameter($annotation),
+                $annotation instanceof Annotations\Header && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->header) => $specification->headers[] = $this->convertHeader($annotation),
+                $annotation instanceof Annotations\Link && !$annotation->_context->is('nested') => $specification->links[] = $this->convertLink($annotation),
+                $annotation instanceof Annotations\ExternalDocumentation && !$annotation->_context->is('nested') => $specification->externalDocs[] = $this->convertExternalDocs($annotation),
                 default => null,
             };
         }
 
         foreach ($classSchemas as $className => $schema) {
             $converted = $this->convertSchemaWithMembers($schema, $className, $classSchemas, $memberProperties);
-            $spec->schemas[] = $converted;
+            $specification->schemas[] = $converted;
         }
 
-        $spec->openapi ??= new Spec\OpenApi();
+        $specification->openapi ??= new Spec\OpenApi();
 
-        return $spec;
+        return $specification;
     }
 
     protected function isClassMember(Annotations\Property $property): bool

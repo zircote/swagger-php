@@ -151,9 +151,8 @@ class Builder
     public function build(): Result
     {
         return match ($this->mode) {
-            Mode::SPEC => $this->doBuildSpec(),
-            Mode::HYBRID => $this->doBuildHybrid(),
-            default => $this->doBuildClassic(),
+            Mode::CLASSIC => $this->doBuildClassic(),
+            default => $this->doBuildSpec($this->mode === Mode::HYBRID),
         };
     }
 
@@ -182,7 +181,7 @@ class Builder
         return Result::fromClassic($this->resolveFiles(), $openApi, $collecting->entries());
     }
 
-    protected function doBuildSpec(): Result
+    protected function doBuildSpec(bool $hybrid = false): Result
     {
         $files = $this->resolveFiles();
 
@@ -204,6 +203,10 @@ class Builder
 
         $specification = $assembler->getSpecification();
 
+        if ($hybrid) {
+            $this->doHybridAssemble($specification);
+        }
+
         // share the token scanner cache ...
         $this->getAugmenters()->get(Augmenter\Inheritance::class)
             ?->setTokenScanner($tokenScanner)
@@ -221,7 +224,7 @@ class Builder
         return Result::fromSpec($files, $output, $diagnostics);
     }
 
-    protected function doBuildHybrid(): Result
+    protected function doHybridAssemble(Specification $specification): void
     {
         $collectingLogger = new CollectingLogger($this->getLogger());
         $generator = new Generator($collectingLogger);
@@ -246,18 +249,7 @@ class Builder
         $generator->generate($this->sources, $analysis, validate: false);
 
         $bridge = new HybridBridge();
-        $specification = $bridge->fromAnalysis($analysis);
-
-        $this->getAugmenters()->process($specification);
-
-        $version = $this->version ?? $specification->openapi->version ?? '3.1.0';
-        $specification->openapi->version = $version;
-        $compiler = $this->compiler ?? $this->resolveCompiler($version);
-
-        $diagnostics = $compiler->validate($specification);
-        $output = $compiler->compile($specification);
-
-        return Result::fromSpec($this->resolveFiles(), $output, array_merge($collectingLogger->entries(), $diagnostics));
+        $bridge->fromAnalysis($analysis, $specification);
     }
 
     protected function resolveCompiler(string $version): CompilerInterface
