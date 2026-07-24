@@ -6,8 +6,10 @@
 
 namespace OpenApi\Tests\Utils;
 
+use OpenApi\Augmenter\OperationIds;
 use OpenApi\Utils\PipeInterface;
 use OpenApi\Utils\Pipeline;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class PipelineTest extends TestCase
@@ -142,6 +144,27 @@ final class PipelineTest extends TestCase
         });
 
         $this->assertSame(['a', 'b'], $names);
+    }
+
+    public static function configCases(): \Iterator
+    {
+        yield 'default' => [[], true];
+        yield 'nested' => [['operationIds' => ['hash' => false]], false];
+        yield 'dots-kv' => [['operationIds.hash' => false], false];
+        yield 'dots-string' => [['operationIds.hash=false'], false];
+    }
+
+    #[DataProvider('configCases')]
+    public function testConfigure(array $config, bool $expected): void
+    {
+        $pipeline = new Pipeline([new OperationIds(hash: true)]);
+
+        $pipeline->configure($config);
+
+        $operationIds = $pipeline->get(OperationIds::class);
+        $rp = new \ReflectionProperty(OperationIds::class, 'hash');
+        $this->assertInstanceOf(OperationIds::class, $operationIds);
+        $this->assertEquals($expected, $rp->getValue($operationIds));
     }
 
     // --- Grouping ---

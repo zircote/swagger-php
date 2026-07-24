@@ -9,6 +9,7 @@ namespace OpenApi\Console;
 use OpenApi\Builder;
 use OpenApi\Builder\Result;
 use OpenApi\Generator;
+use OpenApi\Utils\Pipeline;
 use OpenApi\Utils\SourceFinder;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Attribute\MapInput;
@@ -79,7 +80,7 @@ class GenerateCommand
 
         if ($input->config || $input->addProcessor || $input->removeProcessor) {
             $builder->withGenerator(function (Generator $generator) use ($input): void {
-                if ($input->config) {
+                if ($input->config && $input->mode !== Builder\Mode::SPEC) {
                     $generator->setConfig($input->config);
                 }
 
@@ -99,6 +100,12 @@ class GenerateCommand
                         : '\OpenApi\Processors\\' . ucfirst((string) $processor);
                     $generator->getProcessorPipeline()->remove($class);
                 }
+            });
+        }
+
+        if ($input->config && $input->mode === Builder\Mode::SPEC) {
+            $builder->withAugmenters(function (Pipeline $augmenters) use ($input): void {
+                $augmenters->configure($input->config);
             });
         }
 
