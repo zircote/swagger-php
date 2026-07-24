@@ -37,6 +37,11 @@ class AttributeFactory
         $this->translators = new TypedList($translators);
     }
 
+    public function getTokenScanner(): TokenScanner
+    {
+        return $this->tokenScanner;
+    }
+
     /**
      * @return TypedList<AttributeTranslatorInterface>
      */

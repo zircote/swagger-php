@@ -12,7 +12,6 @@ use OpenApi\Utils\AttributeFactory;
 use OpenApi\Utils\CollectingLogger;
 use OpenApi\Utils\PipeInterface;
 use OpenApi\Utils\SourceScanner;
-use OpenApi\Utils\TokenScanner;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -50,6 +49,8 @@ class Builder
 
     /** @var callable|null */
     protected $generatorHook;
+
+    protected ?AttributeFactory $attributeFactory = null;
 
     public function addSource(string|iterable $source): static
     {
@@ -112,16 +113,6 @@ class Builder
     }
 
     /**
-     * @param Utils\Pipeline<Specification> $augmenters
-     */
-    public function setAugmenters(Utils\Pipeline $augmenters): static
-    {
-        $this->augmenters = $augmenters;
-
-        return $this;
-    }
-
-    /**
      * Configure the augmenter pipeline via callable.
      *
      * @param callable(Utils\Pipeline<Specification>): void $hook
@@ -129,6 +120,23 @@ class Builder
     public function withAugmenters(callable $hook): static
     {
         $hook($this->getAugmenters());
+
+        return $this;
+    }
+
+    public function getAttributeFactory(): AttributeFactory
+    {
+        $this->attributeFactory ??= new AttributeFactory();
+
+        return $this->attributeFactory;
+    }
+
+    /**
+     * @param callable(AttributeFactory):void $hook
+     */
+    public function withAttributeFactory(callable $hook): static
+    {
+        $hook($this->getAttributeFactory());
 
         return $this;
     }
@@ -185,8 +193,8 @@ class Builder
     {
         $files = $this->resolveFiles();
 
-        $tokenScanner = new TokenScanner();
-        $attributeFactory = new AttributeFactory($tokenScanner);
+        $attributeFactory = $this->getAttributeFactory();
+        $tokenScanner = $attributeFactory->getTokenScanner();
         $assembler = new Assembler(
             attributeFactory: $attributeFactory,
             tokenScanner: $tokenScanner,
