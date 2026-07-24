@@ -36,7 +36,7 @@ class GenerateCommand
                 $io->info('Bootstrapping: ' . $filename);
             }
 
-            require_once($filename);
+            require_once $filename;
         }
 
         if ($input->defaults) {
