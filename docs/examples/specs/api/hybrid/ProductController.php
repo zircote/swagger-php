@@ -1,0 +1,126 @@
+<?php declare(strict_types=1);
+
+/**
+ * @license Apache 2.0
+ */
+
+namespace OpenApi\Examples\Specs\Api\Hybrid;
+
+use OpenApi\Attributes as OAT;
+use OpenApi\Tests\Fixtures\Attributes as OAF;
+
+/**
+ * The Controller.
+ */
+class ProductController
+{
+    /**
+     * Get a product.
+     *
+     * @param ?int $product_id the product id
+     */
+    #[OAT\Get(path: '/products/{product_id}', operationId: 'getProducts', tags: ['products'])]
+    #[OAT\Response(response: 200, description: 'successful operation', headers: [
+        new OAT\Header(header: 'X-Rate-Limit', description: 'calls per hour allowed by the user', schema: new OAT\Schema(type: 'integer', format: 'int32')),
+    ], content: [new OAT\MediaType(mediaType: 'application/json', schema: new OAT\Schema(ref: Product::class))])]
+    #[OAT\Response(response: 401, description: 'oops')]
+    #[OAF\CustomAttachable(value: 'operation')]
+    public function getProduct(
+        #[OAT\PathParameter]
+        ?int $product_id
+    ) {
+    }
+
+    #[OAT\Post(path: '/products', operationId: 'addProducts', summary: 'Add products', tags: ['products'])]
+    #[OAT\Response(
+        response: 200,
+        description: 'successful operation',
+        content: new OAT\JsonContent(ref: Product::class)
+    )]
+    #[OAT\RequestBody(description: 'New product', required: true, content: [new OAT\MediaType(
+        mediaType: 'application/json',
+        schema: new OAT\Schema(
+            items: new OAT\Items(type: Product::class)
+        )
+    )])]
+    /**
+     * Add a product.
+     */
+    public function addProduct()
+    {
+    }
+
+    #[OAT\Get(path: '/products', operationId: 'getAll', tags: ['products', 'catalog'])]
+    #[OAT\Response(
+        response: 200,
+        description: 'successful operation',
+        content: new OAT\JsonContent(
+            required: ['data'],
+            properties: [
+                new OAT\Property(
+                    property: 'data',
+                    type: 'array',
+                    items: new OAT\Items(ref: Product::class)
+                ),
+            ],
+            type: 'object'
+        )
+    )]
+    /**
+     * Get all.
+     */
+    #[OAT\Response(response: 401, description: 'oops')]
+    public function getAll()
+    {
+    }
+
+    #[OAT\Post(
+        path: '/subscribe',
+        operationId: 'subscribe',
+        summary: 'Subscribe to product webhook',
+        tags: ['products'],
+        callbacks: [
+            'onChange' => [
+                '{$request.query.callbackUrl}' => [
+                    'post' => [
+                        'requestBody' => new OAT\RequestBody(
+                            description: 'subscription payload',
+                            content: [
+                                new OAT\MediaType(
+                                    mediaType: 'application/json',
+                                    schema: new OAT\Schema(
+                                        properties: [
+                                            new OAT\Property(
+                                                property: 'timestamp',
+                                                description: 'time of change',
+                                                type: 'string',
+                                                format: 'date-time'
+                                            ),
+                                        ]
+                                    )
+                                ),
+                            ]
+                        ),
+                    ],
+                    'responses' => [
+                        '200' => [
+                            'description' => 'Your server implementation should return this HTTP status code if the data was received successfully',
+                        ],
+                    ],
+                ],
+
+            ],
+        ]
+    )]
+    #[OAT\Parameter(
+        name: 'callbackUrl',
+        in: 'query'
+    )]
+    #[OAT\Response(
+        response: 200,
+        description: 'callbackUrl registered'
+    )]
+    public function subscribe()
+    {
+    }
+}
