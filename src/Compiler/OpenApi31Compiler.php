@@ -809,7 +809,7 @@ class OpenApi31Compiler implements CompilerInterface
     protected function collectSchemas(Specification $specification): array
     {
         $schemas = [];
-        $specification->getWalker()->eachSchema(function (OA\Schema $schema) use (&$schemas): void {
+        $specification->getWalker()->visit(OA\Schema::class, function (OA\Schema $schema) use (&$schemas): void {
             $schemas[] = $schema;
         });
 

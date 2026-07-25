@@ -115,7 +115,7 @@ class Builder
     /**
      * Configure the augmenter pipeline via callable.
      *
-     * @param callable(Utils\Pipeline<Specification>): void $hook
+     * @param callable(Utils\Pipeline<Specification>): (Utils\Pipeline<Specification>|void) $hook
      */
     public function withAugmenters(callable $hook): static
     {
@@ -132,7 +132,7 @@ class Builder
     }
 
     /**
-     * @param callable(AttributeFactory):void $hook
+     * @param callable(AttributeFactory): (AttributeFactory|void) $hook
      */
     public function withAttributeFactory(callable $hook): static
     {

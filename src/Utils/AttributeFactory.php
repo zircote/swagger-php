@@ -61,7 +61,7 @@ class AttributeFactory
     }
 
     /**
-     * @param callable(TypedList<AttributeTranslatorInterface>): void $hook
+     * @param callable(TypedList<AttributeTranslatorInterface>): (TypedList<AttributeTranslatorInterface>|void) $hook
      */
     public function withTranslators(callable $hook): static
     {
