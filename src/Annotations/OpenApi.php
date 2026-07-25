@@ -296,14 +296,14 @@ class OpenApi extends AbstractAnnotation
 
     public function jsonSerialize(): \stdClass
     {
-        if ($this->tags === []) {
-            $this->tags = Undefined::UNDEFINED;
-        }
-
         $data = parent::jsonSerialize();
 
         if ($this->_context->isVersion('3.0.x')) {
             unset($data->webhooks);
+        }
+
+        if (isset($data->tags) && $data->tags === []) {
+            unset($data->tags);
         }
 
         return $data;
