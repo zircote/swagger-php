@@ -34,7 +34,6 @@ final class CleanupPerformanceTest extends TestCase
 
         $withPipeline = (new Builder())->getAugmenters();
         $withoutPipeline = (new Builder())
-            /* @phpstan-ignore argument.type */
             ->withAugmenters(fn (Pipeline $pipeline): Pipeline => $pipeline->remove(Augmenter\Cleanup::class))
             ->getAugmenters();
 
