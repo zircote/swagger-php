@@ -108,7 +108,9 @@ class AugmentTags
                 if (false !== $index = array_search($tag, $analysis->openapi->tags, true)) {
                     $analysis->removeAnnotation($tag);
                     unset($analysis->openapi->tags[$index]);
-                    $analysis->openapi->tags = array_values($analysis->openapi->tags);
+                    if ($analysis->openapi->tags !== []) {
+                        $analysis->openapi->tags = array_values($analysis->openapi->tags);
+                    }
                 }
             }
         }

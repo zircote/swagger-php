@@ -302,6 +302,10 @@ class OpenApi extends AbstractAnnotation
             unset($data->webhooks);
         }
 
+        if (isset($data->tags) && $data->tags === []) {
+            unset($data->tags);
+        }
+
         return $data;
     }
 }
