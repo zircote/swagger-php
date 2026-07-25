@@ -1,0 +1,14 @@
+openapi: 3.1.0
+components:
+  schemas:
+    Colour:
+      type: string
+      enum:
+        - GREEN
+        - BLUE
+        - RED
+    Product:
+      properties:
+        colour:
+          $ref: '#/components/schemas/Colour'
+      type: object

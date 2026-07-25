@@ -1,0 +1,14 @@
+openapi: 3.1.0
+components:
+  responses:
+    '200':
+      content:
+        application/json:
+          schema:
+            oneOf:
+              -
+                $ref: '#/components/schemas/QualificationHolder'
+              -
+                type: array
+                items:
+                  $ref: '#/components/schemas/QualificationHolder'

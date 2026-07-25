@@ -1,4 +1,4 @@
-# 🧪 Augmenter Reference
+# Augmenter Reference
 
 This page is generated automatically from the `swagger-php` sources.
 

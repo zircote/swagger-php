@@ -16,6 +16,7 @@ class OpenApiSpec
                     properties: [
                         new OA\Property(
                             property: 'name',
+                            description: 'the file name',
                         ),
                         new OA\Property(
                             description: 'file to upload',

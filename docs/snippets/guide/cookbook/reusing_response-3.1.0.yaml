@@ -1,0 +1,21 @@
+openapi: 3.1.0
+paths:
+  '/products/{product_id}':
+    get:
+      tags:
+        - Products
+      responses:
+        default:
+          $ref: '#/components/responses/product'
+components:
+  responses:
+    product:
+      description: 'All information about a product'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Product'
+tags:
+  -
+    name: Products
+    description: Products

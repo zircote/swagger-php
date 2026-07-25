@@ -17,6 +17,11 @@ The simples way of using enums is to annotate them as `OA\Schema`. This allows y
 <<< @/snippets/guide/enums/enum_as_schema_an.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/enums/enum_as_schema_spec.php
+
+  </template>
 </codeblock>
 
 **Results in:**
@@ -53,6 +58,11 @@ Enum cases can be used as value in an `enum` list just like a `string`, `integer
   <template v-slot:an>
 
 <<< @/snippets/guide/enums/enum_as_values_an.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/enums/enum_as_values_spec.php
 
   </template>
 </codeblock>
@@ -101,6 +111,11 @@ By default, the name of a backed enum case is used.
 <<< @/snippets/guide/enums/backed_enum_names_as_schema_an.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/enums/backed_enum_names_as_schema_spec.php
+
+  </template>
 </codeblock>
 
 **Results in:**
@@ -137,6 +152,11 @@ To force `swagger-php` to use the backing value of an enum, you need to set the 
   <template v-slot:an>
 
 <<< @/snippets/guide/enums/backed_enum_values_as_schema_an.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/enums/backed_enum_values_as_schema_spec.php
 
   </template>
 </codeblock>

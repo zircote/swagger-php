@@ -4,16 +4,22 @@ namespace Openapi\Snippets\Cookbook\ResponseExamples;
 
 use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Schema(
+ *     schema="Result",
+ *     type="object",
+ *     properties={
+ *         @OA\Property(property="success", type="boolean"),
+ *     },
+ * )
+ */
+class ResultModel
+{
+}
+
 class Controller
 {
     /**
-     * @OA\Schema(
-     *     schema="Result",
-     *     type="object",
-     *     properties={
-     *         @OA\Property(property="success", type="boolean"),
-     *     },
-     * )
      * @OA\Response(
      *     response=200,
      *     description="OK",

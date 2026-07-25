@@ -1,0 +1,14 @@
+openapi: 3.1.0
+info:
+  title: Example
+  version: 1.0.0
+  x-some-name: a-value
+  x-another: 2
+  x-complex-type:
+    supported:
+      -
+        version: '1.0'
+        level: baseapi
+      -
+        version: '2.1'
+        level: fullapi

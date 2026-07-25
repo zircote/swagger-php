@@ -22,11 +22,16 @@ With the above in mind, a minimal API with a single endpoint could look like thi
 <<< @/snippets/minimal_api_an.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/snippets/minimal_api_spec.php
+
+  </template>
 </codeblock>
 
 with the resulting OpenAPI document like this
 
-<<< @/snippets/minimal_api.yaml
+<<< @/snippets/minimal_api-3.1.0.yaml
 
 ::: warning Where to add annotations?
 Attributes and annotations can be added anywhere in your codebase as long as they are associated with structural elements
@@ -56,4 +61,3 @@ This also has the advantage of making it easier to keep both in sync.
 As of `swagger-php` v4 all attributes and/or annotations must be associated with
 a structural element (`class`, `method`, `parameter` or `enum`)
 :::
-

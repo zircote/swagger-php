@@ -1,0 +1,27 @@
+openapi: 3.1.0
+components:
+  schemas:
+    Result:
+      properties:
+        success:
+          type: boolean
+      type: object
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            oneOf:
+              -
+                $ref: '#/components/schemas/Result'
+              -
+                type: boolean
+          examples:
+            result:
+              summary: 'An result object.'
+              value:
+                success: true
+            bool:
+              summary: 'A boolean value.'
+              value: 0

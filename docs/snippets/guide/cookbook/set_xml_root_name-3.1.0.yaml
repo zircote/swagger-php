@@ -1,0 +1,19 @@
+openapi: 3.1.0
+paths:
+  /foobar:
+    post:
+      responses:
+        '400':
+          description: 'Request error'
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Error:
+      properties:
+        message: {}
+      type: object
+      xml:
+        name: details

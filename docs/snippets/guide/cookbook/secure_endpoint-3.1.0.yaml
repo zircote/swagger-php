@@ -1,0 +1,8 @@
+openapi: 3.1.0
+paths:
+  /api/secure/:
+    get:
+      summary: 'Requires authentication'
+      security:
+        -
+          api_key: []

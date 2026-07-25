@@ -70,7 +70,9 @@ class OpenApi31Compiler implements CompilerInterface
 
     public function compile(Specification $specification): array
     {
-        $output = ['openapi' => $specification->openapi->version ?? $this->getVersion()];
+        $version = $specification->openapi->version ?? $this->getVersion();
+
+        $output = $this->filter(['openapi' => $version], $specification->openapi);
 
         if ($specification->info instanceof OA\Info) {
             $output['info'] = $this->compileInfo($specification->info);
@@ -561,7 +563,7 @@ class OpenApi31Compiler implements CompilerInterface
             'else' => $schema->else instanceof OA\Schema ? $this->compileSchema($schema->else) : null,
 
             // Examples
-            'examples' => $schema->examples,
+            'examples' => $schema->examples !== null ? $this->compileExamples($schema->examples) : null,
 
             // Meta
             'deprecated' => $schema->deprecated,
@@ -760,7 +762,7 @@ class OpenApi31Compiler implements CompilerInterface
             'authorizationUrl' => $flow->authorizationUrl,
             'tokenUrl' => $flow->tokenUrl,
             'refreshUrl' => $flow->refreshUrl,
-            'scopes' => $flow->scopes !== null ? (object) $flow->scopes : null,
+            'scopes' => $flow->scopes ?? new \stdClass(),
         ], $flow);
     }
 

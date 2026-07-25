@@ -16,6 +16,11 @@ support further grouping via the vendor extension `x-tagGroups`.
 <<< @/snippets/guide/cookbook/x_tag_groups_an.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/x_tag_groups_spec.php
+
+  </template>
 </codeblock>
 
 ## Adding examples to `@OA\Response`
@@ -29,6 +34,11 @@ support further grouping via the vendor extension `x-tagGroups`.
   <template v-slot:an>
 
 <<< @/snippets/guide/cookbook/response_examples_an.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/response_examples_spec.php
 
   </template>
 </codeblock>
@@ -45,6 +55,11 @@ OpenApi allows a single reference to external documentation. This is a part of t
   <template v-slot:an>
 
 <<< @/snippets/guide/cookbook/external_documentation_an.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/external_documentation_spec.php
 
   </template>
 </codeblock>
@@ -76,6 +91,11 @@ Sometimes properties or even lists (arrays) may contain data of different types.
   <template v-slot:an>
 
 <<< @/snippets/guide/cookbook/properties_with_union_types_an.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/properties_with_union_types_spec.php
 
   </template>
 </codeblock>
@@ -134,6 +154,11 @@ An API might have zero or more security schemes. These are defined at the top le
 <<< @/snippets/guide/cookbook/security_schemas_an.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/security_schemas_spec.php
+
+  </template>
 </codeblock>
 
 To declare an endpoint as secure and define what security schemes are available to authenticate a client, it needs to be
@@ -150,6 +175,11 @@ added to the operation, for example:
 <<< @/snippets/guide/cookbook/secure_endpoint_an.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/secure_endpoint_spec.php
+
+  </template>
 </codeblock>
 
 ::: tip Endpoints can support multiple security schemes and have custom options too:
@@ -162,6 +192,11 @@ added to the operation, for example:
   <template v-slot:an>
 
 <<< @/snippets/guide/cookbook/security_schema_tips_an.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/security_schema_tips_spec.php
 
   </template>
 </codeblock>
@@ -178,6 +213,11 @@ added to the operation, for example:
   <template v-slot:an>
 
 <<< @/snippets/guide/cookbook/file_upload_with_headers_an.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/file_upload_with_headers_spec.php
 
   </template>
 </codeblock>
@@ -197,6 +237,11 @@ The `OA\Xml` annotation may be used to set the XML root element for a given `@OA
 <<< @/snippets/guide/cookbook/set_xml_root_name_an.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/set_xml_root_name_spec.php
+
+  </template>
 </codeblock>
 
 ## upload multipart/form-data
@@ -211,6 +256,11 @@ Form posts are `@OA\Post` requests with a `multipart/form-data` `@OA\RequestBody
   <template v-slot:an>
 
 <<< @/snippets/guide/cookbook/uploading_multipart_formdata_an.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/uploading_multipart_formdata_spec.php
 
   </template>
 </codeblock>
@@ -232,6 +282,11 @@ This is done on the `@OA\OpenApi` annotation:
 <<< @/snippets/guide/cookbook/default_security_an.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/default_security_spec.php
+
+  </template>
 </codeblock>
 
 ## Nested objects
@@ -246,6 +301,11 @@ Complex, nested data structures are defined by nesting `@OA\Property` annotation
   <template v-slot:an>
 
 <<< @/snippets/guide/cookbook/nested_objects_an.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/nested_objects_spec.php
 
   </template>
 </codeblock>
@@ -264,6 +324,11 @@ A response with either a single or a list of `QualificationHolder`'s.
 <<< @/snippets/guide/cookbook/oneof_example_an.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/oneof_example_spec.php
+
+  </template>
 </codeblock>
 
 ## Reusing responses
@@ -278,6 +343,11 @@ Global responses are found under `/components/responses` and can be referenced/s
   <template v-slot:an>
 
 <<< @/snippets/guide/cookbook/reusing_response_an.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/reusing_response_spec.php
 
   </template>
 </codeblock>
@@ -401,6 +471,11 @@ is a code anchor - e.g. an empty class.
 <<< @/snippets/guide/cookbook/virtual_model_an.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/virtual_model_spec.php
+
+  </template>
 </codeblock>
 
 
@@ -499,6 +574,11 @@ As of PHP 8.1 there is native support for `enum`'s.
 <<< @/snippets/guide/cookbook/enums_an.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/enums_spec.php
+
+  </template>
 </codeblock>
 
 However, in this case the schema generated for `State` will be an enum:
@@ -535,6 +615,11 @@ In terms of OpenAPI, the parameters can be considered a single parameter with a 
   <template v-slot:an>
 
 <<< @/snippets/guide/cookbook/multi_value_query_parameter_an.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/multi_value_query_parameter_spec.php
 
   </template>
 </codeblock>
@@ -626,6 +711,11 @@ Furthermore, your custom annotations should extend from the `OpenApi\Annotations
   <template v-slot:an>
 
 <<< @/snippets/guide/cookbook/class_constants_an.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/class_constants_spec.php
 
   </template>
 </codeblock>

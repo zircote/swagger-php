@@ -18,6 +18,11 @@ Typically, these save you from creating boilerplate nested `OA\Schema` annotatio
 <<< @/snippets/guide/shortcuts/response_media_type_an.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/shortcuts/response_media_type_spec.php
+
+  </template>
 </codeblock>
 
 For `JSON` and `Xml` content, `swagger-php` provides shortcut
@@ -34,6 +39,11 @@ annotations to avoid having to specify the `mediaType` over and over again.
   <template v-slot:an>
 
 <<< @/snippets/guide/shortcuts/response_json_content_an.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/shortcuts/response_json_content_spec.php
 
   </template>
 </codeblock>

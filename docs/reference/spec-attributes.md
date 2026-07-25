@@ -1,4 +1,4 @@
-# 🧪 Spec Attribute Reference
+# Spec Attribute Reference
 
 This page is generated automatically from the `swagger-php` sources.
 
