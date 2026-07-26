@@ -12,12 +12,12 @@ use OpenApi\Spec\Schema;
 use OpenApi\Undefined;
 
 /**
- * Describes the content payload for `application/json`.
+ * Describes the content payload for `application/xml`.
  *
  * @see [Media Type Object](https://spec.openapis.org/oas/v3.1.1.html#media-type-object)
  */
 #[\Attribute(\Attribute::IS_REPEATABLE)]
-class Json extends OA\MediaType
+class Xml extends OA\MediaType
 {
     /**
      * @param string|null                                      $ref         A JSON Reference to a reusable schema
@@ -48,7 +48,7 @@ class Json extends OA\MediaType
         ?array $attachables = null,
     ) {
         parent::__construct(
-            mediaType: 'application/json',
+            mediaType: 'application/xml',
             schema: $schema,
             example: $example,
             examples: $examples,

@@ -307,6 +307,7 @@ class Builder
             new Augmenter\Inheritance(),
             new Augmenter\Names(),
             new Augmenter\Enums(),
+            new Augmenter\Shortcuts(),
             new Augmenter\PathItems(),
             new Augmenter\Types(),
             new Augmenter\Refs(),
