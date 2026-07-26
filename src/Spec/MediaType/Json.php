@@ -1,0 +1,60 @@
+<?php declare(strict_types=1);
+
+/**
+ * @license Apache 2.0
+ */
+
+namespace OpenApi\Spec\MediaType;
+
+use OpenApi\Spec as OA;
+use OpenApi\Spec\Property;
+use OpenApi\Spec\Schema;
+use OpenApi\Undefined;
+
+/**
+ * Describes the content payload for `application/json`.
+ *
+ * @see [Media Type Object](https://spec.openapis.org/oas/v3.1.1.html#media-type-object)
+ */
+#[\Attribute(\Attribute::IS_REPEATABLE)]
+class Json extends OA\MediaType
+{
+    /**
+     * @param string|null                                      $ref         A JSON Reference to a reusable schema
+     * @param string|list<string>|null                         $type        The value type(s) (string, number, integer, boolean, array, object, null)
+     * @param Schema|string|null                               $items       Schema for array items
+     * @param list<Property|Schema>|null                       $properties  Object property definitions
+     * @param list<string>|null                                $required    List of required property names
+     * @param Schema|null                                      $schema      The schema defining the content
+     * @param mixed                                            $example     Example of the media type content
+     * @param list<OA\Example>|null                            $examples    Examples of the media type content
+     * @param list<OA\Encoding>|array<string,OA\Encoding>|null $encoding    Encoding information for specific properties
+     * @param array<string,mixed>|null                         $x           Vendor extensions (x-* properties)
+     * @param list<OA\Attachable>|null                         $attachables Reusable custom attachable attributes
+     */
+    public function __construct(
+        // schema shortcuts
+        public ?string $ref = null,
+        public string|array|null $type = null,
+        public Schema|string|null $items = null,
+        public ?array $properties = null,
+        public ?array $required = null,
+        // media type
+        ?Schema $schema = null,
+        mixed $example = Undefined::UNDEFINED,
+        ?array $examples = null,
+        ?array $encoding = null,
+        ?array $x = null,
+        ?array $attachables = null,
+    ) {
+        parent::__construct(
+            mediaType: 'application/json',
+            schema: $schema,
+            example: $example,
+            examples: $example,
+            encoding: $encoding,
+            x: $x,
+            attachables: $attachables
+        );
+    }
+}
