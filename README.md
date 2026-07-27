@@ -133,13 +133,15 @@ Generate always-up-to-date documentation.
 ```php
 <?php
 require("vendor/autoload.php");
-$openapi = (new \OpenApi\Generator())->generate(['/path/to/project']);
+$result = (new \OpenApi\Builder())
+    ->addSource(['/path/to/project'])
+    ->build();
 header('Content-Type: application/x-yaml');
-echo $openapi->toYaml();
+echo $result->toYaml();
 ```
 
-Documentation of how to use the `Generator` class can be found in
-the [Generator reference](https://zircote.github.io/swagger-php/reference/generator).
+Details on how to generate OpenApi specifications can be found
+in the [generate reference](https://zircote.github.io/swagger-php/guide/generating-openapi-documents).
 
 ### Usage from the Command Line Interface
 
