@@ -12,7 +12,11 @@ use OpenApi\Specification;
 use OpenApi\Utils\PipeInterface;
 
 /**
- * Resolves shortcuts like `OA\MediaType\Json`.
+ * Resolves shortcut attributes.
+ *
+ * Handles:
+ * * `OA\MediaType\Json`
+ * * `OA\MediaType\Xml`
  *
  * @implements PipeInterface<Specification>
  */
