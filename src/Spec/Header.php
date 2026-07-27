@@ -16,20 +16,23 @@ use OpenApi\Undefined;
 #[\Attribute(\Attribute::IS_REPEATABLE)]
 class Header extends AbstractAttribute
 {
+    /** @var list<MediaType>|null */
+    public ?array $content = null;
+
     /**
-     * @param string|null              $header      The header name (component key)
-     * @param string|null              $description A brief description of the header (CommonMark syntax)
-     * @param bool|null                $required    Whether the header is mandatory
-     * @param bool|null                $deprecated  Whether the header is deprecated
-     * @param string|null              $ref         A JSON Reference to a reusable header
-     * @param string|null              $style       How the header value is serialized
-     * @param bool|null                $explode     Whether arrays/objects generate separate parameters
-     * @param Schema|null              $schema      The schema defining the type for the header
-     * @param mixed                    $example     Example of the header's value
-     * @param list<Example>|null       $examples    Examples of the header's value
-     * @param list<MediaType>|null     $content     Content-type based header serialization
-     * @param array<string,mixed>|null $x           Vendor extensions (x-* properties)
-     * @param list<Attachable>|null    $attachables Reusable custom attachable attributes
+     * @param string|null                    $header      The header name (component key)
+     * @param string|null                    $description A brief description of the header (CommonMark syntax)
+     * @param bool|null                      $required    Whether the header is mandatory
+     * @param bool|null                      $deprecated  Whether the header is deprecated
+     * @param string|null                    $ref         A JSON Reference to a reusable header
+     * @param string|null                    $style       How the header value is serialized
+     * @param bool|null                      $explode     Whether arrays/objects generate separate parameters
+     * @param Schema|null                    $schema      The schema defining the type for the header
+     * @param mixed                          $example     Example of the header's value
+     * @param list<Example>|null             $examples    Examples of the header's value
+     * @param MediaType|list<MediaType>|null $content     Content-type based header serialization
+     * @param array<string,mixed>|null       $x           Vendor extensions (x-* properties)
+     * @param list<Attachable>|null          $attachables Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $header = null,
@@ -42,11 +45,12 @@ class Header extends AbstractAttribute
         public ?Schema $schema = null,
         public mixed $example = Undefined::UNDEFINED,
         public ?array $examples = null,
-        public ?array $content = null,
+        MediaType|array|null $content = null,
         ?array $x = null,
         ?array $attachables = null,
     ) {
         parent::__construct(x: $x, attachables: $attachables);
+        $this->content = self::wrapList($content);
     }
 
     public function merge(): array

@@ -18,10 +18,10 @@ use OpenApi\Undefined;
 class Header extends OA\Parameter
 {
     /**
-     * @param list<OA\Example>|null    $examples
-     * @param list<OA\MediaType>|null  $content
-     * @param array<string,mixed>|null $x
-     * @param list<OA\Attachable>|null $attachables
+     * @param list<OA\Example>|null                $examples
+     * @param OA\MediaType|list<OA\MediaType>|null $content
+     * @param array<string,mixed>|null             $x
+     * @param list<OA\Attachable>|null             $attachables
      */
     public function __construct(
         ?string $parameter = null,
@@ -34,7 +34,7 @@ class Header extends OA\Parameter
         ?OA\Schema $schema = null,
         mixed $example = Undefined::UNDEFINED,
         ?array $examples = null,
-        ?array $content = null,
+        OA\MediaType|array|null $content = null,
         ?array $x = null,
         ?array $attachables = null,
     ) {
