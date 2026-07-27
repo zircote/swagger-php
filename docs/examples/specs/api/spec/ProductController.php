@@ -23,7 +23,7 @@ class ProductController
         response: 200,
         description: 'successful operation',
         headers: [new OA\Header(header: 'X-Rate-Limit', description: 'calls per hour allowed by the user', schema: new OA\Schema(type: 'integer', format: 'int32'))],
-        content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: Product::class))],
+        content: [new OA\MediaType\Json(ref: Product::class)],
     )]
     #[OA\Response(response: 401, description: 'oops')]
     public function getProduct(
@@ -39,15 +39,12 @@ class ProductController
     #[OA\Response(
         response: 200,
         description: 'successful operation',
-        content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: Product::class))],
+        content: [new OA\MediaType\Json(ref: Product::class)],
     )]
     #[OA\RequestBody(
         description: 'New product',
         required: true,
-        content: [new OA\MediaType(
-            mediaType: 'application/json',
-            schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Product::class)),
-        )],
+        content: [new OA\MediaType\Json(items: new OA\Schema(ref: Product::class))],
     )]
     public function addProduct()
     {
