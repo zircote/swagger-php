@@ -94,4 +94,20 @@ abstract class AbstractAttribute implements AttributeInterface
 
         return $this->sourceLocation;
     }
+
+    /**
+     * @template T
+     *
+     * @param T|list<T>|null $value
+     *
+     * @return list<T>|null
+     */
+    protected static function wrapList(mixed $value): ?array
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        return is_array($value) ? $value : [$value];
+    }
 }
