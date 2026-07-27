@@ -9,7 +9,6 @@ namespace OpenApi\Utils;
 use OpenApi\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
-use ReflectionAttribute;
 
 /**
  * Traversal helpers for walking the Specification tree.
