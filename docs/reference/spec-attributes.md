@@ -64,11 +64,11 @@ Contact information for the exposed API.
 
 #### Parameters
 ---
-- **name** : `string|null`  
+- **name** : `string|null`
   The identifying name of the contact person/organization
-- **url** : `string|null`  
+- **url** : `string|null`
   A URL pointing to the contact information
-- **email** : `string|null`  
+- **email** : `string|null`
   The email address of the contact person/organization
 
 #### Reference
@@ -86,9 +86,9 @@ can be one of several schemas (used with oneOf, anyOf, allOf).
 
 #### Parameters
 ---
-- **propertyName** : `string|null`  
+- **propertyName** : `string|null`
   The name of the property in the payload that distinguishes types
-- **mapping** : `array&lt;string,string&gt;|null`  
+- **mapping** : `array&lt;string,string&gt;|null`
   Maps payload values to schema names or references
 
 #### Reference
@@ -105,17 +105,17 @@ Describes the encoding for a single property in a media type.
 
 #### Parameters
 ---
-- **encoding** : `string|null`  
+- **encoding** : `string|null`
   The property name this encoding applies to
-- **contentType** : `string|null`  
+- **contentType** : `string|null`
   The Content-Type for encoding a specific property
-- **headers** : `list&lt;Header&gt;|null`  
+- **headers** : `list&lt;Header&gt;|null`
   Additional headers for multipart media types
-- **style** : `string|null`  
+- **style** : `string|null`
   How the property value is serialized
-- **explode** : `bool|null`  
+- **explode** : `bool|null`
   Whether arrays/objects generate separate parameters
-- **allowReserved** : `bool|null`  
+- **allowReserved** : `bool|null`
   Whether reserved characters are allowed without encoding
 
 #### Reference
@@ -132,17 +132,17 @@ Describes an example value for a parameter, media type, or schema.
 
 #### Parameters
 ---
-- **example** : `string|null`  
+- **example** : `string|null`
   Reusable example identifier (component key)
-- **summary** : `string|null`  
+- **summary** : `string|null`
   Short description of the example
-- **description** : `string|null`  
+- **description** : `string|null`
   Long description of the example (CommonMark syntax)
-- **value** : `mixed`  
+- **value** : `mixed`
   Embedded literal example value
-- **externalValue** : `string|null`  
+- **externalValue** : `string|null`
   A URI pointing to the literal example
-- **ref** : `string|null`  
+- **ref** : `string|null`
   A JSON Reference to a reusable example
 
 #### Reference
@@ -159,9 +159,9 @@ Allows referencing an external resource for extended documentation.
 
 #### Parameters
 ---
-- **url** : `string|null`  
+- **url** : `string|null`
   The URL for the target documentation
-- **description** : `string|null`  
+- **description** : `string|null`
   A description of the target documentation (CommonMark syntax)
 
 #### Reference
@@ -205,15 +205,15 @@ Produces:
 
 #### Parameters
 ---
-- **flow** : `string|null`  
+- **flow** : `string|null`
   The OAuth2 flow type (implicit, password, clientCredentials, authorizationCode)
-- **authorizationUrl** : `string|null`  
+- **authorizationUrl** : `string|null`
   The authorization URL for this flow
-- **tokenUrl** : `string|null`  
+- **tokenUrl** : `string|null`
   The token URL for this flow
-- **refreshUrl** : `string|null`  
+- **refreshUrl** : `string|null`
   The URL for obtaining refresh tokens
-- **scopes** : `array&lt;string,string&gt;|null`  
+- **scopes** : `array&lt;string,string&gt;|null`
   The available scopes for the OAuth2 security scheme
 
 #### Reference
@@ -231,13 +231,13 @@ Configuration for the OAuth2 Authorization Code flow.
 
 #### Parameters
 ---
-- **authorizationUrl** : `string|null`  
+- **authorizationUrl** : `string|null`
   No details available.
-- **tokenUrl** : `string|null`  
+- **tokenUrl** : `string|null`
   No details available.
-- **refreshUrl** : `string|null`  
+- **refreshUrl** : `string|null`
   No details available.
-- **scopes** : `array&lt;string,string&gt;|null`  
+- **scopes** : `array&lt;string,string&gt;|null`
   No details available.
 
 #### Reference
@@ -254,11 +254,11 @@ Configuration for the OAuth2 Client Credentials flow.
 
 #### Parameters
 ---
-- **tokenUrl** : `string|null`  
+- **tokenUrl** : `string|null`
   No details available.
-- **refreshUrl** : `string|null`  
+- **refreshUrl** : `string|null`
   No details available.
-- **scopes** : `array&lt;string,string&gt;|null`  
+- **scopes** : `array&lt;string,string&gt;|null`
   No details available.
 
 #### Reference
@@ -275,11 +275,11 @@ Configuration for the OAuth2 Implicit flow.
 
 #### Parameters
 ---
-- **authorizationUrl** : `string|null`  
+- **authorizationUrl** : `string|null`
   No details available.
-- **refreshUrl** : `string|null`  
+- **refreshUrl** : `string|null`
   No details available.
-- **scopes** : `array&lt;string,string&gt;|null`  
+- **scopes** : `array&lt;string,string&gt;|null`
   No details available.
 
 #### Reference
@@ -296,11 +296,11 @@ Configuration for the OAuth2 Resource Owner Password flow.
 
 #### Parameters
 ---
-- **tokenUrl** : `string|null`  
+- **tokenUrl** : `string|null`
   No details available.
-- **refreshUrl** : `string|null`  
+- **refreshUrl** : `string|null`
   No details available.
-- **scopes** : `array&lt;string,string&gt;|null`  
+- **scopes** : `array&lt;string,string&gt;|null`
   No details available.
 
 #### Reference
@@ -321,27 +321,27 @@ Describes a single HTTP header.
 
 #### Parameters
 ---
-- **header** : `string|null`  
+- **header** : `string|null`
   The header name (component key)
-- **description** : `string|null`  
+- **description** : `string|null`
   A brief description of the header (CommonMark syntax)
-- **required** : `bool|null`  
+- **required** : `bool|null`
   Whether the header is mandatory
-- **deprecated** : `bool|null`  
+- **deprecated** : `bool|null`
   Whether the header is deprecated
-- **ref** : `string|null`  
+- **ref** : `string|null`
   A JSON Reference to a reusable header
-- **style** : `string|null`  
+- **style** : `string|null`
   How the header value is serialized
-- **explode** : `bool|null`  
+- **explode** : `bool|null`
   Whether arrays/objects generate separate parameters
-- **schema** : `Schema|null`  
+- **schema** : `Schema|null`
   The schema defining the type for the header
-- **example** : `mixed`  
+- **example** : `mixed`
   Example of the header's value
-- **examples** : `list&lt;Example&gt;|null`  
+- **examples** : `list&lt;Example&gt;|null`
   Examples of the header's value
-- **content** : `list&lt;MediaType&gt;|null`  
+- **content** : `list&lt;MediaType&gt;|null`
   Content-type based header serialization
 
 #### Reference
@@ -358,19 +358,19 @@ Metadata about the API.
 
 #### Parameters
 ---
-- **title** : `string|null`  
+- **title** : `string|null`
   The title of the API
-- **description** : `string|null`  
+- **description** : `string|null`
   A description of the API (CommonMark syntax)
-- **termsOfService** : `string|null`  
+- **termsOfService** : `string|null`
   A URL to the Terms of Service for the API
-- **version** : `string|null`  
+- **version** : `string|null`
   The version of the API document
-- **contact** : `Contact|null`  
+- **contact** : `Contact|null`
   Contact information for the API
-- **license** : `License|null`  
+- **license** : `License|null`
   License information for the API
-- **summary** : `string|null`  
+- **summary** : `string|null`
   A short summary of the API
 
 #### Reference
@@ -387,11 +387,11 @@ License information for the exposed API.
 
 #### Parameters
 ---
-- **name** : `string|null`  
+- **name** : `string|null`
   The license name used for the API
-- **identifier** : `string|null`  
+- **identifier** : `string|null`
   An SPDX license expression for the API
-- **url** : `string|null`  
+- **url** : `string|null`
   A URL to the license used for the API
 
 #### Reference
@@ -408,21 +408,21 @@ Describes a possible design-time link for a response.
 
 #### Parameters
 ---
-- **link** : `string|null`  
+- **link** : `string|null`
   Reusable link identifier (component key)
-- **operationRef** : `string|null`  
+- **operationRef** : `string|null`
   A relative or absolute URI reference to a linked operation
-- **operationId** : `string|null`  
+- **operationId** : `string|null`
   The name of an existing operation (mutually exclusive with operationRef)
-- **parameters** : `array&lt;string,mixed&gt;|null`  
+- **parameters** : `array&lt;string,mixed&gt;|null`
   Values to pass to the linked operation's parameters
-- **requestBody** : `mixed`  
+- **requestBody** : `mixed`
   A value to use as the request body for the linked operation
-- **description** : `string|null`  
+- **description** : `string|null`
   A description of the link (CommonMark syntax)
-- **ref** : `string|null`  
+- **ref** : `string|null`
   A JSON Reference to a reusable link
-- **server** : `Server|null`  
+- **server** : `Server|null`
   A server object to be used by the target operation
 
 #### Reference
@@ -443,15 +443,15 @@ Describes the content payload for a specific media type.
 
 #### Parameters
 ---
-- **mediaType** : `string|null`  
+- **mediaType** : `string|null`
   The media type identifier (e.g. 'application/json')
-- **schema** : `Schema|null`  
+- **schema** : `Schema|null`
   The schema defining the content
-- **example** : `mixed`  
+- **example** : `mixed`
   Example of the media type content
-- **examples** : `list&lt;Example&gt;|null`  
+- **examples** : `list&lt;Example&gt;|null`
   Examples of the media type content
-- **encoding** : `list&lt;Encoding&gt;|array&lt;string,Encoding&gt;|null`  
+- **encoding** : `list&lt;Encoding&gt;|array&lt;string,Encoding&gt;|null`
   Encoding information for specific properties
 
 #### Reference
@@ -477,23 +477,23 @@ A shortcut version of `OA\MediaType` with some of the more common `OA\Schema` pr
 
 #### Parameters
 ---
-- **ref** : `string|null`  
+- **ref** : `string|null`
   A JSON Reference to a reusable schema
-- **type** : `string|list&lt;string&gt;|null`  
+- **type** : `string|list&lt;string&gt;|null`
   The value type(s) (string, number, integer, boolean, array, object, null)
-- **items** : `Schema|string|null`  
+- **items** : `Schema|string|null`
   Schema for array items
-- **properties** : `list&lt;Property|Schema&gt;|null`  
+- **properties** : `list&lt;Property|Schema&gt;|null`
   Object property definitions
-- **required** : `list&lt;string&gt;|null`  
+- **required** : `list&lt;string&gt;|null`
   List of required property names
-- **schema** : `Schema|null`  
+- **schema** : `Schema|null`
   The schema defining the content
-- **example** : `mixed`  
+- **example** : `mixed`
   Example of the media type content
-- **examples** : `list&lt;OA\Example&gt;|null`  
+- **examples** : `list&lt;OA\Example&gt;|null`
   Examples of the media type content
-- **encoding** : `list&lt;OA\Encoding&gt;|array&lt;string,OA\Encoding&gt;|null`  
+- **encoding** : `list&lt;OA\Encoding&gt;|array&lt;string,OA\Encoding&gt;|null`
   Encoding information for specific properties
 
 #### Reference
@@ -519,23 +519,23 @@ A shortcut version of `OA\MediaType` with some of the more common `OA\Schema` pr
 
 #### Parameters
 ---
-- **ref** : `string|null`  
+- **ref** : `string|null`
   A JSON Reference to a reusable schema
-- **type** : `string|list&lt;string&gt;|null`  
+- **type** : `string|list&lt;string&gt;|null`
   The value type(s) (string, number, integer, boolean, array, object, null)
-- **items** : `Schema|string|null`  
+- **items** : `Schema|string|null`
   Schema for array items
-- **properties** : `list&lt;Property|Schema&gt;|null`  
+- **properties** : `list&lt;Property|Schema&gt;|null`
   Object property definitions
-- **required** : `list&lt;string&gt;|null`  
+- **required** : `list&lt;string&gt;|null`
   List of required property names
-- **schema** : `Schema|null`  
+- **schema** : `Schema|null`
   The schema defining the content
-- **example** : `mixed`  
+- **example** : `mixed`
   Example of the media type content
-- **examples** : `list&lt;OA\Example&gt;|null`  
+- **examples** : `list&lt;OA\Example&gt;|null`
   Examples of the media type content
-- **encoding** : `list&lt;OA\Encoding&gt;|array&lt;string,OA\Encoding&gt;|null`  
+- **encoding** : `list&lt;OA\Encoding&gt;|array&lt;string,OA\Encoding&gt;|null`
   Encoding information for specific properties
 
 #### Reference
@@ -552,9 +552,9 @@ The root element of an OpenAPI definition.
 
 #### Parameters
 ---
-- **version** : `string|null`  
+- **version** : `string|null`
   The OpenAPI specification version (e.g. '3.1.0')
-- **security** : `list&lt;Security\Requirement&gt;|null`  
+- **security** : `list&lt;Security\Requirement&gt;|null`
   Default security requirements for the API
 
 #### Reference
@@ -597,35 +597,35 @@ For webhooks, use `webhook` instead of `path`:
 
 #### Parameters
 ---
-- **path** : `string|null`  
+- **path** : `string|null`
   The URL path for the operation
-- **webhook** : `string|null`  
+- **webhook** : `string|null`
   The webhook name (mutually exclusive with path)
-- **method** : `string|null`  
+- **method** : `string|null`
   The HTTP method (get, post, put, delete, etc.)
-- **operationId** : `string|null`  
+- **operationId** : `string|null`
   Unique identifier for the operation
-- **summary** : `string|null`  
+- **summary** : `string|null`
   A short summary of what the operation does
-- **description** : `string|null`  
+- **description** : `string|null`
   A verbose explanation of the operation (CommonMark syntax)
-- **tags** : `list&lt;string&gt;|null`  
+- **tags** : `list&lt;string&gt;|null`
   Tags for API documentation grouping
-- **parameters** : `list&lt;Parameter&gt;|null`  
+- **parameters** : `list&lt;Parameter&gt;|null`
   Parameters applicable to this operation
-- **requestBody** : `RequestBody|null`  
+- **requestBody** : `RequestBody|null`
   The request body applicable to this operation
-- **responses** : `list&lt;Response&gt;|null`  
+- **responses** : `list&lt;Response&gt;|null`
   The list of possible responses
-- **callbacks** : `array&lt;string,mixed&gt;|null`  
+- **callbacks** : `array&lt;string,mixed&gt;|null`
   Possible out-of-band callbacks related to the operation
-- **deprecated** : `bool|null`  
+- **deprecated** : `bool|null`
   Whether the operation is deprecated
-- **security** : `list&lt;Security\Requirement&gt;|null`  
+- **security** : `list&lt;Security\Requirement&gt;|null`
   Security mechanisms that can be used for this operation
-- **servers** : `list&lt;Server&gt;|null`  
+- **servers** : `list&lt;Server&gt;|null`
   Alternative servers for this operation
-- **externalDocs** : `ExternalDocumentation|null`  
+- **externalDocs** : `ExternalDocumentation|null`
   Additional external documentation
 
 #### Reference
@@ -643,33 +643,33 @@ Shorthand for an HTTP DELETE operation.
 
 #### Parameters
 ---
-- **path** : `string|null`  
+- **path** : `string|null`
   No details available.
-- **webhook** : `string|null`  
+- **webhook** : `string|null`
   No details available.
-- **operationId** : `string|null`  
+- **operationId** : `string|null`
   No details available.
-- **summary** : `string|null`  
+- **summary** : `string|null`
   No details available.
-- **description** : `string|null`  
+- **description** : `string|null`
   No details available.
-- **tags** : `list&lt;string&gt;|null`  
+- **tags** : `list&lt;string&gt;|null`
   No details available.
-- **parameters** : `list&lt;OA\Parameter&gt;|null`  
+- **parameters** : `list&lt;OA\Parameter&gt;|null`
   No details available.
-- **requestBody** : `OpenApi\Spec\RequestBody|null`  
+- **requestBody** : `OpenApi\Spec\RequestBody|null`
   No details available.
-- **responses** : `list&lt;OA\Response&gt;|null`  
+- **responses** : `list&lt;OA\Response&gt;|null`
   No details available.
-- **callbacks** : `array&lt;string,mixed&gt;|null`  
+- **callbacks** : `array&lt;string,mixed&gt;|null`
   No details available.
-- **deprecated** : `bool|null`  
+- **deprecated** : `bool|null`
   No details available.
-- **security** : `list&lt;OA\Security\Requirement&gt;|null`  
+- **security** : `list&lt;OA\Security\Requirement&gt;|null`
   No details available.
-- **servers** : `list&lt;OA\Server&gt;|null`  
+- **servers** : `list&lt;OA\Server&gt;|null`
   No details available.
-- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`  
+- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`
   No details available.
 
 #### Reference
@@ -686,33 +686,33 @@ Shorthand for an HTTP GET operation.
 
 #### Parameters
 ---
-- **path** : `string|null`  
+- **path** : `string|null`
   No details available.
-- **webhook** : `string|null`  
+- **webhook** : `string|null`
   No details available.
-- **operationId** : `string|null`  
+- **operationId** : `string|null`
   No details available.
-- **summary** : `string|null`  
+- **summary** : `string|null`
   No details available.
-- **description** : `string|null`  
+- **description** : `string|null`
   No details available.
-- **tags** : `list&lt;string&gt;|null`  
+- **tags** : `list&lt;string&gt;|null`
   No details available.
-- **parameters** : `list&lt;OA\Parameter&gt;|null`  
+- **parameters** : `list&lt;OA\Parameter&gt;|null`
   No details available.
-- **requestBody** : `OpenApi\Spec\RequestBody|null`  
+- **requestBody** : `OpenApi\Spec\RequestBody|null`
   No details available.
-- **responses** : `list&lt;OA\Response&gt;|null`  
+- **responses** : `list&lt;OA\Response&gt;|null`
   No details available.
-- **callbacks** : `array&lt;string,mixed&gt;|null`  
+- **callbacks** : `array&lt;string,mixed&gt;|null`
   No details available.
-- **deprecated** : `bool|null`  
+- **deprecated** : `bool|null`
   No details available.
-- **security** : `list&lt;OA\Security\Requirement&gt;|null`  
+- **security** : `list&lt;OA\Security\Requirement&gt;|null`
   No details available.
-- **servers** : `list&lt;OA\Server&gt;|null`  
+- **servers** : `list&lt;OA\Server&gt;|null`
   No details available.
-- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`  
+- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`
   No details available.
 
 #### Reference
@@ -729,33 +729,33 @@ Shorthand for an HTTP HEAD operation.
 
 #### Parameters
 ---
-- **path** : `string|null`  
+- **path** : `string|null`
   No details available.
-- **webhook** : `string|null`  
+- **webhook** : `string|null`
   No details available.
-- **operationId** : `string|null`  
+- **operationId** : `string|null`
   No details available.
-- **summary** : `string|null`  
+- **summary** : `string|null`
   No details available.
-- **description** : `string|null`  
+- **description** : `string|null`
   No details available.
-- **tags** : `list&lt;string&gt;|null`  
+- **tags** : `list&lt;string&gt;|null`
   No details available.
-- **parameters** : `list&lt;OA\Parameter&gt;|null`  
+- **parameters** : `list&lt;OA\Parameter&gt;|null`
   No details available.
-- **requestBody** : `OpenApi\Spec\RequestBody|null`  
+- **requestBody** : `OpenApi\Spec\RequestBody|null`
   No details available.
-- **responses** : `list&lt;OA\Response&gt;|null`  
+- **responses** : `list&lt;OA\Response&gt;|null`
   No details available.
-- **callbacks** : `array&lt;string,mixed&gt;|null`  
+- **callbacks** : `array&lt;string,mixed&gt;|null`
   No details available.
-- **deprecated** : `bool|null`  
+- **deprecated** : `bool|null`
   No details available.
-- **security** : `list&lt;OA\Security\Requirement&gt;|null`  
+- **security** : `list&lt;OA\Security\Requirement&gt;|null`
   No details available.
-- **servers** : `list&lt;OA\Server&gt;|null`  
+- **servers** : `list&lt;OA\Server&gt;|null`
   No details available.
-- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`  
+- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`
   No details available.
 
 #### Reference
@@ -772,33 +772,33 @@ Shorthand for an HTTP OPTIONS operation.
 
 #### Parameters
 ---
-- **path** : `string|null`  
+- **path** : `string|null`
   No details available.
-- **webhook** : `string|null`  
+- **webhook** : `string|null`
   No details available.
-- **operationId** : `string|null`  
+- **operationId** : `string|null`
   No details available.
-- **summary** : `string|null`  
+- **summary** : `string|null`
   No details available.
-- **description** : `string|null`  
+- **description** : `string|null`
   No details available.
-- **tags** : `list&lt;string&gt;|null`  
+- **tags** : `list&lt;string&gt;|null`
   No details available.
-- **parameters** : `list&lt;OA\Parameter&gt;|null`  
+- **parameters** : `list&lt;OA\Parameter&gt;|null`
   No details available.
-- **requestBody** : `OpenApi\Spec\RequestBody|null`  
+- **requestBody** : `OpenApi\Spec\RequestBody|null`
   No details available.
-- **responses** : `list&lt;OA\Response&gt;|null`  
+- **responses** : `list&lt;OA\Response&gt;|null`
   No details available.
-- **callbacks** : `array&lt;string,mixed&gt;|null`  
+- **callbacks** : `array&lt;string,mixed&gt;|null`
   No details available.
-- **deprecated** : `bool|null`  
+- **deprecated** : `bool|null`
   No details available.
-- **security** : `list&lt;OA\Security\Requirement&gt;|null`  
+- **security** : `list&lt;OA\Security\Requirement&gt;|null`
   No details available.
-- **servers** : `list&lt;OA\Server&gt;|null`  
+- **servers** : `list&lt;OA\Server&gt;|null`
   No details available.
-- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`  
+- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`
   No details available.
 
 #### Reference
@@ -815,33 +815,33 @@ Shorthand for an HTTP PATCH operation.
 
 #### Parameters
 ---
-- **path** : `string|null`  
+- **path** : `string|null`
   No details available.
-- **webhook** : `string|null`  
+- **webhook** : `string|null`
   No details available.
-- **operationId** : `string|null`  
+- **operationId** : `string|null`
   No details available.
-- **summary** : `string|null`  
+- **summary** : `string|null`
   No details available.
-- **description** : `string|null`  
+- **description** : `string|null`
   No details available.
-- **tags** : `list&lt;string&gt;|null`  
+- **tags** : `list&lt;string&gt;|null`
   No details available.
-- **parameters** : `list&lt;OA\Parameter&gt;|null`  
+- **parameters** : `list&lt;OA\Parameter&gt;|null`
   No details available.
-- **requestBody** : `OpenApi\Spec\RequestBody|null`  
+- **requestBody** : `OpenApi\Spec\RequestBody|null`
   No details available.
-- **responses** : `list&lt;OA\Response&gt;|null`  
+- **responses** : `list&lt;OA\Response&gt;|null`
   No details available.
-- **callbacks** : `array&lt;string,mixed&gt;|null`  
+- **callbacks** : `array&lt;string,mixed&gt;|null`
   No details available.
-- **deprecated** : `bool|null`  
+- **deprecated** : `bool|null`
   No details available.
-- **security** : `list&lt;OA\Security\Requirement&gt;|null`  
+- **security** : `list&lt;OA\Security\Requirement&gt;|null`
   No details available.
-- **servers** : `list&lt;OA\Server&gt;|null`  
+- **servers** : `list&lt;OA\Server&gt;|null`
   No details available.
-- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`  
+- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`
   No details available.
 
 #### Reference
@@ -858,33 +858,33 @@ Shorthand for an HTTP POST operation.
 
 #### Parameters
 ---
-- **path** : `string|null`  
+- **path** : `string|null`
   No details available.
-- **webhook** : `string|null`  
+- **webhook** : `string|null`
   No details available.
-- **operationId** : `string|null`  
+- **operationId** : `string|null`
   No details available.
-- **summary** : `string|null`  
+- **summary** : `string|null`
   No details available.
-- **description** : `string|null`  
+- **description** : `string|null`
   No details available.
-- **tags** : `list&lt;string&gt;|null`  
+- **tags** : `list&lt;string&gt;|null`
   No details available.
-- **parameters** : `list&lt;OA\Parameter&gt;|null`  
+- **parameters** : `list&lt;OA\Parameter&gt;|null`
   No details available.
-- **requestBody** : `OpenApi\Spec\RequestBody|null`  
+- **requestBody** : `OpenApi\Spec\RequestBody|null`
   No details available.
-- **responses** : `list&lt;OA\Response&gt;|null`  
+- **responses** : `list&lt;OA\Response&gt;|null`
   No details available.
-- **callbacks** : `array&lt;string,mixed&gt;|null`  
+- **callbacks** : `array&lt;string,mixed&gt;|null`
   No details available.
-- **deprecated** : `bool|null`  
+- **deprecated** : `bool|null`
   No details available.
-- **security** : `list&lt;OA\Security\Requirement&gt;|null`  
+- **security** : `list&lt;OA\Security\Requirement&gt;|null`
   No details available.
-- **servers** : `list&lt;OA\Server&gt;|null`  
+- **servers** : `list&lt;OA\Server&gt;|null`
   No details available.
-- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`  
+- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`
   No details available.
 
 #### Reference
@@ -901,33 +901,33 @@ Shorthand for an HTTP PUT operation.
 
 #### Parameters
 ---
-- **path** : `string|null`  
+- **path** : `string|null`
   No details available.
-- **webhook** : `string|null`  
+- **webhook** : `string|null`
   No details available.
-- **operationId** : `string|null`  
+- **operationId** : `string|null`
   No details available.
-- **summary** : `string|null`  
+- **summary** : `string|null`
   No details available.
-- **description** : `string|null`  
+- **description** : `string|null`
   No details available.
-- **tags** : `list&lt;string&gt;|null`  
+- **tags** : `list&lt;string&gt;|null`
   No details available.
-- **parameters** : `list&lt;OA\Parameter&gt;|null`  
+- **parameters** : `list&lt;OA\Parameter&gt;|null`
   No details available.
-- **requestBody** : `OpenApi\Spec\RequestBody|null`  
+- **requestBody** : `OpenApi\Spec\RequestBody|null`
   No details available.
-- **responses** : `list&lt;OA\Response&gt;|null`  
+- **responses** : `list&lt;OA\Response&gt;|null`
   No details available.
-- **callbacks** : `array&lt;string,mixed&gt;|null`  
+- **callbacks** : `array&lt;string,mixed&gt;|null`
   No details available.
-- **deprecated** : `bool|null`  
+- **deprecated** : `bool|null`
   No details available.
-- **security** : `list&lt;OA\Security\Requirement&gt;|null`  
+- **security** : `list&lt;OA\Security\Requirement&gt;|null`
   No details available.
-- **servers** : `list&lt;OA\Server&gt;|null`  
+- **servers** : `list&lt;OA\Server&gt;|null`
   No details available.
-- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`  
+- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`
   No details available.
 
 #### Reference
@@ -944,33 +944,33 @@ Shorthand for an HTTP TRACE operation.
 
 #### Parameters
 ---
-- **path** : `string|null`  
+- **path** : `string|null`
   No details available.
-- **webhook** : `string|null`  
+- **webhook** : `string|null`
   No details available.
-- **operationId** : `string|null`  
+- **operationId** : `string|null`
   No details available.
-- **summary** : `string|null`  
+- **summary** : `string|null`
   No details available.
-- **description** : `string|null`  
+- **description** : `string|null`
   No details available.
-- **tags** : `list&lt;string&gt;|null`  
+- **tags** : `list&lt;string&gt;|null`
   No details available.
-- **parameters** : `list&lt;OA\Parameter&gt;|null`  
+- **parameters** : `list&lt;OA\Parameter&gt;|null`
   No details available.
-- **requestBody** : `OpenApi\Spec\RequestBody|null`  
+- **requestBody** : `OpenApi\Spec\RequestBody|null`
   No details available.
-- **responses** : `list&lt;OA\Response&gt;|null`  
+- **responses** : `list&lt;OA\Response&gt;|null`
   No details available.
-- **callbacks** : `array&lt;string,mixed&gt;|null`  
+- **callbacks** : `array&lt;string,mixed&gt;|null`
   No details available.
-- **deprecated** : `bool|null`  
+- **deprecated** : `bool|null`
   No details available.
-- **security** : `list&lt;OA\Security\Requirement&gt;|null`  
+- **security** : `list&lt;OA\Security\Requirement&gt;|null`
   No details available.
-- **servers** : `list&lt;OA\Server&gt;|null`  
+- **servers** : `list&lt;OA\Server&gt;|null`
   No details available.
-- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`  
+- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`
   No details available.
 
 #### Reference
@@ -1017,35 +1017,35 @@ Produces:
 
 #### Parameters
 ---
-- **parameter** : `string|null`  
+- **parameter** : `string|null`
   Reusable parameter identifier (component key)
-- **name** : `string|null`  
+- **name** : `string|null`
   The name of the parameter
-- **in** : `string|null`  
+- **in** : `string|null`
   The location of the parameter (query, header, path, cookie)
-- **description** : `string|null`  
+- **description** : `string|null`
   A brief description of the parameter (CommonMark syntax)
-- **required** : `bool|null`  
+- **required** : `bool|null`
   Whether the parameter is mandatory
-- **deprecated** : `bool|null`  
+- **deprecated** : `bool|null`
   Whether the parameter is deprecated
-- **allowEmptyValue** : `bool|null`  
+- **allowEmptyValue** : `bool|null`
   Whether empty-valued parameters are allowed
-- **ref** : `string|null`  
+- **ref** : `string|null`
   A JSON Reference to a reusable parameter
-- **style** : `string|null`  
+- **style** : `string|null`
   How the parameter value is serialized
-- **explode** : `bool|null`  
+- **explode** : `bool|null`
   Whether arrays/objects generate separate parameters
-- **allowReserved** : `bool|null`  
+- **allowReserved** : `bool|null`
   Whether reserved characters are allowed without encoding
-- **schema** : `Schema|null`  
+- **schema** : `Schema|null`
   The schema defining the type for the parameter
-- **example** : `mixed`  
+- **example** : `mixed`
   Example of the parameter's value
-- **examples** : `list&lt;Example&gt;|null`  
+- **examples** : `list&lt;Example&gt;|null`
   Examples of the parameter's value
-- **content** : `list&lt;MediaType&gt;|null`  
+- **content** : `list&lt;MediaType&gt;|null`
   Content-type based parameter serialization
 
 #### Reference
@@ -1066,27 +1066,27 @@ A parameter passed via an HTTP cookie.
 
 #### Parameters
 ---
-- **parameter** : `string|null`  
+- **parameter** : `string|null`
   No details available.
-- **name** : `string|null`  
+- **name** : `string|null`
   No details available.
-- **description** : `string|null`  
+- **description** : `string|null`
   No details available.
-- **required** : `bool|null`  
+- **required** : `bool|null`
   No details available.
-- **deprecated** : `bool|null`  
+- **deprecated** : `bool|null`
   No details available.
-- **ref** : `string|null`  
+- **ref** : `string|null`
   No details available.
-- **explode** : `bool|null`  
+- **explode** : `bool|null`
   No details available.
-- **schema** : `OpenApi\Spec\Schema|null`  
+- **schema** : `OpenApi\Spec\Schema|null`
   No details available.
-- **example** : `mixed|null`  
+- **example** : `mixed|null`
   No details available.
-- **examples** : `list&lt;OA\Example&gt;|null`  
+- **examples** : `list&lt;OA\Example&gt;|null`
   No details available.
-- **content** : `list&lt;OA\MediaType&gt;|null`  
+- **content** : `list&lt;OA\MediaType&gt;|null`
   No details available.
 
 #### Reference
@@ -1107,27 +1107,27 @@ A parameter passed via an HTTP header.
 
 #### Parameters
 ---
-- **parameter** : `string|null`  
+- **parameter** : `string|null`
   No details available.
-- **name** : `string|null`  
+- **name** : `string|null`
   No details available.
-- **description** : `string|null`  
+- **description** : `string|null`
   No details available.
-- **required** : `bool|null`  
+- **required** : `bool|null`
   No details available.
-- **deprecated** : `bool|null`  
+- **deprecated** : `bool|null`
   No details available.
-- **ref** : `string|null`  
+- **ref** : `string|null`
   No details available.
-- **explode** : `bool|null`  
+- **explode** : `bool|null`
   No details available.
-- **schema** : `OpenApi\Spec\Schema|null`  
+- **schema** : `OpenApi\Spec\Schema|null`
   No details available.
-- **example** : `mixed|null`  
+- **example** : `mixed|null`
   No details available.
-- **examples** : `list&lt;OA\Example&gt;|null`  
+- **examples** : `list&lt;OA\Example&gt;|null`
   No details available.
-- **content** : `list&lt;OA\MediaType&gt;|null`  
+- **content** : `list&lt;OA\MediaType&gt;|null`
   No details available.
 
 #### Reference
@@ -1148,27 +1148,27 @@ A parameter passed via the URL path (always required).
 
 #### Parameters
 ---
-- **parameter** : `string|null`  
+- **parameter** : `string|null`
   No details available.
-- **name** : `string|null`  
+- **name** : `string|null`
   No details available.
-- **description** : `string|null`  
+- **description** : `string|null`
   No details available.
-- **deprecated** : `bool|null`  
+- **deprecated** : `bool|null`
   No details available.
-- **ref** : `string|null`  
+- **ref** : `string|null`
   No details available.
-- **style** : `string|null`  
+- **style** : `string|null`
   No details available.
-- **explode** : `bool|null`  
+- **explode** : `bool|null`
   No details available.
-- **schema** : `OpenApi\Spec\Schema|null`  
+- **schema** : `OpenApi\Spec\Schema|null`
   No details available.
-- **example** : `mixed|null`  
+- **example** : `mixed|null`
   No details available.
-- **examples** : `list&lt;OA\Example&gt;|null`  
+- **examples** : `list&lt;OA\Example&gt;|null`
   No details available.
-- **content** : `list&lt;OA\MediaType&gt;|null`  
+- **content** : `list&lt;OA\MediaType&gt;|null`
   No details available.
 
 #### Reference
@@ -1189,33 +1189,33 @@ A parameter passed via the URL query string.
 
 #### Parameters
 ---
-- **parameter** : `string|null`  
+- **parameter** : `string|null`
   No details available.
-- **name** : `string|null`  
+- **name** : `string|null`
   No details available.
-- **description** : `string|null`  
+- **description** : `string|null`
   No details available.
-- **required** : `bool|null`  
+- **required** : `bool|null`
   No details available.
-- **deprecated** : `bool|null`  
+- **deprecated** : `bool|null`
   No details available.
-- **allowEmptyValue** : `bool|null`  
+- **allowEmptyValue** : `bool|null`
   No details available.
-- **ref** : `string|null`  
+- **ref** : `string|null`
   No details available.
-- **style** : `string|null`  
+- **style** : `string|null`
   No details available.
-- **explode** : `bool|null`  
+- **explode** : `bool|null`
   No details available.
-- **allowReserved** : `bool|null`  
+- **allowReserved** : `bool|null`
   No details available.
-- **schema** : `OpenApi\Spec\Schema|null`  
+- **schema** : `OpenApi\Spec\Schema|null`
   No details available.
-- **example** : `mixed|null`  
+- **example** : `mixed|null`
   No details available.
-- **examples** : `list&lt;OA\Example&gt;|null`  
+- **examples** : `list&lt;OA\Example&gt;|null`
   No details available.
-- **content** : `list&lt;OA\MediaType&gt;|null`  
+- **content** : `list&lt;OA\MediaType&gt;|null`
   No details available.
 
 #### Reference
@@ -1274,23 +1274,23 @@ name+in (parameters).
 
 #### Parameters
 ---
-- **ref** : `string|null`  
+- **ref** : `string|null`
   A JSON Reference to a reusable path item
-- **prefix** : `string|null`  
+- **prefix** : `string|null`
   Path prefix — composable via class hierarchy
-- **summary** : `string|null`  
+- **summary** : `string|null`
   An optional summary, intended to apply to all operations in this path
-- **description** : `string|null`  
+- **description** : `string|null`
   An optional description, intended to apply to all operations in this path
-- **parameters** : `list&lt;Parameter&gt;|null`  
+- **parameters** : `list&lt;Parameter&gt;|null`
   Parameters applicable to all operations under this path
-- **servers** : `list&lt;Server&gt;|null`  
+- **servers** : `list&lt;Server&gt;|null`
   Alternative servers for all operations under this path
-- **tags** : `list&lt;string&gt;|null`  
+- **tags** : `list&lt;string&gt;|null`
   Tags to clone to contained operations
-- **security** : `list&lt;Security\Requirement&gt;|null`  
+- **security** : `list&lt;Security\Requirement&gt;|null`
   Security requirements to clone to contained operations
-- **responses** : `list&lt;Response&gt;|null`  
+- **responses** : `list&lt;Response&gt;|null`
   Shared responses to clone to contained operations
 
 #### Reference
@@ -1307,9 +1307,9 @@ Defines a single property within a Schema object.
 
 #### Parameters
 ---
-- **property** : `string|null`  
+- **property** : `string|null`
   The property name
-- **schema** : `Schema|null`  
+- **schema** : `Schema|null`
   The schema defining the property type and constraints
 
 #### Reference
@@ -1330,15 +1330,15 @@ Describes a single request body.
 
 #### Parameters
 ---
-- **request** : `string|null`  
+- **request** : `string|null`
   Reusable request body identifier (component key)
-- **description** : `string|null`  
+- **description** : `string|null`
   A brief description of the request body (CommonMark syntax)
-- **required** : `bool|null`  
+- **required** : `bool|null`
   Whether the request body is required
-- **ref** : `string|null`  
+- **ref** : `string|null`
   A JSON Reference to a reusable request body
-- **content** : `list&lt;MediaType&gt;|null`  
+- **content** : `list&lt;MediaType&gt;|null`
   The content of the request body
 
 #### Reference
@@ -1359,17 +1359,17 @@ Describes a single response from an API operation.
 
 #### Parameters
 ---
-- **response** : `string|int|null`  
+- **response** : `string|int|null`
   The HTTP status code or 'default'
-- **description** : `string|null`  
+- **description** : `string|null`
   A description of the response (CommonMark syntax)
-- **ref** : `string|null`  
+- **ref** : `string|null`
   A JSON Reference to a reusable response
-- **headers** : `list&lt;Header&gt;|null`  
+- **headers** : `list&lt;Header&gt;|null`
   Headers sent with the response
-- **content** : `list&lt;MediaType&gt;|null`  
+- **content** : `list&lt;MediaType&gt;|null`
   Possible response payloads
-- **links** : `list&lt;Link&gt;|null`  
+- **links** : `list&lt;Link&gt;|null`
   Design-time links for the response
 
 #### Reference
@@ -1413,113 +1413,113 @@ Inline — used within parameters, responses, or other schemas:
 
 #### Parameters
 ---
-- **schema** : `string|null`  
+- **schema** : `string|null`
   Reusable schema identifier (component key)
-- **title** : `string|null`  
+- **title** : `string|null`
   A title for the schema
-- **description** : `string|null`  
+- **description** : `string|null`
   A description of the schema (CommonMark syntax)
-- **ref** : `string|null`  
+- **ref** : `string|null`
   A JSON Reference to a reusable schema
-- **type** : `string|list&lt;string&gt;|null`  
+- **type** : `string|list&lt;string&gt;|null`
   The value type(s) (string, number, integer, boolean, array, object, null)
-- **format** : `string|null`  
+- **format** : `string|null`
   Further refines the type (e.g. int32, int64, float, double, date-time, email)
-- **nullable** : `bool|null`  
+- **nullable** : `bool|null`
   Whether the value can be null (OAS 3.0 only; use type array in 3.1+)
-- **minLength** : `int|null`  
+- **minLength** : `int|null`
   Minimum string length
-- **maxLength** : `int|null`  
+- **maxLength** : `int|null`
   Maximum string length
-- **pattern** : `string|null`  
+- **pattern** : `string|null`
   Regular expression pattern the string must match
-- **contentMediaType** : `string|null`  
+- **contentMediaType** : `string|null`
   The media type of string content encoding
-- **contentEncoding** : `string|null`  
+- **contentEncoding** : `string|null`
   The encoding used for string content (e.g. base64)
-- **minimum** : `int|float|null`  
+- **minimum** : `int|float|null`
   Minimum numeric value (inclusive)
-- **maximum** : `int|float|null`  
+- **maximum** : `int|float|null`
   Maximum numeric value (inclusive)
-- **exclusiveMinimum** : `int|float|bool|null`  
+- **exclusiveMinimum** : `int|float|bool|null`
   Exclusive minimum value
-- **exclusiveMaximum** : `int|float|bool|null`  
+- **exclusiveMaximum** : `int|float|bool|null`
   Exclusive maximum value
-- **multipleOf** : `int|float|null`  
+- **multipleOf** : `int|float|null`
   The value must be a multiple of this number
-- **items** : `Schema|string|null`  
+- **items** : `Schema|string|null`
   Schema for array items
-- **minItems** : `int|null`  
+- **minItems** : `int|null`
   Minimum number of array items
-- **maxItems** : `int|null`  
+- **maxItems** : `int|null`
   Maximum number of array items
-- **uniqueItems** : `bool|null`  
+- **uniqueItems** : `bool|null`
   Whether array items must be unique
-- **prefixItems** : `list&lt;Schema&gt;|null`  
+- **prefixItems** : `list&lt;Schema&gt;|null`
   Schemas for positional array items (tuple validation)
-- **contains** : `Schema|bool|null`  
+- **contains** : `Schema|bool|null`
   Schema that at least one array item must match
-- **minContains** : `int|null`  
+- **minContains** : `int|null`
   Minimum number of items matching contains
-- **maxContains** : `int|null`  
+- **maxContains** : `int|null`
   Maximum number of items matching contains
-- **unevaluatedItems** : `Schema|bool|null`  
+- **unevaluatedItems** : `Schema|bool|null`
   Schema for items not covered by other keywords
-- **properties** : `list&lt;Property|Schema&gt;|null`  
+- **properties** : `list&lt;Property|Schema&gt;|null`
   Object property definitions
-- **required** : `list&lt;string&gt;|null`  
+- **required** : `list&lt;string&gt;|null`
   List of required property names
-- **additionalProperties** : `Schema|bool|null`  
+- **additionalProperties** : `Schema|bool|null`
   Schema or boolean for additional properties
-- **patternProperties** : `array&lt;string,Schema&gt;|null`  
+- **patternProperties** : `array&lt;string,Schema&gt;|null`
   Schemas for properties matching regex patterns
-- **minProperties** : `int|null`  
+- **minProperties** : `int|null`
   Minimum number of properties
-- **maxProperties** : `int|null`  
+- **maxProperties** : `int|null`
   Maximum number of properties
-- **unevaluatedProperties** : `Schema|bool|null`  
+- **unevaluatedProperties** : `Schema|bool|null`
   Schema for properties not covered by other keywords
-- **propertyNames** : `Schema|null`  
+- **propertyNames** : `Schema|null`
   Schema that property names must validate against
-- **dependentRequired** : `array&lt;string,list&lt;string&gt;&gt;|null`  
+- **dependentRequired** : `array&lt;string,list&lt;string&gt;&gt;|null`
   Property-level required dependencies
-- **dependentSchemas** : `array&lt;string,Schema&gt;|null`  
+- **dependentSchemas** : `array&lt;string,Schema&gt;|null`
   Property-level schema dependencies
-- **allOf** : `list&lt;Schema&gt;|null`  
+- **allOf** : `list&lt;Schema&gt;|null`
   All schemas must match (AND composition)
-- **anyOf** : `list&lt;Schema&gt;|null`  
+- **anyOf** : `list&lt;Schema&gt;|null`
   At least one schema must match (OR composition)
-- **oneOf** : `list&lt;Schema&gt;|null`  
+- **oneOf** : `list&lt;Schema&gt;|null`
   Exactly one schema must match (XOR composition)
-- **not** : `Schema|null`  
+- **not** : `Schema|null`
   The schema must NOT match
-- **if** : `Schema|null`  
+- **if** : `Schema|null`
   Conditional schema (if-then-else)
-- **then** : `Schema|null`  
+- **then** : `Schema|null`
   Applied when 'if' succeeds
-- **else** : `Schema|null`  
+- **else** : `Schema|null`
   Applied when 'if' fails
-- **enum** : `list&lt;string|int|float|bool|\UnitEnum|class-string&lt;\UnitEnum&gt;|null&gt;|null`  
+- **enum** : `list&lt;string|int|float|bool|\UnitEnum|class-string&lt;\UnitEnum&gt;|null&gt;|null`
   Allowed values
-- **const** : `mixed`  
+- **const** : `mixed`
   A single allowed value
-- **example** : `mixed`  
+- **example** : `mixed`
   An example value
-- **examples** : `list&lt;mixed&gt;|null`  
+- **examples** : `list&lt;mixed&gt;|null`
   A list of example values
-- **deprecated** : `bool|null`  
+- **deprecated** : `bool|null`
   Whether the schema is deprecated
-- **readOnly** : `bool|null`  
+- **readOnly** : `bool|null`
   Whether the value is read-only
-- **writeOnly** : `bool|null`  
+- **writeOnly** : `bool|null`
   Whether the value is write-only
-- **default** : `mixed`  
+- **default** : `mixed`
   The default value
-- **discriminator** : `Discriminator|null`  
+- **discriminator** : `Discriminator|null`
   Discriminator for polymorphism
-- **externalDocs** : `ExternalDocumentation|null`  
+- **externalDocs** : `ExternalDocumentation|null`
   Additional external documentation
-- **xml** : `Xml|null`  
+- **xml** : `Xml|null`
   XML representation metadata
 
 #### Reference
@@ -1540,11 +1540,11 @@ Multiple schemes within a single requirement represent AND logic.
 
 #### Parameters
 ---
-- **scheme** : `string|null`  
+- **scheme** : `string|null`
   Single scheme name (shorthand for simple requirements)
-- **scopes** : `list&lt;string&gt;|null`  
+- **scopes** : `list&lt;string&gt;|null`
   Scopes for the single scheme (OAuth2/OpenIdConnect)
-- **schemes** : `array&lt;string,list&lt;string&gt;&gt;|null`  
+- **schemes** : `array&lt;string,list&lt;string&gt;&gt;|null`
   Map of scheme names to scopes (for AND logic with multiple schemes)
 
 #### Reference
@@ -1572,25 +1572,25 @@ Typed subtypes are available for each security scheme type:
 
 #### Parameters
 ---
-- **securityScheme** : `string|null`  
+- **securityScheme** : `string|null`
   Reusable security scheme identifier (component key)
-- **type** : `string|null`  
+- **type** : `string|null`
   The type of the security scheme (apiKey, http, mutualTLS, oauth2, openIdConnect)
-- **description** : `string|null`  
+- **description** : `string|null`
   A description of the security scheme (CommonMark syntax)
-- **name** : `string|null`  
+- **name** : `string|null`
   The name of the header, query, or cookie parameter (apiKey)
-- **in** : `string|null`  
+- **in** : `string|null`
   The location of the API key (query, header, cookie)
-- **scheme** : `string|null`  
+- **scheme** : `string|null`
   The HTTP authorization scheme (http)
-- **bearerFormat** : `string|null`  
+- **bearerFormat** : `string|null`
   A hint about the format of the bearer token (http/bearer)
-- **openIdConnectUrl** : `string|null`  
+- **openIdConnectUrl** : `string|null`
   The OpenID Connect URL to discover configuration (openIdConnect)
-- **flows** : `list&lt;OA\Flow&gt;|null`  
+- **flows** : `list&lt;OA\Flow&gt;|null`
   The available OAuth2 flows (oauth2)
-- **ref** : `string|null`  
+- **ref** : `string|null`
   A JSON Reference to a reusable security scheme
 
 #### Reference
@@ -1607,13 +1607,13 @@ An API key security scheme (header, query, or cookie).
 
 #### Parameters
 ---
-- **securityScheme** : `string|null`  
+- **securityScheme** : `string|null`
   No details available.
-- **description** : `string|null`  
+- **description** : `string|null`
   No details available.
-- **name** : `string|null`  
+- **name** : `string|null`
   No details available.
-- **in** : `string|null`  
+- **in** : `string|null`
   No details available.
 
 #### Reference
@@ -1630,13 +1630,13 @@ An HTTP authentication security scheme (Basic, Bearer, etc.).
 
 #### Parameters
 ---
-- **securityScheme** : `string|null`  
+- **securityScheme** : `string|null`
   No details available.
-- **description** : `string|null`  
+- **description** : `string|null`
   No details available.
-- **scheme** : `string|null`  
+- **scheme** : `string|null`
   No details available.
-- **bearerFormat** : `string|null`  
+- **bearerFormat** : `string|null`
   No details available.
 
 #### Reference
@@ -1653,9 +1653,9 @@ A Mutual TLS security scheme.
 
 #### Parameters
 ---
-- **securityScheme** : `string|null`  
+- **securityScheme** : `string|null`
   No details available.
-- **description** : `string|null`  
+- **description** : `string|null`
   No details available.
 
 #### Reference
@@ -1672,11 +1672,11 @@ An OAuth2 security scheme with one or more flows.
 
 #### Parameters
 ---
-- **securityScheme** : `string|null`  
+- **securityScheme** : `string|null`
   No details available.
-- **description** : `string|null`  
+- **description** : `string|null`
   No details available.
-- **flows** : `list&lt;OA\Flow&gt;|null`  
+- **flows** : `list&lt;OA\Flow&gt;|null`
   No details available.
 
 #### Reference
@@ -1693,11 +1693,11 @@ An OpenID Connect Discovery security scheme.
 
 #### Parameters
 ---
-- **securityScheme** : `string|null`  
+- **securityScheme** : `string|null`
   No details available.
-- **description** : `string|null`  
+- **description** : `string|null`
   No details available.
-- **openIdConnectUrl** : `string|null`  
+- **openIdConnectUrl** : `string|null`
   No details available.
 
 #### Reference
@@ -1718,11 +1718,11 @@ Represents a Server.
 
 #### Parameters
 ---
-- **url** : `string|null`  
+- **url** : `string|null`
   A URL to the target host
-- **description** : `string|null`  
+- **description** : `string|null`
   A description of the host (CommonMark syntax)
-- **variables** : `list&lt;ServerVariable&gt;|null`  
+- **variables** : `list&lt;ServerVariable&gt;|null`
   Variables for server URL template substitution
 
 #### Reference
@@ -1739,13 +1739,13 @@ Represents a Server Variable for server URL template substitution.
 
 #### Parameters
 ---
-- **serverVariable** : `string|null`  
+- **serverVariable** : `string|null`
   The variable name
-- **default** : `string|null`  
+- **default** : `string|null`
   The default value to use for substitution
-- **description** : `string|null`  
+- **description** : `string|null`
   A description of the server variable (CommonMark syntax)
-- **enum** : `list&lt;string&gt;|null`  
+- **enum** : `list&lt;string&gt;|null`
   Enumeration of allowed string values for substitution
 
 #### Reference
@@ -1762,11 +1762,11 @@ Adds metadata to a single tag used by the Operation Object.
 
 #### Parameters
 ---
-- **name** : `string|null`  
+- **name** : `string|null`
   The name of the tag
-- **description** : `string|null`  
+- **description** : `string|null`
   A description of the tag (CommonMark syntax)
-- **externalDocs** : `ExternalDocumentation|null`  
+- **externalDocs** : `ExternalDocumentation|null`
   Additional external documentation for this tag
 
 #### Reference
@@ -1783,15 +1783,15 @@ Metadata for XML representation of a schema property.
 
 #### Parameters
 ---
-- **name** : `string|null`  
+- **name** : `string|null`
   Replaces the name of the element/attribute
-- **namespace** : `string|null`  
+- **namespace** : `string|null`
   The URI of the XML namespace
-- **prefix** : `string|null`  
+- **prefix** : `string|null`
   The namespace prefix to use
-- **attribute** : `bool|null`  
+- **attribute** : `bool|null`
   Whether the property translates to an XML attribute
-- **wrapped** : `bool|null`  
+- **wrapped** : `bool|null`
   Whether array items are wrapped in an additional element
 
 #### Reference
