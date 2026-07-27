@@ -191,6 +191,11 @@ class Renderer
                 $out .= "<<< @/examples/specs/{$name}/annotations/{$relFilename}\n";
                 $out .= "\n";
                 $out .= "  </template>\n";
+                $out .= "  <template v-slot:spec>\n";
+                $out .= "\n";
+                $out .= "<<< @/examples/specs/{$name}/spec/{$relFilename}\n";
+                $out .= "\n";
+                $out .= "  </template>\n";
                 $out .= "</codeblock>\n";
             }
         }

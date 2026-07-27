@@ -15,6 +15,11 @@ and will unfold into "x-" properties.
 <<< @/snippets/guide/vendor-extensions/custom_property_an.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/vendor-extensions/custom_property_spec.php
+
+  </template>
 </codeblock>
 
 **Results in:**
@@ -33,4 +38,3 @@ info:
       - version: "2.1"
         level: fullapi
 ```
-

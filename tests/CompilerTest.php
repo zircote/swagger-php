@@ -211,9 +211,9 @@ final class CompilerTest extends TestCase
         ];
 
         yield 'examples array' => [
-            new OA\Schema(schema: 'F', type: 'string', examples: ['foo', 'bar']),
+            new OA\Schema(schema: 'F', type: 'string', examples: [new OA\Example(example: 'foo', value: false)]),
             'examples',
-            ['foo', 'bar'],
+            ['foo' => ['value' => false]],
         ];
 
         yield 'unevaluatedProperties false' => [

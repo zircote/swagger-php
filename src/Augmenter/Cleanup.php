@@ -69,8 +69,8 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
     {
         $usedRefs = [];
 
-        $specification->getWalker()->eachRef(static function (OA\AbstractAttribute $a) use (&$usedRefs): void {
-            $usedRefs[$a->ref] = true;
+        $specification->getWalker()->eachRef(static function (OA\AbstractAttribute $attribute) use (&$usedRefs): void {
+            $usedRefs[$attribute->ref] = true;
         });
 
         $removed = false;

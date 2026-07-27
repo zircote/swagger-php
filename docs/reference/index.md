@@ -25,3 +25,8 @@ However, `swagger-php` offers more.
   `swagger-php` comes with a list of pre-defined processors that convert the raw data to a
   complete OpenAPI document.
   Custom processors can be added or existing removed to tweak swagger-php` to your requirements.
+
+* [Augmenters](augmenters.md)
+
+  Augmenters enrich the spec-attributes pipeline with inferred data (types, refs, docblocks)
+  before compilation. They run in three groups: resolve, reduce, and augment.

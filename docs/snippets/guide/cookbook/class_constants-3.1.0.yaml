@@ -1,0 +1,9 @@
+openapi: 3.1.0
+components:
+  schemas:
+    Airport:
+      properties:
+        kind:
+          type: string
+          const: Airport
+      type: object

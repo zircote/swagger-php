@@ -1,0 +1,9 @@
+openapi: 3.1.0
+components:
+  responses:
+    '200':
+      description: 'successful operation'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'

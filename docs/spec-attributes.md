@@ -45,7 +45,7 @@ After both passes, only root attributes remain and are added to the `Specificati
 **Root attributes.** A "root" attribute is one that can exist independently in the Specification — it has its own bucket and doesn't require a parent container. After the two-pass assembly (merge + hierarchy resolution), every remaining attribute must satisfy `isRoot() === true` or the assembler throws an error.
 
 Root DTOs have a corresponding bucket in `Specification` and are collected directly by the assembler:
-- Always root: `Schema`, `Operation`, `PathItem`, `OpenApi`, `Info`, `Tag`, `Server`, `ExternalDocumentation`, `SecurityScheme`, `Components`, `Attachable`
+- Always root: `Schema`, `Operation`, `PathItem`, `OpenApi`, `Info`, `Tag`, `Server`, `ExternalDocumentation`, `SecurityScheme`, `Components`
 - Conditionally root: `Response` (when `response` key is set), `RequestBody` (when `request` key is set)
 - Never root: `Parameter`, `Header`, `Link`, `Example`, `MediaType`, `Property`, etc.
 
@@ -103,15 +103,14 @@ OA\AbstractAttribute
 │   ├── OA\Flow\Password
 │   ├── OA\Flow\ClientCredentials
 │   └── OA\Flow\AuthorizationCode
-├── OA\Security
-│   ├── OA\Security\Requirement
-│   └── OA\Security\Scheme
-│       ├── OA\Security\Scheme\Http
-│       ├── OA\Security\Scheme\ApiKey
-│       ├── OA\Security\Scheme\OAuth2
-│       ├── OA\Security\Scheme\OpenIdConnect
-│       └── OA\Security\Scheme\MutualTls
-└── OA\Attachable
+└── OA\Security
+    ├── OA\Security\Requirement
+    └── OA\Security\Scheme
+        ├── OA\Security\Scheme\Http
+        ├── OA\Security\Scheme\ApiKey
+        ├── OA\Security\Scheme\OAuth2
+        ├── OA\Security\Scheme\OpenIdConnect
+        └── OA\Security\Scheme\MutualTls
 ```
 
 ### Reflectors as relationship glue
@@ -132,103 +131,75 @@ The `Builder` class supports three modes via `setMode('classic'|'spec'|'hybrid')
 - **spec** — runs the new spec attributes pipeline end-to-end
 - **hybrid** — uses the classic `Generator` for scanning only (MergeJsonContent/MergeXmlContent), then iterates the `Analysis` annotations directly via `HybridBridge` into a `Specification` and runs it through the full spec augmenter chain and compilers
 
-### Full programmatic Builder example
-
-```php
-use OpenApi\Builder;
-use OpenApi\Builder\Mode;
-use OpenApi\Utils\AttributeFactory;
-use OpenApi\Augmenter;
-
-$result = (new Builder())
-    ->setMode(Mode::SPEC)
-    ->setVersion('3.1.0')
-    ->addSource('src/Api')
-
-    // Configure the attribute factory — add custom translators
-    ->withAttributeFactory(function (AttributeFactory $factory): void {
-        // Add a translator that converts Symfony validation attributes
-        // into OpenAPI schema constraints
-        $factory->getTranslators()->add(new SymfonyValidationTranslator());
-    })
-
-    // Configure the augmenter pipeline — add/remove/reorder pipes
-    ->withAugmenters(function (\OpenApi\Utils\Pipeline $pipeline): void {
-        // Disable cleanup (keep all components even if unreferenced)
-        $pipeline->get(Augmenter\Cleanup::class)?->setEnabled(false);
-
-        // Configure operationId generation to use hashing
-        $pipeline->get(Augmenter\OperationIds::class)?->setHash(true);
-
-        // Filter to only specific paths/tags
-        $pipeline->get(Augmenter\PathFilter::class)
-            ?->setPathFilter('/^\/api\/v2/')
-            ?->setTagFilter('/^(Users|Products)$/');
-
-        // Insert a custom augmenter before Inheritance
-        $pipeline->insert(new CustomAugmenter(), Augmenter\Inheritance::class);
-
-        // Remove an augmenter entirely
-        $pipeline->remove(Augmenter\EnumDescriptions::class);
-    })
-
-    // Classic-mode only: configure the underlying Generator
-    // ->withGenerator(function (\OpenApi\Generator $generator): void {
-    //     $generator->setProcessors([...]);
-    // })
-
-    ->build();
-
-// Access results
-$openapi = $result->openapi;     // compiled OpenAPI array
-$yaml = $result->toYaml();       // YAML string
-$json = $result->toJson();       // JSON string
-$warnings = $result->warnings(); // any non-fatal issues
-```
-
 ## What's done
 
 - All core spec DTOs (OpenApi, Info, Server, Tag, Operation, Schema, Parameter, Response, Header, PathItem, etc.)
 - Assembler with two-pass nesting resolution
-- `AttributeFactory` extracted from Assembler for standalone attribute instantiation, with `TypedList<AttributeTranslatorInterface>` translators and `withTranslators()` hook
-- `TypedList<T>` generic collection (implements `IteratorAggregate`) — base class for `Pipeline`, also used for translator management
+- `AttributeFactory` extracted from Assembler for standalone attribute instantiation
 - Three compilers (3.0, 3.1, 3.2) with version-specific handling and shared inheritance
-- Builder with tri-mode support (classic/spec/hybrid), CLI integration, and callable hooks (`withAttributeFactory()`, `withAugmenters()`, `withGenerator()`)
+- Builder with tri-mode support (classic/spec/hybrid) and CLI integration
 - `HybridBridge` iterates `Analysis` annotations directly into `Specification` DTOs (no tree assembly needed)
 - Security namespace (Scheme subclasses + Requirement)
 - Typed subclasses for Parameter, Flow, and Operation
 - All examples ported to spec attributes (see table below)
 - Pipeline classes tested (Assembler, Compilers, Builder)
-- Augmenter infrastructure: `PipeInterface` with `@template` generics, `Pipeline` (extends `TypedList`) with grouping (resolve → reduce → augment), `Pipeline::get()` for typed configuration
+- Augmenter infrastructure: `PipeInterface` with `@template` generics, Pipeline grouping (resolve → reduce → augment), `Pipeline::get()` for typed configuration
 - `SpecificationWalker` — instance-based tree traversal with unified schema descent
 - All augmenters implemented (see table below)
-- Shared `Type\TypeResolver` core producing `SchemaType` value objects — used by both the spec-attributes `Types` augmenter and the classic `TypeInfoTypeResolver`, confirming identical type resolution behavior
-- `Attachable` DTO with `Specification::$attachables` bucket, inline `$attachables` parameter on all DTOs, slot validation in `AttributeFactory::nestChild()`
+- Shared `Type\TypeResolver` core producing `SchemaType` value objects — used by both the spec-attributes `Type` augmenter and the classic `TypeInfoTypeResolver`, confirming identical type resolution behavior
 
 ### Augmenter status
 
 | Augmenter | Group | Description | Status |
 |---|---|---|---|
-| `Types` | resolve | Infers schema type, format, nullable, items, refs from PHP types and docblocks | Done |
-| `Refs` | resolve | Resolves FQCN `$ref` values to JSON Reference paths, including discriminator mappings | Done |
-| `Docblocks` | augment | Summary, description, deprecated from PHPDoc | Done |
-| `OperationIds` | augment | Generates operationId from reflector context, with `hash` option | Done |
-| `Tags` | augment | Auto-generates global tags from operation usage | Done |
-| `Inheritance` | augment | Trait/interface allOf composition, non-schema interface member merging | Done |
+| `Type` | resolve | Infers schema type, format, nullable, items, refs from PHP types and docblocks | Done |
+| `Ref` | resolve | Resolves FQCN `$ref` values to JSON Reference paths, including discriminator mappings | Done |
+| `Docblock` | augment | Summary, description, deprecated from PHPDoc | Done |
+| `OperationId` | augment | Generates operationId from reflector context, with `hash` option | Done |
+| `Tag` | augment | Auto-generates global tags from operation usage | Done |
+| `ExpandHierarchy` | augment | Trait/interface allOf composition, non-schema interface member merging | Done |
 | `Enums` | augment | Resolves PHP enum backing types into schema enum/type values | Done |
-| `Names` | augment | Auto-names component keys from reflector class/context | Done |
-| `MediaTypes` | augment | Re-keys encoding by property name | Done |
-| `Cleanup` | reduce | Removes unreferenced components (iterative, handles nested deps) | Done |
+| `InferNames` | augment | Auto-names component keys from reflector class/context | Done |
+| `MediaType` | augment | Re-keys encoding by property name | Done |
+| `CleanUnused` | reduce | Removes unreferenced components (iterative, handles nested deps) | Done |
 | `PathFilter` | reduce | Filters operations by tag/path regex patterns | Done |
-| `EnumDescriptions` | augment | Generates descriptions for enum-based properties (BETA, disabled by default) | Done |
-| `PathItems` | resolve | Prefix composition, clone-down of tags/security/responses, path inference | Done |
+| `PathItemResolve` | resolve | Prefix composition, clone-down of tags/security/responses, path inference | Done |
 
-## Test coverage
+## Example coverage
 
-* New code is covered by new tests.
-* All examples tests pass in all modes (`CLASSIC`, `HYBRID` and `SPEC`). Spec versions have been added to all examples.
-* All tests that now rely on `Generator` or `AbstractAnnotation` specific features are passing in `HYBRID` mode.
-* Spec version of the performance test is passing and way faster than classic.
+All 10 example specs now have spec-attribute versions. Most produce identical output across classic, spec, and hybrid modes (shared yaml fixtures). Hybrid mode is tested for all examples and passes except using-refs (ref-path difference).
+
+| Example | Shared fixture | Spec-specific fixture | Notes |
+|---|---|---|---|
+| api | ✓ | — | Original spec example |
+| misc | ✓ | — | Callbacks, security, enums |
+| nesting | ✓ | — | Multi-level class inheritance |
+| petstore | ✓ | — | Classic CRUD example |
+| polymorphism | ✓ | — | oneOf/allOf/discriminator |
+| using-interfaces | ✓ | — | Interface-based allOf composition |
+| using-links | ✓ | — | Response links |
+| using-refs | — | ✓ | PathItem works; hybrid excluded due to ref-path difference |
+| using-traits | — | ✓ | Bug fix: explicit type inference |
+| webhooks | ✓ | — | 3.1+ webhooks |
+
+### Spec-specific fixture notes
+
+**using-refs** — PathItem with path-level parameters works correctly. The spec example uses `#[OA\PathItem(parameters: [...])]` to emit parameters at path level. The example uses a spec-specific fixture due to a ref-path difference: classic emits `Product/allOf/1/properties/id` while spec/hybrid emits `Product/properties/id` (spec puts properties directly rather than in an allOf wrapper).
+
+**using-traits** — Not a gap; intentional improvement. The spec/hybrid pipeline infers explicit types from PHP declarations more thoroughly than classic.
+
+### Behavioral differences from classic
+
+Intentional improvements or corrections in the spec/hybrid pipeline that produce different output from classic:
+
+| Difference | Classic | Spec/Hybrid | Rationale |
+|---|---|---|---|
+| Empty `tags` | Always emits `tags: []` | Omits when empty | Per OpenAPI spec, optional fields should be omitted when empty |
+| Empty flow `scopes` | Emits `scopes: {}` | Was omitting empty scopes | Bug fix in compiler — scopes is required per OpenAPI spec |
+| Type inference on traits | Types often omitted | Explicit types from PHP declarations | Bug fix — classic failed to resolve types on trait properties |
+| Docblock on parameters | Only from `@param` on ReflectionParameter | Also matches by parameter name | More thorough — resolves descriptions for non-reflection parameters |
+| Promoted property descriptions | Resolved via constructor parameter context | Resolved via ReflectionProperty fallback | Different mechanism, same result |
+| Schema property refs | `Product/allOf/1/properties/id` | `Product/properties/id` | Spec pipeline places properties directly on the schema rather than wrapping in allOf — both specs are internally consistent, but `$ref` paths into schema internals differ |
 
 ## Classic processor mapping
 
@@ -236,9 +207,9 @@ How each classic processor maps to the new pipeline:
 
 | Classic Processor | Spec-Attributes Equivalent | Stage | Status |
 |---|---|---|---|
-| ExpandClasses | `Inheritance` + Assembler (`contains()` maps) | augment + assembly | Done |
-| ExpandTraits | `Inheritance` + Assembler (`contains()` maps) | augment + assembly | Done |
-| ExpandInterfaces | `Inheritance` + Assembler (`contains()` maps) | augment + assembly | Done |
+| ExpandClasses | `ExpandHierarchy` + Assembler (`contains()` maps) | augment + assembly | Done |
+| ExpandTraits | `ExpandHierarchy` + Assembler (`contains()` maps) | augment + assembly | Done |
+| ExpandInterfaces | `ExpandHierarchy` + Assembler (`contains()` maps) | augment + assembly | Done |
 | ExpandEnums | `Enums` | augment | Done |
 | MergeIntoOpenApi | Assembler (builds Specification) | assembly | Done |
 | MergeIntoComponents | Compiler (groups into components) | compile | Done |
@@ -246,101 +217,25 @@ How each classic processor maps to the new pipeline:
 | MergeXmlContent | N/A — attribute eliminated | — | N/A |
 | BuildPaths | Compiler (groups by path) | compile | Done |
 | AugmentSchemas | Split (see below) | mixed | Done |
-| AugmentProperties | `Types` (type/format/nullable + property name) | resolve | Done |
-| AugmentParameters | `Types` (type/name/required inference) | resolve | Done |
-| AugmentItems | `Types` (array items via SchemaType.items) | resolve | Done |
-| AugmentRequestBody | `Types` (required inference from nullable) | resolve | Done |
-| AugmentRefs | `Refs` (FQCN → JSON reference) | resolve | Done |
-| AugmentDiscriminators | `Refs` (discriminator mapping resolution) | resolve | Done |
-| AugmentTags | `Tags` (auto-generate tags from operations) | augment | Done |
-| AugmentMediaType | `MediaTypes` (re-key encoding by property name) | augment | Done |
-| DocBlockDescriptions | `Docblocks` (summary/description/deprecated) | augment | Done |
-| OperationId | `OperationIds` | augment | Done |
+| AugmentProperties | `Type` (type/format/nullable + property name) | resolve | Done |
+| AugmentParameters | `Type` (type/name/required inference) | resolve | Done |
+| AugmentItems | `Type` (array items via SchemaType.items) | resolve | Done |
+| AugmentRequestBody | `Type` (required inference from nullable) | resolve | Done |
+| AugmentRefs | `Ref` (FQCN → JSON reference) | resolve | Done |
+| AugmentDiscriminators | `Ref` (discriminator mapping resolution) | resolve | Done |
+| AugmentTags | `Tag` (auto-generate tags from operations) | augment | Done |
+| AugmentMediaType | `MediaType` (re-key encoding by property name) | augment | Done |
+| DocBlockDescriptions | `Docblock` (summary/description/deprecated) | augment | Done |
+| OperationId | `OperationId` | augment | Done |
 | CleanUnmerged | Assembler (orphan validation in resolveHierarchy) | assembly | Done |
-| CleanUnusedComponents | `Cleanup` (iterative, handles nested deps) | reduce | Done |
+| CleanUnusedComponents | `CleanUnused` (iterative, handles nested deps) | reduce | Done |
 | PathFilter | `PathFilter` | reduce | Done |
 
 **AugmentSchemas split:** This processor's responsibilities are distributed across four concerns:
-1. Schema naming from class/trait/interface/enum → `Names` (done)
-2. `type: object` inference when properties present → `Types` (done)
+1. Schema naming from class/trait/interface/enum → `InferNames` (done)
+2. `type: object` inference when properties present → `Type` (done)
 3. Property merging into parent schema → Assembler via `merge()`/`contains()` (done)
 4. allOf merge when both properties + allOf exist → Compiler (done)
-
-## Inheritance expansion
-
-### Authoritative rules (derived from classic behavior)
-
-These rules define the agreed upon inheritance behavior. The classic path implements them via TokenScanner-filtered definitions; the spec path must produce identical results.
-
-The rules mirror PHP inheritance: a schema inherits everything its PHP class inherits. The same rule applies uniformly to parents, traits, and interfaces.
-
-#### Property ownership
-
-Each property belongs to exactly one source — the class-like that physically declares it:
-
-- A class's **own properties** are those declared in its class body (including promoted constructor parameters), but **not** properties contributed by traits.
-- Trait properties belong to the trait, not to the class that uses it.
-- Parent class properties belong to the parent.
-
-This matches PHP's source-level declaration. Trait properties appear on the using class at runtime, but for schema purposes they belong to the trait.
-
-#### The one rule
-
-For each parent, trait, or interface that a schema's class relates to:
-
-- **Has a schema** → add `$ref` to `allOf` (composition via reference)
-- **Has no schema** → merge its own members into the current schema (inlining)
-
-This rule is the same for all three relationship types. The only differences are PHP language constraints:
-
-- **Interfaces** can only contribute methods (PHP interfaces cannot declare properties)
-- **Parents** are walked linearly; stop at the first ancestor with a schema (everything above is inherited transitively through that ref)
-- **Traits on non-schema ancestors** are also processed (stop at the first ancestor with a schema)
-
-#### Deduplication of merged properties
-
-A running list of already-merged property names prevents duplicates. A property is merged only if its name is not already present on the schema.
-
-#### allOf refs are not deduplicated
-
-Refs are added for each direct relationship, without checking whether the referenced schema is already reachable transitively through another ref. This is unavoidable — we compose with predefined schemas and cannot inspect their contents to determine overlap.
-
-Example:
-```php
-#[Schema(schema: "Timestamps")]
-trait HasTimestamps { public string $createdAt; }
-
-#[Schema]
-class BaseModel { use HasTimestamps; public int $id; }
-
-#[Schema]
-class User extends BaseModel { use HasTimestamps; public string $email; }
-```
-
-Output for `User`:
-```yaml
-User:
-  allOf:
-    - $ref: '#/components/schemas/BaseModel'    # parent (which itself refs Timestamps)
-    - $ref: '#/components/schemas/Timestamps'   # direct trait usage
-    - properties: { email: ... }               # own properties only
-```
-
-The `$ref: Timestamps` is semantically redundant (already composed via BaseModel) but present because User explicitly declares `use HasTimestamps`. The alternative — inspecting ref targets for transitive overlap — would require resolving the full schema graph and is not feasible at this stage.
-
-#### allOf finalization
-
-After inheritance expansion, if a schema has both `allOf` refs **and** own properties, the properties are wrapped in a dedicated `allOf` entry (`type: object`) to produce a pure allOf composition.
-
-### Reflection limitation: trait member ownership
-
-PHP reflection lies about trait members: `getDeclaringClass()` for a trait property returns the **using class**, not the trait. This means `ReflectionClass::getProperties()` + `getDeclaringClass()` cannot distinguish a class's own properties from trait-contributed ones.
-
-```php
-trait T { public string $x; }
-class C { use T; public string $y; }
-// ReflectionClass("C")->getProperty("x")->getDeclaringClass()->getName() === "C"
-```
 
 ## PathItem design
 
@@ -361,7 +256,7 @@ Class-level only. No `path` property — path is always inferred from the operat
 | `security[]` | — (cloned to operations) | Shared security for all operations |
 | `responses[]` | — (cloned to operations) | Shared responses for all operations |
 
-### Augmenter: `PathItems` (resolve group, early)
+### Augmenter: `PathItemResolve` (resolve group, early)
 
 1. **Index** — map each PathItem to its declaring class via reflector
 2. **Compose prefixes** — walk `ReflectionClass::getParentClass()` chain, collect ancestor PathItems, compose full prefix
@@ -396,7 +291,7 @@ Output paths:
 - `/api/v1/users/list` — get operation, tags: ['Users'], path-level parameter: tenant
 - `/api/v1/users/{id}` — get operation, tags: ['Users'], path-level parameter: tenant
 
-## DTO: `OA\Components`
+## Components container
 
 `#[OA\Components]` is a class-level attribute that acts as a container for reusable component definitions that cannot stand on their own as root attributes.
 
@@ -434,30 +329,13 @@ class SharedComponents {
 
 These components can then be referenced via `$ref` from operations, PathItems, or other DTOs.
 
-## DTO: `OA\Schema`
-
-The spec version of `OA\Schema` is a fully standalone attribute. No other attributes inherits from it - its all down to composition.
-Side effect is that `OA\Schema` now can be stacked next to other attributes (as long as it is not ambiguous).
-
-Inline nesting works also, as before.
-
-### Example
-
-```php
-#[OA\Schema]
-class Model {
-    #[OA\Property]
-    #[OA\Schema(type: 'integer')]
-    public int $page;
-}
-```
-
 ## What's next
 
 ### Hybrid mode hardening
 
 - Dedicated test coverage for `HybridBridge` (currently exercised only indirectly via examples)
 - Migrate scratch tests and doc snippet tests to run in spec and/or hybrid modes
+- Broad hybrid validation by forcing existing classic tests to use `setMode('hybrid')` on their Builder — most classic tests should pass through hybrid unchanged, exposing gaps
 
 ### Testing
 
@@ -473,11 +351,11 @@ class Model {
 
 ### Extension systems
 
-Three extension points:
+Three extension points to implement:
 
-- ~~**`AttributeTranslatorInterface`**~~ — **Done.** Hook into assembly to translate non-OA attributes (e.g. Symfony `#[Assert\*]`, framework route annotations) into spec DTOs. Runs per-element during the factory/assembler phase. Translators are registered on `AttributeFactory` via `getTranslators()->add()` or `withTranslators()`. Each translator implements two methods: `getAttributes()` (collect `ReflectionAttribute` instances from a reflector) and `translate()` (transform the cumulative list of instantiated objects into `AttributeInterface` instances). The default `DefaultAttributeTranslator` handles native OA attributes; custom translators are appended and receive the accumulated result from prior translators.
-- ~~**`Attachable` DTO**~~ — **Done.** `OA\Attachable` extends `AbstractAttribute`, is repeatable on any target, and `isRoot() === true` by default (gets its own `Specification::$attachables` bucket). Can also be inlined into any attribute via the `$attachables` constructor parameter or nested via custom `merge()` maps. Slot validation in `AttributeFactory::nestChild()` catches invalid merge targets early. Custom attachables subclass `OA\Attachable` and override `merge()` to specify where they nest.
-- ~~**`CompilerExtension`**~~ — Abandoned for now. Since compiler can easiy be extended/swapped it feels overkill with the more powerfull alternatives of attribute translation and `OA\Attribute`
+- **`AttributeEnricher`** — hook into assembly to translate non-OA attributes (e.g. Symfony `#[Assert\*]`, framework route annotations) into spec DTOs. Runs per-element during the factory/assembler phase.
+- **`CompilerExtension`** — lets custom `Attachable` DTOs produce spec output. Extensions declare which Attachable class(es) they handle and return key-value pairs merged into the parent's compiled output. Unhandled Attachables are silently omitted.
+- **`Attachable` DTO** — an empty class extending `AbstractAttribute`. Gets its own `Specification` bucket by default (unless inlined via `merge()`). Ignored by the standard pipeline — custom augmenter pipes can process them however they want. Mirrors the existing `Attachable` pattern from the classic pipeline.
 
 These extension systems should also address downstream integration needs (e.g. Nelmio translating Symfony metadata, framework route annotations) without requiring those projects to couple to pipeline internals.
 
@@ -485,16 +363,21 @@ These extension systems should also address downstream integration needs (e.g. N
 
 Re-evaluate support for convenience attributes that reduce boilerplate in common patterns:
 
-- **`Items`** — shorthand for array item schema declaration; this probably should be extending `OA\Items` and get a dedicated `PipeInterface` augmenter.
-- **`JsonContent`** / **`XmlContent`** — shorthand for wrapping a schema in a media type with the appropriate content type; a new `AttributeTranslatorInterface` should be implemented to handle the translation of these attributes.
+- **`Items`** — shorthand for array item schema declaration
+- **`JsonContent`** / **`XmlContent`** — shorthand for wrapping a schema in a media type with the appropriate content type
 
-These could be implemented as assembler-level transforms (expand the shortcut into canonical DTOs during assembly). This would serve as both useful functionality and documentation of how the extension systems work in practice.
+These could be implemented as assembler-level transforms (expand the shortcut into canonical DTOs during assembly) or as extension examples using `AttributeEnricher` + `CompilerExtension`. The latter approach would serve as both useful functionality and documentation of how the extension systems work in practice.
 
 Need to document the general pattern for shortcut attributes: how they participate in nesting (via `merge()`), when they expand (assembly vs augmentation), and how custom shortcuts can be added by users.
 
 ### Additional augmenter pipes
 
-None planned at this time.
+- **`EnumDescription`** — generate human-readable descriptions from PHP enum cases (ported from openapi-extras). Ships in the default pipeline but disabled by default; enable via `$builder->getAugmenters()->get(EnumDescription::class)->setEnabled(true)`.
+
+### Design decisions
+
+- **Error vs warning strategy** — currently the assembler throws `OpenApiException` for all validation issues. Some issues (orphan attributes, unknown Attachable types, duplicate attributes where last-wins is acceptable) could be warnings via PSR logger instead. Need to decide the boundary: structural issues that prevent valid output remain exceptions; issues that don't block compilation become warnings surfaced via `Result::warnings()`.
+- **Untyped pipe configuration** — currently pipes are configured via typed setters (`setHash(bool)`, `setEnabled(bool)`). Tools that load config from files (YAML/JSON) only have untyped arrays. Consider a generic `configure(array $options)` method on `PipeInterface` so external tooling can pass arbitrary key-value config without needing to know the typed API. Typed setters remain the primary API for programmatic use.
 
 ### Shipping
 
@@ -516,3 +399,17 @@ None planned at this time.
 - Version-specific logic is contained in individual compilers rather than scattered across processors
 - The two-pass assembly model is simpler to reason about than the current processor chain
 - Augmenters can be developed and tested independently of the core pipeline
+
+### TODO/evaluate
+
+Re-evaluate support for convenience attributes that reduce boilerplate in common patterns:
+
+- **`Items`** — shorthand for array item schema declaration; this probably should be extending `OA\Items` and get a dedicated `PipeInterface` augmenter.
+- **`JsonContent`** / **`XmlContent`** — shorthand for wrapping a schema in a media type with the appropriate content type; a new `AttributeTranslatorInterface` should be implemented to handle the translation of these attributes.
+- Optional `OA\Property` if `OA\Schema` present and the default property name is used (empty `#[OA\Property])`)
+- Adjust attribute parameter types to aid downstream projects?
+- A `OA\Schema\Ref` attribute (with title/description 3.1.0+), $ref required attribute - extends `OA\Schema`
+- test to verify merges()/contains() consistency (with property type checks)
+- attachable example/test
+- review [] property types that could also accept a single: type|list<type>
+.- enums for fixed strings, like flows->implicit, etc

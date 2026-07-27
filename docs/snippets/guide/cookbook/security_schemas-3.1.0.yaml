@@ -1,0 +1,15 @@
+openapi: 3.1.0
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'http://petstore.swagger.io/oauth/dialog'
+          scopes:
+            'read:pets': 'read your pets'
+            'write:pets': 'modify pets in your account'

@@ -1,0 +1,14 @@
+openapi: 3.1.0
+components:
+  schemas:
+    State:
+      type: string
+      enum:
+        - OPEN
+        - MERGED
+        - DECLINED
+    PullRequest:
+      properties:
+        state:
+          $ref: '#/components/schemas/State'
+      type: object

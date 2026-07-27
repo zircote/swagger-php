@@ -35,6 +35,11 @@ all 'global' annotations (e.g. `OA\Tag`, `OA\Server`, `OA\SecurityScheme`, etc.)
 <<< @/snippets/guide/faq/dummy_class_an.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/faq/dummy_class_spec.php
+
+  </template>
 </codeblock>
 
 **As of version 4.8 the `doctrine/annotations` library is optional and might cause the same message.**

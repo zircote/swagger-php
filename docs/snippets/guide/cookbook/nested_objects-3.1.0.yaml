@@ -1,0 +1,20 @@
+openapi: 3.1.0
+components:
+  schemas:
+    Profile:
+      properties:
+        Status:
+          type: string
+          example: '0'
+        Group:
+          properties:
+            ID:
+              description: 'ID de grupo'
+              type: number
+              example: -1
+            Name:
+              description: 'Nombre de grupo'
+              type: string
+              example: Superadmin
+          type: object
+      type: object

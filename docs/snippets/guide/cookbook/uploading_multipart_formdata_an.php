@@ -14,7 +14,7 @@ class OpenApiSpec
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 @OA\Property(property="name"),
+     *                 @OA\Property(property="name", description="the file name"),
      *                 @OA\Property(
      *                     description="file to upload",
      *                     property="avatar",

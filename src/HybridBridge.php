@@ -33,7 +33,7 @@ class HybridBridge
                 $annotation instanceof Annotations\PathItem && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->path) && !($annotation instanceof Annotations\Webhook) => $specification->pathItems[] = $this->convertPathItem($annotation),
                 $annotation instanceof Annotations\Components && !$annotation->_context->is('nested') => $this->convertComponents($annotation, $specification),
                 $annotation instanceof Annotations\Operation => $specification->operations[] = $this->convertOperation($annotation, $this->val($annotation->path), $this->methodFromAnnotation($annotation)),
-                $annotation instanceof Annotations\Schema && $annotation->_context->reflector instanceof \ReflectionClass && !$annotation->_context->is('nested') => $classSchemas[$annotation->_context->reflector->getName()] = $annotation,
+                $annotation instanceof Annotations\Schema && $annotation->_context->reflector instanceof \ReflectionClass && !$annotation->_context->is('nested') => $classSchemas[$annotation->_context->reflector->getName()][] = $annotation,
                 $annotation instanceof Annotations\Property && $this->isClassMember($annotation) => $memberProperties[] = $annotation,
                 $annotation instanceof Annotations\Response && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->response) => $specification->responses[] = $this->convertResponse($annotation),
                 $annotation instanceof Annotations\RequestBody && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->request) => $specification->requestBodies[] = $this->convertRequestBody($annotation),
@@ -45,9 +45,11 @@ class HybridBridge
             };
         }
 
-        foreach ($classSchemas as $className => $schema) {
-            $converted = $this->convertSchemaWithMembers($schema, $className, $classSchemas, $memberProperties);
-            $specification->schemas[] = $converted;
+        foreach ($classSchemas as $className => $schemas) {
+            foreach ($schemas as $schema) {
+                $converted = $this->convertSchemaWithMembers($schema, $className, $classSchemas, $memberProperties);
+                $specification->schemas[] = $converted;
+            }
         }
 
         $specification->openapi ??= new Spec\OpenApi();
@@ -66,8 +68,8 @@ class HybridBridge
     }
 
     /**
-     * @param array<string, Annotations\Schema> $classSchemas
-     * @param list<Annotations\Property>        $allMembers
+     * @param array<string, list<Annotations\Schema>> $classSchemas
+     * @param list<Annotations\Property>              $allMembers
      */
     protected function convertSchemaWithMembers(Annotations\Schema $schema, string $className, array $classSchemas, array $allMembers): Spec\Schema
     {
@@ -92,7 +94,7 @@ class HybridBridge
     /**
      * Get the class itself plus non-schema ancestors and interfaces (they contribute properties to this schema).
      *
-     * @param array<string, Annotations\Schema> $classSchemas
+     * @param array<string, list<Annotations\Schema>> $classSchemas
      *
      * @return list<string>
      */
@@ -174,6 +176,8 @@ class HybridBridge
                 $this->convertWebhook($webhook, $spec);
             }
         }
+
+        $spec->openapi->x =  $this->extensions($openApi);
     }
 
     protected function methodFromAnnotation(Annotations\Operation $op): string

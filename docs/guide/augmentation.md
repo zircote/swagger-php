@@ -28,6 +28,11 @@ Based on the context of the annotation `swagger-php` will look at (in order of p
 <<< @/snippets/guide/augmentation/context_awareness_an.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/augmentation/context_awareness_spec.php
+
+  </template>
 </codeblock>
 
 **Results in**
@@ -54,6 +59,11 @@ components:
   <template v-slot:an>
 
 <<< @/snippets/guide/augmentation/explicit_context_an.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/augmentation/explicit_context_spec.php
 
   </template>
 </codeblock>

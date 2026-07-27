@@ -15,15 +15,39 @@ $result = (new \OpenApi\Builder())
 echo $result->toYaml();
 ```
 
-## API
+## Processing modes
 
-### Mode
+The Builder supports three processing modes via `setMode()`:
+
+### Classic (default)
+
+Scans source files for annotations/attributes and assembles the OpenAPI document via the Generator pipeline. This is the stable, production-ready mode.
 
 ```php
 $builder->setMode('classic');
 ```
 
-Sets the processing mode. Currently the only mode is `classic`, which scans source files for annotations/attributes and assembles the OpenAPI document via the Generator pipeline. This is the default.
+### Spec (beta) {#mode-spec}
+
+Runs the new spec attributes pipeline end-to-end: Assembler → Augmenters → Compiler. Uses pure PHP 8.1+ attributes from the `OpenApi\Spec` namespace with typed DTOs and version-aware compilers.
+
+```php
+$builder->setMode('spec');
+```
+
+### Hybrid (beta) {#mode-hybrid}
+
+Uses the classic Generator for scanning, then bridges the result into the spec pipeline's augmenters and compilers. A transition path for existing projects that want access to the new augmenter pipeline without rewriting all annotations.
+
+```php
+$builder->setMode('hybrid');
+```
+
+::: tip Choosing a mode
+See the [Processing Modes](/guide/modes) guide for a full comparison and migration path.
+:::
+
+## API
 
 ### Sources
 
@@ -44,7 +68,10 @@ Sources can be directory paths, file paths, `\SplFileInfo`, `\Symfony\Component\
 $builder->setVersion('3.1.0');
 ```
 
-Sets the target OpenAPI version. If not set, defaults to the version declared in your `#[OA\OpenApi]` attribute.
+Sets the target OpenAPI version. Version resolution order:
+1. Explicit `setVersion()` call (highest priority)
+2. Version declared in the source `#[OA\OpenApi(version: '...')]` attribute
+3. Falls back to `3.0.0`
 
 ### Logger
 
@@ -54,7 +81,7 @@ $builder->setLogger($psrLogger);
 
 Accepts any PSR-3 logger. Defaults to `NullLogger` (silent). The CLI command sets its own console logger.
 
-### Generator configuration
+### Generator configuration (classic mode)
 
 For advanced Generator configuration (custom analysers, processors, aliases, type resolvers), use `withGenerator()`:
 
@@ -69,6 +96,49 @@ $builder->withGenerator(function (\OpenApi\Generator $generator) {
 ```
 
 The callable receives a pre-configured `Generator` instance and may either modify it in-place or return a new instance.
+
+### Augmenter configuration (spec/hybrid mode) {#augmenters}
+
+For spec and hybrid modes, use `withAugmenters()` to configure the augmenter pipeline:
+
+```php
+use OpenApi\Augmenter;
+
+$builder->withAugmenters(function (\OpenApi\Utils\Pipeline $pipeline) {
+    // Disable an augmenter
+    $pipeline->get(Augmenter\Cleanup::class)?->setEnabled(false);
+
+    // Configure operationId generation
+    $pipeline->get(Augmenter\OperationIds::class)?->setHash(true);
+
+    // Filter to specific paths/tags
+    $pipeline->get(Augmenter\PathFilter::class)
+        ?->setPathFilter('/^\/api\/v2/')
+        ?->setTagFilter('/^(Users|Products)$/');
+
+    // Insert a custom augmenter
+    $pipeline->insert(new CustomAugmenter(), Augmenter\Inheritance::class);
+
+    // Remove an augmenter entirely
+    $pipeline->remove(Augmenter\EnumDescriptions::class);
+});
+```
+
+The pipeline is grouped into three phases that run in order: **resolve** → **reduce** → **augment**. See the [Augmenters reference](/reference/augmenters) for the full list and their configuration options.
+
+### Attribute factory configuration (spec mode) {#attribute-factory}
+
+Use `withAttributeFactory()` to add custom attribute translators:
+
+```php
+use OpenApi\Utils\AttributeFactory;
+
+$builder->withAttributeFactory(function (AttributeFactory $factory): void {
+    $factory->getTranslators()->add(new SymfonyValidationTranslator());
+});
+```
+
+Translators convert non-OA attributes (e.g. Symfony `#[Assert\*]`, framework route annotations) into spec DTOs during assembly.
 
 ## Result
 
@@ -85,4 +155,24 @@ $result->files();       // string[] — scanned source files
 $result->log();         // array — all log entries [{level, message}, ...]
 $result->warnings();    // string[] — warning messages
 $result->errors();      // string[] — error messages
+```
+
+## Full example (spec mode)
+
+```php
+use OpenApi\Builder;
+use OpenApi\Builder\Mode;
+use OpenApi\Augmenter;
+
+$result = (new Builder())
+    ->setMode(Mode::SPEC)
+    ->setVersion('3.1.0')
+    ->addSource('src/Api')
+    ->withAugmenters(function (\OpenApi\Utils\Pipeline $pipeline) {
+        $pipeline->get(Augmenter\Cleanup::class)?->setEnabled(false);
+        $pipeline->get(Augmenter\OperationIds::class)?->setHash(true);
+    })
+    ->build();
+
+echo $result->toYaml();
 ```

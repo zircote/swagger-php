@@ -41,6 +41,11 @@ possible attributes should be used.
 <<< @/snippets/minimal_api_an.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/snippets/minimal_api_spec.php
+
+  </template>
 </codeblock>
 
 ### 3. Generate OpenAPI documentation

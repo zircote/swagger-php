@@ -21,6 +21,11 @@ A simple API example uing `enums`, `traits` and `callbacks`.
 <<< @/examples/specs/api/annotations/Colour.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/api/spec/Colour.php
+
+  </template>
 </codeblock>
 
 ### NameTrait.php
@@ -34,6 +39,11 @@ A simple API example uing `enums`, `traits` and `callbacks`.
   <template v-slot:an>
 
 <<< @/examples/specs/api/annotations/NameTrait.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/api/spec/NameTrait.php
 
   </template>
 </codeblock>
@@ -51,6 +61,11 @@ A simple API example uing `enums`, `traits` and `callbacks`.
 <<< @/examples/specs/api/annotations/OpenApiSpec.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/api/spec/OpenApiSpec.php
+
+  </template>
 </codeblock>
 
 ### Product.php
@@ -64,6 +79,11 @@ A simple API example uing `enums`, `traits` and `callbacks`.
   <template v-slot:an>
 
 <<< @/examples/specs/api/annotations/Product.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/api/spec/Product.php
 
   </template>
 </codeblock>
@@ -81,6 +101,11 @@ A simple API example uing `enums`, `traits` and `callbacks`.
 <<< @/examples/specs/api/annotations/ProductController.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/api/spec/ProductController.php
+
+  </template>
 </codeblock>
 
 ### Server.php
@@ -94,6 +119,11 @@ A simple API example uing `enums`, `traits` and `callbacks`.
   <template v-slot:an>
 
 <<< @/examples/specs/api/annotations/Server.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/api/spec/Server.php
 
   </template>
 </codeblock>
@@ -115,6 +145,11 @@ Classic petstore sample app. Uses `OAuth`
 <<< @/examples/specs/petstore/annotations/Controllers/PetController.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/petstore/spec/Controllers/PetController.php
+
+  </template>
 </codeblock>
 
 ### Controllers/StoreController.php
@@ -128,6 +163,11 @@ Classic petstore sample app. Uses `OAuth`
   <template v-slot:an>
 
 <<< @/examples/specs/petstore/annotations/Controllers/StoreController.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/petstore/spec/Controllers/StoreController.php
 
   </template>
 </codeblock>
@@ -145,6 +185,11 @@ Classic petstore sample app. Uses `OAuth`
 <<< @/examples/specs/petstore/annotations/Controllers/UserController.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/petstore/spec/Controllers/UserController.php
+
+  </template>
 </codeblock>
 
 ### Models/ApiResponse.php
@@ -158,6 +203,11 @@ Classic petstore sample app. Uses `OAuth`
   <template v-slot:an>
 
 <<< @/examples/specs/petstore/annotations/Models/ApiResponse.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/petstore/spec/Models/ApiResponse.php
 
   </template>
 </codeblock>
@@ -175,6 +225,11 @@ Classic petstore sample app. Uses `OAuth`
 <<< @/examples/specs/petstore/annotations/Models/Category.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/petstore/spec/Models/Category.php
+
+  </template>
 </codeblock>
 
 ### Models/Order.php
@@ -188,6 +243,11 @@ Classic petstore sample app. Uses `OAuth`
   <template v-slot:an>
 
 <<< @/examples/specs/petstore/annotations/Models/Order.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/petstore/spec/Models/Order.php
 
   </template>
 </codeblock>
@@ -205,6 +265,11 @@ Classic petstore sample app. Uses `OAuth`
 <<< @/examples/specs/petstore/annotations/Models/Pet.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/petstore/spec/Models/Pet.php
+
+  </template>
 </codeblock>
 
 ### Models/PetRequestBody.php
@@ -218,6 +283,11 @@ Classic petstore sample app. Uses `OAuth`
   <template v-slot:an>
 
 <<< @/examples/specs/petstore/annotations/Models/PetRequestBody.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/petstore/spec/Models/PetRequestBody.php
 
   </template>
 </codeblock>
@@ -235,6 +305,11 @@ Classic petstore sample app. Uses `OAuth`
 <<< @/examples/specs/petstore/annotations/Models/Tag.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/petstore/spec/Models/Tag.php
+
+  </template>
 </codeblock>
 
 ### Models/User.php
@@ -248,6 +323,11 @@ Classic petstore sample app. Uses `OAuth`
   <template v-slot:an>
 
 <<< @/examples/specs/petstore/annotations/Models/User.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/petstore/spec/Models/User.php
 
   </template>
 </codeblock>
@@ -265,6 +345,11 @@ Classic petstore sample app. Uses `OAuth`
 <<< @/examples/specs/petstore/annotations/Models/UserArrayRequestBody.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/petstore/spec/Models/UserArrayRequestBody.php
+
+  </template>
 </codeblock>
 
 ### Petstore.php
@@ -280,6 +365,11 @@ Classic petstore sample app. Uses `OAuth`
 <<< @/examples/specs/petstore/annotations/Petstore.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/petstore/spec/Petstore.php
+
+  </template>
 </codeblock>
 
 ### Security.php
@@ -293,6 +383,11 @@ Classic petstore sample app. Uses `OAuth`
   <template v-slot:an>
 
 <<< @/examples/specs/petstore/annotations/Security.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/petstore/spec/Security.php
 
   </template>
 </codeblock>
@@ -314,6 +409,11 @@ Demonstrates the use of `Discriminator`
 <<< @/examples/specs/polymorphism/annotations/AbstractResponsible.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/polymorphism/spec/AbstractResponsible.php
+
+  </template>
 </codeblock>
 
 ### Controller.php
@@ -327,6 +427,11 @@ Demonstrates the use of `Discriminator`
   <template v-slot:an>
 
 <<< @/examples/specs/polymorphism/annotations/Controller.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/polymorphism/spec/Controller.php
 
   </template>
 </codeblock>
@@ -344,6 +449,11 @@ Demonstrates the use of `Discriminator`
 <<< @/examples/specs/polymorphism/annotations/Employee.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/polymorphism/spec/Employee.php
+
+  </template>
 </codeblock>
 
 ### Fl.php
@@ -359,6 +469,11 @@ Demonstrates the use of `Discriminator`
 <<< @/examples/specs/polymorphism/annotations/Fl.php
 
   </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/polymorphism/spec/Fl.php
+
+  </template>
 </codeblock>
 
 ### Request.php
@@ -372,6 +487,11 @@ Demonstrates the use of `Discriminator`
   <template v-slot:an>
 
 <<< @/examples/specs/polymorphism/annotations/Request.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/examples/specs/polymorphism/spec/Request.php
 
   </template>
 </codeblock>

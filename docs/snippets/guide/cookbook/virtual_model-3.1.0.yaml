@@ -1,0 +1,10 @@
+openapi: 3.1.0
+components:
+  schemas:
+    User:
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+      type: object

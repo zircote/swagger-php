@@ -1,0 +1,30 @@
+openapi: 3.1.0
+paths:
+  /v1/media/upload:
+    post:
+      tags:
+        - Media
+      summary: 'Upload document'
+      description: ''
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              required:
+                - content
+              properties:
+                content:
+                  description: 'Binary content of file'
+                  type: string
+                  format: binary
+              type: object
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: 'Bad Request'
+tags:
+  -
+    name: Media
+    description: Media

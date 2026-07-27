@@ -1,0 +1,35 @@
+openapi: 3.1.0
+components:
+  schemas:
+    StringList:
+      properties:
+        value:
+          type: array
+          items:
+            anyOf:
+              -
+                type: string
+      type: object
+    String:
+      properties:
+        value:
+          type: string
+      type: object
+    Object:
+      properties:
+        value:
+          type: object
+      type: object
+    mixedList:
+      properties:
+        fields:
+          type: array
+          items:
+            oneOf:
+              -
+                $ref: '#/components/schemas/StringList'
+              -
+                $ref: '#/components/schemas/String'
+              -
+                $ref: '#/components/schemas/Object'
+      type: object

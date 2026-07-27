@@ -6,7 +6,10 @@
 
 namespace OpenApi\Tests;
 
-use OpenApi\Attributes\OpenApi;
+use OpenApi\Augmenter\Cleanup;
+use OpenApi\Augmenter\OperationIds;
+use OpenApi\Builder;
+use OpenApi\Builder\Mode;
 use OpenApi\Generator;
 use OpenApi\Processors\OperationId;
 use OpenApi\Tests\Concerns\UsesExamples;
@@ -22,16 +25,28 @@ final class DocSnippetsTest extends OpenApiTestCase
     {
         $finder = (new Finder())
             ->in(__DIR__ . '/../docs/snippets/')
-            ->name('*.php');
+            ->name('*_an.php');
 
         foreach ($finder as $file) {
-            if (str_ends_with($file->getPathname(), '_an.php')) {
-                $other = str_replace('_an.php', '_at.php', $file->getPathname());
-                if (file_exists($other)) {
-                    $key = str_replace('_an', '', $file->getBasename('.php'));
-                    foreach ([OpenApi::VERSION_3_0_0, OpenApi::VERSION_3_1_0] as $version) {
-                        yield "{$key}-{$version}" => [['an' => $file->getPathname(), 'at' => $other], $version];
+            $key = str_replace('_an', '', $file->getBasename('.php'));
+            $snippet_spec = str_replace('_an.php', '-3.1.0.yaml', $file->getPathname());
+
+            foreach (['an', 'at', 'spec'] as $implementation) {
+                $snippet = str_replace('_an.php', "_{$implementation}.php", $file->getPathname());
+                foreach ([Mode::CLASSIC, Mode::HYBRID, Mode::SPEC] as $mode) {
+                    if ($mode === Mode::SPEC && $implementation !== 'spec'
+                        || $mode === Mode::CLASSIC && $implementation === 'spec'
+                        || !file_exists($snippet)
+                    ) {
+                        continue;
                     }
+
+                    yield "{$key}-{$implementation}-$mode->value" => [
+                        $snippet,
+                        $implementation,
+                        $mode,
+                        $snippet_spec,
+                        ];
                 }
             }
         }
@@ -41,31 +56,37 @@ final class DocSnippetsTest extends OpenApiTestCase
      * Compare snippets and ensure they result in the same spec fragment.
      */
     #[DataProvider('snippetSets')]
-    public function testSnippets(array $filenames, string $version): void
+    public function testSnippets(string $snippet, string $implementation, Mode $mode, string $spec): void
     {
-        $lastSpec = null;
-        foreach ($filenames as $type => $filename) {
-            $contents = preg_replace('/(namespace [^;]+);/', "\\1\\{$type};", file_get_contents($filename));
-            $namespace = basename((string) $filename, '.php');
+        // normalize and make namespace unique
+        $contents = preg_replace('/(namespace [^;]+);/', "\\1\\{$implementation};", file_get_contents($snippet));
+        $namespace = basename($snippet, '.php');
 
-            $tmp = sys_get_temp_dir() . "/{$namespace}.php";
-            file_put_contents($tmp, $contents);
-            require_once $tmp;
+        // write to file so we can load it for reflection to work
+        $tmp = sys_get_temp_dir() . "/{$namespace}.php";
+        file_put_contents($tmp, $contents);
+        require_once $tmp;
 
-            $openapi = (new Generator($this->getTrackingLogger()))
-                ->setVersion($version)
+        $result = (new Builder())
+            ->setMode($mode)
+            ->setVersion('3.1.0')
+            ->setSources([$tmp])
+            ->withGenerator(function (Generator $generator): void {
+                $generator
                 ->setTypeResolver($this->getTypeResolver())
-                 ->withProcessorPipeline(fn (Pipeline $processorPipeline): Pipeline => $processorPipeline->remove(OperationId::class))
-                ->generate([$tmp], null, false);
-            if ($lastSpec instanceof \OpenApi\Annotations\OpenApi) {
-                $this->assertSpecEquals(
-                    $openapi,
-                    $lastSpec,
-                    "Snippet: \${$filename}"
+                ->withProcessorPipeline(
+                    fn (Pipeline $processorPipeline): Pipeline => $processorPipeline
+                    ->remove(OperationId::class)
                 );
+            })
+            ->withAugmenters(
+                fn (Pipeline $augmenters): Pipeline => $augmenters
+                ->remove(OperationIds::class)
+                ->remove(Cleanup::class)
+            )
+            ->build();
 
-            }
-            $lastSpec = $openapi;
-        }
+        // file_put_contents($spec, $result->toYaml());
+        $this->assertSpecEquals(file_get_contents($spec), $result->toArray());
     }
 }

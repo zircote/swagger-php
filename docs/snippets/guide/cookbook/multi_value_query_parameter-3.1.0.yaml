@@ -1,0 +1,25 @@
+openapi: 3.1.0
+paths:
+  /api/endpoint:
+    get:
+      tags:
+        - endpoints
+      description: 'The endpoint'
+      operationId: endpoint
+      parameters:
+        -
+          name: 'things[]'
+          in: query
+          description: 'A list of things.'
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+      responses:
+        '200':
+          description: 'All good'
+tags:
+  -
+    name: endpoints
+    description: endpoints

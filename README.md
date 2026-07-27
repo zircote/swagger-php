@@ -22,6 +22,7 @@ attributes and annotations.
 - [Documentation site](https://zircote.github.io/swagger-php/) with a getting started guide.
 - Error reporting (with hints, context).
 - All metadata is configured via PHP attributes.
+- 🧪 **Spec attributes pipeline (beta)** — a new processing mode with typed DTOs, grouped augmenters, and version-aware compilers.
 
 ## OpenAPI version support
 
@@ -83,6 +84,48 @@ Visit the [Documentation website](https://zircote.github.io/swagger-php/) for
 the [Getting started guide](https://zircote.github.io/swagger-php/guide) or look at
 the [examples directory](docs/examples) for more examples.
 
+### 🧪 Spec Attributes (Beta)
+
+*Available since 6.5.0*
+
+A new processing mode using typed attributes from the `OpenApi\Spec` namespace:
+
+```php
+use OpenApi\Spec as OA;
+
+#[OA\OpenApi(version: '3.1.0')]
+#[OA\Info(title: 'My API', version: '1.0')]
+class MyApi
+{
+    #[OA\Operation\Get(path: '/api/resource')]
+    #[OA\Response(response: 200, description: 'An example resource')]
+    public function getResource() {}
+}
+```
+
+```php
+$result = (new \OpenApi\Builder())
+    ->setMode(\OpenApi\Builder\Mode::SPEC)
+    ->addSource('src/')
+    ->build();
+```
+
+**Hybrid mode** works with your existing `OpenApi\Attributes` code — no changes needed. It runs the classic scanner
+but uses the new augmenter pipeline and version-aware compilers, which is faster and easier to extend.
+If you'd like to help test the new pipeline, switching to hybrid is the easiest way:
+
+```php
+$result = (new \OpenApi\Builder())
+    ->setMode(\OpenApi\Builder\Mode::HYBRID)
+    ->addSource('src/')
+    ->build();
+```
+
+Or from the CLI: `./vendor/bin/openapi src/ --mode hybrid`
+
+See the [Spec Attributes guide](https://zircote.github.io/swagger-php/guide/spec-attributes) and
+[Processing Modes](https://zircote.github.io/swagger-php/guide/modes) for full documentation.
+
 ### Usage from PHP
 
 Generate always-up-to-date documentation.
@@ -90,13 +133,15 @@ Generate always-up-to-date documentation.
 ```php
 <?php
 require("vendor/autoload.php");
-$openapi = (new \OpenApi\Generator())->generate(['/path/to/project']);
+$result = (new \OpenApi\Builder())
+    ->addSource(['/path/to/project'])
+    ->build();
 header('Content-Type: application/x-yaml');
-echo $openapi->toYaml();
+echo $result->toYaml();
 ```
 
-Documentation of how to use the `Generator` class can be found in
-the [Generator reference](https://zircote.github.io/swagger-php/reference/generator).
+Details on how to generate OpenApi specifications can be found
+in the [generate reference](https://zircote.github.io/swagger-php/guide/generating-openapi-documents).
 
 ### Usage from the Command Line Interface
 

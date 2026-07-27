@@ -1,0 +1,46 @@
+<?php
+
+namespace Openapi\Snippets\Cookbook\FileUploadWithHeaders;
+
+use OpenApi\Spec as OA;
+
+class Controller
+{
+    #[OA\Operation\Post(
+        path: '/v1/media/upload',
+        summary: 'Upload document',
+        description: '',
+        tags: ['Media'],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: [new OA\MediaType(
+                mediaType: 'application/octet-stream',
+                schema: new OA\Schema(
+                    required: ['content'],
+                    properties: [
+                        new OA\Property(
+                            property: 'content',
+                            schema: new OA\Schema(
+                                description: 'Binary content of file',
+                                type: 'string',
+                                format: 'binary',
+                            ),
+                        ),
+                    ],
+                ),
+            )],
+        ),
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Success',
+    )]
+    #[OA\Response(
+        response: 400,
+        description: 'Bad Request',
+    )]
+    public function upload()
+    {
+        // ...
+    }
+}

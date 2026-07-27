@@ -1,0 +1,9 @@
+openapi: 3.1.0
+components:
+  schemas:
+    Product:
+      properties:
+        name:
+          description: 'The product name'
+          type: string
+      type: object
