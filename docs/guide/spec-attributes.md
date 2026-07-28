@@ -385,15 +385,15 @@ Or apply globally via the OpenApi attribute or via PathItem (cloned to all opera
 
 ## Differences from classic attributes
 
-| Classic (`OpenApi\Attributes`) | Spec (`OpenApi\Spec`)                                                  |
-|---|------------------------------------------------------------------------|
-| `use OpenApi\Attributes as OA;` | `use OpenApi\Spec as OA;`                                              |
-| `#[OA\Get(path: '/pets')]` | `#[OA\Operation\Get(path: '/pets')]`                                   |
-| `#[OA\JsonContent(...)]` | `new OA\MediaType\Json(...)` - but with limited set of attributes only |
-| `#[OA\PathParameter(...)]` | `#[OA\Parameter\Path(...)]`                                            |
-| Schema inherits from annotation base | Schema is standalone, stackable                                        |
-| Processors modify mutable annotation tree | Augmenters enrich immutable DTOs                                       |
-| Single serializer with version branches | Dedicated compiler per OpenAPI version                                 |
+| Classic (`OpenApi\Attributes`) | Spec (`OpenApi\Spec`)                                                              |
+|---|------------------------------------------------------------------------------------|
+| `use OpenApi\Attributes as OA;` | `use OpenApi\Spec as OA;`                                                          |
+| `#[OA\Get(path: '/pets')]` | `#[OA\Operation\Get(path: '/pets')]`                                               |
+| `#[OA\JsonContent(...)]` | `new OA\MediaType\Json(...)` - but with limited set of (OA\Schema) attributes only |
+| `#[OA\PathParameter(...)]` | `#[OA\Parameter\Path(...)]`                                                        |
+| Schema inherits from annotation base | Schema is standalone, stackable                                                    |
+| Processors modify mutable annotation tree | Augmenters enrich immutable DTOs                                                   |
+| Single serializer with version branches | Dedicated compiler per OpenAPI version                                             |
 
 ## References
 

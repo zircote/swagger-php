@@ -101,13 +101,13 @@ $builder->setMode(Mode::SPEC);
 
 The three modes produce equivalent OpenAPI output for the same logical API. However, there are some differences in how they process source code:
 
-| Behavior | Classic | Hybrid                                               | Spec |
-|---|---|------------------------------------------------------|---|
-| Annotation support (`/** @OA\... */`) | Yes | Yes                                                  | No |
-| `MergeJsonContent` / `MergeXmlContent` | Yes | Yes                                                  | No (use `MediaType` directly) |
-| Processor chain (`withGenerator()`) | Yes | Scanning only (`MergeJsonContent`/`MergeXmlContent`) | No |
-| Augmenter pipeline (`withAugmenters()`) | No | Yes                                                  | Yes |
-| Version-aware compilation | No (single serializer) | Yes                                                  | Yes |
+| Behavior | Classic | Hybrid                                               | Spec                    |
+|---|---|------------------------------------------------------|-------------------------|
+| Annotation support (`/** @OA\... */`) | Yes | Yes                                                  | No                      |
+| `MergeJsonContent` / `MergeXmlContent` | Yes | Yes                                                  | Yes `OA\MediaType\Json` |
+| Processor chain (`withGenerator()`) | Yes | Scanning only (`MergeJsonContent`/`MergeXmlContent`) | No                      |
+| Augmenter pipeline (`withAugmenters()`) | No | Yes                                                  | Yes                     |
+| Version-aware compilation | No (single serializer) | Yes                                                  | Yes                     |
 
 ## Migration path
 
