@@ -117,6 +117,18 @@ class CustomAugmenter implements PipeInterface
 }
 ```
 
+## Compilers
+
+Each OpenAPI version has its own compiler that handles version-specific output differences:
+
+| Compiler | Version | Key differences                                                   |
+|---|---|-------------------------------------------------------------------|
+| `Compiler30` | 3.0.x | `nullable` as property, `exclusiveMinimum` as boolean             |
+| `Compiler31` | 3.1.x | `nullable` via type array, `exclusiveMinimum` as number, webhooks |
+| `Compiler32` | 3.2.x | Extends 3.1 (currently without additional features)               |
+
+The compiler transforms a Specification into a plain PHP array representing the OpenAPI document. Version selection is automatic based on `Builder::setVersion()` or the `#[OA\OpenApi(version: '...')]` attribute.
+
 ## Design principles
 
 ### Normalise early, store simple
@@ -132,19 +144,7 @@ public function __construct(string|FlowType|null $flow = null) {
 }
 ```
 
-## Compilers
-
-Each OpenAPI version has its own compiler that handles version-specific output differences:
-
-| Compiler | Version | Key differences                                                   |
-|---|---|-------------------------------------------------------------------|
-| `Compiler30` | 3.0.x | `nullable` as property, `exclusiveMinimum` as boolean             |
-| `Compiler31` | 3.1.x | `nullable` via type array, `exclusiveMinimum` as number, webhooks |
-| `Compiler32` | 3.2.x | Extends 3.1 (currently without additional features)               |
-
-The compiler transforms a Specification into a plain PHP array representing the OpenAPI document. Version selection is automatic based on `Builder::setVersion()` or the `#[OA\OpenApi(version: '...')]` attribute.
-
-## Reflectors as glue
+### Reflectors as glue
 
 Every root DTO carries its originating reflector (`ReflectionClass`, `ReflectionMethod`, etc.). This is the fundamental mechanism for resolving cross-bucket relationships at augmentation time.
 
@@ -157,7 +157,7 @@ Key applications:
 
 This design keeps the Assembler simple (just collect into buckets) and makes cross-cutting relationships resolvable without coupling DTOs to each other.
 
-## DTO class tree
+### DTO class tree
 
 All spec attributes extend `AbstractAttribute` and live in the `OpenApi\Spec` namespace:
 
