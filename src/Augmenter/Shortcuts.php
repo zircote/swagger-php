@@ -30,6 +30,7 @@ class Shortcuts implements PipeInterface
     public function __invoke(mixed $payload): mixed
     {
         $this->processMediaTypes($payload);
+        $this->processSchemaItems($payload);
 
         return null;
     }
@@ -58,5 +59,46 @@ class Shortcuts implements PipeInterface
                 required: $mediaType->required,
             );
         }
+    }
+
+    protected function processSchemaItems(Specification $specification): void
+    {
+        $specification->getWalker()->visit(AttributeInterface::class, function (AttributeInterface $attribute): void {
+            if (property_exists($attribute, 'schema') && $attribute->schema instanceof OA\Schema\Items) {
+                $this->processSchemaItem($attribute);
+            }
+        });
+    }
+
+    protected function processSchemaItem(AttributeInterface $parent): void
+    {
+        if (!property_exists($parent, 'schema') || !$parent->schema instanceof OA\Schema\Items) {
+            return;
+        }
+
+        $arrayConstraints = [
+            'minItems',
+            'maxItems',
+            'uniqueItems',
+            'prefixItems',
+            'contains',
+            'minContains',
+            'maxContains',
+            'unevaluatedItems',
+        ];
+
+        $inner = $parent->schema;
+        $outer = new OA\Schema(
+            type: 'array',
+            items: $inner,
+        );
+        foreach ($arrayConstraints as $arrayConstraint) {
+            $outer->{$arrayConstraint} = $inner->{$arrayConstraint};
+        }
+        foreach ($arrayConstraints as $arrayConstraint) {
+            $inner->{$arrayConstraint} = null;
+        }
+
+        $parent->schema = $outer;
     }
 }

@@ -27,4 +27,17 @@ final class ShortcutsTest extends TestCase
         $this->assertInstanceOf(OA\Schema::class, $json->schema);
         $this->assertSame('string', $json->schema->type);
     }
+
+    public function testItems(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\ItemsSchema::class);
+
+        (new Augmenter\Shortcuts())($spec);
+
+        $property = $spec->schemas[0]->properties[0];
+        $this->assertInstanceOf(OA\Property::class, $property);
+        $this->assertInstanceOf(OA\Schema::class, $property->schema);
+        $this->assertSame('array', $property->schema->type);
+        $this->assertInstanceOf(OA\Schema\Items::class, $property->schema->items);
+    }
 }

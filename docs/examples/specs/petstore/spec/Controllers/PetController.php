@@ -56,7 +56,7 @@ class PetController
             response: 200,
             description: 'successful operation',
             content: [
-                new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
+                new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema\Items(ref: Pet::class)),
                 new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
             ],
         ),
