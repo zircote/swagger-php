@@ -9,6 +9,7 @@ namespace OpenApi\Augmenter;
 use OpenApi\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Undefined;
 use OpenApi\Utils\PipeInterface;
 
 /**
@@ -22,6 +23,8 @@ use OpenApi\Utils\PipeInterface;
  */
 class Shortcuts implements PipeInterface
 {
+    private const ITEMS_KEEP_PROPERTIES = ['schema', 'title', 'description', 'deprecated', 'readOnly', 'writeOnly', 'xml', 'externalDocs', 'x', 'attachables'];
+
     public function group(): string|\BackedEnum
     {
         return Group::Resolve;
@@ -65,40 +68,35 @@ class Shortcuts implements PipeInterface
     {
         $specification->getWalker()->visit(AttributeInterface::class, function (AttributeInterface $attribute): void {
             if (property_exists($attribute, 'schema') && $attribute->schema instanceof OA\Schema\Items) {
-                $this->processSchemaItem($attribute);
+                $this->processSchemaItem($attribute->schema);
             }
         });
     }
 
-    protected function processSchemaItem(AttributeInterface $parent): void
+    protected function processSchemaItem(OA\Schema\Items $items): void
     {
-        if (!property_exists($parent, 'schema') || !$parent->schema instanceof OA\Schema\Items) {
-            return;
+        if ($items->items instanceof OA\Schema\Items) {
+            $this->processSchemaItem($items->items);
         }
 
-        $arrayConstraints = [
-            'minItems',
-            'maxItems',
-            'uniqueItems',
-            'prefixItems',
-            'contains',
-            'minContains',
-            'maxContains',
-            'unevaluatedItems',
-        ];
+        $itemKeep = [...OA\Schema::ARRAY_PROPERTIES, ...self::ITEMS_KEEP_PROPERTIES];
 
-        $inner = $parent->schema;
-        $outer = new OA\Schema(
-            type: 'array',
-            items: $inner,
-        );
-        foreach ($arrayConstraints as $arrayConstraint) {
-            $outer->{$arrayConstraint} = $inner->{$arrayConstraint};
-        }
-        foreach ($arrayConstraints as $arrayConstraint) {
-            $inner->{$arrayConstraint} = null;
+        $innerArgs = [];
+        foreach ((new \ReflectionClass(OA\Schema::class))->getConstructor()->getParameters() as $param) {
+            $prop = $param->getName();
+            if (in_array($prop, $itemKeep, true)) {
+                continue;
+            }
+            $value = $items->{$prop};
+            if ($value !== null && $value !== Undefined::UNDEFINED) {
+                $innerArgs[$prop] = $value;
+                $items->{$prop} = null;
+            }
         }
 
-        $parent->schema = $outer;
+        $items->type = 'array';
+        if ($innerArgs || $items->items === null) {
+            $items->items = new OA\Schema(...$innerArgs);
+        }
     }
 }

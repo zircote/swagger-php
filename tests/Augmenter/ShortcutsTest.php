@@ -16,7 +16,7 @@ final class ShortcutsTest extends TestCase
 {
     use AssemblesSpecification;
 
-    public function testBasicEnumUsesNames(): void
+    public function testMediaTypeJson(): void
     {
         $spec = $this->assemble(Fixtures\Augmenter\JsonController::class);
 
@@ -36,8 +36,8 @@ final class ShortcutsTest extends TestCase
 
         $property = $spec->schemas[0]->properties[0];
         $this->assertInstanceOf(OA\Property::class, $property);
-        $this->assertInstanceOf(OA\Schema::class, $property->schema);
+        $this->assertInstanceOf(OA\Schema\Items::class, $property->schema);
         $this->assertSame('array', $property->schema->type);
-        $this->assertInstanceOf(OA\Schema\Items::class, $property->schema->items);
+        $this->assertInstanceOf(OA\Schema::class, $property->schema->items);
     }
 }

@@ -40,6 +40,18 @@ use OpenApi\Undefined;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
 class Schema extends AbstractAttribute
 {
+    public const ARRAY_PROPERTIES = [
+        'items',
+        'minItems',
+        'maxItems',
+        'uniqueItems',
+        'prefixItems',
+        'contains',
+        'minContains',
+        'maxContains',
+        'unevaluatedItems',
+    ];
+
     /**
      * @param string|null                                                             $schema                Reusable schema identifier (component key)
      * @param string|null                                                             $title                 A title for the schema
