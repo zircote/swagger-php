@@ -183,6 +183,7 @@ OA\AbstractAttribute
 │   └── OA\Operation\Trace
 ├── OA\PathItem
 ├── OA\Schema
+│   ├── OA\Schema\Items
 │   └── OA\Property
 ├── OA\Parameter
 │   ├── OA\Parameter\Path
