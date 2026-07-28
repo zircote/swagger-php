@@ -18,11 +18,14 @@ use OpenApi\Utils\PipeInterface;
  * Handles:
  * * `OA\MediaType\Json`
  * * `OA\MediaType\Xml`
+ * * `OA\Schema\Items`
  *
  * @implements PipeInterface<Specification>
  */
 class Shortcuts implements PipeInterface
 {
+    private const MEDIA_TYPE_SCHEMA_PROPERTIES = ['ref', 'type', 'items', 'properties', 'required'];
+
     private const ITEMS_KEEP_PROPERTIES = ['schema', 'title', 'description', 'deprecated', 'readOnly', 'writeOnly', 'xml', 'externalDocs', 'x', 'attachables'];
 
     public function group(): string|\BackedEnum
@@ -54,13 +57,14 @@ class Shortcuts implements PipeInterface
     protected function processMediaType(OA\MediaType\Json|OA\MediaType\Xml $mediaType): void
     {
         if (!$mediaType->schema instanceof OA\Schema) {
-            $mediaType->schema = new OA\Schema(
-                ref: $mediaType->ref,
-                type: $mediaType->type,
-                items: $mediaType->items,
-                properties: $mediaType->properties,
-                required: $mediaType->required,
-            );
+            $args = [];
+            foreach (self::MEDIA_TYPE_SCHEMA_PROPERTIES as $prop) {
+                if ($mediaType->{$prop} !== null) {
+                    $args[$prop] = $mediaType->{$prop};
+                    $mediaType->{$prop} = null;
+                }
+            }
+            $mediaType->schema = new OA\Schema(...$args);
         }
     }
 

@@ -235,10 +235,32 @@ Still useful even when nesting `OA\Schema` as the media type is prefilled either
 
 **If a nested `OA\Schema` is set, the custom attributes are ignored.**
 
-### Items
-`#[OA\Schema\Items]` is the equivalent to the classic `OA\Items` attribute. Similar to `OA\MediaType\Json` and `Xml` it is a shortcut that allows to skip the outer `OA\Schema(type: 'array')`.
+```php
+// Without shortcut
+#[OA\Response(response: 200, content: [
+    new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
+])]
 
-Both the `MediaType` and `Items` shortcut are resolved by the `Shortcuts` augmenter.
+// With shortcut
+#[OA\Response(response: 200, content: [new OA\MediaType\Json(type: 'array', items: new OA\Schema(ref: Pet::class))])]
+```
+
+### Items
+`#[OA\Schema\Items]` is the equivalent to the classic `OA\Items` attribute. Similar to `OA\MediaType\Json` and `Xml` it is a shortcut that allows to skip the outer `OA\Schema(type: 'array')`. The `Shortcuts` augmenter wraps it into `OA\Schema(type: 'array', items: ...)` automatically.
+
+```php
+// Without shortcut
+#[OA\Property]
+#[OA\Schema(type: 'array', items: new OA\Schema(ref: Tag::class))]
+public array $tags;
+
+// With shortcut
+#[OA\Property]
+#[OA\Schema\Items(ref: Tag::class)]
+public array $tags;
+```
+
+Both the `MediaType` and `Items` shortcuts are resolved by the `Shortcuts` augmenter.
 
 ## Components
 
