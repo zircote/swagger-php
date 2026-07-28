@@ -47,7 +47,7 @@ class Delete extends OA\Operation
         parent::__construct(
             path: $path,
             webhook: $webhook,
-            method: 'delete',
+            method: OA\HttpMethod::Delete,
             operationId: $operationId,
             summary: $summary,
             description: $description,

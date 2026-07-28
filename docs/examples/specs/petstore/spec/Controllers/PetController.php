@@ -45,7 +45,7 @@ class PetController
     #[OA\Operation\Get(path: '/pet/findByStatus', operationId: 'findPetsByStatus', summary: 'Finds Pets by status', description: 'Multiple status values can be provided with comma separated string', tags: ['pet'], parameters: [
         new OA\Parameter(
             name: 'status',
-            in: 'query',
+            in: OA\ParameterIn::Query,
             description: 'Status values that needed to be considered for filter',
             required: true,
             explode: true,
@@ -97,7 +97,7 @@ class PetController
     #[OA\Operation\Get(path: '/pet/{petId}', operationId: 'getPetById', summary: 'Find pet by ID', description: 'Returns a single pet', tags: ['pet'], parameters: [
         new OA\Parameter(
             name: 'petId',
-            in: 'path',
+            in: OA\ParameterIn::Path,
             description: 'ID of pet to return',
             required: true,
             schema: new OA\Schema(type: 'integer', format: 'int64'),

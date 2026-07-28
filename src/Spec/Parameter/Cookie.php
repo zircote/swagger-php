@@ -41,7 +41,7 @@ class Cookie extends OA\Parameter
         parent::__construct(
             parameter: $parameter,
             name: $name,
-            in: 'cookie',
+            in: OA\ParameterIn::Cookie,
             description: $description,
             required: $required,
             deprecated: $deprecated,

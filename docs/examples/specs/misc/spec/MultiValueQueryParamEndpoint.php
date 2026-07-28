@@ -24,7 +24,7 @@ class MultiValueQueryParamEndpoint
         parameters: [
             new OA\Parameter(
                 name: 'things[]',
-                in: 'query',
+                in: OA\ParameterIn::Query,
                 description: 'A list of things.',
                 required: false,
                 schema: new OA\Schema(type: 'array', items: new OA\Schema(type: 'integer')),

@@ -29,7 +29,7 @@ class OpenIdConnect extends OA\Security\Scheme
     ) {
         parent::__construct(
             securityScheme: $securityScheme,
-            type: 'openIdConnect',
+            type: OA\SchemeType::OpenIdConnect,
             description: $description,
             openIdConnectUrl: $openIdConnectUrl,
             x: $x,

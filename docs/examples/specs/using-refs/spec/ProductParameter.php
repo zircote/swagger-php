@@ -14,7 +14,7 @@ class ProductParameter
     #[OA\Parameter(
         parameter: 'product_id_in_path_required',
         name: 'product_id',
-        in: 'path',
+        in: OA\ParameterIn::Path,
         description: 'The ID of the product',
         required: true,
         schema: new OA\Schema(type: 'integer', format: 'int64'),

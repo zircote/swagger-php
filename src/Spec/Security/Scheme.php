@@ -22,26 +22,30 @@ use OpenApi\Spec as OA;
  */
 class Scheme extends OA\AbstractAttribute
 {
+    public ?string $type = null;
+
+    public ?string $in = null;
+
     /**
-     * @param string|null              $securityScheme   Reusable security scheme identifier (component key)
-     * @param string|null              $type             The type of the security scheme (apiKey, http, mutualTLS, oauth2, openIdConnect)
-     * @param string|null              $description      A description of the security scheme (CommonMark syntax)
-     * @param string|null              $name             The name of the header, query, or cookie parameter (apiKey)
-     * @param string|null              $in               The location of the API key (query, header, cookie)
-     * @param string|null              $scheme           The HTTP authorization scheme (http)
-     * @param string|null              $bearerFormat     A hint about the format of the bearer token (http/bearer)
-     * @param string|null              $openIdConnectUrl The OpenID Connect URL to discover configuration (openIdConnect)
-     * @param list<OA\Flow>|null       $flows            The available OAuth2 flows (oauth2)
-     * @param string|null              $ref              A JSON Reference to a reusable security scheme
-     * @param array<string,mixed>|null $x                Vendor extensions (x-* properties)
-     * @param list<OA\Attachable>|null $attachables      Reusable custom attachable attributes
+     * @param string|null               $securityScheme   Reusable security scheme identifier (component key)
+     * @param string|OA\SchemeType|null $type             The type of the security scheme (apiKey, http, mutualTLS, oauth2, openIdConnect)
+     * @param string|null               $description      A description of the security scheme (CommonMark syntax)
+     * @param string|null               $name             The name of the header, query, or cookie parameter (apiKey)
+     * @param string|OA\SchemeIn|null   $in               The location of the API key (query, header, cookie)
+     * @param string|null               $scheme           The HTTP authorization scheme (http)
+     * @param string|null               $bearerFormat     A hint about the format of the bearer token (http/bearer)
+     * @param string|null               $openIdConnectUrl The OpenID Connect URL to discover configuration (openIdConnect)
+     * @param list<OA\Flow>|null        $flows            The available OAuth2 flows (oauth2)
+     * @param string|null               $ref              A JSON Reference to a reusable security scheme
+     * @param array<string,mixed>|null  $x                Vendor extensions (x-* properties)
+     * @param list<OA\Attachable>|null  $attachables      Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $securityScheme = null,
-        public ?string $type = null,
+        string|OA\SchemeType|null $type = null,
         public ?string $description = null,
         public ?string $name = null,
-        public ?string $in = null,
+        string|OA\SchemeIn|null $in = null,
         public ?string $scheme = null,
         public ?string $bearerFormat = null,
         public ?string $openIdConnectUrl = null,
@@ -51,6 +55,8 @@ class Scheme extends OA\AbstractAttribute
         ?array $attachables = null,
     ) {
         parent::__construct(x: $x, attachables: $attachables);
+        $this->type = $type instanceof \BackedEnum ? $type->value : $type;
+        $this->in = $in instanceof \BackedEnum ? $in->value : $in;
     }
 
     public function isRoot(): bool

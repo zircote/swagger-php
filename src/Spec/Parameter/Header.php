@@ -41,7 +41,7 @@ class Header extends OA\Parameter
         parent::__construct(
             parameter: $parameter,
             name: $name,
-            in: 'header',
+            in: OA\ParameterIn::Header,
             description: $description,
             required: $required,
             deprecated: $deprecated,

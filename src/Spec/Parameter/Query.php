@@ -31,7 +31,7 @@ class Query extends OA\Parameter
         ?bool $deprecated = null,
         ?bool $allowEmptyValue = null,
         ?string $ref = null,
-        ?string $style = null,
+        string|OA\ParameterStyle|null $style = null,
         ?bool $explode = null,
         ?bool $allowReserved = null,
         ?OA\Schema $schema = null,
@@ -44,7 +44,7 @@ class Query extends OA\Parameter
         parent::__construct(
             parameter: $parameter,
             name: $name,
-            in: 'query',
+            in: OA\ParameterIn::Query,
             description: $description,
             required: $required,
             deprecated: $deprecated,

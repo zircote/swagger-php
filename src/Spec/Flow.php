@@ -42,8 +42,10 @@ namespace OpenApi\Spec;
 #[\Attribute(\Attribute::IS_REPEATABLE)]
 class Flow extends AbstractAttribute
 {
+    public ?string $flow = null;
+
     /**
-     * @param string|null               $flow             The OAuth2 flow type (implicit, password, clientCredentials, authorizationCode)
+     * @param string|FlowType|null      $flow             The OAuth2 flow type (implicit, password, clientCredentials, authorizationCode)
      * @param string|null               $authorizationUrl The authorization URL for this flow
      * @param string|null               $tokenUrl         The token URL for this flow
      * @param string|null               $refreshUrl       The URL for obtaining refresh tokens
@@ -52,7 +54,7 @@ class Flow extends AbstractAttribute
      * @param list<Attachable>|null     $attachables      Reusable custom attachable attributes
      */
     public function __construct(
-        public ?string $flow = null,
+        string|FlowType|null $flow = null,
         public ?string $authorizationUrl = null,
         public ?string $tokenUrl = null,
         public ?string $refreshUrl = null,
@@ -61,6 +63,7 @@ class Flow extends AbstractAttribute
         ?array $attachables = null,
     ) {
         parent::__construct(x: $x, attachables: $attachables);
+        $this->flow = $flow instanceof \BackedEnum ? $flow->value : $flow;
     }
 
     public function merge(): array

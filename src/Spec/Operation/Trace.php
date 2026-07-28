@@ -47,7 +47,7 @@ class Trace extends OA\Operation
         parent::__construct(
             path: $path,
             webhook: $webhook,
-            method: 'trace',
+            method: OA\HttpMethod::Trace,
             operationId: $operationId,
             summary: $summary,
             description: $description,

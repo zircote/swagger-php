@@ -47,7 +47,7 @@ class Options extends OA\Operation
         parent::__construct(
             path: $path,
             webhook: $webhook,
-            method: 'options',
+            method: OA\HttpMethod::Options,
             operationId: $operationId,
             summary: $summary,
             description: $description,

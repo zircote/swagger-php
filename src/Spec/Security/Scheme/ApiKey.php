@@ -24,13 +24,13 @@ class ApiKey extends OA\Security\Scheme
         ?string $securityScheme = null,
         ?string $description = null,
         ?string $name = null,
-        ?string $in = null,
+        string|OA\SchemeIn|null $in = null,
         ?array $x = null,
         ?array $attachables = null,
     ) {
         parent::__construct(
             securityScheme: $securityScheme,
-            type: 'apiKey',
+            type: OA\SchemeType::ApiKey,
             description: $description,
             name: $name,
             in: $in,

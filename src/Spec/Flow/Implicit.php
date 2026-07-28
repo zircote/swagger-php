@@ -29,7 +29,7 @@ class Implicit extends OA\Flow
         ?array $attachables = null,
     ) {
         parent::__construct(
-            flow: 'implicit',
+            flow: OA\FlowType::Implicit,
             authorizationUrl: $authorizationUrl,
             refreshUrl: $refreshUrl,
             scopes: $scopes,

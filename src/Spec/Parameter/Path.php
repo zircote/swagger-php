@@ -29,7 +29,7 @@ class Path extends OA\Parameter
         ?string $description = null,
         ?bool $deprecated = null,
         ?string $ref = null,
-        ?string $style = null,
+        string|OA\ParameterStyle|null $style = null,
         ?bool $explode = null,
         ?OA\Schema $schema = null,
         mixed $example = Undefined::UNDEFINED,
@@ -41,7 +41,7 @@ class Path extends OA\Parameter
         parent::__construct(
             parameter: $parameter,
             name: $name,
-            in: 'path',
+            in: OA\ParameterIn::Path,
             description: $description,
             required: true,
             deprecated: $deprecated,

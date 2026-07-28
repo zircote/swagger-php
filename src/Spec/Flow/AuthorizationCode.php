@@ -30,7 +30,7 @@ class AuthorizationCode extends OA\Flow
         ?array $attachables = null,
     ) {
         parent::__construct(
-            flow: 'authorizationCode',
+            flow: OA\FlowType::AuthorizationCode,
             authorizationUrl: $authorizationUrl,
             tokenUrl: $tokenUrl,
             refreshUrl: $refreshUrl,

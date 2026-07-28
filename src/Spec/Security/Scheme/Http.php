@@ -30,7 +30,7 @@ class Http extends OA\Security\Scheme
     ) {
         parent::__construct(
             securityScheme: $securityScheme,
-            type: 'http',
+            type: OA\SchemeType::Http,
             description: $description,
             scheme: $scheme,
             bearerFormat: $bearerFormat,

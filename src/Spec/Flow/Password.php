@@ -29,7 +29,7 @@ class Password extends OA\Flow
         ?array $attachables = null,
     ) {
         parent::__construct(
-            flow: 'password',
+            flow: OA\FlowType::Password,
             tokenUrl: $tokenUrl,
             refreshUrl: $refreshUrl,
             scopes: $scopes,
