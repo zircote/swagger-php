@@ -26,6 +26,11 @@ final class ShortcutsTest extends TestCase
         $this->assertSame('application/json', $json->mediaType);
         $this->assertInstanceOf(OA\Schema::class, $json->schema);
         $this->assertSame('string', $json->schema->type);
+        $this->assertNull($json->ref);
+        $this->assertNull($json->type);
+        $this->assertNull($json->items);
+        $this->assertNull($json->properties);
+        $this->assertNull($json->required);
     }
 
     public function testItems(): void
@@ -39,5 +44,21 @@ final class ShortcutsTest extends TestCase
         $this->assertInstanceOf(OA\Schema\Items::class, $property->schema);
         $this->assertSame('array', $property->schema->type);
         $this->assertInstanceOf(OA\Schema::class, $property->schema->items);
+    }
+
+    public function testRecursiveItems(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\ItemsSchema::class);
+
+        (new Augmenter\Shortcuts())($spec);
+
+        $property = $spec->schemas[0]->properties[1];
+        $this->assertInstanceOf(OA\Property::class, $property);
+        $this->assertInstanceOf(OA\Schema\Items::class, $property->schema);
+        $this->assertSame('array', $property->schema->type);
+        $this->assertInstanceOf(OA\Schema\Items::class, $property->schema->items);
+        $this->assertSame('array', $property->schema->items->type);
+        $this->assertInstanceOf(OA\Schema::class, $property->schema->items->items);
+        $this->assertSame('string', $property->schema->items->items->type);
     }
 }

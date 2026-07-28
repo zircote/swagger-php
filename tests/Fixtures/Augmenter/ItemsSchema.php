@@ -15,4 +15,9 @@ class ItemsSchema
     #[OA\Property]
     #[OA\Schema\Items]
     public array $tags;
+
+    /** @var list<list<string>> */
+    #[OA\Property]
+    #[OA\Schema\Items(items: new OA\Schema\Items(type: 'string'))]
+    public array $matrix;
 }
