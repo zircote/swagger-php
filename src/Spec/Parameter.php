@@ -42,19 +42,23 @@ use OpenApi\Undefined;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
 class Parameter extends AbstractAttribute
 {
+    public ?string $in = null;
+
+    public ?string $style = null;
+
     /** @var list<MediaType>|null */
     public ?array $content = null;
 
     /**
      * @param string|null                    $parameter       Reusable parameter identifier (component key)
      * @param string|null                    $name            The name of the parameter
-     * @param string|null                    $in              The location of the parameter (query, header, path, cookie)
+     * @param string|ParameterIn|null        $in              The location of the parameter (query, header, path, cookie)
      * @param string|null                    $description     A brief description of the parameter (CommonMark syntax)
      * @param bool|null                      $required        Whether the parameter is mandatory
      * @param bool|null                      $deprecated      Whether the parameter is deprecated
      * @param bool|null                      $allowEmptyValue Whether empty-valued parameters are allowed
      * @param string|null                    $ref             A JSON Reference to a reusable parameter
-     * @param string|null                    $style           How the parameter value is serialized
+     * @param string|ParameterStyle|null     $style           How the parameter value is serialized
      * @param bool|null                      $explode         Whether arrays/objects generate separate parameters
      * @param bool|null                      $allowReserved   Whether reserved characters are allowed without encoding
      * @param Schema|null                    $schema          The schema defining the type for the parameter
@@ -67,13 +71,13 @@ class Parameter extends AbstractAttribute
     public function __construct(
         public ?string $parameter = null,
         public ?string $name = null,
-        public ?string $in = null,
+        string|ParameterIn|null $in = null,
         public ?string $description = null,
         public ?bool $required = null,
         public ?bool $deprecated = null,
         public ?bool $allowEmptyValue = null,
         public ?string $ref = null,
-        public ?string $style = null,
+        string|ParameterStyle|null $style = null,
         public ?bool $explode = null,
         public ?bool $allowReserved = null,
         public ?Schema $schema = null,
@@ -84,6 +88,8 @@ class Parameter extends AbstractAttribute
         ?array $attachables = null,
     ) {
         parent::__construct(x: $x, attachables: $attachables);
+        $this->in = $in instanceof \BackedEnum ? $in->value : $in;
+        $this->style = $style instanceof \BackedEnum ? $style->value : $style;
         $this->content = self::wrapList($content);
     }
 

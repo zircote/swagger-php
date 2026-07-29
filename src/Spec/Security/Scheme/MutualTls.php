@@ -28,7 +28,7 @@ class MutualTls extends OA\Security\Scheme
     ) {
         parent::__construct(
             securityScheme: $securityScheme,
-            type: 'mutualTLS',
+            type: OA\SchemeType::MutualTLS,
             description: $description,
             x: $x,
             attachables: $attachables,

@@ -47,7 +47,7 @@ class Put extends OA\Operation
         parent::__construct(
             path: $path,
             webhook: $webhook,
-            method: 'put',
+            method: OA\HttpMethod::Put,
             operationId: $operationId,
             summary: $summary,
             description: $description,

@@ -47,7 +47,7 @@ class Get extends OA\Operation
         parent::__construct(
             path: $path,
             webhook: $webhook,
-            method: 'get',
+            method: OA\HttpMethod::Get,
             operationId: $operationId,
             summary: $summary,
             description: $description,

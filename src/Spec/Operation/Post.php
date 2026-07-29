@@ -47,7 +47,7 @@ class Post extends OA\Operation
         parent::__construct(
             path: $path,
             webhook: $webhook,
-            method: 'post',
+            method: OA\HttpMethod::Post,
             operationId: $operationId,
             summary: $summary,
             description: $description,

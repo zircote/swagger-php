@@ -30,7 +30,7 @@ class OAuth2 extends OA\Security\Scheme
     ) {
         parent::__construct(
             securityScheme: $securityScheme,
-            type: 'oauth2',
+            type: OA\SchemeType::OAuth2,
             description: $description,
             flows: $flows,
             x: $x,

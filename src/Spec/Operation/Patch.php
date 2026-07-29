@@ -47,7 +47,7 @@ class Patch extends OA\Operation
         parent::__construct(
             path: $path,
             webhook: $webhook,
-            method: 'patch',
+            method: OA\HttpMethod::Patch,
             operationId: $operationId,
             summary: $summary,
             description: $description,

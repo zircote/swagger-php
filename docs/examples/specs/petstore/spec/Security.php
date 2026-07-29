@@ -17,7 +17,7 @@ use OpenApi\Spec as OA;
         ],
     ),
 ])]
-#[OA\Security\Scheme\ApiKey(securityScheme: 'api_key', name: 'api_key', in: 'header')]
+#[OA\Security\Scheme\ApiKey(securityScheme: 'api_key', name: 'api_key', in: OA\SchemeIn::Header)]
 class Security
 {
 }

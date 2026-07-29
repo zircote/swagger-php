@@ -47,7 +47,7 @@ class Head extends OA\Operation
         parent::__construct(
             path: $path,
             webhook: $webhook,
-            method: 'head',
+            method: OA\HttpMethod::Head,
             operationId: $operationId,
             summary: $summary,
             description: $description,

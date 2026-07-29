@@ -16,6 +16,8 @@ use OpenApi\Undefined;
 #[\Attribute(\Attribute::IS_REPEATABLE)]
 class Header extends AbstractAttribute
 {
+    public ?string $style = null;
+
     /** @var list<MediaType>|null */
     public ?array $content = null;
 
@@ -25,7 +27,7 @@ class Header extends AbstractAttribute
      * @param bool|null                      $required    Whether the header is mandatory
      * @param bool|null                      $deprecated  Whether the header is deprecated
      * @param string|null                    $ref         A JSON Reference to a reusable header
-     * @param string|null                    $style       How the header value is serialized
+     * @param string|ParameterStyle|null     $style       How the header value is serialized
      * @param bool|null                      $explode     Whether arrays/objects generate separate parameters
      * @param Schema|null                    $schema      The schema defining the type for the header
      * @param mixed                          $example     Example of the header's value
@@ -40,7 +42,7 @@ class Header extends AbstractAttribute
         public ?bool $required = null,
         public ?bool $deprecated = null,
         public ?string $ref = null,
-        public ?string $style = null,
+        string|ParameterStyle|null $style = null,
         public ?bool $explode = null,
         public ?Schema $schema = null,
         public mixed $example = Undefined::UNDEFINED,
@@ -50,6 +52,7 @@ class Header extends AbstractAttribute
         ?array $attachables = null,
     ) {
         parent::__construct(x: $x, attachables: $attachables);
+        $this->style = $style instanceof \BackedEnum ? $style->value : $style;
         $this->content = self::wrapList($content);
     }
 

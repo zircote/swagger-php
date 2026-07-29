@@ -29,7 +29,7 @@ class ClientCredentials extends OA\Flow
         ?array $attachables = null,
     ) {
         parent::__construct(
-            flow: 'clientCredentials',
+            flow: OA\FlowType::ClientCredentials,
             tokenUrl: $tokenUrl,
             refreshUrl: $refreshUrl,
             scopes: $scopes,

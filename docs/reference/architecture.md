@@ -129,7 +129,22 @@ Each OpenAPI version has its own compiler that handles version-specific output d
 
 The compiler transforms a Specification into a plain PHP array representing the OpenAPI document. Version selection is automatic based on `Builder::setVersion()` or the `#[OA\OpenApi(version: '...')]` attribute.
 
-## Reflectors as glue
+## Design principles
+
+### Normalise early, store simple
+
+When a property has both a rich input type (e.g. a PHP enum) and a plain serialization type (e.g. string), accept both on input but normalise to the plain type immediately in the constructor. Properties always store the simple form — enums, objects, and convenience types are input sugar only. This keeps downstream code (augmenters, compilers, serialization) free of type-checking branches.
+
+```php
+// Example: FlowType enum accepted on input, stored as string
+public function __construct(string|FlowType|null $flow = null) {
+    parent::__construct([
+        'flow' => $flow instanceof \BackedEnum ? $flow->value : $flow,
+    ]);
+}
+```
+
+### Reflectors as glue
 
 Every root DTO carries its originating reflector (`ReflectionClass`, `ReflectionMethod`, etc.). This is the fundamental mechanism for resolving cross-bucket relationships at augmentation time.
 
@@ -142,7 +157,7 @@ Key applications:
 
 This design keeps the Assembler simple (just collect into buckets) and makes cross-cutting relationships resolvable without coupling DTOs to each other.
 
-## DTO class tree
+### DTO class tree
 
 All spec attributes extend `AbstractAttribute` and live in the `OpenApi\Spec` namespace:
 

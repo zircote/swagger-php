@@ -412,4 +412,4 @@ Re-evaluate support for convenience attributes that reduce boilerplate in common
 - test to verify merges()/contains() consistency (with property type checks)
 - attachable example/test
 - review [] property types that could also accept a single: type|list<type>
-.- enums for fixed strings, like flows->implicit, etc
+~~- enums for fixed strings, like flows->implicit, etc~~
