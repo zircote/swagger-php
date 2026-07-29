@@ -13,7 +13,6 @@ use OpenApi\Tests\Concerns\AssemblesSpecification;
 use OpenApi\Tests\Fixtures;
 use PHPUnit\Framework\TestCase;
 
-
 final class RefsTest extends TestCase
 {
     use AssemblesSpecification;
