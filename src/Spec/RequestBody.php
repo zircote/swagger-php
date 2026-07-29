@@ -30,7 +30,7 @@ class RequestBody extends AbstractAttribute
         public ?string $request = null,
         public ?string $description = null,
         public ?bool $required = null,
-        public ?string $ref = null,
+        public string|Schema\Ref|null $ref = null,
         MediaType|array|null $content = null,
         ?array $x = null,
         ?array $attachables = null,

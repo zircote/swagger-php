@@ -18,7 +18,7 @@ class ProductController
         operationId: 'getProduct',
         tags: ['Products'],
         responses: [
-            new OA\Response(response: 'default', ref: '#/components/responses/product'),
+            new OA\Response(response: 'default', ref: new OA\Schema\Ref(ref: '#/components/responses/product')),
         ],
     )]
     public function getProduct($id)
