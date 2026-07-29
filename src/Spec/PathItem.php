@@ -66,7 +66,7 @@ class PathItem extends AbstractAttribute
      * @param list<Attachable>|null           $attachables Reusable custom attachable attributes
      */
     public function __construct(
-        public ?string $ref = null,
+        public string|Schema\Ref|null $ref = null,
         public ?string $prefix = null,
         public ?string $summary = null,
         public ?string $description = null,

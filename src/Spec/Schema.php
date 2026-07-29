@@ -105,7 +105,7 @@ class Schema extends AbstractAttribute
         public ?string $description = null,
 
         // Reference
-        public ?string $ref = null,
+        public string|Schema\Ref|null $ref = null,
 
         // Core type
         public string|array|null $type = null,

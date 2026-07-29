@@ -50,7 +50,7 @@ class Scheme extends OA\AbstractAttribute
         public ?string $bearerFormat = null,
         public ?string $openIdConnectUrl = null,
         public ?array $flows = null,
-        public ?string $ref = null,
+        public string|OA\Schema\Ref|null $ref = null,
         ?array $x = null,
         ?array $attachables = null,
     ) {

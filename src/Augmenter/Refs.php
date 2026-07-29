@@ -37,6 +37,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
             return null;
         }
 
+        $this->resolveRefRefs($payload);
         $this->resolveFQCNRefs($payload, $refMap);
         $this->resolveDiscriminatorMappings($payload, $refMap);
         $this->resolveAllOfPropertyRefs($payload);
@@ -44,7 +45,16 @@ class Refs implements PipeInterface, LoggerAwareInterface
         return null;
     }
 
-    protected function resolveFQCNRefs(Specification $specification, array &$refMap): array
+    protected function resolveRefRefs(Specification $specification): void
+    {
+        $specification->getWalker()->eachRef(function (OA\AbstractAttribute $attribute): void {
+            if ($attribute->ref instanceof OA\Schema\Ref) {
+                $attribute->ref = $attribute->ref->ref;
+            }
+        });
+    }
+
+    protected function resolveFQCNRefs(Specification $specification, array &$refMap): void
     {
         $unresolved = [];
 
@@ -64,8 +74,6 @@ class Refs implements PipeInterface, LoggerAwareInterface
                 'ref' => $ref,
             ]);
         }
-
-        return $refMap;
     }
 
     /**

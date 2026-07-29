@@ -30,7 +30,7 @@ class Example extends AbstractAttribute
         public ?string $description = null,
         public mixed $value = null,
         public ?string $externalValue = null,
-        public ?string $ref = null,
+        public string|Schema\Ref|null $ref = null,
         ?array $x = null,
         ?array $attachables = null,
     ) {
