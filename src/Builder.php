@@ -228,7 +228,7 @@ class Builder
         $diagnostics = $compiler->validate($specification);
         $output = $compiler->compile($specification);
 
-        return Result::fromSpec($files, $output, $diagnostics);
+        return Result::fromSpec($files, $specification, $output, $diagnostics);
     }
 
     protected function doHybridAssemble(Specification $specification): void

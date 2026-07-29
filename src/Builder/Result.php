@@ -8,6 +8,7 @@ namespace OpenApi\Builder;
 
 use OpenApi\Annotations\OpenApi;
 use OpenApi\OpenApiException;
+use OpenApi\Specification;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -23,6 +24,7 @@ class Result
     protected function __construct(
         protected array $files,
         protected ?OpenApi $openApi,
+        protected ?Specification $specification,
         protected array $log = [],
         protected ?array $specOutput = null,
     ) {
@@ -36,7 +38,7 @@ class Result
      */
     public static function fromClassic(array $files, ?OpenApi $openApi, array $log = []): self
     {
-        return new self($files, $openApi, $log);
+        return new self($files, $openApi, null, $log);
     }
 
     /**
@@ -46,9 +48,9 @@ class Result
      * @param array<string,mixed>                         $output
      * @param list<array{level: string, message: string}> $log
      */
-    public static function fromSpec(array $files, array $output, array $log = []): self
+    public static function fromSpec(array $files, Specification $specification, array $output, array $log = []): self
     {
-        return new self($files, null, $log, $output);
+        return new self($files, null, $specification, $log, $output);
     }
 
     /**
@@ -62,6 +64,11 @@ class Result
     public function openApi(): ?OpenApi
     {
         return $this->openApi;
+    }
+
+    public function specification(): ?Specification
+    {
+        return $this->specification;
     }
 
     public function isValid(): bool
