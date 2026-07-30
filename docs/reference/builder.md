@@ -67,6 +67,27 @@ $builder->setSources(['src/Controllers', 'src/Models']);
 
 Sources can be directory paths, file paths, `\SplFileInfo`, `\Symfony\Component\Finder\Finder` instances, or nested iterables of these.
 
+#### Reflector sources (spec/hybrid mode)
+
+In spec and hybrid mode, you can pass `\Reflector` instances (e.g. `\ReflectionClass`) directly instead of file paths. This is useful when you already have reflection objects available or want to build a spec from a specific set of classes without file scanning:
+
+```php
+use OpenApi\Builder;
+use OpenApi\Builder\Mode;
+
+$result = (new Builder())
+    ->setMode(Mode::SPEC)
+    ->addSource([
+        new \ReflectionClass(App\Controllers\PetController::class),
+        new \ReflectionClass(App\Models\Pet::class),
+    ])
+    ->build();
+```
+
+::: warning
+Reflector sources are not supported in classic mode — they require the spec or hybrid pipeline.
+:::
+
 ### Version
 
 ```php

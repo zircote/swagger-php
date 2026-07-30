@@ -131,6 +131,23 @@ echo $result->toYaml();
 
 Spec mode uses attributes from the `OpenApi\Spec` namespace. See [Using Spec Attributes](/guide/spec-attributes) for details on the attribute API and [Processing Modes](/guide/modes) for a comparison of all modes.
 
+In spec and hybrid mode, you can also pass `\ReflectionClass` instances directly instead of file paths:
+
+```php
+<?php
+require('vendor/autoload.php');
+
+$result = (new \OpenApi\Builder())
+    ->setMode(\OpenApi\Builder\Mode::SPEC)
+    ->addSource([
+        new \ReflectionClass(App\Controllers\PetController::class),
+        new \ReflectionClass(App\Models\Pet::class),
+    ])
+    ->build();
+
+echo $result->toYaml();
+```
+
 ### Using the Generator directly
 
 The `Generator` class can also be used directly (classic mode only):
