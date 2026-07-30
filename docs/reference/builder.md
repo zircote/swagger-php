@@ -97,7 +97,7 @@ $builder->setVersion('3.1.0');
 Sets the target OpenAPI version. Version resolution order:
 1. Explicit `setVersion()` call (highest priority)
 2. Version declared in the source `#[OA\OpenApi(version: '...')]` attribute
-3. Falls back to `3.0.0`
+3. Falls back to `3.0.0` (classic) or `3.1.0` (spec/hybrid)
 
 ### Logger
 

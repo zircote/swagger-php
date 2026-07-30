@@ -111,7 +111,7 @@ Describes the encoding for a single property in a media type.
   The Content-Type for encoding a specific property
 - **headers** : `list&lt;Header&gt;|null`
   Additional headers for multipart media types
-- **style** : `string|null`
+- **style** : `string|ParameterStyle|null`
   How the property value is serialized
 - **explode** : `bool|null`
   Whether arrays/objects generate separate parameters
@@ -205,7 +205,7 @@ Produces:
 
 #### Parameters
 ---
-- **flow** : `string|null`
+- **flow** : `string|FlowType|null`
   The OAuth2 flow type (implicit, password, clientCredentials, authorizationCode)
 - **authorizationUrl** : `string|null`
   The authorization URL for this flow
@@ -331,7 +331,7 @@ Describes a single HTTP header.
   Whether the header is deprecated
 - **ref** : `string|null`
   A JSON Reference to a reusable header
-- **style** : `string|null`
+- **style** : `string|ParameterStyle|null`
   How the header value is serialized
 - **explode** : `bool|null`
   Whether arrays/objects generate separate parameters
@@ -341,7 +341,7 @@ Describes a single HTTP header.
   Example of the header's value
 - **examples** : `list&lt;Example&gt;|null`
   Examples of the header's value
-- **content** : `list&lt;MediaType&gt;|null`
+- **content** : `MediaType|list&lt;MediaType&gt;|null`
   Content-type based header serialization
 
 #### Reference
@@ -467,6 +467,18 @@ A shortcut version of `OA\MediaType` with some of the more common `OA\Schema` pr
 * `ref`, `type`, `items`, `properties` and `required` may be used and will be expanded into a nested `OA\Schema` automatically.
 * If `schema` is explicitly set, the custom `OA\Schema` properties will be ignored.
 
+Allows to shorten this:
+
+  #[OA\Response(response: 200, content: [
+      new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
+  ])]
+
+to this:
+
+  #[OA\Response(response: 200, content: [new OA\MediaType\Json(type: 'array', items: new OA\Schema(ref: Pet::class))])]
+
+The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema` automatically.
+
 #### Allowed in
 ---
 <a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#parameter">Parameter</a>
@@ -508,6 +520,18 @@ A shortcut version of `OA\MediaType` with some of the more common `OA\Schema` pr
 * `mediaType` is set to `application/xml` by default.
 * `ref`, `type`, `items`, `properties` and `required` may be used and will be expanded into a nested `OA\Schema` automatically.
 * If `schema` is explicitly set, the custom `OA\Schema` properties will be ignored.
+
+Allows to shorten this:
+
+  #[OA\Response(response: 200, content: [
+      new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
+  ])]
+
+to this:
+
+  #[OA\Response(response: 200, content: [new OA\MediaType\Xml(type: 'array', items: new OA\Schema(ref: Pet::class))])]
+
+The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema` automatically.
 
 #### Allowed in
 ---
@@ -601,7 +625,7 @@ For webhooks, use `webhook` instead of `path`:
   The URL path for the operation
 - **webhook** : `string|null`
   The webhook name (mutually exclusive with path)
-- **method** : `string|null`
+- **method** : `string|HttpMethod|null`
   The HTTP method (get, post, put, delete, etc.)
 - **operationId** : `string|null`
   Unique identifier for the operation
@@ -1021,7 +1045,7 @@ Produces:
   Reusable parameter identifier (component key)
 - **name** : `string|null`
   The name of the parameter
-- **in** : `string|null`
+- **in** : `string|ParameterIn|null`
   The location of the parameter (query, header, path, cookie)
 - **description** : `string|null`
   A brief description of the parameter (CommonMark syntax)
@@ -1033,7 +1057,7 @@ Produces:
   Whether empty-valued parameters are allowed
 - **ref** : `string|null`
   A JSON Reference to a reusable parameter
-- **style** : `string|null`
+- **style** : `string|ParameterStyle|null`
   How the parameter value is serialized
 - **explode** : `bool|null`
   Whether arrays/objects generate separate parameters
@@ -1045,7 +1069,7 @@ Produces:
   Example of the parameter's value
 - **examples** : `list&lt;Example&gt;|null`
   Examples of the parameter's value
-- **content** : `list&lt;MediaType&gt;|null`
+- **content** : `MediaType|list&lt;MediaType&gt;|null`
   Content-type based parameter serialization
 
 #### Reference
@@ -1086,7 +1110,7 @@ A parameter passed via an HTTP cookie.
   No details available.
 - **examples** : `list&lt;OA\Example&gt;|null`
   No details available.
-- **content** : `list&lt;OA\MediaType&gt;|null`
+- **content** : `OA\MediaType|list&lt;OA\MediaType&gt;|null`
   No details available.
 
 #### Reference
@@ -1127,7 +1151,7 @@ A parameter passed via an HTTP header.
   No details available.
 - **examples** : `list&lt;OA\Example&gt;|null`
   No details available.
-- **content** : `list&lt;OA\MediaType&gt;|null`
+- **content** : `OA\MediaType|list&lt;OA\MediaType&gt;|null`
   No details available.
 
 #### Reference
@@ -1158,7 +1182,7 @@ A parameter passed via the URL path (always required).
   No details available.
 - **ref** : `string|null`
   No details available.
-- **style** : `string|null`
+- **style** : `OpenApi\Spec\ParameterStyle|string|null`
   No details available.
 - **explode** : `bool|null`
   No details available.
@@ -1168,7 +1192,7 @@ A parameter passed via the URL path (always required).
   No details available.
 - **examples** : `list&lt;OA\Example&gt;|null`
   No details available.
-- **content** : `list&lt;OA\MediaType&gt;|null`
+- **content** : `OA\MediaType|list&lt;OA\MediaType&gt;|null`
   No details available.
 
 #### Reference
@@ -1203,7 +1227,7 @@ A parameter passed via the URL query string.
   No details available.
 - **ref** : `string|null`
   No details available.
-- **style** : `string|null`
+- **style** : `OpenApi\Spec\ParameterStyle|string|null`
   No details available.
 - **explode** : `bool|null`
   No details available.
@@ -1215,7 +1239,7 @@ A parameter passed via the URL query string.
   No details available.
 - **examples** : `list&lt;OA\Example&gt;|null`
   No details available.
-- **content** : `list&lt;OA\MediaType&gt;|null`
+- **content** : `OA\MediaType|list&lt;OA\MediaType&gt;|null`
   No details available.
 
 #### Reference
@@ -1303,7 +1327,7 @@ Defines a single property within a Schema object.
 
 #### Allowed in
 ---
-<a href="#schema">Schema</a>
+<a href="#schema">Schema</a>, <a href="#schema-items">Schema\Items</a>
 
 #### Parameters
 ---
@@ -1338,7 +1362,7 @@ Describes a single request body.
   Whether the request body is required
 - **ref** : `string|null`
   A JSON Reference to a reusable request body
-- **content** : `list&lt;MediaType&gt;|null`
+- **content** : `MediaType|list&lt;MediaType&gt;|null`
   The content of the request body
 
 #### Reference
@@ -1367,7 +1391,7 @@ Describes a single response from an API operation.
   A JSON Reference to a reusable response
 - **headers** : `list&lt;Header&gt;|null`
   Headers sent with the response
-- **content** : `list&lt;MediaType&gt;|null`
+- **content** : `MediaType|list&lt;MediaType&gt;|null`
   Possible response payloads
 - **links** : `list&lt;Link&gt;|null`
   Design-time links for the response
@@ -1405,7 +1429,7 @@ Inline — used within parameters, responses, or other schemas:
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#schema">Schema</a>
+<a href="#components">Components</a>, <a href="#schema">Schema</a>, <a href="#schema-items">Schema\Items</a>
 
 #### Nested elements
 ---
@@ -1527,6 +1551,153 @@ Inline — used within parameters, responses, or other schemas:
 - [Schema Object](https://spec.openapis.org/oas/v3.1.1.html#schema-object) ↗
 - [JSON Schema](https://json-schema.org/draft/2020-12/json-schema-validation) ↗
 
+### [Schema\Items](https://github.com/zircote/swagger-php/tree/master/src/Spec/Schema/Items.php)
+
+Shortcut for `OA\Schema` with type `array` and `items`.
+
+Allows to shorten this:
+
+  #[OA\Schema]
+  class Pet {
+      #[OA\Property]
+      #[OA\Schema(type: 'array', items: new OA\Schema(ref: MyModel::class))]
+      public array $names;
+  }
+
+to this:
+
+  #[OA\Schema]
+  class Pet {
+      #[OA\Property]
+      #[OA\Schema\Items(ref: MyModel::class)]
+      public array $names;
+  }
+
+The `Shortcuts` augmenter wraps this into `OA\Schema(type: 'array', items: ...)` automatically.
+
+#### Allowed in
+---
+<a href="#property">Property</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>
+
+#### Nested elements
+---
+<a href="#property">Property</a>, <a href="#schema">Schema</a>
+
+#### Parameters
+---
+- **schema** : `string|null`
+  Reusable schema identifier (component key)
+- **title** : `string|null`
+  A title for the schema
+- **description** : `string|null`
+  A description of the schema (CommonMark syntax)
+- **ref** : `string|null`
+  A JSON Reference to a reusable schema
+- **type** : `string|list&lt;string&gt;|null`
+  The value type(s) (string, number, integer, boolean, array, object, null)
+- **format** : `string|null`
+  Further refines the type (e.g. int32, int64, float, double, date-time, email)
+- **nullable** : `bool|null`
+  Whether the value can be null (OAS 3.0 only; use type array in 3.1+)
+- **minLength** : `int|null`
+  Minimum string length
+- **maxLength** : `int|null`
+  Maximum string length
+- **pattern** : `string|null`
+  Regular expression pattern the string must match
+- **contentMediaType** : `string|null`
+  The media type of string content encoding
+- **contentEncoding** : `string|null`
+  The encoding used for string content (e.g. base64)
+- **minimum** : `int|float|null`
+  Minimum numeric value (inclusive)
+- **maximum** : `int|float|null`
+  Maximum numeric value (inclusive)
+- **exclusiveMinimum** : `int|float|bool|null`
+  Exclusive minimum value
+- **exclusiveMaximum** : `int|float|bool|null`
+  Exclusive maximum value
+- **multipleOf** : `int|float|null`
+  The value must be a multiple of this number
+- **items** : `Schema|string|null`
+  Schema for array items
+- **minItems** : `int|null`
+  Minimum number of array items
+- **maxItems** : `int|null`
+  Maximum number of array items
+- **uniqueItems** : `bool|null`
+  Whether array items must be unique
+- **prefixItems** : `list&lt;Schema&gt;|null`
+  Schemas for positional array items (tuple validation)
+- **contains** : `Schema|bool|null`
+  Schema that at least one array item must match
+- **minContains** : `int|null`
+  Minimum number of items matching contains
+- **maxContains** : `int|null`
+  Maximum number of items matching contains
+- **unevaluatedItems** : `Schema|bool|null`
+  Schema for items not covered by other keywords
+- **properties** : `list&lt;Property|Schema&gt;|null`
+  Object property definitions
+- **required** : `list&lt;string&gt;|null`
+  List of required property names
+- **additionalProperties** : `Schema|bool|null`
+  Schema or boolean for additional properties
+- **patternProperties** : `array&lt;string,Schema&gt;|null`
+  Schemas for properties matching regex patterns
+- **minProperties** : `int|null`
+  Minimum number of properties
+- **maxProperties** : `int|null`
+  Maximum number of properties
+- **unevaluatedProperties** : `Schema|bool|null`
+  Schema for properties not covered by other keywords
+- **propertyNames** : `Schema|null`
+  Schema that property names must validate against
+- **dependentRequired** : `array&lt;string,list&lt;string&gt;&gt;|null`
+  Property-level required dependencies
+- **dependentSchemas** : `array&lt;string,Schema&gt;|null`
+  Property-level schema dependencies
+- **allOf** : `list&lt;Schema&gt;|null`
+  All schemas must match (AND composition)
+- **anyOf** : `list&lt;Schema&gt;|null`
+  At least one schema must match (OR composition)
+- **oneOf** : `list&lt;Schema&gt;|null`
+  Exactly one schema must match (XOR composition)
+- **not** : `Schema|null`
+  The schema must NOT match
+- **if** : `Schema|null`
+  Conditional schema (if-then-else)
+- **then** : `Schema|null`
+  Applied when 'if' succeeds
+- **else** : `Schema|null`
+  Applied when 'if' fails
+- **enum** : `list&lt;string|int|float|bool|\UnitEnum|class-string&lt;\UnitEnum&gt;|null&gt;|null`
+  Allowed values
+- **const** : `mixed`
+  A single allowed value
+- **example** : `mixed`
+  An example value
+- **examples** : `list&lt;mixed&gt;|null`
+  A list of example values
+- **deprecated** : `bool|null`
+  Whether the schema is deprecated
+- **readOnly** : `bool|null`
+  Whether the value is read-only
+- **writeOnly** : `bool|null`
+  Whether the value is write-only
+- **default** : `mixed`
+  The default value
+- **discriminator** : `Discriminator|null`
+  Discriminator for polymorphism
+- **externalDocs** : `ExternalDocumentation|null`
+  Additional external documentation
+- **xml** : `Xml|null`
+  XML representation metadata
+
+#### Reference
+---
+- [Schema Object](https://spec.openapis.org/oas/v3.1.1.html#schema-object) ↗
+
 ### [Security\Requirement](https://github.com/zircote/swagger-php/tree/master/src/Spec/Security/Requirement.php)
 
 A security requirement declaring which security schemes apply.
@@ -1574,13 +1745,13 @@ Typed subtypes are available for each security scheme type:
 ---
 - **securityScheme** : `string|null`
   Reusable security scheme identifier (component key)
-- **type** : `string|null`
+- **type** : `string|OA\SchemeType|null`
   The type of the security scheme (apiKey, http, mutualTLS, oauth2, openIdConnect)
 - **description** : `string|null`
   A description of the security scheme (CommonMark syntax)
 - **name** : `string|null`
   The name of the header, query, or cookie parameter (apiKey)
-- **in** : `string|null`
+- **in** : `string|OA\SchemeIn|null`
   The location of the API key (query, header, cookie)
 - **scheme** : `string|null`
   The HTTP authorization scheme (http)
@@ -1613,7 +1784,7 @@ An API key security scheme (header, query, or cookie).
   No details available.
 - **name** : `string|null`
   No details available.
-- **in** : `string|null`
+- **in** : `OpenApi\Spec\SchemeIn|string|null`
   No details available.
 
 #### Reference

@@ -60,9 +60,9 @@ Augmenters form a grouped pipeline that enriches the Specification in three orde
 
 | Phase | Purpose | Examples |
 |---|---|---|
-| **Resolve** | Infer data from PHP reflection and cross-bucket relationships | `Types`, `Refs`, `PathItems` |
+| **Resolve** | Infer data from PHP reflection and cross-bucket relationships | `Inheritance`, `Names`, `Enums`, `PathItems`, `Types`, `Refs`, `Shortcuts` |
 | **Reduce** | Filter or remove entries | `PathFilter`, `Cleanup` |
-| **Augment** | Add derived metadata | `Docblocks`, `OperationIds`, `Tags`, `Inheritance`, `Names` |
+| **Augment** | Add derived metadata | `MediaTypes`, `Docblocks`, `OperationIds`, `Tags`, `EnumDescriptions` |
 
 Each augmenter implements `PipeInterface` and receives the full Specification. Augmenters within a phase run in registration order.
 
@@ -89,30 +89,36 @@ $builder->withAugmenters(function (\OpenApi\Utils\Pipeline $pipeline) {
 A custom augmenter implements `PipeInterface`:
 
 ```php
-use OpenApi\Augmenter\PipeInterface;
-use OpenApi\Spec\Specification;
+use OpenApi\Utils\PipeInterface;
+use OpenApi\Specification;
+use OpenApi\Spec as OA;
 
 class CustomAugmenter implements PipeInterface
 {
-    public function pipe(Specification $specification): Specification
+    public function group(): string|\BackedEnum
     {
-        foreach ($specification->schemas as $schema) {
+        return \OpenApi\Augmenter\Group::Augment;
+    }
+
+    public function __invoke(mixed $payload): mixed
+    {
+        foreach ($payload->schemas as $schema) {
             // enrich schemas...
         }
 
         // or
 
         // the walker will walk all attributes (including nested) of the specification
-        $specification->getWalker()->visit(OA\Property::class, function (OA\Property $property) {
+        $payload->getWalker()->visit(OA\Property::class, function (OA\Property $property) {
             // ...
         });
 
         // or walk all attributes with $ref set
-        $specification->getWalker()->eachRef(funtion () {
+        $payload->getWalker()->eachRef(function () {
             // $attribute->ref = ...
         });
 
-        return $specification;
+        return $payload;
     }
 }
 ```
@@ -123,9 +129,9 @@ Each OpenAPI version has its own compiler that handles version-specific output d
 
 | Compiler | Version | Key differences                                                   |
 |---|---|-------------------------------------------------------------------|
-| `Compiler30` | 3.0.x | `nullable` as property, `exclusiveMinimum` as boolean             |
-| `Compiler31` | 3.1.x | `nullable` via type array, `exclusiveMinimum` as number, webhooks |
-| `Compiler32` | 3.2.x | Extends 3.1 (currently without additional features)               |
+| `OpenApi30Compiler` | 3.0.x | `nullable` as property, `exclusiveMinimum` as boolean             |
+| `OpenApi31Compiler` | 3.1.x | `nullable` via type array, `exclusiveMinimum` as number, webhooks |
+| `OpenApi32Compiler` | 3.2.x | Extends 3.1 (currently without additional features)               |
 
 The compiler transforms a Specification into a plain PHP array representing the OpenAPI document. Version selection is automatic based on `Builder::setVersion()` or the `#[OA\OpenApi(version: '...')]` attribute.
 

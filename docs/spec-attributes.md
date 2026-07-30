@@ -16,7 +16,7 @@ The spec attributes pipeline introduces a clean separation of concerns with expl
 
 ### Additional augmenter pipes
 
-- **`EnumDescription`** — generate human-readable descriptions from PHP enum cases (ported from openapi-extras). Ships in the default pipeline but disabled by default; enable via `$builder->getAugmenters()->get(EnumDescription::class)->setEnabled(true)`.
+- **`EnumDescriptions`** — generate human-readable descriptions from PHP enum cases (ported from openapi-extras). Ships in the default pipeline but disabled by default; enable via `$builder->getAugmenters()->get(EnumDescriptions::class)->setEnabled(true)`.
 
 ### Shipping
 

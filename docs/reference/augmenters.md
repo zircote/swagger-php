@@ -85,6 +85,7 @@ Resolves shortcut attributes.
 Handles:
 * `OA\MediaType\Json`
 * `OA\MediaType\Xml`
+* `OA\Schema\Items`
 
 ### [PathItems](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/PathItems.php)
 
