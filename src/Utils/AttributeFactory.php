@@ -337,7 +337,10 @@ class AttributeFactory
     protected function readAttributes(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
     {
         $attributes = [];
+
         foreach ($this->translators as $translator) {
+            $current = [];
+
             foreach ($translator->getAttributes($reflector) as $attribute) {
                 try {
                     $instance = $attribute->newInstance();
@@ -353,10 +356,10 @@ class AttributeFactory
                     $instance->setReflector($reflector);
                 }
 
-                $attributes[] = $instance;
+                $current[] = $instance;
             }
 
-            $attributes = $translator->translate($attributes);
+            $attributes = $translator->translate($attributes, $current, $reflector);
         }
 
         return array_values(array_filter($attributes, static fn (object $item): bool => $item instanceof AttributeInterface));
