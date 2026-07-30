@@ -22,8 +22,8 @@ class DefaultAttributeTranslator implements AttributeTranslatorInterface
         );
     }
 
-    public function translate(array $attributes, \ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
+    public function translate(array $attributes, array $created, \ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
     {
-        return $attributes;
+        return [...$attributes, ...$created];
     }
 }
