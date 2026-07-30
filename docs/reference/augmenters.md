@@ -78,6 +78,14 @@ Rules for name vs. value:
 - **enums.enumNames** : `string` · default: `null`  
   If set, stores enum case names in a vendor extension with this key (e.g. <code>x-enum-varnames</code>).
 
+### [Shortcuts](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Shortcuts.php)
+
+Resolves shortcut attributes.
+
+Handles:
+* `OA\MediaType\Json`
+* `OA\MediaType\Xml`
+
 ### [PathItems](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/PathItems.php)
 
 Resolves PathItem prefixes, clones metadata to operations, and sets path-level output.

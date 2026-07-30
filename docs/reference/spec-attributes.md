@@ -101,7 +101,7 @@ Describes the encoding for a single property in a media type.
 
 #### Allowed in
 ---
-<a href="#mediatype">MediaType</a>
+<a href="#mediatype">MediaType</a>, <a href="#mediatype-json">MediaType\Json</a>, <a href="#mediatype-xml">MediaType\Xml</a>
 
 #### Parameters
 ---
@@ -128,7 +128,7 @@ Describes an example value for a parameter, media type, or schema.
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>, <a href="#parameter">Parameter</a>, <a href="#parameter-cookie">Parameter\Cookie</a>, <a href="#parameter-header">Parameter\Header</a>, <a href="#parameter-path">Parameter\Path</a>, <a href="#parameter-query">Parameter\Query</a>
+<a href="#components">Components</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>, <a href="#mediatype-json">MediaType\Json</a>, <a href="#mediatype-xml">MediaType\Xml</a>, <a href="#parameter">Parameter</a>, <a href="#parameter-cookie">Parameter\Cookie</a>, <a href="#parameter-header">Parameter\Header</a>, <a href="#parameter-path">Parameter\Path</a>, <a href="#parameter-query">Parameter\Query</a>
 
 #### Parameters
 ---
@@ -452,6 +452,90 @@ Describes the content payload for a specific media type.
 - **examples** : `list&lt;Example&gt;|null`  
   Examples of the media type content
 - **encoding** : `list&lt;Encoding&gt;|array&lt;string,Encoding&gt;|null`  
+  Encoding information for specific properties
+
+#### Reference
+---
+- [Media Type Object](https://spec.openapis.org/oas/v3.1.1.html#media-type-object) ↗
+
+### [MediaType\Json](https://github.com/zircote/swagger-php/tree/master/src/Spec/MediaType/Json.php)
+
+Describes the content payload for `application/json`.
+
+A shortcut version of `OA\MediaType` with some of the more common `OA\Schema` properties added.
+* `mediaType` is set to `application/json` by default.
+* `ref`, `type`, `items`, `properties` and `required` may be used and will be expanded into a nested `OA\Schema` automatically.
+* If `schema` is explicitly set, the custom `OA\Schema` properties will be ignored.
+
+#### Allowed in
+---
+<a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#parameter">Parameter</a>
+
+#### Nested elements
+---
+<a href="#encoding">Encoding</a>, <a href="#example">Example</a>
+
+#### Parameters
+---
+- **ref** : `string|null`  
+  A JSON Reference to a reusable schema
+- **type** : `string|list&lt;string&gt;|null`  
+  The value type(s) (string, number, integer, boolean, array, object, null)
+- **items** : `Schema|string|null`  
+  Schema for array items
+- **properties** : `list&lt;Property|Schema&gt;|null`  
+  Object property definitions
+- **required** : `list&lt;string&gt;|null`  
+  List of required property names
+- **schema** : `Schema|null`  
+  The schema defining the content
+- **example** : `mixed`  
+  Example of the media type content
+- **examples** : `list&lt;OA\Example&gt;|null`  
+  Examples of the media type content
+- **encoding** : `list&lt;OA\Encoding&gt;|array&lt;string,OA\Encoding&gt;|null`  
+  Encoding information for specific properties
+
+#### Reference
+---
+- [Media Type Object](https://spec.openapis.org/oas/v3.1.1.html#media-type-object) ↗
+
+### [MediaType\Xml](https://github.com/zircote/swagger-php/tree/master/src/Spec/MediaType/Xml.php)
+
+Describes the content payload for `application/xml`.
+
+A shortcut version of `OA\MediaType` with some of the more common `OA\Schema` properties added.
+* `mediaType` is set to `application/xml` by default.
+* `ref`, `type`, `items`, `properties` and `required` may be used and will be expanded into a nested `OA\Schema` automatically.
+* If `schema` is explicitly set, the custom `OA\Schema` properties will be ignored.
+
+#### Allowed in
+---
+<a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#parameter">Parameter</a>
+
+#### Nested elements
+---
+<a href="#encoding">Encoding</a>, <a href="#example">Example</a>
+
+#### Parameters
+---
+- **ref** : `string|null`  
+  A JSON Reference to a reusable schema
+- **type** : `string|list&lt;string&gt;|null`  
+  The value type(s) (string, number, integer, boolean, array, object, null)
+- **items** : `Schema|string|null`  
+  Schema for array items
+- **properties** : `list&lt;Property|Schema&gt;|null`  
+  Object property definitions
+- **required** : `list&lt;string&gt;|null`  
+  List of required property names
+- **schema** : `Schema|null`  
+  The schema defining the content
+- **example** : `mixed`  
+  Example of the media type content
+- **examples** : `list&lt;OA\Example&gt;|null`  
+  Examples of the media type content
+- **encoding** : `list&lt;OA\Encoding&gt;|array&lt;string,OA\Encoding&gt;|null`  
   Encoding information for specific properties
 
 #### Reference

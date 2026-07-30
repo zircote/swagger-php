@@ -193,7 +193,9 @@ OA\AbstractAttribute
 ├── OA\Response
 ├── OA\Header
 ├── OA\MediaType
-│   └── OA\Encoding
+│   ├── OA\Encoding
+│   ├── OA\MediaType\Json
+│   └── OA\MediaType\Xml
 ├── OA\Link
 ├── OA\Example
 ├── OA\Discriminator
@@ -220,30 +222,30 @@ Typed subclasses (e.g. `Operation\Get`, `Parameter\Path`) pre-fill fields that t
 
 How each classic processor maps to the new pipeline:
 
-| Classic Processor | Spec Equivalent | Stage |
-|---|---|---|
-| ExpandClasses | `Inheritance` + Assembler | augment + assembly |
-| ExpandTraits | `Inheritance` + Assembler | augment + assembly |
-| ExpandInterfaces | `Inheritance` + Assembler | augment + assembly |
-| ExpandEnums | `Enums` | augment |
-| MergeIntoOpenApi | Assembler | assembly |
-| MergeIntoComponents | Compiler | compile |
-| MergeJsonContent | N/A (attribute eliminated) | — |
-| MergeXmlContent | N/A (attribute eliminated) | — |
-| BuildPaths | Compiler | compile |
+| Classic Processor | Spec Equivalent                          | Stage |
+|---|------------------------------------------|---|
+| ExpandClasses | `Inheritance` + Assembler                | augment + assembly |
+| ExpandTraits | `Inheritance` + Assembler                | augment + assembly |
+| ExpandInterfaces | `Inheritance` + Assembler                | augment + assembly |
+| ExpandEnums | `Enums`                                  | augment |
+| MergeIntoOpenApi | `Assembler`                                | assembly |
+| MergeIntoComponents | Compiler                                 | compile |
+| MergeJsonContent | `Shortcuts`                                | resolve |
+| MergeXmlContent | `Shortcuts`               | resolve |
+| BuildPaths | Compiler                                 | compile |
 | AugmentSchemas | `Names` + `Types` + Assembler + Compiler | mixed |
-| AugmentProperties | `Types` | resolve |
-| AugmentParameters | `Types` | resolve |
-| AugmentItems | `Types` | resolve |
-| AugmentRequestBody | `Types` | resolve |
-| AugmentRefs | `Refs` | resolve |
-| AugmentDiscriminators | `Refs` | resolve |
-| AugmentTags | `Tags` | augment |
-| AugmentMediaType | `MediaTypes` | augment |
-| DocBlockDescriptions | `Docblocks` | augment |
-| OperationId | `OperationIds` | augment |
-| CleanUnmerged | Assembler (orphan validation) | assembly |
-| CleanUnusedComponents | `Cleanup` | reduce |
-| PathFilter | `PathFilter` | reduce |
+| AugmentProperties | `Types`                                  | resolve |
+| AugmentParameters | `Types`                                  | resolve |
+| AugmentItems | `Types`                                  | resolve |
+| AugmentRequestBody | `Types`                                  | resolve |
+| AugmentRefs | `Refs`                                   | resolve |
+| AugmentDiscriminators | `Refs`                                   | resolve |
+| AugmentTags | `Tags`                                   | augment |
+| AugmentMediaType | `MediaTypes`                             | augment |
+| DocBlockDescriptions | `Docblocks`                              | augment |
+| OperationId | `OperationIds`                           | augment |
+| CleanUnmerged | Assembler (orphan validation)            | assembly |
+| CleanUnusedComponents | `Cleanup`                                | reduce |
+| PathFilter | `PathFilter`                             | reduce |
 
 The key architectural difference: classic processors operate on a mutable annotation tree in a single chain. Spec augmenters operate on an immutable Specification with typed buckets, grouped into explicit phases.
