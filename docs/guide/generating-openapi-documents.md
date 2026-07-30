@@ -86,13 +86,14 @@ The result object provides access to the generated spec in multiple formats, the
 files, and any validation warnings or errors collected during generation.
 
 ```php
-$result->toYaml();      // YAML string
-$result->toJson();      // JSON string
-$result->toArray();     // PHP array
-$result->files();       // list of scanned files
-$result->warnings();    // validation warnings
-$result->errors();      // validation errors
-$result->isValid();     // true if spec was generated
+$result->toYaml();        // YAML string
+$result->toJson();        // JSON string
+$result->toArray();       // PHP array
+$result->files();         // list of scanned files
+$result->warnings();      // validation warnings
+$result->errors();        // validation errors
+$result->isValid();       // true if spec was generated
+$result->specification(); // the final `Specification` instance
 ```
 
 For advanced Generator configuration (custom analysers, processors, aliases, etc.), use the
