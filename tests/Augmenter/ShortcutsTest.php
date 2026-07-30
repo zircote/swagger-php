@@ -22,6 +22,7 @@ final class ShortcutsTest extends TestCase
 
         (new Augmenter\Shortcuts())($spec);
 
+        /** @var OA\MediaType\Json $json */
         $json = $spec->operations[0]->requestBody->content[0];
         $this->assertSame('application/json', $json->mediaType);
         $this->assertInstanceOf(OA\Schema::class, $json->schema);
