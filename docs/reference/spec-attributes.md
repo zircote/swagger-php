@@ -504,12 +504,10 @@ A shortcut version of `OA\MediaType` with some of the more common `OA\Schema` pr
 
 Describes the content payload for `application/xml`.
 
-Describes the content payload for `application/xml`.
-*
-* A shortcut version of `OA\MediaType` with some of the more common `OA\Schema` properties added.
-* * `mediaType` is set to `application/xml` by default.
-* * `ref`, `type`, `items`, `properties` and `required` may be used and will be expanded into a nested `OA\Schema` automatically.
-* * If `schema` is explicitly set, the custom `OA\Schema` properties will be ignored.
+A shortcut version of `OA\MediaType` with some of the more common `OA\Schema` properties added.
+* `mediaType` is set to `application/xml` by default.
+* `ref`, `type`, `items`, `properties` and `required` may be used and will be expanded into a nested `OA\Schema` automatically.
+* If `schema` is explicitly set, the custom `OA\Schema` properties will be ignored.
 
 #### Allowed in
 ---

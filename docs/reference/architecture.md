@@ -193,7 +193,7 @@ OA\AbstractAttribute
 ├── OA\Response
 ├── OA\Header
 ├── OA\MediaType
-│   └── OA\Encoding
+│   ├── OA\Encoding
 │   ├── OA\MediaType\Json
 │   └── OA\MediaType\Xml
 ├── OA\Link

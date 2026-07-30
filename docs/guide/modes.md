@@ -104,7 +104,7 @@ The three modes produce equivalent OpenAPI output for the same logical API. Howe
 | Behavior | Classic | Hybrid                                               | Spec                    |
 |---|---|------------------------------------------------------|-------------------------|
 | Annotation support (`/** @OA\... */`) | Yes | Yes                                                  | No                      |
-| `MergeJsonContent` / `MergeXmlContent` | Yes | Yes                                                  | Yes `OA\MediaType\Json` |
+| `MergeJsonContent` / `MergeXmlContent` | Yes | Yes                                                  | Yes (via `OA\MediaType\Json`) |
 | Processor chain (`withGenerator()`) | Yes | Scanning only (`MergeJsonContent`/`MergeXmlContent`) | No                      |
 | Augmenter pipeline (`withAugmenters()`) | No | Yes                                                  | Yes                     |
 | Version-aware compilation | No (single serializer) | Yes                                                  | Yes                     |

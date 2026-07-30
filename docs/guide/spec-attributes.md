@@ -229,7 +229,7 @@ This produces paths `/api/v1/users/` and `/api/v1/users/{id}`, both tagged with 
 
 `OA\MediaType\Json` and `OA\MediaType\Xml` are the corresponding versions of the classic `OA\JsonContent` and `OA\XmlContent`, respectively.
 
-They do work pretty much the same, however since they are not inherting from `OA\Schema`, they only support a limited (most common) set of schema attributes.
+They do work pretty much the same, however since they are not inheriting from `OA\Schema`, they only support a limited (most common) set of schema attributes.
 Still useful even when nesting `OA\Schema` as the media type is prefilled either way.
 
 **If a nested `OA\Schema` is set, the custom attributes are ignored.**
