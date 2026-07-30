@@ -86,13 +86,14 @@ The result object provides access to the generated spec in multiple formats, the
 files, and any validation warnings or errors collected during generation.
 
 ```php
-$result->toYaml();      // YAML string
-$result->toJson();      // JSON string
-$result->toArray();     // PHP array
-$result->files();       // list of scanned files
-$result->warnings();    // validation warnings
-$result->errors();      // validation errors
-$result->isValid();     // true if spec was generated
+$result->toYaml();        // YAML string
+$result->toJson();        // JSON string
+$result->toArray();       // PHP array
+$result->files();         // list of scanned files
+$result->warnings();      // validation warnings
+$result->errors();        // validation errors
+$result->isValid();       // true if spec was generated
+$result->specification(); // the final `Specification` instance
 ```
 
 For advanced Generator configuration (custom analysers, processors, aliases, etc.), use the
@@ -129,6 +130,23 @@ echo $result->toYaml();
 ```
 
 Spec mode uses attributes from the `OpenApi\Spec` namespace. See [Using Spec Attributes](/guide/spec-attributes) for details on the attribute API and [Processing Modes](/guide/modes) for a comparison of all modes.
+
+In spec and hybrid mode, you can also pass `\ReflectionClass` instances directly instead of file paths:
+
+```php
+<?php
+require('vendor/autoload.php');
+
+$result = (new \OpenApi\Builder())
+    ->setMode(\OpenApi\Builder\Mode::SPEC)
+    ->addSource([
+        new \ReflectionClass(App\Controllers\PetController::class),
+        new \ReflectionClass(App\Models\Pet::class),
+    ])
+    ->build();
+
+echo $result->toYaml();
+```
 
 ### Using the Generator directly
 

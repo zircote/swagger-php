@@ -51,7 +51,7 @@ final class SourceScannerTest extends OpenApiTestCase
     public function testScanNestedIterables(): void
     {
         $sourceDir = self::examplePath('petstore/annotations');
-        $nested = [[new SourceFinder($sourceDir)]];
+        $nested = [new SourceFinder($sourceDir)];
 
         $scanner = new SourceScanner($this->getTrackingLogger());
         $files = $scanner->scan($nested);
@@ -71,5 +71,30 @@ final class SourceScannerTest extends OpenApiTestCase
 
         $this->assertCount(1, $files);
         $this->assertFileExists($files[0]);
+    }
+
+    public function testScanReflectors(): void
+    {
+        $reflector = new \ReflectionClass(self::class);
+
+        $scanner = new SourceScanner($this->getTrackingLogger());
+        $files = $scanner->scan([$reflector]);
+
+        $this->assertEmpty($files);
+        $this->assertCount(1, $scanner->getReflectors());
+        $this->assertSame($reflector, $scanner->getReflectors()[0]);
+    }
+
+    public function testScanMixed(): void
+    {
+        $sourceDir = self::examplePath('petstore/annotations');
+        $reflector = new \ReflectionClass(self::class);
+
+        $scanner = new SourceScanner($this->getTrackingLogger());
+        $files = $scanner->scan([$sourceDir, $reflector]);
+
+        $this->assertNotEmpty($files);
+        $this->assertCount(1, $scanner->getReflectors());
+        $this->assertSame($reflector, $scanner->getReflectors()[0]);
     }
 }

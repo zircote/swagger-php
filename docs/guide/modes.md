@@ -93,11 +93,8 @@ Hybrid mode is the recommended transition path for existing projects that want t
 use OpenApi\Builder;
 use OpenApi\Builder\Mode;
 
-// String value
-$builder->setMode('spec');
-
-// Or enum
 $builder->setMode(Mode::SPEC);
+// or: $builder->setMode('spec');
 ```
 
 ## Behavioral differences
@@ -116,11 +113,11 @@ The three modes produce equivalent OpenAPI output for the same logical API. Howe
 
 The recommended migration path is:
 
-1. **Classic → Hybrid** — change `setMode('hybrid')` and verify output is unchanged. No code changes needed. This gives you access to the augmenter pipeline.
+1. **Classic → Hybrid** — change `setMode(Mode::HYBRID)` and verify output is unchanged. No code changes needed. This gives you access to the augmenter pipeline.
 
 2. **Hybrid → Spec** — when starting new code, use `OpenApi\Spec` attributes. Existing `OpenApi\Attributes` code continues to work via hybrid mode.
 
-3. **Full Spec** — once all code uses `OpenApi\Spec` attributes, switch to `setMode('spec')` for the cleanest pipeline.
+3. **Full Spec** — once all code uses `OpenApi\Spec` attributes, switch to `setMode(Mode::SPEC)` for the cleanest pipeline.
 
 ::: tip Version timeline
 - **v6** — spec/hybrid ship as opt-in beta. Classic remains default.

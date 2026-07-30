@@ -6,13 +6,22 @@
 
 namespace OpenApi\Utils;
 
+use OpenApi\Builder;
 use Psr\Log\LoggerInterface;
 
 /**
- * Resolves mixed source inputs into a flat list of resolved file paths.
+ * Resolves mixed source inputs into file paths and reflectors.
+ *
+ * @phpstan-import-type BuilderSource from Builder
  */
 class SourceScanner
 {
+    /** @var list<string> */
+    protected array $files = [];
+
+    /** @var list<\Reflector> */
+    protected array $reflectors = [];
+
     public function __construct(protected LoggerInterface $logger)
     {
     }
@@ -20,23 +29,46 @@ class SourceScanner
     /**
      * Scan sources and return resolved file paths.
      *
-     * @param iterable $sources file/directory paths, \SplFileInfo, \Symfony\Component\Finder\Finder instances, or nested iterables
+     * @param list<BuilderSource|iterable<BuilderSource>> $sources
      *
-     * @return string[] resolved absolute file paths
+     * @return list<string> resolved absolute file paths
      */
     public function scan(iterable $sources): array
     {
-        $files = [];
-        $this->collect($sources, $files);
+        $this->files = [];
+        $this->reflectors = [];
+        $this->collect($sources);
 
-        return $files;
+        return $this->files;
     }
 
-    protected function collect(iterable $sources, array &$files): void
+    /**
+     * Return files collected during the last scan().
+     *
+     * @return list<string>
+     */
+    public function getFiles(): array
+    {
+        return $this->files;
+    }
+
+    /**
+     * Return reflectors collected during the last scan().
+     *
+     * @return list<\Reflector>
+     */
+    public function getReflectors(): array
+    {
+        return $this->reflectors;
+    }
+
+    protected function collect(iterable $sources): void
     {
         foreach ($sources as $source) {
-            if (is_iterable($source)) {
-                $this->collect($source, $files);
+            if ($source instanceof \Reflector) {
+                $this->reflectors[] = $source;
+            } elseif (is_iterable($source)) {
+                $this->collect($source);
             } else {
                 $resolvedSource = $source instanceof \SplFileInfo ? $source->getPathname() : realpath($source);
                 if (!$resolvedSource) {
@@ -44,9 +76,9 @@ class SourceScanner
                     continue;
                 }
                 if (is_dir($resolvedSource)) {
-                    $this->collect(new SourceFinder($resolvedSource), $files);
+                    $this->collect(new SourceFinder($resolvedSource));
                 } else {
-                    $files[] = $resolvedSource;
+                    $this->files[] = $resolvedSource;
                 }
             }
         }

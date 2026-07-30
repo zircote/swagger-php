@@ -9,6 +9,7 @@ namespace OpenApi\Tests;
 use OpenApi\Augmenter\OperationIds;
 use OpenApi\Builder;
 use OpenApi\Builder\Mode;
+use OpenApi\Examples\Specs\Webhooks\Spec as WebhooksSpec;
 use OpenApi\Generator;
 use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\Utils\SourceFinder;
@@ -108,6 +109,27 @@ final class BuilderTest extends OpenApiTestCase
         foreach ($result->files() as $file) {
             $this->assertFileExists($file);
         }
+    }
+
+    public function testBuildReflectors(): void
+    {
+        $this->registerExampleClassloader('webhooks', 'spec');
+
+        $reflectorResult = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->addSource([
+                new \ReflectionClass(WebhooksSpec\NewPetWebhook::class),
+                new \ReflectionClass(WebhooksSpec\OpenApiSpec::class),
+                new \ReflectionClass(WebhooksSpec\Pet::class),
+            ])
+            ->build();
+
+        $fileResult = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->addSource(new SourceFinder(self::examplePath('webhooks/spec')))
+            ->build();
+
+        $this->assertSpecEquals($fileResult->toArray(), $reflectorResult->toArray());
     }
 
     public function testBuildEmptySources(): void

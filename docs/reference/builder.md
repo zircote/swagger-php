@@ -17,14 +17,17 @@ echo $result->toYaml();
 
 ## Processing modes
 
-The Builder supports three processing modes via `setMode()`:
+The Builder supports three processing modes via `setMode(string|Mode $mode)`:
 
 ### Classic (default)
 
 Scans source files for annotations/attributes and assembles the OpenAPI document via the Generator pipeline. This is the stable, production-ready mode.
 
 ```php
-$builder->setMode('classic');
+use OpenApi\Builder\Mode;
+
+$builder->setMode(Mode::CLASSIC);
+// or: $builder->setMode('classic');
 ```
 
 ### Spec (beta) {#mode-spec}
@@ -32,7 +35,8 @@ $builder->setMode('classic');
 Runs the new spec attributes pipeline end-to-end: Assembler → Augmenters → Compiler. Uses pure PHP 8.1+ attributes from the `OpenApi\Spec` namespace with typed DTOs and version-aware compilers.
 
 ```php
-$builder->setMode('spec');
+$builder->setMode(Mode::SPEC);
+// or: $builder->setMode('spec');
 ```
 
 ### Hybrid (beta) {#mode-hybrid}
@@ -40,7 +44,8 @@ $builder->setMode('spec');
 Uses the classic Generator for scanning, then bridges the result into the spec pipeline's augmenters and compilers. A transition path for existing projects that want access to the new augmenter pipeline without rewriting all annotations.
 
 ```php
-$builder->setMode('hybrid');
+$builder->setMode(Mode::HYBRID);
+// or: $builder->setMode('hybrid');
 ```
 
 ::: tip Choosing a mode
@@ -61,6 +66,27 @@ $builder->setSources(['src/Controllers', 'src/Models']);
 ```
 
 Sources can be directory paths, file paths, `\SplFileInfo`, `\Symfony\Component\Finder\Finder` instances, or nested iterables of these.
+
+#### Reflector sources (spec/hybrid mode)
+
+In spec and hybrid mode, you can pass `\Reflector` instances (e.g. `\ReflectionClass`) directly instead of file paths. This is useful when you already have reflection objects available or want to build a spec from a specific set of classes without file scanning:
+
+```php
+use OpenApi\Builder;
+use OpenApi\Builder\Mode;
+
+$result = (new Builder())
+    ->setMode(Mode::SPEC)
+    ->addSource([
+        new \ReflectionClass(App\Controllers\PetController::class),
+        new \ReflectionClass(App\Models\Pet::class),
+    ])
+    ->build();
+```
+
+::: warning
+Reflector sources are not supported in classic mode — they require the spec or hybrid pipeline.
+:::
 
 ### Version
 
@@ -147,14 +173,15 @@ The `build()` method returns a `\OpenApi\Builder\Result` instance:
 ```php
 $result = $builder->build();
 
-$result->isValid();     // bool — true if a spec was generated
-$result->toArray();     // array — the spec as a PHP array
-$result->toJson();      // string — JSON output
-$result->toYaml();      // string — YAML output
-$result->files();       // string[] — scanned source files
-$result->log();         // array — all log entries [{level, message}, ...]
-$result->warnings();    // string[] — warning messages
-$result->errors();      // string[] — error messages
+$result->isValid();      // bool — true if a spec was generated
+$result->toArray();       // array — the spec as a PHP array
+$result->toJson();        // string — JSON output
+$result->toYaml();        // string — YAML output
+$result->files();         // string[] — scanned source files
+$result->log();           // array — all log entries [{level, message}, ...]
+$result->warnings();      // string[] — warning messages
+$result->errors();        // string[] — error messages
+$result->specification(); // the final `Specification` instance
 ```
 
 ## Full example (spec mode)

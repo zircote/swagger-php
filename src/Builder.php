@@ -23,16 +23,23 @@ use Psr\Log\NullLogger;
  *   setMode(Builder\Mode::SPEC)    — spec attribute pipeline via Assembler + Compiler
  *   setMode(Builder\Mode::HYBRID)  — reduced classic pipeline → HybridBridge → spec Compiler
  *
+ * Set/add sources to process:
+ *   addSource() > can be file based (string, \SplFileInfo) or reflection (\ReflectionClass)
+ *
  * Version resolution (spec/hybrid pipeline):
  *   setVersion() > #[OpenApi(version: ...)] from source > '3.1.0' fallback
  *
  * Compiler resolution (spec/hybrid pipeline):
  *   setCompiler() explicit > auto-resolved from version
+ *
+ * @phpstan-type BuilderSource string|\SplFileInfo|\Reflector
  */
 class Builder
 {
-    /** @var list<string|iterable> */
-    protected array $sources = [];
+    /**
+     * @var list<BuilderSource|iterable<BuilderSource>>
+     */
+    protected string|\SplFileInfo|\Reflector|iterable $sources = [];
 
     protected Mode $mode = Mode::CLASSIC;
 
@@ -47,12 +54,17 @@ class Builder
      */
     protected ?Utils\Pipeline $augmenters = null;
 
-    /** @var callable|null */
+    /**
+     * @var callable|null
+     */
     protected $generatorHook;
 
     protected ?AttributeFactory $attributeFactory = null;
 
-    public function addSource(string|iterable $source): static
+    /**
+     * @param BuilderSource|iterable<BuilderSource> $source
+     */
+    public function addSource(string|\SplFileInfo|\Reflector|iterable $source): static
     {
         $this->sources[] = $source;
 
@@ -60,7 +72,7 @@ class Builder
     }
 
     /**
-     * @param list<string|iterable> $sources
+     * @param list<BuilderSource|iterable<BuilderSource>> $sources
      */
     public function setSources(array $sources): static
     {
@@ -184,14 +196,18 @@ class Builder
             $generator = ($this->generatorHook)($generator) ?? $generator;
         }
 
-        $openApi = $generator->generate($this->sources);
+        $sourceScanner = new SourceScanner($this->getLogger());
+        $files = $sourceScanner->scan($this->sources);
 
-        return Result::fromClassic($this->resolveFiles(), $openApi, $collecting->entries());
+        $openApi = $generator->generate($files);
+
+        return Result::fromClassic($files, $openApi, $collecting->entries());
     }
 
     protected function doBuildSpec(bool $hybrid = false): Result
     {
-        $files = $this->resolveFiles();
+        $sourceScanner = new SourceScanner($this->getLogger());
+        $sourceScanner->scan($this->sources);
 
         $attributeFactory = $this->getAttributeFactory();
         $tokenScanner = $attributeFactory->getTokenScanner();
@@ -200,11 +216,17 @@ class Builder
             tokenScanner: $tokenScanner,
         );
 
-        foreach ($files as $file) {
+        foreach ($sourceScanner->getFiles() as $file) {
             foreach (array_keys($tokenScanner->scanFile($file)) as $class) {
                 if (class_exists($class) || interface_exists($class) || enum_exists($class) || trait_exists($class)) {
                     $assembler->collect(new \ReflectionClass($class));
                 }
+            }
+        }
+
+        foreach ($sourceScanner->getReflectors() as $reflector) {
+            if ($reflector instanceof \ReflectionClass) {
+                $assembler->collect($reflector);
             }
         }
 
@@ -228,7 +250,7 @@ class Builder
         $diagnostics = $compiler->validate($specification);
         $output = $compiler->compile($specification);
 
-        return Result::fromSpec($files, $specification, $output, $diagnostics);
+        return Result::fromSpec($sourceScanner->getFiles(), $specification, $output, $diagnostics);
     }
 
     protected function doHybridAssemble(Specification $specification): void
@@ -296,15 +318,5 @@ class Builder
             new Augmenter\Tags(),
             new Augmenter\EnumDescriptions(),
         ];
-    }
-
-    /**
-     * @return list<string>
-     */
-    protected function resolveFiles(): array
-    {
-        $scanner = new SourceScanner($this->getLogger());
-
-        return $scanner->scan($this->sources);
     }
 }
