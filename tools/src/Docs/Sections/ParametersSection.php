@@ -27,7 +27,7 @@ class ParametersSection implements SectionInterface
 
         foreach ($parameters as $param) {
             $type = ($param['type'] ?? '') !== '' ? ' : `' . $param['type'] . '`' : '';
-            $out .= '- **' . $param['name'] . '**' . $type . "  \n";
+            $out .= '- **' . $param['name'] . '**' . $type . "\n";
 
             $desc = ($param['description'] ?? '') ?: DocGenerator::NO_DETAILS_AVAILABLE;
             $out .= '  ' . $desc . "\n";
