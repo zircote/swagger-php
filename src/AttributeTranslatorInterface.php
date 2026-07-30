@@ -29,5 +29,5 @@ interface AttributeTranslatorInterface
      * @param  array<object|AttributeInterface> $attributes
      * @return array<AttributeInterface>
      */
-    public function translate(array $attributes): array;
+    public function translate(array $attributes, \ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array;
 }

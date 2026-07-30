@@ -356,7 +356,7 @@ class AttributeFactory
                 $attributes[] = $instance;
             }
 
-            $attributes = $translator->translate($attributes);
+            $attributes = $translator->translate($attributes, $reflector);
         }
 
         return array_values(array_filter($attributes, static fn (object $item): bool => $item instanceof AttributeInterface));
