@@ -225,7 +225,8 @@ This produces paths `/api/v1/users/` and `/api/v1/users/{id}`, both tagged with 
 | `summary` / `description` | Emitted at path level |
 | `servers` | Emitted at path level |
 
-## MediaType
+## Shortcuts
+### MediaType
 
 `OA\MediaType\Json` and `OA\MediaType\Xml` are the corresponding versions of the classic `OA\JsonContent` and `OA\XmlContent`, respectively.
 
@@ -233,6 +234,33 @@ They do work pretty much the same, however since they are not inheriting from `O
 Still useful even when nesting `OA\Schema` as the media type is prefilled either way.
 
 **If a nested `OA\Schema` is set, the custom attributes are ignored.**
+
+```php
+// Without shortcut
+#[OA\Response(response: 200, content: [
+    new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
+])]
+
+// With shortcut
+#[OA\Response(response: 200, content: [new OA\MediaType\Json(type: 'array', items: new OA\Schema(ref: Pet::class))])]
+```
+
+### Items
+`#[OA\Schema\Items]` is the equivalent to the classic `OA\Items` attribute. Similar to `OA\MediaType\Json` and `Xml` it is a shortcut that allows to skip the outer `OA\Schema(type: 'array')`. The `Shortcuts` augmenter wraps it into `OA\Schema(type: 'array', items: ...)` automatically.
+
+```php
+// Without shortcut
+#[OA\Property]
+#[OA\Schema(type: 'array', items: new OA\Schema(ref: Tag::class))]
+public array $tags;
+
+// With shortcut
+#[OA\Property]
+#[OA\Schema\Items(ref: Tag::class)]
+public array $tags;
+```
+
+Both the `MediaType` and `Items` shortcuts are resolved by the `Shortcuts` augmenter.
 
 ## Components
 
@@ -385,15 +413,16 @@ Or apply globally via the OpenApi attribute or via PathItem (cloned to all opera
 
 ## Differences from classic attributes
 
-| Classic (`OpenApi\Attributes`) | Spec (`OpenApi\Spec`)                                                              |
-|---|------------------------------------------------------------------------------------|
-| `use OpenApi\Attributes as OA;` | `use OpenApi\Spec as OA;`                                                          |
-| `#[OA\Get(path: '/pets')]` | `#[OA\Operation\Get(path: '/pets')]`                                               |
-| `#[OA\JsonContent(...)]` | `new OA\MediaType\Json(...)` - but with limited set of (OA\Schema) attributes only |
-| `#[OA\PathParameter(...)]` | `#[OA\Parameter\Path(...)]`                                                        |
-| Schema inherits from annotation base | Schema is standalone, stackable                                                    |
+| Classic (`OpenApi\Attributes`)            | Spec (`OpenApi\Spec`)                                                              |
+|-------------------------------------------|------------------------------------------------------------------------------------|
+| `use OpenApi\Attributes as OA;`           | `use OpenApi\Spec as OA;`                                                          |
+| `#[OA\Get(path: '/pets')]`                | `#[OA\Operation\Get(path: '/pets')]`                                               |
+| `#[OA\JsonContent(...)]`                  | `new OA\MediaType\Json(...)` - but with limited set of (OA\Schema) attributes only |
+| `#[OA\PathParameter(...)]`                | `#[OA\Parameter\Path(...)]`                                                        |
+| `#[OA\Items(...)]`                        | `#[OA\Schema\Items(...)]`                                                          |
+| Schema inherits from annotation base      | Schema is standalone, stackable                                                    |
 | Processors modify mutable annotation tree | Augmenters enrich immutable DTOs                                                   |
-| Single serializer with version branches | Dedicated compiler per OpenAPI version                                             |
+| Single serializer with version branches   | Dedicated compiler per OpenAPI version                                             |
 
 ## References
 

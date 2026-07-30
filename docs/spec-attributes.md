@@ -16,7 +16,7 @@ The spec attributes pipeline introduces a clean separation of concerns with expl
 
 ### Additional augmenter pipes
 
-- **`EnumDescription`** — generate human-readable descriptions from PHP enum cases (ported from openapi-extras). Ships in the default pipeline but disabled by default; enable via `$builder->getAugmenters()->get(EnumDescription::class)->setEnabled(true)`.
+- **`EnumDescriptions`** — generate human-readable descriptions from PHP enum cases (ported from openapi-extras). Ships in the default pipeline but disabled by default; enable via `$builder->getAugmenters()->get(EnumDescriptions::class)->setEnabled(true)`.
 
 ### Shipping
 
@@ -35,12 +35,12 @@ The spec attributes pipeline introduces a clean separation of concerns with expl
 
 Re-evaluate support for convenience attributes that reduce boilerplate in common patterns:
 
-- **`Items`** — shorthand for array item schema declaration; this probably should be extending `OA\Items` and get a dedicated `PipeInterface` augmenter.
+~~- **`Items`** — shorthand for array item schema declaration; this probably should be extending `OA\Items` and get a dedicated `PipeInterface` augmenter.~~
 ~~- **`JsonContent`** / **`XmlContent`** — shorthand for wrapping a schema in a media type with the appropriate content type; a new `AttributeTranslatorInterface` should be implemented to handle the translation of these attributes.~~
 - Optional `OA\Property` if `OA\Schema` present and the default property name is used (empty `#[OA\Property])`)
 - Adjust attribute parameter types to aid downstream projects?
 - A `OA\Schema\Ref` attribute (with title/description 3.1.0+), $ref required attribute - extends `OA\Schema`
 - test to verify merges()/contains() consistency (with property type checks)
-- attachable example/test
-- review [] property types that could also accept a single: type|list<type>
+~~- attachable example/test~~
+~~- review [] property types that could also accept a single: type|list<type>~~
 ~~- enums for fixed strings, like flows->implicit, etc~~

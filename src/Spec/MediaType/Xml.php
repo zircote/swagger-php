@@ -19,6 +19,18 @@ use OpenApi\Undefined;
  * * `ref`, `type`, `items`, `properties` and `required` may be used and will be expanded into a nested `OA\Schema` automatically.
  * * If `schema` is explicitly set, the custom `OA\Schema` properties will be ignored.
  *
+ * Allows to shorten this:
+ *
+ *   #[OA\Response(response: 200, content: [
+ *       new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
+ *   ])]
+ *
+ * to this:
+ *
+ *   #[OA\Response(response: 200, content: [new OA\MediaType\Xml(type: 'array', items: new OA\Schema(ref: Pet::class))])]
+ *
+ * The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema` automatically.
+ *
  * @see [Media Type Object](https://spec.openapis.org/oas/v3.1.1.html#media-type-object)
  */
 #[\Attribute(\Attribute::IS_REPEATABLE)]
