@@ -4,9 +4,8 @@ namespace Openapi\Snippets\Shortcuts\ResponseJson;
 
 use OpenApi\Spec as OA;
 
-class ControllerSpec
+class Controller
 {
-    #[OA\Operation\Get(path: '/endpoint')]
     #[OA\Response(
         response: 200,
         description: 'successful operation',
