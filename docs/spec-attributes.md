@@ -126,7 +126,7 @@ This design keeps the assembler simple and makes cross-cutting relationships res
 
 ### Tri-mode Builder
 
-The `Builder` class supports three modes via `setMode('classic'|'spec'|'hybrid')`:
+The `Builder` class supports three modes via `setMode(Mode::CLASSIC|Mode::SPEC|Mode::HYBRID)`:
 - **classic** — delegates to the existing `Generator` pipeline
 - **spec** — runs the new spec attributes pipeline end-to-end
 - **hybrid** — uses the classic `Generator` for scanning only (MergeJsonContent/MergeXmlContent), then iterates the `Analysis` annotations directly via `HybridBridge` into a `Specification` and runs it through the full spec augmenter chain and compilers
@@ -335,7 +335,7 @@ These components can then be referenced via `$ref` from operations, PathItems, o
 
 - Dedicated test coverage for `HybridBridge` (currently exercised only indirectly via examples)
 - Migrate scratch tests and doc snippet tests to run in spec and/or hybrid modes
-- Broad hybrid validation by forcing existing classic tests to use `setMode('hybrid')` on their Builder — most classic tests should pass through hybrid unchanged, exposing gaps
+- Broad hybrid validation by forcing existing classic tests to use `setMode(Mode::HYBRID)` on their Builder — most classic tests should pass through hybrid unchanged, exposing gaps
 
 ### Testing
 
@@ -388,8 +388,8 @@ Need to document the general pattern for shortcut attributes: how they participa
 
 ### Version timeline
 
-- **v6.x** — spec pipeline ships as opt-in (`setMode('spec')`). Classic remains default. Both modes available side-by-side.
-- **v7** — spec mode becomes default. Classic still available via `setMode('classic')`. Remove legacy namespaces (`Annotations\*`, `Attributes\*`), `Context`, `Analysis`, doctrine support. Introduce `ProcessorInterface::process(Specification)`.
+- **v6.x** — spec pipeline ships as opt-in (`setMode(Mode::SPEC)`). Classic remains default. Both modes available side-by-side.
+- **v7** — spec mode becomes default. Classic still available via `setMode(Mode::CLASSIC)`. Remove legacy namespaces (`Annotations\*`, `Attributes\*`), `Context`, `Analysis`, doctrine support. Introduce `ProcessorInterface::process(Specification)`.
 - **v8** — classic mode removed entirely. Builder is spec-only.
 
 ## Consequences
