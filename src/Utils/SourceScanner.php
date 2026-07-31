@@ -71,10 +71,12 @@ class SourceScanner
                 $this->collect($source);
             } else {
                 $resolvedSource = $source instanceof \SplFileInfo ? $source->getPathname() : realpath($source);
+
                 if (!$resolvedSource) {
                     $this->logger->warning(sprintf('Skipping invalid source: %s', $source));
                     continue;
                 }
+
                 if (is_dir($resolvedSource)) {
                     $this->collect(new SourceFinder($resolvedSource));
                 } else {

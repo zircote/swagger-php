@@ -51,7 +51,7 @@ final class SourceScannerTest extends OpenApiTestCase
     public function testScanNestedIterables(): void
     {
         $sourceDir = self::examplePath('petstore/annotations');
-        $nested = [new SourceFinder($sourceDir)];
+        $nested = [[new SourceFinder($sourceDir)]];
 
         $scanner = new SourceScanner($this->getTrackingLogger());
         $files = $scanner->scan($nested);
