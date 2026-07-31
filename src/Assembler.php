@@ -26,11 +26,13 @@ use OpenApi\Utils\TokenScanner;
  */
 class Assembler
 {
+    protected TokenScanner $tokenScanner;
+
     public function __construct(
         protected Specification $specification = new Specification(),
         protected AttributeFactory $attributeFactory = new AttributeFactory(),
-        protected TokenScanner $tokenScanner = new TokenScanner(),
     ) {
+        $this->tokenScanner = $this->attributeFactory->getTokenScanner();
     }
 
     public function getSpecification(): Specification
@@ -41,11 +43,6 @@ class Assembler
     public function getAttributeFactory(): AttributeFactory
     {
         return $this->attributeFactory;
-    }
-
-    public function getTokenScanner(): TokenScanner
-    {
-        return $this->tokenScanner;
     }
 
     /**

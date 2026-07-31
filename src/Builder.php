@@ -206,15 +206,13 @@ class Builder
 
     protected function doBuildSpec(bool $hybrid = false): Result
     {
+        $attributeFactory = $this->getAttributeFactory();
+        $assembler = new Assembler(attributeFactory: $attributeFactory);
+
         $sourceScanner = new SourceScanner($this->getLogger());
         $sourceScanner->scan($this->sources);
 
-        $attributeFactory = $this->getAttributeFactory();
         $tokenScanner = $attributeFactory->getTokenScanner();
-        $assembler = new Assembler(
-            attributeFactory: $attributeFactory,
-            tokenScanner: $tokenScanner,
-        );
 
         foreach ($sourceScanner->getFiles() as $file) {
             foreach (array_keys($tokenScanner->scanFile($file)) as $class) {
@@ -238,8 +236,7 @@ class Builder
 
         // share the token scanner cache ...
         $this->getAugmenters()->get(Augmenter\Inheritance::class)
-            ?->setTokenScanner($tokenScanner)
-            ->setAttributeFactory($attributeFactory);
+            ?->setAttributeFactory($attributeFactory);
 
         $this->getAugmenters()->process($specification);
 
