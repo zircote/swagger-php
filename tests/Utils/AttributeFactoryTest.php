@@ -37,7 +37,7 @@ final class AttributeFactoryTest extends TestCase
     {
         $factory = new AttributeFactory();
         $result = $factory->fromReflector(new \ReflectionParameter(
-            [SimpleController::class, 'getProduct'],
+            [SimpleController::class, 'addProduct'],
             'product_id',
         ));
 
@@ -63,7 +63,7 @@ final class AttributeFactoryTest extends TestCase
         $members = $factory->membersOf(new \ReflectionClass(SimpleProduct::class));
 
         $propertyNames = array_map(
-            fn(AttributeInterface $attr): ?string => $attr instanceof OA\Property ? $attr->property : null,
+            fn (AttributeInterface $attr): ?string => $attr instanceof OA\Property ? $attr->property : null,
             $members,
         );
 
@@ -102,7 +102,7 @@ final class AttributeFactoryTest extends TestCase
     {
         $factory = (new AttributeFactory())
             ->withTranslators(
-                fn(TypedList $translators): TypedList => $translators->add(
+                fn (TypedList $translators): TypedList => $translators->add(
                     new class () implements AttributeTranslatorInterface {
                         public function getAttributes(\ReflectionClassConstant|\ReflectionParameter|\ReflectionMethod|\ReflectionClass|\ReflectionProperty $reflector): array
                         {
@@ -133,7 +133,7 @@ final class AttributeFactoryTest extends TestCase
     {
         $factory = (new AttributeFactory())
             ->withTranslators(
-                fn(TypedList $translators): TypedList => $translators->add(
+                fn (TypedList $translators): TypedList => $translators->add(
                     new class () implements AttributeTranslatorInterface {
                         public function getAttributes(\ReflectionClassConstant|\ReflectionParameter|\ReflectionMethod|\ReflectionClass|\ReflectionProperty $reflector): array
                         {
@@ -166,11 +166,11 @@ final class AttributeFactoryTest extends TestCase
         $this->assertSame('extra', $schema->properties[0]->property);
     }
 
-    public function testCustomTranslateMerge()
+    public function testCustomTranslateMerge(): void
     {
         $factory = (new AttributeFactory())
             ->withTranslators(
-                fn(TypedList $translators): TypedList => $translators->add(
+                fn (TypedList $translators): TypedList => $translators->add(
                     new class () implements AttributeTranslatorInterface {
                         protected OA\Operation|null $operation = null;
 
@@ -206,7 +206,7 @@ final class AttributeFactoryTest extends TestCase
                                 }
                             }
 
-                            return array_filter([...$attributes, ...$created], fn($attribute) => !($attribute instanceof RequestPayload));
+                            return array_filter([...$attributes, ...$created], fn (object $attribute): bool => !($attribute instanceof RequestPayload));
                         }
                     }
                 )

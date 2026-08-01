@@ -6,9 +6,7 @@
 
 namespace OpenApi\Tests\Fixtures\Assembler\Attachable;
 
-use OpenApi\Spec as OA;
-
 #[\Attribute(\Attribute::TARGET_ALL | \Attribute::IS_REPEATABLE)]
- class RequestPayload extends OA\Attachable
+class RequestPayload
 {
 }
