@@ -59,6 +59,8 @@ class Assembler
 
     protected function collectFromReflector(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): void
     {
+        $this->attributeFactory->resetTranslators();
+
         if ($reflector instanceof \ReflectionClass) {
             $this->collectFromClass($reflector);
 

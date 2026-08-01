@@ -8,9 +8,25 @@ namespace OpenApi;
 
 /**
  * Contract for creating raw attributes and translating them into `AttributeInterface` instances.
+ *
+ * Translator instances are long-lived (one per factory) and shared across all
+ * `readAttributes()` calls within a collection pass. This means translators
+ * can accumulate state across structural levels — e.g. tracking the current
+ * `Operation` at method level and injecting into it at parameter level.
+ *
+ * Processing order within the Assembler is guaranteed structural:
+ * class → method → parameters (outer before inner).
  */
 interface AttributeTranslatorInterface
 {
+    /**
+     * Reset any accumulated state between collection boundaries.
+     *
+     * Called by the assembler at the start of each top-level collection unit
+     * (e.g. per class).
+     */
+    public function reset(): void;
+
     /**
      * Get attributes to load from the given reflector.
      *

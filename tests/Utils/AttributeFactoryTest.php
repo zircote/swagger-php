@@ -7,6 +7,7 @@
 namespace OpenApi\Tests\Utils;
 
 use OpenApi\Assembler;
+use OpenApi\Assembler\AbstractAttributeTranslator;
 use OpenApi\AttributeInterface;
 use OpenApi\AttributeTranslatorInterface;
 use OpenApi\OpenApiException;
@@ -103,7 +104,7 @@ final class AttributeFactoryTest extends TestCase
         $factory = (new AttributeFactory())
             ->withTranslators(
                 fn (TypedList $translators): TypedList => $translators->add(
-                    new class () implements AttributeTranslatorInterface {
+                    new class () extends AbstractAttributeTranslator {
                         public function getAttributes(\ReflectionClassConstant|\ReflectionParameter|\ReflectionMethod|\ReflectionClass|\ReflectionProperty $reflector): array
                         {
                             return [];
@@ -134,7 +135,7 @@ final class AttributeFactoryTest extends TestCase
         $factory = (new AttributeFactory())
             ->withTranslators(
                 fn (TypedList $translators): TypedList => $translators->add(
-                    new class () implements AttributeTranslatorInterface {
+                    new class () extends AbstractAttributeTranslator {
                         public function getAttributes(\ReflectionClassConstant|\ReflectionParameter|\ReflectionMethod|\ReflectionClass|\ReflectionProperty $reflector): array
                         {
                             return [];
@@ -173,6 +174,11 @@ final class AttributeFactoryTest extends TestCase
                 fn (TypedList $translators): TypedList => $translators->add(
                     new class () implements AttributeTranslatorInterface {
                         protected OA\Operation|null $operation = null;
+
+                        public function reset(): void
+                        {
+                            $this->operation = null;
+                        }
 
                         public function getAttributes(\ReflectionClassConstant|\ReflectionParameter|\ReflectionMethod|\ReflectionClass|\ReflectionProperty $reflector): array
                         {

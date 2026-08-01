@@ -71,6 +71,18 @@ class AttributeFactory
     }
 
     /**
+     * Reset all translators.
+     *
+     * Called at the start of each top-level collection unit.
+     */
+    public function resetTranslators(): void
+    {
+        foreach ($this->translators as $translator) {
+            $translator->reset();
+        }
+    }
+
+    /**
      * Read and resolve attributes from a single member reflector.
      *
      * For methods, also resolves parameter-level attributes into the method-level ones.
