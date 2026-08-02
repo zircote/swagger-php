@@ -7,15 +7,18 @@
 namespace OpenApi\Tests\Fixtures\Assembler;
 
 use OpenApi\Spec as OA;
+use OpenApi\Tests\Fixtures\Assembler\Attachable\RequestPayload;
 
 class SimpleController
 {
-    #[OA\Operation(path: '/products/{product_id}', method: 'get')]
+    #[OA\Operation\Post(path: '/products/{product_id}')]
     #[OA\Response(response: 200, description: 'OK')]
-    public function getProduct(
+    public function addProduct(
         #[OA\Parameter(name: 'product_id', in: 'path', required: true)]
         #[OA\Schema(format: 'int64')]
         ?int $product_id,
+        #[RequestPayload]
+        SimpleProduct $product,
     ) {
     }
 }

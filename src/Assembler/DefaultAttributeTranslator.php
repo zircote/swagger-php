@@ -7,12 +7,11 @@
 namespace OpenApi\Assembler;
 
 use OpenApi\AttributeInterface;
-use OpenApi\AttributeTranslatorInterface;
 
 /**
  * Default implementation dealing with native attributes.
  */
-class DefaultAttributeTranslator implements AttributeTranslatorInterface
+class DefaultAttributeTranslator extends AbstractAttributeTranslator
 {
     public function getAttributes(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
     {
@@ -20,10 +19,5 @@ class DefaultAttributeTranslator implements AttributeTranslatorInterface
             AttributeInterface::class,
             \ReflectionAttribute::IS_INSTANCEOF,
         );
-    }
-
-    public function translate(array $attributes, array $created, \ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
-    {
-        return [...$attributes, ...$created];
     }
 }
