@@ -65,9 +65,7 @@ class Assembler
             return;
         }
 
-        foreach ($this->attributeFactory->fromReflector($reflector) as $root) {
-            $this->specification->add($root);
-        }
+        $this->specification->add(...$this->attributeFactory->fromReflector($reflector));
     }
 
     /**
@@ -85,9 +83,7 @@ class Assembler
             $inner = $this->attributeFactory->membersOf($class);
             $roots = $this->attributeFactory->resolveHierarchy($outer, $inner);
 
-            foreach ($roots as $root) {
-                $this->specification->add($root);
-            }
+            $this->specification->add(...$roots);
         }
 
         // Methods are always processed — a controller may have operations without
@@ -106,9 +102,7 @@ class Assembler
                 continue;
             }
 
-            foreach ($this->attributeFactory->fromReflector($method) as $root) {
-                $this->specification->add($root);
-            }
+            $this->specification->add(...$this->attributeFactory->fromReflector($method));
         }
     }
 }
