@@ -9,7 +9,6 @@ namespace OpenApi\Tests\Utils;
 use OpenApi\Assembler;
 use OpenApi\Assembler\AbstractAttributeTranslator;
 use OpenApi\AttributeInterface;
-use OpenApi\AttributeTranslatorInterface;
 use OpenApi\OpenApiException;
 use OpenApi\Spec as OA;
 use OpenApi\Tests\Fixtures\Assembler\AmbiguousMerge;
@@ -172,14 +171,7 @@ final class AttributeFactoryTest extends TestCase
         $factory = (new AttributeFactory())
             ->withTranslators(
                 fn (TypedList $translators): TypedList => $translators->add(
-                    new class () implements AttributeTranslatorInterface {
-                        protected OA\Operation|null $operation = null;
-
-                        public function reset(): void
-                        {
-                            $this->operation = null;
-                        }
-
+                    new class () extends AbstractAttributeTranslator {
                         public function getAttributes(\ReflectionClassConstant|\ReflectionParameter|\ReflectionMethod|\ReflectionClass|\ReflectionProperty $reflector): array
                         {
                             if ($reflector instanceof \ReflectionParameter) {
@@ -187,28 +179,18 @@ final class AttributeFactoryTest extends TestCase
                                     RequestPayload::class,
                                     \ReflectionAttribute::IS_INSTANCEOF,
                                 );
-                            };
+                            }
 
                             return [];
                         }
 
                         public function translate(array $attributes, array $created, \ReflectionClassConstant|\ReflectionParameter|\ReflectionMethod|\ReflectionClass|\ReflectionProperty $reflector): array
                         {
-                            foreach ($attributes as $attribute) {
-                                if ($attribute instanceof OA\Operation) {
-                                    $this->operation = $attribute;
-                                }
-                            }
-
                             foreach ($created as $attribute) {
                                 if ($attribute instanceof RequestPayload) {
-                                    $requestBody = new OA\RequestBody(
+                                    $attributes[] = new OA\RequestBody(
                                         content: new OA\MediaType\Json(ref: $reflector->getName()),
                                     );
-
-                                    if ($this->operation) {
-                                        $this->operation->requestBody = $requestBody;
-                                    }
                                 }
                             }
 

@@ -111,4 +111,17 @@ final class AssemblerTest extends TestCase
         $assembler = new Assembler();
         $assembler->collect(new \ReflectionClass(Fixtures\Assembler\WithInvalidAttachables::class));
     }
+
+    public function testClassLevelOperation(): void
+    {
+        $assembler = new Assembler();
+        $assembler->collect(new \ReflectionClass(Fixtures\Assembler\InvokableController::class));
+
+        $spec = $assembler->getSpecification();
+        $this->assertCount(1, $spec->operations);
+        $this->assertEquals('/products/{product_id}', $spec->operations[0]->path);
+        $this->assertNotNull($spec->operations[0]->parameters);
+        $this->assertCount(1, $spec->operations[0]->parameters);
+        $this->assertEquals('product_id', $spec->operations[0]->parameters[0]->name);
+    }
 }

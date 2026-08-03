@@ -8,7 +8,7 @@ This page documents the internals of the spec attributes pipeline — for users 
 Source files → Assembler → Specification → Augmenters → Compiler → OpenAPI document
 ```
 
-1. **Assembler** — scans source files, instantiates attributes from reflection, resolves nesting via two-pass slot maps
+1. **Assembler** — scans source files, instantiates attributes from reflection, resolves nesting via slot maps (merge + hierarchical absorb)
 2. **Specification** — a flat, typed container holding all collected attributes in buckets
 3. **Augmenters** — enrich the specification with inferred data (types, refs, tags, etc.) via a grouped pipeline
 4. **Compiler** — transforms the specification into a versioned OpenAPI document array
@@ -27,14 +27,14 @@ Each attribute declares its relationships via two methods:
 
 Slots use `[]` suffix for collection append (`'parameters[]'`), bare name for scalar assignment (`'requestBody'`).
 
-### Two-pass assembly
+### Level-by-level resolution
 
-The Assembler runs two distinct passes:
+Assembler resolution itself is purely attribute-relationship driven — no PHP structural semantics:
 
 1. **Sibling merge** — attributes on the same reflector compose via `merge()` maps
-2. **Hierarchy resolution** — attributes from inner reflectors (method → class, property → class) are absorbed via `contains()` maps
+2. **Hierarchical absorb** — resolved attributes flow upward level by level via `contains()` maps (first match wins). If a level has containers, unmatched non-roots are errors. If a level has no containers, unmatched attributes pass through to the next level up.
 
-After both passes, only root attributes remain and are added to the Specification.
+After resolution, only root attributes (should) remain and are added to the Specification.
 
 ### Root attributes
 

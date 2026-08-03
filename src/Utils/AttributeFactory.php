@@ -10,7 +10,6 @@ use OpenApi\Assembler\DefaultAttributeTranslator;
 use OpenApi\AttributeInterface;
 use OpenApi\AttributeTranslatorInterface;
 use OpenApi\OpenApiException;
-use OpenApi\Spec as OA;
 
 /**
  * Creates spec attribute instances from PHP reflectors.
@@ -98,17 +97,30 @@ class AttributeFactory
                 array_push($inner, ...$this->resolveNesting($this->readAttributes($parameter)));
             }
 
-            return $this->resolveHierarchy($outer, $inner);
+            $resolved = $this->resolveHierarchy($outer, $inner);
+
+            if ($outer !== []) {
+                foreach ($resolved as $attribute) {
+                    if (!$attribute->isRoot() && !in_array($attribute, $outer, true)) {
+                        throw OpenApiException::fromSource(
+                            sprintf('Orphan attribute: %s has no valid container at enclosing level', $attribute::class),
+                            $attribute->getSourceLocation(),
+                        );
+                    }
+                }
+            }
+
+            return $resolved;
         }
 
         return $this->resolveNesting($this->readAttributes($reflector));
     }
 
     /**
-     * Read and resolve attributes from a class's own members (properties, constructor params, constants).
+     * Read and resolve attributes from all class members (properties, constants, methods).
      *
-     * Does NOT include the class-level attributes themselves or methods.
-     * Returns inner attributes suitable for hierarchical absorption into a class-level container.
+     * Each member is fully resolved internally (merge + parameter absorption for methods),
+     * then all results are returned for hierarchical absorption into class-level containers.
      *
      * @return list<AttributeInterface>
      */
@@ -153,43 +165,20 @@ class AttributeFactory
                 continue;
             }
 
-            $resolved = $this->resolveNesting($this->readAttributes($method));
-            foreach ($resolved as $attribute) {
-                if ($attribute instanceof OA\Property) {
-                    $inner[] = $attribute;
-                }
-            }
+            array_push($inner, ...$this->fromReflector($method));
         }
 
         return $inner;
     }
 
     /**
-     * Check whether a reflector has any OpenAPI attributes.
+     * Check whether a reflector has any `AttributeInterface` attributes.
      */
     public function hasAttributes(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): bool
     {
         return $this->readAttributes($reflector) !== [];
     }
 
-    /**
-     * Check whether a method only produces Property attributes (no operations).
-     */
-    public function hasOnlyProperties(\ReflectionMethod $method): bool
-    {
-        $attributes = $this->readAttributes($method);
-        if ($attributes === []) {
-            return false;
-        }
-
-        foreach ($attributes as $attribute) {
-            if (!$attribute instanceof OA\Property && !$attribute instanceof OA\Schema) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 
     /**
      * Stack-resolve: merge sibling attributes on the same reflector using merge().
@@ -252,6 +241,9 @@ class AttributeFactory
     /**
      * Hierarchical absorb: outer-level attributes absorb inner-level attributes using contains().
      *
+     * Inner attributes that match a container's contains() are nested into it (first match wins).
+     * Inner attributes that find no container pass through alongside outer.
+     *
      * @param  list<AttributeInterface> $outer
      * @param  list<AttributeInterface> $inner
      * @return list<AttributeInterface>
@@ -259,8 +251,7 @@ class AttributeFactory
     public function resolveHierarchy(array $outer, array $inner): array
     {
         foreach ($inner as $innerAttribute) {
-            $matchingContainer = null;
-            $matchingSlot = null;
+            $absorbed = false;
 
             foreach ($outer as $outerAttribute) {
                 $containsTypes = $outerAttribute->contains();
@@ -270,40 +261,15 @@ class AttributeFactory
 
                 foreach ($containsTypes as $childClass => $slot) {
                     if ($innerAttribute instanceof $childClass) {
-                        if ($matchingContainer instanceof AttributeInterface) {
-                            throw OpenApiException::fromSource(
-                                sprintf(
-                                    'Ambiguous hierarchy: %s matches multiple containers (%s and %s)',
-                                    $innerAttribute::class,
-                                    $matchingContainer::class,
-                                    $outerAttribute::class,
-                                ),
-                                $innerAttribute->getSourceLocation(),
-                            );
-                        }
-                        $matchingContainer = $outerAttribute;
-                        $matchingSlot = $slot;
-                        break;
+                        $this->nestChild($outerAttribute, $innerAttribute, $slot);
+                        $absorbed = true;
+                        break 2;
                     }
                 }
             }
 
-            if ($matchingContainer === null) {
-                throw OpenApiException::fromSource(
-                    sprintf('Orphan attribute: %s has no valid container at enclosing level', $innerAttribute::class),
-                    $innerAttribute->getSourceLocation(),
-                );
-            }
-
-            $this->nestChild($matchingContainer, $innerAttribute, $matchingSlot);
-        }
-
-        foreach ($outer as $attribute) {
-            if (!$attribute->isRoot()) {
-                throw OpenApiException::fromSource(
-                    sprintf('Non-root attribute %s remains after resolution — it should have been absorbed by a container', $attribute::class),
-                    $attribute->getSourceLocation(),
-                );
+            if (!$absorbed) {
+                $outer[] = $innerAttribute;
             }
         }
 
