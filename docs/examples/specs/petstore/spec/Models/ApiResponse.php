@@ -14,15 +14,15 @@ use OpenApi\Spec as OA;
 #[OA\Schema(title: 'Api response', description: 'Api response')]
 class ApiResponse
 {
-    #[OA\Property(property: 'code')]
+    #[OA\Property]
     #[OA\Schema(title: 'Code', description: 'Code', format: 'int32')]
     private int $code;
 
-    #[OA\Property(property: 'type')]
+    #[OA\Property]
     #[OA\Schema(title: 'Type', description: 'Type')]
     private string $type;
 
-    #[OA\Property(property: 'message')]
+    #[OA\Property]
     #[OA\Schema(title: 'Message', description: 'Message')]
     private string $message;
 }

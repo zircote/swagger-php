@@ -11,10 +11,10 @@ use OpenApi\Spec as OA;
 #[OA\Schema(schema: 'repository')]
 class Repository
 {
-    #[OA\Property(property: 'slug')]
+    #[OA\Property]
     #[OA\Schema(type: 'string')]
     public $slug;
 
-    #[OA\Property(property: 'owner')]
+    #[OA\Property]
     public User $owner;
 }

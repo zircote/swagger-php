@@ -11,10 +11,10 @@ use OpenApi\Spec as OA;
 /**
  * A Name.
  */
-#[OA\Schema(schema: 'NameTrait')]
+#[OA\Schema]
 trait NameTrait
 {
-    #[OA\Property(property: 'name')]
+    #[OA\Property]
     #[OA\Schema(description: 'The name.')]
     public $name;
 }

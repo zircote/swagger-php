@@ -20,23 +20,23 @@ class Order
     #[OA\Schema(title: 'ID', description: 'ID', format: 'int64', default: 1)]
     private int $id;
 
-    #[OA\Property(property: 'petId')]
+    #[OA\Property]
     #[OA\Schema(title: 'Pet ID', description: 'Pet ID', format: 'int64', default: 1)]
     private int $petId;
 
-    #[OA\Property(property: 'quantity')]
+    #[OA\Property]
     #[OA\Schema(title: 'Quantity', description: 'Quantity', format: 'int32', default: 12)]
     private int $quantity;
 
-    #[OA\Property(property: 'shipDate')]
-    #[OA\Schema(title: 'Shipping date', description: 'Shipping date', type: 'string', format: 'datetime', default: '2017-02-02 18:31:45')]
+    #[OA\Property]
+    #[OA\Schema(title: 'Shipping date', description: 'Shipping date', format: 'datetime', default: '2017-02-02 18:31:45')]
     private \DateTime $shipDate;
 
-    #[OA\Property(property: 'status')]
+    #[OA\Property]
     #[OA\Schema(title: 'Order status', description: 'Order status', enum: ['placed', 'approved', 'delivered'], default: 'placed')]
     private string $status;
 
-    #[OA\Property(property: 'complete')]
-    #[OA\Schema(title: 'Complete status', description: 'Complete status', type: 'boolean', default: false)]
+    #[OA\Property]
+    #[OA\Schema(title: 'Complete status', description: 'Complete status', default: false)]
     private bool $complete;
 }

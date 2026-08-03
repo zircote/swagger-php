@@ -8,14 +8,14 @@ namespace OpenApi\Examples\Specs\UsingRefs\Spec;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(title: 'Product model', description: 'Product model', type: 'object')]
+#[OA\Schema(title: 'Product model', description: 'Product model')]
 class Product extends Model
 {
     /**
      * The unique identifier of a product in our catalog.
      */
     #[OA\Property]
-    #[OA\Schema(type: 'integer', format: 'int64', example: 1)]
+    #[OA\Schema(format: 'int64', example: 1)]
     public int $id;
 
     #[OA\Property(schema: new OA\Schema(ref: '#/components/schemas/product_status'))]

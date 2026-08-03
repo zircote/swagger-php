@@ -22,7 +22,7 @@ class Product
     #[OA\Property(property: 'kind')]
     public const KIND = 'Virtual';
 
-    #[OA\Property(property: 'id', schema: new OA\Schema(description: 'The id.', format: 'int64'))]
+    #[OA\Property(schema: new OA\Schema(format: 'int64'))]
     /**
      * The id.
      *
@@ -31,16 +31,16 @@ class Product
     public $id;
 
     public function __construct(
-        #[OA\Property(property: 'quantity')]
+        #[OA\Property]
         #[OA\Schema]
         public int $quantity,
-        #[OA\Property(property: 'brand')]
+        #[OA\Property]
         #[OA\Schema(example: null, default: null)]
         public ?string $brand,
-        #[OA\Property(property: 'colour')]
+        #[OA\Property]
         #[OA\Schema(description: 'The colour')]
         public Colour $colour,
-        #[OA\Property(property: 'releasedAt')]
+        #[OA\Property]
         #[OA\Schema(type: 'string')]
         public \DateTimeInterface $releasedAt,
     ) {
