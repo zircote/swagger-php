@@ -7,7 +7,6 @@
 namespace OpenApi;
 
 use OpenApi\Utils\AttributeFactory;
-use OpenApi\Utils\TokenScanner;
 
 /**
  * Collects OpenAPI spec attributes from PHP reflectors and assembles them into a Specification.
@@ -22,13 +21,10 @@ use OpenApi\Utils\TokenScanner;
  */
 class Assembler
 {
-    protected TokenScanner $tokenScanner;
-
     public function __construct(
         protected Specification $specification = new Specification(),
         protected AttributeFactory $attributeFactory = new AttributeFactory(),
     ) {
-        $this->tokenScanner = $this->attributeFactory->getTokenScanner();
     }
 
     public function getSpecification(): Specification

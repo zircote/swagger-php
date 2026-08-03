@@ -179,6 +179,29 @@ class AttributeFactory
         return $this->readAttributes($reflector) !== [];
     }
 
+    /**
+     * Get traits directly used by the given class (excludes inherited trait-uses).
+     *
+     * PHP's ReflectionClass::getTraits() flattens the entire trait tree, so we
+     * must exclude traits that come from a parent class or from another trait's use.
+     *
+     * @return list<\ReflectionClass>
+     */
+    public function getDirectTraits(\ReflectionClass $class): array
+    {
+        $scannerDetails = $this->tokenScanner->detailsFor($class);
+
+        if ($scannerDetails !== null) {
+            return array_filter(
+                array_map(
+                    fn (string $name): ?\ReflectionClass => class_exists($name) || trait_exists($name) ? new \ReflectionClass($name) : null,
+                    $scannerDetails['traits'],
+                ),
+            );
+        }
+
+        return [];
+    }
 
     /**
      * Stack-resolve: merge sibling attributes on the same reflector using merge().

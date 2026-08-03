@@ -10,7 +10,6 @@ use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Utils\AttributeFactory;
 use OpenApi\Utils\PipeInterface;
-use OpenApi\Utils\TokenScanner;
 
 /**
  * Expands PHP class hierarchy into OpenAPI composition (allOf).
@@ -28,8 +27,6 @@ class Inheritance implements PipeInterface
 {
     protected AttributeFactory $attributeFactory;
 
-    protected TokenScanner $tokenScanner;
-
     public function __construct(
         AttributeFactory $attributeFactory = new AttributeFactory(),
     ) {
@@ -39,7 +36,6 @@ class Inheritance implements PipeInterface
     public function setAttributeFactory(AttributeFactory $attributeFactory): static
     {
         $this->attributeFactory = $attributeFactory;
-        $this->tokenScanner = $this->attributeFactory->getTokenScanner();
 
         return $this;
     }
@@ -110,7 +106,7 @@ class Inheritance implements PipeInterface
      */
     protected function expandTraits(OA\Schema $schema, \ReflectionClass $reflector, array $schemaMap, array &$existingProperties): void
     {
-        foreach ($this->getDirectTraits($reflector) as $trait) {
+        foreach ($this->attributeFactory->getDirectTraits($reflector) as $trait) {
             if (isset($schemaMap[$trait->getName()])) {
                 $this->addAllOfRef($schema, $schemaMap[$trait->getName()]);
             } else {
@@ -124,7 +120,7 @@ class Inheritance implements PipeInterface
                 break;
             }
 
-            foreach ($this->getDirectTraits($parent) as $trait) {
+            foreach ($this->attributeFactory->getDirectTraits($parent) as $trait) {
                 if (isset($schemaMap[$trait->getName()])) {
                     $this->addAllOfRef($schema, $schemaMap[$trait->getName()]);
                 }
@@ -191,30 +187,6 @@ class Inheritance implements PipeInterface
 
         $schema->allOf[] = new OA\Schema(type: 'object', properties: $schema->properties);
         $schema->properties = null;
-    }
-
-    /**
-     * Get traits directly used by a class (not inherited via parents or other traits).
-     *
-     * PHP's ReflectionClass::getTraits() flattens the entire trait tree, so we
-     * must exclude traits that come from a parent class or from another trait's use.
-     *
-     * @return list<\ReflectionClass>
-     */
-    protected function getDirectTraits(\ReflectionClass $class): array
-    {
-        $scannerDetails = $this->tokenScanner->detailsFor($class);
-
-        if ($scannerDetails !== null) {
-            return array_filter(
-                array_map(
-                    fn (string $name): ?\ReflectionClass => class_exists($name) || trait_exists($name) ? new \ReflectionClass($name) : null,
-                    $scannerDetails['traits'],
-                ),
-            );
-        }
-
-        return [];
     }
 
     /**
