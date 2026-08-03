@@ -98,6 +98,7 @@ class DocblocksEndpoint
      */
     #[OAT\Get(
         path: '/api/endpoint',
+        operationId: 'DocblocksEndpoint',
     )]
     #[OAT\Response(response: 200, description: 'successful operation')]
     public function endpoint(

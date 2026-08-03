@@ -33,6 +33,33 @@ namespace OpenApi\Spec;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Components extends AbstractAttribute
 {
+    /**
+     * @param list<Schema>             $schemas
+     * @param list<Parameter>          $parameters
+     * @param list<Response>           $responses
+     * @param list<RequestBody>        $requestBodies
+     * @param list<Header>             $headers
+     * @param list<Security\Scheme>    $securitySchemes
+     * @param list<Link>               $links
+     * @param list<Example>            $examples
+     * @param array<string,mixed>|null $x               Vendor extensions (x-* properties)
+     * @param list<Attachable>|null    $attachables     Reusable custom attachable attributes
+     */
+    public function __construct(
+        public array $schemas = [],
+        public array $parameters = [],
+        public array $responses = [],
+        public array $requestBodies = [],
+        public array $headers = [],
+        public array $securitySchemes = [],
+        public array $links = [],
+        public array $examples = [],
+        ?array $x = null,
+        ?array $attachables = null,
+    ) {
+        parent::__construct(x: $x, attachables: $attachables);
+    }
+
     public function isRoot(): bool
     {
         return true;
@@ -52,31 +79,4 @@ class Components extends AbstractAttribute
             PathItem::class => 'pathItems[]',
         ];
     }
-
-    /** @var list<Schema> */
-    public array $schemas = [];
-
-    /** @var list<Parameter> */
-    public array $parameters = [];
-
-    /** @var list<Response> */
-    public array $responses = [];
-
-    /** @var list<RequestBody> */
-    public array $requestBodies = [];
-
-    /** @var list<Header> */
-    public array $headers = [];
-
-    /** @var list<Security\Scheme> */
-    public array $securitySchemes = [];
-
-    /** @var list<Link> */
-    public array $links = [];
-
-    /** @var list<Example> */
-    public array $examples = [];
-
-    /** @var list<PathItem> */
-    public array $pathItems = [];
 }

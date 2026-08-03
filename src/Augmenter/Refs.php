@@ -44,7 +44,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
         return null;
     }
 
-    protected function resolveFQCNRefs(Specification $specification, array &$refMap): array
+    protected function resolveFQCNRefs(Specification $specification, array $refMap): void
     {
         $unresolved = [];
 
@@ -64,8 +64,6 @@ class Refs implements PipeInterface, LoggerAwareInterface
                 'ref' => $ref,
             ]);
         }
-
-        return $refMap;
     }
 
     /**
@@ -77,13 +75,13 @@ class Refs implements PipeInterface, LoggerAwareInterface
     {
         $map = [];
 
-        foreach ($specification->schemas as $schema) {
+        $specification->getWalker()->eachSchema(function (OA\Schema $schema) use (&$map): void {
             $name = $schema->schema ?? $schema->title;
             $fqcn = $schema->getClassName();
             if ($name !== null && $fqcn !== null) {
                 $map[$fqcn] = '#/components/schemas/' . $name;
             }
-        }
+        });
 
         foreach ($specification->responses as $response) {
             $name = $response->response;

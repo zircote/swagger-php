@@ -39,6 +39,7 @@ class ComponentsClass2
 )]
 #[OAT\Get(
     path: '/endpoint',
+    operationId: 'getEndpoint',
     responses: [
         new OAT\Response(
             response: 200,

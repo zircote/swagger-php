@@ -9,7 +9,7 @@ docs/.vitepress/dist/
 docs/node_modules/
 docs/package-lock.json
 node_modules/
-scratch/
+/scratch/
 vendor/
 .idea/
 .phpstan/

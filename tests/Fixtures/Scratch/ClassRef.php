@@ -16,6 +16,7 @@ class ClassRef
 #[OAT\Info(title: 'ClassRef', version: '1.0')]
 #[OAT\Get(
     path: '/endpoint',
+    operationId: 'ClassRefEndpoint',
     responses: [
         new OAT\Response(
             response: 200,

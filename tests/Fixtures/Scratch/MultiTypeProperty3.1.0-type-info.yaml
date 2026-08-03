@@ -6,7 +6,7 @@ paths:
   /api/endpoint:
     get:
       description: 'An endpoint'
-      operationId: 18b884f3d600e07547af2c8e4f1258ea
+      operationId: 'multiTypePropertyEndpoint'
       responses:
         '200':
           description: OK

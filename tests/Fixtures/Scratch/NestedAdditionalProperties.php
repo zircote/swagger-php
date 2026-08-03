@@ -15,6 +15,7 @@ use OpenApi\Attributes as OAT;
 #[OAT\Get(
     path: '/api/endpoint',
     description: 'An endpoint',
+    operationId: 'nestedAdditionalProperties',
     responses: [new OAT\Response(response: 200, description: 'OK')]
 )]
 #[OAT\Schema(
@@ -26,6 +27,6 @@ use OpenApi\Attributes as OAT;
     ),
     type: 'object'
 )]
-class NestedAdditionalAttributes
+class NestedAdditionalProperties
 {
 }

@@ -14,13 +14,16 @@ final class CustomOpenApiProperty extends OAT\Property
 }
 
 #[OAT\Info(title: 'Api', version: '1.0.0')]
-#[OAT\Get(path: '/api')]
+#[OAT\Get(
+    path: '/api',
+    operationId: 'api',
+)]
 #[OAT\Response(response: 200, description: 'All good')]
-class Controller
+class CustomOpenApiPropertyController
 {
 }
 
-#[OAT\Schema]
+#[OAT\Schema(schema: 'CustomPropertyAttribute')]
 class CustomPropertyAttribute
 {
     public function __construct(

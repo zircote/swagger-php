@@ -16,6 +16,7 @@ class JsonContentEquiv
 #[OAT\Info(title: 'JsonContentEquiv', version: '1.0')]
 #[OAT\Get(
     path: '/endpoint/json-content',
+    operationId: 'jsonContentEquiv1',
     responses: [
         new OAT\Response(
             response: 200,
@@ -32,6 +33,7 @@ class JsonContentEquivEndpoint1
 
 #[OAT\Get(
     path: '/endpoint/media-type',
+    operationId: 'jsonContentEquiv2',
     responses: [
         new OAT\Response(
             response: 200,

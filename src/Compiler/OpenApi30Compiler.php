@@ -97,6 +97,13 @@ class OpenApi30Compiler extends OpenApi31Compiler
         }
 
         if ($schema->ref !== null) {
+            if ($schema->nullable === true) {
+                return $this->filter([
+                    'oneOf' => [['$ref' => $schema->ref]],
+                    'nullable' => true,
+                ], $schema);
+            }
+
             return ['$ref' => $schema->ref];
         }
 

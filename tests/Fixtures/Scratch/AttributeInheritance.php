@@ -41,6 +41,7 @@ class Child2 extends Base
 #[OAT\Get(
     path: '/api/endpoint',
     description: 'An endpoint',
+    operationId: 'getEndpoint',
     responses: [new OAT\Response(response: 200, description: 'OK')]
 )]
 class AttributeInheritanceEndpoint

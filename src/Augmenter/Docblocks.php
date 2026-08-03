@@ -157,6 +157,17 @@ class Docblocks implements PipeInterface
 
         if ($reflector instanceof \ReflectionParameter) {
             $name = $reflector->getName();
+
+            // PHP 8.6+ exposes docblocks on parameters directly
+            if (method_exists($reflector, 'getDocComment') && ($doc = $reflector->getDocComment()) !== false) {
+                $varLine = $this->parser->parseVarLine($doc);
+                if ($varLine['description'] !== null) {
+                    $parameter->description = $varLine['description'];
+
+                    return;
+                }
+            }
+
             if (isset($parentParamTags[$name]) && $parentParamTags[$name]['description'] !== null) {
                 $parameter->description = $parentParamTags[$name]['description'];
 
@@ -211,7 +222,18 @@ class Docblocks implements PipeInterface
                     $content = $this->parser->parseDocblock($docblock);
                     if ($content !== '' && !Undefined::isDefault($content)) {
                         $property->schema->description = $content;
+                    } else {
+                        // parseDocblock() only extracts free text before tags;
+                        // descriptions embedded in @var tags (e.g. "@var string The name") need parseVarLine()
+                        $varLine = $this->parser->parseVarLine($docblock);
+                        if ($varLine['description'] !== null) {
+                            $property->schema->description = $varLine['description'];
+                        }
                     }
+                }
+
+                if ($property->schema->deprecated === null && $this->parser->isDeprecated($docblock)) {
+                    $property->schema->deprecated = true;
                 }
 
                 if (Undefined::isDefault($property->schema->example)) {

@@ -36,6 +36,7 @@ class ExclusiveMinMax
     #[OAT\Get(
         path: '/api/endpoint',
         description: 'An endpoint',
+        operationId: 'exclusiveMinMax',
         responses: [new OAT\Response(response: 200, description: 'OK')]
     )]
     public function exclusiveMinMax()

@@ -5,7 +5,7 @@ info:
 paths:
   '/endpoint/{name}/{other}':
     get:
-      operationId: fc70869eba6848b340d6f3546b63e344
+      operationId: 'examples'
       parameters:
         -
           name: name

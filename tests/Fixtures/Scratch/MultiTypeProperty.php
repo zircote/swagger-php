@@ -37,6 +37,7 @@ class MultiTypeProperty
 #[OAT\Get(
     path: '/api/endpoint',
     description: 'An endpoint',
+    operationId: 'multiTypePropertyEndpoint',
     responses: [new OAT\Response(response: 200, description: 'OK')]
 )]
 class MultiTypePropertyEndpoint

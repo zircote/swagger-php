@@ -56,10 +56,12 @@ class Inheritance implements PipeInterface
             }
 
             $existingProperties = array_map(fn (OA\Property $property): ?string => $property->property, $schema->properties ?? []);
+
             $this->expandParents($schema, $reflector, $schemaMap, $existingProperties);
             $this->expandTraits($schema, $reflector, $schemaMap, $existingProperties);
             $this->expandInterfaces($schema, $reflector, $schemaMap, $existingProperties);
             $this->mergeAllOf($schema);
+            $this->dedupAllOfRefs($schema);
         }
 
         return null;
@@ -187,6 +189,26 @@ class Inheritance implements PipeInterface
 
         $schema->allOf[] = new OA\Schema(type: 'object', properties: $schema->properties);
         $schema->properties = null;
+    }
+
+    protected function dedupAllOfRefs(OA\Schema $schema): void
+    {
+        if ($schema->allOf === null || $schema->allOf === []) {
+            return;
+        }
+
+        $unique = [];
+        foreach ($schema->allOf as $ii => $allOf) {
+            if ($allOf->ref !== null) {
+                if (isset($unique[$allOf->ref])) {
+                    continue;
+                }
+                $unique[$allOf->ref] = $allOf;
+            } else {
+                $unique[$ii] = $allOf;
+            }
+        }
+        $schema->allOf = array_values($unique);
     }
 
     /**
