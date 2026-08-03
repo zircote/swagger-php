@@ -11,11 +11,11 @@ use OpenApi\Spec as OA;
 #[OA\Schema(schema: 'Result', title: 'Sample schema for using references')]
 class ResultSchema
 {
-    #[OA\Property(property: 'status')]
+    #[OA\Property]
     #[OA\Schema(type: 'string')]
     public $status;
 
-    #[OA\Property(property: 'error')]
+    #[OA\Property]
     #[OA\Schema(type: 'string')]
     public $error;
 }

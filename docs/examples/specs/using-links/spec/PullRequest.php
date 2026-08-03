@@ -11,24 +11,24 @@ use OpenApi\Spec as OA;
 #[OA\Schema(schema: 'pullrequest')]
 class PullRequest
 {
-    #[OA\Property(property: 'id')]
+    #[OA\Property]
     #[OA\Schema(type: 'integer')]
     public $id;
 
-    #[OA\Property(property: 'title')]
+    #[OA\Property]
     #[OA\Schema(type: 'string')]
     public $title;
 
-    #[OA\Property(property: 'repository')]
+    #[OA\Property]
     #[OA\Schema(ref: Repository::class)]
     public $repository;
 
-    #[OA\Property(property: 'author')]
+    #[OA\Property]
     #[OA\Schema(ref: User::class)]
     public $author;
 
     public function __construct(
-        #[OA\Property(property: 'state')]
+        #[OA\Property]
         public State $state,
     ) {
     }

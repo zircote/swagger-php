@@ -14,7 +14,7 @@ final class Employee extends AbstractResponsible
     #[OA\Property(property: 'type')]
     protected const TYPE = 'Virtual';
 
-    #[OA\Property(property: 'property2')]
+    #[OA\Property]
     #[OA\Schema(nullable: false)]
     public string $property2;
 }

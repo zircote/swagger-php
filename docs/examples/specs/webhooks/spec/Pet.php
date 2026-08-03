@@ -11,13 +11,13 @@ use OpenApi\Spec as OA;
 #[OA\Schema(required: ['id', 'name'])]
 final class Pet
 {
-    #[OA\Property(property: 'id')]
+    #[OA\Property]
     #[OA\Schema(format: 'int64')]
     public int $id;
 
-    #[OA\Property(property: 'name')]
+    #[OA\Property]
     public string $name;
 
-    #[OA\Property(property: 'tag')]
+    #[OA\Property]
     public string $tag;
 }

@@ -11,11 +11,11 @@ use OpenApi\Spec as OA;
 #[OA\Schema(schema: 'user')]
 class User
 {
-    #[OA\Property(property: 'username')]
+    #[OA\Property]
     #[OA\Schema(type: 'string')]
     public $username;
 
-    #[OA\Property(property: 'uuid')]
+    #[OA\Property]
     #[OA\Schema(type: 'string')]
     public $uuid;
 }

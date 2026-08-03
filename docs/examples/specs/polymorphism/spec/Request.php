@@ -13,6 +13,6 @@ final class Request
 {
     protected const TYPE = 'employee';
 
-    #[OA\Property(property: 'payload')]
+    #[OA\Property]
     public AbstractResponsible $payload;
 }

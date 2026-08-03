@@ -22,7 +22,7 @@ abstract class AbstractResponsible
 {
     protected const TYPE = null;
 
-    #[OA\Property(property: 'type')]
+    #[OA\Property]
     #[OA\Schema(nullable: false, enum: ['employee', 'assignee', 'fl'])]
     protected string $type;
 

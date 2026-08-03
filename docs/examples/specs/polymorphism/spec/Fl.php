@@ -13,6 +13,6 @@ final class Fl extends AbstractResponsible
 {
     public const TYPE = 'fl';
 
-    #[OA\Property(property: 'property3')]
+    #[OA\Property]
     public ?string $property3 = null;
 }

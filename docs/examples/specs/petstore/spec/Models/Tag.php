@@ -17,11 +17,11 @@ use OpenApi\Spec as OA;
 )]
 class Tag
 {
-    #[OA\Property(property: 'id')]
+    #[OA\Property]
     #[OA\Schema(title: 'ID', description: 'ID', format: 'int64')]
     private int $id;
 
-    #[OA\Property(property: 'name')]
+    #[OA\Property]
     #[OA\Schema(title: 'Name', description: 'Name')]
     private string $name;
 }

@@ -14,8 +14,8 @@ class Product implements ProductInterface
     /**
      * The unique identifier of a product in our catalog.
      */
-    #[OA\Property(property: 'id')]
-    #[OA\Schema(type: 'integer', format: 'int64', example: 1)]
+    #[OA\Property]
+    #[OA\Schema(format: 'int64', example: 1)]
     public int $id;
 
     public function getName(): string
