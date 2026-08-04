@@ -30,7 +30,6 @@ return RectorConfig::configure()
             __DIR__ . '/src/Processors/ExpandEnums.php',
         ],
         NewlineAfterStatementRector::class,
-        NullableCompareToNullRector::class,
         StringClassNameToClassConstantRector::class => [
             __DIR__ . '/src/Analysers/DocBlockParser.php',
             __DIR__ . '/src/Analysers/TypeResolverTrait.php',
@@ -40,10 +39,6 @@ return RectorConfig::configure()
             __DIR__ . '/tests/ContextTest.php',
             __DIR__ . '/tests/Utils/TokenScannerTest.php',
         ],
-        WrapEncapsedVariableInCurlyBracesRector::class => [
-            __DIR__ . '/src/Type/LegacyTypeResolver.php',
-        ],
-        EncapsedStringsToSprintfRector::class,
         ParamTypeByMethodCallTypeRector::class => [
             __DIR__ . '/src/Serializer.php',
         ],
