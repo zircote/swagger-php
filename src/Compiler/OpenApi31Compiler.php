@@ -72,44 +72,17 @@ class OpenApi31Compiler implements CompilerInterface
     {
         $version = $specification->openapi->version ?? $this->getVersion();
 
-        $output = $this->filter(['openapi' => $version], $specification->openapi);
-
-        if ($specification->info instanceof OA\Info) {
-            $output['info'] = $this->compileInfo($specification->info);
-        }
-
-        if ($specification->servers) {
-            $output['servers'] = array_map($this->compileServer(...), $specification->servers);
-        }
-
-        $paths = $this->compilePaths($specification->operations, $specification->pathItems);
-        if ($paths !== []) {
-            $output['paths'] = $paths;
-        }
-
-        $webhooks = $this->compileWebhooks($specification->operations);
-        if ($webhooks !== []) {
-            $output['webhooks'] = $webhooks;
-        }
-
-        if ($specification->tags) {
-            $output['tags'] = array_map($this->compileTag(...), $specification->tags);
-        }
-
-        if ($specification->openapi->security) {
-            $output['security'] = $this->compileSecurity($specification->openapi->security);
-        }
-
-        if ($specification->externalDocs) {
-            $output['externalDocs'] = $this->compileExternalDocs($specification->externalDocs[0]);
-        }
-
-        $components = $this->compileComponents($specification);
-        if ($components !== []) {
-            $output['components'] = $components;
-        }
-
-        return $output;
+        return $this->filter([
+            'openapi' => $version,
+            'info' => $specification->info instanceof OA\Info ? $this->compileInfo($specification->info) : null,
+            'servers' => array_map($this->compileServer(...), $specification->servers),
+            'paths' => $this->compilePaths($specification->operations, $specification->pathItems),
+            'webhooks' => $this->compileWebhooks($specification->operations),
+            'tags' => array_map($this->compileTag(...), $specification->tags),
+            'security' => $this->compileSecurity($specification->openapi->security ?? []),
+            'externalDocs' => $specification->externalDocs ? $this->compileExternalDocs($specification->externalDocs[0]) : null,
+            'components' => $this->compileComponents($specification),
+        ], $specification->openapi);
     }
 
     protected function compileInfo(OA\Info $info): array
@@ -212,30 +185,20 @@ class OpenApi31Compiler implements CompilerInterface
                 continue;
             }
 
-            $paths[$pathItem->path] ??= [];
-            $this->mergePathItem($paths[$pathItem->path], $pathItem);
+            $paths[$pathItem->path] = ($paths[$pathItem->path] ?? []) + $this->compilePathItem($pathItem);
         }
 
         return $paths;
     }
 
-    protected function mergePathItem(array &$pathEntry, OA\PathItem $pathItem): void
+    protected function compilePathItem(OA\PathItem $pathItem): array
     {
-        if ($pathItem->summary !== null) {
-            $pathEntry['summary'] = $pathItem->summary;
-        }
-
-        if ($pathItem->description !== null) {
-            $pathEntry['description'] = $pathItem->description;
-        }
-
-        if ($pathItem->parameters) {
-            $pathEntry['parameters'] = array_map($this->compileParameter(...), $pathItem->parameters);
-        }
-
-        if ($pathItem->servers) {
-            $pathEntry['servers'] = array_map($this->compileServer(...), $pathItem->servers);
-        }
+        return $this->filter([
+            'summary' => $pathItem->summary,
+            'description' => $pathItem->description,
+            'parameters' => array_map($this->compileParameter(...), $pathItem->parameters ?? []),
+            'servers' => array_map($this->compileServer(...), $pathItem->servers ?? []),
+        ], $pathItem);
     }
 
     /**
@@ -266,13 +229,13 @@ class OpenApi31Compiler implements CompilerInterface
             'description' => $operation->description,
             'externalDocs' => $operation->externalDocs instanceof OA\ExternalDocumentation ? $this->compileExternalDocs($operation->externalDocs) : null,
             'operationId' => $operation->operationId,
-            'parameters' => $operation->parameters ? array_map($this->compileParameter(...), $operation->parameters) : null,
+            'parameters' => array_map($this->compileParameter(...), $operation->parameters ?? []),
             'requestBody' => $operation->requestBody instanceof OA\RequestBody ? $this->compileRequestBody($operation->requestBody) : null,
-            'responses' => $operation->responses ? $this->compileResponses($operation->responses) : null,
-            'callbacks' => $operation->callbacks !== null ? $this->compileCallbacks($operation->callbacks) : null,
+            'responses' => $this->compileResponses($operation->responses ?? []),
+            'callbacks' => $this->compileCallbacks($operation->callbacks ?? []),
             'deprecated' => $operation->deprecated,
-            'security' => $operation->security ? $this->compileSecurity($operation->security) : null,
-            'servers' => $operation->servers ? array_map($this->compileServer(...), $operation->servers) : null,
+            'security' => $this->compileSecurity($operation->security ?? []),
+            'servers' => array_map($this->compileServer(...), $operation->servers ?? []),
         ], $operation);
     }
 
@@ -281,7 +244,6 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function compileCallbacks(array $callbacks): array
     {
-
         return array_map($this->compileCallbackValue(...), $callbacks);
     }
 
@@ -324,8 +286,8 @@ class OpenApi31Compiler implements CompilerInterface
             'allowReserved' => $parameter->allowReserved,
             'schema' => $parameter->schema instanceof OA\Schema ? $this->compileSchema($parameter->schema) : null,
             'example' => $parameter->example,
-            'examples' => $parameter->examples !== null ? $this->compileExamples($parameter->examples) : null,
-            'content' => $parameter->content !== null ? $this->compileMediaTypes($parameter->content) : null,
+            'examples' => $this->compileExamples($parameter->examples ?? []),
+            'content' => $this->compileMediaTypes($parameter->content ?? []),
         ], $parameter);
     }
 
@@ -337,7 +299,7 @@ class OpenApi31Compiler implements CompilerInterface
 
         return $this->filter([
             'description' => $body->description,
-            'content' => $body->content ? $this->compileMediaTypes($body->content) : null,
+            'content' => $this->compileMediaTypes($body->content ?? []),
             'required' => $body->required,
         ], $body);
     }
@@ -348,14 +310,7 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function compileResponses(array $responses): array
     {
-        $result = [];
-
-        foreach ($responses as $response) {
-            $key = (string) $response->response;
-            $result[$key] = $this->compileResponse($response);
-        }
-
-        return $result;
+        return $this->compileNamedMap($responses, fn (OA\Response $response) => (string) $response->response, $this->compileResponse(...));
     }
 
     protected function compileResponse(OA\Response $response): array
@@ -364,31 +319,11 @@ class OpenApi31Compiler implements CompilerInterface
             return ['$ref' => $response->ref];
         }
 
-        $headers = null;
-        if ($response->headers) {
-            $headers = [];
-            foreach ($response->headers as $header) {
-                if ($header->header !== null) {
-                    $headers[$header->header] = $this->compileHeader($header);
-                }
-            }
-            $headers = $headers ?: null;
-        }
-
-        $links = null;
-        if ($response->links) {
-            $links = [];
-            foreach ($response->links as $link) {
-                $name = $link->link ?? $link->operationId ?? 'link';
-                $links[$name] = $this->compileLink($link);
-            }
-        }
-
         return $this->filter([
             'description' => $response->description,
-            'headers' => $headers,
-            'content' => $response->content ? $this->compileMediaTypes($response->content) : null,
-            'links' => $links,
+            'headers' => $this->compileNamedMap($response->headers ?? [], 'header', $this->compileHeader(...)),
+            'content' => $this->compileMediaTypes($response->content ?? []),
+            'links' => $this->compileNamedMap($response->links ?? [], fn (OA\Link $link) => $link->link ?? $link->operationId ?? 'link', $this->compileLink(...)),
         ], $response);
     }
 
@@ -406,8 +341,8 @@ class OpenApi31Compiler implements CompilerInterface
             'explode' => $header->explode,
             'schema' => $header->schema instanceof OA\Schema ? $this->compileSchema($header->schema) : null,
             'example' => $header->example,
-            'examples' => $header->examples !== null ? $this->compileExamples($header->examples) : null,
-            'content' => $header->content !== null ? $this->compileMediaTypes($header->content) : null,
+            'examples' => $this->compileExamples($header->examples ?? []),
+            'content' => $this->compileMediaTypes($header->content ?? []),
         ], $header);
     }
 
@@ -417,51 +352,24 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function compileMediaTypes(array $mediaTypes): array
     {
-        $result = [];
-
-        foreach ($mediaTypes as $mediaType) {
-            $key = $mediaType->mediaType ?? 'application/json';
-            $result[$key] = $this->compileMediaType($mediaType);
-        }
-
-        return $result;
+        return $this->compileNamedMap($mediaTypes, fn (OA\MediaType $mediaType) => $mediaType->mediaType ?? 'application/json', $this->compileMediaType(...));
     }
 
     protected function compileMediaType(OA\MediaType $mediaType): array
     {
-        $encoding = null;
-        if ($mediaType->encoding) {
-            $encoding = [];
-            foreach ($mediaType->encoding as $enc) {
-                $key = $enc->encoding ?? (string) count($encoding);
-                $encoding[$key] = $this->compileEncoding($enc);
-            }
-        }
-
         return $this->filter([
             'schema' => $mediaType->schema instanceof OA\Schema ? $this->compileSchema($mediaType->schema) : null,
             'example' => $mediaType->example,
-            'examples' => $mediaType->examples !== null ? $this->compileExamples($mediaType->examples) : null,
-            'encoding' => $encoding,
+            'examples' => $this->compileExamples($mediaType->examples ?? []),
+            'encoding' => $this->compileNamedMap($mediaType->encoding ?? [], 'encoding', $this->compileEncoding(...)),
         ], $mediaType);
     }
 
     protected function compileEncoding(OA\Encoding $encoding): array
     {
-        $headers = null;
-        if ($encoding->headers) {
-            $headers = [];
-            foreach ($encoding->headers as $header) {
-                if ($header->header !== null) {
-                    $headers[$header->header] = $this->compileHeader($header);
-                }
-            }
-            $headers = $headers ?: null;
-        }
-
         return $this->filter([
             'contentType' => $encoding->contentType,
-            'headers' => $headers,
+            'headers' => $this->compileNamedMap($encoding->headers ?? [], 'header', $this->compileHeader(...)),
             'style' => $encoding->style,
             'explode' => $encoding->explode,
             'allowReserved' => $encoding->allowReserved,
@@ -491,12 +399,10 @@ class OpenApi31Compiler implements CompilerInterface
         }
 
         if ($schema->ref !== null) {
-            $ref = ['$ref' => $schema->ref];
-            if ($schema->description !== null) {
-                $ref['description'] = $schema->description;
-            }
-
-            return $ref;
+            return $this->filter([
+                '$ref' => $schema->ref,
+                'description' => $schema->description,
+            ], $schema);
         }
 
         $type = $schema->type;
@@ -563,7 +469,7 @@ class OpenApi31Compiler implements CompilerInterface
             'else' => $schema->else instanceof OA\Schema ? $this->compileSchema($schema->else) : null,
 
             // Examples
-            'examples' => $schema->examples !== null ? $this->compileExamples($schema->examples) : null,
+            'examples' => $this->compileExamples($schema->examples ?? []),
 
             // Meta
             'deprecated' => $schema->deprecated,
@@ -633,81 +539,16 @@ class OpenApi31Compiler implements CompilerInterface
 
     protected function compileComponents(Specification $specification): array
     {
-        $components = [];
-
-        if ($specification->schemas) {
-            $schemas = [];
-            foreach ($specification->schemas as $schema) {
-                $name = $schema->schema ?? $schema->title ?? 'Schema';
-                $schemas[$name] = $this->compileSchema($schema);
-            }
-            $components['schemas'] = $schemas;
-        }
-
-        if ($specification->responses) {
-            $responses = [];
-            foreach ($specification->responses as $response) {
-                $key = (string) $response->response;
-                $responses[$key] = $this->compileResponse($response);
-            }
-            $components['responses'] = $responses;
-        }
-
-        if ($specification->parameters) {
-            $parameters = [];
-            foreach ($specification->parameters as $parameter) {
-                $name = $parameter->parameter ?? $parameter->name ?? 'param';
-                $parameters[$name] = $this->compileParameter($parameter);
-            }
-            $components['parameters'] = $parameters;
-        }
-
-        if ($specification->requestBodies) {
-            $bodies = [];
-            foreach ($specification->requestBodies as $i => $body) {
-                $name = $body->request ?? 'body' . $i;
-                $bodies[$name] = $this->compileRequestBody($body);
-            }
-            $components['requestBodies'] = $bodies;
-        }
-
-        if ($specification->headers) {
-            $headers = [];
-            foreach ($specification->headers as $header) {
-                $name = $header->header ?? 'header';
-                $headers[$name] = $this->compileHeader($header);
-            }
-            $components['headers'] = $headers;
-        }
-
-        if ($specification->securitySchemes) {
-            $schemes = [];
-            foreach ($specification->securitySchemes as $scheme) {
-                $name = $scheme->securityScheme ?? 'scheme';
-                $schemes[$name] = $this->compileSecurityScheme($scheme);
-            }
-            $components['securitySchemes'] = $schemes;
-        }
-
-        if ($specification->links) {
-            $links = [];
-            foreach ($specification->links as $link) {
-                $name = $link->link ?? $link->operationId ?? 'link';
-                $links[$name] = $this->compileLink($link);
-            }
-            $components['links'] = $links;
-        }
-
-        if ($specification->examples) {
-            $examples = [];
-            foreach ($specification->examples as $example) {
-                $name = $example->example ?? 'example';
-                $examples[$name] = $this->compileExample($example);
-            }
-            $components['examples'] = $examples;
-        }
-
-        return $components;
+        return array_filter([
+            'schemas' => $this->compileNamedMap($specification->schemas, fn (OA\Schema $schema) => $schema->schema ?? $schema->title ?? 'Schema', $this->compileSchema(...)),
+            'responses' => $this->compileNamedMap($specification->responses, fn (OA\Response $response) => (string) $response->response, $this->compileResponse(...)),
+            'parameters' => $this->compileNamedMap($specification->parameters, fn (OA\Parameter $parameter) => $parameter->parameter ?? $parameter->name ?? 'param', $this->compileParameter(...)),
+            'requestBodies' => $this->compileNamedMap($specification->requestBodies, fn (OA\RequestBody $body, int $index) => $body->request ?? 'body' . $index, $this->compileRequestBody(...)),
+            'headers' => $this->compileNamedMap($specification->headers, 'header', $this->compileHeader(...)),
+            'securitySchemes' => $this->compileNamedMap($specification->securitySchemes, 'securityScheme', $this->compileSecurityScheme(...)),
+            'links' => $this->compileNamedMap($specification->links, fn (OA\Link $link) => $link->link ?? $link->operationId ?? 'link', $this->compileLink(...)),
+            'examples' => $this->compileNamedMap($specification->examples, 'example', $this->compileExample(...)),
+        ]);
     }
 
     /**
@@ -736,7 +577,7 @@ class OpenApi31Compiler implements CompilerInterface
             'scheme' => $scheme->scheme,
             'bearerFormat' => $scheme->bearerFormat,
             'openIdConnectUrl' => $scheme->openIdConnectUrl,
-            'flows' => $scheme->flows !== null ? $this->compileFlows($scheme->flows) : null,
+            'flows' => $this->compileFlows($scheme->flows ?? []),
         ], $scheme);
     }
 
@@ -782,14 +623,7 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function compileExamples(array $examples): array
     {
-        $result = [];
-
-        foreach ($examples as $example) {
-            $name = $example->example ?? 'example';
-            $result[$name] = $this->compileExample($example);
-        }
-
-        return $result;
+        return $this->compileNamedMap($examples, 'example', $this->compileExample(...));
     }
 
     protected function validateSchemas(Specification $specification): void
@@ -816,6 +650,23 @@ class OpenApi31Compiler implements CompilerInterface
         });
 
         return $schemas;
+    }
+
+    /**
+     * @param  list<object>        $items
+     * @param  string|\Closure     $key   Property name or fn($item, $index): string
+     * @return array<string,mixed>
+     */
+    protected function compileNamedMap(array $items, string|\Closure $key, \Closure $compiler): array
+    {
+        $result = [];
+
+        foreach ($items as $index => $item) {
+            $name = $key instanceof \Closure ? $key($item, $index) : ($item->$key ?? (string) $index);
+            $result[$name] = $compiler($item);
+        }
+
+        return $result;
     }
 
     /**
