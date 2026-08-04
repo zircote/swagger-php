@@ -26,7 +26,7 @@ class Cookie extends OA\Parameter
     public function __construct(
         ?string $parameter = null,
         ?string $name = null,
-        ?string $description = null,
+        ?string $description = Undefined::UNDEFINED,
         ?bool $required = null,
         ?bool $deprecated = null,
         ?string $ref = null,
