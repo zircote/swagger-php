@@ -310,7 +310,7 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function compileResponses(array $responses): array
     {
-        return $this->compileNamedMap($responses, fn (OA\Response $response) => (string) $response->response, $this->compileResponse(...));
+        return $this->compileNamedMap($responses, fn (OA\Response $response): string => (string) $response->response, $this->compileResponse(...));
     }
 
     protected function compileResponse(OA\Response $response): array
@@ -323,7 +323,7 @@ class OpenApi31Compiler implements CompilerInterface
             'description' => $response->description,
             'headers' => $this->compileNamedMap($response->headers ?? [], 'header', $this->compileHeader(...)),
             'content' => $this->compileMediaTypes($response->content ?? []),
-            'links' => $this->compileNamedMap($response->links ?? [], fn (OA\Link $link) => $link->link ?? $link->operationId ?? 'link', $this->compileLink(...)),
+            'links' => $this->compileNamedMap($response->links ?? [], fn (OA\Link $link): string => $link->link ?? $link->operationId ?? 'link', $this->compileLink(...)),
         ], $response);
     }
 
@@ -352,7 +352,7 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function compileMediaTypes(array $mediaTypes): array
     {
-        return $this->compileNamedMap($mediaTypes, fn (OA\MediaType $mediaType) => $mediaType->mediaType ?? 'application/json', $this->compileMediaType(...));
+        return $this->compileNamedMap($mediaTypes, fn (OA\MediaType $mediaType): string => $mediaType->mediaType ?? 'application/json', $this->compileMediaType(...));
     }
 
     protected function compileMediaType(OA\MediaType $mediaType): array
@@ -540,13 +540,13 @@ class OpenApi31Compiler implements CompilerInterface
     protected function compileComponents(Specification $specification): array
     {
         return array_filter([
-            'schemas' => $this->compileNamedMap($specification->schemas, fn (OA\Schema $schema) => $schema->schema ?? $schema->title ?? 'Schema', $this->compileSchema(...)),
-            'responses' => $this->compileNamedMap($specification->responses, fn (OA\Response $response) => (string) $response->response, $this->compileResponse(...)),
-            'parameters' => $this->compileNamedMap($specification->parameters, fn (OA\Parameter $parameter) => $parameter->parameter ?? $parameter->name ?? 'param', $this->compileParameter(...)),
-            'requestBodies' => $this->compileNamedMap($specification->requestBodies, fn (OA\RequestBody $body, int $index) => $body->request ?? 'body' . $index, $this->compileRequestBody(...)),
+            'schemas' => $this->compileNamedMap($specification->schemas, fn (OA\Schema $schema): string => $schema->schema ?? $schema->title ?? 'Schema', $this->compileSchema(...)),
+            'responses' => $this->compileNamedMap($specification->responses, fn (OA\Response $response): string => (string) $response->response, $this->compileResponse(...)),
+            'parameters' => $this->compileNamedMap($specification->parameters, fn (OA\Parameter $parameter): string => $parameter->parameter ?? $parameter->name ?? 'param', $this->compileParameter(...)),
+            'requestBodies' => $this->compileNamedMap($specification->requestBodies, fn (OA\RequestBody $body, int $index): string => $body->request ?? 'body' . $index, $this->compileRequestBody(...)),
             'headers' => $this->compileNamedMap($specification->headers, 'header', $this->compileHeader(...)),
             'securitySchemes' => $this->compileNamedMap($specification->securitySchemes, 'securityScheme', $this->compileSecurityScheme(...)),
-            'links' => $this->compileNamedMap($specification->links, fn (OA\Link $link) => $link->link ?? $link->operationId ?? 'link', $this->compileLink(...)),
+            'links' => $this->compileNamedMap($specification->links, fn (OA\Link $link): string => $link->link ?? $link->operationId ?? 'link', $this->compileLink(...)),
             'examples' => $this->compileNamedMap($specification->examples, 'example', $this->compileExample(...)),
         ]);
     }
