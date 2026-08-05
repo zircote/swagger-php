@@ -8,6 +8,7 @@ namespace OpenApi\Augmenter;
 
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Undefined;
 use OpenApi\Utils\PipeInterface;
 
 /**
@@ -89,7 +90,7 @@ class EnumDescriptions implements PipeInterface
         }
 
         $property->schema ??= new OA\Schema();
-        if ($property->schema->description === null) {
+        if (Undefined::isDefault($property->schema->description)) {
             $property->schema->description = $reflector->getShortName() . ' (' . implode('; ', $values) . ')';
         }
     }

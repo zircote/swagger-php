@@ -7,6 +7,7 @@
 namespace OpenApi\Spec\Operation;
 
 use OpenApi\Spec as OA;
+use OpenApi\Undefined;
 
 /**
  * Shorthand for an HTTP TRACE operation.
@@ -30,8 +31,8 @@ class Trace extends OA\Operation
         ?string $path = null,
         ?string $webhook = null,
         ?string $operationId = null,
-        ?string $summary = null,
-        ?string $description = null,
+        ?string $summary = Undefined::UNDEFINED,
+        ?string $description = Undefined::UNDEFINED,
         ?array $tags = null,
         ?array $parameters = null,
         ?OA\RequestBody $requestBody = null,

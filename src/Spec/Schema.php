@@ -114,7 +114,7 @@ class Schema extends AbstractAttribute
         // Identity
         public ?string $schema = null,
         public ?string $title = null,
-        public ?string $description = null,
+        public ?string $description = Undefined::UNDEFINED,
 
         // Reference
         public ?string $ref = null,

@@ -67,7 +67,7 @@ class Docblocks implements PipeInterface
 
     protected function augmentSummaryAndDescription(OA\Operation $operation): void
     {
-        if ($operation->summary !== null && $operation->description !== null) {
+        if (!Undefined::isDefault($operation->summary) && !Undefined::isDefault($operation->description)) {
             return;
         }
 
@@ -81,19 +81,19 @@ class Docblocks implements PipeInterface
             return;
         }
 
-        if ($operation->summary === null && $operation->description === null) {
+        if (Undefined::isDefault($operation->summary) && Undefined::isDefault($operation->description)) {
             $operation->summary = $this->extractSummary($content);
             $operation->description = $this->extractDescription($content);
-        } elseif ($operation->summary === null) {
+        } elseif (Undefined::isDefault($operation->summary)) {
             $operation->summary = $content;
-        } elseif ($operation->description === null) {
+        } elseif (Undefined::isDefault($operation->description)) {
             $operation->description = $content;
         }
     }
 
     protected function augmentDescription(OA\Schema $schema): void
     {
-        if ($schema->description !== null) {
+        if (!Undefined::isDefault($schema->description)) {
             return;
         }
 
@@ -149,7 +149,7 @@ class Docblocks implements PipeInterface
      */
     protected function augmentParameterDescription(OA\Parameter $parameter, array $parentParamTags = []): void
     {
-        if ($parameter->description !== null) {
+        if (!Undefined::isDefault($parameter->description)) {
             return;
         }
 
@@ -207,7 +207,7 @@ class Docblocks implements PipeInterface
             $docblock = $this->getDocComment($property->schema) ?? $this->getDocComment($property);
 
             if ($docblock) {
-                if ($property->schema->description === null) {
+                if (Undefined::isDefault($property->schema->description)) {
                     $content = $this->parser->parseDocblock($docblock);
                     if ($content !== '' && !Undefined::isDefault($content)) {
                         $property->schema->description = $content;

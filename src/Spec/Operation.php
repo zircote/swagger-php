@@ -6,6 +6,8 @@
 
 namespace OpenApi\Spec;
 
+use OpenApi\Undefined;
+
 /**
  * Describes a single API operation on a path.
  *
@@ -67,8 +69,8 @@ class Operation extends AbstractAttribute
         public ?string $webhook = null,
         string|HttpMethod|null $method = null,
         public ?string $operationId = null,
-        public ?string $summary = null,
-        public ?string $description = null,
+        public ?string $summary = Undefined::UNDEFINED,
+        public ?string $description = Undefined::UNDEFINED,
         public ?array $tags = null,
         public ?array $parameters = null,
         public ?RequestBody $requestBody = null,

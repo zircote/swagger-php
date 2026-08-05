@@ -72,7 +72,7 @@ class Parameter extends AbstractAttribute
         public ?string $parameter = null,
         public ?string $name = null,
         string|ParameterIn|null $in = null,
-        public ?string $description = null,
+        public ?string $description = Undefined::UNDEFINED,
         public ?bool $required = null,
         public ?bool $deprecated = null,
         public ?bool $allowEmptyValue = null,
