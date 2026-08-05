@@ -7,32 +7,24 @@
 namespace OpenApi;
 
 use OpenApi\Utils\AttributeFactory;
-use OpenApi\Utils\TokenScanner;
 
 /**
  * Collects OpenAPI spec attributes from PHP reflectors and assembles them into a Specification.
  *
- * The assembler operates in two passes:
+ * Resolution is purely attribute-relationship driven — no PHP structural semantics:
  *
- * 1. Stack-resolve (resolveNesting): On each reflector, sibling attributes are merged
- *    using merge() — e.g., a Schema adjacent to a Property on the same parameter
- *    fills the Property's $schema slot.
+ * 1. Merge (resolveNesting): sibling attributes on the same reflector are merged
+ *    using merge() — e.g., a Schema adjacent to a Property fills the Property's $schema slot.
  *
- * 2. Hierarchical absorb (resolveHierarchy): Attributes from inner reflectors (properties,
- *    parameters, constants) flow up into enclosing-level containers using contains() —
- *    e.g., Property instances from class members are absorbed into the class-level Schema.
- *
- * After both passes, only root attributes (isRoot() = true) should remain.
+ * 2. Absorb (resolveHierarchy): resolved attributes flow upward level by level using
+ *    contains() (first match wins). Roots that aren't absorbed pass through to the spec.
  */
 class Assembler
 {
-    protected TokenScanner $tokenScanner;
-
     public function __construct(
         protected Specification $specification = new Specification(),
         protected AttributeFactory $attributeFactory = new AttributeFactory(),
     ) {
-        $this->tokenScanner = $this->attributeFactory->getTokenScanner();
     }
 
     public function getSpecification(): Specification
@@ -61,50 +53,41 @@ class Assembler
     {
         $this->attributeFactory->resetTranslators();
 
-        if ($reflector instanceof \ReflectionClass) {
-            $this->collectFromClass($reflector);
+        $resolved = $this->resolveReflector($reflector);
 
-            return;
-        }
-
-        $this->specification->add(...$this->attributeFactory->fromReflector($reflector));
+        $this->specification->add(...$resolved);
     }
 
     /**
-     * Collect attributes from a class: stack-resolve at each structural level,
-     * then hierarchically absorb inner attributes into class-level containers.
+     * @return list<AttributeInterface>
      */
-    protected function collectFromClass(\ReflectionClass $class): void
+    protected function resolveReflector(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
     {
-        $outer = $this->attributeFactory->fromReflector($class);
-
-        if ($outer !== []) {
-            // Only collect own members when the class has a root attribute (e.g. Schema).
-            // Classes without root attributes (plain parents/traits) are handled later
-            // by the `Inheritance` augmenter, which merges their members into the child schema.
-            $inner = $this->attributeFactory->membersOf($class);
-            $roots = $this->attributeFactory->resolveHierarchy($outer, $inner);
-
-            $this->specification->add(...$roots);
+        if (!$reflector instanceof \ReflectionClass) {
+            return $this->attributeFactory->fromReflector($reflector);
         }
 
-        // Methods are always processed — a controller may have operations without
-        // any class-level schema attribute. Properties on methods are handled via
-        // membersOf() (absorbed into class schema) or ExpandHierarchy (non-schema interfaces).
-        foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            $scannerDetails = $this->tokenScanner->detailsFor($class);
-            if ($method->isConstructor()
-                || $method->getDeclaringClass()->getName() !== $class->getName()
-                || ($scannerDetails && !in_array($method->getName(), $scannerDetails['methods'], true))
-            ) {
-                continue;
-            }
+        $outer = $this->attributeFactory->fromReflector($reflector);
+        $inner = $this->attributeFactory->membersOf($reflector);
 
-            if ($this->attributeFactory->hasOnlyProperties($method)) {
-                continue;
-            }
-
-            $this->specification->add(...$this->attributeFactory->fromReflector($method));
+        if ($outer === [] && $inner === []) {
+            return [];
         }
+
+        $resolved = $this->attributeFactory->resolveHierarchy($outer, $inner);
+
+        $roots = [];
+        foreach ($resolved as $attribute) {
+            if ($attribute->isRoot()) {
+                $roots[] = $attribute;
+            } elseif ($outer !== []) {
+                throw OpenApiException::fromSource(
+                    sprintf('Non-root attribute %s remains after resolution', $attribute::class),
+                    $attribute->getSourceLocation(),
+                );
+            }
+        }
+
+        return $roots;
     }
 }
