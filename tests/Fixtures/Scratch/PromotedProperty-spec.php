@@ -6,21 +6,21 @@
 
 namespace OpenApi\Tests\Fixtures\Scratch;
 
-use OpenApi\Attributes as OAT;
+use OpenApi\Spec as OA;
 
-#[OAT\Schema(type: 'string')]
-enum MyEnum: string
+#[OA\Schema(schema: 'MyEnum', type: 'string')]
+enum MyEnumSpec: string
 {
     case AA = 'AA';
 }
 
-#[OAT\Schema]
-class PromotedPropertyDescription
+#[OA\Schema(schema: 'PromotedPropertyDescription')]
+class PromotedPropertyDescriptionSpec
 {
     /**
      * Property name.
      */
-    #[OAT\Property(property: 'thename')]
+    #[OA\Property(property: 'thename')]
     public string $name = '';
 
     public function __construct(
@@ -29,7 +29,7 @@ class PromotedPropertyDescription
          *
          * @var string
          */
-        #[OAT\Property(property: 'thevalue')]
+        #[OA\Property(property: 'thevalue')]
         public string $value = '',
 
         /**
@@ -37,7 +37,7 @@ class PromotedPropertyDescription
          *
          * @var string
          */
-        #[OAT\Property(property: 'other')]
+        #[OA\Property(property: 'other')]
         public string $other = '',
 
         /**
@@ -45,7 +45,7 @@ class PromotedPropertyDescription
          *
          * @var string
          */
-        #[OAT\Property(property: 'themeta')]
+        #[OA\Property(property: 'themeta')]
         public string $meta = '',
 
         /**
@@ -53,28 +53,28 @@ class PromotedPropertyDescription
          *
          * @var string
          */
-        #[OAT\Property]
+        #[OA\Property]
         public string $different = '',
 
         /*
          * Intentionally not promoted!
          */
-        #[OAT\Property]
-        MyEnum $myEnum = MyEnum::AA,
+        #[OA\Property]
+        MyEnumSpec $myEnum = MyEnumSpec::AA,
     ) {
     }
 }
 
-#[OAT\Info(
+#[OA\Info(
     title: 'Promoted Property Description Scratch',
     version: '1.0'
 )]
-#[OAT\Get(
+#[OA\Operation\Get(
     path: '/api/endpoint',
     description: 'An endpoint',
     operationId: 'getPromotedPropertyDescription',
-    responses: [new OAT\Response(response: 200, description: 'OK')]
+    responses: [new OA\Response(response: 200, description: 'OK')]
 )]
-class PromotedPropertyDescriptionEndpoint
+class PromotedPropertyDescriptionEndpointSpec
 {
 }

@@ -6,34 +6,34 @@
 
 namespace OpenApi\Tests\Fixtures\Scratch;
 
-use OpenApi\Attributes as OAT;
+use OpenApi\Spec as OA;
 
-#[OAT\Tag(
+#[OA\Tag(
     name: 'bool',
     x: ['custom-tag' => false],
 )]
-#[OAT\Tag(
+#[OA\Tag(
     name: 'int',
     x: ['custom-tag' => 2],
 )]
-#[OAT\Tag(
+#[OA\Tag(
     name: 'string',
     x: ['custom-tag' => 'foo'],
 )]
-class VendorExtensions
+class VendorExtensionsSpec
 {
 }
 
-#[OAT\Info(
+#[OA\Info(
     title: 'Vendor Extensions Scratch',
     version: '1.0'
 )]
-#[OAT\Get(
+#[OA\Operation\Get(
     path: '/api/endpoint',
     description: 'An endpoint',
     operationId: 'get',
-    responses: [new OAT\Response(response: 200, description: 'OK')]
+    responses: [new OA\Response(response: 200, description: 'OK')]
 )]
-class VendorExtensionsEndpoint
+class VendorExtensionsEndpointSpec
 {
 }

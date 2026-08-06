@@ -6,7 +6,7 @@ paths:
   /api/endpoint:
     get:
       description: 'An endpoint'
-      operationId: 22e79d8d650659ed1ced1f375c7e723d
+      operationId: 'getInheritedFilters'
       responses:
         '200':
           description: OK

@@ -6,24 +6,21 @@
 
 namespace OpenApi\Tests\Fixtures\Scratch;
 
-use OpenApi\Attributes as OAT;
+use OpenApi\Spec as OA;
 
-#[OAT\SecurityScheme(
-    type: 'apiKey',
+#[OA\Security\Scheme\ApiKey(
     name: 'api_key',
     in: 'header',
     securityScheme: 'api_key',
 )]
-#[OAT\SecurityScheme(
-    type: 'oauth2',
+#[OA\Security\Scheme\OAuth2(
     securityScheme: 'store_auth',
     flows: [
-        new OAT\Flow(
+        new OA\Flow(
             authorizationUrl: 'http://store.local/oauth/dialog',
-            flow: 'implicit',
-            scopes: [],
+            flow: OA\FlowType::Implicit,
         ),
-        new OAT\Flow(
+        new OA\Flow(
             authorizationUrl: 'http://store.local/login',
             flow: 'password',
             scopes: [
@@ -32,21 +29,21 @@ use OpenApi\Attributes as OAT;
         ),
     ],
 )]
-class Security
+class SecuritySpec
 {
 }
 
-#[OAT\Info(title: 'Security', version: '1.0')]
-#[OAT\Get(
+#[OA\Info(title: 'Security', version: '1.0')]
+#[OA\Operation\Get(
     path: '/endpoint',
     operationId: 'getInheritedFilters',
     responses: [
-        new OAT\Response(
+        new OA\Response(
             response: 200,
             description: 'All good',
         ),
     ]
 )]
-class SecurityEndpoint
+class SecurityEndpointSpec
 {
 }

@@ -5,7 +5,7 @@ info:
 paths:
   '/item/{item_name}':
     get:
-      operationId: 6ecb3788642c6ba8ce8d99cbcd554dbe
+      operationId: 'getItem'
       parameters:
         -
           $ref: '#/components/parameters/item_name'

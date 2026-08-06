@@ -204,6 +204,7 @@ class Schema extends AbstractAttribute
     public function merge(): array
     {
         return [
+            Components::class => 'schemas[]',
             Property::class => 'schema',
             Parameter::class => 'schema',
             Header::class => 'schema',

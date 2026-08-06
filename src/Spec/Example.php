@@ -40,6 +40,7 @@ class Example extends AbstractAttribute
     public function merge(): array
     {
         return [
+            Components::class => 'examples[]',
             MediaType::class => 'examples[]',
             Parameter::class => 'examples[]',
             Header::class => 'examples[]',

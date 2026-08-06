@@ -6,41 +6,46 @@
 
 namespace OpenApi\Tests\Fixtures\Scratch;
 
-use OpenApi\Attributes as OAT;
+use OpenApi\Spec as OA;
 
-#[OAT\Schema(
+#[OA\Schema(
+    schema: 'ItemDto',
     title: 'Item Dto',
     required: [
         'name',
     ],
 )]
-class ItemDto
+class ItemDtoSpec
 {
-    #[OAT\Property(example: 'Car')]
+    #[OA\Property]
+    #[OA\Schema(example: 'Car')]
     public string $name;
 }
 
-#[OAT\Schema(
+#[OA\Schema(
+    schema: 'PropertyItems',
     title: 'Property Items',
     required: [
         'list1',
     ],
 )]
-class PropertyItems
+class PropertyItemsSpec
 {
-    #[OAT\Property(
+    #[OA\Property]
+    #[OA\Schema\Items(
         description: 'Missing docblock',
-        items: new OAT\Items(type: ItemDto::class),
+        ref: ItemDtoSpec::class,
         minItems: 2,
     )]
     public ?array $list1;
 
     /**
-     * @var ItemDto[] $list2
+     * @var ItemDtoSpec[] $list2
      */
-    #[OAT\Property(
+    #[OA\Property]
+    #[OA\Schema\Items(
         description: 'With docblock',
-        items: new OAT\Items(type: ItemDto::class),
+        ref: ItemDtoSpec::class,
         minItems: 1,
     )]
     public array $list2;
@@ -48,25 +53,29 @@ class PropertyItems
     /**
      * @var string[] $list3
      */
-    #[OAT\Property(
+    #[OA\Property]
+    #[OA\Schema(
         description: 'Simple type',
-        items: new OAT\Items(type: 'string', minLength: 2),
+        items: new OA\Schema\Items(
+            type: 'string',
+            minLength: 2,
+        ),
         maxItems: 5,
         minItems: 0,
     )]
     public array $list3;
 }
 
-#[OAT\Info(
+#[OA\Info(
     title: 'Property Items Scratch',
     version: '1.0'
 )]
-#[OAT\Get(
+#[OA\Operation\Get(
     path: '/api/endpoint',
     description: 'An endpoint',
     operationId: 'getInheritedFilters',
-    responses: [new OAT\Response(response: 200, description: 'OK')]
+    responses: [new OA\Response(response: 200, description: 'OK')]
 )]
-class PropertyItemsEndpoint
+class PropertyItemsEndpointSpec
 {
 }

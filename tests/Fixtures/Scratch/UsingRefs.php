@@ -21,6 +21,7 @@ class UsingRefsResponse
 #[OAT\Info(title: 'Parameter Ref', version: '1.0.0')]
 #[OAT\Get(
     path: '/item/{item_name}',
+    operationId: 'getItem',
     parameters: [
         new OAT\Parameter(ref: '#/components/parameters/item_name'),
     ],

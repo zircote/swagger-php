@@ -46,7 +46,10 @@ class RequestBody extends AbstractAttribute
 
     public function merge(): array
     {
-        return [Operation::class => 'requestBody'];
+        return [
+            Components::class => 'requestBodies[]',
+            Operation::class => 'requestBody',
+        ];
     }
 
     public function contains(): array
