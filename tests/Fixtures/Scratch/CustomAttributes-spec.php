@@ -6,27 +6,27 @@
 
 namespace OpenApi\Tests\Fixtures\Scratch;
 
-use OpenApi\Attributes as OAT;
+use OpenApi\Spec as OA;
 
 // ======== custom attributes =======================
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-class CustomInfo extends OAT\Info
+class CustomInfoSpec extends OA\Info
 {
 }
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
-class CustomSchema extends OAT\Schema
+class CustomSchemaSpec extends OA\Schema
 {
 }
 
 #[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER)]
-class CustomProperty extends OAT\Property
+class CustomPropertySpec extends OA\Property
 {
 }
 
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER | \Attribute::TARGET_CLASS_CONSTANT | \Attribute::IS_REPEATABLE)]
-class CustomItem extends OAT\Property
+class CustomItemSpec extends OA\Property
 {
     /**
      * @param class-string $of
@@ -36,15 +36,17 @@ class CustomItem extends OAT\Property
         ?string $description = null
     ) {
         parent::__construct(
-            ref: $of,
-            title: (new \ReflectionClass($of))->getShortName(),
-            description: $description,
+            schema: new OA\Schema(
+                ref: $of,
+                title: str_replace('Spec', '', (new \ReflectionClass($of))->getShortName()),
+                description: $description,
+            )
         );
     }
 }
 
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER | \Attribute::TARGET_CLASS_CONSTANT | \Attribute::IS_REPEATABLE)]
-class CustomList extends OAT\Property
+class CustomListSpec extends OA\Property
 {
     /**
      * @param class-string $of
@@ -52,48 +54,50 @@ class CustomList extends OAT\Property
     public function __construct(string $of, ?string $description = null)
     {
         parent::__construct(
-            title: (new \ReflectionClass($of))->getShortName(),
-            description: $description,
-            items: new OAT\Items(ref: $of)
+            schema: new OA\Schema\Items(
+                title: str_replace('Spec', '', (new \ReflectionClass($of))->getShortName()),
+                description: $description,
+                ref: $of,
+            ),
         );
     }
 }
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
-class CustomGet extends OAT\Get
+class CustomGetSpec extends OA\Operation\Get
 {
 }
 
 // ======== application code =======================
 
-#[CustomSchema]
-class CAItemModel
+#[CustomSchemaSpec(schema: 'CAItemModel')]
+class CAItemModelSpec
 {
 }
 
-#[CustomSchema]
-class CAModel
+#[CustomSchemaSpec(schema: 'CAModel')]
+class CAModelSpec
 {
-    #[CustomProperty]
+    #[CustomPropertySpec]
     public ?string $name;
 
-    #[CustomItem(of: CAItemModel::class)]
-    public readonly CAItemModel $item;
+    #[CustomItemSpec(of: CAItemModelSpec::class)]
+    public readonly CAItemModelSpec $item;
 
-    #[CustomList(of: CAItemModel::class)]
+    #[CustomListSpec(of: CAItemModelSpec::class)]
     public readonly array $items;
 }
 
-#[CustomInfo(
+#[CustomInfoSpec(
     title: 'Extended Attributes Scratch',
     version: '1.0'
 )]
-#[CustomGet(
+#[CustomGetSpec(
     path: '/api/endpoint',
     description: 'An endpoint',
     operationId: 'CAEndpoint',
-    responses: [new OAT\Response(response: 200, description: 'OK')]
+    responses: [new OA\Response(response: 200, description: 'OK')]
 )]
-class CAEndpoint
+class CAEndpointSpec
 {
 }
