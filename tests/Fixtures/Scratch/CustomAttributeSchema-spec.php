@@ -6,28 +6,28 @@
 
 namespace OpenApi\Tests\Fixtures\Scratch;
 
-use OpenApi\Attributes as OAT;
+use OpenApi\Spec as OA;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
-class CustomAttributeSchema extends OAT\Schema
+class CustomAttributeSchemaSpec extends OA\Schema
 {
 }
 
-#[CustomAttributeSchema]
-class MyClass
+#[CustomAttributeSchemaSpec(schema: 'MyClass')]
+class MyClassSpec
 {
 }
 
-#[OAT\Info(
+#[OA\Info(
     title: 'Custom Attribute Schema Scratch',
     version: '1.0'
 )]
-#[OAT\Get(
+#[OA\Operation\Get(
     path: '/api/endpoint',
     description: 'An endpoint',
     operationId: 'customAttributeSchemaEndpoint',
-    responses: [new OAT\Response(response: 200, description: 'OK')]
+    responses: [new OA\Response(response: 200, description: 'OK')]
 )]
-class CustomAttributeSchemaEndpoint
+class CustomAttributeSchemaEndpointSpec
 {
 }
