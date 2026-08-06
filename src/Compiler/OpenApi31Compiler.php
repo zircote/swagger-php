@@ -402,7 +402,10 @@ class OpenApi31Compiler implements CompilerInterface
             if ($schema->nullable === true) {
                 return $this->filter([
                     'oneOf' => [
-                        ['$ref' => $schema->ref],
+                        $this->filter([
+                            '$ref' => $schema->ref,
+                            'description' => Undefined::isDefault($schema->description) ? null : $schema->description,
+                        ]),
                         ['type' => 'null'],
                     ],
                 ], $schema);
@@ -728,11 +731,11 @@ class OpenApi31Compiler implements CompilerInterface
     /**
      * Remove null entries and apply x- extensions.
      */
-    protected function filter(array $result, OA\AbstractAttribute $attribute): array
+    protected function filter(array $result, OA\AbstractAttribute|null $attribute = null): array
     {
         $result = array_filter($result, fn ($value): bool => !in_array($value, [null, Undefined::UNDEFINED, []], true));
 
-        if ($attribute->x !== null) {
+        if ($attribute?->x !== null) {
             foreach ($attribute->x as $key => $value) {
                 $result['x-' . $key] = $value;
             }

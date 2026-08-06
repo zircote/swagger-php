@@ -65,6 +65,13 @@ class Shortcuts implements PipeInterface
                 }
             }
             $mediaType->schema = new OA\Schema(...$args);
+        } else {
+            foreach (self::MEDIA_TYPE_SCHEMA_PROPERTIES as $prop) {
+                if ($mediaType->{$prop} !== null && $mediaType->schema->{$prop} === null) {
+                    $mediaType->schema->{$prop} = $mediaType->{$prop};
+                    $mediaType->{$prop} = null;
+                }
+            }
         }
     }
 

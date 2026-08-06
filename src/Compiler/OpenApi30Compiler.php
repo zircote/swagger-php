@@ -90,7 +90,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
     /**
      * Compile schema using OAS 3.0 / JSON Schema draft-04 semantics.
      */
-    protected function compileSchema(OA\Schema|string $schema): array
+    protected function compileSchema(OA\Schema|string $schema): array|\stdClass
     {
         if (is_string($schema)) {
             return ['$ref' => $schema];
@@ -101,6 +101,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
                 return $this->filter([
                     'oneOf' => [['$ref' => $schema->ref]],
                     'nullable' => true,
+                    'description' => Undefined::isDefault($schema->description) ? null : $schema->description,
                 ], $schema);
             }
 
@@ -207,7 +208,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
             $result['enum'] = [$schema->const];
         }
 
-        return $result;
+        return $result ?: new \stdClass();
     }
 
     protected function validateSchemas(Specification $specification): void
