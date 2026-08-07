@@ -150,8 +150,6 @@ class Types implements PipeInterface
                 if ($resolved->nullable !== null && $requestBody->required === null) {
                     $requestBody->required = !$resolved->nullable;
                 }
-
-
             }
         }
     }
