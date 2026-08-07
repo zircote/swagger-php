@@ -125,6 +125,8 @@ class Inheritance implements PipeInterface
             foreach ($this->attributeFactory->getDirectTraits($parent) as $trait) {
                 if (isset($schemaMap[$trait->getName()])) {
                     $this->addAllOfRef($schema, $schemaMap[$trait->getName()]);
+                } else {
+                    $this->mergeMembers($schema, $trait, $existingProperties);
                 }
             }
 
