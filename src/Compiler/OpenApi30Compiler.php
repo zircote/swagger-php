@@ -117,7 +117,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
         $type = $schema->type;
         if (is_array($type)) {
             $type = array_values(array_filter($type, fn (string $t): bool => $t !== 'null'));
-            $type = count($type) === 1 ? $type[0] : ($type[0] ?? null);
+            $type = count($type) === 1 ? $type[0] : null;
         }
 
         $nullable = $schema->nullable;
