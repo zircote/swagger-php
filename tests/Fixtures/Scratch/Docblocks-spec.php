@@ -103,9 +103,9 @@ class DocblocksEndpointSpec
     )]
     #[OA\Response(response: 200, description: 'successful operation')]
     public function endpoint(
-        /* @var string|null $filter An optional filter */
+        /** @var string|null $filter An optional filter */
         #[OA\Parameter\Query(description: null)] ?string $filter,
-        /* @var string|null $limit An optional limit */
+        /** @var string|null $limit An optional limit */
         #[OA\Parameter\Query] ?int $limit,
     ) {
 
