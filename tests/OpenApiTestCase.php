@@ -186,6 +186,17 @@ class OpenApiTestCase extends TestCase
             $expected = $normalizeIn($expected);
         }
 
+        if ($actual instanceof \stdClass && $expected === []) {
+            $this->assertEmpty((array) $actual, $message . PHP_EOL . '[] does not match expected type "object".');
+
+            return;
+        }
+        if ($expected instanceof \stdClass && $actual === []) {
+            $this->assertEmpty((array) $expected, $message . PHP_EOL . '[] does not match expected type "object".');
+
+            return;
+        }
+
         if (is_iterable($actual) && is_iterable($expected)) {
             foreach ($actual as $key => $value) {
                 $this->assertArrayHasKey($key, (array) $expected, $message . ': property: "' . $key . '" should be absent, but has value: ' . $formattedValue($value));
