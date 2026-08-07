@@ -16,15 +16,21 @@ class Tag extends AbstractAttribute
 {
     /**
      * @param string|null                $name         The name of the tag
+     * @param string|null                $summary      A short summary of the tag, used for display purposes
      * @param string|null                $description  A description of the tag (CommonMark syntax)
      * @param ExternalDocumentation|null $externalDocs Additional external documentation for this tag
+     * @param string|null                $parent       The name of a tag that this tag is nested under
+     * @param string|null                $kind         A machine-readable string to categorize the tag
      * @param array<string,mixed>|null   $x            Vendor extensions (x-* properties)
      * @param list<Attachable>|null      $attachables  Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $name = null,
+        public ?string $summary = null,
         public ?string $description = null,
         public ?ExternalDocumentation $externalDocs = null,
+        public ?string $parent = null,
+        public ?string $kind = null,
         ?array $x = null,
         ?array $attachables = null,
     ) {

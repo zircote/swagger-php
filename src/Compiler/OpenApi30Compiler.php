@@ -31,11 +31,13 @@ class OpenApi30Compiler extends OpenApi31Compiler
 {
     protected const VERSIONS = ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.0.4'];
 
+    #[\Override]
     public function getVersion(): string
     {
         return '3.0.0';
     }
 
+    #[\Override]
     public function validate(Specification $specification): array
     {
         parent::validate($specification);
@@ -62,11 +64,13 @@ class OpenApi30Compiler extends OpenApi31Compiler
         return $this->logger->entries();
     }
 
+    #[\Override]
     protected function compileWebhooks(array $operations): array
     {
         return [];
     }
 
+    #[\Override]
     protected function compileInfo(OA\Info $info): array
     {
         return $this->filter([
@@ -79,6 +83,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
         ], $info);
     }
 
+    #[\Override]
     protected function compileLicense(OA\License $license): array
     {
         return $this->filter([
@@ -90,6 +95,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
     /**
      * Compile schema using OAS 3.0 / JSON Schema draft-04 semantics.
      */
+    #[\Override]
     protected function compileSchema(OA\Schema|string $schema): array|\stdClass
     {
         if (is_string($schema)) {
@@ -211,6 +217,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
         return $result ?: new \stdClass();
     }
 
+    #[\Override]
     protected function validateSchemas(Specification $specification): void
     {
         $allSchemas = $this->collectSchemas($specification);
