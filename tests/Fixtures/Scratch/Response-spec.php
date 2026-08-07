@@ -4,23 +4,23 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests\Fixtures\Scratch;
+namespace Fixtures\Scratch;
 
-use OpenApi\Attributes as OAT;
+use OpenApi\Spec as OA;
 
-#[OAT\Info(title: 'Response', version: '1.0')]
-class ResponseController
+#[OA\Info(title: 'Response', version: '1.0')]
+class ResponseControllerSpec
 {
-    #[OAT\Post(
+    #[OA\Operation\Post(
         path: '/endpoint/response-schema',
         operationId: 'responseSchema',
         responses: [
-            new OAT\Response(
+            new OA\Response(
                 response: 200,
                 description: 'All good',
-                content: new OAT\MediaType(
+                content: new OA\MediaType(
                     mediaType: 'application/octet-stream',
-                    schema: new OAT\Schema(
+                    schema: new OA\Schema(
                         type: 'string',
                         format: 'byte',
                     ),
