@@ -5,7 +5,7 @@ info:
 paths:
   /endpoint/schema-ref-json:
     post:
-      operationId: 8d1f9c9f0437712695d337f1c11badc7
+      operationId: 'postSchemaRefJson'
       requestBody:
         description: 'Information about a new pet in the system'
         content:
@@ -17,7 +17,7 @@ paths:
           description: 'All good'
   /endpoint/schema-ref:
     post:
-      operationId: 7fa3f3456b14a4a8eb3a0357283ecd15
+      operationId: 'postSchemaRef'
       requestBody:
         description: 'Information about a new pet in the system'
         content:
@@ -29,7 +29,7 @@ paths:
           description: 'All good'
   /endpoint/ref:
     post:
-      operationId: 4250dd87e4e3872a8f2e481532cbc245
+      operationId: 'postRef'
       requestBody:
         $ref: '#/components/requestBodies/RequestBodyRef'
       responses:
@@ -37,7 +37,7 @@ paths:
           description: 'All good'
   /endpoint/ref-foo:
     post:
-      operationId: 344406e28927343e4e9e4f39bd6c385b
+      operationId: 'postRefFoo'
       requestBody:
         $ref: '#/components/requestBodies/foo'
       responses:

@@ -6,35 +6,37 @@
 
 namespace OpenApi\Tests\Fixtures\Scratch;
 
-use OpenApi\Attributes as OAT;
+use OpenApi\Spec as OA;
 
-#[OAT\Schema]
-class RequestBodySchema
+#[OA\Schema(schema: 'RequestBodySchema')]
+class RequestBodySchemaSpec
 {
 }
 
-#[OAT\RequestBody]
-class RequestBodyRef
+#[OA\Components]
+#[OA\RequestBody(request: 'RequestBodyRef')]
+class RequestBodyRefSpec
 {
 }
 
-#[OAT\RequestBody(request: 'foo')]
-class RequestBodyRefFoo
+#[OA\Components]
+#[OA\RequestBody(request: 'foo')]
+class RequestBodyRefFooSpec
 {
 }
 
-#[OAT\Info(title: 'RequestBody', version: '1.0')]
-class RequestBodyController
+#[OA\Info(title: 'RequestBody', version: '1.0')]
+class RequestBodyControllerSpec
 {
-    #[OAT\Post(
+    #[OA\Operation\Post(
         path: '/endpoint/schema-ref-json',
         operationId: 'postSchemaRefJson',
-        requestBody: new OAT\RequestBody(
+        requestBody: new OA\RequestBody(
             description: 'Information about a new pet in the system',
-            content: new OAT\JsonContent(ref: RequestBodySchema::class),
+            content: new OA\MediaType\Json(ref: RequestBodySchemaSpec::class),
         ),
         responses: [
-            new OAT\Response(
+            new OA\Response(
                 response: 200,
                 description: 'All good'
             ),
@@ -44,18 +46,18 @@ class RequestBodyController
     {
     }
 
-    #[OAT\Post(
+    #[OA\Operation\Post(
         path: '/endpoint/schema-ref',
         operationId: 'postSchemaRef',
-        requestBody: new OAT\RequestBody(
+        requestBody: new OA\RequestBody(
             description: 'Information about a new pet in the system',
-            content: new OAT\MediaType(
+            content: new OA\MediaType(
                 mediaType: 'application/json',
-                schema: new OAT\Schema(ref: RequestBodySchema::class)
+                schema: new OA\Schema(ref: RequestBodySchemaSpec::class)
             ),
         ),
         responses: [
-            new OAT\Response(
+            new OA\Response(
                 response: 200,
                 description: 'All good'
             ),
@@ -65,12 +67,12 @@ class RequestBodyController
     {
     }
 
-    #[OAT\Post(
+    #[OA\Operation\Post(
         path: '/endpoint/ref',
         operationId: 'postRef',
-        requestBody: new OAT\RequestBody(ref: RequestBodyRef::class),
+        requestBody: new OA\RequestBody(ref: RequestBodyRefSpec::class),
         responses: [
-            new OAT\Response(
+            new OA\Response(
                 response: 200,
                 description: 'All good'
             ),
@@ -80,17 +82,17 @@ class RequestBodyController
     {
     }
 
-    #[OAT\Post(
+    #[OA\Operation\Post(
         path: '/endpoint/ref-foo',
         operationId: 'postRefFoo',
         responses: [
-            new OAT\Response(
+            new OA\Response(
                 response: 200,
                 description: 'All good'
             ),
         ]
     )]
-    public function postRefFoo(#[OAT\RequestBody] RequestBodyRefFoo $body)
+    public function postRefFoo(#[OA\RequestBody] RequestBodyRefFoo $body)
     {
     }
 }

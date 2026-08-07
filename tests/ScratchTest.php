@@ -50,12 +50,14 @@ final class ScratchTest extends OpenApiTestCase
                 if ($combo['mode'] === Builder\Mode::SPEC) {
                     $source = str_replace('.php', '-spec.php', $scratch);
                     if (!file_exists($source)) {
+                        echo $source."\n";
                         continue;
                     }
                 }
 
                 $spec = self::mostSpecific([
                     "{$basePath}/{$scratchName}{$combo['version']}-{$combo['mode']->value}.yaml",
+                    "{$basePath}/{$scratchName}{$combo['version']}-{$combo['resolverName']}.yaml",
                     "{$basePath}/{$scratchName}{$combo['version']}-{$phpVersion}.yaml",
                     "{$basePath}/{$scratchName}{$combo['version']}.yaml",
                 ]);

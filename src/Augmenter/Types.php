@@ -60,6 +60,7 @@ class Types implements PipeInterface
         }
 
         foreach ($payload->requestBodies as $requestBody) {
+            $this->augmentRequestBody($requestBody);
             $this->walkMediaTypes($requestBody->content);
         }
 
@@ -131,6 +132,26 @@ class Types implements PipeInterface
 
         if ($operation->requestBody instanceof OA\RequestBody) {
             $this->walkMediaTypes($operation->requestBody->content);
+        }
+    }
+
+    protected function augmentRequestBody(OA\RequestBody $requestBody): void
+    {
+        $reflector = $requestBody->getReflector();
+        if ($reflector instanceof \ReflectionParameter) {
+            $resolved = $this->typeResolver->resolve($reflector);
+
+            if ($resolved instanceof SchemaType) {
+                if ($resolved->type !== null && $resolved->isRef()) {
+                    $requestBody->ref = $resolved->type;
+                }
+
+                if ($resolved->nullable !== null && $requestBody->required === null) {
+                    $requestBody->required = !$resolved->nullable;
+                }
+
+
+            }
         }
     }
 
