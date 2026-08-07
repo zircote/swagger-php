@@ -92,7 +92,7 @@ class RequestBodyControllerSpec
             ),
         ]
     )]
-    public function postRefFoo(#[OA\RequestBody] RequestBodyRefFoo $body)
+    public function postRefFoo(#[OA\RequestBody] RequestBodyRefFooSpec $body)
     {
     }
 }

@@ -61,7 +61,6 @@ class Types implements PipeInterface
 
         foreach ($payload->requestBodies as $requestBody) {
             $this->augmentRequestBody($requestBody);
-            $this->walkMediaTypes($requestBody->content);
         }
 
         foreach ($payload->responses as $response) {
@@ -131,12 +130,14 @@ class Types implements PipeInterface
         }
 
         if ($operation->requestBody instanceof OA\RequestBody) {
-            $this->walkMediaTypes($operation->requestBody->content);
+            $this->augmentRequestBody($operation->requestBody);
         }
     }
 
     protected function augmentRequestBody(OA\RequestBody $requestBody): void
     {
+        $this->walkMediaTypes($requestBody->content);
+
         $reflector = $requestBody->getReflector();
         if ($reflector instanceof \ReflectionParameter) {
             $resolved = $this->typeResolver->resolve($reflector);
