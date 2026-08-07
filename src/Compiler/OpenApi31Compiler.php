@@ -12,6 +12,7 @@ use OpenApi\Specification;
 use OpenApi\Undefined;
 use OpenApi\Utils\CollectingLogger;
 use Psr\Log\LoggerInterface;
+use stdClass;
 
 /**
  * Compiles a Specification into an OpenAPI 3.1.x document array.
@@ -291,17 +292,19 @@ class OpenApi31Compiler implements CompilerInterface
         ], $parameter);
     }
 
-    protected function compileRequestBody(OA\RequestBody $body): array
+    protected function compileRequestBody(OA\RequestBody $body): array|stdClass
     {
         if ($body->ref !== null) {
             return ['$ref' => $body->ref];
         }
 
-        return $this->filter([
+        $result = $this->filter([
             'description' => $body->description,
             'content' => $this->compileMediaTypes($body->content ?? []),
             'required' => $body->required,
         ], $body);
+
+        return $result ?: new \stdClass();
     }
 
     /**
