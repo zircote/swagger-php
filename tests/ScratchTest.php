@@ -56,6 +56,7 @@ final class ScratchTest extends OpenApiTestCase
                 }
 
                 $spec = self::mostSpecific([
+                    "{$basePath}/{$scratchName}{$combo['version']}-{$combo['resolverName']}-{$combo['mode']->value}.yaml",
                     "{$basePath}/{$scratchName}{$combo['version']}-{$combo['mode']->value}.yaml",
                     "{$basePath}/{$scratchName}{$combo['version']}-{$combo['resolverName']}.yaml",
                     "{$basePath}/{$scratchName}{$combo['version']}-{$phpVersion}.yaml",
