@@ -511,7 +511,7 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * @param  list<OA\Property|OA\Schema> $properties
+     * @param  list<OA\Property>   $properties
      * @return array<string,mixed>
      */
     protected function compileProperties(array $properties): array
@@ -519,15 +519,9 @@ class OpenApi31Compiler implements CompilerInterface
         $result = [];
 
         foreach ($properties as $property) {
-            if ($property instanceof OA\Property) {
-                $name = $property->property ?? 'unknown';
-                $result[$name] = $property->schema instanceof OA\Schema
-                    ? $this->compileSchema($property->schema)
-                    : new \stdClass();
-            } elseif ($property instanceof OA\Schema) {
-                $name = $property->schema ?? $property->title ?? 'unknown';
-                $result[$name] = $this->compileSchema($property);
-            }
+            $result[$property->property] = $property->schema instanceof OA\Schema
+                ? $this->compileSchema($property->schema)
+                : new \stdClass();
         }
 
         return $result;

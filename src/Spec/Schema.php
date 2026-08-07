@@ -79,7 +79,7 @@ class Schema extends AbstractAttribute
      * @param int|null                                                                $minContains           Minimum number of items matching contains
      * @param int|null                                                                $maxContains           Maximum number of items matching contains
      * @param Schema|bool|null                                                        $unevaluatedItems      Schema for items not covered by other keywords
-     * @param list<Property|Schema>|null                                              $properties            Object property definitions
+     * @param list<Property>|null                                                     $properties            Object property definitions
      * @param list<string>|null                                                       $required              List of required property names
      * @param Schema|Schema\AdditionalProperties|bool|null                            $additionalProperties  Schema or boolean for additional properties
      * @param array<string,Schema>|null                                               $patternProperties     Schemas for properties matching regex patterns
