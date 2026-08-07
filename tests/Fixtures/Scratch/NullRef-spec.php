@@ -47,8 +47,8 @@ class NullRefSpec
                 content: new OA\MediaType\Json(
                     ref: '#/components/schemas/repository',
                     schema: new OA\Schema(
-                    description: 'The repository',
-                    nullable: true,
+                        description: 'The repository',
+                        nullable: true,
                     ),
                 )
             ),
