@@ -15,7 +15,7 @@ paths:
         - nested
         - invalidparent
       description: 'Sandbox endpoint'
-      operationId: f1c7f5a59b9708596c2bc955017002e6
+      operationId: 'tagsEndpoint'
       responses:
         '200':
           description: 'All good'

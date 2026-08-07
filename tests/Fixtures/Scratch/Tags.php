@@ -22,6 +22,7 @@ use OpenApi\Attributes as OAT;
 #[OAT\Get(
     path: '/endpoint',
     description: 'Sandbox endpoint',
+    operationId: 'tagsEndpoint',
     tags: ['sandbox', 'other', 'nested', 'invalidparent'],
     responses: [
         new OAT\Response(
