@@ -6,7 +6,7 @@ paths:
   /api/endpoint:
     get:
       description: 'An endpoint'
-      operationId: d40e7915a2b7f4a4250c4c3a85b5dcfa
+      operationId: 'dynamicEnumCase'
       responses:
         '200':
           description: OK

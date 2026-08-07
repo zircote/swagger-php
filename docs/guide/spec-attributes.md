@@ -262,6 +262,28 @@ public array $tags;
 
 Both the `MediaType` and `Items` shortcuts are resolved by the `Shortcuts` augmenter.
 
+### AdditionalProperties
+`OA\Schema\AdditionalProperties` is a typed alias for `OA\Schema` — functionally identical but improves readability when declaring `additionalProperties` constraints:
+
+```php
+#[OA\Schema(
+    type: 'object',
+    properties: [
+        new OA\Property(
+            property: 'errors',
+            schema: new OA\Schema(
+                type: 'object',
+                additionalProperties: new OA\Schema\AdditionalProperties(
+                    type: 'array',
+                    items: new OA\Schema\Items(type: 'string'),
+                ),
+            ),
+        ),
+    ],
+)]
+class ValidationErrors {}
+```
+
 ## Components
 
 `#[OA\Components]` is a class-level container for reusable definitions that cannot stand alone as root attributes — primarily Parameters, Headers, Links, and Examples.

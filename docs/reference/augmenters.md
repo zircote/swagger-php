@@ -50,8 +50,6 @@ moved into a dedicated allOf entry (anonymous schema with type: object).
 #### Config settings
 - **inheritance.attributeFactory** : `OpenApi\Utils\AttributeFactory` · default: `OpenApi\Utils\AttributeFactory`  
   No details available.
-- **inheritance.tokenScanner** : `OpenApi\Utils\TokenScanner` · default: `OpenApi\Utils\TokenScanner`  
-  No details available.
 
 ### [Names](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Names.php)
 

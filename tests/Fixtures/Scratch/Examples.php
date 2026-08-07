@@ -25,6 +25,7 @@ class ExampleSchema
 #[OAT\Info(title: 'Examples', version: '1.0')]
 #[OAT\Get(
     path: '/endpoint/{name}/{other}',
+    operationId: 'examples',
     parameters: [
         new OAT\PathParameter(
             name: 'name',

@@ -12,6 +12,7 @@ use OpenApi\Attributes as OAT;
 #[OAT\Get(
     path: '/api/endpoint',
     description: 'An endpoint',
+    operationId: 'dynamicEnumCase',
     responses: [new OAT\Response(response: 200, description: 'OK')]
 )]
 class DynamicEnumCaseEndpoint

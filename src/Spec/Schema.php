@@ -81,7 +81,7 @@ class Schema extends AbstractAttribute
      * @param Schema|bool|null                                                        $unevaluatedItems      Schema for items not covered by other keywords
      * @param list<Property|Schema>|null                                              $properties            Object property definitions
      * @param list<string>|null                                                       $required              List of required property names
-     * @param Schema|bool|null                                                        $additionalProperties  Schema or boolean for additional properties
+     * @param Schema|Schema\AdditionalProperties|bool|null                            $additionalProperties  Schema or boolean for additional properties
      * @param array<string,Schema>|null                                               $patternProperties     Schemas for properties matching regex patterns
      * @param int|null                                                                $minProperties         Minimum number of properties
      * @param int|null                                                                $maxProperties         Maximum number of properties
@@ -152,7 +152,7 @@ class Schema extends AbstractAttribute
         // Object constraints
         public ?array $properties = null,
         public ?array $required = null,
-        public Schema|bool|null $additionalProperties = null,
+        public Schema|Schema\AdditionalProperties|bool|null $additionalProperties = null,
         public ?array $patternProperties = null,
         public ?int $minProperties = null,
         public ?int $maxProperties = null,

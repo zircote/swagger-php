@@ -399,6 +399,15 @@ class OpenApi31Compiler implements CompilerInterface
         }
 
         if ($schema->ref !== null) {
+            if ($schema->nullable === true) {
+                return $this->filter([
+                    'oneOf' => [
+                        ['$ref' => $schema->ref],
+                        ['type' => 'null'],
+                    ],
+                ], $schema);
+            }
+
             return $this->filter([
                 '$ref' => $schema->ref,
                 'description' => $schema->description,
@@ -411,6 +420,9 @@ class OpenApi31Compiler implements CompilerInterface
             if (!in_array('null', $type, true)) {
                 $type[] = 'null';
             }
+        }
+        if (is_array($type) && count($type) === 1) {
+            $type = reset($type);
         }
 
         $result = $this->filter([
@@ -428,10 +440,10 @@ class OpenApi31Compiler implements CompilerInterface
             'contentEncoding' => $schema->contentEncoding,
 
             // Numeric
-            'minimum' => $schema->minimum,
-            'maximum' => $schema->maximum,
-            'exclusiveMinimum' => $schema->exclusiveMinimum,
-            'exclusiveMaximum' => $schema->exclusiveMaximum,
+            'minimum' => $this->compileMinimum($schema),
+            'maximum' => $this->compileMaximum($schema),
+            'exclusiveMinimum' => $this->compileExclusiveMinimum($schema),
+            'exclusiveMaximum' => $this->compileExclusiveMaximum($schema),
             'multipleOf' => $schema->multipleOf,
 
             // Array
@@ -667,6 +679,50 @@ class OpenApi31Compiler implements CompilerInterface
         }
 
         return $result;
+    }
+
+    protected function compileMinimum(OA\Schema $schema): int|float|null
+    {
+        if ($schema->exclusiveMinimum === true) {
+            return null;
+        }
+
+        return $schema->minimum;
+    }
+
+    protected function compileMaximum(OA\Schema $schema): int|float|null
+    {
+        if ($schema->exclusiveMaximum === true) {
+            return null;
+        }
+
+        return $schema->maximum;
+    }
+
+    protected function compileExclusiveMinimum(OA\Schema $schema): int|float|null
+    {
+        if ($schema->exclusiveMinimum === true) {
+            return $schema->minimum;
+        }
+
+        if (is_numeric($schema->exclusiveMinimum)) {
+            return $schema->exclusiveMinimum;
+        }
+
+        return null;
+    }
+
+    protected function compileExclusiveMaximum(OA\Schema $schema): int|float|null
+    {
+        if ($schema->exclusiveMaximum === true) {
+            return $schema->maximum;
+        }
+
+        if (is_numeric($schema->exclusiveMaximum)) {
+            return $schema->exclusiveMaximum;
+        }
+
+        return null;
     }
 
     /**

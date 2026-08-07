@@ -11,6 +11,7 @@ use OpenApi\Builder\Mode;
 use OpenApi\Generator;
 use OpenApi\Serializer;
 use OpenApi\Tests\Concerns\AssertsBuilderResult;
+use OpenApi\Tests\Concerns\GeneratesTestMatrix;
 use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\Type\LegacyTypeResolver;
 use OpenApi\TypeResolverInterface;
@@ -19,80 +20,73 @@ use PHPUnit\Framework\Attributes\DataProvider;
 final class ExamplesTest extends OpenApiTestCase
 {
     use AssertsBuilderResult;
+    use GeneratesTestMatrix;
     use UsesExamples;
+
+    private const EXAMPLES = [
+        'api',
+        'misc',
+        'nesting',
+        'petstore',
+        'polymorphism',
+        'using-interfaces',
+        'using-links',
+        'using-refs',
+        'using-traits',
+        'webhooks',
+    ];
+
+    private const IMPLEMENTATIONS = [
+        'annotations',
+        'attributes',
+        'mixed',
+        'hybrid',
+        'spec',
+    ];
 
     public static function exampleSpecs(): iterable
     {
-        $examples = [
-            'api',
-            'misc',
-            'nesting',
-            'petstore',
-            'polymorphism',
-            'using-interfaces',
-            'using-links',
-            'using-refs',
-            'using-traits',
-            'webhooks',
-        ];
-        $implementations = [
-            'annotations',
-            'attributes',
-            'mixed',   // classic annotations + attributes
-            'hybrid',  // classic attributes + spec
-            'spec',
-        ];
-        $versions = [
-            '3.0.0',
-            '3.1.0',
-            '3.2.0',
-        ];
-        $modes = [
-            Mode::CLASSIC,
-            Mode::HYBRID,
-            Mode::SPEC,
-        ];
+        $resolvers = self::getTypeResolvers();
 
-        foreach (self::getTypeResolvers() as $resolverName => $typeResolver) {
-            foreach ($examples as $example) {
-                foreach ($implementations as $implementation) {
+        foreach ($resolvers as $resolverName => $typeResolver) {
+            foreach (self::EXAMPLES as $example) {
+                foreach (self::IMPLEMENTATIONS as $implementation) {
                     if (!file_exists(self::examplePath($example) . '/' . $implementation)) {
                         continue;
                     }
 
-                    foreach ($versions as $version) {
-                        foreach ($modes as $mode) {
-                            if (
-                                ($implementation === 'spec' && in_array($mode, [Mode::CLASSIC, Mode::HYBRID], true))
-                                || ($implementation !== 'spec' && $mode === Mode::SPEC)
-                                || ($implementation === 'hybrid' && $mode !== Mode::HYBRID)
-                                || ($typeResolver instanceof LegacyTypeResolver && $mode !== Mode::CLASSIC)
-                            ) {
-                                continue;
-                            }
-
-                            if (!file_exists(self::getSpecFilename($example, $implementation, $version, $mode))) {
-                                continue;
-                            }
-
-                            $key = "{$example}:{$resolverName}-{$implementation}-{$mode->value}-{$version}";
-                            yield $key => [
-                                $typeResolver,
-                                $example,
-                                $implementation,
-                                $version,
-                                $mode,
-                            ];
+                    foreach (self::matrixCombinations(
+                        [
+                            'version' => self::versions(),
+                            'mode' => self::modes(),
+                        ],
+                        [
+                            fn (array $c): bool => $implementation === 'spec' && in_array($c['mode'], [Mode::CLASSIC, Mode::HYBRID], true),
+                            fn (array $c): bool => $implementation !== 'spec' && $c['mode'] === Mode::SPEC,
+                            fn (array $c): bool => $implementation === 'hybrid' && $c['mode'] !== Mode::HYBRID,
+                            fn (array $c): bool => $typeResolver instanceof LegacyTypeResolver && $c['mode'] !== Mode::CLASSIC,
+                        ],
+                    ) as $combo) {
+                        $specFilename = self::getSpecFilename($example, $implementation, $combo['version'], $combo['mode']);
+                        if (!file_exists($specFilename)) {
+                            continue;
                         }
+
+                        $key = self::matrixKey([$example, $resolverName, $implementation, $combo['mode']->value, $combo['version']]);
+
+                        yield $key => [
+                            $typeResolver,
+                            $example,
+                            $implementation,
+                            $combo['version'],
+                            $combo['mode'],
+                        ];
                     }
                 }
             }
         }
     }
 
-    /**
-     * Validate openapi definitions of the included examples.
-     */
     #[DataProvider('exampleSpecs')]
     public function testExample(TypeResolverInterface $typeResolver, string $name, string $implementation, string $version, Mode $mode): void
     {

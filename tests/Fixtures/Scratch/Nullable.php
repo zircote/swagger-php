@@ -63,6 +63,7 @@ class Nullable
 #[OAT\Get(
     path: '/api/endpoint',
     description: 'An endpoint',
+    operationId: 'nullableEndpoint',
     responses: [new OAT\Response(response: 200, description: 'OK')]
 )]
 class NullableEndpoint

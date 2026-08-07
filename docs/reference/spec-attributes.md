@@ -54,6 +54,25 @@ can be declared directly on a class without needing a Components wrapper.
 ---
 <a href="#schema">Schema</a>, <a href="#parameter">Parameter</a>, <a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#header">Header</a>, <a href="#security-scheme">Security\Scheme</a>, <a href="#link">Link</a>, <a href="#example">Example</a>, <a href="#pathitem">PathItem</a>
 
+#### Parameters
+---
+- **schemas** : `list&lt;Schema&gt;`
+  No details available.
+- **parameters** : `list&lt;Parameter&gt;`
+  No details available.
+- **responses** : `list&lt;Response&gt;`
+  No details available.
+- **requestBodies** : `list&lt;RequestBody&gt;`
+  No details available.
+- **headers** : `list&lt;Header&gt;`
+  No details available.
+- **securitySchemes** : `list&lt;Security\Scheme&gt;`
+  No details available.
+- **links** : `list&lt;Link&gt;`
+  No details available.
+- **examples** : `list&lt;Example&gt;`
+  No details available.
+
 ### [Contact](https://github.com/zircote/swagger-php/tree/master/src/Spec/Contact.php)
 
 Contact information for the exposed API.
@@ -1178,6 +1197,8 @@ A parameter passed via the URL path (always required).
   No details available.
 - **description** : `string|null`
   No details available.
+- **required** : `bool|null`
+  No details available.
 - **deprecated** : `bool|null`
   No details available.
 - **ref** : `string|null`
@@ -1327,7 +1348,7 @@ Defines a single property within a Schema object.
 
 #### Allowed in
 ---
-<a href="#schema">Schema</a>, <a href="#schema-items">Schema\Items</a>
+<a href="#schema">Schema</a>, <a href="#schema-additionalproperties">Schema\AdditionalProperties</a>, <a href="#schema-items">Schema\Items</a>
 
 #### Parameters
 ---
@@ -1429,7 +1450,7 @@ Inline — used within parameters, responses, or other schemas:
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#schema">Schema</a>, <a href="#schema-items">Schema\Items</a>
+<a href="#components">Components</a>, <a href="#schema">Schema</a>, <a href="#schema-additionalproperties">Schema\AdditionalProperties</a>, <a href="#schema-items">Schema\Items</a>
 
 #### Nested elements
 ---
@@ -1493,7 +1514,7 @@ Inline — used within parameters, responses, or other schemas:
   Object property definitions
 - **required** : `list&lt;string&gt;|null`
   List of required property names
-- **additionalProperties** : `Schema|bool|null`
+- **additionalProperties** : `Schema|Schema\AdditionalProperties|bool|null`
   Schema or boolean for additional properties
 - **patternProperties** : `array&lt;string,Schema&gt;|null`
   Schemas for properties matching regex patterns
@@ -1550,6 +1571,137 @@ Inline — used within parameters, responses, or other schemas:
 ---
 - [Schema Object](https://spec.openapis.org/oas/v3.1.1.html#schema-object) ↗
 - [JSON Schema](https://json-schema.org/draft/2020-12/json-schema-validation) ↗
+
+### [Schema\AdditionalProperties](https://github.com/zircote/swagger-php/tree/master/src/Spec/Schema/AdditionalProperties.php)
+
+Typed alias for Schema used as the `additionalProperties` value.
+
+Identical to OA\Schema in functionality — exists for readability when declaring
+schemas with constrained additional properties:
+
+    new OA\Schema(
+        type: 'object',
+        additionalProperties: new OA\Schema\AdditionalProperties(type: 'string'),
+    )
+
+#### Allowed in
+---
+<a href="#property">Property</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>
+
+#### Nested elements
+---
+<a href="#property">Property</a>, <a href="#schema">Schema</a>
+
+#### Parameters
+---
+- **schema** : `string|null`
+  Reusable schema identifier (component key)
+- **title** : `string|null`
+  A title for the schema
+- **description** : `string|null`
+  A description of the schema (CommonMark syntax)
+- **ref** : `string|null`
+  A JSON Reference to a reusable schema
+- **type** : `string|list&lt;string&gt;|null`
+  The value type(s) (string, number, integer, boolean, array, object, null)
+- **format** : `string|null`
+  Further refines the type (e.g. int32, int64, float, double, date-time, email)
+- **nullable** : `bool|null`
+  Whether the value can be null (OAS 3.0 only; use type array in 3.1+)
+- **minLength** : `int|null`
+  Minimum string length
+- **maxLength** : `int|null`
+  Maximum string length
+- **pattern** : `string|null`
+  Regular expression pattern the string must match
+- **contentMediaType** : `string|null`
+  The media type of string content encoding
+- **contentEncoding** : `string|null`
+  The encoding used for string content (e.g. base64)
+- **minimum** : `int|float|null`
+  Minimum numeric value (inclusive)
+- **maximum** : `int|float|null`
+  Maximum numeric value (inclusive)
+- **exclusiveMinimum** : `int|float|bool|null`
+  Exclusive minimum value
+- **exclusiveMaximum** : `int|float|bool|null`
+  Exclusive maximum value
+- **multipleOf** : `int|float|null`
+  The value must be a multiple of this number
+- **items** : `Schema|string|null`
+  Schema for array items
+- **minItems** : `int|null`
+  Minimum number of array items
+- **maxItems** : `int|null`
+  Maximum number of array items
+- **uniqueItems** : `bool|null`
+  Whether array items must be unique
+- **prefixItems** : `list&lt;Schema&gt;|null`
+  Schemas for positional array items (tuple validation)
+- **contains** : `Schema|bool|null`
+  Schema that at least one array item must match
+- **minContains** : `int|null`
+  Minimum number of items matching contains
+- **maxContains** : `int|null`
+  Maximum number of items matching contains
+- **unevaluatedItems** : `Schema|bool|null`
+  Schema for items not covered by other keywords
+- **properties** : `list&lt;Property|Schema&gt;|null`
+  Object property definitions
+- **required** : `list&lt;string&gt;|null`
+  List of required property names
+- **additionalProperties** : `Schema|Schema\AdditionalProperties|bool|null`
+  Schema or boolean for additional properties
+- **patternProperties** : `array&lt;string,Schema&gt;|null`
+  Schemas for properties matching regex patterns
+- **minProperties** : `int|null`
+  Minimum number of properties
+- **maxProperties** : `int|null`
+  Maximum number of properties
+- **unevaluatedProperties** : `Schema|bool|null`
+  Schema for properties not covered by other keywords
+- **propertyNames** : `Schema|null`
+  Schema that property names must validate against
+- **dependentRequired** : `array&lt;string,list&lt;string&gt;&gt;|null`
+  Property-level required dependencies
+- **dependentSchemas** : `array&lt;string,Schema&gt;|null`
+  Property-level schema dependencies
+- **allOf** : `list&lt;Schema&gt;|null`
+  All schemas must match (AND composition)
+- **anyOf** : `list&lt;Schema&gt;|null`
+  At least one schema must match (OR composition)
+- **oneOf** : `list&lt;Schema&gt;|null`
+  Exactly one schema must match (XOR composition)
+- **not** : `Schema|null`
+  The schema must NOT match
+- **if** : `Schema|null`
+  Conditional schema (if-then-else)
+- **then** : `Schema|null`
+  Applied when 'if' succeeds
+- **else** : `Schema|null`
+  Applied when 'if' fails
+- **enum** : `list&lt;string|int|float|bool|\UnitEnum|class-string&lt;\UnitEnum&gt;|null&gt;|null`
+  Allowed values
+- **const** : `mixed`
+  A single allowed value
+- **example** : `mixed`
+  An example value
+- **examples** : `list&lt;mixed&gt;|null`
+  A list of example values
+- **deprecated** : `bool|null`
+  Whether the schema is deprecated
+- **readOnly** : `bool|null`
+  Whether the value is read-only
+- **writeOnly** : `bool|null`
+  Whether the value is write-only
+- **default** : `mixed`
+  The default value
+- **discriminator** : `Discriminator|null`
+  Discriminator for polymorphism
+- **externalDocs** : `ExternalDocumentation|null`
+  Additional external documentation
+- **xml** : `Xml|null`
+  XML representation metadata
 
 ### [Schema\Items](https://github.com/zircote/swagger-php/tree/master/src/Spec/Schema/Items.php)
 
@@ -1641,7 +1793,7 @@ The `Shortcuts` augmenter wraps this into `OA\Schema(type: 'array', items: ...)`
   Object property definitions
 - **required** : `list&lt;string&gt;|null`
   List of required property names
-- **additionalProperties** : `Schema|bool|null`
+- **additionalProperties** : `Schema|Schema\AdditionalProperties|bool|null`
   Schema or boolean for additional properties
 - **patternProperties** : `array&lt;string,Schema&gt;|null`
   Schemas for properties matching regex patterns

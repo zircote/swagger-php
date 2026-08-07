@@ -5,7 +5,7 @@ info:
 paths:
   /endpoint/json-content:
     get:
-      operationId: b598e813bcf7ee84638f257a2eac34cd
+      operationId: 'jsonContentEquiv1'
       responses:
         '200':
           description: 'All good'
@@ -15,7 +15,7 @@ paths:
                 $ref: '#/components/schemas/JsonContentEquiv'
   /endpoint/media-type:
     get:
-      operationId: 2ca68e25f7c9f045816f28dd8f975aa6
+      operationId: 'jsonContentEquiv2'
       responses:
         '200':
           description: 'All good'
