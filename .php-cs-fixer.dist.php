@@ -22,6 +22,7 @@ $finder = PhpCsFixer\Finder::create()
             && !strpos($file->getPathname(), 'tests/Fixtures/PHP/DocblockAndTypehintTypes.php')
             // parameter docblock for PHP 8.6
             && !strpos($file->getPathname(), 'tests/Fixtures/Scratch/Docblocks.php')
+            && !strpos($file->getPathname(), 'tests/Fixtures/Scratch/Docblocks-spec.php')
             // FQDN in data provider
             && !strpos($file->getPathname(), 'tests/Utils/TokenScannerTest.php')
         ;
