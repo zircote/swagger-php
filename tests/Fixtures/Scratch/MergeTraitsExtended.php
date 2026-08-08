@@ -74,7 +74,10 @@ class Product extends ModelExtended
 }
 
 #[OAT\Info(title: 'API', version: '1.0')]
-#[OAT\Get(path: '/api/endpoint')]
+#[OAT\Get(
+    path: '/api/endpoint',
+    operationId: 'getProducts',
+)]
 #[OAT\Response(
     response: 200,
     description: 'successful operation',
