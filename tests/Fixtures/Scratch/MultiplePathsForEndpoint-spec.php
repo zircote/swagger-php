@@ -6,41 +6,41 @@
 
 namespace OpenApi\Tests\Fixtures\Scratch;
 
-use OpenApi\Attributes as OAT;
+use OpenApi\Spec as OA;
 
-#[OAT\Info(
+#[OA\Info(
     title: 'Multiple Paths For Endpoint Scratch',
     version: '1.0'
 )]
-#[OAT\Get(
+#[OA\Operation\Get(
     path: '/api/class/endpoint',
     description: 'A class endpoint',
     operationId: 'getMultiple',
-    responses: [new OAT\Response(response: 200, description: 'OK')]
+    responses: [new OA\Response(response: 200, description: 'OK')]
 )]
-#[OAT\Get(
+#[OA\Operation\Get(
     path: '/api/class/endpoint2',
     description: 'Another class endpoint',
     operationId: 'getMultipleAnother',
-    responses: [new OAT\Response(response: 200, description: 'OK')]
+    responses: [new OA\Response(response: 200, description: 'OK')]
 )]
-class MultiplePathsForClassEndpoint
+class MultiplePathsForClassEndpointSpec
 {
 }
 
-class MultiplePathsForMethodEndpoint
+class MultiplePathsForMethodEndpointSpec
 {
-    #[OAT\Get(
+    #[OA\Operation\Get(
         path: '/api/method/endpoint',
         description: 'A method endpoint',
         operationId: 'methodEndpoint',
-        responses: [new OAT\Response(response: 200, description: 'OK')]
+        responses: [new OA\Response(response: 200, description: 'OK')]
     )]
-    #[OAT\Get(
+    #[OA\Operation\Get(
         path: '/api/method/endpoint2',
         description: 'Another method endpoint',
         operationId: 'anotherMethodEndpoint',
-        responses: [new OAT\Response(response: 200, description: 'OK')]
+        responses: [new OA\Response(response: 200, description: 'OK')]
     )]
     public function endpoint()
     {

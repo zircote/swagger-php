@@ -6,28 +6,28 @@ paths:
   /api/class/endpoint:
     get:
       description: 'A class endpoint'
-      operationId: f6fa254544c561ced460509c98adbc8b
+      operationId: 'getMultiple'
       responses:
         '200':
           description: OK
   /api/class/endpoint2:
     get:
       description: 'Another class endpoint'
-      operationId: 7816e3a6652e1e4782355ec5675e75f8
+      operationId: 'getMultipleAnother'
       responses:
         '200':
           description: OK
   /api/method/endpoint:
     get:
       description: 'A method endpoint'
-      operationId: b134e3908c5787b578f7faaa63283168
+      operationId: 'methodEndpoint'
       responses:
         '200':
           description: OK
   /api/method/endpoint2:
     get:
       description: 'Another method endpoint'
-      operationId: ff3758f75b33d1e680c47e92ed39844f
+      operationId: 'anotherMethodEndpoint'
       responses:
         '200':
           description: OK
