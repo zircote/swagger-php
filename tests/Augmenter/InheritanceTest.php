@@ -33,6 +33,7 @@ final class InheritanceTest extends TestCase
 
         $spec = $assembler->getSpecification();
         (new Augmenter\Inheritance())($spec);
+        (new Augmenter\Refs())($spec);
 
         $this->assertSpecificationSchemasMatchFile(
             $spec,

@@ -60,8 +60,6 @@ class Inheritance implements PipeInterface
             $this->expandParents($schema, $reflector, $schemaMap, $existingProperties);
             $this->expandTraits($schema, $reflector, $schemaMap, $existingProperties);
             $this->expandInterfaces($schema, $reflector, $schemaMap, $existingProperties);
-            $this->mergeAllOf($schema);
-            $this->dedupAllOfRefs($schema);
         }
 
         return null;
@@ -177,39 +175,5 @@ class Inheritance implements PipeInterface
         if ($merged !== []) {
             $schema->properties = [...$merged, ...($schema->properties ?? [])];
         }
-    }
-
-    /**
-     * When allOf refs were added but the schema also has own properties, wrap them
-     * in a dedicated allOf entry so the final output is a pure allOf composition.
-     */
-    protected function mergeAllOf(OA\Schema $schema): void
-    {
-        if ($schema->allOf === null || $schema->properties === null) {
-            return;
-        }
-
-        $schema->allOf[] = new OA\Schema(type: 'object', properties: $schema->properties);
-        $schema->properties = null;
-    }
-
-    protected function dedupAllOfRefs(OA\Schema $schema): void
-    {
-        if ($schema->allOf === null || $schema->allOf === []) {
-            return;
-        }
-
-        $unique = [];
-        foreach ($schema->allOf as $ii => $allOf) {
-            if ($allOf->ref !== null) {
-                if (isset($unique[$allOf->ref])) {
-                    continue;
-                }
-                $unique[$allOf->ref] = $allOf;
-            } else {
-                $unique[$ii] = $allOf;
-            }
-        }
-        $schema->allOf = array_values($unique);
     }
 }
