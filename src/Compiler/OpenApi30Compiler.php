@@ -31,11 +31,13 @@ class OpenApi30Compiler extends OpenApi31Compiler
 {
     protected const VERSIONS = ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.0.4'];
 
+    #[\Override]
     public function getVersion(): string
     {
         return '3.0.0';
     }
 
+    #[\Override]
     public function validate(Specification $specification): array
     {
         parent::validate($specification);
@@ -62,11 +64,13 @@ class OpenApi30Compiler extends OpenApi31Compiler
         return $this->logger->entries();
     }
 
+    #[\Override]
     protected function compileWebhooks(array $operations): array
     {
         return [];
     }
 
+    #[\Override]
     protected function compileInfo(OA\Info $info): array
     {
         return $this->filter([
@@ -79,6 +83,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
         ], $info);
     }
 
+    #[\Override]
     protected function compileLicense(OA\License $license): array
     {
         return $this->filter([
@@ -90,7 +95,8 @@ class OpenApi30Compiler extends OpenApi31Compiler
     /**
      * Compile schema using OAS 3.0 / JSON Schema draft-04 semantics.
      */
-    protected function compileSchema(OA\Schema|string $schema): array
+    #[\Override]
+    protected function compileSchema(OA\Schema|string $schema): array|\stdClass
     {
         if (is_string($schema)) {
             return ['$ref' => $schema];
@@ -101,6 +107,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
                 return $this->filter([
                     'oneOf' => [['$ref' => $schema->ref]],
                     'nullable' => true,
+                    'description' => Undefined::isDefault($schema->description) ? null : $schema->description,
                 ], $schema);
             }
 
@@ -110,7 +117,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
         $type = $schema->type;
         if (is_array($type)) {
             $type = array_values(array_filter($type, fn (string $t): bool => $t !== 'null'));
-            $type = count($type) === 1 ? $type[0] : ($type[0] ?? null);
+            $type = count($type) === 1 ? $type[0] : null;
         }
 
         $nullable = $schema->nullable;
@@ -207,9 +214,10 @@ class OpenApi30Compiler extends OpenApi31Compiler
             $result['enum'] = [$schema->const];
         }
 
-        return $result;
+        return $result ?: new \stdClass();
     }
 
+    #[\Override]
     protected function validateSchemas(Specification $specification): void
     {
         $allSchemas = $this->collectSchemas($specification);

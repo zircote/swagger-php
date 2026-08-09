@@ -5,7 +5,7 @@ info:
 paths:
   /endpoint:
     get:
-      operationId: 246a59a9e3caa2de5fc49987b2cf7584
+      operationId: 'getInheritedFilters'
       responses:
         '200':
           description: 'All good'

@@ -91,6 +91,7 @@ class CAModel
 #[CustomGet(
     path: '/api/endpoint',
     description: 'An endpoint',
+    operationId: 'CAEndpoint',
     responses: [new OAT\Response(response: 200, description: 'OK')]
 )]
 class CAEndpoint

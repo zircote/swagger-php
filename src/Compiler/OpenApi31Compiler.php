@@ -291,17 +291,19 @@ class OpenApi31Compiler implements CompilerInterface
         ], $parameter);
     }
 
-    protected function compileRequestBody(OA\RequestBody $body): array
+    protected function compileRequestBody(OA\RequestBody $body): array|\stdClass
     {
         if ($body->ref !== null) {
             return ['$ref' => $body->ref];
         }
 
-        return $this->filter([
+        $result = $this->filter([
             'description' => $body->description,
             'content' => $this->compileMediaTypes($body->content ?? []),
             'required' => $body->required,
         ], $body);
+
+        return $result ?: new \stdClass();
     }
 
     /**
@@ -392,7 +394,7 @@ class OpenApi31Compiler implements CompilerInterface
         ], $link);
     }
 
-    protected function compileSchema(OA\Schema|string $schema): array
+    protected function compileSchema(OA\Schema|string $schema): array|\stdClass
     {
         if (is_string($schema)) {
             return ['$ref' => $schema];
@@ -402,7 +404,10 @@ class OpenApi31Compiler implements CompilerInterface
             if ($schema->nullable === true) {
                 return $this->filter([
                     'oneOf' => [
-                        ['$ref' => $schema->ref],
+                        $this->filter([
+                            '$ref' => $schema->ref,
+                            'description' => Undefined::isDefault($schema->description) ? null : $schema->description,
+                        ]),
                         ['type' => 'null'],
                     ],
                 ], $schema);
@@ -504,11 +509,11 @@ class OpenApi31Compiler implements CompilerInterface
             $result['example'] = $schema->example;
         }
 
-        return $result;
+        return $result ?: new \stdClass();
     }
 
     /**
-     * @param  list<OA\Property|OA\Schema> $properties
+     * @param  list<OA\Property>   $properties
      * @return array<string,mixed>
      */
     protected function compileProperties(array $properties): array
@@ -516,15 +521,9 @@ class OpenApi31Compiler implements CompilerInterface
         $result = [];
 
         foreach ($properties as $property) {
-            if ($property instanceof OA\Property) {
-                $name = $property->property ?? 'unknown';
-                $result[$name] = $property->schema instanceof OA\Schema
-                    ? $this->compileSchema($property->schema)
-                    : new \stdClass();
-            } elseif ($property instanceof OA\Schema) {
-                $name = $property->schema ?? $property->title ?? 'unknown';
-                $result[$name] = $this->compileSchema($property);
-            }
+            $result[$property->property] = $property->schema instanceof OA\Schema
+                ? $this->compileSchema($property->schema)
+                : new \stdClass();
         }
 
         return $result;
@@ -728,11 +727,11 @@ class OpenApi31Compiler implements CompilerInterface
     /**
      * Remove null entries and apply x- extensions.
      */
-    protected function filter(array $result, OA\AbstractAttribute $attribute): array
+    protected function filter(array $result, OA\AbstractAttribute|null $attribute = null): array
     {
         $result = array_filter($result, fn ($value): bool => !in_array($value, [null, Undefined::UNDEFINED, []], true));
 
-        if ($attribute->x !== null) {
+        if ($attribute?->x !== null) {
             foreach ($attribute->x as $key => $value) {
                 $result['x-' . $key] = $value;
             }

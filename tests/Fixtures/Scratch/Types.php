@@ -26,6 +26,7 @@ class Types
 #[OAT\Get(
     path: '/api/endpoint',
     description: 'An endpoint',
+    operationId: 'getTypes',
     responses: [new OAT\Response(response: 200, description: 'OK')]
 )]
 class TypesEndpoint

@@ -28,6 +28,7 @@ class RequestBodyController
 {
     #[OAT\Post(
         path: '/endpoint/schema-ref-json',
+        operationId: 'postSchemaRefJson',
         requestBody: new OAT\RequestBody(
             description: 'Information about a new pet in the system',
             content: new OAT\JsonContent(ref: RequestBodySchema::class),
@@ -45,6 +46,7 @@ class RequestBodyController
 
     #[OAT\Post(
         path: '/endpoint/schema-ref',
+        operationId: 'postSchemaRef',
         requestBody: new OAT\RequestBody(
             description: 'Information about a new pet in the system',
             content: new OAT\MediaType(
@@ -65,6 +67,7 @@ class RequestBodyController
 
     #[OAT\Post(
         path: '/endpoint/ref',
+        operationId: 'postRef',
         requestBody: new OAT\RequestBody(ref: RequestBodyRef::class),
         responses: [
             new OAT\Response(
@@ -79,6 +82,7 @@ class RequestBodyController
 
     #[OAT\Post(
         path: '/endpoint/ref-foo',
+        operationId: 'postRefFoo',
         responses: [
             new OAT\Response(
                 response: 200,

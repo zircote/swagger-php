@@ -31,6 +31,7 @@ class VendorExtensions
 #[OAT\Get(
     path: '/api/endpoint',
     description: 'An endpoint',
+    operationId: 'get',
     responses: [new OAT\Response(response: 200, description: 'OK')]
 )]
 class VendorExtensionsEndpoint

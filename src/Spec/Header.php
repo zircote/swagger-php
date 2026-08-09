@@ -59,6 +59,7 @@ class Header extends AbstractAttribute
     public function merge(): array
     {
         return [
+            Components::class => 'headers[]',
             Response::class => 'headers[]',
             Encoding::class => 'headers[]',
         ];

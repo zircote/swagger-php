@@ -40,7 +40,7 @@ class Xml extends OA\MediaType
      * @param string|null                                      $ref         A JSON Reference to a reusable schema
      * @param string|list<string>|null                         $type        The value type(s) (string, number, integer, boolean, array, object, null)
      * @param Schema|string|null                               $items       Schema for array items
-     * @param list<Property|Schema>|null                       $properties  Object property definitions
+     * @param list<Property>|null                              $properties  Object property definitions
      * @param list<string>|null                                $required    List of required property names
      * @param Schema|null                                      $schema      The schema defining the content
      * @param mixed                                            $example     Example of the media type content

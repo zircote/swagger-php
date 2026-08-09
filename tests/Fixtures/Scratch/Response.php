@@ -13,6 +13,7 @@ class ResponseController
 {
     #[OAT\Post(
         path: '/endpoint/response-schema',
+        operationId: 'responseSchema',
         responses: [
             new OAT\Response(
                 response: 200,

@@ -26,7 +26,7 @@ final class CompilerTest extends TestCase
         return $spec;
     }
 
-    protected function compileSchema(CompilerInterface $compiler, OA\Schema $schema): array
+    protected function compileSchema(CompilerInterface $compiler, OA\Schema $schema): array|\stdClass
     {
         $spec = $this->createSpecification($compiler->getVersion());
         $spec->schemas[] = $schema;
@@ -264,9 +264,8 @@ final class CompilerTest extends TestCase
             ),
         );
 
-        $this->assertArrayNotHasKey('if', $result);
-        $this->assertArrayNotHasKey('then', $result);
-        $this->assertArrayNotHasKey('else', $result);
+        // empty schema is '{}'
+        $this->assertInstanceOf(\stdClass::class, $result);
     }
 
     public function test31IncludesIfThenElse(): void

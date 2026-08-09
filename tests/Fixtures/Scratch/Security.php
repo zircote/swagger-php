@@ -39,6 +39,7 @@ class Security
 #[OAT\Info(title: 'Security', version: '1.0')]
 #[OAT\Get(
     path: '/endpoint',
+    operationId: 'getInheritedFilters',
     responses: [
         new OAT\Response(
             response: 200,

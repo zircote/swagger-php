@@ -101,6 +101,7 @@ class Parameter extends AbstractAttribute
     public function merge(): array
     {
         return [
+            Components::class => 'parameters[]',
             Operation::class => 'parameters[]',
             PathItem::class => 'parameters[]',
         ];

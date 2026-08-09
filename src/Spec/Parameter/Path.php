@@ -27,7 +27,7 @@ class Path extends OA\Parameter
         ?string $parameter = null,
         ?string $name = null,
         ?string $description = Undefined::UNDEFINED,
-        ?bool $required = null,
+        ?bool $required = true,
         ?bool $deprecated = null,
         ?string $ref = null,
         string|OA\ParameterStyle|null $style = null,

@@ -72,6 +72,7 @@ class PromotedPropertyDescription
 #[OAT\Get(
     path: '/api/endpoint',
     description: 'An endpoint',
+    operationId: 'getPromotedPropertyDescription',
     responses: [new OAT\Response(response: 200, description: 'OK')]
 )]
 class PromotedPropertyDescriptionEndpoint

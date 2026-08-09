@@ -5,7 +5,7 @@ info:
 paths:
   /endpoint/response-schema:
     post:
-      operationId: 1c263833c8db6ca090be27b517d92017
+      operationId: 'responseSchema'
       responses:
         '200':
           description: 'All good'

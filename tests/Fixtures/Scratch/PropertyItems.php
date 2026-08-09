@@ -64,6 +64,7 @@ class PropertyItems
 #[OAT\Get(
     path: '/api/endpoint',
     description: 'An endpoint',
+    operationId: 'getInheritedFilters',
     responses: [new OAT\Response(response: 200, description: 'OK')]
 )]
 class PropertyItemsEndpoint
