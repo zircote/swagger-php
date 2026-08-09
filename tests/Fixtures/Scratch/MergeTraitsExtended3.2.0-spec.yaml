@@ -1,0 +1,56 @@
+openapi: 3.2.0
+info:
+  title: API
+  version: '1.0'
+paths:
+  /api/endpoint:
+    get:
+      operationId: getProducts
+      responses:
+        200:
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+components:
+  schemas:
+    ModelExtended:
+      type: object
+      description: 'This model can be ignored, it is just used for inheritance.'
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+    Product:
+      type: object
+      description: Product
+      required:
+        - number
+        - name
+      allOf:
+        - $ref: '#/components/schemas/ModelExtended'
+        -
+          type: object
+          properties:
+            deleted_at:
+              type:
+                - string
+                - 'null'
+              format: date-time
+              readOnly: true
+            number:
+              type: string
+            name:
+              type: string
+      xml:
+        name: Product
