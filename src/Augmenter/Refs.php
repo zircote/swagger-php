@@ -31,6 +31,15 @@ class Refs implements PipeInterface, LoggerAwareInterface
 
     public function __invoke(mixed $payload): mixed
     {
+        foreach ($payload->schemas as $schema) {
+            $reflector = $schema->getClassReflector();
+            if ($reflector === null) {
+                continue;
+            }
+            $this->mergeAllOf($schema);
+            $this->dedupAllOfRefs($schema);
+        }
+
         $refMap = $this->buildRefMap($payload);
 
         if ($refMap === []) {
@@ -169,5 +178,40 @@ class Refs implements PipeInterface, LoggerAwareInterface
                 $attribute->ref = "#/components/schemas/{$name}/allOf/{$index}/{$path}";
             }
         });
+    }
+
+
+    /**
+     * When allOf refs were added but the schema also has own properties, wrap them
+     * in a dedicated allOf entry so the final output is a pure allOf composition.
+     */
+    protected function mergeAllOf(OA\Schema $schema): void
+    {
+        if ($schema->allOf === null || $schema->properties === null) {
+            return;
+        }
+
+        $schema->allOf[] = new OA\Schema(type: 'object', properties: $schema->properties);
+        $schema->properties = null;
+    }
+
+    protected function dedupAllOfRefs(OA\Schema $schema): void
+    {
+        if ($schema->allOf === null || $schema->allOf === []) {
+            return;
+        }
+
+        $unique = [];
+        foreach ($schema->allOf as $ii => $allOf) {
+            if ($allOf->ref !== null) {
+                if (isset($unique[$allOf->ref])) {
+                    continue;
+                }
+                $unique[$allOf->ref] = $allOf;
+            } else {
+                $unique[$ii] = $allOf;
+            }
+        }
+        $schema->allOf = array_values($unique);
     }
 }
