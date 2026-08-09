@@ -137,7 +137,7 @@ class Inheritance implements PipeInterface
      */
     protected function expandInterfaces(OA\Schema $schema, \ReflectionClass $reflector, array $schemaMap, array &$existingProperties): void
     {
-        $ownInterfaces = $this->getDirectInterfaces($reflector);
+        $ownInterfaces = $this->attributeFactory->getDirectInterfaces($reflector);
 
         foreach ($ownInterfaces as $interface) {
             if (isset($schemaMap[$interface->getName()])) {
@@ -209,29 +209,5 @@ class Inheritance implements PipeInterface
             }
         }
         $schema->allOf = array_values($unique);
-    }
-
-    /**
-     * Get interfaces directly implemented by a class (not inherited from parents).
-     *
-     * @return list<\ReflectionClass>
-     */
-    protected function getDirectInterfaces(\ReflectionClass $class): array
-    {
-        $interfaces = $class->getInterfaces();
-
-        $parent = $class->getParentClass();
-        if ($parent !== false) {
-            $parentInterfaceNames = array_map(
-                fn (\ReflectionClass $i): string => $i->getName(),
-                $parent->getInterfaces(),
-            );
-            $interfaces = array_filter(
-                $interfaces,
-                fn (\ReflectionClass $i): bool => !in_array($i->getName(), $parentInterfaceNames, true),
-            );
-        }
-
-        return array_values($interfaces);
     }
 }
