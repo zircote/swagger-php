@@ -365,4 +365,29 @@ class AttributeFactory
 
         return array_values(array_filter($attributes, static fn (object $item): bool => $item instanceof AttributeInterface));
     }
+
+    /**
+     * Get interfaces directly implemented by a class (not inherited from parents).
+     *
+     *
+     * @return list<\ReflectionClass>
+     */
+    public function getDirectInterfaces(\ReflectionClass $class): array
+    {
+        $interfaces = $class->getInterfaces();
+
+        $parent = $class->getParentClass();
+        if ($parent !== false) {
+            $parentInterfaceNames = array_map(
+                fn (\ReflectionClass $i): string => $i->getName(),
+                $parent->getInterfaces(),
+            );
+            $interfaces = array_filter(
+                $interfaces,
+                fn (\ReflectionClass $i): bool => !in_array($i->getName(), $parentInterfaceNames, true),
+            );
+        }
+
+        return array_values($interfaces);
+    }
 }
