@@ -180,7 +180,6 @@ class Refs implements PipeInterface, LoggerAwareInterface
         });
     }
 
-
     /**
      * When allOf refs were added but the schema also has own properties, wrap them
      * in a dedicated allOf entry so the final output is a pure allOf composition.

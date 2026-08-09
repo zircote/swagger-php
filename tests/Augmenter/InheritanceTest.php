@@ -8,11 +8,9 @@ namespace OpenApi\Tests\Augmenter;
 
 use OpenApi\Assembler;
 use OpenApi\Augmenter;
-use OpenApi\Compiler\OpenApi31Compiler;
 use OpenApi\Tests\Concerns\AssertsSchemaStructure;
 use OpenApi\Tests\Fixtures\Augmenter\Hierarchy\Spec as Fixtures;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Yaml\Yaml;
 
 final class InheritanceTest extends TestCase
 {
