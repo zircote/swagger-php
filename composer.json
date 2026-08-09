@@ -100,8 +100,8 @@
             "@rector --dry-run"
         ],
         "test": [
-            "export XDEBUG_MODE=off && phpunit --display-all-issues",
-            "@lint"
+            "export XDEBUG_MODE=off && phpunit --display-all-issues @additional_args",
+            "@lint @no_additional_args"
         ],
         "performance": "export XDEBUG_MODE=off && phpunit --group performance",
         "analyse": [
