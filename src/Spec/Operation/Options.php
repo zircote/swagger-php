@@ -7,6 +7,7 @@
 namespace OpenApi\Spec\Operation;
 
 use OpenApi\Spec as OA;
+use OpenApi\Spec\RequestBody;
 use OpenApi\Undefined;
 
 /**
@@ -35,7 +36,6 @@ class Options extends OA\Operation
         ?string $description = Undefined::UNDEFINED,
         ?array $tags = null,
         ?array $parameters = null,
-        ?OA\RequestBody $requestBody = null,
         ?array $responses = null,
         ?array $callbacks = null,
         ?bool $deprecated = null,
@@ -54,7 +54,6 @@ class Options extends OA\Operation
             description: $description,
             tags: $tags,
             parameters: $parameters,
-            requestBody: $requestBody,
             responses: $responses,
             callbacks: $callbacks,
             deprecated: $deprecated,
@@ -64,5 +63,13 @@ class Options extends OA\Operation
             x: $x,
             attachables: $attachables,
         );
+    }
+
+    public function contains(): array
+    {
+        $result = parent::contains();
+        unset($result[RequestBody::class]);
+
+        return $result;
     }
 }
