@@ -446,6 +446,162 @@ Or apply globally via the OpenApi attribute or via PathItem (cloned to all opera
 | Processors modify mutable annotation tree | Augmenters enrich immutable DTOs                                                   |
 | Single serializer with version branches   | Dedicated compiler per OpenAPI version                                             |
 
+## Other differences
+
+Beyond the API changes listed above, spec mode produces slightly different output in some cases:
+
+### Explicit `type: object` on `allOf` schemas
+
+When a class-based schema uses `allOf`, spec mode emits an explicit `type: object` on the schema itself. Classic mode omits it.
+
+```php
+#[OA\Schema(
+    schema: 'create-user',
+    allOf: [
+        new OA\Schema(ref: '#/components/schemas/abstract-user'),
+        new OA\Schema(required: ['name', 'email']),
+    ]
+)]
+class CreateUser extends AbstractUser {}
+```
+
+Classic output:
+```yaml
+create-user:
+  allOf:
+    - $ref: '#/components/schemas/abstract-user'
+    - required:
+        - name
+        - email
+```
+
+Spec output:
+```yaml
+create-user:
+  type: object
+  allOf:
+    - $ref: '#/components/schemas/abstract-user'
+    - required:
+        - name
+        - email
+```
+
+This is semantically stricter — the schema explicitly declares it must be an object, rather than leaving the type to be inferred from the `allOf` members.
+
+### Duplicate `$ref` deduplication in `allOf`
+
+When a class extends a parent that has its own schema, the `Inheritance` augmenter adds a `$ref` to the parent in `allOf`. If you also declare that same `$ref` explicitly, spec mode deduplicates it — only one entry survives. Classic mode may emit the same `$ref` twice.
+
+```php
+#[OA\Schema(
+    schema: 'create-user',
+    allOf: [
+        new OA\Schema(ref: '#/components/schemas/abstract-user'),
+        new OA\Schema(required: ['name', 'email']),
+    ]
+)]
+class CreateUser extends AbstractUser {}
+```
+
+In spec mode, the `$ref` to `abstract-user` appears only once in the output even though both the explicit `allOf` and the inheritance augmenter would add it.
+
+### Single-element `type` arrays reduced to string
+
+When a schema's `type` is an array with a single element (e.g. `['string']`), spec mode compiles it as a plain string (`type: 'string'`). Classic mode may emit the array form.
+
+```php
+#[OA\Property]
+#[OA\Schema(type: ['string'])]
+public string $name;
+```
+
+Classic output:
+```yaml
+name:
+  type:
+    - string
+```
+
+Spec output:
+```yaml
+name:
+  type: string
+```
+
+Both forms are valid in OpenAPI 3.1+, but the scalar form is more conventional for single types.
+
+### No `requestBody` on `Get`, `Head`, `Options`, `Trace`
+
+In spec mode, the typed operation subclasses `OA\Operation\Get`, `OA\Operation\Head`, `OA\Operation\Options`, and `OA\Operation\Trace` do not accept a `requestBody` parameter. This enforces the HTTP semantics where request bodies are not defined for these methods.
+
+Classic mode accepts `requestBody` on all operations (with a comment noting it should be ignored by validators for methods that don't support it).
+
+```php
+// This works in classic mode but is a compile error in spec mode:
+#[OA\Operation\Get(path: '/pets', requestBody: new OA\RequestBody(...))]
+
+// Use Post, Put, Patch, or Delete for request bodies:
+#[OA\Operation\Post(path: '/pets', requestBody: new OA\RequestBody(...))]
+```
+
+### Nullable `$ref` does not duplicate `description`
+
+When a schema combines a `$ref` with `nullable: true` and a `description`, classic mode emits the `description` both on the `$ref` entry inside `oneOf` and as a sibling of `oneOf`. Spec mode only emits it on the `$ref` entry — no redundant duplication.
+
+```php
+#[OA\Schema(
+    ref: '#/components/schemas/repository',
+    description: 'The repository',
+    nullable: true,
+)]
+```
+
+Classic output (3.1+):
+```yaml
+oneOf:
+  - { $ref: '#/components/schemas/repository', description: 'The repository' }
+  - { type: 'null' }
+description: 'The repository'
+```
+
+Spec output (3.1+):
+```yaml
+oneOf:
+  - { $ref: '#/components/schemas/repository', description: 'The repository' }
+  - { type: 'null' }
+```
+
+### Trait property ordering
+
+When traits without their own `#[OA\Schema]` are merged inline, the property order in the output may differ between modes. Spec mode orders properties by trait `use` declaration order, which may place trait properties differently than classic mode.
+
+### Nullable type inference from PHP types
+
+Spec mode consistently infers nullability from PHP type declarations (e.g. `?\DateTime`). For OpenAPI 3.0 this adds `nullable: true`; for 3.1+ it emits `type: ['string', 'null']`. Classic mode may not infer nullability in all cases where the PHP type is nullable.
+
+```php
+#[OA\Property]
+#[OA\Schema(format: 'date-time', type: 'string', readOnly: true)]
+public ?\DateTime $deleted_at;
+```
+
+Classic output (3.0):
+```yaml
+deleted_at:
+  type: string
+  format: date-time
+  readOnly: true
+```
+
+Spec output (3.0):
+```yaml
+deleted_at:
+  type: string
+  format: date-time
+  nullable: true
+  readOnly: true
+```
+
 ## References
 
 `$ref` values can use PHP class references (resolved by the `Refs` augmenter):
