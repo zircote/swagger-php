@@ -157,8 +157,9 @@ class Refs implements PipeInterface, LoggerAwareInterface
             if ($schema->allOf !== null && $schema->properties === null) {
                 foreach ($schema->allOf as $index => $allOf) {
                     if ($allOf instanceof OA\Schema && $allOf->properties !== null) {
-                        $name = $schema->schema ?? $schema->title;
-                        $candidates[$name] = $index;
+                        if ($schema->schema !== null) {
+                            $candidates[$schema->schema] = $index;
+                        }
                     }
                 }
             }
