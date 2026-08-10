@@ -13,7 +13,6 @@ use OpenApi\Tests\Concerns\AssertsSchemaStructure;
 use OpenApi\Tests\Fixtures as OperationalFixtures;
 use OpenApi\Tests\Fixtures\Augmenter\Hierarchy\Spec as HierarchyFixtures;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 
 final class InheritanceTest extends TestCase
 {
@@ -24,19 +23,20 @@ final class InheritanceTest extends TestCase
     {
         $assembler = new Assembler();
         $assembler->collect(
-            new ReflectionClass(HierarchyFixtures\TraitWithSchema::class),
-            new ReflectionClass(HierarchyFixtures\ClassUsingTraitWithSchema::class),
-            new ReflectionClass(HierarchyFixtures\PlainTrait::class),
-            new ReflectionClass(HierarchyFixtures\ClassUsingPlainTrait::class),
-            new ReflectionClass(HierarchyFixtures\ParentWithSchema::class),
-            new ReflectionClass(HierarchyFixtures\ChildOfParentWithSchema::class),
-            new ReflectionClass(HierarchyFixtures\PlainParent::class),
-            new ReflectionClass(HierarchyFixtures\ChildOfPlainParent::class),
-            new ReflectionClass(HierarchyFixtures\StandaloneSchema::class),
+            new \ReflectionClass(HierarchyFixtures\TraitWithSchema::class),
+            new \ReflectionClass(HierarchyFixtures\ClassUsingTraitWithSchema::class),
+            new \ReflectionClass(HierarchyFixtures\PlainTrait::class),
+            new \ReflectionClass(HierarchyFixtures\ClassUsingPlainTrait::class),
+            new \ReflectionClass(HierarchyFixtures\ParentWithSchema::class),
+            new \ReflectionClass(HierarchyFixtures\ChildOfParentWithSchema::class),
+            new \ReflectionClass(HierarchyFixtures\PlainParent::class),
+            new \ReflectionClass(HierarchyFixtures\ChildOfPlainParent::class),
+            new \ReflectionClass(HierarchyFixtures\StandaloneSchema::class),
         );
 
         $spec = $assembler->getSpecification();
         (new Augmenter\Inheritance())($spec);
+        (new Augmenter\Names())($spec);
         (new Augmenter\Refs())($spec);
 
         $this->assertSpecificationSchemasMatchFile(
@@ -115,10 +115,10 @@ final class InheritanceTest extends TestCase
     public function testDiscoveryPrefixApplied(): void
     {
         $spec = $this->assemble(
-            Inheritance\Augmenter\InvoiceDocumentController::class,
+            OperationalFixtures\Augmenter\InvoiceDocumentController::class,
         );
 
-        (new Augmenter\OperationInheritance())($spec);
+        (new Augmenter\Inheritance())($spec);
         (new Augmenter\PathItems())($spec);
 
         $this->assertSame('/invoices', $spec->operations[0]->path);

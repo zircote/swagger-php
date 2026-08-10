@@ -157,14 +157,7 @@ class AttributeFactory
             array_push($inner, ...$this->resolveNesting($this->readAttributes($constant)));
         }
 
-        foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            if ($method->isConstructor()
-                || $method->getDeclaringClass()->getName() !== $class->getName()
-                || ($scannerDetails && !in_array($method->getName(), $scannerDetails['methods'], true))
-            ) {
-                continue;
-            }
-
+        foreach ($this->getDirectMethods($class) as $method) {
             array_push($inner, ...$this->fromReflector($method));
         }
 
@@ -177,6 +170,54 @@ class AttributeFactory
     public function hasAttributes(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): bool
     {
         return $this->readAttributes($reflector) !== [];
+    }
+
+    /**
+     * Get methods directly implemented by a class (not inherited from parents).
+     *
+     * @return list<\ReflectionMethod>
+     */
+    public function getDirectMethods(\ReflectionClass $class): array
+    {
+        $scannerDetails = $this->tokenScanner->detailsFor($class);
+
+        $methods = [];
+        foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+            if ($method->isConstructor()
+                || $method->getDeclaringClass()->getName() !== $class->getName()
+                || ($scannerDetails && !in_array($method->getName(), $scannerDetails['methods'], true))
+            ) {
+                continue;
+            }
+
+            $methods[] = $method;
+        }
+
+        return $methods;
+    }
+
+    /**
+     * Get interfaces directly implemented by a class (not inherited from parents).
+     *
+     * @return list<\ReflectionClass>
+     */
+    public function getDirectInterfaces(\ReflectionClass $class): array
+    {
+        $interfaces = $class->getInterfaces();
+
+        $parent = $class->getParentClass();
+        if ($parent !== false) {
+            $parentInterfaceNames = array_map(
+                fn (\ReflectionClass $i): string => $i->getName(),
+                $parent->getInterfaces(),
+            );
+            $interfaces = array_filter(
+                $interfaces,
+                fn (\ReflectionClass $i): bool => !in_array($i->getName(), $parentInterfaceNames, true),
+            );
+        }
+
+        return array_values($interfaces);
     }
 
     /**
@@ -239,31 +280,6 @@ class AttributeFactory
         }
 
         return $outer;
-    }
-
-    /**
-     * Get interfaces directly implemented by a class (not inherited from parents).
-     *
-     *
-     * @return list<\ReflectionClass>
-     */
-    public function getDirectInterfaces(\ReflectionClass $class): array
-    {
-        $interfaces = $class->getInterfaces();
-
-        $parent = $class->getParentClass();
-        if ($parent !== false) {
-            $parentInterfaceNames = array_map(
-                fn (\ReflectionClass $i): string => $i->getName(),
-                $parent->getInterfaces(),
-            );
-            $interfaces = array_filter(
-                $interfaces,
-                fn (\ReflectionClass $i): bool => !in_array($i->getName(), $parentInterfaceNames, true),
-            );
-        }
-
-        return array_values($interfaces);
     }
 
     /**
