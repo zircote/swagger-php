@@ -264,8 +264,7 @@ final class CompilerTest extends TestCase
             ),
         );
 
-        // empty schema is '{}'
-        $this->assertInstanceOf(\stdClass::class, $result);
+        $this->assertSame([], $result);
     }
 
     public function test31IncludesIfThenElse(): void
