@@ -24,6 +24,20 @@ class CleanUnusedComponents
         $this->enabled = $enabled;
     }
 
+    public function __invoke(Analysis $analysis): void
+    {
+        if (!$this->enabled || Undefined::isDefault($analysis->openapi->components)) {
+            return;
+        }
+
+        // allow multiple runs to catch nested dependencies
+        for ($ii = 0; $ii < 10; ++$ii) {
+            if (!$this->cleanup($analysis)) {
+                break;
+            }
+        }
+    }
+
     public function isEnabled(): bool
     {
         return $this->enabled;
@@ -37,20 +51,6 @@ class CleanUnusedComponents
         $this->enabled = $enabled;
 
         return $this;
-    }
-
-    public function __invoke(Analysis $analysis): void
-    {
-        if (!$this->enabled || Undefined::isDefault($analysis->openapi->components)) {
-            return;
-        }
-
-        // allow multiple runs to catch nested dependencies
-        for ($ii = 0; $ii < 10; ++$ii) {
-            if (!$this->cleanup($analysis)) {
-                break;
-            }
-        }
     }
 
     protected function collectAnnotationRefs(OA\AbstractAnnotation $annotation, array &$usedRefs, \SplObjectStorage $visited): void

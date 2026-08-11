@@ -23,13 +23,6 @@ use OpenApi\Undefined;
 
 final class ExpandClassesTest extends OpenApiTestCase
 {
-    protected function validate(Analysis $analysis): void
-    {
-        $analysis->openapi->info = new OA\Info(['title' => 'test', 'version' => '1.0.0', '_context' => $this->getContext()]);
-        $analysis->openapi->paths = [new OA\PathItem(['path' => '/test', '_context' => $this->getContext()])];
-        $analysis->validate();
-    }
-
     public function testExpandClasses(): void
     {
         $analysis = $this->analysisFromFixtures([
@@ -217,5 +210,12 @@ final class ExpandClassesTest extends OpenApiTestCase
         $this->assertSame('TraitUsedByExtendsBaseThatImplements', $traitUsedByExtendsBaseThatImplements->schema);
         $this->assertEquals('traitProperty', $traitUsedByExtendsBaseThatImplements->properties[0]->property);
         $this->assertEquals(Undefined::UNDEFINED, $traitUsedByExtendsBaseThatImplements->allOf);
+    }
+
+    protected function validate(Analysis $analysis): void
+    {
+        $analysis->openapi->info = new OA\Info(['title' => 'test', 'version' => '1.0.0', '_context' => $this->getContext()]);
+        $analysis->openapi->paths = [new OA\PathItem(['path' => '/test', '_context' => $this->getContext()])];
+        $analysis->validate();
     }
 }

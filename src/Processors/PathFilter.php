@@ -30,40 +30,6 @@ class PathFilter
         $this->paths = $paths;
     }
 
-    public function getTags(): array
-    {
-        return $this->tags;
-    }
-
-    /**
-     * A list of regular expressions to match <code>tags</code> to include.
-     *
-     * @param array<string> $tags
-     */
-    public function setTags(array $tags): PathFilter
-    {
-        $this->tags = $tags;
-
-        return $this;
-    }
-
-    public function getPaths(): array
-    {
-        return $this->paths;
-    }
-
-    /**
-     * A list of regular expressions to match <code>paths</code> to include.
-     *
-     * @param array<string> $paths
-     */
-    public function setPaths(array $paths): PathFilter
-    {
-        $this->paths = $paths;
-
-        return $this;
-    }
-
     public function __invoke(Analysis $analysis): void
     {
         if (($this->tags || $this->paths) && !Undefined::isDefault($analysis->openapi->paths)) {
@@ -99,5 +65,39 @@ class PathFilter
 
             $analysis->openapi->paths = $filtered;
         }
+    }
+
+    public function getTags(): array
+    {
+        return $this->tags;
+    }
+
+    /**
+     * A list of regular expressions to match <code>tags</code> to include.
+     *
+     * @param array<string> $tags
+     */
+    public function setTags(array $tags): PathFilter
+    {
+        $this->tags = $tags;
+
+        return $this;
+    }
+
+    public function getPaths(): array
+    {
+        return $this->paths;
+    }
+
+    /**
+     * A list of regular expressions to match <code>paths</code> to include.
+     *
+     * @param array<string> $paths
+     */
+    public function setPaths(array $paths): PathFilter
+    {
+        $this->paths = $paths;
+
+        return $this;
     }
 }

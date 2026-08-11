@@ -16,14 +16,14 @@ namespace OpenApi\Utils;
 interface PipeInterface
 {
     /**
-     * The group this pipe belongs to.
-     */
-    public function group(): string|\BackedEnum;
-
-    /**
      * @param T $payload
      *
      * @return T|null
      */
     public function __invoke(mixed $payload): mixed;
+
+    /**
+     * The group this pipe belongs to.
+     */
+    public function group(): string|\BackedEnum;
 }

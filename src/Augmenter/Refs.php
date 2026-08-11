@@ -24,11 +24,6 @@ class Refs implements PipeInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function group(): string|\BackedEnum
-    {
-        return Group::Resolve;
-    }
-
     public function __invoke(mixed $payload): mixed
     {
         foreach ($payload->schemas as $schema) {
@@ -51,6 +46,11 @@ class Refs implements PipeInterface, LoggerAwareInterface
         $this->resolveAllOfPropertyRefs($payload);
 
         return null;
+    }
+
+    public function group(): string|\BackedEnum
+    {
+        return Group::Resolve;
     }
 
     protected function resolveFQCNRefs(Specification $specification, array $refMap): void

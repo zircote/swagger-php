@@ -141,6 +141,18 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
     }
 
+    public function __debugInfo()
+    {
+        $properties = [];
+        foreach (get_object_vars($this) as $property => $value) {
+            if (!Undefined::isDefault($value)) {
+                $properties[$property] = $value;
+            }
+        }
+
+        return $properties;
+    }
+
     /**
      * Merge given annotations to their mapped properties configured in static::$_nested.
      *
@@ -248,18 +260,6 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
 
         return json_encode($this, $flags);
-    }
-
-    public function __debugInfo()
-    {
-        $properties = [];
-        foreach (get_object_vars($this) as $property => $value) {
-            if (!Undefined::isDefault($value)) {
-                $properties[$property] = $value;
-            }
-        }
-
-        return $properties;
     }
 
     public function jsonSerialize(): \stdClass
@@ -415,51 +415,6 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
 
         return $data;
-    }
-
-    /**
-     * Validate a given value against a `_$type` definition.
-     */
-    private function validateValueType(string $type, mixed $value): bool
-    {
-        if (str_starts_with($type, '[') && str_ends_with($type, ']')) {
-            // $value must be an array
-            if (!$this->validateValueType('array', $value)) {
-                return false;
-            }
-
-            $itemType = substr($type, 1, -1);
-            foreach ($value as $item) {
-                if (!$this->validateValueType($itemType, $item)) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        if (is_subclass_of($type, AbstractAnnotation::class)) {
-            $type = 'object';
-        }
-
-        $isValidType = fn (string $type, mixed $value): bool => match ($type) {
-            'string' => is_string($value),
-            'boolean' => is_bool($value),
-            'integer' => is_int($value),
-            'number' => is_numeric($value),
-            'object' => is_object($value),
-            'array' => is_array($value) && array_is_list($value),
-            'scheme' => in_array($value, ['http', 'https', 'ws', 'wss'], strict: true),
-            default => throw new OpenApiException('Invalid type "' . $type . '"'),
-        };
-
-        foreach (explode('|', $type) as $tt) {
-            if ($isValidType(trim($tt), $value)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public function validate(?Analysis $analysis = null, string $version = OpenApi::DEFAULT_VERSION, ?object $context = null): bool
@@ -709,5 +664,50 @@ abstract class AbstractAnnotation implements \JsonSerializable
         }
 
         return is_array($classes) ? $short : array_pop($short);
+    }
+
+    /**
+     * Validate a given value against a `_$type` definition.
+     */
+    private function validateValueType(string $type, mixed $value): bool
+    {
+        if (str_starts_with($type, '[') && str_ends_with($type, ']')) {
+            // $value must be an array
+            if (!$this->validateValueType('array', $value)) {
+                return false;
+            }
+
+            $itemType = substr($type, 1, -1);
+            foreach ($value as $item) {
+                if (!$this->validateValueType($itemType, $item)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        if (is_subclass_of($type, AbstractAnnotation::class)) {
+            $type = 'object';
+        }
+
+        $isValidType = fn (string $type, mixed $value): bool => match ($type) {
+            'string' => is_string($value),
+            'boolean' => is_bool($value),
+            'integer' => is_int($value),
+            'number' => is_numeric($value),
+            'object' => is_object($value),
+            'array' => is_array($value) && array_is_list($value),
+            'scheme' => in_array($value, ['http', 'https', 'ws', 'wss'], strict: true),
+            default => throw new OpenApiException('Invalid type "' . $type . '"'),
+        };
+
+        foreach (explode('|', $type) as $tt) {
+            if ($isValidType(trim($tt), $value)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

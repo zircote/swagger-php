@@ -18,63 +18,6 @@ final class SerializerTest extends OpenApiTestCase
 {
     use UsesExamples;
 
-    private function getPetstoreExpected(): OpenApi
-    {
-        $path = new OA\PathItem(['_context' => $this->getContext()]);
-        $path->path = '/products';
-        $path->post = new OA\Post(['_context' => $this->getContext()]);
-        $path->post->tags = ['products'];
-        $path->post->summary = 's1';
-        $path->post->description = 'd1';
-        $path->post->requestBody = new OA\RequestBody(['_context' => $this->getContext()]);
-        $mediaType = new OA\MediaType(['_context' => $this->getContext()]);
-        $mediaType->mediaType = 'application/json';
-        $mediaType->schema = new OA\Schema(['_context' => $this->getContext()]);
-        $mediaType->schema->type = 'object';
-        $mediaType->schema->additionalProperties = true;
-        $path->post->requestBody->content = [$mediaType];
-        $path->post->requestBody->description = 'data in body';
-        $path->post->requestBody->x = [];
-        $path->post->requestBody->x['repository'] = 'def';
-
-        $resp = new OA\Response(['_context' => $this->getContext()]);
-        $resp->response = '200';
-        $resp->description = 'Success';
-        $content = new OA\MediaType(['_context' => $this->getContext()]);
-        $content->mediaType = 'application/json';
-        $content->schema = new OA\Schema(['_context' => $this->getContext()]);
-        $content->schema->ref = '#/components/schemas/Pet';
-        $resp->content = [$content];
-        $resp->x = [];
-        $resp->x['repository'] = 'def';
-
-        $respRange = new OA\Response(['_context' => $this->getContext()]);
-        $respRange->response = '4XX';
-        $respRange->description = 'Client error response';
-
-        $path->post->responses = [$resp, $respRange];
-
-        $expected = new OpenApi(['_context' => $this->getContext()]);
-        $expected->openapi = OpenApi::VERSION_3_1_0;
-        $expected->paths = [
-            $path,
-        ];
-
-        $info = new OA\Info(['_context' => $this->getContext()]);
-        $info->title = 'Pet store';
-        $info->version = '1.0';
-        $expected->info = $info;
-
-        $schema = new OA\Schema(['_context' => $this->getContext()]);
-        $schema->schema = 'Pet';
-        $schema->required = ['name', 'photoUrls'];
-
-        $expected->components = new OA\Components(['_context' => $this->getContext()]);
-        $expected->components->schemas = [$schema];
-
-        return $expected;
-    }
-
     public function testDeserializePetstore(): void
     {
         $json = <<<JSON
@@ -238,5 +181,62 @@ JSON;
             str_replace('"tags"', '"openapi":"3.2.0", "tags"', $json),
             $annotation->toJson(),
         );
+    }
+
+    private function getPetstoreExpected(): OpenApi
+    {
+        $path = new OA\PathItem(['_context' => $this->getContext()]);
+        $path->path = '/products';
+        $path->post = new OA\Post(['_context' => $this->getContext()]);
+        $path->post->tags = ['products'];
+        $path->post->summary = 's1';
+        $path->post->description = 'd1';
+        $path->post->requestBody = new OA\RequestBody(['_context' => $this->getContext()]);
+        $mediaType = new OA\MediaType(['_context' => $this->getContext()]);
+        $mediaType->mediaType = 'application/json';
+        $mediaType->schema = new OA\Schema(['_context' => $this->getContext()]);
+        $mediaType->schema->type = 'object';
+        $mediaType->schema->additionalProperties = true;
+        $path->post->requestBody->content = [$mediaType];
+        $path->post->requestBody->description = 'data in body';
+        $path->post->requestBody->x = [];
+        $path->post->requestBody->x['repository'] = 'def';
+
+        $resp = new OA\Response(['_context' => $this->getContext()]);
+        $resp->response = '200';
+        $resp->description = 'Success';
+        $content = new OA\MediaType(['_context' => $this->getContext()]);
+        $content->mediaType = 'application/json';
+        $content->schema = new OA\Schema(['_context' => $this->getContext()]);
+        $content->schema->ref = '#/components/schemas/Pet';
+        $resp->content = [$content];
+        $resp->x = [];
+        $resp->x['repository'] = 'def';
+
+        $respRange = new OA\Response(['_context' => $this->getContext()]);
+        $respRange->response = '4XX';
+        $respRange->description = 'Client error response';
+
+        $path->post->responses = [$resp, $respRange];
+
+        $expected = new OpenApi(['_context' => $this->getContext()]);
+        $expected->openapi = OpenApi::VERSION_3_1_0;
+        $expected->paths = [
+            $path,
+        ];
+
+        $info = new OA\Info(['_context' => $this->getContext()]);
+        $info->title = 'Pet store';
+        $info->version = '1.0';
+        $expected->info = $info;
+
+        $schema = new OA\Schema(['_context' => $this->getContext()]);
+        $schema->schema = 'Pet';
+        $schema->required = ['name', 'photoUrls'];
+
+        $expected->components = new OA\Components(['_context' => $this->getContext()]);
+        $expected->components->schemas = [$schema];
+
+        return $expected;
     }
 }

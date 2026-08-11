@@ -30,6 +30,15 @@ class AugmentParameters implements GeneratorAwareInterface
         $this->augmentOperationParameters = $augmentOperationParameters;
     }
 
+    public function __invoke(Analysis $analysis): void
+    {
+        $this->augmentParameters($analysis);
+        $this->augmentSharedParameters($analysis);
+        if ($this->augmentOperationParameters) {
+            $this->augmentOperationParameters($analysis);
+        }
+    }
+
     public function isAugmentOperationParameters(): bool
     {
         return $this->augmentOperationParameters;
@@ -43,15 +52,6 @@ class AugmentParameters implements GeneratorAwareInterface
         $this->augmentOperationParameters = $augmentOperationParameters;
 
         return $this;
-    }
-
-    public function __invoke(Analysis $analysis): void
-    {
-        $this->augmentParameters($analysis);
-        $this->augmentSharedParameters($analysis);
-        if ($this->augmentOperationParameters) {
-            $this->augmentOperationParameters($analysis);
-        }
     }
 
     protected function augmentParameters(Analysis $analysis): void

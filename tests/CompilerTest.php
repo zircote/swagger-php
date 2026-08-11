@@ -17,25 +17,6 @@ use PHPUnit\Framework\TestCase;
 
 final class CompilerTest extends TestCase
 {
-    protected function createSpecification(string $version = '3.1.0'): Specification
-    {
-        $spec = new Specification();
-        $spec->openapi = new OA\OpenApi(version: $version);
-        $spec->info = new OA\Info(title: 'Test API', version: '1.0.0');
-
-        return $spec;
-    }
-
-    protected function compileSchema(CompilerInterface $compiler, OA\Schema $schema): array|\stdClass
-    {
-        $spec = $this->createSpecification($compiler->getVersion());
-        $spec->schemas[] = $schema;
-
-        $output = $compiler->compile($spec);
-
-        return $output['components']['schemas'][$schema->schema];
-    }
-
     // --- Version support ---
 
     public function testSupportsVersions(): void
@@ -566,5 +547,24 @@ final class CompilerTest extends TestCase
         $this->assertCount(2, $output['security']);
         $this->assertEquals(['bearerAuth' => []], $output['security'][0]);
         $this->assertEquals(['oauth2' => ['read', 'write']], $output['security'][1]);
+    }
+
+    protected function createSpecification(string $version = '3.1.0'): Specification
+    {
+        $spec = new Specification();
+        $spec->openapi = new OA\OpenApi(version: $version);
+        $spec->info = new OA\Info(title: 'Test API', version: '1.0.0');
+
+        return $spec;
+    }
+
+    protected function compileSchema(CompilerInterface $compiler, OA\Schema $schema): array|\stdClass
+    {
+        $spec = $this->createSpecification($compiler->getVersion());
+        $spec->schemas[] = $schema;
+
+        $output = $compiler->compile($spec);
+
+        return $output['components']['schemas'][$schema->schema];
     }
 }

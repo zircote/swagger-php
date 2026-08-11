@@ -13,21 +13,6 @@ final class CommandlineTest extends OpenApiTestCase
 {
     use UsesExamples;
 
-    private function getCommandToExecute(string $cmd, ?string $devNullRedir = null): string
-    {
-        if (PHP_OS_FAMILY === 'Windows') {
-            $cmd = 'php ' . $cmd;
-            $devNull = 'NUL';
-        } else {
-            $devNull = '/dev/null';
-        }
-        if ($devNullRedir) {
-            $cmd .= " {$devNullRedir} {$devNull}";
-        }
-
-        return $cmd;
-    }
-
     public function testStdout(): void
     {
         $basePath = self::examplePath('petstore');
@@ -93,5 +78,20 @@ final class CommandlineTest extends OpenApiTestCase
         exec($this->getCommandToExecute($cmd, '2>'), $output, $retval);
         $this->assertSame(0, $retval, $cmd . PHP_EOL . implode(PHP_EOL, $output));
         $this->assertStringContainsString("openapi: {$expectedVersion}", implode(PHP_EOL, $output));
+    }
+
+    private function getCommandToExecute(string $cmd, ?string $devNullRedir = null): string
+    {
+        if (PHP_OS_FAMILY === 'Windows') {
+            $cmd = 'php ' . $cmd;
+            $devNull = 'NUL';
+        } else {
+            $devNull = '/dev/null';
+        }
+        if ($devNullRedir) {
+            $cmd .= " {$devNullRedir} {$devNull}";
+        }
+
+        return $cmd;
     }
 }

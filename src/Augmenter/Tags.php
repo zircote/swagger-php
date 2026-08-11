@@ -29,33 +29,6 @@ class Tags implements PipeInterface
     ) {
     }
 
-    /**
-     * Whitelist tags to keep even if not used. Use '*' to keep all.
-     *
-     * @param list<string> $whitelist
-     */
-    public function setWhitelist(array $whitelist): static
-    {
-        $this->whitelist = $whitelist;
-
-        return $this;
-    }
-
-    /**
-     * Enables/disables generation of default tag descriptions.
-     */
-    public function setWithDescription(bool $withDescription): static
-    {
-        $this->withDescription = $withDescription;
-
-        return $this;
-    }
-
-    public function group(): string|\BackedEnum
-    {
-        return Group::Augment;
-    }
-
     public function __invoke(mixed $payload): mixed
     {
         $usedTagNames = $this->collectUsedTags($payload);
@@ -81,6 +54,33 @@ class Tags implements PipeInterface
         $this->removeUnusedTags($usedTagNames, $declaredTags, $payload);
 
         return null;
+    }
+
+    /**
+     * Whitelist tags to keep even if not used. Use '*' to keep all.
+     *
+     * @param list<string> $whitelist
+     */
+    public function setWhitelist(array $whitelist): static
+    {
+        $this->whitelist = $whitelist;
+
+        return $this;
+    }
+
+    /**
+     * Enables/disables generation of default tag descriptions.
+     */
+    public function setWithDescription(bool $withDescription): static
+    {
+        $this->withDescription = $withDescription;
+
+        return $this;
+    }
+
+    public function group(): string|\BackedEnum
+    {
+        return Group::Augment;
     }
 
     /**

@@ -235,6 +235,21 @@ class OpenApi extends AbstractAnnotation
         return self::resolveRef($ref, '#/', $this, []);
     }
 
+    public function jsonSerialize(): \stdClass
+    {
+        $data = parent::jsonSerialize();
+
+        if ($this->_context->isVersion('3.0.x')) {
+            unset($data->webhooks);
+        }
+
+        if (isset($data->tags) && $data->tags === []) {
+            unset($data->tags);
+        }
+
+        return $data;
+    }
+
     /**
      * Recursive helper for ref().
      *
@@ -292,20 +307,5 @@ class OpenApi extends AbstractAnnotation
         }
 
         throw new OpenApiException('$ref "' . $unresolved . '" not found');
-    }
-
-    public function jsonSerialize(): \stdClass
-    {
-        $data = parent::jsonSerialize();
-
-        if ($this->_context->isVersion('3.0.x')) {
-            unset($data->webhooks);
-        }
-
-        if (isset($data->tags) && $data->tags === []) {
-            unset($data->tags);
-        }
-
-        return $data;
     }
 }

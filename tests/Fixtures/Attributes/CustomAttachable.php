@@ -17,17 +17,17 @@ class CustomAttachable extends OAT\Attachable
      */
     public $value = Undefined::UNDEFINED;
 
+    /**
+     * @inheritdoc
+     */
+    public static $_required = ['value'];
+
     public function __construct($value = Undefined::UNDEFINED)
     {
         parent::__construct([
             'value' => $value,
         ]);
     }
-
-    /**
-     * @inheritdoc
-     */
-    public static $_required = ['value'];
 
     public function allowedParents(): ?array
     {

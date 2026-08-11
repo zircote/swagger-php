@@ -22,11 +22,6 @@ use OpenApi\Utils\PipeInterface;
  */
 class PathItems implements PipeInterface
 {
-    public function group(): string|\BackedEnum
-    {
-        return Group::Resolve;
-    }
-
     public function __invoke(mixed $payload): mixed
     {
         $classToPathItem = $this->indexPathItems($payload);
@@ -60,6 +55,11 @@ class PathItems implements PipeInterface
         $this->resolvePathItemPaths($payload, $classToPathItem, $prefixCache);
 
         return null;
+    }
+
+    public function group(): string|\BackedEnum
+    {
+        return Group::Resolve;
     }
 
     /**

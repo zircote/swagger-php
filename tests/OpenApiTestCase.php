@@ -211,24 +211,6 @@ class OpenApiTestCase extends TestCase
         }
     }
 
-    /**
-     * Create a valid OpenApi object with Info.
-     */
-    protected function createOpenApiWithInfo(): OA\OpenApi
-    {
-        return new OA\OpenApi([
-            'info' => new OA\Info([
-                'title' => 'swagger-php Test-API',
-                'version' => 'test',
-                '_context' => $this->getContext(),
-            ]),
-            'paths' => [
-                new OA\PathItem(['path' => '/test', '_context' => $this->getContext()]),
-            ],
-            '_context' => $this->getContext(),
-        ]);
-    }
-
     public static function fixture(string $file): ?string
     {
         $fixtures = static::fixtures([$file]);
@@ -273,18 +255,6 @@ class OpenApiTestCase extends TestCase
         return $analysis;
     }
 
-    protected function annotationsFromDocBlockParser(string $docBlock, array $extraAliases = [], string $version = OA\OpenApi::DEFAULT_VERSION): array
-    {
-        return (new Generator())
-            ->setTypeResolver($this->getTypeResolver())
-            ->setVersion($version)
-            ->withContext(function (Generator $generator, Analysis $analysis, Context $context) use ($docBlock, $extraAliases): array {
-                $docBlockParser = new DocBlockParser($generator->getAliases() + $extraAliases);
-
-                return $docBlockParser->fromComment($docBlock, $this->getContext([], $generator->getVersion()));
-            });
-    }
-
     /**
      * Collect a list of all non-abstract annotation classes.
      *
@@ -327,5 +297,35 @@ class OpenApiTestCase extends TestCase
         }
 
         return $classes;
+    }
+
+    /**
+     * Create a valid OpenApi object with Info.
+     */
+    protected function createOpenApiWithInfo(): OA\OpenApi
+    {
+        return new OA\OpenApi([
+            'info' => new OA\Info([
+                'title' => 'swagger-php Test-API',
+                'version' => 'test',
+                '_context' => $this->getContext(),
+            ]),
+            'paths' => [
+                new OA\PathItem(['path' => '/test', '_context' => $this->getContext()]),
+            ],
+            '_context' => $this->getContext(),
+        ]);
+    }
+
+    protected function annotationsFromDocBlockParser(string $docBlock, array $extraAliases = [], string $version = OA\OpenApi::DEFAULT_VERSION): array
+    {
+        return (new Generator())
+            ->setTypeResolver($this->getTypeResolver())
+            ->setVersion($version)
+            ->withContext(function (Generator $generator, Analysis $analysis, Context $context) use ($docBlock, $extraAliases): array {
+                $docBlockParser = new DocBlockParser($generator->getAliases() + $extraAliases);
+
+                return $docBlockParser->fromComment($docBlock, $this->getContext([], $generator->getVersion()));
+            });
     }
 }

@@ -101,6 +101,31 @@ final class AttributesSyncTest extends OpenApiTestCase
         }
     }
 
+    #[DataProvider('allAttributeClasses')]
+    public function testPropertyCompleteness(string $attribute): void
+    {
+        $attributeRC = new \ReflectionClass($attribute);
+        $annotationRC = new \ReflectionClass('OpenApi\\Annotations\\' . $attributeRC->getShortName());
+        $attributeCtor = $attributeRC->getMethod('__construct');
+
+        $stale = [];
+        foreach ($attributeCtor->getParameters() as $parameter) {
+            $parameterName = $parameter->getName();
+
+            if (!$annotationRC->hasProperty($parameterName)) {
+                // exclusions...
+                if ($attributeRC->isSubclassOf(OA\Attachable::class) && 'properties' == $parameterName) {
+                    continue;
+                }
+                $stale[] = $parameterName;
+            }
+        }
+
+        if ($stale !== []) {
+            $this->fail('Stale parameters: ' . implode(', ', $stale));
+        }
+    }
+
     protected function prepDocComment(string $docComment): array
     {
         if (!$docComment) {
@@ -184,30 +209,5 @@ final class AttributesSyncTest extends OpenApiTestCase
         }
 
         return $var;
-    }
-
-    #[DataProvider('allAttributeClasses')]
-    public function testPropertyCompleteness(string $attribute): void
-    {
-        $attributeRC = new \ReflectionClass($attribute);
-        $annotationRC = new \ReflectionClass('OpenApi\\Annotations\\' . $attributeRC->getShortName());
-        $attributeCtor = $attributeRC->getMethod('__construct');
-
-        $stale = [];
-        foreach ($attributeCtor->getParameters() as $parameter) {
-            $parameterName = $parameter->getName();
-
-            if (!$annotationRC->hasProperty($parameterName)) {
-                // exclusions...
-                if ($attributeRC->isSubclassOf(OA\Attachable::class) && 'properties' == $parameterName) {
-                    continue;
-                }
-                $stale[] = $parameterName;
-            }
-        }
-
-        if ($stale !== []) {
-            $this->fail('Stale parameters: ' . implode(', ', $stale));
-        }
     }
 }

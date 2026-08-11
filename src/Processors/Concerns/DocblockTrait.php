@@ -14,11 +14,6 @@ trait DocblockTrait
 {
     private ?DocBlockParser $docBlockParser = null;
 
-    private function docBlockParser(): DocBlockParser
-    {
-        return $this->docBlockParser ??= new DocBlockParser();
-    }
-
     /**
      * An annotation is a docblock root if it is the top-level / outermost annotation in a PHP docblock.
      */
@@ -89,5 +84,10 @@ trait DocblockTrait
     public function isDeprecated(?string $docblock): bool
     {
         return $this->docBlockParser()->isDeprecated($docblock);
+    }
+
+    private function docBlockParser(): DocBlockParser
+    {
+        return $this->docBlockParser ??= new DocBlockParser();
     }
 }

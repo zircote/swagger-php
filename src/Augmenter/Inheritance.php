@@ -33,18 +33,6 @@ class Inheritance implements PipeInterface
         $this->setAttributeFactory($attributeFactory);
     }
 
-    public function setAttributeFactory(AttributeFactory $attributeFactory): static
-    {
-        $this->attributeFactory = $attributeFactory;
-
-        return $this;
-    }
-
-    public function group(): string|\BackedEnum
-    {
-        return Group::Resolve;
-    }
-
     public function __invoke(mixed $payload): mixed
     {
         $schemaMap = $this->buildSchemaMap($payload);
@@ -63,6 +51,18 @@ class Inheritance implements PipeInterface
         }
 
         return null;
+    }
+
+    public function setAttributeFactory(AttributeFactory $attributeFactory): static
+    {
+        $this->attributeFactory = $attributeFactory;
+
+        return $this;
+    }
+
+    public function group(): string|\BackedEnum
+    {
+        return Group::Resolve;
     }
 
     /**

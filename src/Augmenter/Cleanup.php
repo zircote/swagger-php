@@ -31,21 +31,6 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
     ) {
     }
 
-    /**
-     * Enables/disables removal of unreferenced components.
-     */
-    public function setEnabled(bool $enabled): static
-    {
-        $this->enabled = $enabled;
-
-        return $this;
-    }
-
-    public function group(): string|\BackedEnum
-    {
-        return Group::Reduce;
-    }
-
     public function __invoke(mixed $payload): mixed
     {
         if (!$this->enabled) {
@@ -63,6 +48,21 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
         ]);
 
         return null;
+    }
+
+    /**
+     * Enables/disables removal of unreferenced components.
+     */
+    public function setEnabled(bool $enabled): static
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function group(): string|\BackedEnum
+    {
+        return Group::Reduce;
     }
 
     protected function cleanup(Specification $specification): bool
