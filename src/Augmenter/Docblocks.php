@@ -29,21 +29,6 @@ class Docblocks implements PipeInterface
     ) {
     }
 
-    /**
-     * Override the docblock parser used to extract summaries and descriptions.
-     */
-    public function setParser(DocBlockParser $parser): static
-    {
-        $this->parser = $parser;
-
-        return $this;
-    }
-
-    public function group(): string|\BackedEnum
-    {
-        return Group::Augment;
-    }
-
     public function __invoke(mixed $payload): mixed
     {
         foreach ($payload->operations as $operation) {
@@ -63,6 +48,21 @@ class Docblocks implements PipeInterface
         }
 
         return null;
+    }
+
+    /**
+     * Override the docblock parser used to extract summaries and descriptions.
+     */
+    public function setParser(DocBlockParser $parser): static
+    {
+        $this->parser = $parser;
+
+        return $this;
+    }
+
+    public function group(): string|\BackedEnum
+    {
+        return Group::Augment;
     }
 
     protected function augmentSummaryAndDescription(OA\Operation $operation): void

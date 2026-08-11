@@ -204,6 +204,69 @@ class AttributeFactory
     }
 
     /**
+     * Hierarchical absorb: outer-level attributes absorb inner-level attributes using contains().
+     *
+     * Inner attributes that match a container's contains() are nested into it (first match wins).
+     * Inner attributes that find no container pass through alongside outer.
+     *
+     * @param  list<AttributeInterface> $outer
+     * @param  list<AttributeInterface> $inner
+     * @return list<AttributeInterface>
+     */
+    public function resolveHierarchy(array $outer, array $inner): array
+    {
+        foreach ($inner as $innerAttribute) {
+            $absorbed = false;
+
+            foreach ($outer as $outerAttribute) {
+                $containsTypes = $outerAttribute->contains();
+                if ($containsTypes === []) {
+                    continue;
+                }
+
+                foreach ($containsTypes as $childClass => $slot) {
+                    if ($innerAttribute instanceof $childClass) {
+                        $this->nestChild($outerAttribute, $innerAttribute, $slot);
+                        $absorbed = true;
+                        break 2;
+                    }
+                }
+            }
+
+            if (!$absorbed) {
+                $outer[] = $innerAttribute;
+            }
+        }
+
+        return $outer;
+    }
+
+    /**
+     * Get interfaces directly implemented by a class (not inherited from parents).
+     *
+     *
+     * @return list<\ReflectionClass>
+     */
+    public function getDirectInterfaces(\ReflectionClass $class): array
+    {
+        $interfaces = $class->getInterfaces();
+
+        $parent = $class->getParentClass();
+        if ($parent !== false) {
+            $parentInterfaceNames = array_map(
+                fn (\ReflectionClass $i): string => $i->getName(),
+                $parent->getInterfaces(),
+            );
+            $interfaces = array_filter(
+                $interfaces,
+                fn (\ReflectionClass $i): bool => !in_array($i->getName(), $parentInterfaceNames, true),
+            );
+        }
+
+        return array_values($interfaces);
+    }
+
+    /**
      * Stack-resolve: merge sibling attributes on the same reflector using merge().
      *
      * @param  list<AttributeInterface> $attributes
@@ -259,44 +322,6 @@ class AttributeFactory
         }
 
         return $roots;
-    }
-
-    /**
-     * Hierarchical absorb: outer-level attributes absorb inner-level attributes using contains().
-     *
-     * Inner attributes that match a container's contains() are nested into it (first match wins).
-     * Inner attributes that find no container pass through alongside outer.
-     *
-     * @param  list<AttributeInterface> $outer
-     * @param  list<AttributeInterface> $inner
-     * @return list<AttributeInterface>
-     */
-    public function resolveHierarchy(array $outer, array $inner): array
-    {
-        foreach ($inner as $innerAttribute) {
-            $absorbed = false;
-
-            foreach ($outer as $outerAttribute) {
-                $containsTypes = $outerAttribute->contains();
-                if ($containsTypes === []) {
-                    continue;
-                }
-
-                foreach ($containsTypes as $childClass => $slot) {
-                    if ($innerAttribute instanceof $childClass) {
-                        $this->nestChild($outerAttribute, $innerAttribute, $slot);
-                        $absorbed = true;
-                        break 2;
-                    }
-                }
-            }
-
-            if (!$absorbed) {
-                $outer[] = $innerAttribute;
-            }
-        }
-
-        return $outer;
     }
 
     protected function nestChild(AttributeInterface $parent, AttributeInterface $child, string $slot): void
@@ -364,30 +389,5 @@ class AttributeFactory
         }
 
         return array_values(array_filter($attributes, static fn (object $item): bool => $item instanceof AttributeInterface));
-    }
-
-    /**
-     * Get interfaces directly implemented by a class (not inherited from parents).
-     *
-     *
-     * @return list<\ReflectionClass>
-     */
-    public function getDirectInterfaces(\ReflectionClass $class): array
-    {
-        $interfaces = $class->getInterfaces();
-
-        $parent = $class->getParentClass();
-        if ($parent !== false) {
-            $parentInterfaceNames = array_map(
-                fn (\ReflectionClass $i): string => $i->getName(),
-                $parent->getInterfaces(),
-            );
-            $interfaces = array_filter(
-                $interfaces,
-                fn (\ReflectionClass $i): bool => !in_array($i->getName(), $parentInterfaceNames, true),
-            );
-        }
-
-        return array_values($interfaces);
     }
 }

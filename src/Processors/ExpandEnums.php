@@ -29,6 +29,16 @@ class ExpandEnums implements GeneratorAwareInterface
         $this->enumNames = $enumNames;
     }
 
+    public function __invoke(Analysis $analysis): void
+    {
+        if (!class_exists('\\ReflectionEnum')) {
+            return;
+        }
+
+        $this->expandContextEnum($analysis);
+        $this->expandSchemaEnum($analysis);
+    }
+
     public function getEnumNames(): ?string
     {
         return $this->enumNames;
@@ -49,16 +59,6 @@ class ExpandEnums implements GeneratorAwareInterface
     public function setEnumNames(?string $enumNames = null): void
     {
         $this->enumNames = $enumNames;
-    }
-
-    public function __invoke(Analysis $analysis): void
-    {
-        if (!class_exists('\\ReflectionEnum')) {
-            return;
-        }
-
-        $this->expandContextEnum($analysis);
-        $this->expandSchemaEnum($analysis);
     }
 
     protected function expandContextEnum(Analysis $analysis): void

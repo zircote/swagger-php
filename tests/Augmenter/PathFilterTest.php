@@ -14,17 +14,6 @@ use PHPUnit\Framework\TestCase;
 
 final class PathFilterTest extends TestCase
 {
-    protected function createSpec(): Specification
-    {
-        $spec = new Specification();
-        $spec->operations[] = new OA\Operation(path: '/products', method: 'get', tags: ['products']);
-        $spec->operations[] = new OA\Operation(path: '/products/{id}', method: 'get', tags: ['products']);
-        $spec->operations[] = new OA\Operation(path: '/users', method: 'get', tags: ['users']);
-        $spec->operations[] = new OA\Operation(path: '/users/{id}', method: 'get', tags: ['users', 'admin']);
-
-        return $spec;
-    }
-
     /**
      * @return \Generator<string, array{list<string>, list<string>, list<string>}>
      */
@@ -54,5 +43,16 @@ final class PathFilterTest extends TestCase
         $result = $filter->setTags(['/test/'])->setPaths(['/path/']);
 
         $this->assertSame($filter, $result);
+    }
+
+    protected function createSpec(): Specification
+    {
+        $spec = new Specification();
+        $spec->operations[] = new OA\Operation(path: '/products', method: 'get', tags: ['products']);
+        $spec->operations[] = new OA\Operation(path: '/products/{id}', method: 'get', tags: ['products']);
+        $spec->operations[] = new OA\Operation(path: '/users', method: 'get', tags: ['users']);
+        $spec->operations[] = new OA\Operation(path: '/users/{id}', method: 'get', tags: ['users', 'admin']);
+
+        return $spec;
     }
 }

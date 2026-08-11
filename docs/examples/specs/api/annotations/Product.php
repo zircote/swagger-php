@@ -20,6 +20,13 @@ class Product implements ProductInterface
 {
     use NameTrait;
 
+    /**
+     * The kind.
+     *
+     * @OA\Property(property="kind")
+     */
+    public const KIND = 'Virtual';
+
     /** @OA\Property */
     public int $quantity;
 
@@ -35,13 +42,6 @@ class Product implements ProductInterface
      * @OA\Property(format="int64", example=1)
      */
     public $id;
-
-    /**
-     * The kind.
-     *
-     * @OA\Property(property="kind")
-     */
-    public const KIND = 'Virtual';
 
     public function __construct(
         /**

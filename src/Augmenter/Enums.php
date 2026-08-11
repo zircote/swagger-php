@@ -32,6 +32,14 @@ class Enums implements PipeInterface
     ) {
     }
 
+    public function __invoke(mixed $payload): mixed
+    {
+        $this->expandEnumSchemas($payload);
+        $this->resolveEnumValues($payload);
+
+        return null;
+    }
+
     /**
      * If set, stores enum case names in a vendor extension with this key (e.g. <code>x-enum-varnames</code>).
      */
@@ -45,14 +53,6 @@ class Enums implements PipeInterface
     public function group(): string|\BackedEnum
     {
         return Group::Resolve;
-    }
-
-    public function __invoke(mixed $payload): mixed
-    {
-        $this->expandEnumSchemas($payload);
-        $this->resolveEnumValues($payload);
-
-        return null;
     }
 
     protected function expandEnumSchemas(Specification $specification): void

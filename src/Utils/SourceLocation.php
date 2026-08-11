@@ -20,6 +20,43 @@ final readonly class SourceLocation implements \Stringable
     ) {
     }
 
+    public function __toString(): string
+    {
+        $parts = [];
+
+        if ($this->class !== null) {
+            $parts[] = $this->class;
+        }
+
+        if ($this->method !== null) {
+            $parts[] = ($parts !== [] ? '::' : '') . $this->method . '()';
+        }
+
+        if ($this->property !== null) {
+            $parts[] = ($parts !== [] ? '::$' : '$') . $this->property;
+        }
+
+        if ($this->parameter !== null) {
+            $parts[] = ($parts !== [] ? ' $' : '$') . $this->parameter;
+        }
+
+        if ($this->constant !== null) {
+            $parts[] = ($parts !== [] ? '::' : '') . $this->constant;
+        }
+
+        $location = implode('', $parts);
+
+        if ($this->filename !== null) {
+            $file = $this->filename;
+            if ($this->line !== null) {
+                $file .= ':' . $this->line;
+            }
+            $location = $location ? "{$location} in {$file}" : $file;
+        }
+
+        return $location ?: 'unknown';
+    }
+
     public static function fromReflector(\Reflector $reflector): self
     {
         $class = null;
@@ -76,42 +113,5 @@ final readonly class SourceLocation implements \Stringable
             parameter: $parameter,
             constant: $constant,
         );
-    }
-
-    public function __toString(): string
-    {
-        $parts = [];
-
-        if ($this->class !== null) {
-            $parts[] = $this->class;
-        }
-
-        if ($this->method !== null) {
-            $parts[] = ($parts !== [] ? '::' : '') . $this->method . '()';
-        }
-
-        if ($this->property !== null) {
-            $parts[] = ($parts !== [] ? '::$' : '$') . $this->property;
-        }
-
-        if ($this->parameter !== null) {
-            $parts[] = ($parts !== [] ? ' $' : '$') . $this->parameter;
-        }
-
-        if ($this->constant !== null) {
-            $parts[] = ($parts !== [] ? '::' : '') . $this->constant;
-        }
-
-        $location = implode('', $parts);
-
-        if ($this->filename !== null) {
-            $file = $this->filename;
-            if ($this->line !== null) {
-                $file .= ':' . $this->line;
-            }
-            $location = $location ? "{$location} in {$file}" : $file;
-        }
-
-        return $location ?: 'unknown';
     }
 }

@@ -52,6 +52,9 @@ namespace OpenApi\Spec;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class PathItem extends AbstractAttribute
 {
+    /** Resolved path — set by augmenter or HybridBridge, not user-authored. */
+    public ?string $path = null;
+
     /**
      * @param string|null                     $ref         A JSON Reference to a reusable path item
      * @param string|null                     $prefix      Path prefix — composable via class hierarchy
@@ -80,9 +83,6 @@ class PathItem extends AbstractAttribute
     ) {
         parent::__construct(x: $x, attachables: $attachables);
     }
-
-    /** Resolved path — set by augmenter or HybridBridge, not user-authored. */
-    public ?string $path = null;
 
     public function isRoot(): bool
     {

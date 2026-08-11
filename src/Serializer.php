@@ -62,14 +62,6 @@ class Serializer
     ];
 
     /**
-     * @param class-string<OA\AbstractAnnotation> $className
-     */
-    protected static function isValidAnnotationClass(string $className): bool
-    {
-        return in_array($className, self::$VALID_ANNOTATIONS);
-    }
-
-    /**
      * Deserialize a string.
      *
      * @param class-string<OA\AbstractAnnotation> $className
@@ -102,6 +94,14 @@ class Serializer
         }
 
         return $this->doDeserialize(json_decode($contents), $className, $context ?? new Context(['generated' => true]));
+    }
+
+    /**
+     * @param class-string<OA\AbstractAnnotation> $className
+     */
+    protected static function isValidAnnotationClass(string $className): bool
+    {
+        return in_array($className, self::$VALID_ANNOTATIONS);
     }
 
     /**

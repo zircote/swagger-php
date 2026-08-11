@@ -28,21 +28,6 @@ class Types implements PipeInterface
     ) {
     }
 
-    /**
-     * Override the type resolver used to infer schema types from PHP type declarations.
-     */
-    public function setTypeResolver(TypeResolver $typeResolver): static
-    {
-        $this->typeResolver = $typeResolver;
-
-        return $this;
-    }
-
-    public function group(): string|\BackedEnum
-    {
-        return Group::Resolve;
-    }
-
     public function __invoke(mixed $payload): mixed
     {
         $payload->getWalker()->eachSchema(function (OA\Schema $schema): void {
@@ -72,6 +57,21 @@ class Types implements PipeInterface
         }
 
         return null;
+    }
+
+    /**
+     * Override the type resolver used to infer schema types from PHP type declarations.
+     */
+    public function setTypeResolver(TypeResolver $typeResolver): static
+    {
+        $this->typeResolver = $typeResolver;
+
+        return $this;
+    }
+
+    public function group(): string|\BackedEnum
+    {
+        return Group::Resolve;
     }
 
     protected function inferSchemaType(OA\Schema $schema): void

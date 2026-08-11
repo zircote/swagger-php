@@ -25,21 +25,6 @@ class OperationIds implements PipeInterface
     ) {
     }
 
-    /**
-     * If set to <code>true</code> generate ids (md5) instead of clear text operation ids.
-     */
-    public function setHash(bool $hash): static
-    {
-        $this->hash = $hash;
-
-        return $this;
-    }
-
-    public function group(): string|\BackedEnum
-    {
-        return Group::Augment;
-    }
-
     public function __invoke(mixed $payload): mixed
     {
         foreach ($payload->operations as $operation) {
@@ -54,6 +39,21 @@ class OperationIds implements PipeInterface
         }
 
         return null;
+    }
+
+    /**
+     * If set to <code>true</code> generate ids (md5) instead of clear text operation ids.
+     */
+    public function setHash(bool $hash): static
+    {
+        $this->hash = $hash;
+
+        return $this;
+    }
+
+    public function group(): string|\BackedEnum
+    {
+        return Group::Augment;
     }
 
     protected function generateId(OA\Operation $operation): ?string

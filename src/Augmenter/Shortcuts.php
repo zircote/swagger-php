@@ -28,17 +28,17 @@ class Shortcuts implements PipeInterface
 
     private const ITEMS_KEEP_PROPERTIES = ['schema', 'title', 'description', 'deprecated', 'readOnly', 'writeOnly', 'xml', 'externalDocs', 'x', 'attachables'];
 
-    public function group(): string|\BackedEnum
-    {
-        return Group::Resolve;
-    }
-
     public function __invoke(mixed $payload): mixed
     {
         $this->processMediaTypes($payload);
         $this->processSchemaItems($payload);
 
         return null;
+    }
+
+    public function group(): string|\BackedEnum
+    {
+        return Group::Resolve;
     }
 
     protected function processMediaTypes(Specification $specification): void

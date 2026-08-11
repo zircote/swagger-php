@@ -29,20 +29,6 @@ class SpecAttributeGenerator extends DocGenerator
     }
 
     /**
-     * @return list<SectionInterface>
-     */
-    protected function defaultSections(): array
-    {
-        return [
-            new DescriptionSection(),
-            new AllowedInSection(),
-            new NestedElementsSection(),
-            new ParametersSection(),
-            new ReferencesSection(),
-        ];
-    }
-
-    /**
      * @param list<SectionInterface> $sections
      */
     public function setSections(array $sections): static
@@ -77,6 +63,20 @@ class SpecAttributeGenerator extends DocGenerator
         }
 
         return ['spec-attributes' => $content];
+    }
+
+    /**
+     * @return list<SectionInterface>
+     */
+    protected function defaultSections(): array
+    {
+        return [
+            new DescriptionSection(),
+            new AllowedInSection(),
+            new NestedElementsSection(),
+            new ParametersSection(),
+            new ReferencesSection(),
+        ];
     }
 
     /**

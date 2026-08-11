@@ -30,6 +30,20 @@ class PathFilter implements PipeInterface
     ) {
     }
 
+    public function __invoke(mixed $payload): mixed
+    {
+        if (!$this->tags && !$this->paths) {
+            return null;
+        }
+
+        $payload->operations = array_values(array_filter(
+            $payload->operations,
+            $this->matches(...),
+        ));
+
+        return null;
+    }
+
     /**
      * A list of regular expressions to match <code>tags</code> to include.
      *
@@ -57,20 +71,6 @@ class PathFilter implements PipeInterface
     public function group(): string|\BackedEnum
     {
         return Group::Reduce;
-    }
-
-    public function __invoke(mixed $payload): mixed
-    {
-        if (!$this->tags && !$this->paths) {
-            return null;
-        }
-
-        $payload->operations = array_values(array_filter(
-            $payload->operations,
-            $this->matches(...),
-        ));
-
-        return null;
     }
 
     protected function matches(OA\Operation $operation): bool

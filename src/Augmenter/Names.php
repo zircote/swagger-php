@@ -19,17 +19,17 @@ use OpenApi\Utils\PipeInterface;
  */
 class Names implements PipeInterface
 {
-    public function group(): string|\BackedEnum
-    {
-        return Group::Resolve;
-    }
-
     public function __invoke(mixed $payload): mixed
     {
         $this->inferSchemaNames($payload);
         $this->inferParameterNames($payload);
 
         return null;
+    }
+
+    public function group(): string|\BackedEnum
+    {
+        return Group::Resolve;
     }
 
     protected function inferSchemaNames(Specification $specification): void

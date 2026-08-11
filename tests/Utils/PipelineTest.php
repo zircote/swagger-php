@@ -14,48 +14,6 @@ use PHPUnit\Framework\TestCase;
 
 final class PipelineTest extends TestCase
 {
-    protected function pipe(string $add): callable
-    {
-        return fn (string $payload): string => $payload . $add;
-    }
-
-    protected function namedPipe(string $name): object
-    {
-        return new class ($name) {
-            public function __construct(public readonly string $name)
-            {
-            }
-
-            public function __invoke(mixed $payload): mixed
-            {
-                return null;
-            }
-        };
-    }
-
-    protected function groupedPipe(string $group, array &$log): PipeInterface
-    {
-        return new class ($group, $log) implements PipeInterface {
-            public function __construct(
-                protected string $group,
-                protected array &$log,
-            ) {
-            }
-
-            public function group(): string
-            {
-                return $this->group;
-            }
-
-            public function __invoke(mixed $payload): mixed
-            {
-                $this->log[] = $this->group;
-
-                return null;
-            }
-        };
-    }
-
     public function testProcess(): void
     {
         $pipeline = new Pipeline([$this->pipe('x')]);
@@ -244,6 +202,48 @@ final class PipelineTest extends TestCase
         $pipeline = new Pipeline([$this->pipe('a'), $this->pipe('b'), $this->pipe('c')]);
 
         $this->assertSame('abc', $pipeline->process(''));
+    }
+
+    protected function pipe(string $add): callable
+    {
+        return fn (string $payload): string => $payload . $add;
+    }
+
+    protected function namedPipe(string $name): object
+    {
+        return new class ($name) {
+            public function __construct(public readonly string $name)
+            {
+            }
+
+            public function __invoke(mixed $payload): mixed
+            {
+                return null;
+            }
+        };
+    }
+
+    protected function groupedPipe(string $group, array &$log): PipeInterface
+    {
+        return new class ($group, $log) implements PipeInterface {
+            public function __construct(
+                protected string $group,
+                protected array &$log,
+            ) {
+            }
+
+            public function group(): string
+            {
+                return $this->group;
+            }
+
+            public function __invoke(mixed $payload): mixed
+            {
+                $this->log[] = $this->group;
+
+                return null;
+            }
+        };
     }
 }
 

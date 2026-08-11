@@ -21,16 +21,16 @@ use OpenApi\Utils\PipeInterface;
  */
 class MediaTypes implements PipeInterface
 {
-    public function group(): string|\BackedEnum
-    {
-        return Group::Augment;
-    }
-
     public function __invoke(mixed $payload): mixed
     {
         $this->processMediaTypes($payload);
 
         return null;
+    }
+
+    public function group(): string|\BackedEnum
+    {
+        return Group::Augment;
     }
 
     protected function processMediaTypes(Specification $specification): void

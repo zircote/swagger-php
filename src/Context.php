@@ -59,6 +59,46 @@ class Context implements \Stringable
         $this->logger = $this->logger ?: new DefaultLogger();
     }
 
+    public function __serialize(): array
+    {
+        return array_filter(get_object_vars($this), static function ($value): bool {
+            $rc = is_object($value) ? new \ReflectionClass($value) : null;
+
+            return (!$rc || !$rc->isAnonymous())
+                && !$value instanceof \Reflector
+                && !$value instanceof \Closure;
+        });
+    }
+
+    public function __unserialize(array $data): void
+    {
+        foreach ($data as $name => $value) {
+            $this->{$name} = $value;
+        }
+    }
+
+    /**
+     * Traverse the context tree to get the property value.
+     */
+    public function __get(string $property): mixed
+    {
+        if ($this->parent instanceof Context) {
+            return $this->parent->{$property};
+        }
+
+        return null;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getDebugLocation();
+    }
+
+    public function __debugInfo()
+    {
+        return ['-' => $this->getDebugLocation()];
+    }
+
     /**
      * Ensure this context is part of the context tree.
      */
@@ -185,46 +225,6 @@ class Context implements \Stringable
         }
 
         return $location;
-    }
-
-    public function __serialize(): array
-    {
-        return array_filter(get_object_vars($this), static function ($value): bool {
-            $rc = is_object($value) ? new \ReflectionClass($value) : null;
-
-            return (!$rc || !$rc->isAnonymous())
-                && !$value instanceof \Reflector
-                && !$value instanceof \Closure;
-        });
-    }
-
-    public function __unserialize(array $data): void
-    {
-        foreach ($data as $name => $value) {
-            $this->{$name} = $value;
-        }
-    }
-
-    /**
-     * Traverse the context tree to get the property value.
-     */
-    public function __get(string $property): mixed
-    {
-        if ($this->parent instanceof Context) {
-            return $this->parent->{$property};
-        }
-
-        return null;
-    }
-
-    public function __toString(): string
-    {
-        return $this->getDebugLocation();
-    }
-
-    public function __debugInfo()
-    {
-        return ['-' => $this->getDebugLocation()];
     }
 
     /**

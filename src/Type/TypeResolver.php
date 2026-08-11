@@ -82,6 +82,68 @@ class TypeResolver
         return $result;
     }
 
+    public function getDocblockType(\Reflector $reflector): ?Type
+    {
+        $docComment = match (true) {
+            $reflector instanceof \ReflectionProperty => $reflector->isPromoted()
+                && $reflector->getDeclaringClass() && $reflector->getDeclaringClass()->getConstructor()
+                    ? $reflector->getDeclaringClass()->getConstructor()->getDocComment()
+                    : $reflector->getDocComment(),
+            $reflector instanceof \ReflectionParameter => $reflector->getDeclaringFunction()->getDocComment(),
+            $reflector instanceof \ReflectionFunctionAbstract => $reflector->getDocComment(),
+            default => null,
+        };
+
+        if (!$docComment) {
+            return null;
+        }
+
+        $typeContext = (new TypeContextFactory())->createFromReflection($reflector);
+
+        $tagName = match (true) {
+            $reflector instanceof \ReflectionProperty => $reflector->isPromoted()
+                ? '@param'
+                : '@var',
+            $reflector instanceof \ReflectionParameter => '@param',
+            $reflector instanceof \ReflectionFunctionAbstract => '@return',
+            default => null,
+        };
+
+        if ($tagName === null) {
+            return null;
+        }
+
+        $lexer = new Lexer(new ParserConfig([]));
+        $config = new ParserConfig([]);
+        $constExprParser = new ConstExprParser($config);
+        $phpDocParser = new PhpDocParser(
+            $config,
+            new TypeParser($config, $constExprParser),
+            $constExprParser,
+        );
+
+        $tokens = new TokenIterator($lexer->tokenize($docComment));
+        $docNode = $phpDocParser->parse($tokens);
+
+        foreach ($docNode->getTagsByName($tagName) as $tag) {
+            $tagValue = $tag->value;
+
+            if (
+                $tagValue instanceof VarTagValueNode
+                || ($tagValue instanceof ParamTagValueNode && '$' . $reflector->getName() === $tagValue->parameterName)
+                || $tagValue instanceof ReturnTagValueNode
+            ) {
+                try {
+                    return (new StringTypeResolver())->resolve((string) $tagValue, $typeContext);
+                } catch (UnsupportedException) {
+                    // ignore
+                }
+            }
+        }
+
+        return null;
+    }
+
     protected function mapType(Type $type): SchemaType
     {
         if ($type instanceof CompositeTypeInterface) {
@@ -276,67 +338,5 @@ class TypeResolver
         } catch (UnsupportedException) {
             return null;
         }
-    }
-
-    public function getDocblockType(\Reflector $reflector): ?Type
-    {
-        $docComment = match (true) {
-            $reflector instanceof \ReflectionProperty => $reflector->isPromoted()
-                && $reflector->getDeclaringClass() && $reflector->getDeclaringClass()->getConstructor()
-                    ? $reflector->getDeclaringClass()->getConstructor()->getDocComment()
-                    : $reflector->getDocComment(),
-            $reflector instanceof \ReflectionParameter => $reflector->getDeclaringFunction()->getDocComment(),
-            $reflector instanceof \ReflectionFunctionAbstract => $reflector->getDocComment(),
-            default => null,
-        };
-
-        if (!$docComment) {
-            return null;
-        }
-
-        $typeContext = (new TypeContextFactory())->createFromReflection($reflector);
-
-        $tagName = match (true) {
-            $reflector instanceof \ReflectionProperty => $reflector->isPromoted()
-                ? '@param'
-                : '@var',
-            $reflector instanceof \ReflectionParameter => '@param',
-            $reflector instanceof \ReflectionFunctionAbstract => '@return',
-            default => null,
-        };
-
-        if ($tagName === null) {
-            return null;
-        }
-
-        $lexer = new Lexer(new ParserConfig([]));
-        $config = new ParserConfig([]);
-        $constExprParser = new ConstExprParser($config);
-        $phpDocParser = new PhpDocParser(
-            $config,
-            new TypeParser($config, $constExprParser),
-            $constExprParser,
-        );
-
-        $tokens = new TokenIterator($lexer->tokenize($docComment));
-        $docNode = $phpDocParser->parse($tokens);
-
-        foreach ($docNode->getTagsByName($tagName) as $tag) {
-            $tagValue = $tag->value;
-
-            if (
-                $tagValue instanceof VarTagValueNode
-                || ($tagValue instanceof ParamTagValueNode && '$' . $reflector->getName() === $tagValue->parameterName)
-                || $tagValue instanceof ReturnTagValueNode
-            ) {
-                try {
-                    return (new StringTypeResolver())->resolve((string) $tagValue, $typeContext);
-                } catch (UnsupportedException) {
-                    // ignore
-                }
-            }
-        }
-
-        return null;
     }
 }

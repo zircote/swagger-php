@@ -18,16 +18,6 @@ class AnonymousFunctions
         }, []);
     }
 
-    protected function query()
-    {
-        return new class () {
-            public function leftJoin(string $foo, callable $callback)
-            {
-                return $this;
-            }
-        };
-    }
-
     public function other()
     {
         return $this->query()
@@ -80,5 +70,15 @@ class AnonymousFunctions
         array_map(static function ($issue) use ($key) {
             return $issue;
         }, []);
+    }
+
+    protected function query()
+    {
+        return new class () {
+            public function leftJoin(string $foo, callable $callback)
+            {
+                return $this;
+            }
+        };
     }
 }

@@ -76,15 +76,6 @@ final class GeneratorTest extends OpenApiTestCase
         $this->assertSame(['OpenApi\\Annotations\\', 'Foo\\Bar\\'], $generator->getNamespaces());
     }
 
-    protected function assertOperationIdHash(Generator $generator, bool $expected): void
-    {
-        $generator->getProcessorPipeline()->walk(function ($processor) use ($expected): void {
-            if ($processor instanceof OperationId) {
-                $this->assertSame($expected, $processor->isHash());
-            }
-        });
-    }
-
     public static function configCases(): \Iterator
     {
         yield 'default' => [[], true];
@@ -129,5 +120,14 @@ final class GeneratorTest extends OpenApiTestCase
 
         // excludes generator config
         $this->assertArrayIsEqualToArrayIgnoringListOfKeys($generator->getDefaultConfig(), $collectedConfig, ['generator']);
+    }
+
+    protected function assertOperationIdHash(Generator $generator, bool $expected): void
+    {
+        $generator->getProcessorPipeline()->walk(function ($processor) use ($expected): void {
+            if ($processor instanceof OperationId) {
+                $this->assertSame($expected, $processor->isHash());
+            }
+        });
     }
 }

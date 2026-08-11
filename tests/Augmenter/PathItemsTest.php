@@ -18,36 +18,6 @@ final class PathItemsTest extends TestCase
 {
     use AssemblesSpecification;
 
-    private function resolve(Specification $spec): Specification
-    {
-        (new Augmenter\PathItems())($spec);
-
-        return $spec;
-    }
-
-    private function findPathItemByClass(Specification $spec, string $class): ?OA\PathItem
-    {
-        foreach ($spec->pathItems as $pi) {
-            $reflector = $pi->getReflector();
-            if ($reflector instanceof \ReflectionClass && $reflector->getName() === $class) {
-                return $pi;
-            }
-        }
-
-        return null;
-    }
-
-    private function findOperationByMethod(Specification $spec, string $method): ?OA\Operation
-    {
-        foreach ($spec->operations as $operation) {
-            if ($operation->method === $method) {
-                return $operation;
-            }
-        }
-
-        return null;
-    }
-
     public static function prefixCompositionProvider(): \Generator
     {
         yield '2-level' => [
@@ -246,5 +216,35 @@ final class PathItemsTest extends TestCase
         $basePathItem = $this->findPathItemByClass($spec, Fixtures\Augmenter\PathItemBaseController::class);
         $this->assertInstanceOf(OA\PathItem::class, $basePathItem);
         $this->assertNull($basePathItem->path);
+    }
+
+    private function resolve(Specification $spec): Specification
+    {
+        (new Augmenter\PathItems())($spec);
+
+        return $spec;
+    }
+
+    private function findPathItemByClass(Specification $spec, string $class): ?OA\PathItem
+    {
+        foreach ($spec->pathItems as $pi) {
+            $reflector = $pi->getReflector();
+            if ($reflector instanceof \ReflectionClass && $reflector->getName() === $class) {
+                return $pi;
+            }
+        }
+
+        return null;
+    }
+
+    private function findOperationByMethod(Specification $spec, string $method): ?OA\Operation
+    {
+        foreach ($spec->operations as $operation) {
+            if ($operation->method === $method) {
+                return $operation;
+            }
+        }
+
+        return null;
     }
 }

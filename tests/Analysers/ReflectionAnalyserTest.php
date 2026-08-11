@@ -21,31 +21,6 @@ use OpenApi\Tests\OpenApiTestCase;
 
 final class ReflectionAnalyserTest extends OpenApiTestCase
 {
-    protected function collectingAnnotationFactory(): AnnotationFactoryInterface
-    {
-        return new class () implements AnnotationFactoryInterface {
-            public $reflectors = [];
-
-            public function build(\Reflector $reflector, Context $context): array
-            {
-                $this->reflectors[$reflector->name] = $reflector;
-
-                return [];
-            }
-
-            public function isSupported(): bool
-            {
-                return true;
-            }
-
-            public function setGenerator(Generator $generator): static
-            {
-                // noop
-                return $this;
-            }
-        };
-    }
-
     public function testClassInheritance(): void
     {
         $analyser = new ReflectionAnalyser([$annotationFactory = $this->collectingAnnotationFactory()]);
@@ -102,5 +77,30 @@ final class ReflectionAnalyserTest extends OpenApiTestCase
         $this->assertStringContainsString('Label List', (string) $labels->_context->comment);
         $this->assertStringContainsString('Tag List', (string) $tags->_context->comment);
         $this->assertEmpty($id->_context->comment);
+    }
+
+    protected function collectingAnnotationFactory(): AnnotationFactoryInterface
+    {
+        return new class () implements AnnotationFactoryInterface {
+            public $reflectors = [];
+
+            public function build(\Reflector $reflector, Context $context): array
+            {
+                $this->reflectors[$reflector->name] = $reflector;
+
+                return [];
+            }
+
+            public function isSupported(): bool
+            {
+                return true;
+            }
+
+            public function setGenerator(Generator $generator): static
+            {
+                // noop
+                return $this;
+            }
+        };
     }
 }

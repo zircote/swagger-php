@@ -22,6 +22,17 @@ class EnumDescriptions implements PipeInterface
     {
     }
 
+    public function __invoke(mixed $payload): mixed
+    {
+        if (!$this->enabled) {
+            return null;
+        }
+
+        $this->expandEnumDescriptions($payload);
+
+        return null;
+    }
+
     /**
      * Enables/disables generation of descriptions for enum based properties.
      */
@@ -35,17 +46,6 @@ class EnumDescriptions implements PipeInterface
     public function group(): string|\BackedEnum
     {
         return Group::Augment;
-    }
-
-    public function __invoke(mixed $payload): mixed
-    {
-        if (!$this->enabled) {
-            return null;
-        }
-
-        $this->expandEnumDescriptions($payload);
-
-        return null;
     }
 
     protected function expandEnumDescriptions(Specification $specification): void

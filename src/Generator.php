@@ -24,11 +24,6 @@ use Psr\Log\LoggerInterface;
  */
 class Generator
 {
-    /**
-     * Allows Annotation classes to know the context of the annotation that is being processed.
-     */
-    public static ?Context $context = null;
-
     /** @deprecated Use {@see Undefined::UNDEFINED} instead. */
     public const UNDEFINED = Undefined::UNDEFINED;
 
@@ -37,6 +32,11 @@ class Generator
 
     /** @var list<string> */
     public const DEFAULT_NAMESPACES = ['OpenApi\\Annotations\\'];
+
+    /**
+     * Allows Annotation classes to know the context of the annotation that is being processed.
+     */
+    public static ?Context $context = null;
 
     /** @var array<string,string> Map of namespace aliases to be supported by doctrine. */
     protected array $aliases;
@@ -180,46 +180,6 @@ class Generator
     public function getConfig(): array
     {
         return $this->config + $this->getDefaultConfig();
-    }
-
-    protected function normaliseConfig(array $config): array
-    {
-        $normalised = [];
-        foreach ($config as $key => $value) {
-            if (is_numeric($key)) {
-                $token = explode('=', (string) $value);
-                if (2 === count($token)) {
-                    // 'operationId.hash=false'
-                    [$key, $value] = $token;
-                }
-            }
-
-            if (in_array($value, ['true', 'false'])) {
-                $value = 'true' == $value;
-            }
-
-            if ($isList = (str_ends_with((string) $key, '[]'))) {
-                $key = substr((string) $key, 0, -2);
-            }
-            $token = explode('.', (string) $key);
-            if (2 === count($token)) {
-                // 'operationId.hash' => false
-                // namespaced / processor
-                if ($isList) {
-                    $normalised[$token[0]][$token[1]][] = $value;
-                } else {
-                    $normalised[$token[0]][$token[1]] = $value;
-                }
-            } else {
-                if ($isList) {
-                    $normalised[$key][] = $value;
-                } else {
-                    $normalised[$key] = $value;
-                }
-            }
-        }
-
-        return $normalised;
     }
 
     /**
@@ -407,6 +367,46 @@ class Generator
         }
 
         return $analysis->openapi;
+    }
+
+    protected function normaliseConfig(array $config): array
+    {
+        $normalised = [];
+        foreach ($config as $key => $value) {
+            if (is_numeric($key)) {
+                $token = explode('=', (string) $value);
+                if (2 === count($token)) {
+                    // 'operationId.hash=false'
+                    [$key, $value] = $token;
+                }
+            }
+
+            if (in_array($value, ['true', 'false'])) {
+                $value = 'true' == $value;
+            }
+
+            if ($isList = (str_ends_with((string) $key, '[]'))) {
+                $key = substr((string) $key, 0, -2);
+            }
+            $token = explode('.', (string) $key);
+            if (2 === count($token)) {
+                // 'operationId.hash' => false
+                // namespaced / processor
+                if ($isList) {
+                    $normalised[$token[0]][$token[1]][] = $value;
+                } else {
+                    $normalised[$token[0]][$token[1]] = $value;
+                }
+            } else {
+                if ($isList) {
+                    $normalised[$key][] = $value;
+                } else {
+                    $normalised[$key] = $value;
+                }
+            }
+        }
+
+        return $normalised;
     }
 
     protected function scanSources(iterable $sources, Analysis $analysis, Context $rootContext): void

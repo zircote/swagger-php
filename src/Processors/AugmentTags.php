@@ -26,26 +26,6 @@ class AugmentTags
         $this->withDescription = $withDescription;
     }
 
-    /**
-     * Whitelist tags to keep even if not used. <code>*</code> may be used to keep all unused.
-     */
-    public function setWhitelist(array $whitelist): AugmentTags
-    {
-        $this->whitelist = $whitelist;
-
-        return $this;
-    }
-
-    /**
-     * Enables/disables generation of default tag descriptions.
-     */
-    public function setWithDescription(bool $withDescription): AugmentTags
-    {
-        $this->withDescription = $withDescription;
-
-        return $this;
-    }
-
     public function __invoke(Analysis $analysis): void
     {
         $operations = $analysis->getAnnotationsOfType(OA\Operation::class);
@@ -94,6 +74,26 @@ class AugmentTags
         }
 
         $this->removeUnusedTags($usedTagNames, $declaredTags, $analysis);
+    }
+
+    /**
+     * Whitelist tags to keep even if not used. <code>*</code> may be used to keep all unused.
+     */
+    public function setWhitelist(array $whitelist): AugmentTags
+    {
+        $this->whitelist = $whitelist;
+
+        return $this;
+    }
+
+    /**
+     * Enables/disables generation of default tag descriptions.
+     */
+    public function setWithDescription(bool $withDescription): AugmentTags
+    {
+        $this->withDescription = $withDescription;
+
+        return $this;
     }
 
     private function removeUnusedTags(array $usedTagNames, array $declaredTags, Analysis $analysis): void

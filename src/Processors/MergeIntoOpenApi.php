@@ -24,21 +24,6 @@ class MergeIntoOpenApi
         $this->mergeComponents = $mergeComponents;
     }
 
-    public function isMergeComponents(): bool
-    {
-        return $this->mergeComponents;
-    }
-
-    /**
-     *  If set to <code>true</code> allow multiple `@OA\Components` annotations to be merged.
-     */
-    public function setMergeComponents(bool $mergeComponents): MergeIntoOpenApi
-    {
-        $this->mergeComponents = $mergeComponents;
-
-        return $this;
-    }
-
     public function __invoke(Analysis $analysis): void
     {
         // Auto-create the OpenApi annotation.
@@ -108,5 +93,20 @@ class MergeIntoOpenApi
         }
 
         $analysis->mergeAnnotations($openapi, $merge, true);
+    }
+
+    public function isMergeComponents(): bool
+    {
+        return $this->mergeComponents;
+    }
+
+    /**
+     *  If set to <code>true</code> allow multiple `@OA\Components` annotations to be merged.
+     */
+    public function setMergeComponents(bool $mergeComponents): MergeIntoOpenApi
+    {
+        $this->mergeComponents = $mergeComponents;
+
+        return $this;
     }
 }
