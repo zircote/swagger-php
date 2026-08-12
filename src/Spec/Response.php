@@ -20,7 +20,7 @@ class Response extends AbstractAttribute
     /**
      * @param string|int|null                $response    The HTTP status code or 'default'
      * @param string|null                    $description A description of the response (CommonMark syntax)
-     * @param string|null                    $ref         A JSON Reference to a reusable response
+     * @param string|Schema\Ref|null         $ref         A JSON Reference to a reusable response
      * @param list<Header>|null              $headers     Headers sent with the response
      * @param MediaType|list<MediaType>|null $content     Possible response payloads
      * @param list<Link>|null                $links       Design-time links for the response

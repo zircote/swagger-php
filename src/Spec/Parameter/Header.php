@@ -29,7 +29,7 @@ class Header extends OA\Parameter
         ?string $description = Undefined::UNDEFINED,
         ?bool $required = null,
         ?bool $deprecated = null,
-        ?string $ref = null,
+        string|OA\Schema\Ref|null $ref = null,
         ?bool $explode = null,
         ?OA\Schema $schema = null,
         mixed $example = Undefined::UNDEFINED,
