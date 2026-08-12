@@ -153,9 +153,9 @@ class Serializer
                 if ($declaration === $property) {
                     if (is_object($value)) {
                         return $this->doDeserialize($value, $nestedClass, $context);
-                    } else {
-                        return $value;
                     }
+
+                    return $value;
                 }
             } elseif (count($declaration) === 1 && $declaration[0] === $property) {
                 // property is an annotation array

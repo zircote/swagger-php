@@ -267,7 +267,6 @@ class OpenApi extends AbstractAnnotation
         $subpath = $slash === false ? $path : substr($path, 0, $slash);
         $property = Components::refDecode($subpath);
         $unresolved = $slash === false ? $resolved . $subpath : $resolved . $subpath . '/';
-
         if (is_object($container)) {
             // support use x-* in ref
             $xKey = str_starts_with($property, 'x-') ? substr($property, 2) : null;
@@ -279,9 +278,7 @@ class OpenApi extends AbstractAnnotation
             if (property_exists($container, $property) === false && !$xKey) {
                 throw new OpenApiException('$ref "' . $ref . '" not found');
             }
-
             $nextContainer = $xKey ? $container->x[$xKey] : $container->{$property};
-
             if ($slash === false) {
                 return $nextContainer;
             }
@@ -293,7 +290,9 @@ class OpenApi extends AbstractAnnotation
             }
 
             return self::resolveRef($ref, $unresolved, $nextContainer, $mapping);
-        } elseif (is_array($container)) {
+        }
+
+        if (is_array($container)) {
             if (array_key_exists($property, $container)) {
                 return self::resolveRef($ref, $unresolved, $container[$property], []);
             }
