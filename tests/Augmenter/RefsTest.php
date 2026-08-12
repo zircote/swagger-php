@@ -49,6 +49,53 @@ final class RefsTest extends TestCase
         $this->assertSame('#/components/schemas/Foo', $response->content[0]->schema->ref);
     }
 
+    public function testResolvesRefInstanceOnSchema(): void
+    {
+        $spec = $this->assemble(
+            Fixtures\Augmenter\RefTarget::class,
+            Fixtures\Augmenter\RefInstanceController::class,
+        );
+
+        (new Augmenter\Refs())($spec);
+
+        $operation = null;
+        foreach ($spec->operations as $op) {
+            if ($op->path === '/ref-instance-schema') {
+                $operation = $op;
+                break;
+            }
+        }
+
+        $this->assertInstanceOf(OA\Operation::class, $operation);
+        $schema = $operation->responses[0]->content[0]->schema;
+        $this->assertSame('#/components/schemas/RefTarget', $schema->ref);
+    }
+
+    public function testResolvesRefInstanceOnResponse(): void
+    {
+        $spec = $this->assemble(
+            Fixtures\Augmenter\RefTarget::class,
+            Fixtures\Augmenter\RefInstanceController::class,
+        );
+
+        $sharedResponse = new OA\Response(response: 'SharedResponse', description: 'Shared');
+        $sharedResponse->setReflector(new \ReflectionClass(Fixtures\Augmenter\RefTarget::class));
+        $spec->responses[] = $sharedResponse;
+
+        (new Augmenter\Refs())($spec);
+
+        $operation = null;
+        foreach ($spec->operations as $op) {
+            if ($op->path === '/ref-instance-response') {
+                $operation = $op;
+                break;
+            }
+        }
+
+        $this->assertInstanceOf(OA\Operation::class, $operation);
+        $this->assertSame('#/components/responses/SharedResponse', $operation->responses[0]->ref);
+    }
+
     public function testResolvesDiscriminatorMapping(): void
     {
         $spec = $this->assemble(

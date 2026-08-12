@@ -41,6 +41,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
             return null;
         }
 
+        $this->resolveRefRefs($payload);
         $this->resolveFQCNRefs($payload, $refMap);
         $this->resolveDiscriminatorMappings($payload, $refMap);
         $this->resolveAllOfPropertyRefs($payload);
@@ -51,6 +52,15 @@ class Refs implements PipeInterface, LoggerAwareInterface
     public function group(): string|\BackedEnum
     {
         return Group::Resolve;
+    }
+
+    protected function resolveRefRefs(Specification $specification): void
+    {
+        $specification->getWalker()->eachRef(function (OA\AbstractAttribute $attribute): void {
+            if ($attribute->ref instanceof OA\Schema\Ref) {
+                $attribute->ref = $attribute->ref->ref;
+            }
+        });
     }
 
     protected function resolveFQCNRefs(Specification $specification, array $refMap): void

@@ -41,7 +41,7 @@ class Header extends AbstractAttribute
         public ?string $description = null,
         public ?bool $required = null,
         public ?bool $deprecated = null,
-        public ?string $ref = null,
+        public string|Schema\Ref|null $ref = null,
         string|ParameterStyle|null $style = null,
         public ?bool $explode = null,
         public ?Schema $schema = null,
