@@ -617,3 +617,22 @@ deleted_at:
 ```
 
 The FQCN is resolved to the appropriate `#/components/schemas/Pet` JSON reference at augmentation time.
+
+### Schema\Ref
+
+`OA\Schema\Ref` is a restricted `Schema` subclass that only accepts `ref`, `title`, and `description`. It can be used in two ways:
+
+**As a schema** — when you want a reference-only schema with optional metadata overrides (OpenAPI 3.1+):
+
+```php
+#[OA\Property(schema: new OA\Schema\Ref(ref: Pet::class, description: 'The pet'))]
+public Pet $pet;
+```
+
+**On a `ref` parameter directly** — when the `ref` property only accepts strings but you want type-safety or IDE completion for the reference target:
+
+```php
+#[OA\Response(ref: new OA\Schema\Ref(ref: '#/components/responses/NotFound'), response: 404)]
+```
+
+When used on `ref` directly, the `Refs` augmenter unwraps it to the plain string value before further resolution.

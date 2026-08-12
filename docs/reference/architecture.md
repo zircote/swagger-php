@@ -189,7 +189,9 @@ OA\AbstractAttribute
 │   └── OA\Operation\Trace
 ├── OA\PathItem
 ├── OA\Schema
+│   ├── OA\Schema\AdditionalProperties
 │   ├── OA\Schema\Items
+│   ├── OA\Schema\Ref
 │   └── OA\Property
 ├── OA\Parameter
 │   ├── OA\Parameter\Path

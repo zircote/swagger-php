@@ -514,7 +514,7 @@ The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema
   The value type(s) (string, number, integer, boolean, array, object, null)
 - **items** : `Schema|string|null`
   Schema for array items
-- **properties** : `list&lt;Property|Schema&gt;|null`
+- **properties** : `list&lt;Property&gt;|null`
   Object property definitions
 - **required** : `list&lt;string&gt;|null`
   List of required property names
@@ -568,7 +568,7 @@ The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema
   The value type(s) (string, number, integer, boolean, array, object, null)
 - **items** : `Schema|string|null`
   Schema for array items
-- **properties** : `list&lt;Property|Schema&gt;|null`
+- **properties** : `list&lt;Property&gt;|null`
   Object property definitions
 - **required** : `list&lt;string&gt;|null`
   List of required property names
@@ -725,7 +725,7 @@ Shorthand for an HTTP GET operation.
 
 #### Nested elements
 ---
-<a href="#parameter">Parameter</a>, <a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#server">Server</a>, <a href="#security-requirement">Security\Requirement</a>
+<a href="#parameter">Parameter</a>, <a href="#response">Response</a>, <a href="#server">Server</a>, <a href="#security-requirement">Security\Requirement</a>
 
 #### Parameters
 ---
@@ -741,11 +741,9 @@ Shorthand for an HTTP GET operation.
   No details available.
 - **tags** : `list&lt;string&gt;|null`
   No details available.
-- **parameters** : `list&lt;OA\Parameter&gt;|null`
+- **parameters** : `list&lt;Parameter&gt;|null`
   No details available.
-- **requestBody** : `OpenApi\Spec\RequestBody|null`
-  No details available.
-- **responses** : `list&lt;OA\Response&gt;|null`
+- **responses** : `list&lt;Response&gt;|null`
   No details available.
 - **callbacks** : `array&lt;string,mixed&gt;|null`
   No details available.
@@ -753,7 +751,7 @@ Shorthand for an HTTP GET operation.
   No details available.
 - **security** : `list&lt;OA\Security\Requirement&gt;|null`
   No details available.
-- **servers** : `list&lt;OA\Server&gt;|null`
+- **servers** : `list&lt;Server&gt;|null`
   No details available.
 - **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`
   No details available.
@@ -768,7 +766,7 @@ Shorthand for an HTTP HEAD operation.
 
 #### Nested elements
 ---
-<a href="#parameter">Parameter</a>, <a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#server">Server</a>, <a href="#security-requirement">Security\Requirement</a>
+<a href="#parameter">Parameter</a>, <a href="#response">Response</a>, <a href="#server">Server</a>, <a href="#security-requirement">Security\Requirement</a>
 
 #### Parameters
 ---
@@ -785,8 +783,6 @@ Shorthand for an HTTP HEAD operation.
 - **tags** : `list&lt;string&gt;|null`
   No details available.
 - **parameters** : `list&lt;OA\Parameter&gt;|null`
-  No details available.
-- **requestBody** : `OpenApi\Spec\RequestBody|null`
   No details available.
 - **responses** : `list&lt;OA\Response&gt;|null`
   No details available.
@@ -811,7 +807,7 @@ Shorthand for an HTTP OPTIONS operation.
 
 #### Nested elements
 ---
-<a href="#parameter">Parameter</a>, <a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#server">Server</a>, <a href="#security-requirement">Security\Requirement</a>
+<a href="#parameter">Parameter</a>, <a href="#response">Response</a>, <a href="#server">Server</a>, <a href="#security-requirement">Security\Requirement</a>
 
 #### Parameters
 ---
@@ -828,8 +824,6 @@ Shorthand for an HTTP OPTIONS operation.
 - **tags** : `list&lt;string&gt;|null`
   No details available.
 - **parameters** : `list&lt;OA\Parameter&gt;|null`
-  No details available.
-- **requestBody** : `OpenApi\Spec\RequestBody|null`
   No details available.
 - **responses** : `list&lt;OA\Response&gt;|null`
   No details available.
@@ -983,7 +977,7 @@ Shorthand for an HTTP TRACE operation.
 
 #### Nested elements
 ---
-<a href="#parameter">Parameter</a>, <a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#server">Server</a>, <a href="#security-requirement">Security\Requirement</a>
+<a href="#parameter">Parameter</a>, <a href="#response">Response</a>, <a href="#server">Server</a>, <a href="#security-requirement">Security\Requirement</a>
 
 #### Parameters
 ---
@@ -1000,8 +994,6 @@ Shorthand for an HTTP TRACE operation.
 - **tags** : `list&lt;string&gt;|null`
   No details available.
 - **parameters** : `list&lt;OA\Parameter&gt;|null`
-  No details available.
-- **requestBody** : `OpenApi\Spec\RequestBody|null`
   No details available.
 - **responses** : `list&lt;OA\Response&gt;|null`
   No details available.
@@ -1101,7 +1093,7 @@ A parameter passed via an HTTP cookie.
 
 #### Allowed in
 ---
-<a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
+<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
 
 #### Nested elements
 ---
@@ -1142,7 +1134,7 @@ A parameter passed via an HTTP header.
 
 #### Allowed in
 ---
-<a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
+<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
 
 #### Nested elements
 ---
@@ -1183,7 +1175,7 @@ A parameter passed via the URL path (always required).
 
 #### Allowed in
 ---
-<a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
+<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
 
 #### Nested elements
 ---
@@ -1226,7 +1218,7 @@ A parameter passed via the URL query string.
 
 #### Allowed in
 ---
-<a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
+<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
 
 #### Nested elements
 ---
@@ -1348,7 +1340,7 @@ Defines a single property within a Schema object.
 
 #### Allowed in
 ---
-<a href="#schema">Schema</a>, <a href="#schema-additionalproperties">Schema\AdditionalProperties</a>, <a href="#schema-items">Schema\Items</a>
+<a href="#schema">Schema</a>, <a href="#schema-additionalproperties">Schema\AdditionalProperties</a>, <a href="#schema-items">Schema\Items</a>, <a href="#schema-ref">Schema\Ref</a>
 
 #### Parameters
 ---
@@ -1367,7 +1359,7 @@ Describes a single request body.
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#operation-delete">Operation\Delete</a>, <a href="#operation-get">Operation\Get</a>, <a href="#operation-head">Operation\Head</a>, <a href="#operation-options">Operation\Options</a>, <a href="#operation-patch">Operation\Patch</a>, <a href="#operation-post">Operation\Post</a>, <a href="#operation-put">Operation\Put</a>, <a href="#operation-trace">Operation\Trace</a>
+<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#operation-delete">Operation\Delete</a>, <a href="#operation-patch">Operation\Patch</a>, <a href="#operation-post">Operation\Post</a>, <a href="#operation-put">Operation\Put</a>
 
 #### Nested elements
 ---
@@ -1450,7 +1442,7 @@ Inline — used within parameters, responses, or other schemas:
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#schema">Schema</a>, <a href="#schema-additionalproperties">Schema\AdditionalProperties</a>, <a href="#schema-items">Schema\Items</a>
+<a href="#components">Components</a>, <a href="#schema">Schema</a>, <a href="#schema-additionalproperties">Schema\AdditionalProperties</a>, <a href="#schema-items">Schema\Items</a>, <a href="#schema-ref">Schema\Ref</a>
 
 #### Nested elements
 ---
@@ -1510,7 +1502,7 @@ Inline — used within parameters, responses, or other schemas:
   Maximum number of items matching contains
 - **unevaluatedItems** : `Schema|bool|null`
   Schema for items not covered by other keywords
-- **properties** : `list&lt;Property|Schema&gt;|null`
+- **properties** : `list&lt;Property&gt;|null`
   Object property definitions
 - **required** : `list&lt;string&gt;|null`
   List of required property names
@@ -1586,7 +1578,7 @@ schemas with constrained additional properties:
 
 #### Allowed in
 ---
-<a href="#property">Property</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>
+<a href="#components">Components</a>, <a href="#property">Property</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>
 
 #### Nested elements
 ---
@@ -1646,7 +1638,7 @@ schemas with constrained additional properties:
   Maximum number of items matching contains
 - **unevaluatedItems** : `Schema|bool|null`
   Schema for items not covered by other keywords
-- **properties** : `list&lt;Property|Schema&gt;|null`
+- **properties** : `list&lt;Property&gt;|null`
   Object property definitions
 - **required** : `list&lt;string&gt;|null`
   List of required property names
@@ -1729,7 +1721,7 @@ The `Shortcuts` augmenter wraps this into `OA\Schema(type: 'array', items: ...)`
 
 #### Allowed in
 ---
-<a href="#property">Property</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>
+<a href="#components">Components</a>, <a href="#property">Property</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>
 
 #### Nested elements
 ---
@@ -1789,7 +1781,7 @@ The `Shortcuts` augmenter wraps this into `OA\Schema(type: 'array', items: ...)`
   Maximum number of items matching contains
 - **unevaluatedItems** : `Schema|bool|null`
   Schema for items not covered by other keywords
-- **properties** : `list&lt;Property|Schema&gt;|null`
+- **properties** : `list&lt;Property&gt;|null`
   Object property definitions
 - **required** : `list&lt;string&gt;|null`
   List of required property names
@@ -1849,6 +1841,37 @@ The `Shortcuts` augmenter wraps this into `OA\Schema(type: 'array', items: ...)`
 #### Reference
 ---
 - [Schema Object](https://spec.openapis.org/oas/v3.1.1.html#schema-object) ↗
+
+### [Schema\Ref](https://github.com/zircote/swagger-php/tree/master/src/Spec/Schema/Ref.php)
+
+A reference-only schema — $ref is required, most other Schema properties are unavailable.
+
+In OpenAPI 3.1+, $ref can be combined with title and description to override
+the referenced schema's metadata without duplicating the definition.
+
+Usage:
+  #[OA\Property(schema: new OA\Schema\Ref(ref: Pet::class))]
+  #[OA\Property(schema: new OA\Schema\Ref(ref: '#/components/schemas/Pet', title: 'The pet'))]
+  #[OA\Property(schema: new OA\Schema\Ref(ref: Pet::class, description: 'Override desc'))]
+
+If used on a `$ref` directly, only the ref value is used.
+
+#### Allowed in
+---
+<a href="#components">Components</a>, <a href="#property">Property</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>
+
+#### Nested elements
+---
+<a href="#property">Property</a>, <a href="#schema">Schema</a>
+
+#### Parameters
+---
+- **ref** : `string`
+  No details available.
+- **title** : `string|null`
+  No details available.
+- **description** : `string|null`
+  No details available.
 
 ### [Security\Requirement](https://github.com/zircote/swagger-php/tree/master/src/Spec/Security/Requirement.php)
 
@@ -1924,6 +1947,10 @@ Typed subtypes are available for each security scheme type:
 
 An API key security scheme (header, query, or cookie).
 
+#### Allowed in
+---
+<a href="#components">Components</a>
+
 #### Nested elements
 ---
 <a href="#flow">Flow</a>
@@ -1946,6 +1973,10 @@ An API key security scheme (header, query, or cookie).
 ### [Security\Scheme\Http](https://github.com/zircote/swagger-php/tree/master/src/Spec/Security/Scheme/Http.php)
 
 An HTTP authentication security scheme (Basic, Bearer, etc.).
+
+#### Allowed in
+---
+<a href="#components">Components</a>
 
 #### Nested elements
 ---
@@ -1970,6 +2001,10 @@ An HTTP authentication security scheme (Basic, Bearer, etc.).
 
 A Mutual TLS security scheme.
 
+#### Allowed in
+---
+<a href="#components">Components</a>
+
 #### Nested elements
 ---
 <a href="#flow">Flow</a>
@@ -1988,6 +2023,10 @@ A Mutual TLS security scheme.
 ### [Security\Scheme\OAuth2](https://github.com/zircote/swagger-php/tree/master/src/Spec/Security/Scheme/OAuth2.php)
 
 An OAuth2 security scheme with one or more flows.
+
+#### Allowed in
+---
+<a href="#components">Components</a>
 
 #### Nested elements
 ---
@@ -2009,6 +2048,10 @@ An OAuth2 security scheme with one or more flows.
 ### [Security\Scheme\OpenIdConnect](https://github.com/zircote/swagger-php/tree/master/src/Spec/Security/Scheme/OpenIdConnect.php)
 
 An OpenID Connect Discovery security scheme.
+
+#### Allowed in
+---
+<a href="#components">Components</a>
 
 #### Nested elements
 ---
@@ -2087,10 +2130,16 @@ Adds metadata to a single tag used by the Operation Object.
 ---
 - **name** : `string|null`
   The name of the tag
+- **summary** : `string|null`
+  A short summary of the tag, used for display purposes
 - **description** : `string|null`
   A description of the tag (CommonMark syntax)
 - **externalDocs** : `ExternalDocumentation|null`
   Additional external documentation for this tag
+- **parent** : `string|null`
+  The name of a tag that this tag is nested under
+- **kind** : `string|null`
+  A machine-readable string to categorize the tag
 
 #### Reference
 ---
