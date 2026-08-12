@@ -18,6 +18,8 @@ use OpenApi\Spec as OA;
  *   #[OA\Property(schema: new OA\Schema\Ref(ref: Pet::class))]
  *   #[OA\Property(schema: new OA\Schema\Ref(ref: '#/components/schemas/Pet', title: 'The pet'))]
  *   #[OA\Property(schema: new OA\Schema\Ref(ref: Pet::class, description: 'Override desc'))]
+ *
+ * If used on a `$ref` directly, only the ref value is used.
  */
 #[\Attribute(\Attribute::TARGET_ALL | \Attribute::IS_REPEATABLE)]
 class Ref extends OA\Schema
