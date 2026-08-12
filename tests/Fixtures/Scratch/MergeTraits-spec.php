@@ -52,7 +52,7 @@ class AddressSpec extends ModelSpec
 #[OA\Response(
     response: 200,
     description: 'successful operation',
-    content: new OA\MediaType\Json(ref: AddressSpec::class)
+    content: new OA\MediaType\Json(ref: new OA\Schema\Ref(AddressSpec::class))
 )]
 class MergeTraitsEndpointSpec
 {

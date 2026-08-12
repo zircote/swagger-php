@@ -21,7 +21,7 @@ class RequestBody extends AbstractAttribute
      * @param string|null                    $request     Reusable request body identifier (component key)
      * @param string|null                    $description A brief description of the request body (CommonMark syntax)
      * @param bool|null                      $required    Whether the request body is required
-     * @param string|null                    $ref         A JSON Reference to a reusable request body
+     * @param string|Schema\Ref|null         $ref         A JSON Reference to a reusable request body
      * @param MediaType|list<MediaType>|null $content     The content of the request body
      * @param array<string,mixed>|null       $x           Vendor extensions (x-* properties)
      * @param list<Attachable>|null          $attachables Reusable custom attachable attributes

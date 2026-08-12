@@ -51,7 +51,7 @@ class Xml extends OA\MediaType
      */
     public function __construct(
         // schema shortcuts
-        public ?string $ref = null,
+        public string|Schema\Ref|null $ref = null,
         public string|array|null $type = null,
         public Schema|string|null $items = null,
         public ?array $properties = null,

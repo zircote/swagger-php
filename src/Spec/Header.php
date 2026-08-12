@@ -26,7 +26,7 @@ class Header extends AbstractAttribute
      * @param string|null                    $description A brief description of the header (CommonMark syntax)
      * @param bool|null                      $required    Whether the header is mandatory
      * @param bool|null                      $deprecated  Whether the header is deprecated
-     * @param string|null                    $ref         A JSON Reference to a reusable header
+     * @param string|Schema\Ref|null         $ref         A JSON Reference to a reusable header
      * @param string|ParameterStyle|null     $style       How the header value is serialized
      * @param bool|null                      $explode     Whether arrays/objects generate separate parameters
      * @param Schema|null                    $schema      The schema defining the type for the header

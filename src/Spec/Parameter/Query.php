@@ -30,7 +30,7 @@ class Query extends OA\Parameter
         ?bool $required = null,
         ?bool $deprecated = null,
         ?bool $allowEmptyValue = null,
-        ?string $ref = null,
+        string|OA\Schema\Ref|null $ref = null,
         string|OA\ParameterStyle|null $style = null,
         ?bool $explode = null,
         ?bool $allowReserved = null,

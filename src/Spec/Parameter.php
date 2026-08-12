@@ -57,7 +57,7 @@ class Parameter extends AbstractAttribute
      * @param bool|null                      $required        Whether the parameter is mandatory
      * @param bool|null                      $deprecated      Whether the parameter is deprecated
      * @param bool|null                      $allowEmptyValue Whether empty-valued parameters are allowed
-     * @param string|null                    $ref             A JSON Reference to a reusable parameter
+     * @param string|Schema\Ref|null         $ref             A JSON Reference to a reusable parameter
      * @param string|ParameterStyle|null     $style           How the parameter value is serialized
      * @param bool|null                      $explode         Whether arrays/objects generate separate parameters
      * @param bool|null                      $allowReserved   Whether reserved characters are allowed without encoding
