@@ -71,6 +71,7 @@ function getReferenceSidebar() {
         { text: 'Generator', link: '/reference/generator' },
         { text: 'Processors', link: '/reference/processors' },
         { text: '🧪 Augmenters', link: '/reference/augmenters' },
+        { text: '🧪 Inheritance', link: '/reference/inheritance' },
         { text: '🧪 Architecture', link: '/reference/architecture' },
       ]
     },
