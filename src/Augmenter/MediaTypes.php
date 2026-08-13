@@ -13,7 +13,7 @@ use OpenApi\Utils\PipeInterface;
 /**
  * Re-keys MediaType encoding lists by property name.
  *
- * The assembler collects Encoding objects as a flat list via contains().
+ * The assembler collects Encoding objects as a flat list via contained().
  * The compiler expects them as an associative array keyed by the property name
  * the encoding applies to.
  *
