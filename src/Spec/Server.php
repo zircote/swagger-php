@@ -41,8 +41,11 @@ class Server extends AbstractAttribute
         return [PathItem::class => 'servers[]', Operation::class => 'servers[]'];
     }
 
-    public function contains(): array
+    public function contained(): array
     {
-        return [ServerVariable::class => 'variables[]'];
+        return [
+            Operation::class => 'servers[]',
+            PathItem::class => 'servers[]',
+        ];
     }
 }

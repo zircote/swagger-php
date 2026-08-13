@@ -75,10 +75,10 @@ class Scheme extends OA\AbstractAttribute
         ];
     }
 
-    public function contains(): array
+    public function contained(): array
     {
         return [
-            OA\Flow::class => 'flows[]',
+            Components::class => 'securitySchemes[]',
         ];
     }
 }

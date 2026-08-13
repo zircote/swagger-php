@@ -35,4 +35,9 @@ class License extends AbstractAttribute
     {
         return [Info::class => 'license'];
     }
+
+    public function contained(): array
+    {
+        return [Info::class => 'license'];
+    }
 }

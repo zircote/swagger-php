@@ -91,15 +91,4 @@ class Operation extends AbstractAttribute
     {
         return true;
     }
-
-    public function contains(): array
-    {
-        return [
-            Parameter::class => 'parameters[]',
-            Response::class => 'responses[]',
-            RequestBody::class => 'requestBody',
-            Server::class => 'servers[]',
-            Security\Requirement::class => 'security[]',
-        ];
-    }
 }

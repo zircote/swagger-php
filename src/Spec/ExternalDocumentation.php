@@ -41,4 +41,11 @@ class ExternalDocumentation extends AbstractAttribute
             Schema::class => 'externalDocs',
         ];
     }
+
+    public function contained(): array
+    {
+        return [
+            Tag::class => 'externalDocs',
+        ];
+    }
 }

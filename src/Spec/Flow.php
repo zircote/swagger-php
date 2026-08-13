@@ -70,4 +70,9 @@ class Flow extends AbstractAttribute
     {
         return [Security\Scheme::class => 'flows[]'];
     }
+
+    public function contained(): array
+    {
+        return [Security\Scheme::class => 'flows[]'];
+    }
 }

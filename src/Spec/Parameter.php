@@ -107,11 +107,11 @@ class Parameter extends AbstractAttribute
         ];
     }
 
-    public function contains(): array
+    public function contained(): array
     {
         return [
-            MediaType::class => 'content[]',
-            Example::class => 'examples[]',
+            Operation::class => 'parameters[]',
+            PathItem::class => 'parameters[]',
         ];
     }
 }

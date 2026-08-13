@@ -8,7 +8,6 @@ namespace OpenApi\Spec\Operation;
 
 use OpenApi\Spec as OA;
 use OpenApi\Spec\Parameter;
-use OpenApi\Spec\RequestBody;
 use OpenApi\Spec\Response;
 use OpenApi\Spec\Server;
 use OpenApi\Undefined;
@@ -66,13 +65,5 @@ class Get extends OA\Operation
             x: $x,
             attachables: $attachables,
         );
-    }
-
-    public function contains(): array
-    {
-        $result = parent::contains();
-        unset($result[RequestBody::class]);
-
-        return $result;
     }
 }

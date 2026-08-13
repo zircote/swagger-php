@@ -53,4 +53,11 @@ class Link extends AbstractAttribute
             Response::class => 'links[]',
         ];
     }
+
+    public function contained(): array
+    {
+        return [
+            Response::class => 'links[]',
+        ];
+    }
 }

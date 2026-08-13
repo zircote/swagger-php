@@ -212,11 +212,10 @@ class Schema extends AbstractAttribute
         ];
     }
 
-    public function contains(): array
+    public function contained(): array
     {
         return [
-            Property::class => 'properties[]',
-            self::class => 'properties[]',
+            Schema::class => 'properties[]',
         ];
     }
 }

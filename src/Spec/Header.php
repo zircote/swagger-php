@@ -65,11 +65,10 @@ class Header extends AbstractAttribute
         ];
     }
 
-    public function contains(): array
+    public function contained(): array
     {
         return [
-            MediaType::class => 'content[]',
-            Example::class => 'examples[]',
+            Response::class => 'headers[]',
         ];
     }
 }

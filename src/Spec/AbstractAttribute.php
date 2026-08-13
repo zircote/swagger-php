@@ -35,7 +35,7 @@ abstract class AbstractAttribute implements AttributeInterface
         return [];
     }
 
-    public function contains(): array
+    public function contained(): array
     {
         return [];
     }

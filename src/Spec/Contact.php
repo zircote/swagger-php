@@ -35,4 +35,9 @@ class Contact extends AbstractAttribute
     {
         return [Info::class => 'contact'];
     }
+
+    public function contained(): array
+    {
+        return [Info::class => 'contact'];
+    }
 }

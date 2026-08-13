@@ -52,8 +52,10 @@ class RequestBody extends AbstractAttribute
         ];
     }
 
-    public function contains(): array
+    public function contained(): array
     {
-        return [MediaType::class => 'content[]'];
+        return [
+            Operation::class => 'requestBody',
+        ];
     }
 }
