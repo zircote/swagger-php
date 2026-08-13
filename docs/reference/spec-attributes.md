@@ -52,7 +52,7 @@ can be declared directly on a class without needing a Components wrapper.
 
 #### Nested elements
 ---
-<a href="#schema">Schema</a>, <a href="#parameter">Parameter</a>, <a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#header">Header</a>, <a href="#security-scheme">Security\Scheme</a>, <a href="#link">Link</a>, <a href="#example">Example</a>, <a href="#pathitem">PathItem</a>
+<a href="#security-scheme">Security\Scheme</a>, <a href="#security-scheme-apikey">Security\Scheme\ApiKey</a>, <a href="#security-scheme-http">Security\Scheme\Http</a>, <a href="#security-scheme-mutualtls">Security\Scheme\MutualTls</a>, <a href="#security-scheme-oauth2">Security\Scheme\OAuth2</a>, <a href="#security-scheme-openidconnect">Security\Scheme\OpenIdConnect</a>
 
 #### Parameters
 ---
@@ -120,7 +120,7 @@ Describes the encoding for a single property in a media type.
 
 #### Allowed in
 ---
-<a href="#mediatype">MediaType</a>, <a href="#mediatype-json">MediaType\Json</a>, <a href="#mediatype-xml">MediaType\Xml</a>
+<a href="#mediatype">MediaType</a>
 
 #### Parameters
 ---
@@ -147,7 +147,7 @@ Describes an example value for a parameter, media type, or schema.
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>, <a href="#mediatype-json">MediaType\Json</a>, <a href="#mediatype-xml">MediaType\Xml</a>, <a href="#parameter">Parameter</a>, <a href="#parameter-cookie">Parameter\Cookie</a>, <a href="#parameter-header">Parameter\Header</a>, <a href="#parameter-path">Parameter\Path</a>, <a href="#parameter-query">Parameter\Query</a>
+<a href="#mediatype">MediaType</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>
 
 #### Parameters
 ---
@@ -220,7 +220,7 @@ Produces:
 
 #### Allowed in
 ---
-<a href="#security-scheme">Security\Scheme</a>, <a href="#security-scheme-apikey">Security\Scheme\ApiKey</a>, <a href="#security-scheme-http">Security\Scheme\Http</a>, <a href="#security-scheme-mutualtls">Security\Scheme\MutualTls</a>, <a href="#security-scheme-oauth2">Security\Scheme\OAuth2</a>, <a href="#security-scheme-openidconnect">Security\Scheme\OpenIdConnect</a>
+<a href="#security-scheme">Security\Scheme</a>
 
 #### Parameters
 ---
@@ -332,11 +332,11 @@ Describes a single HTTP header.
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#response">Response</a>
+<a href="#response">Response</a>
 
 #### Nested elements
 ---
-<a href="#mediatype">MediaType</a>, <a href="#example">Example</a>
+<a href="#example">Example</a>, <a href="#mediatype">MediaType</a>, <a href="#mediatype-json">MediaType\Json</a>, <a href="#mediatype-xml">MediaType\Xml</a>
 
 #### Parameters
 ---
@@ -348,7 +348,7 @@ Describes a single HTTP header.
   Whether the header is mandatory
 - **deprecated** : `bool|null`
   Whether the header is deprecated
-- **ref** : `string|null`
+- **ref** : `string|Schema\Ref|null`
   A JSON Reference to a reusable header
 - **style** : `string|ParameterStyle|null`
   How the header value is serialized
@@ -423,7 +423,7 @@ Describes a possible design-time link for a response.
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#response">Response</a>
+<a href="#response">Response</a>
 
 #### Parameters
 ---
@@ -454,7 +454,7 @@ Describes the content payload for a specific media type.
 
 #### Allowed in
 ---
-<a href="#header">Header</a>, <a href="#parameter">Parameter</a>, <a href="#parameter-cookie">Parameter\Cookie</a>, <a href="#parameter-header">Parameter\Header</a>, <a href="#parameter-path">Parameter\Path</a>, <a href="#parameter-query">Parameter\Query</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>
+<a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>
 
 #### Nested elements
 ---
@@ -500,11 +500,7 @@ The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema
 
 #### Allowed in
 ---
-<a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#parameter">Parameter</a>
-
-#### Nested elements
----
-<a href="#encoding">Encoding</a>, <a href="#example">Example</a>
+<a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>
 
 #### Parameters
 ---
@@ -554,11 +550,7 @@ The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema
 
 #### Allowed in
 ---
-<a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#parameter">Parameter</a>
-
-#### Nested elements
----
-<a href="#encoding">Encoding</a>, <a href="#example">Example</a>
+<a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>
 
 #### Parameters
 ---
@@ -636,7 +628,7 @@ For webhooks, use `webhook` instead of `path`:
 
 #### Nested elements
 ---
-<a href="#parameter">Parameter</a>, <a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#server">Server</a>, <a href="#security-requirement">Security\Requirement</a>
+<a href="#parameter">Parameter</a>, <a href="#parameter-cookie">Parameter\Cookie</a>, <a href="#parameter-header">Parameter\Header</a>, <a href="#parameter-path">Parameter\Path</a>, <a href="#parameter-query">Parameter\Query</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>, <a href="#security-requirement">Security\Requirement</a>, <a href="#server">Server</a>
 
 #### Parameters
 ---
@@ -680,10 +672,6 @@ For webhooks, use `webhook` instead of `path`:
 
 Shorthand for an HTTP DELETE operation.
 
-#### Nested elements
----
-<a href="#parameter">Parameter</a>, <a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#server">Server</a>, <a href="#security-requirement">Security\Requirement</a>
-
 #### Parameters
 ---
 - **path** : `string|null`
@@ -723,10 +711,6 @@ Shorthand for an HTTP DELETE operation.
 
 Shorthand for an HTTP GET operation.
 
-#### Nested elements
----
-<a href="#parameter">Parameter</a>, <a href="#response">Response</a>, <a href="#server">Server</a>, <a href="#security-requirement">Security\Requirement</a>
-
 #### Parameters
 ---
 - **path** : `string|null`
@@ -763,10 +747,6 @@ Shorthand for an HTTP GET operation.
 ### [Operation\Head](https://github.com/zircote/swagger-php/tree/master/src/Spec/Operation/Head.php)
 
 Shorthand for an HTTP HEAD operation.
-
-#### Nested elements
----
-<a href="#parameter">Parameter</a>, <a href="#response">Response</a>, <a href="#server">Server</a>, <a href="#security-requirement">Security\Requirement</a>
 
 #### Parameters
 ---
@@ -805,10 +785,6 @@ Shorthand for an HTTP HEAD operation.
 
 Shorthand for an HTTP OPTIONS operation.
 
-#### Nested elements
----
-<a href="#parameter">Parameter</a>, <a href="#response">Response</a>, <a href="#server">Server</a>, <a href="#security-requirement">Security\Requirement</a>
-
 #### Parameters
 ---
 - **path** : `string|null`
@@ -845,10 +821,6 @@ Shorthand for an HTTP OPTIONS operation.
 ### [Operation\Patch](https://github.com/zircote/swagger-php/tree/master/src/Spec/Operation/Patch.php)
 
 Shorthand for an HTTP PATCH operation.
-
-#### Nested elements
----
-<a href="#parameter">Parameter</a>, <a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#server">Server</a>, <a href="#security-requirement">Security\Requirement</a>
 
 #### Parameters
 ---
@@ -889,10 +861,6 @@ Shorthand for an HTTP PATCH operation.
 
 Shorthand for an HTTP POST operation.
 
-#### Nested elements
----
-<a href="#parameter">Parameter</a>, <a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#server">Server</a>, <a href="#security-requirement">Security\Requirement</a>
-
 #### Parameters
 ---
 - **path** : `string|null`
@@ -932,10 +900,6 @@ Shorthand for an HTTP POST operation.
 
 Shorthand for an HTTP PUT operation.
 
-#### Nested elements
----
-<a href="#parameter">Parameter</a>, <a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#server">Server</a>, <a href="#security-requirement">Security\Requirement</a>
-
 #### Parameters
 ---
 - **path** : `string|null`
@@ -974,10 +938,6 @@ Shorthand for an HTTP PUT operation.
 ### [Operation\Trace](https://github.com/zircote/swagger-php/tree/master/src/Spec/Operation/Trace.php)
 
 Shorthand for an HTTP TRACE operation.
-
-#### Nested elements
----
-<a href="#parameter">Parameter</a>, <a href="#response">Response</a>, <a href="#server">Server</a>, <a href="#security-requirement">Security\Requirement</a>
 
 #### Parameters
 ---
@@ -1044,11 +1004,11 @@ Produces:
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#operation-delete">Operation\Delete</a>, <a href="#operation-get">Operation\Get</a>, <a href="#operation-head">Operation\Head</a>, <a href="#operation-options">Operation\Options</a>, <a href="#operation-patch">Operation\Patch</a>, <a href="#operation-post">Operation\Post</a>, <a href="#operation-put">Operation\Put</a>, <a href="#operation-trace">Operation\Trace</a>, <a href="#pathitem">PathItem</a>
+<a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
 
 #### Nested elements
 ---
-<a href="#mediatype">MediaType</a>, <a href="#example">Example</a>
+<a href="#example">Example</a>, <a href="#mediatype">MediaType</a>, <a href="#mediatype-json">MediaType\Json</a>, <a href="#mediatype-xml">MediaType\Xml</a>
 
 #### Parameters
 ---
@@ -1066,7 +1026,7 @@ Produces:
   Whether the parameter is deprecated
 - **allowEmptyValue** : `bool|null`
   Whether empty-valued parameters are allowed
-- **ref** : `string|null`
+- **ref** : `string|Schema\Ref|null`
   A JSON Reference to a reusable parameter
 - **style** : `string|ParameterStyle|null`
   How the parameter value is serialized
@@ -1093,11 +1053,7 @@ A parameter passed via an HTTP cookie.
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
-
-#### Nested elements
----
-<a href="#mediatype">MediaType</a>, <a href="#example">Example</a>
+<a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
 
 #### Parameters
 ---
@@ -1111,7 +1067,7 @@ A parameter passed via an HTTP cookie.
   No details available.
 - **deprecated** : `bool|null`
   No details available.
-- **ref** : `string|null`
+- **ref** : `OpenApi\Spec\Schema\Ref|string|null`
   No details available.
 - **explode** : `bool|null`
   No details available.
@@ -1134,11 +1090,7 @@ A parameter passed via an HTTP header.
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
-
-#### Nested elements
----
-<a href="#mediatype">MediaType</a>, <a href="#example">Example</a>
+<a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
 
 #### Parameters
 ---
@@ -1152,7 +1104,7 @@ A parameter passed via an HTTP header.
   No details available.
 - **deprecated** : `bool|null`
   No details available.
-- **ref** : `string|null`
+- **ref** : `OpenApi\Spec\Schema\Ref|string|null`
   No details available.
 - **explode** : `bool|null`
   No details available.
@@ -1175,11 +1127,7 @@ A parameter passed via the URL path (always required).
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
-
-#### Nested elements
----
-<a href="#mediatype">MediaType</a>, <a href="#example">Example</a>
+<a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
 
 #### Parameters
 ---
@@ -1193,7 +1141,7 @@ A parameter passed via the URL path (always required).
   No details available.
 - **deprecated** : `bool|null`
   No details available.
-- **ref** : `string|null`
+- **ref** : `OpenApi\Spec\Schema\Ref|string|null`
   No details available.
 - **style** : `OpenApi\Spec\ParameterStyle|string|null`
   No details available.
@@ -1218,11 +1166,7 @@ A parameter passed via the URL query string.
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
-
-#### Nested elements
----
-<a href="#mediatype">MediaType</a>, <a href="#example">Example</a>
+<a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
 
 #### Parameters
 ---
@@ -1238,7 +1182,7 @@ A parameter passed via the URL query string.
   No details available.
 - **allowEmptyValue** : `bool|null`
   No details available.
-- **ref** : `string|null`
+- **ref** : `OpenApi\Spec\Schema\Ref|string|null`
   No details available.
 - **style** : `OpenApi\Spec\ParameterStyle|string|null`
   No details available.
@@ -1301,13 +1245,9 @@ responses, and parameters accumulate from the full ancestor chain. Deduplication
 is by value (tags), by scheme (security), by status code (responses), and by
 name+in (parameters).
 
-#### Allowed in
----
-<a href="#components">Components</a>
-
 #### Nested elements
 ---
-<a href="#parameter">Parameter</a>, <a href="#server">Server</a>, <a href="#response">Response</a>, <a href="#security-requirement">Security\Requirement</a>
+<a href="#parameter">Parameter</a>, <a href="#parameter-cookie">Parameter\Cookie</a>, <a href="#parameter-header">Parameter\Header</a>, <a href="#parameter-path">Parameter\Path</a>, <a href="#parameter-query">Parameter\Query</a>, <a href="#response">Response</a>, <a href="#security-requirement">Security\Requirement</a>, <a href="#server">Server</a>
 
 #### Parameters
 ---
@@ -1340,7 +1280,7 @@ Defines a single property within a Schema object.
 
 #### Allowed in
 ---
-<a href="#schema">Schema</a>, <a href="#schema-additionalproperties">Schema\AdditionalProperties</a>, <a href="#schema-items">Schema\Items</a>, <a href="#schema-ref">Schema\Ref</a>
+<a href="#schema">Schema</a>
 
 #### Parameters
 ---
@@ -1359,11 +1299,11 @@ Describes a single request body.
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#operation-delete">Operation\Delete</a>, <a href="#operation-patch">Operation\Patch</a>, <a href="#operation-post">Operation\Post</a>, <a href="#operation-put">Operation\Put</a>
+<a href="#operation">Operation</a>
 
 #### Nested elements
 ---
-<a href="#mediatype">MediaType</a>
+<a href="#mediatype">MediaType</a>, <a href="#mediatype-json">MediaType\Json</a>, <a href="#mediatype-xml">MediaType\Xml</a>
 
 #### Parameters
 ---
@@ -1373,7 +1313,7 @@ Describes a single request body.
   A brief description of the request body (CommonMark syntax)
 - **required** : `bool|null`
   Whether the request body is required
-- **ref** : `string|null`
+- **ref** : `string|Schema\Ref|null`
   A JSON Reference to a reusable request body
 - **content** : `MediaType|list&lt;MediaType&gt;|null`
   The content of the request body
@@ -1388,11 +1328,11 @@ Describes a single response from an API operation.
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#operation-delete">Operation\Delete</a>, <a href="#operation-get">Operation\Get</a>, <a href="#operation-head">Operation\Head</a>, <a href="#operation-options">Operation\Options</a>, <a href="#operation-patch">Operation\Patch</a>, <a href="#operation-post">Operation\Post</a>, <a href="#operation-put">Operation\Put</a>, <a href="#operation-trace">Operation\Trace</a>, <a href="#pathitem">PathItem</a>
+<a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
 
 #### Nested elements
 ---
-<a href="#header">Header</a>, <a href="#mediatype">MediaType</a>, <a href="#link">Link</a>
+<a href="#header">Header</a>, <a href="#link">Link</a>, <a href="#mediatype">MediaType</a>, <a href="#mediatype-json">MediaType\Json</a>, <a href="#mediatype-xml">MediaType\Xml</a>
 
 #### Parameters
 ---
@@ -1400,7 +1340,7 @@ Describes a single response from an API operation.
   The HTTP status code or 'default'
 - **description** : `string|null`
   A description of the response (CommonMark syntax)
-- **ref** : `string|null`
+- **ref** : `string|Schema\Ref|null`
   A JSON Reference to a reusable response
 - **headers** : `list&lt;Header&gt;|null`
   Headers sent with the response
@@ -1442,11 +1382,11 @@ Inline — used within parameters, responses, or other schemas:
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#schema">Schema</a>, <a href="#schema-additionalproperties">Schema\AdditionalProperties</a>, <a href="#schema-items">Schema\Items</a>, <a href="#schema-ref">Schema\Ref</a>
+<a href="#schema">Schema</a>
 
 #### Nested elements
 ---
-<a href="#property">Property</a>, <a href="#schema">Schema</a>
+<a href="#property">Property</a>, <a href="#schema">Schema</a>, <a href="#schema-additionalproperties">Schema\AdditionalProperties</a>, <a href="#schema-items">Schema\Items</a>, <a href="#schema-ref">Schema\Ref</a>
 
 #### Parameters
 ---
@@ -1578,11 +1518,7 @@ schemas with constrained additional properties:
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#property">Property</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>
-
-#### Nested elements
----
-<a href="#property">Property</a>, <a href="#schema">Schema</a>
+<a href="#schema">Schema</a>
 
 #### Parameters
 ---
@@ -1721,11 +1657,7 @@ The `Shortcuts` augmenter wraps this into `OA\Schema(type: 'array', items: ...)`
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#property">Property</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>
-
-#### Nested elements
----
-<a href="#property">Property</a>, <a href="#schema">Schema</a>
+<a href="#schema">Schema</a>
 
 #### Parameters
 ---
@@ -1858,11 +1790,7 @@ If used on a `$ref` directly, only the ref value is used.
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#property">Property</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>
-
-#### Nested elements
----
-<a href="#property">Property</a>, <a href="#schema">Schema</a>
+<a href="#schema">Schema</a>
 
 #### Parameters
 ---
@@ -1882,7 +1810,7 @@ Multiple schemes within a single requirement represent AND logic.
 
 #### Allowed in
 ---
-<a href="#openapi">OpenApi</a>, <a href="#operation">Operation</a>, <a href="#operation-delete">Operation\Delete</a>, <a href="#operation-get">Operation\Get</a>, <a href="#operation-head">Operation\Head</a>, <a href="#operation-options">Operation\Options</a>, <a href="#operation-patch">Operation\Patch</a>, <a href="#operation-post">Operation\Post</a>, <a href="#operation-put">Operation\Put</a>, <a href="#operation-trace">Operation\Trace</a>, <a href="#pathitem">PathItem</a>
+<a href="#openapi">OpenApi</a>, <a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
 
 #### Parameters
 ---
@@ -1914,7 +1842,7 @@ Typed subtypes are available for each security scheme type:
 
 #### Nested elements
 ---
-<a href="#flow">Flow</a>
+<a href="#flow">Flow</a>, <a href="#flow-authorizationcode">Flow\AuthorizationCode</a>, <a href="#flow-clientcredentials">Flow\ClientCredentials</a>, <a href="#flow-implicit">Flow\Implicit</a>, <a href="#flow-password">Flow\Password</a>
 
 #### Parameters
 ---
@@ -1951,10 +1879,6 @@ An API key security scheme (header, query, or cookie).
 ---
 <a href="#components">Components</a>
 
-#### Nested elements
----
-<a href="#flow">Flow</a>
-
 #### Parameters
 ---
 - **securityScheme** : `string|null`
@@ -1977,10 +1901,6 @@ An HTTP authentication security scheme (Basic, Bearer, etc.).
 #### Allowed in
 ---
 <a href="#components">Components</a>
-
-#### Nested elements
----
-<a href="#flow">Flow</a>
 
 #### Parameters
 ---
@@ -2005,10 +1925,6 @@ A Mutual TLS security scheme.
 ---
 <a href="#components">Components</a>
 
-#### Nested elements
----
-<a href="#flow">Flow</a>
-
 #### Parameters
 ---
 - **securityScheme** : `string|null`
@@ -2027,10 +1943,6 @@ An OAuth2 security scheme with one or more flows.
 #### Allowed in
 ---
 <a href="#components">Components</a>
-
-#### Nested elements
----
-<a href="#flow">Flow</a>
 
 #### Parameters
 ---
@@ -2053,10 +1965,6 @@ An OpenID Connect Discovery security scheme.
 ---
 <a href="#components">Components</a>
 
-#### Nested elements
----
-<a href="#flow">Flow</a>
-
 #### Parameters
 ---
 - **securityScheme** : `string|null`
@@ -2076,7 +1984,7 @@ Represents a Server.
 
 #### Allowed in
 ---
-<a href="#operation">Operation</a>, <a href="#operation-delete">Operation\Delete</a>, <a href="#operation-get">Operation\Get</a>, <a href="#operation-head">Operation\Head</a>, <a href="#operation-options">Operation\Options</a>, <a href="#operation-patch">Operation\Patch</a>, <a href="#operation-post">Operation\Post</a>, <a href="#operation-put">Operation\Put</a>, <a href="#operation-trace">Operation\Trace</a>, <a href="#pathitem">PathItem</a>
+<a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
 
 #### Nested elements
 ---

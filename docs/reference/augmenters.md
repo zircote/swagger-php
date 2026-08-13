@@ -38,14 +38,7 @@ and configure individual augmenters via `Pipeline::get()`.
 
 ### [Inheritance](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Inheritance.php)
 
-Expands PHP class hierarchy into OpenAPI composition (allOf).
-
-For each schema backed by a class reflector, walks parents, traits, and interfaces:
-- Ancestor with #[Schema] → adds $ref to allOf, stops walking up (parents only)
-- Ancestor without #[Schema] → merges its own members into the current schema
-
-After expansion, if a schema has both allOf and properties, the properties are
-moved into a dedicated allOf entry (anonymous schema with type: object).
+Handle all scenarios related to PHP inheritance.
 
 #### Config settings
 - **inheritance.attributeFactory** : `OpenApi\Utils\AttributeFactory` · default: `OpenApi\Utils\AttributeFactory`  
