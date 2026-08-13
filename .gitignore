@@ -9,9 +9,9 @@ docs/.vitepress/dist/
 docs/node_modules/
 docs/package-lock.json
 node_modules/
-/scratch/
+scratch/
 vendor/
 .idea/
 .phpstan/
-/.phpunit.cache/test-results
-/.claude/settings.local.json
+.phpunit.cache/
+.claude/settings.local.json
