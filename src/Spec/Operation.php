@@ -84,7 +84,7 @@ class Operation extends AbstractAttribute
         ?array $attachables = null,
     ) {
         parent::__construct(x: $x, attachables: $attachables);
-        $this->method = $method instanceof \BackedEnum ? $method->value : $method;
+        $this->method = $method instanceof \BackedEnum ? $method->value : strtolower($method);
     }
 
     public function isRoot(): bool

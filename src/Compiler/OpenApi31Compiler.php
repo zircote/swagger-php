@@ -42,7 +42,7 @@ class OpenApi31Compiler implements CompilerInterface
         if (!$specification->info instanceof OA\Info) {
             $this->logger->error('info is required');
         } elseif ($specification->info->title === null) {
-            $this->logger->error('info.title is required');
+            $this->logger->error('info.title is required in ' . $specification->info->getSourceLocation());
         }
 
         $hasPaths = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->path !== null);
@@ -59,11 +59,13 @@ class OpenApi31Compiler implements CompilerInterface
         if ($specification->info?->license instanceof OA\License) {
             $license = $specification->info->license;
             if ($license->url !== null && $license->identifier !== null) {
-                $this->logger->warning('License url and identifier are mutually exclusive');
+                $this->logger->warning('License url and identifier are mutually exclusive in ' . $license->getSourceLocation());
             }
         }
 
         $this->validateSchemas($specification);
+
+        $this->validateOperations($specification);
 
         return $this->logger->entries();
     }
@@ -644,10 +646,14 @@ class OpenApi31Compiler implements CompilerInterface
         foreach ($allSchemas as $schema) {
             if ($schema->type !== null && (is_array($schema->type) ? in_array('array', $schema->type, true) : $schema->type === 'array')) {
                 if ($schema->items === null) {
-                    $this->logger->warning('Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ' has type "array" but no items');
+                    $this->logger->warning('Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ' has type "array" but no items in ' . $schema->getSourceLocation());
                 }
             }
         }
+    }
+
+    protected function validateOperations(Specification $specification): void
+    {
     }
 
     /**
