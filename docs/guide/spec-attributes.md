@@ -537,7 +537,7 @@ In spec mode, the typed operation subclasses `OA\Operation\Get`, `OA\Operation\H
 Classic mode accepts `requestBody` on all operations (with a comment noting it should be ignored by validators for methods that don't support it).
 
 ```php
-// This works in classic mode but is a compile error in spec mode:
+// This works in classic mode but is a compile warning in spec mode:
 #[OA\Operation\Get(path: '/pets', requestBody: new OA\RequestBody(...))]
 
 // Use Post, Put, Patch, or Delete for request bodies:

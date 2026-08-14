@@ -20,6 +20,8 @@ class OpenApi31Compiler implements CompilerInterface
 {
     protected const VERSIONS = ['3.1.0', '3.1.1', '3.1.2'];
 
+    protected const OPERATION_REQUEST_BODY_METHODS = ['put', 'post', 'delete', 'patch'];
+
     protected CollectingLogger $logger;
 
     public function __construct(?LoggerInterface $logger = null)
@@ -229,10 +231,14 @@ class OpenApi31Compiler implements CompilerInterface
             'tags' => $operation->tags,
             'summary' => $operation->summary,
             'description' => $operation->description,
-            'externalDocs' => $operation->externalDocs instanceof OA\ExternalDocumentation ? $this->compileExternalDocs($operation->externalDocs) : null,
+            'externalDocs' => $operation->externalDocs instanceof OA\ExternalDocumentation
+                ? $this->compileExternalDocs($operation->externalDocs)
+                : null,
             'operationId' => $operation->operationId,
             'parameters' => array_map($this->compileParameter(...), $operation->parameters ?? []),
-            'requestBody' => $operation->requestBody instanceof OA\RequestBody ? $this->compileRequestBody($operation->requestBody) : null,
+            'requestBody' => $operation->requestBody instanceof OA\RequestBody
+                ? $this->compileRequestBody($operation->requestBody, $operation->method)
+                : null,
             'responses' => $this->compileResponses($operation->responses ?? []),
             'callbacks' => $this->compileCallbacks($operation->callbacks ?? []),
             'deprecated' => $operation->deprecated,
@@ -293,8 +299,12 @@ class OpenApi31Compiler implements CompilerInterface
         ], $parameter);
     }
 
-    protected function compileRequestBody(OA\RequestBody $body): array|\stdClass
+    protected function compileRequestBody(OA\RequestBody $body, ?string $method = null): array|\stdClass|null
     {
+        if ($method && !in_array($method, static::OPERATION_REQUEST_BODY_METHODS)) {
+            return null;
+        }
+
         if ($body->ref !== null) {
             return ['$ref' => $body->ref];
         }
@@ -654,6 +664,11 @@ class OpenApi31Compiler implements CompilerInterface
 
     protected function validateOperations(Specification $specification): void
     {
+        $specification->getWalker()->visit(OA\Operation::class, function (OA\Operation $operation): void {
+            if ($operation->requestBody instanceof OA\RequestBody && !in_array($operation->method, static::OPERATION_REQUEST_BODY_METHODS)) {
+                $this->logger->warning("Request body not supported for method {$operation->method} in " . $operation->getSourceLocation());
+            }
+        });
     }
 
     /**
