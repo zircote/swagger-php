@@ -13,6 +13,10 @@ use OpenApi\Utils\PipeInterface;
 /**
  * Handle all scenarios related to PHP inheritance.
  *
+ * Delegates to:
+ * - Inheritance\Schemas
+ * - Inheritance\Operations
+ *
  * @implements PipeInterface<Specification>
  */
 class Inheritance implements PipeInterface
