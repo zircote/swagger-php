@@ -13,6 +13,7 @@ use OpenApi\OpenApiException;
 use OpenApi\Spec as OA;
 use OpenApi\Tests\Fixtures\Assembler\AmbiguousMerge;
 use OpenApi\Tests\Fixtures\Assembler\Attachable\RequestPayload;
+use OpenApi\Tests\Fixtures\Assembler\ImplicitPropertyProduct;
 use OpenApi\Tests\Fixtures\Assembler\SimpleController;
 use OpenApi\Tests\Fixtures\Assembler\SimpleProduct;
 use OpenApi\Utils\AttributeFactory;
@@ -31,6 +32,31 @@ final class AttributeFactoryTest extends TestCase
         $this->assertSame('name', $result[0]->property);
         $this->assertInstanceOf(OA\Schema::class, $result[0]->schema);
         $this->assertSame('The name.', $result[0]->schema->description);
+    }
+
+    public function testImplicitPropertyOnProperty(): void
+    {
+        $factory = new AttributeFactory();
+        $result = $factory->fromReflector(new \ReflectionProperty(ImplicitPropertyProduct::class, 'id'));
+
+        $this->assertCount(1, $result);
+        $this->assertInstanceOf(OA\Property::class, $result[0]);
+        $this->assertInstanceOf(OA\Schema::class, $result[0]->schema);
+        $this->assertSame('int64', $result[0]->schema->format);
+    }
+
+    public function testImplicitPropertyOnPromotedParameter(): void
+    {
+        $factory = new AttributeFactory();
+        $result = $factory->fromReflector(new \ReflectionParameter(
+            [ImplicitPropertyProduct::class, '__construct'],
+            'colour',
+        ));
+
+        $this->assertCount(1, $result);
+        $this->assertInstanceOf(OA\Property::class, $result[0]);
+        $this->assertInstanceOf(OA\Schema::class, $result[0]->schema);
+        $this->assertSame('The colour', $result[0]->schema->description);
     }
 
     public function testFromReflectorParameter(): void

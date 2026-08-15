@@ -22,7 +22,7 @@ class Product
     #[OA\Property(property: 'kind')]
     public const KIND = 'Virtual';
 
-    #[OA\Property(schema: new OA\Schema(format: 'int64'))]
+    #[OA\Schema(format: 'int64')]
     /**
      * The id.
      *
@@ -37,7 +37,6 @@ class Product
         #[OA\Property]
         #[OA\Schema(example: null, default: null)]
         public ?string $brand,
-        #[OA\Property]
         #[OA\Schema(description: 'The colour')]
         public Colour $colour,
         #[OA\Property]

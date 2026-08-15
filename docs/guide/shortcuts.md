@@ -53,6 +53,22 @@ and will generate the same output.
 
 The same applies to `OA\XmlContent`.
 
+## `OA\Property` (spec only)
+
+When using the `OA\Spec` namespace, class properties and promoted constructor parameters that have an `OA\Schema`
+attribute do not need an explicit `OA\Property` attribute — it will be added automatically.
+
+**Verbose:**
+
+<<< @/snippets/guide/shortcuts/optional_property_verbose_spec.php
+
+**Shortcut:**
+
+<<< @/snippets/guide/shortcuts/optional_property_short_spec.php
+
+Both produce the same output. The implicit `OA\Property` is inferred from the context (class property or promoted
+constructor parameter with an `OA\Schema`).
+
 ## `OA\Parameter`
 
 The `OA\Parameter` annotation requires specifying the `in` property to indicate where in the request the parameter is located.

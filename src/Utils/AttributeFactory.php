@@ -7,6 +7,7 @@
 namespace OpenApi\Utils;
 
 use OpenApi\Assembler\DefaultAttributeTranslator;
+use OpenApi\Assembler\OptionalPropertyAttributeTranslator;
 use OpenApi\AttributeInterface;
 use OpenApi\AttributeTranslatorInterface;
 use OpenApi\OpenApiException;
@@ -31,6 +32,7 @@ class AttributeFactory
         /** @var list<AttributeTranslatorInterface> $translators */
         $translators = [
             new DefaultAttributeTranslator(),
+            new OptionalPropertyAttributeTranslator(),
         ];
 
         $this->translators = new TypedList($translators);
