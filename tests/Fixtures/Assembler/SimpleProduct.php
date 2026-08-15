@@ -15,7 +15,7 @@ class SimpleProduct
     #[OA\Schema(description: 'The name.')]
     public string $name;
 
-    #[OA\Property(property: 'price')]
+    // omitting OA\Proeprtyy
     #[OA\Schema(type: 'number', format: 'float')]
     public float $price;
 }
