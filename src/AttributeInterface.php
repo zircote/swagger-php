@@ -22,10 +22,9 @@ use OpenApi\Utils\SourceLocation;
  *   types this attribute can be nested into. E.g., Schema merges into Property,
  *   filling its $schema slot.
  *
- * - contains(): defines hierarchical absorption. Attributes from inner reflectors
- *   flow up into enclosing-level attributes. contains() declares which types a
- *   container can absorb from the level below. E.g., Operation on a method contains
- *   RequestBody from a parameter; Schema on a class contains Property from members.
+ * - contained(): defines hierarchical absorption. An inner-level attribute declares
+ *   which outer-level types can absorb it. E.g., RequestBody on a parameter declares
+ *   Operation as its container; Property on a class member declares Schema as its container.
  */
 interface AttributeInterface
 {
@@ -51,21 +50,21 @@ interface AttributeInterface
     public function merge(): array;
 
     /**
-     * Types this attribute can absorb from inner reflector levels.
+     * Attribute types that can absorb this attribute from inner reflector levels.
      *
      * During hierarchical resolution (class absorbs members, method absorbs parameters),
-     * the assembler uses contains() to determine which inner-level attributes flow into
-     * this container. Keys are the child class, values are the property name on this
+     * the assembler uses contained() to determine which outer-level attributes can contain
+     * this container. Keys are the parent class, values are the property name on this
      * attribute where the child will be placed.
      *
      * Use '[]' suffix for collection slots (append): 'properties[]'
      * Omit suffix for scalar slots (set): 'requestBody'
      *
-     * Return an empty array if this attribute does not absorb children.
+     * Return an empty array if this attribute does not have parents.
      *
      * @return array<class-string<AttributeInterface>, string>
      */
-    public function contains(): array;
+    public function contained(): array;
 
     public function getReflector(): ?\Reflector;
 

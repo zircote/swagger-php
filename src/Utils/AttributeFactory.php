@@ -247,9 +247,9 @@ class AttributeFactory
     }
 
     /**
-     * Hierarchical absorb: outer-level attributes absorb inner-level attributes using contains().
+     * Hierarchical absorb: inner-level attributes declare which outer-level types can contain them.
      *
-     * Inner attributes that match a container's contains() are nested into it (first match wins).
+     * Inner attributes that match an outer attribute via contained() are nested into it (first match wins).
      * Inner attributes that find no container pass through alongside outer.
      *
      * @param  list<AttributeInterface> $outer
@@ -260,18 +260,16 @@ class AttributeFactory
     {
         foreach ($inner as $innerAttribute) {
             $absorbed = false;
+            $containedTargets = $innerAttribute->contained();
 
-            foreach ($outer as $outerAttribute) {
-                $containsTypes = $outerAttribute->contains();
-                if ($containsTypes === []) {
-                    continue;
-                }
-
-                foreach ($containsTypes as $childClass => $slot) {
-                    if ($innerAttribute instanceof $childClass) {
-                        $this->nestChild($outerAttribute, $innerAttribute, $slot);
-                        $absorbed = true;
-                        break 2;
+            if ($containedTargets !== []) {
+                foreach ($outer as $outerAttribute) {
+                    foreach ($containedTargets as $parentClass => $slot) {
+                        if ($outerAttribute instanceof $parentClass) {
+                            $this->nestChild($outerAttribute, $innerAttribute, $slot);
+                            $absorbed = true;
+                            break 2;
+                        }
                     }
                 }
             }

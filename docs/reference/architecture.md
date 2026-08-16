@@ -22,17 +22,19 @@ The Assembler collects spec attributes from source files and resolves their nest
 
 Each attribute declares its relationships via two methods:
 
-- `merge()` returns `[ParentClass => 'slot']` — how this attribute composes into siblings on the same reflector
-- `contains()` returns `[ChildClass => 'slot']` — which child attributes from inner reflectors this attribute absorbs
+- `merge()` returns `[TargetClass => 'slot']` — how this attribute composes into siblings on the same reflector
+- `contained()` returns `[ParentClass => 'slot']` — which outer-level attribute types can absorb this attribute from inner reflector levels
 
 Slots use `[]` suffix for collection append (`'parameters[]'`), bare name for scalar assignment (`'requestBody'`).
+
+Both methods are child-driven: the attribute itself declares where it can go, whether same-level (merge) or cross-level (contained). This makes the system fully extensible by downstream code — custom attachables can declare their own nesting targets without modifying native attributes.
 
 ### Level-by-level resolution
 
 Assembler resolution itself is purely attribute-relationship driven — no PHP structural semantics:
 
 1. **Sibling merge** — attributes on the same reflector compose via `merge()` maps
-2. **Hierarchical absorb** — resolved attributes flow upward level by level via `contains()` maps (first match wins). If a level has containers, unmatched non-roots are errors. If a level has no containers, unmatched attributes pass through to the next level up.
+2. **Hierarchical absorb** — resolved attributes flow upward level by level via `contained()` maps (first match wins). If a level has containers, unmatched non-roots are errors. If a level has no containers, unmatched attributes pass through to the next level up.
 
 After resolution, only root attributes (should) remain and are added to the Specification.
 

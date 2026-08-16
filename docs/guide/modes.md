@@ -36,7 +36,7 @@ Classic mode gives you access to the full `Generator` API including custom proce
 Spec mode is a ground-up reimplementation of the pipeline using pure PHP 8.1+ attributes from the `OpenApi\Spec` namespace. It introduces:
 
 - **Typed DTOs** — attributes are simple data containers with constructor-promoted properties
-- **Slot-map nesting** — explicit `merge()`/`contains()` maps replace reflection-based nesting resolution
+- **Slot-map nesting** — explicit `merge()`/`contained()` maps replace reflection-based nesting
 - **Grouped augmenters** — a three-phase pipeline (resolve → reduce → augment) that's easy to extend and configure
 - **Version-aware compilers** — separate compilers for OpenAPI 3.0, 3.1, and 3.2
 
@@ -55,7 +55,7 @@ $result->toYaml();
 Spec mode uses the `OpenApi\Spec` namespace (`use OpenApi\Spec as OA;`) with a cleaner attribute API. See [Using Spec Attributes](/guide/spec-attributes) for a full guide.
 
 ::: warning Beta
-Spec mode is feature-complete but still beta. The attribute API may evolve based on feedback before being promoted to default in a future major version.
+Spec mode is mostly feature-complete but still beta. The attribute API may evolve based on feedback before being promoted to default in a future major version.
 :::
 
 ## Hybrid (beta) {#hybrid}
@@ -77,6 +77,10 @@ $result->toYaml();
 ```
 
 Hybrid mode is the recommended transition path for existing projects that want to benefit from the new pipeline incrementally.
+
+::: warning Disclaimer
+Hybrid mode will not work in heavily customized projects like `NelmioApiDocBundle or projects adding custom processors.
+:::
 
 ## Switching modes
 

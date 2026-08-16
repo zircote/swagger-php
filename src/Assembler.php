@@ -17,7 +17,7 @@ use OpenApi\Utils\AttributeFactory;
  *    using merge() — e.g., a Schema adjacent to a Property fills the Property's $schema slot.
  *
  * 2. Absorb (resolveHierarchy): resolved attributes flow upward level by level using
- *    contains() (first match wins). Roots that aren't absorbed pass through to the spec.
+ *    contained() (first match wins). Roots that aren't absorbed pass through to the spec.
  */
 class Assembler
 {

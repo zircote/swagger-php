@@ -44,4 +44,9 @@ class Encoding extends AbstractAttribute
     {
         return [MediaType::class => 'encoding[]'];
     }
+
+    public function contained(): array
+    {
+        return [MediaType::class => 'encoding[]'];
+    }
 }

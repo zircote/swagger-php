@@ -46,11 +46,13 @@ class MediaType extends AbstractAttribute
         ];
     }
 
-    public function contains(): array
+    public function contained(): array
     {
         return [
-            Encoding::class => 'encoding[]',
-            Example::class => 'examples[]',
+            Response::class => 'content[]',
+            RequestBody::class => 'content[]',
+            Parameter::class => 'content[]',
+            Header::class => 'content[]',
         ];
     }
 }

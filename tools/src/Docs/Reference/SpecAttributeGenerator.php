@@ -41,7 +41,7 @@ class SpecAttributeGenerator extends DocGenerator
     public function generate(): array
     {
         $classes = $this->discoverClasses();
-        $parentMap = $this->buildParentMap($classes);
+        [$parentMap, $nestedMap] = $this->buildMaps($classes);
 
         $content = $this->renderer->preamble(
             'Spec Attribute',
@@ -52,7 +52,7 @@ class SpecAttributeGenerator extends DocGenerator
 
         foreach ($classes as $shortName => $fqdn) {
             $content .= "\n" . $this->renderClassLink($shortName, $fqdn);
-            $data = $this->collectClassData($shortName, $fqdn, $parentMap);
+            $data = $this->collectClassData($shortName, $fqdn, $parentMap, $nestedMap);
 
             foreach ($this->sections as $section) {
                 $rendered = $section->render($data);
@@ -120,32 +120,36 @@ class SpecAttributeGenerator extends DocGenerator
     }
 
     /**
-     * Build a map: child FQDN => list of parent short names (who can contain this class).
+     * Build maps from contained(): parentMap (child FQDN => parents) and nestedMap (parent FQDN => children).
      *
      * @param array<string,class-string<AbstractAttribute>> $classes
      *
-     * @return array<string,list<array{name: string, anchor: string}>>
+     * @return array{array<string,list<array{name: string, anchor: string}>>, array<string,list<array{name: string, anchor: string}>>}
      */
-    protected function buildParentMap(array $classes): array
+    protected function buildMaps(array $classes): array
     {
-        $map = [];
+        $parentMap = [];
+        $nestedMap = [];
 
         foreach ($classes as $shortName => $fqdn) {
             $instance = (new \ReflectionClass($fqdn))->newInstanceWithoutConstructor();
-            foreach ($instance->contains() as $childClass => $prop) {
-                $map[$childClass][] = ['name' => $shortName, 'anchor' => $this->anchor($shortName)];
+            foreach ($instance->contained() as $parentClass => $prop) {
+                $parentShortName = $this->shortName($parentClass);
+                $parentMap[$fqdn][] = ['name' => $parentShortName, 'anchor' => $this->anchor($parentShortName)];
+                $nestedMap[$parentClass][] = ['name' => $shortName, 'anchor' => $this->anchor($shortName)];
             }
         }
 
-        return $map;
+        return [$parentMap, $nestedMap];
     }
 
     /**
      * @param array<string,list<array{name: string, anchor: string}>> $parentMap
+     * @param array<string,list<array{name: string, anchor: string}>> $nestedMap
      *
      * @return array<string,mixed>
      */
-    protected function collectClassData(string $shortName, string $fqdn, array $parentMap): array
+    protected function collectClassData(string $shortName, string $fqdn, array $parentMap, array $nestedMap): array
     {
         $rc = new \ReflectionClass($fqdn);
         $classDoc = $this->parseDocblock($rc->getDocComment());
@@ -154,7 +158,7 @@ class SpecAttributeGenerator extends DocGenerator
             : ['content' => '', 'see' => [], 'var' => '', 'params' => []];
 
         $instance = $rc->newInstanceWithoutConstructor();
-        $nested = $this->collectNested($instance);
+        $nested = $nestedMap[$fqdn] ?? [];
         $parents = $parentMap[$fqdn] ?? $this->collectMergeParents($instance);
         $parameters = $this->collectParameters($rc, $ctorDoc);
 
@@ -200,21 +204,6 @@ class SpecAttributeGenerator extends DocGenerator
         }
 
         return $parameters;
-    }
-
-    /**
-     * @return list<array{name: string, anchor: string}>
-     */
-    protected function collectNested(OA\AbstractAttribute $instance): array
-    {
-        $nested = [];
-
-        foreach ($instance->contains() as $childClass => $prop) {
-            $shortName = $this->shortName($childClass);
-            $nested[] = ['name' => $shortName, 'anchor' => $this->anchor($shortName)];
-        }
-
-        return $nested;
     }
 
     /**

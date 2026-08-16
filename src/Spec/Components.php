@@ -64,19 +64,4 @@ class Components extends AbstractAttribute
     {
         return true;
     }
-
-    public function contains(): array
-    {
-        return [
-            Schema::class => 'schemas[]',
-            Parameter::class => 'parameters[]',
-            Response::class => 'responses[]',
-            RequestBody::class => 'requestBodies[]',
-            Header::class => 'headers[]',
-            Security\Scheme::class => 'securitySchemes[]',
-            Link::class => 'links[]',
-            Example::class => 'examples[]',
-            PathItem::class => 'pathItems[]',
-        ];
-    }
 }

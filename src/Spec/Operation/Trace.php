@@ -7,7 +7,6 @@
 namespace OpenApi\Spec\Operation;
 
 use OpenApi\Spec as OA;
-use OpenApi\Spec\RequestBody;
 use OpenApi\Undefined;
 
 /**
@@ -63,13 +62,5 @@ class Trace extends OA\Operation
             x: $x,
             attachables: $attachables,
         );
-    }
-
-    public function contains(): array
-    {
-        $result = parent::contains();
-        unset($result[RequestBody::class]);
-
-        return $result;
     }
 }

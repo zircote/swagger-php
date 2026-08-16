@@ -55,12 +55,11 @@ class Response extends AbstractAttribute
         ];
     }
 
-    public function contains(): array
+    public function contained(): array
     {
         return [
-            Header::class => 'headers[]',
-            MediaType::class => 'content[]',
-            Link::class => 'links[]',
+            Operation::class => 'responses[]',
+            PathItem::class => 'responses[]',
         ];
     }
 }

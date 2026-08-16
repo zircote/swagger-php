@@ -88,14 +88,4 @@ class PathItem extends AbstractAttribute
     {
         return true;
     }
-
-    public function contains(): array
-    {
-        return [
-            Parameter::class => 'parameters[]',
-            Server::class => 'servers[]',
-            Response::class => 'responses[]',
-            Security\Requirement::class => 'security[]',
-        ];
-    }
 }

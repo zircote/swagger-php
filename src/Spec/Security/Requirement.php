@@ -41,6 +41,11 @@ class Requirement extends OA\AbstractAttribute
         return [OA\OpenApi::class => 'security[]', OA\Operation::class => 'security[]', OA\PathItem::class => 'security[]'];
     }
 
+    public function contained(): array
+    {
+        return [OA\OpenApi::class => 'security[]', OA\Operation::class => 'security[]', OA\PathItem::class => 'security[]'];
+    }
+
     /**
      * Resolve to the normalized map format: ['schemeName' => [...scopes]].
      *

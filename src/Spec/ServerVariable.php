@@ -37,4 +37,9 @@ class ServerVariable extends AbstractAttribute
     {
         return [Server::class => 'variables[]'];
     }
+
+    public function contained(): array
+    {
+        return [Server::class => 'variables[]'];
+    }
 }

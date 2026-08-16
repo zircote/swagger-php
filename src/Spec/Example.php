@@ -46,4 +46,13 @@ class Example extends AbstractAttribute
             Header::class => 'examples[]',
         ];
     }
+
+    public function contained(): array
+    {
+        return [
+            MediaType::class => 'examples[]',
+            Parameter::class => 'examples[]',
+            Header::class => 'examples[]',
+        ];
+    }
 }

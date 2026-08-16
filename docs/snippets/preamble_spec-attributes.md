@@ -3,9 +3,9 @@ Spec attributes are typed PHP 8.1+ attributes in the `OpenApi\Spec` namespace â€
 spec-attributes pipeline (`--mode spec` or `--mode hybrid`).
 
 They are immutable data containers with no serialization logic. Relationships between attributes are
-declared via `contains()` (what children an attribute absorbs) and `merge()` (what parent an attribute
-composes into). The [Assembler](/reference/builder.md) resolves nesting, and [Augmenters](/reference/augmenters.md)
-enrich the collected specification before compilation.
+declared via `merge()` (what sibling an attribute composes into on the same reflector) and `contained()`
+(what parent types can absorb this attribute from inner reflector levels). The [Assembler](/reference/builder.md)
+resolves nesting, and [Augmenters](/reference/augmenters.md) enrich the collected specification before compilation.
 
 Typed subclasses (e.g. `Operation\Get`, `Parameter\Path`, `Flow\AuthorizationCode`) pre-fill common
 fields to reduce boilerplate â€” the base class can always be used directly.

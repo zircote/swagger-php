@@ -33,4 +33,11 @@ class Property extends AbstractAttribute
     {
         return [];
     }
+
+    public function contained(): array
+    {
+        return [
+            Schema::class => 'properties[]',
+        ];
+    }
 }
