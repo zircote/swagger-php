@@ -44,7 +44,7 @@ class Encoding extends AbstractAttribute
     {
         return [
             MediaType::class => 'encoding[]',
-            Property::class => 'encoding',
+            Property\Encoded::class => 'encoding',
         ];
     }
 

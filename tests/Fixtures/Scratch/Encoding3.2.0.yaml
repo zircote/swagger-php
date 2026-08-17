@@ -5,7 +5,7 @@ info:
 paths:
   /endpoint/multipart-form-data-ref:
     post:
-      operationId: 3ed6d7b4d6050aad4152388e6e154a55
+      operationId: multipartFormDataRef
       requestBody:
         content:
           multipart/form-data:
@@ -23,7 +23,7 @@ paths:
           description: 'All good'
   /endpoint/multipart-form-data-ref-json-content:
     post:
-      operationId: 62590046a8aac464222d8c2b19ac4644
+      operationId: multipartFormDataRefJsonContent
       requestBody:
         content:
           application/json:
@@ -41,7 +41,7 @@ paths:
           description: 'All good'
   /endpoint/multipart-form-data-json-content:
     post:
-      operationId: 6208fbaa6292638cc112e0b1d5fd2e3e
+      operationId: multipartFormDataJsonContent
       requestBody:
         content:
           application/json:

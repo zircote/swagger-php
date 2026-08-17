@@ -48,6 +48,7 @@ class EncodingController
 {
     #[OAT\Post(
         path: '/endpoint/multipart-form-data-ref',
+        operationId: 'multipartFormDataRef',
         requestBody: new OAT\RequestBody(
             content: new OAT\MediaType(
                 mediaType: 'multipart/form-data',
@@ -75,6 +76,7 @@ class EncodingController
 
     #[OAT\Post(
         path: '/endpoint/multipart-form-data-ref-json-content',
+        operationId: 'multipartFormDataRefJsonContent',
         requestBody: new OAT\RequestBody(
             content: new OAT\JsonContent(
                 ref: MultipartFormData::class,
@@ -99,6 +101,7 @@ class EncodingController
 
     #[OAT\Post(
         path: '/endpoint/multipart-form-data-json-content',
+        operationId: 'multipartFormDataJsonContent',
         requestBody: new OAT\RequestBody(
             content: new OAT\JsonContent(
                 properties: [

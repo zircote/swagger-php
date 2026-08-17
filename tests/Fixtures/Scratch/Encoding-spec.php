@@ -8,12 +8,12 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema]
+#[OA\Schema(schema: 'EncodingMetadata')]
 class EncodingMetadataSpec
 {
 }
 
-#[OA\Schema]
+#[OA\Schema(schema: 'MultipartFormData')]
 class MultipartFormDataSpec
 {
     #[OA\Schema(format: 'uuid')]
@@ -41,6 +41,7 @@ class EncodingControllerSpec
 {
     #[OA\Operation\Post(
         path: '/endpoint/multipart-form-data-ref',
+        operationId: 'multipartFormDataRef',
         requestBody: new OA\RequestBody(
             content: new OA\MediaType(
                 mediaType: 'multipart/form-data',
@@ -68,6 +69,7 @@ class EncodingControllerSpec
 
     #[OA\Operation\Post(
         path: '/endpoint/multipart-form-data-ref-json-content',
+        operationId: 'multipartFormDataRefJsonContent',
         requestBody: new OA\RequestBody(
             content: new OA\MediaType\Json(
                 ref: MultipartFormDataSpec::class,
@@ -92,6 +94,7 @@ class EncodingControllerSpec
 
     #[OA\Operation\Post(
         path: '/endpoint/multipart-form-data-json-content',
+        operationId: 'multipartFormDataJsonContent',
         requestBody: new OA\RequestBody(
             content: new OA\MediaType\Json(
                 properties: [
@@ -101,15 +104,12 @@ class EncodingControllerSpec
                     ),
                     new OA\Property(
                         property: 'metadata',
-                        schema: new OA\Schema\Ref(EncodingMetadata::class),
+                        schema: new OA\Schema\Ref(EncodingMetadataSpec::class),
                     ),
-                    new OA\Property(
+                    new OA\Property\Encoded(
                         property: 'avatar',
-                        schema: new OA\Schema(
-                            type: 'object',
-                            encoding: new OA\Encoding(
-                                contentType: 'image/png, image/jpeg',
-                            ),
+                        encoding: new OA\Encoding(
+                            contentType: 'image/png, image/jpeg',
                         ),
                     ),
                 ],

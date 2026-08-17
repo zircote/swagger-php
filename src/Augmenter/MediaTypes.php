@@ -6,8 +6,11 @@
 
 namespace OpenApi\Augmenter;
 
+use OpenApi\ComponentIndex;
+use OpenApi\OpenApiException;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Undefined;
 use OpenApi\Utils\PipeInterface;
 
 /**
@@ -23,7 +26,9 @@ class MediaTypes implements PipeInterface
 {
     public function __invoke(mixed $payload): mixed
     {
-        $this->processMediaTypes($payload);
+        $index = $payload->buildComponentIndex();
+        $this->mergePropertyEncodings($payload, $index);
+        $this->rekeyMediaTypeEncodings($payload);
 
         return null;
     }
@@ -33,7 +38,40 @@ class MediaTypes implements PipeInterface
         return Group::Augment;
     }
 
-    protected function processMediaTypes(Specification $specification): void
+    protected function mergePropertyEncodings(Specification $specification, ComponentIndex $index): void
+    {
+        $specification->getWalker()->visit(OA\MediaType::class, function (OA\MediaType $mediaType) use ($index) {
+            if ($mediaType->schema === null) {
+                return;
+            }
+
+            if ($mediaType->schema->ref !== null) {
+                $refSchema = $index->findSchema($mediaType->schema->ref);
+                if ($refSchema instanceof OA\Schema && $refSchema->properties !== null) {
+                    $this->mergeEncoded($mediaType, $refSchema->properties);
+                }
+            } elseif ($mediaType->schema->properties !== null) {
+                $this->mergeEncoded($mediaType, $mediaType->schema->properties);
+            }
+        });
+    }
+
+    /**
+     * @param list<OA\Property> $properties
+     */
+    protected function mergeEncoded(OA\MediaType $mediaType, array $properties): void
+    {
+        foreach ($properties as $property) {
+            if ($property instanceof OA\Property\Encoded) {
+                $encoding = $property->encoding;
+                $encoding->encoding ??= $property->property;
+                $mediaType->encoding ??= [];
+                $mediaType->encoding[$encoding->encoding] = $encoding;
+            }
+        }
+    }
+
+    protected function rekeyMediaTypeEncodings(Specification $specification): void
     {
         foreach ($specification->operations as $operation) {
             if ($operation->requestBody instanceof OA\RequestBody) {
