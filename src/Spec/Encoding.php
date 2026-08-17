@@ -42,7 +42,10 @@ class Encoding extends AbstractAttribute
 
     public function merge(): array
     {
-        return [MediaType::class => 'encoding[]'];
+        return [
+            MediaType::class => 'encoding[]',
+            Property::class => 'encoding',
+        ];
     }
 
     public function contained(): array
