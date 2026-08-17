@@ -12,8 +12,6 @@ use OpenApi\Specification;
 
 /**
  * Traversal helpers for walking the Specification tree.
- *
- * @phpstan-type RefAttributeTypes OA\Schema|OA\Parameter|OA\Response|OA\Header|OA\RequestBody|OA\Link|OA\Example|OA\Security\Scheme
  */
 class SpecificationWalker
 {
@@ -35,12 +33,12 @@ class SpecificationWalker
     /**
      * Walk every ref-bearing attribute in the specification.
      *
-     * @param callable(RefAttributeTypes): void $visitor
+     * @param callable(AttributeInterface): void $visitor
      */
     public function eachRef(callable $visitor): void
     {
         $this->visit(AttributeInterface::class, function (AttributeInterface $attribute) use ($visitor): void {
-            if (isset($attribute->ref)) {
+            if (property_exists($attribute, 'ref') && $attribute->ref !== null) {
                 $visitor($attribute);
             }
 
