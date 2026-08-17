@@ -6,6 +6,7 @@
 
 namespace OpenApi\Augmenter;
 
+use OpenApi\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Utils\PipeInterface;
@@ -69,8 +70,10 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
     {
         $usedRefs = [];
 
-        $specification->getWalker()->eachRef(static function (OA\AbstractAttribute $attribute) use (&$usedRefs): void {
-            $usedRefs[$attribute->ref] = true;
+        $specification->getWalker()->eachRef(static function (AttributeInterface $attribute) use (&$usedRefs): void {
+            if (property_exists($attribute, 'ref') && $attribute->ref !== null) {
+                $usedRefs[$attribute->ref] = true;
+            }
         });
 
         $removed = false;

@@ -12,8 +12,6 @@ use OpenApi\Specification;
 
 /**
  * Traversal helpers for walking the Specification tree.
- *
- * @phpstan-type RefAttributeTypes OA\Schema|OA\Parameter|OA\Response|OA\Header|OA\RequestBody|OA\Link|OA\Example|OA\Security\Scheme
  */
 class SpecificationWalker
 {
@@ -35,31 +33,20 @@ class SpecificationWalker
     /**
      * Walk every ref-bearing attribute in the specification.
      *
-     * @param callable(RefAttributeTypes): void $visitor
+     * @param callable(AttributeInterface): void $visitor
      */
     public function eachRef(callable $visitor): void
     {
         $this->visit(AttributeInterface::class, function (AttributeInterface $attribute) use ($visitor): void {
-            if (
-                $attribute instanceof OA\Schema
-                || $attribute instanceof OA\Parameter
-                || $attribute instanceof OA\Response
-                || $attribute instanceof OA\Header
-                || $attribute instanceof OA\RequestBody
-                || $attribute instanceof OA\Link
-                || $attribute instanceof OA\Example
-                || $attribute instanceof OA\Security\Scheme
-            ) {
-                if (isset($attribute->ref)) {
-                    $visitor($attribute);
-                }
+            if (property_exists($attribute, 'ref') && $attribute->ref !== null) {
+                $visitor($attribute);
+            }
 
-                // special case
-                if ($attribute instanceof OA\Schema) {
-                    if ($attribute->discriminator instanceof OA\Discriminator && $attribute->discriminator->mapping !== null) {
-                        foreach ($attribute->discriminator->mapping as $ref) {
-                            $visitor(new OA\Schema(ref: $ref));
-                        }
+            // special case
+            if ($attribute instanceof OA\Schema) {
+                if ($attribute->discriminator instanceof OA\Discriminator && $attribute->discriminator->mapping !== null) {
+                    foreach ($attribute->discriminator->mapping as $ref) {
+                        $visitor(new OA\Schema(ref: $ref));
                     }
                 }
             }
