@@ -108,6 +108,7 @@ class EncodingControllerSpec
                     ),
                     new OA\Property\Encoded(
                         property: 'avatar',
+                        schema: new OA\Schema(type: 'object'),
                         encoding: new OA\Encoding(
                             contentType: 'image/png, image/jpeg',
                         ),

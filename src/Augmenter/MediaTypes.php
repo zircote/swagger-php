@@ -7,11 +7,10 @@
 namespace OpenApi\Augmenter;
 
 use OpenApi\ComponentIndex;
-use OpenApi\OpenApiException;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
-use OpenApi\Undefined;
 use OpenApi\Utils\PipeInterface;
+
 
 /**
  * Re-keys MediaType encoding lists by property name.
@@ -40,14 +39,14 @@ class MediaTypes implements PipeInterface
 
     protected function mergePropertyEncodings(Specification $specification, ComponentIndex $index): void
     {
-        $specification->getWalker()->visit(OA\MediaType::class, function (OA\MediaType $mediaType) use ($index) {
-            if ($mediaType->schema === null) {
+        $specification->getWalker()->visit(OA\MediaType::class, function (OA\MediaType $mediaType) use ($index): void {
+            if (!$mediaType->schema instanceof OA\Schema) {
                 return;
             }
 
             if ($mediaType->schema->ref !== null) {
                 $refSchema = $index->findSchema($mediaType->schema->ref);
-                if ($refSchema instanceof OA\Schema && $refSchema->properties !== null) {
+                if ($refSchema instanceof Schema && $refSchema->properties !== null) {
                     $this->mergeEncoded($mediaType, $refSchema->properties);
                 }
             } elseif ($mediaType->schema->properties !== null) {
