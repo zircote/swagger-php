@@ -11,7 +11,6 @@ use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Utils\AttributeFactory;
 
-
 /**
  * Expands PHP class hierarchy into OpenAPI composition (allOf).
  *
