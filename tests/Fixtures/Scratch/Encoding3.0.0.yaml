@@ -92,5 +92,6 @@ components:
           format: uuid
         metadata:
           $ref: '#/components/schemas/EncodingMetadata'
-        avatar: {}
+        avatar:
+          type: object
       type: object

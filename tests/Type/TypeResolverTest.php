@@ -81,6 +81,8 @@ final class TypeResolverTest extends OpenApiTestCase
                 'type-info:nestedoneof' => '{ "oneOf": [ { "type": "array", "items": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } }, { "type": "array", "items": { "type": "string" } } ], "property": "nestedOneOf" }',
                 'legacy:nestedoneofwithitems' => '{ "type": "array", "items": { "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "string" } ] }, "property": "nestedOneOfWithItems" }',
                 'type-info:nestedoneofwithitems' => '{ "type": "array", "items": { "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "string" } ] }, "property": "nestedOneOfWithItems" }',
+                'stdclass' => '{ "type": "object", "property": "stdClass" }',
+                'nullablestdclass' => '{ "type": "object", "nullable": true, "property": "nullableStdClass" }',
             ],
             OA\OpenApi::VERSION_3_1_0 => [
                 'nothing' => '{ "property": "nothing" }',
@@ -142,6 +144,8 @@ final class TypeResolverTest extends OpenApiTestCase
                 'type-info:nestedoneof' => '{ "oneOf": [ { "type": "array", "items": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } }, { "type": "array", "items": { "type": "string" } } ], "property": "nestedOneOf" }',
                 'legacy:nestedoneofwithitems' => '{ "type": "array", "items": { "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "string" } ] }, "property": "nestedOneOfWithItems" }',
                 'type-info:nestedoneofwithitems' => '{ "type": "array", "items": { "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "string" } ] }, "property": "nestedOneOfWithItems" }',
+                'stdclass' => '{ "type": "object", "property": "stdClass" }',
+                'nullablestdclass' => '{ "type": [ "object", "null" ], "property": "nullableStdClass" }',
             ],
         ];
 

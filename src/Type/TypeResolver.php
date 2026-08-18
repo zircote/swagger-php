@@ -155,6 +155,10 @@ class TypeResolver
         }
 
         if ($type instanceof ObjectType) {
+            if ($type->getClassName() === \stdClass::class) {
+                return new SchemaType(type: 'object');
+            }
+
             return new SchemaType(type: $type->getClassName());
         }
 

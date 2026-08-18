@@ -307,4 +307,10 @@ class DocblockAndTypehintTypes
         new OAT\Schema(type: 'string'),
     ]))]
     public array $nestedOneOfWithItems;
+
+    #[OAT\Property]
+    public \stdClass $stdClass;
+
+    #[OAT\Property]
+    public ?\stdClass $nullableStdClass;
 }
