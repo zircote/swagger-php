@@ -36,7 +36,8 @@ class Refs implements PipeInterface, LoggerAwareInterface
             $this->dedupAllOfRefs($schema);
         }
 
-        $refMap = $this->buildRefMap($payload);
+        $index = $payload->buildComponentIndex();
+        $refMap = $index->buildRefMap();
 
         if ($refMap === []) {
             return null;
@@ -82,58 +83,6 @@ class Refs implements PipeInterface, LoggerAwareInterface
         foreach (array_keys($unresolved) as $ref) {
             $this->logger?->warning("Ref: unresolved reference '{$ref}' — no matching component found");
         }
-    }
-
-    /**
-     * Build a map of FQCN → #/components/{type}/{name}.
-     *
-     * @return array<string, string>
-     */
-    protected function buildRefMap(Specification $specification): array
-    {
-        $map = [];
-
-        $specification->getWalker()->eachSchema(function (OA\Schema $schema) use (&$map): void {
-            $name = $schema->schema ?? $schema->title;
-            $fqcn = $schema->getClassName();
-            if ($name !== null && $fqcn !== null) {
-                $map[$fqcn] = '#/components/schemas/' . $name;
-            }
-        });
-
-        foreach ($specification->responses as $response) {
-            $name = $response->response;
-            $fqcn = $response->getClassName();
-            if ($name !== null && $fqcn !== null) {
-                $map[$fqcn] = '#/components/responses/' . $name;
-            }
-        }
-
-        foreach ($specification->requestBodies as $body) {
-            $name = $body->request;
-            $fqcn = $body->getClassName();
-            if ($name !== null && $fqcn !== null) {
-                $map[$fqcn] = '#/components/requestBodies/' . $name;
-            }
-        }
-
-        foreach ($specification->headers as $header) {
-            $name = $header->header;
-            $fqcn = $header->getClassName();
-            if ($name !== null && $fqcn !== null) {
-                $map[$fqcn] = '#/components/headers/' . $name;
-            }
-        }
-
-        foreach ($specification->parameters as $parameter) {
-            $name = $parameter->parameter ?? $parameter->name;
-            $fqcn = $parameter->getClassName();
-            if ($name !== null && $fqcn !== null) {
-                $map[$fqcn] = '#/components/parameters/' . $name;
-            }
-        }
-
-        return $map;
     }
 
     /**

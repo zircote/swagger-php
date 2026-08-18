@@ -6,6 +6,7 @@
 
 namespace OpenApi\Augmenter\Inheritance;
 
+use OpenApi\ComponentIndex;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Utils\AttributeFactory;
@@ -26,7 +27,7 @@ class Schemas
 
     public function resolve(Specification $payload): mixed
     {
-        $schemaMap = $this->buildSchemaMap($payload);
+        $index = $payload->buildComponentIndex();
 
         foreach ($payload->schemas as $schema) {
             $reflector = $schema->getClassReflector();
@@ -36,42 +37,21 @@ class Schemas
 
             $existingProperties = array_map(fn (OA\Property $property): ?string => $property->property, $schema->properties ?? []);
 
-            $this->expandParents($schema, $reflector, $schemaMap, $existingProperties);
-            $this->expandTraits($schema, $reflector, $schemaMap, $existingProperties);
-            $this->expandInterfaces($schema, $reflector, $schemaMap, $existingProperties);
+            $this->expandParents($schema, $reflector, $index, $existingProperties);
+            $this->expandTraits($schema, $reflector, $index, $existingProperties);
+            $this->expandInterfaces($schema, $reflector, $index, $existingProperties);
         }
 
         return null;
     }
 
-    /**
-     * @return array<string, OA\Schema> class name → schema
-     */
-    protected function buildSchemaMap(Specification $specification): array
+    protected function expandParents(OA\Schema $schema, \ReflectionClass $reflector, ComponentIndex $index, array &$existingProperties): void
     {
-        $map = [];
-        foreach ($specification->schemas as $schema) {
-            $className = $schema->getClassName();
-            if ($className !== null) {
-                $map[$className] = $schema;
-            }
-        }
-
-        return $map;
-    }
-
-    /**
-     * @param array<string, OA\Schema> $schemaMap
-     */
-    protected function expandParents(OA\Schema $schema, \ReflectionClass $reflector, array $schemaMap, array &$existingProperties): void
-    {
-        // Walk up the inheritance chain; stop at the first ancestor that has its own schema
-        // (it becomes a $ref). Non-schema ancestors have their members inlined.
         $parent = $reflector->getParentClass();
         while ($parent !== false) {
-            if (isset($schemaMap[$parent->getName()])) {
-                $this->addAllOfRef($schema, $schemaMap[$parent->getName()]);
-                // stop on first schema ancestor
+            $parentSchema = $index->findSchema($parent->getName());
+            if ($parentSchema instanceof OA\Schema) {
+                $this->addAllOfRef($schema, $parentSchema);
                 break;
             }
 
@@ -80,14 +60,12 @@ class Schemas
         }
     }
 
-    /**
-     * @param array<string, OA\Schema> $schemaMap
-     */
-    protected function expandTraits(OA\Schema $schema, \ReflectionClass $reflector, array $schemaMap, array &$existingProperties): void
+    protected function expandTraits(OA\Schema $schema, \ReflectionClass $reflector, ComponentIndex $index, array &$existingProperties): void
     {
         foreach ($this->attributeFactory->getDirectTraits($reflector) as $trait) {
-            if (isset($schemaMap[$trait->getName()])) {
-                $this->addAllOfRef($schema, $schemaMap[$trait->getName()]);
+            $traitSchema = $index->findSchema($trait->getName());
+            if ($traitSchema instanceof OA\Schema) {
+                $this->addAllOfRef($schema, $traitSchema);
             } else {
                 $this->mergeMembers($schema, $trait, $existingProperties);
             }
@@ -95,13 +73,14 @@ class Schemas
 
         $parent = $reflector->getParentClass();
         while ($parent !== false) {
-            if (isset($schemaMap[$parent->getName()])) {
+            if ($index->findSchema($parent->getName()) instanceof OA\Schema) {
                 break;
             }
 
             foreach ($this->attributeFactory->getDirectTraits($parent) as $trait) {
-                if (isset($schemaMap[$trait->getName()])) {
-                    $this->addAllOfRef($schema, $schemaMap[$trait->getName()]);
+                $traitSchema = $index->findSchema($trait->getName());
+                if ($traitSchema instanceof OA\Schema) {
+                    $this->addAllOfRef($schema, $traitSchema);
                 } else {
                     $this->mergeMembers($schema, $trait, $existingProperties);
                 }
@@ -111,16 +90,14 @@ class Schemas
         }
     }
 
-    /**
-     * @param array<string, OA\Schema> $schemaMap
-     */
-    protected function expandInterfaces(OA\Schema $schema, \ReflectionClass $reflector, array $schemaMap, array &$existingProperties): void
+    protected function expandInterfaces(OA\Schema $schema, \ReflectionClass $reflector, ComponentIndex $index, array &$existingProperties): void
     {
         $ownInterfaces = $this->attributeFactory->getDirectInterfaces($reflector);
 
         foreach ($ownInterfaces as $interface) {
-            if (isset($schemaMap[$interface->getName()])) {
-                $this->addAllOfRef($schema, $schemaMap[$interface->getName()]);
+            $interfaceSchema = $index->findSchema($interface->getName());
+            if ($interfaceSchema instanceof OA\Schema) {
+                $this->addAllOfRef($schema, $interfaceSchema);
             } else {
                 $this->mergeMembers($schema, $interface, $existingProperties);
             }

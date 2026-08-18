@@ -101,6 +101,11 @@ class Specification
         return new SpecificationWalker($this);
     }
 
+    public function buildComponentIndex(): ComponentIndex
+    {
+        return new ComponentIndex($this);
+    }
+
     protected function addComponentsChildren(OA\Components $components): void
     {
         foreach ((new \ReflectionClass($components))->getProperties(\ReflectionProperty::IS_PUBLIC) as $rp) {
