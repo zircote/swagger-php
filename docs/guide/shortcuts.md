@@ -69,6 +69,14 @@ attribute do not need an explicit `OA\Property` attribute — it will be added a
 Both produce the same output. The implicit `OA\Property` is inferred from the context (class property or promoted
 constructor parameter with an `OA\Schema`).
 
+This also applies to `OA\Schema` subclasses like `OA\Schema\Items`:
+
+```php
+// No explicit #[OA\Property] needed
+#[OA\Schema\Items(ref: Tag::class)]
+public array $tags;
+```
+
 ## `OA\Parameter`
 
 The `OA\Parameter` annotation requires specifying the `in` property to indicate where in the request the parameter is located.

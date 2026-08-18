@@ -24,12 +24,13 @@ use OpenApi\Spec as OA;
  *
  *   #[OA\Schema]
  *   class Pet {
- *       #[OA\Property]
  *       #[OA\Schema\Items(ref: MyModel::class)]
  *       public array $names;
  *   }
  *
- * The `Shortcuts` augmenter wraps this into `OA\Schema(type: 'array', items: ...)` automatically.
+ * Since Items extends Schema, the implicit `OA\Property` shortcut applies — no explicit
+ * `#[OA\Property]` is needed. The `Shortcuts` augmenter wraps this into
+ * `OA\Schema(type: 'array', items: ...)` automatically.
  *
  * @see [Schema Object](https://spec.openapis.org/oas/v3.1.1.html#schema-object)
  */
