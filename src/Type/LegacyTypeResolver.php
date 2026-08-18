@@ -125,6 +125,8 @@ class LegacyTypeResolver extends AbstractTypeResolver
             $types = array_values($types);
         }
 
+        $types = array_map(static fn (string $t): string => ltrim($t, '\\') === 'stdClass' ? 'object' : $t, $types);
+
         $explicitType = $explicitType ?: ($types !== [] ? $types[0] : null);
 
         return (object) [
