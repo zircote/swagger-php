@@ -131,11 +131,11 @@ referenced by another unused schema should also be removed).
 
 ### [MediaTypes](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/MediaTypes.php)
 
-Re-keys MediaType encoding lists by property name.
+Promotes property encodings and re-keys MediaType encoding lists by property name.
 
-The assembler collects Encoding objects as a flat list via contained().
-The compiler expects them as an associative array keyed by the property name
-the encoding applies to.
+First, promotes `OA\Encoding` definitions from `OA\Property\Encoded` properties to their
+parent MediaType. Then re-keys the encoding list as an associative array keyed by property name
+(the format the compiler expects).
 
 ### [Docblocks](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Docblocks.php)
 

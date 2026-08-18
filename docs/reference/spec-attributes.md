@@ -120,7 +120,7 @@ Describes the encoding for a single property in a media type.
 
 #### Allowed in
 ---
-<a href="#mediatype">MediaType</a>
+<a href="#mediatype">MediaType</a>, <a href="#propertyencoded">Property\Encoded</a>
 
 #### Parameters
 ---
@@ -1292,6 +1292,31 @@ Defines a single property within a Schema object.
 #### Reference
 ---
 - [Schema Object](https://spec.openapis.org/oas/v3.1.1.html#schema-object) ↗
+
+### [Property\Encoded](https://github.com/zircote/swagger-php/tree/master/src/Spec/Property/Encoded.php)
+
+Shortcut for a property that carries its own encoding definition.
+
+Instead of declaring `OA\Encoding` separately on the `OA\MediaType`, this attribute
+bundles property and encoding together. The `MediaTypes` augmenter promotes the nested
+encoding to the parent MediaType automatically.
+
+#### Allowed in
+---
+<a href="#schema">Schema</a>
+
+#### Parameters
+---
+- **property** : `string|null`
+  The property name
+- **schema** : `Schema|null`
+  The schema defining the property type and constraints
+- **encoding** : `Encoding|null`
+  The encoding definition for this property
+
+#### Reference
+---
+- [Encoding Object](https://spec.openapis.org/oas/v3.1.1.html#encoding-object) ↗
 
 ### [RequestBody](https://github.com/zircote/swagger-php/tree/master/src/Spec/RequestBody.php)
 

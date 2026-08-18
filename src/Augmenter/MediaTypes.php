@@ -11,13 +11,12 @@ use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Utils\PipeInterface;
 
-
 /**
- * Re-keys MediaType encoding lists by property name.
+ * Promotes property encodings and re-keys MediaType encoding lists by property name.
  *
- * The assembler collects Encoding objects as a flat list via contained().
- * The compiler expects them as an associative array keyed by the property name
- * the encoding applies to.
+ * Promotes `OA\Encoding` definitions from `OA\Property\Encoded` properties to their
+ * parent MediaType, then re-keys the encoding list as an associative array keyed by
+ * property name (the format the compiler expects).
  *
  * @implements PipeInterface<Specification>
  */
