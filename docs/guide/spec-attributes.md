@@ -248,14 +248,20 @@ Still useful even when nesting `OA\Schema` as the media type is prefilled either
 ### Items
 `#[OA\Schema\Items]` is the equivalent to the classic `OA\Items` attribute. Similar to `OA\MediaType\Json` and `Xml` it is a shortcut that allows to skip the outer `OA\Schema(type: 'array')`. The `Shortcuts` augmenter wraps it into `OA\Schema(type: 'array', items: ...)` automatically.
 
+Since `OA\Schema\Items` extends `OA\Schema`, the [implicit `OA\Property`](#property-spec-only) shortcut applies — you can omit the explicit `#[OA\Property]` attribute:
+
 ```php
-// Without shortcut
+// Verbose
 #[OA\Property]
 #[OA\Schema(type: 'array', items: new OA\Schema(ref: Tag::class))]
 public array $tags;
 
-// With shortcut
+// With Items shortcut
 #[OA\Property]
+#[OA\Schema\Items(ref: Tag::class)]
+public array $tags;
+
+// With Items shortcut + implicit Property
 #[OA\Schema\Items(ref: Tag::class)]
 public array $tags;
 ```
