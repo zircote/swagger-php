@@ -186,7 +186,7 @@ final class TypeResolverTest extends OpenApiTestCase
                             $typeResolver,
                             $analysis,
                             $property,
-                            json_decode($json, true),
+                            json_decode($json),
                         ];
                     }
                 }
@@ -195,7 +195,7 @@ final class TypeResolverTest extends OpenApiTestCase
     }
 
     #[DataProvider('resolverAugmentCases')]
-    public function testAugmentSchemaType(TypeResolverInterface $typeResolver, Analysis $analysis, OA\Schema $schema, array $expected): void
+    public function testAugmentSchemaType(TypeResolverInterface $typeResolver, Analysis $analysis, OA\Schema $schema, \stdClass $expected): void
     {
         $typeResolver->augmentSchemaType($analysis, $schema);
 

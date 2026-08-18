@@ -406,7 +406,7 @@ class OpenApi31Compiler implements CompilerInterface
         ], $link);
     }
 
-    protected function compileSchema(OA\Schema|string $schema): array
+    protected function compileSchema(OA\Schema|string $schema): array|\stdClass
     {
         if (is_string($schema)) {
             return ['$ref' => $schema];
@@ -521,7 +521,7 @@ class OpenApi31Compiler implements CompilerInterface
             $result['example'] = $schema->example;
         }
 
-        return $result;
+        return $result ?: new \stdClass();
     }
 
     /**

@@ -172,7 +172,7 @@ class OpenApiTestCase extends TestCase
             if (is_string($in)) {
                 // assume YAML
                 try {
-                    $in = Yaml::parse($in);
+                    $in = Yaml::parse($in, Yaml::PARSE_OBJECT_FOR_MAP);
                 } catch (ParseException $e) {
                     $this->fail('Invalid YAML: ' . $e->getMessage() . PHP_EOL . $in);
                 }
@@ -187,22 +187,23 @@ class OpenApiTestCase extends TestCase
         }
 
         if ($actual instanceof \stdClass && $expected === []) {
-            $this->assertEmpty((array) $actual, $message . PHP_EOL . '[] does not match expected type "object".');
-
-            return;
+            $this->fail($message . PHP_EOL . 'Expected array ([]), got object ({}).');
         }
         if ($expected instanceof \stdClass && $actual === []) {
-            $this->assertEmpty((array) $expected, $message . PHP_EOL . '[] does not match expected type "object".');
-
+            $this->fail($message . PHP_EOL . 'Expected object ({}), got array ([]).');
+        }
+        if ($actual === [] && $expected === []) {
             return;
         }
 
-        if (is_iterable($actual) && is_iterable($expected)) {
-            foreach ($actual as $key => $value) {
+        $isComposite = fn ($v): bool => is_iterable($v) || $v instanceof \stdClass;
+
+        if ($isComposite($actual) && $isComposite($expected)) {
+            foreach ((array) $actual as $key => $value) {
                 $this->assertArrayHasKey($key, (array) $expected, $message . ': property: "' . $key . '" should be absent, but has value: ' . $formattedValue($value));
                 $this->assertSpecEquals($value, ((array) $expected)[$key], $message . ' > ' . $key, true);
             }
-            foreach ($expected as $key => $value) {
+            foreach ((array) $expected as $key => $value) {
                 $this->assertArrayHasKey($key, (array) $actual, $message . ': property: "' . $key . '" is missing');
                 $this->assertSpecEquals(((array) $actual)[$key], $value, $message . ' > ' . $key, true);
             }

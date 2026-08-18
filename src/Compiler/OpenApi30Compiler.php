@@ -96,7 +96,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
      * Compile schema using OAS 3.0 / JSON Schema draft-04 semantics.
      */
     #[\Override]
-    protected function compileSchema(OA\Schema|string $schema): array
+    protected function compileSchema(OA\Schema|string $schema): array|\stdClass
     {
         if (is_string($schema)) {
             return ['$ref' => $schema];
@@ -214,7 +214,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
             $result['enum'] = [$schema->const];
         }
 
-        return $result;
+        return $result ?: new \stdClass();
     }
 
     #[\Override]
