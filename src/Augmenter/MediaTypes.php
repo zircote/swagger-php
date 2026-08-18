@@ -45,7 +45,7 @@ class MediaTypes implements PipeInterface
 
             if ($mediaType->schema->ref !== null) {
                 $refSchema = $index->findSchema($mediaType->schema->ref);
-                if ($refSchema instanceof Schema && $refSchema->properties !== null) {
+                if ($refSchema instanceof OA\Schema && $refSchema->properties !== null) {
                     $this->mergeEncoded($mediaType, $refSchema->properties);
                 }
             } elseif ($mediaType->schema->properties !== null) {
