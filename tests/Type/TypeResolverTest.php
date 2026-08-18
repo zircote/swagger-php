@@ -149,6 +149,8 @@ final class TypeResolverTest extends OpenApiTestCase
             ],
         ];
 
+        $expectations[OA\OpenApi::VERSION_3_2_0] = $expectations[OA\OpenApi::VERSION_3_1_0];
+
         $rc = new \ReflectionClass(DocblockAndTypehintTypes::class);
         $fixtureFolder = dirname($rc->getFileName());
         $sources = [
@@ -158,7 +160,7 @@ final class TypeResolverTest extends OpenApiTestCase
         ];
 
         foreach (self::getTypeResolvers() as $key => $typeResolver) {
-            foreach ([OA\OpenApi::VERSION_3_0_0, OA\OpenApi::VERSION_3_1_0] as $version) {
+            foreach ([OA\OpenApi::VERSION_3_0_0, OA\OpenApi::VERSION_3_1_0, OA\OpenApi::VERSION_3_2_0] as $version) {
                 $analysis = (new Generator())
                     ->setVersion($version)
                     ->setProcessorPipeline(new Pipeline([new MergeIntoOpenApi(), new AugmentSchemas()]))
@@ -186,7 +188,7 @@ final class TypeResolverTest extends OpenApiTestCase
                             $typeResolver,
                             $analysis,
                             $property,
-                            json_decode($json, true),
+                            json_decode($json),
                         ];
                     }
                 }
@@ -195,7 +197,7 @@ final class TypeResolverTest extends OpenApiTestCase
     }
 
     #[DataProvider('resolverAugmentCases')]
-    public function testAugmentSchemaType(TypeResolverInterface $typeResolver, Analysis $analysis, OA\Schema $schema, array $expected): void
+    public function testAugmentSchemaType(TypeResolverInterface $typeResolver, Analysis $analysis, OA\Schema $schema, \stdClass $expected): void
     {
         $typeResolver->augmentSchemaType($analysis, $schema);
 

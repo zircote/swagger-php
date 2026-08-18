@@ -245,7 +245,7 @@ final class CompilerTest extends TestCase
             ),
         );
 
-        $this->assertSame([], $result);
+        $this->assertEquals(new \stdClass(), $result);
     }
 
     public function test31IncludesIfThenElse(): void
