@@ -40,6 +40,10 @@ and configure individual augmenters via `Pipeline::get()`.
 
 Handle all scenarios related to PHP inheritance.
 
+Delegates to:
+- Inheritance\Schemas
+- Inheritance\Operations
+
 #### Config settings
 - **inheritance.attributeFactory** : `OpenApi\Utils\AttributeFactory` · default: `OpenApi\Utils\AttributeFactory`  
   No details available.
@@ -133,9 +137,9 @@ referenced by another unused schema should also be removed).
 
 Promotes property encodings and re-keys MediaType encoding lists by property name.
 
-First, promotes `OA\Encoding` definitions from `OA\Property\Encoded` properties to their
-parent MediaType. Then re-keys the encoding list as an associative array keyed by property name
-(the format the compiler expects).
+Promotes `OA\Encoding` definitions from `OA\Property\Encoded` properties to their
+parent MediaType, then re-keys the encoding list as an associative array keyed by
+property name (the format the compiler expects).
 
 ### [Docblocks](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Docblocks.php)
 

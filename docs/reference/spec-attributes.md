@@ -120,7 +120,7 @@ Describes the encoding for a single property in a media type.
 
 #### Allowed in
 ---
-<a href="#mediatype">MediaType</a>, <a href="#propertyencoded">Property\Encoded</a>
+<a href="#mediatype">MediaType</a>
 
 #### Parameters
 ---
@@ -1309,10 +1309,10 @@ encoding to the parent MediaType automatically.
 ---
 - **property** : `string|null`
   The property name
-- **schema** : `Schema|null`
+- **schema** : `OA\Schema|null`
   The schema defining the property type and constraints
-- **encoding** : `Encoding|null`
-  The encoding definition for this property
+- **encoding** : `OpenApi\Spec\Encoding|null`
+  No details available.
 
 #### Reference
 ---
@@ -1411,7 +1411,7 @@ Inline — used within parameters, responses, or other schemas:
 
 #### Nested elements
 ---
-<a href="#property">Property</a>, <a href="#schema">Schema</a>, <a href="#schema-additionalproperties">Schema\AdditionalProperties</a>, <a href="#schema-items">Schema\Items</a>, <a href="#schema-ref">Schema\Ref</a>
+<a href="#property">Property</a>, <a href="#property-encoded">Property\Encoded</a>, <a href="#schema">Schema</a>, <a href="#schema-additionalproperties">Schema\AdditionalProperties</a>, <a href="#schema-items">Schema\Items</a>, <a href="#schema-ref">Schema\Ref</a>
 
 #### Parameters
 ---
@@ -1673,12 +1673,13 @@ to this:
 
   #[OA\Schema]
   class Pet {
-      #[OA\Property]
       #[OA\Schema\Items(ref: MyModel::class)]
       public array $names;
   }
 
-The `Shortcuts` augmenter wraps this into `OA\Schema(type: 'array', items: ...)` automatically.
+Since Items extends Schema, the implicit `OA\Property` shortcut applies — no explicit
+`#[OA\Property]` is needed. The `Shortcuts` augmenter wraps this into
+`OA\Schema(type: 'array', items: ...)` automatically.
 
 #### Allowed in
 ---
