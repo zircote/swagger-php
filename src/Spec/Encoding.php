@@ -11,7 +11,7 @@ namespace OpenApi\Spec;
  *
  * @see [Encoding Object](https://spec.openapis.org/oas/v3.1.1.html#encoding-object)
  */
-#[\Attribute(\Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class Encoding extends AbstractAttribute
 {
     public ?string $style = null;
@@ -42,7 +42,10 @@ class Encoding extends AbstractAttribute
 
     public function merge(): array
     {
-        return [MediaType::class => 'encoding[]'];
+        return [
+            MediaType::class => 'encoding[]',
+            Property\Encoded::class => 'encoding',
+        ];
     }
 
     public function contained(): array

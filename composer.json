@@ -105,7 +105,7 @@
         ],
         "performance": "export XDEBUG_MODE=off && phpunit --group performance",
         "analyse": [
-            "export XDEBUG_MODE=off && phpstan analyse --memory-limit=3G"
+            "export XDEBUG_MODE=off && phpstan clear-result-cache -q && phpstan analyse --memory-limit=3G"
         ],
         "redocly": "npm run redocly -- lint 'docs/examples/specs/**/*.yaml' 'tests/Fixtures/Scratch/*.yaml'",
         "docs:gen": "@php tools/docgen.php",

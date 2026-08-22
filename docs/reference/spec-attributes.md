@@ -1293,6 +1293,31 @@ Defines a single property within a Schema object.
 ---
 - [Schema Object](https://spec.openapis.org/oas/v3.1.1.html#schema-object) ↗
 
+### [Property\Encoded](https://github.com/zircote/swagger-php/tree/master/src/Spec/Property/Encoded.php)
+
+Shortcut for a property that carries its own encoding definition.
+
+Instead of declaring `OA\Encoding` separately on the `OA\MediaType`, this attribute
+bundles property and encoding together. The `MediaTypes` augmenter promotes the nested
+encoding to the parent MediaType automatically.
+
+#### Allowed in
+---
+<a href="#schema">Schema</a>
+
+#### Parameters
+---
+- **property** : `string|null`
+  The property name
+- **schema** : `OA\Schema|null`
+  The schema defining the property type and constraints
+- **encoding** : `OpenApi\Spec\Encoding|null`
+  No details available.
+
+#### Reference
+---
+- [Encoding Object](https://spec.openapis.org/oas/v3.1.1.html#encoding-object) ↗
+
 ### [RequestBody](https://github.com/zircote/swagger-php/tree/master/src/Spec/RequestBody.php)
 
 Describes a single request body.
@@ -1386,7 +1411,7 @@ Inline — used within parameters, responses, or other schemas:
 
 #### Nested elements
 ---
-<a href="#property">Property</a>, <a href="#schema">Schema</a>, <a href="#schema-additionalproperties">Schema\AdditionalProperties</a>, <a href="#schema-items">Schema\Items</a>, <a href="#schema-ref">Schema\Ref</a>
+<a href="#property">Property</a>, <a href="#property-encoded">Property\Encoded</a>, <a href="#schema">Schema</a>, <a href="#schema-additionalproperties">Schema\AdditionalProperties</a>, <a href="#schema-items">Schema\Items</a>, <a href="#schema-ref">Schema\Ref</a>
 
 #### Parameters
 ---
@@ -1648,12 +1673,13 @@ to this:
 
   #[OA\Schema]
   class Pet {
-      #[OA\Property]
       #[OA\Schema\Items(ref: MyModel::class)]
       public array $names;
   }
 
-The `Shortcuts` augmenter wraps this into `OA\Schema(type: 'array', items: ...)` automatically.
+Since Items extends Schema, the implicit `OA\Property` shortcut applies — no explicit
+`#[OA\Property]` is needed. The `Shortcuts` augmenter wraps this into
+`OA\Schema(type: 'array', items: ...)` automatically.
 
 #### Allowed in
 ---

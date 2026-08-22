@@ -9,7 +9,9 @@ namespace OpenApi\Assembler;
 use OpenApi\Spec as OA;
 
 /**
- * Add the required `OA\Property` on schema properties that only have an `OA\Schema` attribute.
+ * Add the required `OA\Property` on schema properties that only have:
+ * - an `OA\Schema`
+ * - an `OA\Encoding`
  */
 class OptionalPropertyAttributeTranslator extends AbstractAttributeTranslator
 {
@@ -25,13 +27,16 @@ class OptionalPropertyAttributeTranslator extends AbstractAttributeTranslator
         $translated = [...$attributes, ...$created];
 
         $hasSchema = $hasInstance($translated, OA\Schema::class);
+        $hasEncoding = $hasInstance($translated, OA\Encoding::class);
 
         if ($reflector instanceof \ReflectionProperty
-        || ($reflector instanceof \ReflectionParameter && $reflector->getDeclaringFunction()->getName() === '__construct')
+            || ($reflector instanceof \ReflectionParameter && $reflector->getDeclaringFunction()->getName() === '__construct')
         ) {
             $hasProperty = $hasInstance($translated, OA\Property::class);
 
-            if ($hasSchema && !$hasProperty) {
+            if ($hasEncoding && !$hasProperty) {
+                $translated = [new OA\Property\Encoded(), ...$translated];
+            } elseif ($hasSchema && !$hasProperty) {
                 $translated = [new OA\Property(), ...$translated];
             }
         }

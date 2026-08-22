@@ -6,7 +6,6 @@
 
 namespace OpenApi\Tests\Fixtures\Scratch;
 
-use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAT;
 
 #[OAT\Schema]
@@ -25,7 +24,7 @@ class MultipartFormData
 
     #[OAT\Property(
         /*
-         * This encoding is not going to show in #/components/schemas/EncodingMetadata
+         * This encoding is not going to show in #/components/schemas/MultipartFormData
          * as Property::encoding is transient and expected under the media type
          */
         encoding: new OAT\Encoding(
@@ -49,6 +48,7 @@ class EncodingController
 {
     #[OAT\Post(
         path: '/endpoint/multipart-form-data-ref',
+        operationId: 'multipartFormDataRef',
         requestBody: new OAT\RequestBody(
             content: new OAT\MediaType(
                 mediaType: 'multipart/form-data',
@@ -72,11 +72,11 @@ class EncodingController
     )]
     public function multipartFormDataRef()
     {
-
     }
 
     #[OAT\Post(
         path: '/endpoint/multipart-form-data-ref-json-content',
+        operationId: 'multipartFormDataRefJsonContent',
         requestBody: new OAT\RequestBody(
             content: new OAT\JsonContent(
                 ref: MultipartFormData::class,
@@ -97,11 +97,11 @@ class EncodingController
     )]
     public function multipartFormDataRefJsonContent()
     {
-
     }
 
     #[OAT\Post(
         path: '/endpoint/multipart-form-data-json-content',
+        operationId: 'multipartFormDataJsonContent',
         requestBody: new OAT\RequestBody(
             content: new OAT\JsonContent(
                 properties: [
@@ -132,30 +132,5 @@ class EncodingController
     )]
     public function multipartFormDataJsonContent()
     {
-
-    }
-
-    /**
-     * @OA\Post(
-     *     path="/multipart-form-data-annot",
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="multipart-form-data",
-     *             @OA\Schema(
-     *                 @OA\Property(property="encname"),
-     *                 @OA\Property(
-     *                     property="other",
-     *                     @OA\Encoding(contentType="application/xml")
-     *                 )
-     *             ),
-     *             @OA\Encoding(property="encname", contentType="application/json")
-     *         )
-     *     ),
-     *     @OA\Response(response="200", description="OK")
-     * )
-     */
-    public function multipartFormDataAnnot()
-    {
-
     }
 }

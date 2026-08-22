@@ -268,6 +268,40 @@ public array $tags;
 
 Both the `MediaType` and `Items` shortcuts are resolved by the `Shortcuts` augmenter.
 
+### Encoded
+`OA\Property\Encoded` bundles a property definition with its encoding — instead of declaring `OA\Encoding` separately on the `OA\MediaType`, you can inline it directly on the property. The `MediaTypes` augmenter promotes the encoding to the parent MediaType automatically.
+
+If no `encoding` property name is set on the nested `OA\Encoding`, it defaults to the property name.
+
+```php
+// Without shortcut — encoding declared separately on the MediaType
+#[OA\Response(response: 200, content: [
+    new OA\MediaType\Json(
+        properties: [
+            new OA\Property(property: 'avatar', schema: new OA\Schema(type: 'object')),
+        ],
+        encoding: [
+            new OA\Encoding(encoding: 'avatar', contentType: 'image/png, image/jpeg'),
+        ],
+    ),
+])]
+
+// With shortcut — encoding bundled with the property
+#[OA\Response(response: 200, content: [
+    new OA\MediaType\Json(
+        properties: [
+            new OA\Property\Encoded(
+                property: 'avatar',
+                schema: new OA\Schema(type: 'object'),
+                encoding: new OA\Encoding(contentType: 'image/png, image/jpeg'),
+            ),
+        ],
+    ),
+])]
+```
+
+The `Encoded` shortcut is resolved by the `MediaTypes` augmenter.
+
 ### AdditionalProperties
 `OA\Schema\AdditionalProperties` is a typed alias for `OA\Schema` — functionally identical but improves readability when declaring `additionalProperties` constraints:
 
