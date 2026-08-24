@@ -102,14 +102,14 @@ $builder->setMode(Mode::SPEC);
 
 The modes aim for equivalent output from the same source, but differ in what they accept and in how they can be configured:
 
-| Behavior                                | Classic                | Hybrid                                               | Spec                          |
-| --------------------------------------- | ---------------------- | ---------------------------------------------------- | ----------------------------- |
-| Annotation support (`/** @OA\... */`)   | Yes                    | Yes                                                  | No                            |
-| `MergeJsonContent` / `MergeXmlContent`  | Yes                    | Yes                                                  | Yes (via `OA\MediaType\Json`) |
-| Processor chain (`withGenerator()`)     | Yes                    | Scanning only (`MergeJsonContent`/`MergeXmlContent`) | No                            |
-| Resolver (`withResolver()`)             | No                     | Yes                                                  | Yes                           |
-| Augmenter pipeline (`withAugmenters()`) | No                     | Yes                                                  | Yes                           |
-| Version-aware compilation               | No (single serializer) | Yes                                                  | Yes                           |
+| Behavior                                | Classic                | Hybrid                                               | Spec                                   |
+| --------------------------------------- | ---------------------- | ---------------------------------------------------- | -------------------------------------- |
+| Annotation support (`/** @OA\... */`)   | Yes                    | Yes                                                  | No                                     |
+| `MergeJsonContent` / `MergeXmlContent`  | Yes                    | Yes                                                  | Yes (via `OA\MediaType\Json`)          |
+| Processor chain (`withGenerator()`)     | Yes                    | Scanning only (`MergeJsonContent`/`MergeXmlContent`) | No                                     |
+| Resolver (`withResolver()`)             | No                     | Yes (`Resolver\Reflection` by default)               | Yes (`Resolver\Reflection` by default) |
+| Augmenter pipeline (`withAugmenters()`) | No                     | Yes                                                  | Yes                                    |
+| Version-aware compilation               | No (single serializer) | Yes                                                  | Yes                                    |
 
 ## Migration path
 

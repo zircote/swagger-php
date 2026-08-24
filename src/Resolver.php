@@ -8,6 +8,7 @@ namespace OpenApi;
 
 use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Contracts\ResolverInterface;
+use OpenApi\Resolver\Reflection;
 use OpenApi\Spec as OA;
 use OpenApi\Specification\ComponentIndex;
 use OpenApi\Utils\TypedList;
@@ -24,10 +25,11 @@ class Resolver
     protected const MAX_ITERATIONS = 50;
 
     /**
-     * @param TypedList<ResolverInterface> $resolvers
+     * @param TypedList<ResolverInterface>|null $resolvers defaults to the built-in resolvers
      */
-    public function __construct(protected TypedList $resolvers = new TypedList())
+    public function __construct(protected TypedList|null $resolvers = null)
     {
+        $this->resolvers ??= new TypedList($this->getDefaultResolvers());
     }
 
     /**
@@ -53,15 +55,20 @@ class Resolver
     }
 
     /**
-     * Resolve all found unresolved FQCN in the given specification.
+     * Resolve all found unresolved FQCN in the specification assembled so far.
      *
      * The first resolver to claim success will resolve the FQCN.
      */
-    public function resolve(Specification $specification): void
+    public function resolve(Assembler $assembler): void
     {
         if ($this->resolvers->count() === 0) {
             return;
         }
+
+        $specification = $assembler->getSpecification();
+
+        // FQCN no resolver was able to handle; not worth another attempt in this run
+        $attempted = [];
 
         $iterations = 0;
         do {
@@ -72,14 +79,28 @@ class Resolver
             $unresolved = $this->findUnresolved($specification);
             $resolved = false;
             foreach ($unresolved as $fqcn) {
+                if (isset($attempted[$fqcn])) {
+                    continue;
+                }
+
                 foreach ($this->resolvers as $resolver) {
-                    if ($resolver->resolve($fqcn, $specification)) {
+                    if ($resolver->resolve($fqcn, $assembler)) {
                         $resolved = true;
-                        break;
+                        continue 2;
                     }
                 }
+
+                $attempted[$fqcn] = true;
             }
         } while ($resolved);
+    }
+
+    /**
+     * @return list<ResolverInterface>
+     */
+    protected function getDefaultResolvers(): array
+    {
+        return [new Reflection()];
     }
 
     /**

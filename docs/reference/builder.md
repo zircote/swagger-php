@@ -154,18 +154,23 @@ The pipeline is grouped into three phases that run in order: **resolve** → **r
 
 ### Resolver configuration (spec/hybrid mode) {#resolver}
 
-Use `withResolver()` to register custom resolvers that handle unresolved FQCNs discovered in the specification. The resolver runs after assembly but before augmenters, so newly added schemas are processed by the full augmenter pipeline in a single pass.
+The resolver handles FQCNs that are referenced by the specification but have no matching component. It runs after assembly but before augmenters, so newly added schemas are processed by the full augmenter pipeline in a single pass.
+
+`Resolver\Reflection` is registered by default: it collects the referenced class with the assembler in use, so adding a single controller is enough to pick up everything it references — no need to list all related classes as sources.
+
+Use `withResolver()` to add your own:
 
 ```php
 use OpenApi\Resolver;
 use OpenApi\Utils\TypedList;
 
 $builder->withResolver(function (Resolver $resolver) {
-    $resolver->withResolvers(fn (TypedList $resolvers) => $resolvers->add(new MyResolver()));
+    $resolver->withResolvers(fn (TypedList $resolvers) => $resolvers
+        ->add(new MyResolver()));
 });
 ```
 
-Resolvers implement `OpenApi\Contracts\ResolverInterface`. See the [Resolver section](/reference/architecture#resolver) in the architecture docs for details.
+Resolvers implement `OpenApi\Contracts\ResolverInterface` and receive the FQCN and the `Assembler` in use. The first one to return `true` claims the FQCN. See the [Resolver section](/reference/architecture#resolver) in the architecture docs for details, including how to reorder or clear the chain.
 
 ### Attribute factory configuration (spec mode) {#attribute-factory}
 

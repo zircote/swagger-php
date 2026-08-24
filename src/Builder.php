@@ -252,7 +252,7 @@ class Builder
 
         $specification = $assembler->getSpecification();
 
-        $this->getResolver()->resolve($specification);
+        $this->getResolver()->resolve($assembler);
 
         if ($hybrid) {
             $this->doHybridAssemble($specification);
