@@ -6,6 +6,7 @@
 
 namespace OpenApi;
 
+use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Utils\AttributeFactory;
 
 /**

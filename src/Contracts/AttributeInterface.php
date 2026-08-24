@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi;
+namespace OpenApi\Contracts;
 
 use OpenApi\Utils\SourceLocation;
 

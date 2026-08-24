@@ -6,7 +6,7 @@
 
 namespace OpenApi\Augmenter;
 
-use OpenApi\AttributeInterface;
+use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Undefined;

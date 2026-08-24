@@ -6,7 +6,9 @@
 
 namespace OpenApi;
 
+use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
+use OpenApi\Specification\ComponentIndex;
 use OpenApi\Utils\SpecificationWalker;
 
 /**

@@ -6,7 +6,7 @@
 
 namespace OpenApi\Spec;
 
-use OpenApi\AttributeInterface;
+use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Utils\SourceLocation;
 
 abstract class AbstractAttribute implements AttributeInterface

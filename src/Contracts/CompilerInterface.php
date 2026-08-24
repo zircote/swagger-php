@@ -4,7 +4,9 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi;
+namespace OpenApi\Contracts;
+
+use OpenApi\Specification;
 
 /**
  * Compiles a Specification into a versioned OpenAPI document.

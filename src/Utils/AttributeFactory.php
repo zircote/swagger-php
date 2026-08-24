@@ -8,8 +8,8 @@ namespace OpenApi\Utils;
 
 use OpenApi\Assembler\DefaultAttributeTranslator;
 use OpenApi\Assembler\OptionalPropertyAttributeTranslator;
-use OpenApi\AttributeInterface;
-use OpenApi\AttributeTranslatorInterface;
+use OpenApi\Contracts\AttributeInterface;
+use OpenApi\Contracts\AttributeTranslatorInterface;
 use OpenApi\OpenApiException;
 
 /**

@@ -6,7 +6,7 @@
 
 namespace OpenApi\Compiler;
 
-use OpenApi\CompilerInterface;
+use OpenApi\Contracts\CompilerInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Undefined;
