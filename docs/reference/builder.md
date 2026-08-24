@@ -173,7 +173,7 @@ The `build()` method returns a `\OpenApi\Builder\Result` instance:
 ```php
 $result = $builder->build();
 
-$result->isValid();      // bool — true if a spec was generated
+$result->isValid();      // bool — true if a spec was generated and no errors were reported
 $result->toArray();       // array — the spec as a PHP array
 $result->toJson();        // string — JSON output
 $result->toYaml();        // string — YAML output

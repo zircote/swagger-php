@@ -135,26 +135,46 @@ class Pipeline extends TypedList
         return $config;
     }
 
+    /**
+     * Apply config to the pipes in this pipeline.
+     *
+     * Keys that match no pipe, and options with no matching setter, are reported
+     * as warnings; they would otherwise be silently ignored. See {@see self::getConfig()}
+     * for the keys a pipeline accepts.
+     */
     public function configure(array $config): void
     {
         $config = $this->normaliseConfig($config);
+        $applied = [];
 
-        $walker = function (callable $pipe) use ($config): void {
+        $walker = function (callable $pipe) use ($config, &$applied): void {
             $rc = new \ReflectionClass($pipe);
 
             // apply config
             $pipeKey = lcfirst($rc->getShortName());
-            if (array_key_exists($pipeKey, $config)) {
-                foreach ($config[$pipeKey] as $name => $value) {
-                    $setter = 'set' . ucfirst($name);
-                    if (method_exists($pipe, $setter)) {
-                        $pipe->{$setter}($value);
-                    }
+            if (!array_key_exists($pipeKey, $config) || !is_array($config[$pipeKey])) {
+                return;
+            }
+
+            $applied[$pipeKey] = true;
+
+            foreach ($config[$pipeKey] as $name => $value) {
+                $setter = 'set' . ucfirst($name);
+                if (method_exists($pipe, $setter)) {
+                    $pipe->{$setter}($value);
+                } else {
+                    $this->logger->warning("Unknown config option '{$pipeKey}.{$name}'");
                 }
             }
         };
 
         $this->walk($walker);
+
+        foreach (array_keys($config) as $pipeKey) {
+            if (!isset($applied[$pipeKey])) {
+                $this->logger->warning("Unknown config key '{$pipeKey}'; no matching pipe in this pipeline");
+            }
+        }
     }
 
     /**

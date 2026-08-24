@@ -92,7 +92,7 @@ $result->toArray();       // PHP array
 $result->files();         // list of scanned files
 $result->warnings();      // validation warnings
 $result->errors();        // validation errors
-$result->isValid();       // true if spec was generated
+$result->isValid();       // true if spec was generated and no errors were reported
 $result->specification(); // the final `Specification` instance
 ```
 
