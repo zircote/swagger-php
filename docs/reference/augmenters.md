@@ -17,8 +17,10 @@ Augmenters are part of the spec-attributes pipeline (`--mode spec` or `--mode hy
 The `-c` option allows to specify a name/value pair with the name consisting
 of the augmenter name (starting lowercase) and option name separated by a dot (`.`).
 
+Use `-D` (with `--mode spec`) to list the available augmenter names and options.
+
 ```shell
-> ./vendor/bin/openapi --mode spec -c operationId.hash=true // ...
+> ./vendor/bin/openapi --mode spec -c operationIds.hash=true // ...
 > ./vendor/bin/openapi --mode spec -c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ // ...
 ```
 
@@ -29,7 +31,7 @@ and configure individual augmenters via `Pipeline::get()`.
 ```php
 (new Builder())
     ->withAugmenters(function ($pipeline) {
-        $pipeline->get(Augmenter\OperationId::class)->setHash(true);
+        $pipeline->get(Augmenter\OperationIds::class)->setHash(true);
         $pipeline->get(Augmenter\PathFilter::class)->setTags(['/pets/', '/store/']);
     });
 ```

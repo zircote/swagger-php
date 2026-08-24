@@ -42,7 +42,7 @@ class GenerateCommand
 
         if ($input->defaults) {
             $io->title('Default config');
-            $io->writeln(json_encode((new Generator())->getDefaultConfig(), JSON_PRETTY_PRINT));
+            $io->writeln(json_encode($this->getDefaultConfig($input), JSON_PRETTY_PRINT));
 
             return 0;
         }
@@ -65,6 +65,21 @@ class GenerateCommand
         }
 
         return $this->logger->hasErrored() ? 1 : 0;
+    }
+
+    /**
+     * The config keys `--config` accepts; these differ per mode.
+     *
+     * Mirrors the routing in {@see self::generate()}: spec mode configures the
+     * augmenter pipeline, classic and hybrid configure the Generator.
+     *
+     * @return array<string,mixed>
+     */
+    protected function getDefaultConfig(GenerateInput $input): array
+    {
+        return $input->mode->isSpec()
+            ? (new Builder())->getAugmenters()->getConfig()
+            : (new Generator())->getDefaultConfig();
     }
 
     protected function generate(GenerateInput $input): Result

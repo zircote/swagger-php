@@ -2,13 +2,13 @@
 <?php
 
 use OpenApi\Console\GenerateCommand;
-use OpenApi\Generator;
+use OpenApi\Undefined;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-if (class_exists(Generator::class) === false) {
+if (class_exists(Undefined::class) === false) {
     if (file_exists(__DIR__.'/../vendor/autoload.php')) {  // cloned / dev environment?
         require_once(__DIR__.'/../vendor/autoload.php');
     } else {

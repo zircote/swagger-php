@@ -80,6 +80,31 @@ final class CommandlineTest extends OpenApiTestCase
         $this->assertStringContainsString("openapi: {$expectedVersion}", implode(PHP_EOL, $output));
     }
 
+    /**
+     * `--defaults` must report the config keys `--config` actually accepts,
+     * which differ per mode: spec configures augmenters, classic/hybrid the Generator.
+     */
+    public static function defaultsCases(): iterable
+    {
+        yield 'classic (implicit)' => ['', 'generator', 'operationIds'];
+        yield 'classic' => ['-m classic', 'generator', 'operationIds'];
+        yield 'hybrid' => ['-m hybrid', 'generator', 'operationIds'];
+        yield 'spec' => ['-m spec', 'operationIds', 'generator'];
+    }
+
+    #[DataProvider('defaultsCases')]
+    public function testDefaultsAreModeAware(string $args, string $expected, string $unexpected): void
+    {
+        $basePath = self::examplePath('petstore');
+        $cmd = __DIR__ . '/../bin/openapi -D ' . $args . ' ' . escapeshellarg("{$basePath}/annotations");
+        exec($this->getCommandToExecute($cmd, '2>'), $output, $retval);
+
+        $this->assertSame(0, $retval, $cmd . PHP_EOL . implode(PHP_EOL, $output));
+        $output = implode(PHP_EOL, $output);
+        $this->assertStringContainsString($expected, $output);
+        $this->assertStringNotContainsString($unexpected, $output);
+    }
+
     private function getCommandToExecute(string $cmd, ?string $devNullRedir = null): string
     {
         if (PHP_OS_FAMILY === 'Windows') {
