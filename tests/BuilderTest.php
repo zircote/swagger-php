@@ -38,6 +38,20 @@ final class BuilderTest extends OpenApiTestCase
         $this->assertNotEmpty($result->toYaml());
     }
 
+    public function testIsValidReportsCompilerErrors(): void
+    {
+        // no OA\Info anywhere -> the compiler reports "info is required"
+        $result = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->addSource((string) self::fixture('Assembler/SimpleController.php'))
+            ->setLogger(new NullLogger())
+            ->build();
+
+        $this->assertNotEmpty($result->toArray(), 'a document is still produced');
+        $this->assertContains('info is required', $result->errors());
+        $this->assertFalse($result->isValid(), 'errors must make the result invalid');
+    }
+
     public function testBuildMatchesGenerator(): void
     {
         $this->registerExampleClassloader('petstore');

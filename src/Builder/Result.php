@@ -71,9 +71,17 @@ class Result
         return $this->specification;
     }
 
+    /**
+     * Whether a document was produced and no errors were reported.
+     *
+     * Mirrors the exit code of the console command: warnings do not make a
+     * result invalid, errors do.
+     */
     public function isValid(): bool
     {
-        return $this->openApi instanceof OpenApi || $this->specOutput !== null;
+        $generated = $this->openApi instanceof OpenApi || $this->specOutput !== null;
+
+        return $generated && $this->errors() === [];
     }
 
     /**

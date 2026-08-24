@@ -7,6 +7,9 @@
 namespace OpenApi\Tests\Utils;
 
 use OpenApi\Augmenter\OperationIds;
+use OpenApi\Augmenter\Tags;
+use OpenApi\Augmenter\Types;
+use OpenApi\Utils\CollectingLogger;
 use OpenApi\Utils\PipeInterface;
 use OpenApi\Utils\Pipeline;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -123,6 +126,79 @@ final class PipelineTest extends TestCase
         $rp = new \ReflectionProperty(OperationIds::class, 'hash');
         $this->assertInstanceOf(OperationIds::class, $operationIds);
         $this->assertEquals($expected, $rp->getValue($operationIds));
+    }
+
+    public function testGetConfigReportsPipeSettings(): void
+    {
+        $pipeline = new Pipeline([
+            new OperationIds(hash: false),
+            new Tags(whitelist: ['pets'], withDescription: false),
+        ]);
+
+        $this->assertSame([
+            'operationIds' => ['hash' => false],
+            'tags' => ['whitelist' => ['pets'], 'withDescription' => false],
+        ], $pipeline->getConfig());
+    }
+
+    public function testGetConfigOmitsCollaborators(): void
+    {
+        // Types only exposes setTypeResolver() -- an object, so not config
+        $pipeline = new Pipeline([new Types()]);
+
+        $this->assertSame([], $pipeline->getConfig());
+    }
+
+    public function testGetConfigRoundTripsThroughConfigure(): void
+    {
+        $pipeline = new Pipeline([new OperationIds(hash: true)]);
+
+        $this->assertSame(['operationIds' => ['hash' => true]], $pipeline->getConfig());
+
+        // the keys getConfig() reports must be the keys configure() accepts
+        $pipeline->configure($pipeline->getConfig());
+        $this->assertSame(['operationIds' => ['hash' => true]], $pipeline->getConfig());
+
+        $pipeline->configure(['operationIds.hash=false']);
+        $this->assertSame(['operationIds' => ['hash' => false]], $pipeline->getConfig());
+    }
+
+    public static function unknownConfigCases(): iterable
+    {
+        yield 'unknown pipe' => [
+            ['noSuchPipe.hash' => false],
+            "Unknown config key 'noSuchPipe'; no matching pipe in this pipeline",
+        ];
+        yield 'unknown option' => [
+            ['operationIds.noSuchOption' => false],
+            "Unknown config option 'operationIds.noSuchOption'",
+        ];
+        yield 'stale classic key' => [
+            ['operationId.hash' => false],
+            "Unknown config key 'operationId'; no matching pipe in this pipeline",
+        ];
+    }
+
+    #[DataProvider('unknownConfigCases')]
+    public function testConfigureWarnsAboutUnknownConfig(array $config, string $expected): void
+    {
+        $logger = new CollectingLogger();
+        $pipeline = new Pipeline([new OperationIds(hash: true)], logger: $logger);
+
+        $pipeline->configure($config);
+
+        $this->assertSame([['level' => 'warning', 'message' => $expected]], $logger->entries());
+    }
+
+    public function testConfigureIsQuietForKnownConfig(): void
+    {
+        $logger = new CollectingLogger();
+        $pipeline = new Pipeline([new OperationIds(hash: true)], logger: $logger);
+
+        $pipeline->configure(['operationIds.hash=false']);
+
+        $this->assertSame([], $logger->entries());
+        $this->assertSame(['operationIds' => ['hash' => false]], $pipeline->getConfig());
     }
 
     // --- Grouping ---

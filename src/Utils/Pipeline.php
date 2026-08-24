@@ -80,26 +80,101 @@ class Pipeline extends TypedList
         return $payload;
     }
 
+    /**
+     * Collect the configurable settings of all pipes, keyed by pipe name.
+     *
+     * A setting is considered configurable when a pipe exposes a `setX()` method
+     * for a property `x`; the reported value is that property's current value.
+     * Object valued properties (factories, resolvers) are treated as collaborators
+     * rather than config and are omitted.
+     *
+     * The result uses the same keys accepted by {@see self::configure()}.
+     *
+     * @return array<string,array<string,mixed>>
+     */
+    public function getConfig(): array
+    {
+        $config = [];
+
+        $walker = function (callable $pipe) use (&$config): void {
+            $rc = new \ReflectionClass($pipe);
+            $settings = [];
+
+            foreach ($rc->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+                if (!str_starts_with($method->getName(), 'set') || $method->getNumberOfParameters() !== 1) {
+                    continue;
+                }
+
+                // LoggerAwareInterface is plumbing, not config
+                if ($method->getName() === 'setLogger') {
+                    continue;
+                }
+
+                $name = lcfirst(substr($method->getName(), 3));
+                if (!$rc->hasProperty($name)) {
+                    continue;
+                }
+
+                $property = $rc->getProperty($name);
+                $value = $property->isInitialized($pipe) ? $property->getValue($pipe) : null;
+
+                if (is_object($value)) {
+                    continue;
+                }
+
+                $settings[$name] = $value;
+            }
+
+            if ($settings !== []) {
+                $config[lcfirst($rc->getShortName())] = $settings;
+            }
+        };
+
+        $this->walk($walker);
+
+        return $config;
+    }
+
+    /**
+     * Apply config to the pipes in this pipeline.
+     *
+     * Keys that match no pipe, and options with no matching setter, are reported
+     * as warnings; they would otherwise be silently ignored. See {@see self::getConfig()}
+     * for the keys a pipeline accepts.
+     */
     public function configure(array $config): void
     {
         $config = $this->normaliseConfig($config);
+        $applied = [];
 
-        $walker = function (callable $pipe) use ($config): void {
+        $walker = function (callable $pipe) use ($config, &$applied): void {
             $rc = new \ReflectionClass($pipe);
 
             // apply config
             $pipeKey = lcfirst($rc->getShortName());
-            if (array_key_exists($pipeKey, $config)) {
-                foreach ($config[$pipeKey] as $name => $value) {
-                    $setter = 'set' . ucfirst($name);
-                    if (method_exists($pipe, $setter)) {
-                        $pipe->{$setter}($value);
-                    }
+            if (!array_key_exists($pipeKey, $config) || !is_array($config[$pipeKey])) {
+                return;
+            }
+
+            $applied[$pipeKey] = true;
+
+            foreach ($config[$pipeKey] as $name => $value) {
+                $setter = 'set' . ucfirst($name);
+                if (method_exists($pipe, $setter)) {
+                    $pipe->{$setter}($value);
+                } else {
+                    $this->logger->warning("Unknown config option '{$pipeKey}.{$name}'");
                 }
             }
         };
 
         $this->walk($walker);
+
+        foreach (array_keys($config) as $pipeKey) {
+            if (!isset($applied[$pipeKey])) {
+                $this->logger->warning("Unknown config key '{$pipeKey}'; no matching pipe in this pipeline");
+            }
+        }
     }
 
     /**

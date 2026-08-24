@@ -42,9 +42,9 @@ For a list of all available options use the `-h` option
 Usage: openapi [--option value] [/path/to/project ...]
 
 Options:
-  --config (-c)               Generator config.
+  --config (-c)               Generator (classic, hybrid) or augmenter (spec) config.
                               ex: -c operationId.hash=false
-  --defaults (-D)             Show default config.
+  --defaults (-D)             Show default config for the selected --mode.
   --output (-o)               Path to store the generated documentation.
                               ex: --output openapi.yaml
   --exclude (-e)              Exclude path(s).
@@ -92,7 +92,7 @@ $result->toArray();       // PHP array
 $result->files();         // list of scanned files
 $result->warnings();      // validation warnings
 $result->errors();        // validation errors
-$result->isValid();       // true if spec was generated
+$result->isValid();       // true if spec was generated and no errors were reported
 $result->specification(); // the final `Specification` instance
 ```
 

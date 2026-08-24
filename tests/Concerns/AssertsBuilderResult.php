@@ -26,8 +26,6 @@ trait AssertsBuilderResult
 
     public function assertBuilderResult(Result $result): void
     {
-        $this->assertTrue($result->isValid());
-
         $filterByContains = (fn (array $list, array $patterns): array => array_filter($list, function (string $item) use ($patterns): bool {
             foreach ($patterns as $pattern) {
                 if (str_contains($item, $pattern)) {
@@ -43,5 +41,11 @@ trait AssertsBuilderResult
 
         $this->assertCount(0, $warnings, '[Warning] ' . implode("\n[Warning] ", $result->warnings()));
         $this->assertCount(0, $errors, '[Error] ' . implode("\n[Error] ", $result->errors()));
+
+        // isValid() does not know about $errorExcludes, so only assert it when
+        // no errors are expected
+        if ($this->errorExcludes === []) {
+            $this->assertTrue($result->isValid());
+        }
     }
 }

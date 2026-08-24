@@ -16,7 +16,7 @@ class GenerateInput
     #[Argument('Source path(s) to scan')]
     public array $paths;
 
-    #[Option('Generator/Augmenter config (e.g. -c operationId.hash=false)', shortcut: 'c')]
+    #[Option('Generator/Augmenter config; keys differ per mode, see -D (e.g. -c operationId.hash=false)', shortcut: 'c')]
     public array $config = [];
 
     #[Option('Show default config', shortcut: 'D')]
