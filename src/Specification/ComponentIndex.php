@@ -33,7 +33,7 @@ class ComponentIndex
         'examples' => 'examples',
     ];
 
-    /** @var array<string, array<string, AttributeInterface>|null> */    protected array $indexes = [];
+    /** @var array<string, array<string, AttributeInterface>|null> */ protected array $indexes = [];
 
     public function __construct(
         protected Specification $specification,
