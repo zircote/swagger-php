@@ -6,7 +6,7 @@
 
 namespace OpenApi\Tests\Concerns;
 
-use OpenApi\AttributeInterface;
+use OpenApi\Contracts\AttributeInterface;
 
 trait CollectsSpecClasses
 {

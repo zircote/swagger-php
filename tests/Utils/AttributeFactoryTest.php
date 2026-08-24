@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Utils;
 
 use OpenApi\Assembler;
 use OpenApi\Assembler\AbstractAttributeTranslator;
-use OpenApi\AttributeInterface;
+use OpenApi\Contracts\AttributeInterface;
 use OpenApi\OpenApiException;
 use OpenApi\Spec as OA;
 use OpenApi\Tests\Fixtures\Assembler\AmbiguousMerge;

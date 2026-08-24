@@ -6,9 +6,9 @@
 
 namespace OpenApi\Augmenter;
 
-use OpenApi\ComponentIndex;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Specification\ComponentIndex;
 use OpenApi\Utils\PipeInterface;
 
 /**

@@ -4,9 +4,11 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi;
+namespace OpenApi\Specification;
 
+use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
+use OpenApi\Specification;
 
 /**
  * Resolves `$ref` values to their corresponding component objects.
@@ -31,8 +33,7 @@ class ComponentIndex
         'examples' => 'examples',
     ];
 
-    /** @var array<string, array<string, AttributeInterface>|null> */
-    protected array $indexes = [];
+    /** @var array<string, array<string, AttributeInterface>|null> */ protected array $indexes = [];
 
     public function __construct(
         protected Specification $specification,

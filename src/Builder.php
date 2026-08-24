@@ -8,6 +8,7 @@ namespace OpenApi;
 
 use OpenApi\Builder\Mode;
 use OpenApi\Builder\Result;
+use OpenApi\Contracts\CompilerInterface;
 use OpenApi\Utils\AttributeFactory;
 use OpenApi\Utils\CollectingLogger;
 use OpenApi\Utils\PipeInterface;

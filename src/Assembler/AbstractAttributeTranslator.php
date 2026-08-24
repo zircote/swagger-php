@@ -6,7 +6,7 @@
 
 namespace OpenApi\Assembler;
 
-use OpenApi\AttributeTranslatorInterface;
+use OpenApi\Contracts\AttributeTranslatorInterface;
 
 /**
  * Convenience empty/noop base imlementation of the `AttributeTranslatorInterface`.

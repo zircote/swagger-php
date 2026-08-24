@@ -6,7 +6,7 @@
 
 namespace OpenApi\Assembler;
 
-use OpenApi\AttributeInterface;
+use OpenApi\Contracts\AttributeInterface;
 
 /**
  * Default implementation handling native (OpenApi) attributes.

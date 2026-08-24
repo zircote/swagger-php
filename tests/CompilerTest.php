@@ -9,7 +9,7 @@ namespace OpenApi\Tests;
 use OpenApi\Compiler\OpenApi30Compiler;
 use OpenApi\Compiler\OpenApi31Compiler;
 use OpenApi\Compiler\OpenApi32Compiler;
-use OpenApi\CompilerInterface;
+use OpenApi\Contracts\CompilerInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use PHPUnit\Framework\Attributes\DataProvider;
