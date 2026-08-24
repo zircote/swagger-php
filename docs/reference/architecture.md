@@ -9,14 +9,15 @@ see [Spec pipeline internals](/dev/pipeline).
 ## Pipeline overview
 
 ```
-Source files → Assembler → Specification → Augmenters → Compiler → OpenAPI document
+Source files → Assembler → Specification → Resolver → Augmenters → Compiler → OpenAPI document
 ```
 
 1. **Assembler** — scans source files, instantiates attributes from reflection, resolves nesting via slot maps (merge + hierarchical absorb)
 2. **Specification** — a flat, typed container holding all collected attributes in buckets
-3. **Augmenters** — enrich the specification with inferred data (types, refs, tags, etc.) via a grouped pipeline
-4. **Compiler** — transforms the specification into a versioned OpenAPI document array
-5. **Builder** — the unified entry point that orchestrates the pipeline
+3. **Resolver** — discovers and resolves unresolved FQCNs (e.g. unannotated model classes) before augmentation
+4. **Augmenters** — enrich the specification with inferred data (types, refs, tags, etc.) via a grouped pipeline
+5. **Compiler** — transforms the specification into a versioned OpenAPI document array
+6. **Builder** — the unified entry point that orchestrates the pipeline
 
 ## Assembler
 
@@ -37,6 +38,53 @@ Whatever is left once nesting is resolved is added to the Specification.
 The Specification is a flat, typed container with one bucket per root attribute type. It holds all attributes collected by the Assembler, organized by type (schemas, operations, pathItems, tags, etc.).
 
 Augmenters read from and write to the Specification's buckets. The container is deliberately simple — no tree structure, no parent pointers. Cross-bucket relationships are resolved by augmenters using reflectors.
+
+## Resolver
+
+The Resolver discovers FQCNs referenced by the specification that have no corresponding component (e.g. unannotated model classes used in `$ref` or typed properties) and delegates their handling to user-registered `ResolverInterface` implementations.
+
+### Why a separate step
+
+Solving this inside the augmenter pipeline creates ordering problems: an augmenter that adds new schemas runs after `Names` and `Types`, so it must re-invoke those augmenters on the newly added entries. The Resolver runs after assembly but before augmenters, so all schemas are present when augmenters start their single pass.
+
+### Discovery
+
+Two sources are inspected to find unresolved FQCNs:
+
+- **Ref values** — walks all `$ref` attributes for raw FQCN strings (not yet rewritten to `#/components/...` paths). These are discoverable without `Names` or `Refs` having run.
+- **Reflector types** — walks schema class reflectors for non-builtin typed properties and constructor parameters. This reads `\ReflectionProperty::getType()` directly, no `Types` augmenter needed.
+
+A `ComponentIndex` is used to deduplicate against components already present in the specification.
+
+### Resolution loop
+
+The Resolver iterates in a convergence loop: discover unresolved FQCNs, pass each to the resolver chain (first resolver to claim success wins), then re-discover. This handles transitive references — resolving class A may add a schema referencing class B, which the next iteration discovers. A `MAX_ITERATIONS` guard (default 50) protects against misbehaving resolvers.
+
+### ResolverInterface
+
+```php
+namespace OpenApi\Contracts;
+
+interface ResolverInterface
+{
+    public function resolve(string $fqcn, Specification $specification): bool;
+}
+```
+
+Each resolver is self-contained — it owns its internal assembler and attribute factory. It writes into the specification directly (e.g. via `Specification::add()`) and returns `true` if it handled the FQCN.
+
+### Configuring resolvers
+
+```php
+use OpenApi\Resolver;
+use OpenApi\Utils\TypedList;
+
+$builder->withResolver(function (Resolver $resolver) {
+    $resolver->withResolvers(fn (TypedList $resolvers) => $resolvers->add(new MyResolver()));
+});
+```
+
+When no resolvers are registered, the resolution step is skipped entirely.
 
 ## Augmenters
 

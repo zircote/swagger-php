@@ -32,7 +32,7 @@ $builder->setMode(Mode::CLASSIC);
 
 ### Spec (beta) {#mode-spec}
 
-Runs the spec attributes pipeline end-to-end: Assembler → Augmenters → Compiler. Uses attributes from the `OpenApi\Spec` namespace with typed DTOs and version-aware compilers.
+Runs the spec attributes pipeline end-to-end: Assembler → Resolver → Augmenters → Compiler. Uses attributes from the `OpenApi\Spec` namespace with typed DTOs and version-aware compilers.
 
 ```php
 $builder->setMode(Mode::SPEC);
@@ -150,7 +150,22 @@ $builder->withAugmenters(function (\OpenApi\Utils\Pipeline $pipeline) {
 });
 ```
 
-The pipeline is grouped into three phases that run in order: **resolve** → **reduce** → **augment**. See the [Augmenters reference](/reference/augmenters) for the full list and their configuration options.
+The pipeline is grouped into three phases that run in order: **resolve** → **reduce** → **augment**. See the [Augmenters reference](/reference/augmenters) for the full list and configuration options, and the [Augmenters section](/reference/architecture#augmenters) in the architecture docs for pipeline design and writing custom augmenters.
+
+### Resolver configuration (spec/hybrid mode) {#resolver}
+
+Use `withResolver()` to register custom resolvers that handle unresolved FQCNs discovered in the specification. The resolver runs after assembly but before augmenters, so newly added schemas are processed by the full augmenter pipeline in a single pass.
+
+```php
+use OpenApi\Resolver;
+use OpenApi\Utils\TypedList;
+
+$builder->withResolver(function (Resolver $resolver) {
+    $resolver->withResolvers(fn (TypedList $resolvers) => $resolvers->add(new MyResolver()));
+});
+```
+
+Resolvers implement `OpenApi\Contracts\ResolverInterface`. See the [Resolver section](/reference/architecture#resolver) in the architecture docs for details.
 
 ### Attribute factory configuration (spec mode) {#attribute-factory}
 
@@ -164,7 +179,7 @@ $builder->withAttributeFactory(function (AttributeFactory $factory): void {
 });
 ```
 
-Translators convert non-OA attributes (e.g. Symfony `#[Assert\*]`, framework route annotations) into spec DTOs during assembly.
+Translators convert non-OA attributes (e.g. Symfony `#[Assert\*]`, framework route annotations) into spec DTOs during assembly. See the [Assembler section](/reference/architecture#assembler) in the architecture docs for how assembly and slot-map nesting work.
 
 ## Result
 
