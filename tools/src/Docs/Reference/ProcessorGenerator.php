@@ -125,6 +125,7 @@ EOT;
     protected function collectOptions(\ReflectionClass $rc): array
     {
         $options = [];
+        $configurable = $this->configurableParameters($rc);
 
         foreach ($rc->getMethods() as $method) {
             if (!str_starts_with($method->getName(), 'set')) {
@@ -132,6 +133,10 @@ EOT;
             }
 
             $pname = lcfirst(substr($method->getName(), 3));
+            if (!in_array($pname, $configurable, true)) {
+                continue;
+            }
+
             $type = 'n/a';
             if (1 === count($method->getParameters())) {
                 if ($rt = $method->getParameters()[0]->getType()) {

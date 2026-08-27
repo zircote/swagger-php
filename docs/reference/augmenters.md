@@ -46,10 +46,6 @@ Delegates to:
 - Inheritance\Schemas
 - Inheritance\Operations
 
-#### Config settings
-- **inheritance.attributeFactory** : `OpenApi\Utils\AttributeFactory` · default: `OpenApi\Utils\AttributeFactory`  
-  No details available.
-
 ### [Names](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Names.php)
 
 Infers component names from PHP reflectors when not explicitly set.
@@ -100,10 +96,6 @@ Infers schema type, format, nullable, items, etc. from PHP type declarations and
 Walks all properties and parameters in the specification and fills their schema
 fields from the attached reflector's type information.
 
-#### Config settings
-- **types.typeResolver** : `OpenApi\Type\TypeResolver` · default: `OpenApi\Type\TypeResolver`  
-  Override the type resolver used to infer schema types from PHP type declarations.
-
 ### [Refs](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Refs.php)
 
 Resolves FQCN-based $ref values to JSON Reference paths.
@@ -150,10 +142,6 @@ Fills summary, description, and deprecated from PHP docblock comments.
 Walks all attributes in the specification that have summary/description
 properties and populates them from the reflector's docblock when not
 explicitly set.
-
-#### Config settings
-- **docblocks.parser** : `OpenApi\Utils\DocBlockParser` · default: `OpenApi\Utils\DocBlockParser`  
-  Override the docblock parser used to extract summaries and descriptions.
 
 ### [OperationIds](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/OperationIds.php)
 
