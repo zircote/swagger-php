@@ -22,15 +22,15 @@ The `LegacyTypeResolver` can still be used as a drop-in replacement, but is now 
 in v7.
 
 ## Removed deprecated elements
-### Methods `\Openapi\Generator::getProcessors()` and `\Openapi\Generator::setProcessors()`
+### Methods `\OpenApi\Generator::getProcessors()` and `\OpenApi\Generator::setProcessors()`
 Use `getProcessorPipeline()` and `setProcessorPipeline(new Pipeline(...))` methods instead
 
-### Static method `\Openapi\Generator::scan()`
+### Static method `\OpenApi\Generator::scan()`
 Main entry point into the `Generator` is now the **non-static** `generate()` method:
 ```php
 (new Generator())->generate(/* ... */);
 ```
 
 ### `Utils` helper
-Most methods in the class were internal to start with and the `Util::finder()` factory methods is now replaced with
+Most methods in the class were internal to start with and the `Utils::finder()` factory method is now replaced with
 the new `SourceFinder` class.

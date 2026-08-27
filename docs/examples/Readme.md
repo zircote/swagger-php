@@ -4,21 +4,21 @@ Collection of code/annotation examples and their corresponding OpenAPI specs gen
 
 * [api](specs/api) - Basic API
 * [misc](specs/misc)
-* [nesting](specs/nesting) - Nested schemas and class hierachies
+* [nesting](specs/nesting) - Nested schemas and class hierarchies
 * [petstore](specs/petstore) - Classic petstore
 * [polymorphism](specs/polymorphism) - Using `@OA\Discriminator`
 * [using interfaces](specs/using-interfaces)
 * [using-links](specs/using-links)
 * [using refs](specs/using-refs)
 * [using traits](specs/using-traits)
-* [webhooks](specs/webhooks) - Using `@OA\Webhooks`
+* [webhooks](specs/webhooks) - Using `@OA\Webhook`
 
 
 ## Custom processors
 
 [Processors](../src/Processors) implement the various steps involved in converting the annotations collected into an OpenAPI spec.
 
-Writing a custom processor is the recommended way to extend swagger-php in a clean way.
+Writing a custom processor is the recommended way to extend swagger-php.
 
 Processors are expected to implement the `__invoke()` method expecting the current `Analysis` object as single parameter:
 

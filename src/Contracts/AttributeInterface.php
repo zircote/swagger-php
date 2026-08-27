@@ -54,8 +54,8 @@ interface AttributeInterface
      *
      * During hierarchical resolution (class absorbs members, method absorbs parameters),
      * the assembler uses contained() to determine which outer-level attributes can contain
-     * this container. Keys are the parent class, values are the property name on this
-     * attribute where the child will be placed.
+     * this container. Keys are the parent class, values are the property name on that
+     * parent where this attribute will be placed.
      *
      * Use '[]' suffix for collection slots (append): 'properties[]'
      * Omit suffix for scalar slots (set): 'requestBody'

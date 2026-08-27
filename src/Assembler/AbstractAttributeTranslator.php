@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-/*
+/**
  * @license Apache 2.0
  */
 
@@ -9,7 +9,7 @@ namespace OpenApi\Assembler;
 use OpenApi\Contracts\AttributeTranslatorInterface;
 
 /**
- * Convenience empty/noop base imlementation of the `AttributeTranslatorInterface`.
+ * Convenience no-op base implementation of the `AttributeTranslatorInterface`.
  */
 class AbstractAttributeTranslator implements AttributeTranslatorInterface
 {

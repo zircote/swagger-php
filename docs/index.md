@@ -9,7 +9,7 @@ hero:
         link: /guide/
 features:
   - title: OpenAPI conformant
-    details: Generate OpenAPI documents in version 3.0 or 3.1.
+    details: Generate OpenAPI documents in version 3.0, 3.1 or 3.2.
   - title: Document your API inside PHP source code
     details: Using swagger-php lets you write the API documentation inside the PHP source files
       which helps keeping the documentation up-to-date.
@@ -27,7 +27,7 @@ features:
 
 Add `swagger-php` attributes (or legacy annotations) to your source code.
 
-⚠️ The `doctrine/annotations` library used to parse annotation is going to be deprecated, so wherever
+⚠️ The `doctrine/annotations` library used to parse annotations is going to be deprecated, so wherever
 possible attributes should be used.
 
 ::: info `spec` [mode](guide/modes)

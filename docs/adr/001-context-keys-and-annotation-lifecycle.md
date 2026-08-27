@@ -69,11 +69,11 @@ Set by the analyser, inherited via the parent chain.
 
 ### Where `nested` is set
 
-1. **`AbstractAnnotation::__construct()`** (line 110): Creates a child context `['nested' => $this]` for annotations passed as constructor properties.
+1. **`AbstractAnnotation::__construct()`**: Creates a child context `['nested' => $this]` for annotations passed as constructor properties.
 
-2. **`AbstractAnnotation::merge()`** (line 156): Same pattern for annotations merged into `_unmerged`.
+2. **`AbstractAnnotation::merge()`**: Same pattern for annotations merged into `_unmerged`.
 
-3. **`AttributeAnnotationFactory`** (line 76): Sets `'nested' => null` for parameter-level attributes (`#[Property]`, `#[Parameter]`, `#[RequestBody]` on method parameters) that should not be merged into root.
+3. **`AttributeAnnotationFactory`**: Sets `'nested' => null` for parameter-level attributes (`#[Property]`, `#[Parameter]`, `#[RequestBody]` on method parameters) that should not be merged into root.
 
 4. **Processors** (e.g. MergeJsonContent): Should update `_context` when relocating an annotation to reflect its new parent.
 

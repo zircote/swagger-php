@@ -16,9 +16,9 @@ use OpenApi\OpenApiException;
  * Creates spec attribute instances from PHP reflectors.
  *
  * Encapsulates: reading PHP attributes, stack-resolving siblings (merge),
- * and hierarchical absorb (contains). Shared between the Assembler (initial
+ * and hierarchical absorb (contained). Shared between the Assembler (initial
  * collection) and augmenter pipes that need to manufacture spec objects
- * from reflection (e.g. ExpandHierarchy for non-schema ancestor members).
+ * from reflection (e.g. Augmenter\Inheritance for non-schema ancestor members).
  */
 class AttributeFactory
 {
