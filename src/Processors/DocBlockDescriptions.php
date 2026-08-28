@@ -60,9 +60,7 @@ class DocBlockDescriptions
     protected function description(OA\AbstractAnnotation $annotation): void
     {
         if (!Undefined::isDefault($annotation->description)) {
-            if ($annotation->description === null) {
-                $annotation->description = Undefined::UNDEFINED;
-            }
+            $annotation->description ??= Undefined::UNDEFINED;
 
             return;
         }

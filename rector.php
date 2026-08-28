@@ -11,6 +11,7 @@ use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\If_\RemoveAlwaysTrueIfConditionRector;
 use Rector\DeadCode\Rector\If_\RemoveDeadInstanceOfRector;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
+use Rector\Php74\Rector\If_\IfToNullCoalescingAssignRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php81\Rector\Array_\ArrayToFirstClassCallableRector;
 use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
@@ -48,6 +49,11 @@ return RectorConfig::configure()
         ],
         ArrayToFirstClassCallableRector::class => [
             __DIR__ . '/tests/Analysers/ComposerAutoloaderScannerTest.php',
+        ],
+        // `Operation::$operationId` is documented `@var string`, so phpstan rejects `??=`
+        // on it; the null check here is deliberate defensive handling
+        IfToNullCoalescingAssignRector::class => [
+            __DIR__ . '/src/Processors/OperationId.php',
         ],
     ])
     ->withPreparedSets(
