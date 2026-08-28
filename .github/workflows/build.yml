@@ -41,4 +41,4 @@ jobs:
           composer-options: "${{ matrix.composer-options }}"
 
       - name: PHPUnit Tests
-        run: bin/phpunit --configuration phpunit.xml.dist --coverage-text
+        run: composer test -- --configuration phpunit.xml.dist --coverage-text
