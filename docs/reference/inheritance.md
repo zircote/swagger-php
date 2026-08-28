@@ -20,10 +20,10 @@ For each schema, the augmenter processes three relationship types in order:
 
 For each ancestor encountered:
 
-| Ancestor has `#[Schema]`? | Action | Continue walking? |
-|---|---|---|
-| Yes | Add `$ref` to the schema's `allOf` | **Stop** (parents only) |
-| No | Merge ancestor's `#[OA\Property]` members inline | Continue |
+| Ancestor has `#[Schema]`? | Action                                           | Continue walking?       |
+| ------------------------- | ------------------------------------------------ | ----------------------- |
+| Yes                       | Add `$ref` to the schema's `allOf`               | **Stop** (parents only) |
+| No                        | Merge ancestor's `#[OA\Property]` members inline | Continue                |
 
 ### Parent chain walk
 
@@ -106,10 +106,10 @@ An operation's "governing" PathItem is found by walking up from the operation's 
 
 The augmenter clones metadata from PathItem (and its ancestors) to operations:
 
-| Property | Merge behavior |
-|---|---|
-| `tags` | Accumulated from all ancestors, deduplicated, appended to operation's existing tags |
-| `security` | Accumulated from all ancestors, deduplicated by scheme name |
+| Property    | Merge behavior                                                                                            |
+| ----------- | --------------------------------------------------------------------------------------------------------- |
+| `tags`      | Accumulated from all ancestors, deduplicated, appended to operation's existing tags                       |
+| `security`  | Accumulated from all ancestors, deduplicated by scheme name                                               |
 | `responses` | Accumulated from all ancestors, deduplicated by response code — operation's own responses take precedence |
 
 All three accumulate additively up the hierarchy — every ancestor's PathItem contributes.

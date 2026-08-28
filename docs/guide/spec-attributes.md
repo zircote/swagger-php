@@ -1,7 +1,7 @@
 # 🧪 Using Spec Attributes
 
 ::: warning Beta
-Spec attributes are feature-complete but still in beta. The API may evolve based on feedback before being promoted to the default mode in a future major version.
+Spec attributes are mostly feature-complete but still beta. The API may evolve based on feedback before being promoted to the default mode in a future major version.
 :::
 
 Spec attributes are a new way to annotate your PHP code for OpenAPI generation. They live in the `OpenApi\Spec` namespace and are typed data containers: unlike classic annotations they carry no serialization logic, and the augmenter pipeline fills in derived values before compilation.
@@ -216,15 +216,15 @@ This produces paths `/api/v1/users/` and `/api/v1/users/{id}`, both tagged with 
 
 ### What PathItem provides
 
-| Feature | Description |
-|---|---|
-| `prefix` | Composable path prefix, inherited via class hierarchy |
-| `tags` | Cloned to all operations that don't declare their own |
-| `security` | Cloned to all operations that don't declare their own |
-| `responses` | Cloned to all operations (e.g. shared error responses) |
-| `parameters` | Emitted as path-level parameters in the output |
-| `summary` / `description` | Emitted at path level |
-| `servers` | Emitted at path level |
+| Feature                   | Description                                            |
+| ------------------------- | ------------------------------------------------------ |
+| `prefix`                  | Composable path prefix, inherited via class hierarchy  |
+| `tags`                    | Cloned to all operations that don't declare their own  |
+| `security`                | Cloned to all operations that don't declare their own  |
+| `responses`               | Cloned to all operations (e.g. shared error responses) |
+| `parameters`              | Emitted as path-level parameters in the output         |
+| `summary` / `description` | Emitted at path level                                  |
+| `servers`                 | Emitted at path level                                  |
 
 ## Shortcuts
 ### MediaType
@@ -476,16 +476,16 @@ Or apply globally via the OpenApi attribute or via PathItem (cloned to all opera
 
 ## Differences from classic attributes
 
-| Classic (`OpenApi\Attributes`)            | Spec (`OpenApi\Spec`)                                                              |
-|-------------------------------------------|------------------------------------------------------------------------------------|
-| `use OpenApi\Attributes as OA;`           | `use OpenApi\Spec as OA;`                                                          |
-| `#[OA\Get(path: '/pets')]`                | `#[OA\Operation\Get(path: '/pets')]`                                               |
-| `#[OA\JsonContent(...)]`                  | `new OA\MediaType\Json(...)` - but with limited set of (OA\Schema) attributes only |
-| `#[OA\PathParameter(...)]`                | `#[OA\Parameter\Path(...)]`                                                        |
-| `#[OA\Items(...)]`                        | `#[OA\Schema\Items(...)]`                                                          |
-| `Property extends Schema`                 | `Property` and `Schema` are siblings, stackable                                     |
-| Processors walk a nested annotation tree  | Augmenters enrich a flat set of typed buckets                                       |
-| Single serializer with version branches   | Dedicated compiler per OpenAPI version                                             |
+| Classic (`OpenApi\Attributes`)           | Spec (`OpenApi\Spec`)                                                              |
+| ---------------------------------------- | ---------------------------------------------------------------------------------- |
+| `use OpenApi\Attributes as OA;`          | `use OpenApi\Spec as OA;`                                                          |
+| `#[OA\Get(path: '/pets')]`               | `#[OA\Operation\Get(path: '/pets')]`                                               |
+| `#[OA\JsonContent(...)]`                 | `new OA\MediaType\Json(...)` - but with limited set of (OA\Schema) attributes only |
+| `#[OA\PathParameter(...)]`               | `#[OA\Parameter\Path(...)]`                                                        |
+| `#[OA\Items(...)]`                       | `#[OA\Schema\Items(...)]`                                                          |
+| `Property extends Schema`                | `Property` and `Schema` are siblings, stackable                                    |
+| Processors walk a nested annotation tree | Augmenters enrich a flat set of typed buckets                                      |
+| Single serializer with version branches  | Dedicated compiler per OpenAPI version                                             |
 
 ## Other differences
 
@@ -577,7 +577,7 @@ Classic mode accepts `requestBody` on all operations (with a comment noting it s
 
 ### Nullable `$ref` does not duplicate `description`
 
-When a schema combines a `$ref` with `nullable: true` and a `description`, classic mode emits the `description` both on the `$ref` entry inside `oneOf` and as a sibling of `oneOf`. Spec mode only emits it on the `$ref` entry — no redundant duplication.
+When a schema combines a `$ref` with `nullable: true` and a `description`, classic mode emits the `description` both on the `$ref` entry inside `oneOf` and as a sibling of `oneOf`. Spec mode only emits it on the `$ref` entry.
 
 ```php
 #[OA\Schema(

@@ -1,22 +1,20 @@
 # 🧪 Processing Modes
 
-Swagger-php supports three processing modes that control how your source code is transformed into an OpenAPI document. Each mode uses a different internal pipeline, but all produce the same OpenAPI output format.
+Swagger-php supports three processing modes that control how your source code is transformed into an OpenAPI document. Each uses a different internal pipeline.
 
 ## Overview
 
-| | Classic | Hybrid | Spec |
-|---|---|---|---|
-| **Status** | Stable | Beta | Beta |
-| **Attributes** | `OpenApi\Attributes` | `OpenApi\Attributes` | `OpenApi\Spec` |
-| **Annotations** | Yes | Yes | No |
-| **Pipeline** | Generator → Processors | Generator → HybridBridge → Augmenters → Compiler | Assembler → Augmenters → Compiler |
-| **Best for** | Existing projects | Gradual migration | New projects |
+|                 | Classic                | Hybrid                                           | Spec                              |
+| --------------- | ---------------------- | ------------------------------------------------ | --------------------------------- |
+| **Status**      | Stable                 | Beta                                             | Beta                              |
+| **Attributes**  | `OpenApi\Attributes`   | `OpenApi\Attributes`                             | `OpenApi\Spec`                    |
+| **Annotations** | Yes                    | Yes                                              | No                                |
+| **Pipeline**    | Generator → Processors | Generator → HybridBridge → Augmenters → Compiler | Assembler → Augmenters → Compiler |
+| **Best for**    | Existing projects      | Gradual migration                                | New projects                      |
 
 ## Classic (default)
 
 The classic mode scans source files for `OpenApi\Attributes` (and legacy `OpenApi\Annotations`) and assembles the OpenAPI document via the Generator pipeline with its processor chain.
-
-This is the stable, production-ready mode and the default for all existing projects.
 
 ```php
 use OpenApi\Builder;
@@ -36,7 +34,7 @@ Spec mode is a ground-up reimplementation of the pipeline using attributes from 
 
 - **Typed DTOs** — attributes are simple data containers with constructor-promoted properties
 - **Slot-map nesting** — explicit `merge()`/`contained()` maps replace reflection-based nesting
-- **Grouped augmenters** — a three-phase pipeline (resolve → reduce → augment) that's easy to extend and configure
+- **Grouped augmenters** — a three-phase pipeline (resolve → reduce → augment) with explicit ordering
 - **Version-aware compilers** — separate compilers for OpenAPI 3.0, 3.1, and 3.2
 
 ```php
@@ -51,7 +49,7 @@ $result = (new Builder())
 $result->toYaml();
 ```
 
-Spec mode uses the `OpenApi\Spec` namespace (`use OpenApi\Spec as OA;`) with a cleaner attribute API. See [Using Spec Attributes](/guide/spec-attributes) for a full guide.
+Spec mode uses the `OpenApi\Spec` namespace (`use OpenApi\Spec as OA;`). See [Using Spec Attributes](/guide/spec-attributes) for a full guide.
 
 ::: warning Beta
 Spec mode is mostly feature-complete but still beta. The attribute API may evolve based on feedback before being promoted to default in a future major version.
@@ -61,7 +59,7 @@ Spec mode is mostly feature-complete but still beta. The attribute API may evolv
 
 Hybrid mode uses the classic Generator for scanning (so your existing `OpenApi\Attributes` annotations work unchanged), then bridges the result into the spec pipeline's augmenters and compilers.
 
-This gives you access to the new augmenter pipeline — with its cleaner extension model and version-aware compilation — without rewriting any attribute code.
+This gives you the augmenter pipeline and version-aware compilation without rewriting any attribute code.
 
 ```php
 use OpenApi\Builder;
@@ -78,7 +76,7 @@ $result->toYaml();
 Hybrid mode is the recommended transition path for existing projects that want to benefit from the new pipeline incrementally.
 
 ::: warning Disclaimer
-Hybrid mode will not work in heavily customized projects like `NelmioApiDocBundle or projects adding custom processors.
+Hybrid mode will not work in heavily customized projects like `NelmioApiDocBundle`, or in projects adding custom processors.
 :::
 
 ## Switching modes
@@ -102,15 +100,15 @@ $builder->setMode(Mode::SPEC);
 
 ## Behavioral differences
 
-The three modes produce equivalent OpenAPI output for the same logical API. However, there are some differences in how they process source code:
+The modes aim for equivalent output from the same source, but differ in what they accept and in how they can be configured:
 
-| Behavior | Classic | Hybrid                                               | Spec                    |
-|---|---|------------------------------------------------------|-------------------------|
-| Annotation support (`/** @OA\... */`) | Yes | Yes                                                  | No                      |
-| `MergeJsonContent` / `MergeXmlContent` | Yes | Yes                                                  | Yes (via `OA\MediaType\Json`) |
-| Processor chain (`withGenerator()`) | Yes | Scanning only (`MergeJsonContent`/`MergeXmlContent`) | No                      |
-| Augmenter pipeline (`withAugmenters()`) | No | Yes                                                  | Yes                     |
-| Version-aware compilation | No (single serializer) | Yes                                                  | Yes                     |
+| Behavior                                | Classic                | Hybrid                                               | Spec                          |
+| --------------------------------------- | ---------------------- | ---------------------------------------------------- | ----------------------------- |
+| Annotation support (`/** @OA\... */`)   | Yes                    | Yes                                                  | No                            |
+| `MergeJsonContent` / `MergeXmlContent`  | Yes                    | Yes                                                  | Yes (via `OA\MediaType\Json`) |
+| Processor chain (`withGenerator()`)     | Yes                    | Scanning only (`MergeJsonContent`/`MergeXmlContent`) | No                            |
+| Augmenter pipeline (`withAugmenters()`) | No                     | Yes                                                  | Yes                           |
+| Version-aware compilation               | No (single serializer) | Yes                                                  | Yes                           |
 
 ## Migration path
 
@@ -120,10 +118,10 @@ The recommended migration path is:
 
 2. **Hybrid → Spec** — when starting new code, use `OpenApi\Spec` attributes. Existing `OpenApi\Attributes` code continues to work via hybrid mode.
 
-3. **Full Spec** — once all code uses `OpenApi\Spec` attributes, switch to `setMode(Mode::SPEC)` for the cleanest pipeline.
+3. **Full Spec** — once all code uses `OpenApi\Spec` attributes, switch to `setMode(Mode::SPEC)`.
 
 ::: tip Version timeline
 - **v6** — spec/hybrid ship as opt-in beta. Classic remains default.
-- **v7** — hybrid becomes the default mode. Classic still available. `setMode()` and all classic code deprecated
-- **v8** — classic removed. `setMode()` removed. Spec becomes default. spec code might move to `OpenApi\Attributes`.
+- **v7** — hybrid becomes the default mode. Classic still available. `setMode()` and all classic code deprecated.
+- **v8** — classic removed. `setMode()` removed. Spec becomes default. Spec code might move to `OpenApi\Attributes`.
 :::

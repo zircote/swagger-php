@@ -27,7 +27,7 @@ Each attribute declares its relationships via two methods:
 
 Slots use `[]` suffix for collection append (`'parameters[]'`), bare name for scalar assignment (`'requestBody'`).
 
-Both methods are child-driven: the attribute itself declares where it can go, whether same-level (merge) or cross-level (contained). This makes the system fully extensible by downstream code — custom attachables can declare their own nesting targets without modifying native attributes.
+Both methods are child-driven: the attribute itself declares where it can go, whether same-level (merge) or cross-level (contained). This is what lets downstream code extend the system: custom attachables declare their own nesting targets without modifying native attributes.
 
 ### Level-by-level resolution
 
@@ -60,11 +60,11 @@ Augmenters form a grouped pipeline that enriches the Specification in three orde
 
 ### Pipeline phases
 
-| Phase | Purpose | Examples |
-|---|---|---|
+| Phase       | Purpose                                                       | Examples                                                                   |
+| ----------- | ------------------------------------------------------------- | -------------------------------------------------------------------------- |
 | **Resolve** | Infer data from PHP reflection and cross-bucket relationships | `Inheritance`, `Names`, `Enums`, `Shortcuts`, `PathItems`, `Types`, `Refs` |
-| **Reduce** | Filter or remove entries | `PathFilter`, `Cleanup` |
-| **Augment** | Add derived metadata | `MediaTypes`, `Docblocks`, `OperationIds`, `Tags`, `EnumDescriptions` |
+| **Reduce**  | Filter or remove entries                                      | `PathFilter`, `Cleanup`                                                    |
+| **Augment** | Add derived metadata                                          | `MediaTypes`, `Docblocks`, `OperationIds`, `Tags`, `EnumDescriptions`      |
 
 Each augmenter implements `PipeInterface` and receives the full Specification. Augmenters within a phase run in registration order, which is defined in `Builder::getDefaultAugmenters()`.
 
@@ -129,11 +129,11 @@ class CustomAugmenter implements PipeInterface
 
 Each OpenAPI version has its own compiler that handles version-specific output differences:
 
-| Compiler | Version | Key differences                                                   |
-|---|---|-------------------------------------------------------------------|
-| `OpenApi30Compiler` | 3.0.x | `nullable` as property, `exclusiveMinimum` as boolean             |
-| `OpenApi31Compiler` | 3.1.x | `nullable` via type array, `exclusiveMinimum` as number, webhooks |
-| `OpenApi32Compiler` | 3.2.x | Extends 3.1 (currently without additional features)               |
+| Compiler            | Version | Key differences                                                   |
+| ------------------- | ------- | ----------------------------------------------------------------- |
+| `OpenApi30Compiler` | 3.0.x   | `nullable` as property, `exclusiveMinimum` as boolean             |
+| `OpenApi31Compiler` | 3.1.x   | `nullable` via type array, `exclusiveMinimum` as number, webhooks |
+| `OpenApi32Compiler` | 3.2.x   | Extends 3.1 (currently without additional features)               |
 
 The compiler transforms a Specification into a plain PHP array representing the OpenAPI document. Version selection is automatic based on `Builder::setVersion()` or the `#[OA\OpenApi(version: '...')]` attribute.
 
@@ -180,30 +180,30 @@ can be nested, see the generated [Spec Attributes reference](/reference/spec-att
 
 How each classic processor maps to the new pipeline:
 
-| Classic Processor | Spec Equivalent                          | Stage |
-|---|------------------------------------------|---|
-| ExpandClasses | `Inheritance` + Assembler                | augment + assembly |
-| ExpandTraits | `Inheritance` + Assembler                | augment + assembly |
-| ExpandInterfaces | `Inheritance` + Assembler                | augment + assembly |
-| ExpandEnums | `Enums`                                  | augment |
-| MergeIntoOpenApi | `Assembler`                                | assembly |
-| MergeIntoComponents | Compiler                                 | compile |
-| MergeJsonContent | `Shortcuts`                                | resolve |
-| MergeXmlContent | `Shortcuts`               | resolve |
-| BuildPaths | Compiler                                 | compile |
-| AugmentSchemas | `Names` + `Types` + Assembler + Compiler | mixed |
-| AugmentProperties | `Types`                                  | resolve |
-| AugmentParameters | `Types`                                  | resolve |
-| AugmentItems | `Types`                                  | resolve |
-| AugmentRequestBody | `Types`                                  | resolve |
-| AugmentRefs | `Refs`                                   | resolve |
-| AugmentDiscriminators | `Refs`                                   | resolve |
-| AugmentTags | `Tags`                                   | augment |
-| AugmentMediaType | `MediaTypes`                             | augment |
-| DocBlockDescriptions | `Docblocks`                              | augment |
-| OperationId | `OperationIds`                           | augment |
-| CleanUnmerged | Assembler (orphan validation)            | assembly |
-| CleanUnusedComponents | `Cleanup`                                | reduce |
-| PathFilter | `PathFilter`                             | reduce |
+| Classic Processor     | Spec Equivalent                          | Stage              |
+| --------------------- | ---------------------------------------- | ------------------ |
+| ExpandClasses         | `Inheritance` + Assembler                | augment + assembly |
+| ExpandTraits          | `Inheritance` + Assembler                | augment + assembly |
+| ExpandInterfaces      | `Inheritance` + Assembler                | augment + assembly |
+| ExpandEnums           | `Enums`                                  | augment            |
+| MergeIntoOpenApi      | `Assembler`                              | assembly           |
+| MergeIntoComponents   | Compiler                                 | compile            |
+| MergeJsonContent      | `Shortcuts`                              | resolve            |
+| MergeXmlContent       | `Shortcuts`                              | resolve            |
+| BuildPaths            | Compiler                                 | compile            |
+| AugmentSchemas        | `Names` + `Types` + Assembler + Compiler | mixed              |
+| AugmentProperties     | `Types`                                  | resolve            |
+| AugmentParameters     | `Types`                                  | resolve            |
+| AugmentItems          | `Types`                                  | resolve            |
+| AugmentRequestBody    | `Types`                                  | resolve            |
+| AugmentRefs           | `Refs`                                   | resolve            |
+| AugmentDiscriminators | `Refs`                                   | resolve            |
+| AugmentTags           | `Tags`                                   | augment            |
+| AugmentMediaType      | `MediaTypes`                             | augment            |
+| DocBlockDescriptions  | `Docblocks`                              | augment            |
+| OperationId           | `OperationIds`                           | augment            |
+| CleanUnmerged         | Assembler (orphan validation)            | assembly           |
+| CleanUnusedComponents | `Cleanup`                                | reduce             |
+| PathFilter            | `PathFilter`                             | reduce             |
 
 The key architectural difference: classic processors walk a single nested annotation tree in one chain. Spec augmenters operate on a flat Specification of typed buckets, grouped into explicit phases. Both mutate their attributes in place — the pipelines differ in shape and ordering, not in mutability.
