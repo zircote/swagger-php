@@ -14,14 +14,16 @@ Augmenters are part of the spec-attributes pipeline (`--mode spec` or `--mode hy
 ## Augmenter Configuration
 
 ### Command line
-The `-c` option allows to specify a name/value pair with the name consisting
-of the augmenter name (starting lowercase) and option name separated by a dot (`.`).
+The `-c` option takes a name/value pair: the augmenter name (starting lowercase)
+and the option name, separated by a dot (`.`).
 
-Use `-D` (with `--mode spec`) to list the available augmenter names and options.
+To list the available augmenter names and options use `-D`. It still requires a
+source path, e.g. `./vendor/bin/openapi --mode spec -D src`. Unknown keys are
+reported as warnings.
 
 ```shell
-> ./vendor/bin/openapi --mode spec -c operationIds.hash=true // ...
-> ./vendor/bin/openapi --mode spec -c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ // ...
+> ./vendor/bin/openapi --mode spec -c operationIds.hash=true src
+> ./vendor/bin/openapi --mode spec -c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ src
 ```
 
 ### Programmatically with PHP

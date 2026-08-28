@@ -10,12 +10,15 @@ For improvements head over to [GitHub](https://github.com/zircote/swagger-php) a
 ## Processor Configuration
 
 ### Command line
-The `-c` option allows to specify a name/value pair with the name consisting
-of the processor name (starting lowercase) and  option name separated by a dot (`.`).
+The `-c` option takes a name/value pair: the processor name (starting lowercase)
+and the option name, separated by a dot (`.`).
+
+To list the available processor names and options use `-D`. It still requires a
+source path, e.g. `./vendor/bin/openapi -D src`.
 
 ```shell
-> ./vendor/bin/openapi -c operatinId.hash=true // ...
-> ./vendor/bin/openapi -c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ // ...
+> ./vendor/bin/openapi -c operationId.hash=true src
+> ./vendor/bin/openapi -c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ src
 ```
 
 ### Programmatically with PHP
