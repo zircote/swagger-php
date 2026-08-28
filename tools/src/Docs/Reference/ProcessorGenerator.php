@@ -45,12 +45,15 @@ class ProcessorGenerator extends DocGenerator
 
         $out .= "\n### Command line\n";
         $out .= <<<'EOT'
-The `-c` option allows to specify a name/value pair with the name consisting
-of the processor name (starting lowercase) and  option name separated by a dot (`.`).
+The `-c` option takes a name/value pair: the processor name (starting lowercase)
+and the option name, separated by a dot (`.`).
+
+To list the available processor names and options use `-D`. It still requires a
+source path, e.g. `./vendor/bin/openapi -D src`.
 
 ```shell
-> ./vendor/bin/openapi -c operatinId.hash=true // ...
-> ./vendor/bin/openapi -c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ // ...
+> ./vendor/bin/openapi -c operationId.hash=true src
+> ./vendor/bin/openapi -c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ src
 ```
 
 EOT;
@@ -125,6 +128,7 @@ EOT;
     protected function collectOptions(\ReflectionClass $rc): array
     {
         $options = [];
+        $configurable = $this->configurableParameters($rc);
 
         foreach ($rc->getMethods() as $method) {
             if (!str_starts_with($method->getName(), 'set')) {
@@ -132,6 +136,10 @@ EOT;
             }
 
             $pname = lcfirst(substr($method->getName(), 3));
+            if (!in_array($pname, $configurable, true)) {
+                continue;
+            }
+
             $type = 'n/a';
             if (1 === count($method->getParameters())) {
                 if ($rt = $method->getParameters()[0]->getType()) {

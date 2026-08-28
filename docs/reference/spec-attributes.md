@@ -5,12 +5,12 @@ This page is generated automatically from the `swagger-php` sources.
 For improvements head over to [GitHub](https://github.com/zircote/swagger-php) and create a PR ;)
 
 
-Spec attributes are typed PHP 8.1+ attributes in the `OpenApi\Spec` namespace — the foundation of the
+Spec attributes are typed PHP attributes in the `OpenApi\Spec` namespace — the foundation of the
 spec-attributes pipeline (`--mode spec` or `--mode hybrid`).
 
-They are immutable data containers with no serialization logic. Relationships between attributes are
+They are data containers with no serialization logic; augmenters fill in derived values. Relationships are
 declared via `merge()` (what sibling an attribute composes into on the same reflector) and `contained()`
-(what parent types can absorb this attribute from inner reflector levels). The [Assembler](/reference/builder.md)
+(what parent types can absorb this attribute from inner reflector levels). The [Assembler](/reference/architecture)
 resolves nesting, and [Augmenters](/reference/augmenters.md) enrich the collected specification before compilation.
 
 Typed subclasses (e.g. `Operation\Get`, `Parameter\Path`, `Flow\AuthorizationCode`) pre-fill common

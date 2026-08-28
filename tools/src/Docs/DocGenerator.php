@@ -6,6 +6,8 @@
 
 namespace OpenApi\Tools\Docs;
 
+use OpenApi\Utils\Pipeline;
+
 abstract class DocGenerator
 {
     public const NO_DETAILS_AVAILABLE = 'No details available.';
@@ -33,6 +35,35 @@ abstract class DocGenerator
     }
 
     abstract public function generate(): array;
+
+    /**
+     * Names of the constructor parameters that count as public configuration.
+     *
+     * Constructor parameters are the configuration contract by convention. Object typed
+     * ones (factories, resolvers, the generator) are collaborators rather than settings
+     * and are excluded, matching {@see Pipeline::getConfig()} and therefore the `-D`
+     * output.
+     *
+     * @return list<string>
+     */
+    public function configurableParameters(\ReflectionClass $rc): array
+    {
+        if (!$rc->hasMethod('__construct')) {
+            return [];
+        }
+
+        $names = [];
+        foreach ($rc->getMethod('__construct')->getParameters() as $parameter) {
+            $type = $parameter->getType();
+            if ($type instanceof \ReflectionNamedType && !$type->isBuiltin()) {
+                continue;
+            }
+
+            $names[] = $parameter->getName();
+        }
+
+        return $names;
+    }
 
     /**
      * @return array{content: string, see: list<string>, var: string, params: array<string, array{type: string, content: string|null}>}

@@ -20,10 +20,10 @@ For each schema, the augmenter processes three relationship types in order:
 
 For each ancestor encountered:
 
-| Ancestor has `#[Schema]`? | Action | Continue walking? |
-|---|---|---|
-| Yes | Add `$ref` to the schema's `allOf` | **Stop** (parents only) |
-| No | Merge ancestor's `#[OA\Property]` members inline | Continue |
+| Ancestor has `#[Schema]`? | Action                                           | Continue walking?       |
+| ------------------------- | ------------------------------------------------ | ----------------------- |
+| Yes                       | Add `$ref` to the schema's `allOf`               | **Stop** (parents only) |
+| No                        | Merge ancestor's `#[OA\Property]` members inline | Continue                |
 
 ### Parent chain walk
 
@@ -56,7 +56,7 @@ When an ancestor has no schema, its `#[OA\Property]` members are merged into the
 
 ### allOf restructuring
 
-After expansion, if a schema has both `allOf` entries and its own properties, the compiler moves the properties into a dedicated `allOf` entry (an anonymous schema with `type: object`). This keeps the output clean:
+After expansion, if a schema has both `allOf` entries and its own properties, the `Refs` augmenter (`mergeAllOf()`) moves the properties into a dedicated `allOf` entry — an anonymous schema with `type: object` — so the result is a pure `allOf` composition:
 
 ```yaml
 User:
@@ -70,7 +70,7 @@ User:
 
 ### Duplicate $ref deduplication
 
-If you explicitly declare an `allOf` entry that matches one the augmenter would add (e.g. you extend a class and also manually reference it), the compiler deduplicates — only one `$ref` survives.
+If you explicitly declare an `allOf` entry that matches one the augmenter would add (e.g. you extend a class and also manually reference it), the `Refs` augmenter (`dedupAllOfRefs()`) deduplicates — only one `$ref` survives.
 
 ## PathItem Inheritance
 
@@ -106,10 +106,10 @@ An operation's "governing" PathItem is found by walking up from the operation's 
 
 The augmenter clones metadata from PathItem (and its ancestors) to operations:
 
-| Property | Merge behavior |
-|---|---|
-| `tags` | Accumulated from all ancestors, deduplicated, appended to operation's existing tags |
-| `security` | Accumulated from all ancestors, deduplicated by scheme name |
+| Property    | Merge behavior                                                                                            |
+| ----------- | --------------------------------------------------------------------------------------------------------- |
+| `tags`      | Accumulated from all ancestors, deduplicated, appended to operation's existing tags                       |
+| `security`  | Accumulated from all ancestors, deduplicated by scheme name                                               |
 | `responses` | Accumulated from all ancestors, deduplicated by response code — operation's own responses take precedence |
 
 All three accumulate additively up the hierarchy — every ancestor's PathItem contributes.

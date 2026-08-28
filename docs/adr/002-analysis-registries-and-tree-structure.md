@@ -17,7 +17,7 @@ A flat index of all annotations keyed by object identity, with Context as the at
 **Populated by:** `Analysis::addAnnotation()`, which recursively registers the annotation and all its nested children at the time of the call.
 
 **Read by:**
-- `getAnnotationsOfType()` — query all annotations of a given class (used by ~15 processors)
+- `getAnnotationsOfType()` — query all annotations of a given class (used by most processors)
 - Direct iteration in early-pipeline processors (`MergeIntoOpenApi`, `MergeIntoComponents`, `DocBlockDescriptions`, `CleanUnmerged`)
 - Late-pipeline processors (`AugmentRefs`, `CleanUnusedComponents`)
 - `Analysis::merged()` / `Analysis::unmerged()` / `Analysis::split()`

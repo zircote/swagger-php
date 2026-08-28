@@ -199,7 +199,7 @@ class Docblocks implements PipeInterface
     {
         $properties = $schema->properties ?? [];
 
-        // Also walk properties inside allOf entries (placed there by ExpandHierarchy)
+        // Also walk properties inside allOf entries (placed there by Augmenter\Inheritance)
         foreach ($schema->allOf ?? [] as $entry) {
             if ($entry->properties) {
                 array_push($properties, ...$entry->properties);

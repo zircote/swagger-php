@@ -1,7 +1,7 @@
 # References
 
 It's quite common that endpoints have some overlap in either their request or response data.
-To keep things DRY (Don't Repeat Yourself) the specification allows reusing components using `$ref`'s
+To keep things DRY (Don't Repeat Yourself) the specification allows reusing components using `$ref`s.
 
 <codeblock id="using-references">
   <template v-slot:at>
@@ -68,5 +68,5 @@ This doesn't do anything by itself, but now you can reference this fragment by i
 </codeblock>
 
 ::: info Examples
-There are more use cases on how to use refs in the [using-refs example](https://github.com/zircote/swagger-php/tree/master/examples/specs/using-refs).
+There are more use cases on how to use refs in the [using-refs example](https://github.com/zircote/swagger-php/tree/master/docs/examples/specs/using-refs).
 :::

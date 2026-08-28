@@ -47,7 +47,7 @@ class Requirement extends OA\AbstractAttribute
     }
 
     /**
-     * Resolve to the normalized map format: ['schemeName' => [...scopes]].
+     * Resolve to the normalised map format: ['schemeName' => [...scopes]].
      *
      * @return array<string, list<string>>
      */

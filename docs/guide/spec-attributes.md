@@ -1,10 +1,10 @@
 # 🧪 Using Spec Attributes
 
 ::: warning Beta
-Spec attributes are feature-complete but still in beta. The API may evolve based on feedback before being promoted to the default mode in a future major version.
+Spec attributes are mostly feature-complete but still beta. The API may evolve based on feedback before being promoted to the default mode in a future major version.
 :::
 
-Spec attributes are a new way to annotate your PHP code for OpenAPI generation. They live in the `OpenApi\Spec` namespace and are designed as simple, typed data containers — no serialization logic, no mutation, just clean PHP 8.1+ attributes.
+Spec attributes are a new way to annotate your PHP code for OpenAPI generation. They live in the `OpenApi\Spec` namespace and are typed data containers: unlike classic annotations they carry no serialization logic, and the augmenter pipeline fills in derived values before compilation.
 
 ## Namespace
 
@@ -117,7 +117,7 @@ Types, formats, and nullability are inferred from PHP type declarations by the `
 
 ### Stacking Schema and Property
 
-In spec mode, `OA\Schema` is standalone — it doesn't inherit from anything. This means you can stack `#[OA\Property]` and `#[OA\Schema]` on the same target:
+In spec mode `OA\Property` no longer extends `OA\Schema`; both derive directly from `AbstractAttribute`. This means you can stack `#[OA\Property]` and `#[OA\Schema]` on the same target:
 
 ```php
 #[OA\Property(property: 'status')]
@@ -139,6 +139,7 @@ Operations map to HTTP methods on API endpoints. Spec mode provides typed subcla
 #[OA\Operation\Patch(path: '/pets/{id}')]
 #[OA\Operation\Head(path: '/pets')]
 #[OA\Operation\Options(path: '/pets')]
+#[OA\Operation\Trace(path: '/pets')]
 ```
 
 You can also use the base class with an explicit method:
@@ -215,15 +216,15 @@ This produces paths `/api/v1/users/` and `/api/v1/users/{id}`, both tagged with 
 
 ### What PathItem provides
 
-| Feature | Description |
-|---|---|
-| `prefix` | Composable path prefix, inherited via class hierarchy |
-| `tags` | Cloned to all operations that don't declare their own |
-| `security` | Cloned to all operations that don't declare their own |
-| `responses` | Cloned to all operations (e.g. shared error responses) |
-| `parameters` | Emitted as path-level parameters in the output |
-| `summary` / `description` | Emitted at path level |
-| `servers` | Emitted at path level |
+| Feature                   | Description                                            |
+| ------------------------- | ------------------------------------------------------ |
+| `prefix`                  | Composable path prefix, inherited via class hierarchy  |
+| `tags`                    | Cloned to all operations that don't declare their own  |
+| `security`                | Cloned to all operations that don't declare their own  |
+| `responses`               | Cloned to all operations (e.g. shared error responses) |
+| `parameters`              | Emitted as path-level parameters in the output         |
+| `summary` / `description` | Emitted at path level                                  |
+| `servers`                 | Emitted at path level                                  |
 
 ## Shortcuts
 ### MediaType
@@ -359,7 +360,7 @@ public function list() {}
 ```
 
 ::: tip When to use Components
-Schemas, PathItems, SecuritySchemes, and named Responses/RequestBodies are root attributes — they can be declared directly on a class without a Components wrapper. Use Components only for types that can't stand alone (Parameter, Header, Link, Example).
+Schemas, PathItems, security schemes (`OA\Security\Scheme`), and named Responses/RequestBodies are root attributes — they can be declared directly on a class without a Components wrapper. Use Components only for types that can't stand alone (Parameter, Header, Link, Example).
 :::
 
 ## Inheritance
@@ -475,16 +476,16 @@ Or apply globally via the OpenApi attribute or via PathItem (cloned to all opera
 
 ## Differences from classic attributes
 
-| Classic (`OpenApi\Attributes`)            | Spec (`OpenApi\Spec`)                                                              |
-|-------------------------------------------|------------------------------------------------------------------------------------|
-| `use OpenApi\Attributes as OA;`           | `use OpenApi\Spec as OA;`                                                          |
-| `#[OA\Get(path: '/pets')]`                | `#[OA\Operation\Get(path: '/pets')]`                                               |
-| `#[OA\JsonContent(...)]`                  | `new OA\MediaType\Json(...)` - but with limited set of (OA\Schema) attributes only |
-| `#[OA\PathParameter(...)]`                | `#[OA\Parameter\Path(...)]`                                                        |
-| `#[OA\Items(...)]`                        | `#[OA\Schema\Items(...)]`                                                          |
-| Schema inherits from annotation base      | Schema is standalone, stackable                                                    |
-| Processors modify mutable annotation tree | Augmenters enrich immutable DTOs                                                   |
-| Single serializer with version branches   | Dedicated compiler per OpenAPI version                                             |
+| Classic (`OpenApi\Attributes`)           | Spec (`OpenApi\Spec`)                                                              |
+| ---------------------------------------- | ---------------------------------------------------------------------------------- |
+| `use OpenApi\Attributes as OA;`          | `use OpenApi\Spec as OA;`                                                          |
+| `#[OA\Get(path: '/pets')]`               | `#[OA\Operation\Get(path: '/pets')]`                                               |
+| `#[OA\JsonContent(...)]`                 | `new OA\MediaType\Json(...)` - but with limited set of (OA\Schema) attributes only |
+| `#[OA\PathParameter(...)]`               | `#[OA\Parameter\Path(...)]`                                                        |
+| `#[OA\Items(...)]`                       | `#[OA\Schema\Items(...)]`                                                          |
+| `Property extends Schema`                | `Property` and `Schema` are siblings, stackable                                    |
+| Processors walk a nested annotation tree | Augmenters enrich a flat set of typed buckets                                      |
+| Single serializer with version branches  | Dedicated compiler per OpenAPI version                                             |
 
 ## Other differences
 
@@ -532,18 +533,7 @@ This is semantically stricter — the schema explicitly declares it must be an o
 
 When a class extends a parent that has its own schema, the `Inheritance` augmenter adds a `$ref` to the parent in `allOf`. If you also declare that same `$ref` explicitly, spec mode deduplicates it — only one entry survives. Classic mode may emit the same `$ref` twice.
 
-```php
-#[OA\Schema(
-    schema: 'create-user',
-    allOf: [
-        new OA\Schema(ref: '#/components/schemas/abstract-user'),
-        new OA\Schema(required: ['name', 'email']),
-    ]
-)]
-class CreateUser extends AbstractUser {}
-```
-
-In spec mode, the `$ref` to `abstract-user` appears only once in the output even though both the explicit `allOf` and the inheritance augmenter would add it.
+Reusing the `CreateUser` example above: it both extends `AbstractUser` and names `abstract-user` in its own `allOf`. In spec mode that `$ref` appears once rather than twice — `Refs::dedupAllOfRefs()` drops the duplicate.
 
 ### Single-element `type` arrays reduced to string
 
@@ -574,10 +564,11 @@ Both forms are valid in OpenAPI 3.1+, but the scalar form is more conventional f
 
 In spec mode, the typed operation subclasses `OA\Operation\Get`, `OA\Operation\Head`, `OA\Operation\Options`, and `OA\Operation\Trace` do not accept a `requestBody` parameter. This enforces the HTTP semantics where request bodies are not defined for these methods.
 
-Classic mode accepts `requestBody` on all operations (with a comment noting it should be ignored by validators for methods that don't support it).
+Classic mode accepts `requestBody` on all operations (with a comment noting it should be ignored by validators for methods that don't support it). In spec mode the parameter simply does not exist, so passing it raises `Error: Unknown named parameter $requestBody` when the attribute is instantiated.
 
 ```php
-// This works in classic mode but is a compile warning in spec mode:
+// Works in classic mode; a PHP error in spec mode, because
+// Operation\Get::__construct() has no $requestBody parameter:
 #[OA\Operation\Get(path: '/pets', requestBody: new OA\RequestBody(...))]
 
 // Use Post, Put, Patch, or Delete for request bodies:
@@ -586,7 +577,7 @@ Classic mode accepts `requestBody` on all operations (with a comment noting it s
 
 ### Nullable `$ref` does not duplicate `description`
 
-When a schema combines a `$ref` with `nullable: true` and a `description`, classic mode emits the `description` both on the `$ref` entry inside `oneOf` and as a sibling of `oneOf`. Spec mode only emits it on the `$ref` entry — no redundant duplication.
+When a schema combines a `$ref` with `nullable: true` and a `description`, classic mode emits the `description` both on the `$ref` entry inside `oneOf` and as a sibling of `oneOf`. Spec mode only emits it on the `$ref` entry.
 
 ```php
 #[OA\Schema(

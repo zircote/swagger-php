@@ -14,14 +14,16 @@ Augmenters are part of the spec-attributes pipeline (`--mode spec` or `--mode hy
 ## Augmenter Configuration
 
 ### Command line
-The `-c` option allows to specify a name/value pair with the name consisting
-of the augmenter name (starting lowercase) and option name separated by a dot (`.`).
+The `-c` option takes a name/value pair: the augmenter name (starting lowercase)
+and the option name, separated by a dot (`.`).
 
-Use `-D` (with `--mode spec`) to list the available augmenter names and options.
+To list the available augmenter names and options use `-D`. It still requires a
+source path, e.g. `./vendor/bin/openapi --mode spec -D src`. Unknown keys are
+reported as warnings.
 
 ```shell
-> ./vendor/bin/openapi --mode spec -c operationIds.hash=true // ...
-> ./vendor/bin/openapi --mode spec -c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ // ...
+> ./vendor/bin/openapi --mode spec -c operationIds.hash=true src
+> ./vendor/bin/openapi --mode spec -c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ src
 ```
 
 ### Programmatically with PHP
@@ -45,10 +47,6 @@ Handle all scenarios related to PHP inheritance.
 Delegates to:
 - Inheritance\Schemas
 - Inheritance\Operations
-
-#### Config settings
-- **inheritance.attributeFactory** : `OpenApi\Utils\AttributeFactory` · default: `OpenApi\Utils\AttributeFactory`  
-  No details available.
 
 ### [Names](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Names.php)
 
@@ -100,10 +98,6 @@ Infers schema type, format, nullable, items, etc. from PHP type declarations and
 Walks all properties and parameters in the specification and fills their schema
 fields from the attached reflector's type information.
 
-#### Config settings
-- **types.typeResolver** : `OpenApi\Type\TypeResolver` · default: `OpenApi\Type\TypeResolver`  
-  Override the type resolver used to infer schema types from PHP type declarations.
-
 ### [Refs](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Refs.php)
 
 Resolves FQCN-based $ref values to JSON Reference paths.
@@ -150,10 +144,6 @@ Fills summary, description, and deprecated from PHP docblock comments.
 Walks all attributes in the specification that have summary/description
 properties and populates them from the reflector's docblock when not
 explicitly set.
-
-#### Config settings
-- **docblocks.parser** : `OpenApi\Utils\DocBlockParser` · default: `OpenApi\Utils\DocBlockParser`  
-  Override the docblock parser used to extract summaries and descriptions.
 
 ### [OperationIds](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/OperationIds.php)
 

@@ -6,7 +6,7 @@ The idea is to add `swagger-php` [annotations](using-annotations.md) or [attribu
 next to the relevant PHP code in your application. These will contain the details about your API and
 `swagger-php` will convert those into machine-readable [OpenAPI documentation](https://spec.openapis.org/oas/v3.1.0.html).
 
-By adding your API documentation next to the corresponding source code (same file!) makes it easy to keep it up-to-date
+Keeping your API documentation next to the corresponding source code (same file!) makes it easy to keep up-to-date,
 as all details can be modified in one place.
 
 ::: tip Annotating vs. Annotations

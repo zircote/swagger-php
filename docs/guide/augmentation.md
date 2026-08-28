@@ -83,7 +83,7 @@ In particular, the following schema elements may be augmented:
 
 Data types that are not recognized and cannot be resolved to a class-like name (`class`, `interface`, `enum`, etc.) will be ignored.
 
-Mots of these schema elements will be resolved in isolation. For example, `nullable` may be enforced by the OpenApi annotation
+Most of these schema elements will be resolved in isolation. For example, `nullable` may be enforced by the OpenApi annotation
 while the actual data type may be resolved from the docblock (or type-hint).
 
 ## Summary and description
@@ -99,6 +99,6 @@ annotated as a `OA\Schema` itself.
 
 ## Tags
 
-Tags are an OpenApi concept and may be added to your spec via th `Tag` annotation. For convenience, however, it is also
+Tags are an OpenApi concept and may be added to your spec via the `Tag` annotation. For convenience, however, it is also
 possible to create tags by just adding them to your HTTP operations (`Get`, `Post`, etc.).
 All tags used that are not explicitly defined with a `Tag` annotation will be added to the spec.

@@ -48,14 +48,14 @@ annotations to avoid having to specify the `mediaType` over and over again.
   </template>
 </codeblock>
 
-During processing the `OA\JsonContent` unwraps to `OA\MediaType(mediaType="application/json", OA\Schema(...)`
+During processing the `OA\JsonContent` unwraps to `OA\MediaType(mediaType="application/json", schema: OA\Schema(...))`
 and will generate the same output.
 
 The same applies to `OA\XmlContent`.
 
 ## `OA\Property` (spec only)
 
-When using the `OA\Spec` namespace, class properties and promoted constructor parameters that have an `OA\Schema`
+When using the `OpenApi\Spec` namespace, class properties and promoted constructor parameters that have an `OA\Schema`
 attribute do not need an explicit `OA\Property` attribute — it will be added automatically.
 
 **Verbose:**

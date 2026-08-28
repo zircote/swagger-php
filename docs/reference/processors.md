@@ -10,12 +10,15 @@ For improvements head over to [GitHub](https://github.com/zircote/swagger-php) a
 ## Processor Configuration
 
 ### Command line
-The `-c` option allows to specify a name/value pair with the name consisting
-of the processor name (starting lowercase) and  option name separated by a dot (`.`).
+The `-c` option takes a name/value pair: the processor name (starting lowercase)
+and the option name, separated by a dot (`.`).
+
+To list the available processor names and options use `-D`. It still requires a
+source path, e.g. `./vendor/bin/openapi -D src`.
 
 ```shell
-> ./vendor/bin/openapi -c operatinId.hash=true // ...
-> ./vendor/bin/openapi -c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ // ...
+> ./vendor/bin/openapi -c operationId.hash=true src
+> ./vendor/bin/openapi -c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ src
 ```
 
 ### Programmatically with PHP
@@ -96,12 +99,6 @@ Determines <code>schema</code>, <code>enum</code> and <code>type</code>.
     - NAME1
     - NAME2
 ```
-**expandEnums.generator**
-: <span style="font-family: monospace;">OpenApi\Generator</span>
-<br>**default**
-: <span style="font-family: monospace;">N/A</span>
-
-&nbsp;&nbsp;&nbsp;&nbsp;No details available.<br>
 
 ### [AugmentSchemas](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentSchemas.php)
 Use the Schema context to extract useful information and inject that into the annotation.
@@ -111,24 +108,8 @@ Merges properties.
 ### [AugmentRequestBody](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentRequestBody.php)
 Use the RequestBody context to extract useful information and inject that into the annotation.
 
-#### Config settings
-**augmentRequestBody.generator**
-: <span style="font-family: monospace;">OpenApi\Generator</span>
-<br>**default**
-: <span style="font-family: monospace;">N/A</span>
-
-&nbsp;&nbsp;&nbsp;&nbsp;No details available.<br>
-
 ### [AugmentProperties](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentProperties.php)
 Use the property context to extract useful information and inject that into the annotation.
-
-#### Config settings
-**augmentProperties.generator**
-: <span style="font-family: monospace;">OpenApi\Generator</span>
-<br>**default**
-: <span style="font-family: monospace;">N/A</span>
-
-&nbsp;&nbsp;&nbsp;&nbsp;No details available.<br>
 
 ### [AugmentDiscriminators](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentDiscriminators.php)
 Use the property context to extract useful information and inject that into the annotation.
@@ -146,12 +127,6 @@ Augments shared and operations parameters from docblock comments.
 : <span style="font-family: monospace;">true</span>
 
 &nbsp;&nbsp;&nbsp;&nbsp;If set to <code>true</code> try to find operation parameter descriptions in the operation docblock.<br>
-**augmentParameters.generator**
-: <span style="font-family: monospace;">OpenApi\Generator</span>
-<br>**default**
-: <span style="font-family: monospace;">N/A</span>
-
-&nbsp;&nbsp;&nbsp;&nbsp;No details available.<br>
 
 ### [AugmentRefs](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentRefs.php)
 
