@@ -32,7 +32,7 @@ $builder->setMode(Mode::CLASSIC);
 
 ### Spec (beta) {#mode-spec}
 
-Runs the new spec attributes pipeline end-to-end: Assembler → Augmenters → Compiler. Uses pure PHP 8.1+ attributes from the `OpenApi\Spec` namespace with typed DTOs and version-aware compilers.
+Runs the spec attributes pipeline end-to-end: Assembler → Augmenters → Compiler. Uses attributes from the `OpenApi\Spec` namespace with typed DTOs and version-aware compilers.
 
 ```php
 $builder->setMode(Mode::SPEC);
@@ -137,10 +137,10 @@ $builder->withAugmenters(function (\OpenApi\Utils\Pipeline $pipeline) {
     // Configure operationId generation
     $pipeline->get(Augmenter\OperationIds::class)?->setHash(true);
 
-    // Filter to specific paths/tags
+    // Filter to specific paths/tags (regular expressions, with delimiters)
     $pipeline->get(Augmenter\PathFilter::class)
-        ?->setPathFilter('/^\/api\/v2/')
-        ?->setTagFilter('/^(Users|Products)$/');
+        ?->setPaths(['/^\/api\/v2/'])
+        ->setTags(['/^(Users|Products)$/']);
 
     // Insert a custom augmenter
     $pipeline->insert(new CustomAugmenter(), Augmenter\Inheritance::class);
@@ -173,15 +173,17 @@ The `build()` method returns a `\OpenApi\Builder\Result` instance:
 ```php
 $result = $builder->build();
 
-$result->isValid();      // bool — true if a spec was generated and no errors were reported
+$result->isValid();       // bool — true if a document was produced and no errors were reported
 $result->toArray();       // array — the spec as a PHP array
 $result->toJson();        // string — JSON output
 $result->toYaml();        // string — YAML output
+$result->saveAs($file);   // void — write to disk, format from the extension
 $result->files();         // string[] — scanned source files
 $result->log();           // array — all log entries [{level, message}, ...]
 $result->warnings();      // string[] — warning messages
 $result->errors();        // string[] — error messages
-$result->specification(); // the final `Specification` instance
+$result->specification(); // ?Specification — spec/hybrid only, null in classic
+$result->openApi();       // ?OA\OpenApi — classic only, null in spec/hybrid
 ```
 
 ## Full example (spec mode)

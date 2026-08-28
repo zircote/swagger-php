@@ -42,7 +42,7 @@ After resolution, only root attributes (should) remain and are added to the Spec
 
 A "root" attribute is one that can exist independently in the Specification — it has its own bucket and doesn't require a parent container.
 
-Always root: `Schema`, `Operation`, `PathItem`, `OpenApi`, `Info`, `Tag`, `Server`, `ExternalDocumentation`, `SecurityScheme`, `Components`, `Attachable`
+Always root: `Schema`, `Operation`, `PathItem`, `OpenApi`, `Info`, `Tag`, `Server`, `ExternalDocumentation`, `Security\Scheme`, `Components`, `Attachable`
 
 Conditionally root: `Response` (when `response` key is set), `RequestBody` (when `request` key is set)
 
@@ -62,11 +62,11 @@ Augmenters form a grouped pipeline that enriches the Specification in three orde
 
 | Phase | Purpose | Examples |
 |---|---|---|
-| **Resolve** | Infer data from PHP reflection and cross-bucket relationships | `Inheritance`, `Names`, `Enums`, `PathItems`, `Types`, `Refs`, `Shortcuts` |
+| **Resolve** | Infer data from PHP reflection and cross-bucket relationships | `Inheritance`, `Names`, `Enums`, `Shortcuts`, `PathItems`, `Types`, `Refs` |
 | **Reduce** | Filter or remove entries | `PathFilter`, `Cleanup` |
 | **Augment** | Add derived metadata | `MediaTypes`, `Docblocks`, `OperationIds`, `Tags`, `EnumDescriptions` |
 
-Each augmenter implements `PipeInterface` and receives the full Specification. Augmenters within a phase run in registration order.
+Each augmenter implements `PipeInterface` and receives the full Specification. Augmenters within a phase run in registration order, which is defined in `Builder::getDefaultAugmenters()`.
 
 ### Configuring augmenters
 
@@ -163,71 +163,18 @@ Key applications:
 - **OperationId generation** — the reflector provides class/method name context for auto-generated identifiers.
 - **Type inference** — the `Types` augmenter reads PHP type declarations from property/parameter reflectors.
 
-This design keeps the Assembler simple (just collect into buckets) and makes cross-cutting relationships resolvable without coupling DTOs to each other.
+This design keeps the Assembler focused on nesting resolution and makes cross-cutting relationships resolvable without coupling DTOs to each other.
 
 ### DTO class tree
 
-All spec attributes extend `AbstractAttribute` and live in the `OpenApi\Spec` namespace:
+All spec attributes extend `AbstractAttribute` and live in the `OpenApi\Spec` namespace.
+Typed subclasses (e.g. `Operation\Get`, `Parameter\Path`) pre-fill fields that the base class
+requires explicitly; the base class can always be used directly for full control.
 
-```
-OA\AbstractAttribute
-├── OA\Components
-├── OA\OpenApi
-├── OA\Info
-│   ├── OA\Contact
-│   └── OA\License
-├── OA\Server
-│   └── OA\ServerVariable
-├── OA\Tag
-├── OA\ExternalDocumentation
-├── OA\Operation
-│   ├── OA\Operation\Get
-│   ├── OA\Operation\Post
-│   ├── OA\Operation\Put
-│   ├── OA\Operation\Delete
-│   ├── OA\Operation\Patch
-│   ├── OA\Operation\Head
-│   ├── OA\Operation\Options
-│   └── OA\Operation\Trace
-├── OA\PathItem
-├── OA\Schema
-│   ├── OA\Schema\AdditionalProperties
-│   ├── OA\Schema\Items
-│   ├── OA\Schema\Ref
-│   └── OA\Property
-├── OA\Parameter
-│   ├── OA\Parameter\Path
-│   ├── OA\Parameter\Query
-│   ├── OA\Parameter\Header
-│   └── OA\Parameter\Cookie
-├── OA\RequestBody
-├── OA\Response
-├── OA\Header
-├── OA\MediaType
-│   ├── OA\Encoding
-│   ├── OA\MediaType\Json
-│   └── OA\MediaType\Xml
-├── OA\Link
-├── OA\Example
-├── OA\Discriminator
-├── OA\Xml
-├── OA\Flow
-│   ├── OA\Flow\Implicit
-│   ├── OA\Flow\Password
-│   ├── OA\Flow\ClientCredentials
-│   └── OA\Flow\AuthorizationCode
-├── OA\Security
-│   ├── OA\Security\Requirement
-│   └── OA\Security\Scheme
-│       ├── OA\Security\Scheme\Http
-│       ├── OA\Security\Scheme\ApiKey
-│       ├── OA\Security\Scheme\OAuth2
-│       ├── OA\Security\Scheme\OpenIdConnect
-│       └── OA\Security\Scheme\MutualTls
-└── OA\Attachable
-```
-
-Typed subclasses (e.g. `Operation\Get`, `Parameter\Path`) pre-fill fields that the base class requires explicitly. The base class can always be used directly for full control.
+Note that the directory layout does not mirror the class hierarchy: `Property` extends
+`AbstractAttribute` rather than `Schema`, `Encoding` is not a `MediaType`, and `Security` is a
+namespace rather than a class. For the current attributes, what each one accepts and where it
+can be nested, see the generated [Spec Attributes reference](/reference/spec-attributes).
 
 ## Classic processor mapping
 
@@ -259,4 +206,4 @@ How each classic processor maps to the new pipeline:
 | CleanUnusedComponents | `Cleanup`                                | reduce |
 | PathFilter | `PathFilter`                             | reduce |
 
-The key architectural difference: classic processors operate on a mutable annotation tree in a single chain. Spec augmenters operate on an immutable Specification with typed buckets, grouped into explicit phases.
+The key architectural difference: classic processors walk a single nested annotation tree in one chain. Spec augmenters operate on a flat Specification of typed buckets, grouped into explicit phases. Both mutate their attributes in place — the pipelines differ in shape and ordering, not in mutability.

@@ -34,32 +34,38 @@ PHP's `reflection` code will be able to inspect your code.
 :::
 
 
-For a list of all available options use the `-h` option
+For a list of all available options use the `-h` option:
 
 ```shell
 > ./vendor/bin/openapi -h
 
-Usage: openapi [--option value] [/path/to/project ...]
+Description:
+  Generate OpenAPI documentation
+
+Usage:
+  openapi [options] [--] <paths>...
+
+Arguments:
+  paths                                    Source path(s) to scan
 
 Options:
-  --config (-c)               Generator (classic, hybrid) or augmenter (spec) config.
-                              ex: -c operationId.hash=false
-  --defaults (-D)             Show default config for the selected --mode.
-  --output (-o)               Path to store the generated documentation.
-                              ex: --output openapi.yaml
-  --exclude (-e)              Exclude path(s).
-                              ex: --exclude vendor,library/Zend
-  --pattern (-n)              Pattern of files to scan.
-                              ex: --pattern "*.php" or --pattern "/\.(phps|php)$/"
-  --bootstrap (-b)            Bootstrap php file(s) for defining constants, etc.
-                              ex: --bootstrap config/constants.php
-  --add-processor (-a)        Register an additional processor (allows multiple).
-  --remove-processor (-r)     Remove an existing processor (allows multiple).
-  --format (-f)               Force yaml or json.
-  --mode (-m)                 Processing mode; "classic" uses the annotation/attribute pipeline.
-  --debug (-d)                Show additional error information.
-  --version                   The OpenAPI version; defaults to 3.0.0.
-  --help (-h)                 Display this help message.
+  -c, --config=CONFIG                      Generator/Augmenter config; keys differ per mode, see -D (e.g. -c operationId.hash=false) (multiple values allowed)
+  -D, --defaults                           Show default config
+  -o, --output=OUTPUT                      Path to store the generated documentation (e.g. -o openapi.yaml)
+  -f, --format=FORMAT                      Force yaml or json [default: "auto"]
+  -e, --exclude=EXCLUDE                    Exclude path(s) (e.g. -e vendor -e library/Zend) (multiple values allowed)
+  -n, --pattern=PATTERN                    Pattern of files to scan (e.g. -n "/\.(phps|php)$/") [default: "*.php"]
+  -b, --bootstrap=BOOTSTRAP                Bootstrap php file(s) for defining constants, etc. (e.g. -b config/constants.php) (multiple values allowed)
+  -a, --add-processor=ADD-PROCESSOR        Register an additional processor (multiple values allowed)
+  -r, --remove-processor=REMOVE-PROCESSOR  Remove an existing processor (multiple values allowed)
+      --version=VERSION                    The OpenAPI version
+  -m, --mode=MODE                          Set mode classic, hybrid or spec [default: "classic"]
+  -d, --debug                              Show additional error information
+  -h, --help                               Display help for the given command. When no command is given display help for the list command
+      --silent                             Do not output any message
+  -q, --quiet                              Only errors are displayed. All other output is suppressed
+      --ansi|--no-ansi                     Force (or disable --no-ansi) ANSI output
+  -v|vv|vvv, --verbose                     Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 ```
 
 ## Using PHP

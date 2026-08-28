@@ -29,6 +29,7 @@ function getGuideSidebar() {
         { text: 'Using Spec Attributes', link: '/guide/spec-attributes' },
         { text: 'Spec Attributes Reference', link: '/reference/spec-attributes' },
         { text: 'Augmenters Reference', link: '/reference/augmenters' },
+        { text: 'Inheritance', link: '/reference/inheritance' },
         { text: 'Architecture', link: '/reference/architecture' },
       ]
     },

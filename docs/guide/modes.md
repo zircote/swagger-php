@@ -10,7 +10,6 @@ Swagger-php supports three processing modes that control how your source code is
 | **Attributes** | `OpenApi\Attributes` | `OpenApi\Attributes` | `OpenApi\Spec` |
 | **Annotations** | Yes | Yes | No |
 | **Pipeline** | Generator → Processors | Generator → HybridBridge → Augmenters → Compiler | Assembler → Augmenters → Compiler |
-| **PHP requirement** | 8.1+ | 8.1+ | 8.1+ |
 | **Best for** | Existing projects | Gradual migration | New projects |
 
 ## Classic (default)
@@ -33,7 +32,7 @@ Classic mode gives you access to the full `Generator` API including custom proce
 
 ## Spec (beta) {#spec}
 
-Spec mode is a ground-up reimplementation of the pipeline using pure PHP 8.1+ attributes from the `OpenApi\Spec` namespace. It introduces:
+Spec mode is a ground-up reimplementation of the pipeline using attributes from the `OpenApi\Spec` namespace. It introduces:
 
 - **Typed DTOs** — attributes are simple data containers with constructor-promoted properties
 - **Slot-map nesting** — explicit `merge()`/`contained()` maps replace reflection-based nesting

@@ -56,7 +56,7 @@ When an ancestor has no schema, its `#[OA\Property]` members are merged into the
 
 ### allOf restructuring
 
-After expansion, if a schema has both `allOf` entries and its own properties, the compiler moves the properties into a dedicated `allOf` entry (an anonymous schema with `type: object`). This keeps the output clean:
+After expansion, if a schema has both `allOf` entries and its own properties, the `Refs` augmenter (`mergeAllOf()`) moves the properties into a dedicated `allOf` entry — an anonymous schema with `type: object` — so the result is a pure `allOf` composition:
 
 ```yaml
 User:
@@ -70,7 +70,7 @@ User:
 
 ### Duplicate $ref deduplication
 
-If you explicitly declare an `allOf` entry that matches one the augmenter would add (e.g. you extend a class and also manually reference it), the compiler deduplicates — only one `$ref` survives.
+If you explicitly declare an `allOf` entry that matches one the augmenter would add (e.g. you extend a class and also manually reference it), the `Refs` augmenter (`dedupAllOfRefs()`) deduplicates — only one `$ref` survives.
 
 ## PathItem Inheritance
 
