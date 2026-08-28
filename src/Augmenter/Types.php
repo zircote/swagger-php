@@ -306,9 +306,7 @@ class Types implements PipeInterface
             $this->applySchemaType($schema, $schemaType);
         }
 
-        if ($schema->nullable === null) {
-            $schema->nullable = $schemaType->nullable;
-        }
+        $schema->nullable ??= $schemaType->nullable;
     }
 
     protected function applySchemaType(OA\Schema $schema, SchemaType $schemaType): void
@@ -325,17 +323,11 @@ class Types implements PipeInterface
             }
         }
 
-        if ($schema->format === null) {
-            $schema->format = $schemaType->format;
-        }
+        $schema->format ??= $schemaType->format;
 
-        if ($schema->minimum === null) {
-            $schema->minimum = $schemaType->minimum;
-        }
+        $schema->minimum ??= $schemaType->minimum;
 
-        if ($schema->maximum === null) {
-            $schema->maximum = $schemaType->maximum;
-        }
+        $schema->maximum ??= $schemaType->maximum;
 
         if ($schemaType->not !== null && !$schema->not instanceof OA\Schema) {
             $schema->not = new OA\Schema(const: $schemaType->not['const']);
