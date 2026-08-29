@@ -53,7 +53,7 @@ class SpecAttributeGenerator extends DocGenerator
     }
 
     /**
-     * @return array<string,class-string<AbstractAttribute>>
+     * @return array<string,class-string<OA\AbstractAttribute>>
      */
     protected function discoverClasses(): array
     {
@@ -95,7 +95,7 @@ class SpecAttributeGenerator extends DocGenerator
     /**
      * Build maps from contained(): parentMap (child FQDN => parents) and nestedMap (parent FQDN => children).
      *
-     * @param array<string,class-string<AbstractAttribute>> $classes
+     * @param array<string,class-string<OA\AbstractAttribute>> $classes
      *
      * @return array{array<string,list<array{name: string, anchor: string}>>, array<string,list<array{name: string, anchor: string}>>}
      */
@@ -205,18 +205,7 @@ class SpecAttributeGenerator extends DocGenerator
             return '';
         }
 
-        $parts = [];
-        if ($type instanceof \ReflectionUnionType) {
-            foreach ($type->getTypes() as $t) {
-                $parts[] = $t->getName();
-            }
-        } elseif ($type instanceof \ReflectionIntersectionType) {
-            foreach ($type->getTypes() as $t) {
-                $parts[] = $t->getName();
-            }
-        } else {
-            $parts[] = $type->getName();
-        }
+        $parts = $this->typeNames($type);
 
         if ($type->allowsNull() && !in_array('null', $parts, true)) {
             $parts[] = 'null';

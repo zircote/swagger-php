@@ -206,6 +206,32 @@ abstract class DocGenerator
     }
 
     /**
+     * Type names for a reflected type, flattening unions and intersections.
+     *
+     * `getName()` only exists on `ReflectionNamedType`, so calling it on whatever
+     * `getType()` returns fails on any union or intersection typed member.
+     *
+     * @return list<string>
+     */
+    protected function typeNames(?\ReflectionType $type): array
+    {
+        if ($type instanceof \ReflectionNamedType) {
+            return [$type->getName()];
+        }
+
+        if ($type instanceof \ReflectionUnionType || $type instanceof \ReflectionIntersectionType) {
+            $names = [];
+            foreach ($type->getTypes() as $member) {
+                $names = array_merge($names, $this->typeNames($member));
+            }
+
+            return $names;
+        }
+
+        return [];
+    }
+
+    /**
      * Configuration options, read from the setters that match a configurable constructor
      * parameter.
      *
@@ -228,8 +254,8 @@ abstract class DocGenerator
 
             $type = 'n/a';
             if (1 === count($method->getParameters())) {
-                if ($rt = $method->getParameters()[0]->getType()) {
-                    $type = $rt->getName();
+                if ($names = $this->typeNames($method->getParameters()[0]->getType())) {
+                    $type = implode('|', $names);
                 }
             }
 
