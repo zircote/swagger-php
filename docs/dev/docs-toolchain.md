@@ -53,7 +53,7 @@ Run it with an otherwise-clean tree, or scope the `git status` to the six files 
 |---|---|
 | `composer docs:gen` | regenerate the six pages above |
 | `composer docs:build` | runs `docs:gen`, then builds the static site |
-| `composer docs:dev` | local preview on `localhost:3000` — **long-running**, it does not return |
+| `composer docs:dev` | local preview — **long-running**, prints its URL on startup and does not return |
 
 `composer docs:dev` starts a Vitepress dev server and blocks until interrupted. Do not run
 it as a build step or from an automated agent loop.

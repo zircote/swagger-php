@@ -43,7 +43,7 @@ npm install
 * Edit `.md` files in the `docs` folder
 * Update annotation / attribute PHP docblocks.<br>These will be extracted during publishing into the [reference](../reference/) section.
 * Run 'composer docs:build' to check for any errors
-* Run 'composer docs:dev' to test the generated documentation locally (`localhost:3000`)
+* Run 'composer docs:dev' to test the generated documentation locally; it prints the URL on startup
 * Create PR and update `master`
 * Manually trigger the `gh-pages` workflow to update the online docs.
 

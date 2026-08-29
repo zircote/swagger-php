@@ -113,6 +113,7 @@ module.exports = {
 
     sidebar: {
       '/guide/': getGuideSidebar(),
+      '/dev/': getGuideSidebar(),
       '/reference/': getReferenceSidebar()
     },
 

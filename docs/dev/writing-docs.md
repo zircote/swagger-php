@@ -45,15 +45,16 @@ When you find yourself writing something a second time, that is the signal to li
 When the same text genuinely has to appear in more than one output, extract it and pull it
 in. Copying is what rots.
 
-The mechanisms already in use:
+Two mechanisms are already in use here:
 
 - `docs/snippets/preamble_*.md` — markdown fragments the reference generators splice into
   their pages, via `DocGenerator::snippetContent()`. Editing the fragment updates the
   generated page.
 - `<<< @/snippets/path.php` — transcludes a real, test-executed source file into a page, so
   a documented example cannot drift from code that runs.
-- `<!--@include: ./path.md-->` — Vitepress markdown include, for prose shared between
-  hand-written pages.
+
+A third, `<!--@include: ./path.md-->`, is supported by Vitepress but not yet used here. It
+suits prose shared between hand-written pages.
 
 Prefer extracting a fragment over pasting, and prefer generating over both where the
 content is derivable at all — see [the toolchain notes](./docs-toolchain.md) for what is
@@ -166,8 +167,10 @@ a wrong docblock or generator, not a page to hand-edit.
 - [ ] **Section anchors verified, or dropped.** A `#heading-slug` link is only safe when
       the heading is plain words — punctuation and dashes make the generated slug
       ambiguous. If you have not confirmed it, link to the page.
-- [ ] **No volatile counts.** "six pages", "around 27 test files" — derive it, or drop the
-      number and describe it qualitatively.
+- [ ] **No volatile values.** Counts ("six pages", "around 27 test files"), ports,
+      versions, anything that shifts without anyone editing the doc. Derive it, describe it
+      qualitatively, or — where the tool announces it — say that instead. A dev server that
+      prints its own URL should be documented as printing its URL, not as a port number.
 - [ ] **Version and requirement claims match** `composer.json`.
 - [ ] **No marketing filler** — "production-ready", "seamless", "powerful", "clean",
       "simply", "robust", "comprehensive".

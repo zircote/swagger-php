@@ -58,8 +58,8 @@ adding *all* of:
 - `foo-3.1.0.yaml` — the expected output
 
 Missing implementations are skipped rather than failing, but a missing or stale
-`-3.1.0.yaml` is a failure. The mode/implementation pairing is deliberate: spec snippets run
-only in spec mode, and classic mode never runs spec snippets.
+`-3.1.0.yaml` is a failure. The mode/implementation pairing is deliberate: spec mode runs
+only spec snippets and classic mode never runs them, but hybrid runs all three.
 
 **`ExamplesTest`** does the same for `docs/examples/specs/*`, against the per-version
 `*-3.0.0.yaml` / `*-3.1.0.yaml` / `*-3.2.0.yaml` fixtures.

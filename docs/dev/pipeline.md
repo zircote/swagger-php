@@ -59,9 +59,13 @@ attribute is one that can stand alone — it owns a bucket and needs no parent.
 
 - **Always root**: `Schema`, `Operation`, `PathItem`, `OpenApi`, `Info`, `Tag`, `Server`,
   `ExternalDocumentation`, `Security\Scheme`, `Components`, `Attachable`
-- **Conditionally root**: `Response` (with `response` set), `RequestBody` (with `request` set)
-- **Never root**: `Parameter`, `Header`, `Link`, `Example`, `MediaType`, `Property` — these
-  must nest inside a parent or sit in a `Components` container
+- **Conditionally root**, when their own key is set and `ref` is not: `Response`
+  (`response`), `Parameter` (`parameter`), `Link` (`link`); `RequestBody` needs `request`
+  set but has no `ref` check
+- **Never root**: `Header`, `Example`, `MediaType`, `Property` — these must nest inside a
+  parent or sit in a `Components` container
+
+Each attribute decides for itself, in `isRoot()`.
 
 The user-facing version of this distinction is in
 [Using Spec Attributes](/guide/spec-attributes#components); this list is the full one.
@@ -111,11 +115,13 @@ convert immediately in the constructor. Properties always hold the simple form; 
 objects and convenience types are input sugar only.
 
 ```php
-// FlowType enum accepted on input, stored as string
-public function __construct(string|FlowType|null $flow = null) {
-    parent::__construct([
-        'flow' => $flow instanceof \BackedEnum ? $flow->value : $flow,
-    ]);
+// OA\Flow — FlowType accepted on input, stored as string
+public function __construct(
+    string|FlowType|null $flow = null,
+    // ...
+) {
+    parent::__construct(x: $x, attachables: $attachables);
+    $this->flow = $flow instanceof \BackedEnum ? $flow->value : $flow;
 }
 ```
 
