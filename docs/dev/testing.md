@@ -27,33 +27,31 @@ regression somebody cared about.
 
 ### Build objects in the test, not in the provider
 
-PHPUnit evaluates providers while collecting tests, before coverage recording starts. Code
-that runs inside a provider is therefore **asserted but never counted as covered**.
+PHPUnit evaluates providers while collecting tests, before coverage recording starts, so
+anything constructed in a provider is **asserted but never counted as covered**. Yield class
+names and arguments; construct in the test body.
 
-Yield the ingredients and construct in the test body:
+The failure is silent — tests pass either way — and only shows up when someone runs coverage
+and wonders why a tested class reads as untouched.
 
-```php
-public static function typedOperations(): iterable
-{
-    yield 'head' => [OA\Operation\Head::class, 'head'];   // not: new OA\Operation\Head(...)
-}
+## Prefer a fixture to an assertion
 
-#[DataProvider('typedOperations')]
-public function testCompilesUnderItsHttpMethod(string $class, string $method): void
-{
-    $operation = new $class(path: '/ping');
-    // ...
-}
-```
+A test that asserts what the implementation currently produces captures the status quo. That
+is worth having, but it is not evidence the output is *correct* — it only pins today's
+behaviour so tomorrow's change is visible.
 
-This is not a style preference. `UncoveredAttributesTest` was written the other way round
-first: every case passed, and `Operation\Head`, `Options`, `Trace`, three `Flow` classes,
-`MutualTls` and `OpenIdConnect` all still reported **0% coverage**. Moving construction into
-the test body took each to 100%, and `src/Spec/` from 79% to 99%, with no change to the
-assertions.
+Where the output is a specification document, a scratch fixture is stronger. It runs the
+whole pipeline rather than one stage, it produces a file per OpenAPI version, and those files
+are linted by `composer redocly` against the real schema. The expectation then comes from the
+specification rather than from whoever wrote the test.
 
-The failure is silent — the tests pass either way — so it only shows up when someone runs
-coverage and wonders why a tested class reads as untouched.
+Concretely: the attributes now covered by `Fixtures/Scratch/Auth-spec.php` were first covered
+by a unit test asserting compiler output. Every case passed. The fixture that replaced it
+immediately failed Redocly, because the pipeline was emitting `type: mutualTLS` into OpenAPI
+3.0 documents, where that type does not exist. The assertions had faithfully encoded the bug.
+
+Reach for a unit test when there is no document to validate — `ComponentIndexTest` and
+`SlotMapConsistencyTest` are the right shape, because neither has a YAML counterpart.
 
 ## Shared helpers
 

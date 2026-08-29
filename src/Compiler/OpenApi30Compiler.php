@@ -19,6 +19,7 @@ use OpenApi\Undefined;
  * - exclusiveMinimum/Maximum are booleans (used alongside minimum/maximum)
  * - No $ref siblings (summary/description stripped from $ref objects)
  * - No webhooks
+ * - No mutualTLS security scheme (added in 3.1)
  * - No const, no examples array on Schema (only singular example)
  * - No prefixItems, unevaluatedItems, unevaluatedProperties
  * - No if/then/else
@@ -52,6 +53,14 @@ class OpenApi30Compiler extends OpenApi31Compiler
             $this->logger->warning('webhooks are not supported in OpenAPI 3.0 and will be omitted');
         }
 
+        $hasMutualTls = (bool) array_filter(
+            $specification->securitySchemes,
+            fn (OA\Security\Scheme $scheme): bool => $scheme->type === OA\SchemeType::MutualTLS->value
+        );
+        if ($hasMutualTls) {
+            $this->logger->warning('mutualTLS security schemes are not supported in OpenAPI 3.0 and will be omitted');
+        }
+
         if ($specification->info?->license instanceof OA\License) {
             $license = $specification->info->license;
             if ($license->identifier !== null) {
@@ -68,6 +77,15 @@ class OpenApi30Compiler extends OpenApi31Compiler
     protected function compileWebhooks(array $operations): array
     {
         return [];
+    }
+
+    #[\Override]
+    protected function compileSecuritySchemes(array $schemes): array
+    {
+        return parent::compileSecuritySchemes(array_values(array_filter(
+            $schemes,
+            fn (OA\Security\Scheme $scheme): bool => $scheme->type !== OA\SchemeType::MutualTLS->value
+        )));
     }
 
     #[\Override]

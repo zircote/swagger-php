@@ -410,6 +410,25 @@ final class CompilerTest extends TestCase
 
     // --- Validation ---
 
+    public function testMutualTlsIsOmittedFrom30ButKeptIn31(): void
+    {
+        $build = function (): Specification {
+            $specification = new Specification();
+            $specification->info = new OA\Info(title: 'T', version: '1.0');
+
+            return $specification->add(
+                new OA\Security\Scheme\MutualTls(securityScheme: 'mtls'),
+                new OA\Security\Scheme\Http(securityScheme: 'basic', scheme: 'basic'),
+            );
+        };
+
+        $compiled30 = (new OpenApi30Compiler())->compile($build());
+        $compiled31 = (new OpenApi31Compiler())->compile($build());
+
+        $this->assertSame(['basic'], array_keys($compiled30['components']['securitySchemes']));
+        $this->assertSame(['mtls', 'basic'], array_keys($compiled31['components']['securitySchemes']));
+    }
+
     public static function validationProvider(): iterable
     {
         $specWithWebhook = new Specification();
@@ -426,6 +445,17 @@ final class CompilerTest extends TestCase
         $specWithIdentifier = new Specification();
         $specWithIdentifier->openapi = new OA\OpenApi(version: '3.0.0');
         $specWithIdentifier->info = new OA\Info(title: 'T', version: '1.0', license: new OA\License(name: 'MIT', identifier: 'MIT'));
+
+        $specWithMutualTls = new Specification();
+        $specWithMutualTls->openapi = new OA\OpenApi(version: '3.0.0');
+        $specWithMutualTls->info = new OA\Info(title: 'T', version: '1.0');
+        $specWithMutualTls->securitySchemes[] = new OA\Security\Scheme\MutualTls(securityScheme: 'mtls');
+
+        yield '3.0 mutualTLS unsupported' => [
+            new OpenApi30Compiler(),
+            $specWithMutualTls,
+            'mutualTLS security schemes are not supported in OpenAPI 3.0 and will be omitted',
+        ];
 
         yield '3.0 license identifier' => [
             new OpenApi30Compiler(),
