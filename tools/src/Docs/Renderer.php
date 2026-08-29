@@ -145,31 +145,6 @@ class Renderer
         return $out;
     }
 
-    /**
-     * @param list<array{name: string, type: string, default: string, description: string}> $options
-     */
-    public function processorOptions(array $options, string $configPrefix): string
-    {
-        if (!$options) {
-            return '';
-        }
-
-        $out = "#### Config settings\n";
-
-        foreach ($options as $option) {
-            $out .= "**{$configPrefix}{$option['name']}**\n";
-            $out .= ': <span style="font-family: monospace;">' . $option['type'] . "</span>\n<br>";
-            $out .= "**default**\n";
-            $out .= ': <span style="font-family: monospace;">' . $option['default'] . "</span>\n";
-            $out .= "\n";
-
-            $desc = $option['description'] ?: DocGenerator::NO_DETAILS_AVAILABLE;
-            $out .= $this->indentedBr($desc) . "\n";
-        }
-
-        return $out;
-    }
-
     public function exampleSection(string $name, ?string $readme, array $files): string
     {
         $out = $readme ? rtrim($readme) . "\n" : '## ' . $name . "\n";
@@ -208,29 +183,5 @@ class Renderer
         preg_match('/\[([^]]+)]\((.*)\)/', $see, $matches);
 
         return 3 === count($matches) ? '<a href="' . $matches[2] . '">' . $matches[1] . '</a>' : null;
-    }
-
-    protected function indentedBr(string $text): string
-    {
-        $lines = explode("\n", $text);
-        $processed = [];
-        $inBlock = false;
-
-        foreach ($lines as $line) {
-            $blockStart = !$inBlock && str_contains($line, '```');
-            if ($blockStart) {
-                $inBlock = true;
-            }
-            if (!$inBlock) {
-                $processed[] = '&nbsp;&nbsp;&nbsp;&nbsp;' . $line . '<br>';
-            } else {
-                $processed[] = $line;
-                if ('```' === $line) {
-                    $inBlock = false;
-                }
-            }
-        }
-
-        return implode("\n", $processed);
     }
 }

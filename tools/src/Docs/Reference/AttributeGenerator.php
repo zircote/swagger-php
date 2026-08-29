@@ -239,14 +239,8 @@ class AttributeGenerator extends DocGenerator
         $var = [];
 
         if ($type = $rp->getType()) {
-            if ($type instanceof \ReflectionUnionType) {
-                foreach ($type->getTypes() as $type) {
-                    $var[] = $type->getName();
-                }
-            } else {
-                $var[] = $type->getName();
-            }
-            if ($type->allowsNull()) {
+            $var = $this->typeNames($type);
+            if ($type->allowsNull() && !in_array('null', $var, true)) {
                 $var[] = 'null';
             }
         }

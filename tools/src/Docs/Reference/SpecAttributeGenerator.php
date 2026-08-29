@@ -8,7 +8,6 @@ namespace OpenApi\Tools\Docs\Reference;
 
 use OpenApi\Spec as OA;
 use OpenApi\Tools\Docs\DocGenerator;
-use OpenApi\Tools\Docs\Renderer;
 use OpenApi\Tools\Docs\Sections\AllowedInSection;
 use OpenApi\Tools\Docs\Sections\DescriptionSection;
 use OpenApi\Tools\Docs\Sections\NestedElementsSection;
@@ -18,26 +17,6 @@ use OpenApi\Tools\Docs\Sections\SectionInterface;
 
 class SpecAttributeGenerator extends DocGenerator
 {
-    /** @var list<SectionInterface> */
-    protected array $sections;
-
-    public function __construct(string $projectRoot, ?Renderer $renderer = null)
-    {
-        parent::__construct($projectRoot, $renderer);
-
-        $this->sections = $this->defaultSections();
-    }
-
-    /**
-     * @param list<SectionInterface> $sections
-     */
-    public function setSections(array $sections): static
-    {
-        $this->sections = $sections;
-
-        return $this;
-    }
-
     public function generate(): array
     {
         $classes = $this->discoverClasses();
@@ -53,13 +32,7 @@ class SpecAttributeGenerator extends DocGenerator
         foreach ($classes as $shortName => $fqdn) {
             $content .= "\n" . $this->renderClassLink($shortName, $fqdn);
             $data = $this->collectClassData($shortName, $fqdn, $parentMap, $nestedMap);
-
-            foreach ($this->sections as $section) {
-                $rendered = $section->render($data);
-                if ($rendered !== '') {
-                    $content .= "\n" . $rendered;
-                }
-            }
+            $content .= $this->renderSections($data);
         }
 
         return ['spec-attributes' => $content];
@@ -80,7 +53,7 @@ class SpecAttributeGenerator extends DocGenerator
     }
 
     /**
-     * @return array<string,class-string<AbstractAttribute>>
+     * @return array<string,class-string<OA\AbstractAttribute>>
      */
     protected function discoverClasses(): array
     {
@@ -122,7 +95,7 @@ class SpecAttributeGenerator extends DocGenerator
     /**
      * Build maps from contained(): parentMap (child FQDN => parents) and nestedMap (parent FQDN => children).
      *
-     * @param array<string,class-string<AbstractAttribute>> $classes
+     * @param array<string,class-string<OA\AbstractAttribute>> $classes
      *
      * @return array{array<string,list<array{name: string, anchor: string}>>, array<string,list<array{name: string, anchor: string}>>}
      */
@@ -232,18 +205,7 @@ class SpecAttributeGenerator extends DocGenerator
             return '';
         }
 
-        $parts = [];
-        if ($type instanceof \ReflectionUnionType) {
-            foreach ($type->getTypes() as $t) {
-                $parts[] = $t->getName();
-            }
-        } elseif ($type instanceof \ReflectionIntersectionType) {
-            foreach ($type->getTypes() as $t) {
-                $parts[] = $t->getName();
-            }
-        } else {
-            $parts[] = $type->getName();
-        }
+        $parts = $this->typeNames($type);
 
         if ($type->allowsNull() && !in_array('null', $parts, true)) {
             $parts[] = 'null';
