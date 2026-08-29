@@ -13,6 +13,7 @@ use OpenApi\Examples\Specs\Webhooks\Spec as WebhooksSpec;
 use OpenApi\Generator;
 use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\Utils\SourceFinder;
+use Psr\Log\AbstractLogger;
 use Psr\Log\NullLogger;
 
 final class BuilderTest extends OpenApiTestCase
@@ -171,6 +172,34 @@ final class BuilderTest extends OpenApiTestCase
         $this->assertNotEmpty($result->warnings());
         $this->assertContains('Required @OA\Info() not found', $result->warnings());
         $this->assertContains('Required @OA\PathItem() not found', $result->warnings());
+    }
+
+    public function testCompilerDiagnosticsReachTheConfiguredLogger(): void
+    {
+        $received = [];
+        $logger = new class ($received) extends AbstractLogger {
+            /**
+             * @param list<string> $received
+             */
+            public function __construct(public array &$received)
+            {
+            }
+
+            public function log($level, $message, array $context = []): void
+            {
+                $this->received[] = (string) $message;
+            }
+        };
+
+        // spec mode: an empty source set leaves the compiler with nothing to validate
+        (new Builder())
+            ->setMode(Mode::SPEC)
+            ->setSources([])
+            ->setVersion('3.0.0')
+            ->setLogger($logger)
+            ->build();
+
+        $this->assertContains('info is required', $received);
     }
 
     public function testGetAugmentersReturnsDefaultPipeline(): void

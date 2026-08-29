@@ -281,10 +281,11 @@ class Builder
 
     protected function resolveCompiler(string $version): CompilerInterface
     {
+        $logger = $this->getLogger();
         $compilers = [
-            new Compiler\OpenApi30Compiler(),
-            new Compiler\OpenApi31Compiler(),
-            new Compiler\OpenApi32Compiler(),
+            new Compiler\OpenApi30Compiler($logger),
+            new Compiler\OpenApi31Compiler($logger),
+            new Compiler\OpenApi32Compiler($logger),
         ];
 
         foreach ($compilers as $compiler) {
