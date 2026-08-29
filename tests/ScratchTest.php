@@ -28,6 +28,13 @@ final class ScratchTest extends OpenApiTestCase
             'Examples-3.0.0' => ['@OA\Schema() is only allowed as of 3.1.0'],
         ];
 
+        // Compiler diagnostics raised in spec mode only. Tolerated rather than expected:
+        // the key has no mode component, so demanding them would fail the classic case.
+        $ignoredLogs = [
+            'Docblocks-3.0.0' => ['const is not supported in OpenAPI 3.0'],
+            'Tags-3.2.0' => ['references non-existent parent'],
+        ];
+
         foreach (self::discoverFixtures("{$basePath}/*.php") as $scratchName => $scratch) {
             if (str_contains($scratchName, '-spec')) {
                 continue;
@@ -77,17 +84,19 @@ final class ScratchTest extends OpenApiTestCase
                     $spec,
                     $combo['version'],
                     array_key_exists($logKey, $expectedLogs) ? $expectedLogs[$logKey] : [],
+                    array_key_exists($logKey, $ignoredLogs) ? $ignoredLogs[$logKey] : [],
                 ];
             }
         }
     }
 
     #[DataProvider('scratchTestCases')]
-    public function testScratch(TypeResolverInterface $typeResolver, string $scratch, Builder\Mode $mode, string $spec, string $version, array $expectedLogs): void
+    public function testScratch(TypeResolverInterface $typeResolver, string $scratch, Builder\Mode $mode, string $spec, string $version, array $expectedLogs, array $ignoredLogs = []): void
     {
         foreach ($expectedLogs as $logLine) {
             $this->assertOpenApiLogEntryContains($logLine);
         }
+        $this->ignoreLogEntries(...$ignoredLogs);
 
         require_once $scratch;
 

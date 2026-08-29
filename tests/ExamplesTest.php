@@ -92,10 +92,12 @@ final class ExamplesTest extends OpenApiTestCase
     {
         $this->registerExampleClassloader($name, $implementation);
 
-        $this->expectResultWarnings([
+        $compilerWarnings = [
             'Schema: const is not supported in OpenAPI 3.0, using enum fallback',
             'License identifier is not supported in OpenAPI 3.0, use url instead',
-        ]);
+        ];
+        $this->expectResultWarnings($compilerWarnings);
+        $this->ignoreLogEntries(...$compilerWarnings);
 
         $path = self::examplePath("{$name}/{$implementation}");
         $specFilename = self::getSpecFilename($name, $implementation, $version, $mode);

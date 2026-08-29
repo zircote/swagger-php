@@ -34,9 +34,13 @@ class OpenApiTestCase extends TestCase
      */
     public $expectedLogMessages = [];
 
+    /** @var list<string> */
+    public array $ignoredLogMessages = [];
+
     protected function setUp(): void
     {
         $this->expectedLogMessages = [];
+        $this->ignoredLogMessages = [];
 
         parent::setUp();
     }
@@ -52,6 +56,17 @@ class OpenApiTestCase extends TestCase
         );
 
         parent::tearDown();
+    }
+
+    /**
+     * Log lines containing any of these are dropped rather than matched against
+     * expectations. For diagnostics that are incidental to what a test asserts — a
+     * compiler warning about the target version, say — where demanding they appear
+     * would couple the test to something it is not about.
+     */
+    public function ignoreLogEntries(string ...$needles): void
+    {
+        $this->ignoredLogMessages = array_merge($this->ignoredLogMessages, $needles);
     }
 
     public function getTrackingLogger(bool $debug = false): ?LoggerInterface
@@ -71,6 +86,12 @@ class OpenApiTestCase extends TestCase
             {
                 if (LogLevel::DEBUG == $level) {
                     if (str_starts_with((string) $message, 'Analysing source:') || str_contains((string) $message, 'JetBrains')) {
+                        return;
+                    }
+                }
+
+                foreach ($this->testCase->ignoredLogMessages as $needle) {
+                    if (str_contains((string) $message, $needle)) {
                         return;
                     }
                 }
