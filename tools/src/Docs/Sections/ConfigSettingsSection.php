@@ -26,7 +26,12 @@ class ConfigSettingsSection implements SectionInterface
             $out .= " · default: `{$option['default']}`  \n";
 
             $desc = ($option['description'] ?? '') ?: DocGenerator::NO_DETAILS_AVAILABLE;
-            $out .= '  ' . $desc . "\n";
+
+            // continuation lines have to stay indented, or they close the list item and
+            // any fenced block in the description escapes with them
+            foreach (explode("\n", $desc) as $line) {
+                $out .= $line === '' ? "\n" : '  ' . $line . "\n";
+            }
         }
 
         return $out;

@@ -6,6 +6,10 @@
 
 namespace OpenApi\Tools\Docs;
 
+use OpenApi\Tools\Docs\Sections\ConfigSettingsSection;
+use OpenApi\Tools\Docs\Sections\DescriptionSection;
+use OpenApi\Tools\Docs\Sections\ReferencesSection;
+use OpenApi\Tools\Docs\Sections\SectionInterface;
 use OpenApi\Utils\Pipeline;
 
 abstract class DocGenerator
@@ -16,10 +20,14 @@ abstract class DocGenerator
 
     protected Renderer $renderer;
 
+    /** @var list<SectionInterface> */
+    protected array $sections;
+
     public function __construct(string $projectRoot, ?Renderer $renderer = null)
     {
         $this->projectRoot = realpath($projectRoot);
         $this->renderer = $renderer ?? new Renderer();
+        $this->sections = $this->defaultSections();
     }
 
     public function docPath(string $relativeName): string
@@ -35,6 +43,16 @@ abstract class DocGenerator
     }
 
     abstract public function generate(): array;
+
+    /**
+     * @param list<SectionInterface> $sections
+     */
+    public function setSections(array $sections): static
+    {
+        $this->sections = $sections;
+
+        return $this;
+    }
 
     /**
      * Names of the constructor parameters that count as public configuration.
@@ -123,6 +141,34 @@ abstract class DocGenerator
         $content = trim(implode("\n", $contentLines));
 
         return ['content' => $content, 'see' => $see, 'var' => $var, 'params' => $params];
+    }
+
+    /**
+     * @return list<SectionInterface>
+     */
+    protected function defaultSections(): array
+    {
+        return [
+            new DescriptionSection(),
+            new ConfigSettingsSection(),
+            new ReferencesSection(),
+        ];
+    }
+
+    /**
+     * @param array<string,mixed> $data
+     */
+    protected function renderSections(array $data): string
+    {
+        $out = '';
+        foreach ($this->sections as $section) {
+            $rendered = $section->render($data);
+            if ($rendered !== '') {
+                $out .= "\n" . $rendered;
+            }
+        }
+
+        return $out;
     }
 
     /**

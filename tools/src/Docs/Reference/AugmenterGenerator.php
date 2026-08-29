@@ -8,34 +8,9 @@ namespace OpenApi\Tools\Docs\Reference;
 
 use OpenApi\Builder;
 use OpenApi\Tools\Docs\DocGenerator;
-use OpenApi\Tools\Docs\Renderer;
-use OpenApi\Tools\Docs\Sections\ConfigSettingsSection;
-use OpenApi\Tools\Docs\Sections\DescriptionSection;
-use OpenApi\Tools\Docs\Sections\ReferencesSection;
-use OpenApi\Tools\Docs\Sections\SectionInterface;
 
 class AugmenterGenerator extends DocGenerator
 {
-    /** @var list<SectionInterface> */
-    protected array $sections;
-
-    public function __construct(string $projectRoot, ?Renderer $renderer = null)
-    {
-        parent::__construct($projectRoot, $renderer);
-
-        $this->sections = $this->defaultSections();
-    }
-
-    /**
-     * @param list<SectionInterface> $sections
-     */
-    public function setSections(array $sections): static
-    {
-        $this->sections = $sections;
-
-        return $this;
-    }
-
     public function generate(): array
     {
         $content = $this->renderer->preamble(
@@ -48,28 +23,10 @@ class AugmenterGenerator extends DocGenerator
 
         foreach ($this->collectAugmenterDetails() as $data) {
             $content .= "\n" . $this->renderer->classHeader($data['name'], 'Augmenter');
-
-            foreach ($this->sections as $section) {
-                $rendered = $section->render($data);
-                if ($rendered !== '') {
-                    $content .= "\n" . $rendered;
-                }
-            }
+            $content .= $this->renderSections($data);
         }
 
         return ['augmenters' => $content];
-    }
-
-    /**
-     * @return list<SectionInterface>
-     */
-    protected function defaultSections(): array
-    {
-        return [
-            new DescriptionSection(),
-            new ConfigSettingsSection(),
-            new ReferencesSection(),
-        ];
     }
 
     protected function renderConfigSection(): string

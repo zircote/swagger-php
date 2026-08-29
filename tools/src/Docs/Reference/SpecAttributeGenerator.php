@@ -8,7 +8,6 @@ namespace OpenApi\Tools\Docs\Reference;
 
 use OpenApi\Spec as OA;
 use OpenApi\Tools\Docs\DocGenerator;
-use OpenApi\Tools\Docs\Renderer;
 use OpenApi\Tools\Docs\Sections\AllowedInSection;
 use OpenApi\Tools\Docs\Sections\DescriptionSection;
 use OpenApi\Tools\Docs\Sections\NestedElementsSection;
@@ -18,26 +17,6 @@ use OpenApi\Tools\Docs\Sections\SectionInterface;
 
 class SpecAttributeGenerator extends DocGenerator
 {
-    /** @var list<SectionInterface> */
-    protected array $sections;
-
-    public function __construct(string $projectRoot, ?Renderer $renderer = null)
-    {
-        parent::__construct($projectRoot, $renderer);
-
-        $this->sections = $this->defaultSections();
-    }
-
-    /**
-     * @param list<SectionInterface> $sections
-     */
-    public function setSections(array $sections): static
-    {
-        $this->sections = $sections;
-
-        return $this;
-    }
-
     public function generate(): array
     {
         $classes = $this->discoverClasses();
@@ -53,13 +32,7 @@ class SpecAttributeGenerator extends DocGenerator
         foreach ($classes as $shortName => $fqdn) {
             $content .= "\n" . $this->renderClassLink($shortName, $fqdn);
             $data = $this->collectClassData($shortName, $fqdn, $parentMap, $nestedMap);
-
-            foreach ($this->sections as $section) {
-                $rendered = $section->render($data);
-                if ($rendered !== '') {
-                    $content .= "\n" . $rendered;
-                }
-            }
+            $content .= $this->renderSections($data);
         }
 
         return ['spec-attributes' => $content];

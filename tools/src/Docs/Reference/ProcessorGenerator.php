@@ -24,16 +24,7 @@ class ProcessorGenerator extends DocGenerator
 
         foreach ($this->collectProcessorsDetails() as $details) {
             $content .= "\n" . $this->renderer->classHeader($details['name'], 'Processors');
-            $content .= $this->renderer->classDescription($details['description']);
-
-            if ($details['options']) {
-                $configPrefix = lcfirst($details['name']) . '.';
-                $content .= "\n" . $this->renderer->processorOptions($details['options'], $configPrefix);
-            }
-
-            if ($details['see']) {
-                $content .= "\n" . $this->renderer->references($details['see']);
-            }
+            $content .= $this->renderSections($details);
         }
 
         return ['processors' => $content];
@@ -70,7 +61,7 @@ class ProcessorGenerator extends DocGenerator
     }
 
     /**
-     * @return list<array{name: string, description: string, options: list<array{name: string, type: string, default: string, description: string}>, see: list<string>}>
+     * @return list<array{name: string, description: string, configPrefix: string, options: list<array{name: string, type: string, default: string, description: string}>, see: list<string>}>
      */
     protected function collectProcessorsDetails(): array
     {
@@ -106,6 +97,7 @@ class ProcessorGenerator extends DocGenerator
         return [
             'name' => $rc->getShortName(),
             'description' => $classDoc['content'],
+            'configPrefix' => lcfirst($rc->getShortName()) . '.',
             'options' => $this->collectOptions($rc),
             'see' => $classDoc['see'],
         ];
