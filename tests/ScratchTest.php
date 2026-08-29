@@ -31,6 +31,7 @@ final class ScratchTest extends OpenApiTestCase
         // Compiler diagnostics raised in spec mode only. Tolerated rather than expected:
         // the key has no mode component, so demanding them would fail the classic case.
         $ignoredLogs = [
+            'Auth-3.0.0' => ['mutualTLS security schemes are not supported in OpenAPI 3.0'],
             'Docblocks-3.0.0' => ['const is not supported in OpenAPI 3.0'],
             'Tags-3.2.0' => ['references non-existent parent'],
         ];
