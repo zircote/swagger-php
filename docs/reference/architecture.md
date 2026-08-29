@@ -1,7 +1,7 @@
 # 🧪 Spec Pipeline Architecture
 
 An overview of how the spec attributes pipeline turns your source code into an OpenAPI
-document — enough context to configure it, extend it, or reason about its output.
+document.
 
 For the internals — how nesting is resolved, why the DTOs are shaped the way they are —
 see [Spec pipeline internals](/dev/pipeline).

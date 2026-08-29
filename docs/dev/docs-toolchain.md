@@ -17,8 +17,8 @@ first.
 | `reference/annotations.md` | `src/Annotations/` docblocks + `snippets/preamble_annotations.md` |
 | `reference/attributes.md` | `src/Attributes/` docblocks + `snippets/preamble_attributes.md` |
 | `reference/spec-attributes.md` | `src/Spec/` docblocks + `snippets/preamble_spec-attributes.md` |
-| `reference/processors.md` | `src/Processors/` docblocks + prose in `ProcessorGenerator` |
-| `reference/augmenters.md` | `src/Augmenter/` docblocks + prose in `AugmenterGenerator` |
+| `reference/processors.md` | `src/Processors/` docblocks + `snippets/preamble_processors.md` + prose in `ProcessorGenerator` |
+| `reference/augmenters.md` | `src/Augmenter/` docblocks + `snippets/preamble_augmenters.md` + prose in `AugmenterGenerator` |
 | `guide/examples.md` | example sources + the per-example `docs/examples/specs/*/Readme.md` |
 
 To change one of these, change its source and re-run `composer docs:gen`.

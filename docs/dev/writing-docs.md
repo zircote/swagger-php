@@ -1,7 +1,7 @@
 # Writing documentation
 
 Conventions for the hand-written pages under `docs/`. For which pages are generated and
-must not be edited, see [Documentation toolchain](./docs-toolchain.md).
+must not be edited, see [Documentation toolchain](/dev/docs-toolchain).
 
 ## State a fact once
 
@@ -57,7 +57,7 @@ A third, `<!--@include: ./path.md-->`, is supported by Vitepress but not yet use
 suits prose shared between hand-written pages.
 
 Prefer extracting a fragment over pasting, and prefer generating over both where the
-content is derivable at all — see [the toolchain notes](./docs-toolchain.md) for what is
+content is derivable at all — see [the toolchain notes](/dev/docs-toolchain) for what is
 already generated.
 
 ## Write about the subject, not about the documentation
@@ -136,17 +136,16 @@ If a claim needs the reader to ignore the next paragraph, cut the claim.
 
 ## Spelling
 
-`docs/` is US-spelled throughout (`behavior`, `serialization`, `organized`) — the OpenAPI
-specification text it quotes is US-spelled, and the docs follow. `src/` uses British
-spelling for identifiers and prose (`normalise`), except `serializ*`, which is US
-everywhere.
+The codebase is mixed. `normalise` sits alongside `serialization`; both spellings of
+`behavio(u)r` appear in `src/` and in `docs/`. There is no single convention to appeal to.
 
-Follow whichever convention is local to the file. Neither is worth "correcting" in bulk.
+Match whatever the file you are editing already uses, and leave the rest alone. A bulk
+correction would churn far more than it fixes.
 
 ## Structure
 
 - Code snippets under `docs/snippets/` are executed by the test suite — see
-  [Testing](./testing.md) for what a new snippet requires.
+  [Testing](/dev/testing) for what a new snippet requires.
 - The `<codeblock>` component renders annotation / attribute / spec variants as tabs; keep
   the three implementations in sync.
 - Internal links use site-absolute paths (`/reference/architecture`), not relative file
@@ -163,7 +162,7 @@ a wrong docblock or generator, not a page to hand-edit.
 ### Checks you can run
 
 - [ ] **Generated pages untouched.** `composer docs:gen` leaves no diff on the pages listed
-      in [the toolchain notes](./docs-toolchain.md).
+      in [the toolchain notes](/dev/docs-toolchain).
 - [ ] **Every `composer <script>` mentioned exists** in `composer.json`.
 - [ ] **Every code reference resolves.** Class names, `Class::method()`, file paths, CLI
       flags, config keys — check each against the source. This catches the most damaging
