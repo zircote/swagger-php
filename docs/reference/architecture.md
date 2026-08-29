@@ -4,8 +4,7 @@ An overview of how the spec attributes pipeline turns your source code into an O
 document — enough context to configure it, extend it, or reason about its output.
 
 For the internals — how nesting is resolved, why the DTOs are shaped the way they are —
-see [Spec pipeline internals](/dev/pipeline), which is written for people changing the
-pipeline rather than using it.
+see [Spec pipeline internals](/dev/pipeline).
 
 ## Pipeline overview
 
@@ -29,7 +28,7 @@ class's schema.
 Each attribute declares where it can go, rather than the Assembler hard-coding the rules.
 That is what lets you introduce your own attributes and have them nest correctly. The
 declaration mechanism is described in
-[Spec pipeline internals](/dev/pipeline#slot-maps-the-slot-belongs-to-the-parent).
+[Spec pipeline internals](/dev/pipeline).
 
 Whatever is left once nesting is resolved is added to the Specification.
 
@@ -52,9 +51,8 @@ Augmenters form a grouped pipeline that enriches the Specification in three orde
 | **Augment** | Add derived metadata                                          |
 
 Each augmenter implements `PipeInterface` and receives the full Specification, and those
-within a phase run in registration order. Which augmenters belong to each phase, in the
-order they run, is listed in the [Augmenters reference](/reference/augmenters) — generated
-from the pipeline itself, so it cannot fall out of step with the code.
+within a phase run in registration order. The [Augmenters reference](/reference/augmenters)
+lists which augmenters belong to each phase, in the order they run.
 
 ### Configuring augmenters
 

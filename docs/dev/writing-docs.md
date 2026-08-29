@@ -62,6 +62,30 @@ Prefer extracting a fragment over pasting, and prefer generating over both where
 content is derivable at all — see [the toolchain notes](./docs-toolchain.md) for what is
 already generated.
 
+## Write about the subject, not about the documentation
+
+A reader-facing page describes the software. It does not explain how the documentation is
+produced, who each page is written for, or why a cross-reference can be trusted. That is
+maintenance commentary, and it belongs in the contributor pages.
+
+Three real examples, all from one page:
+
+> The Augmenters reference — **generated from the pipeline itself, so it cannot fall out of
+> step with the code**
+
+> see Spec pipeline internals, **which is written for people changing the pipeline rather
+> than using it**
+
+> **This page stays at the level of "what happens and in what order"**
+
+Each is true, and each is invisible to the only question the reader has, which is how the
+thing works. Whether a reference is generated matters to whoever maintains it; the reader
+just follows the link.
+
+The usual tell is a clause attached to a link, explaining the link. Let the link text do
+that work: "see [Spec pipeline internals]" is complete. Anything after the comma is the
+page talking about itself.
+
 ## Do not hand-write what can be captured
 
 Command output, default configuration, and API listings should be copied from the real
@@ -139,6 +163,9 @@ a wrong docblock or generator, not a page to hand-edit.
 - [ ] **No line-number citations.** `Foo.php:123` rots silently; cite `Class::method()`.
 - [ ] **Links resolve.** Relative links point at files that exist; the site build fails on
       dead internal links, so `composer docs:build` covers the rest.
+- [ ] **Section anchors verified, or dropped.** A `#heading-slug` link is only safe when
+      the heading is plain words — punctuation and dashes make the generated slug
+      ambiguous. If you have not confirmed it, link to the page.
 - [ ] **No volatile counts.** "six pages", "around 27 test files" — derive it, or drop the
       number and describe it qualitatively.
 - [ ] **Version and requirement claims match** `composer.json`.
@@ -158,6 +185,9 @@ a wrong docblock or generator, not a page to hand-edit.
 - [ ] **The level matches the audience.** User-facing pages say what something does and
       link onward; contributor pages carry the mechanism. Neither should hold the other's
       half.
+- [ ] **No commentary about the documentation itself** on reader-facing pages — how a
+      page is generated, who it is for, why a link is trustworthy. Watch for a clause
+      hanging off a link that explains the link.
 - [ ] **Nothing restates what the page's own structure already shows.** A status table, a
       heading, or a callout already told the reader; a sentence repeating it only rots.
 - [ ] **Spelling follows the file it is in** — `docs/` is US, `src/` is British. Neither is
