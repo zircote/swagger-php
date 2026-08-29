@@ -1,8 +1,7 @@
 # Spec pipeline internals
 
-Things about the spec pipeline that are easy to get wrong from reading the source, and that
-have caused incorrect documentation before. For the user-facing description see
-[Architecture](/reference/architecture); this page is for people changing the pipeline.
+The parts of the spec pipeline that are easiest to get wrong when reading the source. For
+how the pipeline fits together, see [Architecture](/reference/architecture).
 
 ## The DTOs are mutable
 

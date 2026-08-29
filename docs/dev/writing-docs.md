@@ -3,9 +3,6 @@
 Conventions for the hand-written pages under `docs/`. For which pages are generated and
 must not be edited, see [Documentation toolchain](./docs-toolchain.md).
 
-These rules exist because each was broken at some point, and the result read plausibly
-enough that nobody noticed.
-
 ## State a fact once
 
 Do not restate something the page's own structure already establishes.
@@ -64,9 +61,12 @@ already generated.
 
 ## Write about the subject, not about the documentation
 
-A reader-facing page describes the software. It does not explain how the documentation is
-produced, who each page is written for, or why a cross-reference can be trusted. That is
-maintenance commentary, and it belongs in the contributor pages.
+A page describes its subject. Unless the documentation *is* the subject — as on this page,
+or the toolchain notes — it does not explain how the docs are produced or why a
+cross-reference can be trusted.
+
+No page, of either kind, needs to announce its own audience or justify its existence. The
+title and the link that brought the reader here have already done that.
 
 Three real examples, all from one page:
 
@@ -185,9 +185,11 @@ a wrong docblock or generator, not a page to hand-edit.
 - [ ] **The level matches the audience.** User-facing pages say what something does and
       link onward; contributor pages carry the mechanism. Neither should hold the other's
       half.
-- [ ] **No commentary about the documentation itself** on reader-facing pages — how a
-      page is generated, who it is for, why a link is trustworthy. Watch for a clause
+- [ ] **No commentary about the documentation itself**, unless the docs are the page's
+      subject — how a page is generated, why a link is trustworthy. Watch for a clause
       hanging off a link that explains the link.
+- [ ] **No page announcing its own audience or purpose.** "This page is for…", "these
+      notes exist because…". Applies to contributor pages too, not just user-facing ones.
 - [ ] **Nothing restates what the page's own structure already shows.** A status table, a
       heading, or a callout already told the reader; a sentence repeating it only rots.
 - [ ] **Spelling follows the file it is in** — `docs/` is US, `src/` is British. Neither is
