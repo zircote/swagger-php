@@ -124,4 +124,83 @@ abstract class DocGenerator
 
         return ['content' => $content, 'see' => $see, 'var' => $var, 'params' => $params];
     }
+
+    /**
+     * Configuration options, read from the setters that match a configurable constructor
+     * parameter.
+     *
+     * @return list<array{name: string, type: string, default: string, description: string}>
+     */
+    protected function collectOptions(\ReflectionClass $rc): array
+    {
+        $options = [];
+        $configurable = $this->configurableParameters($rc);
+
+        foreach ($rc->getMethods() as $method) {
+            if (!str_starts_with($method->getName(), 'set')) {
+                continue;
+            }
+
+            $pname = lcfirst(substr($method->getName(), 3));
+            if (!in_array($pname, $configurable, true)) {
+                continue;
+            }
+
+            $type = 'n/a';
+            if (1 === count($method->getParameters())) {
+                if ($rt = $method->getParameters()[0]->getType()) {
+                    $type = $rt->getName();
+                }
+            }
+
+            $phpdoc = $this->parseDocblock($method->getDocComment());
+            $description = '';
+            if ($phpdoc['content']) {
+                $description = $phpdoc['content'];
+            } elseif (array_key_exists($pname, $phpdoc['params']) && $phpdoc['params'][$pname]['content']) {
+                $description = $phpdoc['params'][$pname]['content'];
+            }
+
+            $options[] = [
+                'name' => $pname,
+                'type' => $type,
+                'default' => $this->resolveDefault($rc, $pname),
+                'description' => $description,
+            ];
+        }
+
+        return $options;
+    }
+
+    /**
+     * The documented default for an option, taken from the matching constructor parameter.
+     */
+    protected function resolveDefault(\ReflectionClass $rc, string $pname): string
+    {
+        if (!$rc->hasMethod('__construct')) {
+            return 'N/A';
+        }
+
+        foreach ($rc->getMethod('__construct')->getParameters() as $parameter) {
+            if ($parameter->getName() !== $pname) {
+                continue;
+            }
+
+            if (!$parameter->isDefaultValueAvailable()) {
+                return 'N/A';
+            }
+
+            $dv = $parameter->getDefaultValue();
+
+            return match (gettype($dv)) {
+                'NULL' => 'null',
+                'boolean' => $dv ? 'true' : 'false',
+                'array' => '[' . implode(', ', $dv) . ']',
+                'object' => $dv::class,
+                default => (string) $dv,
+            };
+        }
+
+        return 'N/A';
+    }
 }
