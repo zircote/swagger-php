@@ -41,26 +41,20 @@ Augmenters read from and write to the Specification's buckets. The container is 
 
 ## Resolver
 
-The Resolver discovers FQCNs referenced by the specification that have no corresponding component (e.g. model classes used in `$ref` or typed properties that were never scanned) and delegates their handling to a chain of `ResolverInterface` implementations. `Resolver\Reflection` is registered by default; further resolvers can be added, and the chain can be cleared entirely.
+Between assembly and augmentation, the Resolver looks for classes the specification refers
+to but does not contain — a model used in a `$ref`, or the type of a property on a schema —
+and hands each one to a chain of `ResolverInterface` implementations.
 
-### Why a separate step
+`Resolver\Reflection` is registered by default: it reflects the class and collects it with
+the assembler already in use. A class carrying no spec attributes contributes nothing, so
+resolution reports failure and the next resolver in the chain gets a turn — which is where
+something generating schemas for unannotated classes would slot in.
 
-Solving this inside the augmenter pipeline creates ordering problems: an augmenter that adds new schemas runs after `Names` and `Types`, so it must re-invoke those augmenters on the newly added entries. The Resolver runs after assembly but before augmenters, so all schemas are present when augmenters start their single pass.
+Wiring resolvers into a build is covered in
+[Resolver configuration](/reference/builder#resolver); discovery and the convergence loop
+are in [Spec pipeline internals](/dev/pipeline).
 
-### Discovery
-
-Two sources are inspected to find unresolved FQCNs:
-
-- **Ref values** — walks all `$ref` attributes for raw FQCN strings (not yet rewritten to `#/components/...` paths). These are discoverable without `Names` or `Refs` having run.
-- **Reflector types** — walks schema class reflectors for non-builtin typed properties and constructor parameters. This reads `\ReflectionProperty::getType()` directly, no `Types` augmenter needed.
-
-A `ComponentIndex` is used to deduplicate against components already present in the specification.
-
-### Resolution loop
-
-The Resolver iterates in a convergence loop: discover unresolved FQCNs, pass each to the resolver chain (first resolver to claim success wins), then re-discover. This handles transitive references — resolving class A may add a schema referencing class B, which the next iteration discovers.
-
-### ResolverInterface
+### Writing a resolver
 
 ```php
 namespace OpenApi\Contracts;
@@ -71,53 +65,10 @@ interface ResolverInterface
 }
 ```
 
-Resolvers receive the `Assembler` that assembled the specification. Collecting a reflector with it adds the result straight into the specification being built; resolvers that assemble differently can use their own assembler and add to `$assembler->getSpecification()` directly. Returning `true` marks the FQCN as handled and stops the chain for it.
-
-### Resolver\Reflection
-
-The default resolver collects the referenced class with the assembler in use:
-
-```php
-class Reflection implements ResolverInterface
-{
-    public function resolve(string $fqcn, Assembler $assembler): bool
-    {
-        $assembler->collect(new \ReflectionClass($fqcn));
-
-        return $assembler->getSpecification()->buildComponentIndex()->find($fqcn) !== null;
-    }
-}
-```
-
-Because it is registered by default, **listing all related classes as builder sources is optional** — a single controller is enough as long as everything it references carries spec attributes:
-
-```php
-$result = (new Builder())
-    ->setMode(Mode::SPEC)
-    ->addSource(new \ReflectionClass(ProductController::class))
-    ->build();
-```
-
-Classes without spec attributes add nothing, so `resolve()` returns `false` and the next resolver in the chain gets a turn — that is where, for example, a resolver generating schemas for unannotated classes would slot in.
-
-### Configuring resolvers
-
-The default chain contains `Resolver\Reflection` only. Add to it, or place a resolver ahead of it, via `withResolvers()`:
-
-```php
-use OpenApi\Resolver;
-use OpenApi\Utils\TypedList;
-
-$builder->withResolver(function (Resolver $resolver) {
-    $resolver->withResolvers(fn (TypedList $resolvers) => $resolvers->add(new MyResolver()));
-});
-```
-
-To opt out of resolution altogether, replace the chain with an empty list — the step is skipped when no resolvers are registered:
-
-```php
-$builder->withResolver(fn (Resolver $resolver) => $resolver->setResolvers(new TypedList()));
-```
+Resolvers are handed the `Assembler` that built the specification, so collecting a reflector
+with it adds the result straight into the specification in progress. A resolver that
+assembles differently can add to `$assembler->getSpecification()` directly. Return `true` to
+mark the FQCN handled and stop the chain for it.
 
 ## Augmenters
 
