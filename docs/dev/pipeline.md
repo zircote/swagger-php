@@ -13,9 +13,6 @@ and `Specification` exposes public arrays that `add()` appends to.
 What *is* true, and what distinguishes them from classic annotations, is that they carry no
 serialization logic. Serialization is the compiler's job.
 
-Documentation has repeatedly claimed these objects are immutable. They are not; do not
-reason about the pipeline as if nothing is being mutated.
-
 ## Slot maps: the slot belongs to the parent
 
 Nesting is declared by the child, via two methods on `AttributeInterface`:
@@ -34,8 +31,8 @@ public function contained(): array
 }
 ```
 
-A `[]` suffix appends to a collection; a bare name assigns a scalar. This is easy to read
-backwards — the interface's own docblock had it inverted for a while.
+A `[]` suffix appends to a collection; a bare name assigns a scalar. It is easy to read
+backwards.
 
 Because the child declares the relationship, downstream code can extend the system: a
 custom attachable names its own nesting targets without touching any native attribute.
@@ -85,13 +82,8 @@ The user-facing version of this distinction is in
 Genuinely nested: `Schema\{AdditionalProperties,Items,Ref}`, `Property\Encoded`,
 `Operation\*`, `Parameter\*`, `MediaType\{Json,Xml}`, `Flow\*`, `Security\Scheme\*`.
 
-All spec attributes extend `AbstractAttribute`. Typed subclasses such as `Operation\Get`
-and `Parameter\Path` pre-fill fields the base class requires explicitly; the base class is
-always usable directly for full control.
-
-Do not hand-maintain a class tree in documentation. The generated
-[Spec Attributes reference](/reference/spec-attributes) lists every attribute with its
-parameters and what it can nest into, and cannot go stale.
+The [Spec Attributes reference](/reference/spec-attributes) lists every attribute with its
+parameters and what it can nest into.
 
 ## Reflectors are the glue
 
@@ -135,12 +127,3 @@ follows registration order.
 
 Ordering that matters: `Inheritance` must run before `PathItems`, because inherited
 operations have to exist before path prefixes are resolved.
-
-Prose that re-lists the order drifts. Point at the method instead.
-
-## Typed operation subclasses drop `requestBody`
-
-`Operation\Get`, `Operation\Head`, `Operation\Options` and `Operation\Trace` have no
-`requestBody` constructor parameter. Passing one is a PHP
-`Error: Unknown named parameter $requestBody`, raised when the attribute is instantiated —
-not a validation warning. `Post`, `Put`, `Patch` and `Delete` accept it.

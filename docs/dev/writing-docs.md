@@ -87,6 +87,18 @@ The usual tell is a clause attached to a link, explaining the link. Let the link
 that work: "see [Spec pipeline internals]" is complete. Anything after the comma is the
 page talking about itself.
 
+## Enumerate closed sets only
+
+A list someone has to remember to update is a list that will be wrong.
+
+Enumerate a set only when it is **closed** — defined somewhere in code, changing only when
+that code changes. The generated pages are closed: `tools/docgen.php` names them, so a table
+listing them holds until someone edits the generator. "Everything else under `docs/`" is
+open-ended; it grows whenever anyone adds a page, so it gets described rather than listed.
+
+The same test applies to a count attached to a list. If the set can change, so can the
+number — which is why "six pages" goes along with the enumeration it summarised.
+
 ## Do not hand-write what can be captured
 
 Command output, default configuration, and API listings should be copied from the real
@@ -150,10 +162,8 @@ a wrong docblock or generator, not a page to hand-edit.
 
 ### Checks you can run
 
-- [ ] **Generated pages untouched.** Run `composer docs:gen` and confirm the pages listed
-      in [the toolchain notes](./docs-toolchain.md) are
-      unchanged. Scope the check to those files — `docs/reference/` also holds
-      hand-written pages, so a directory-wide check reports your own edits.
+- [ ] **Generated pages untouched.** `composer docs:gen` leaves no diff on the pages listed
+      in [the toolchain notes](./docs-toolchain.md).
 - [ ] **Every `composer <script>` mentioned exists** in `composer.json`.
 - [ ] **Every code reference resolves.** Class names, `Class::method()`, file paths, CLI
       flags, config keys — check each against the source. This catches the most damaging
@@ -179,6 +189,9 @@ a wrong docblock or generator, not a page to hand-edit.
 
 ### Checks that need reading
 
+- [ ] **No open-ended set enumerated.** A list is for a set defined in code, which changes
+      only when that code changes. Anything that grows when someone adds a file gets
+      described instead.
 - [ ] **Detail appears exactly once.** Two pages may introduce the same subject; only one
       may carry the specifics. If you are writing something a second time, link instead.
 - [ ] **Claims are verified, not reasoned.** Hedges — "may", "should", "is expected to" —

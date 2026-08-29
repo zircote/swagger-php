@@ -32,11 +32,9 @@ The documentation site has [some details](https://zircote.github.io/swagger-php/
 - [ ] Reference docs regenerated — `composer docs:gen` leaves **no** diff
 - [ ] Hand-written docs updated for any behaviour or API change
 
-That last one is easy to miss. `composer docs:gen` only rebuilds the six generated
-reference pages; everything else under `docs/` — the guides, `reference/architecture.md`,
-`reference/builder.md`, `reference/inheritance.md` — is hand-written and will not update
-itself. See [docs/dev/](docs/dev/) for which is which, and for the conventions those pages
-follow.
+`composer docs:gen` only rebuilds the generated pages; everything else under `docs/` is
+hand-written and will not update itself. See [docs/dev/](docs/dev/) for which is which, and
+for the conventions those pages follow.
 
 Pull request titles follow `type(Scope): subject`, e.g. `feat(Spec): add encoding shortcut`.
 

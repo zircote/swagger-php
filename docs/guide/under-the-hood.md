@@ -40,10 +40,8 @@ npm install
 
 ### Workflow
 
-* Edit `.md` files in the `docs` folder
-* Update annotation / attribute PHP docblocks.<br>These will be extracted during publishing into the [reference](../reference/) section.
-* Run 'composer docs:build' to check for any errors
-* Run 'composer docs:dev' to test the generated documentation locally; it prints the URL on startup
+* Edit `.md` files in the `docs` folder — see [the toolchain notes](/dev/docs-toolchain) for
+  which pages are generated from source and must not be edited by hand, and for the commands
 * Create PR and update `master`
 * Manually trigger the `gh-pages` workflow to update the online docs.
 
