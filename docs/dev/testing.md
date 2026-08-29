@@ -13,7 +13,7 @@ composer performance                     # perf tests, excluded from the default
 
 ## Prefer data providers
 
-Most behaviour in this library varies along a few axes — OpenAPI version, processing mode,
+Most behavior in this library varies along a few axes — OpenAPI version, processing mode,
 annotation vs attribute vs spec input. Repeating a test body per combination gets long and
 hides which case actually failed.
 

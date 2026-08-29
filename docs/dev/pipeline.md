@@ -4,13 +4,6 @@ Things about the spec pipeline that are easy to get wrong from reading the sourc
 have caused incorrect documentation before. For the user-facing description see
 [Architecture](/reference/architecture); this page is for people changing the pipeline.
 
-## Where new code goes
-
-`src/Annotations/` and `src/Attributes/` are the classic pipeline. They are maintained but
-effectively closed to new features — see [ROADMAP](https://github.com/zircote/swagger-php/blob/master/ROADMAP.md)
-for the v7/v8 plan. New spec work belongs in `src/Spec/`, `src/Augmenter/` and
-`src/Compiler/`.
-
 ## The DTOs are mutable
 
 Spec attributes are plain data containers, but they are **not** immutable, and neither is
@@ -48,6 +41,32 @@ backwards — the interface's own docblock had it inverted for a while.
 Because the child declares the relationship, downstream code can extend the system: a
 custom attachable names its own nesting targets without touching any native attribute.
 
+### How resolution runs
+
+Resolution is driven purely by these declarations — it reads nothing from PHP's own
+structural semantics:
+
+1. **Sibling merge** — attributes on the same reflector compose via `merge()`
+2. **Hierarchical absorb** — what remains flows upward a level at a time via `contained()`,
+   first match wins
+
+If a level has containers, an unmatched non-root attribute is an error. If a level has no
+containers at all, unmatched attributes pass through to the level above.
+
+### What survives resolution
+
+Only *root* attributes should remain, and those are what enters the Specification. A root
+attribute is one that can stand alone — it owns a bucket and needs no parent.
+
+- **Always root**: `Schema`, `Operation`, `PathItem`, `OpenApi`, `Info`, `Tag`, `Server`,
+  `ExternalDocumentation`, `Security\Scheme`, `Components`, `Attachable`
+- **Conditionally root**: `Response` (with `response` set), `RequestBody` (with `request` set)
+- **Never root**: `Parameter`, `Header`, `Link`, `Example`, `MediaType`, `Property` — these
+  must nest inside a parent or sit in a `Components` container
+
+The user-facing version of this distinction is in
+[Using Spec Attributes](/guide/spec-attributes#components); this list is the full one.
+
 ## Directory layout is not the class hierarchy
 
 `src/Spec/` nests directories for readability, not inheritance. Notably:
@@ -63,9 +82,45 @@ custom attachable names its own nesting targets without touching any native attr
 Genuinely nested: `Schema\{AdditionalProperties,Items,Ref}`, `Property\Encoded`,
 `Operation\*`, `Parameter\*`, `MediaType\{Json,Xml}`, `Flow\*`, `Security\Scheme\*`.
 
+All spec attributes extend `AbstractAttribute`. Typed subclasses such as `Operation\Get`
+and `Parameter\Path` pre-fill fields the base class requires explicitly; the base class is
+always usable directly for full control.
+
 Do not hand-maintain a class tree in documentation. The generated
 [Spec Attributes reference](/reference/spec-attributes) lists every attribute with its
 parameters and what it can nest into, and cannot go stale.
+
+## Reflectors are the glue
+
+Every root DTO keeps the reflector it came from. This is how relationships that span
+buckets get resolved after assembly, without the DTOs having to reference each other:
+
+- **PathItem to Operation** — a PathItem sits on a class, operations on its methods; the
+  `PathItems` augmenter uses `ReflectionMethod::getDeclaringClass()` to pair them
+- **Prefix composition** — `ReflectionClass::getParentClass()` walks ancestors so parent
+  PathItems can contribute path prefixes
+- **OperationId generation** — class and method names come from the reflector
+- **Type inference** — `Types` reads PHP type declarations off property and parameter
+  reflectors
+
+This is what keeps the Assembler concerned only with nesting.
+
+## Normalise on input, store the simple form
+
+Where a property accepts both a rich input type and a plain serialized one, take both but
+convert immediately in the constructor. Properties always hold the simple form; enums,
+objects and convenience types are input sugar only.
+
+```php
+// FlowType enum accepted on input, stored as string
+public function __construct(string|FlowType|null $flow = null) {
+    parent::__construct([
+        'flow' => $flow instanceof \BackedEnum ? $flow->value : $flow,
+    ]);
+}
+```
+
+Augmenters, compilers and serialization then never need to branch on type.
 
 ## Augmenter ordering lives in one place
 

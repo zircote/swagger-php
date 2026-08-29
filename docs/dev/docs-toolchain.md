@@ -43,6 +43,10 @@ composer docs:gen && git status --porcelain docs/
 Any output means the committed pages have drifted, and the regenerated version is the
 correct one. Worth running before opening a pull request.
 
+Run it with an otherwise-clean tree, or scope the `git status` to the six files above —
+`docs/reference/` also holds hand-written pages (`architecture.md`, `builder.md`,
+`inheritance.md`, `index.md`), so a directory-wide check reports your own edits as drift.
+
 ## Commands
 
 | Command | Notes |
@@ -69,7 +73,7 @@ This is implemented once, in `DocGenerator::configurableParameters()`, and mirro
 by construction; if you change one, check the other. The check is that
 `./bin/openapi --mode spec -D src` lists exactly the settings the reference page documents.
 
-## CLI behaviour worth knowing
+## CLI behavior worth knowing
 
 - `-D` / `--defaults` prints the resolved default config, but still requires the `paths`
   argument: `./bin/openapi --mode spec -D src`, not `./bin/openapi --mode spec -D`.

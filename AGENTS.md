@@ -28,14 +28,15 @@ Read the relevant page before working in that part of the tree:
 | [docs/dev/pipeline.md](docs/dev/pipeline.md) | spec pipeline internals — slot maps, mutability, augmenter ordering, where new code goes |
 | [docs/dev/testing.md](docs/dev/testing.md) | data providers, the `tests/Concerns` helpers, how documentation is test-verified |
 | [docs/dev/docs-toolchain.md](docs/dev/docs-toolchain.md) | which documentation is generated, and the CLI's rough edges |
-| [docs/dev/writing-docs.md](docs/dev/writing-docs.md) | conventions for hand-written documentation |
+| [docs/dev/writing-docs.md](docs/dev/writing-docs.md) | conventions for hand-written documentation, and a checklist for reviewing doc changes |
 
 ## Conventions
 
 - `protected` over `private` for methods and properties, so downstream can subclass
 - British spelling in `src/`, US in `docs/` — follow whichever is local to the file
 - New pipeline work goes in `src/Spec/`, `src/Augmenter/`, `src/Compiler/`;
-  `src/Annotations/` and `src/Attributes/` are classic and closed to new features
+  `src/Annotations/` and `src/Attributes/` are classic and closed to new features —
+  [ROADMAP.md](ROADMAP.md) has the v7/v8 plan
 - Branches are `type/short-description`; commits are `type(Scope): subject`
   (`feat`, `fix`, `docs`, `chore`, `refactor`)
 

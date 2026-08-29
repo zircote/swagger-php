@@ -23,6 +23,45 @@ Marketing filler and restatement filler are the same defect wearing different cl
 Replacing "the stable, production-ready mode" with "the only mode not marked beta" is not
 an improvement.
 
+## Detail belongs in exactly one place
+
+Orientation may appear in several places; detail may not.
+
+It is fine — often necessary — for two pages to *introduce* the same subject, because they
+are read by different people arriving from different directions. What must not happen is
+the same specifics being spelled out twice, because the two copies drift and nothing
+reveals which one is stale.
+
+The split that works is by depth, not by topic. A page aimed at users says what a thing
+does and why it matters, then links onward. The page aimed at contributors carries the
+mechanism, the rules, the exact lists. Neither repeats the other's half.
+
+`reference/architecture.md` and `dev/pipeline.md` are the worked example: the reference
+page describes the Assembler in a paragraph and links onward, while the internals page owns
+slot maps, the resolution algorithm and the root-attribute list. Before this split both
+described slot maps, augmenter ordering and the class hierarchy, in different words.
+
+When you find yourself writing something a second time, that is the signal to link instead.
+
+## Reuse the content, do not copy it
+
+When the same text genuinely has to appear in more than one output, extract it and pull it
+in. Copying is what rots.
+
+The mechanisms already in use:
+
+- `docs/snippets/preamble_*.md` — markdown fragments the reference generators splice into
+  their pages, via `DocGenerator::snippetContent()`. Editing the fragment updates the
+  generated page.
+- `<<< @/snippets/path.php` — transcludes a real, test-executed source file into a page, so
+  a documented example cannot drift from code that runs.
+- `<!--@include: ./path.md-->` — Vitepress markdown include, for prose shared between
+  hand-written pages.
+
+Prefer extracting a fragment over pasting, and prefer generating over both where the
+content is derivable at all — see [the toolchain notes](./docs-toolchain.md) for what is
+already generated.
+
 ## Do not hand-write what can be captured
 
 Command output, default configuration, and API listings should be copied from the real
@@ -38,7 +77,7 @@ options — for as long as nobody ran it.
 ## Do not cite line numbers
 
 `Class::method()` survives refactoring; `Foo.php:110` does not. Of three line references in
-`docs/adr/001`, two had already rotted.
+ADR-001, two had already rotted.
 
 ## Do not claim what you have not verified
 
@@ -46,7 +85,7 @@ If a page compares spec mode to classic mode, run both. Hedged comparisons — "
 *may* emit the array form" — are a sign the comparison was reasoned about rather than
 tested, and they are impossible for a reader to act on.
 
-Either verify and state it plainly, or document only the behaviour you know.
+Either verify and state it plainly, or document only the behavior you know.
 
 ## Do not contradict the page you are on
 
@@ -75,3 +114,53 @@ Follow whichever convention is local to the file. Neither is worth "correcting" 
   the three implementations in sync.
 - Internal links use site-absolute paths (`/reference/architecture`), not relative file
   paths, so they survive being rendered at a different depth.
+
+## Reviewing documentation changes
+
+A pass to run over a documentation diff — your own or someone else's. Every item below
+caught a real defect in this codebase at least once.
+
+Where a check fails, fix the source rather than the symptom: a wrong generated page means
+a wrong docblock or generator, not a page to hand-edit.
+
+### Checks you can run
+
+- [ ] **Generated pages untouched.** Run `composer docs:gen` and confirm the pages listed
+      in [the toolchain notes](./docs-toolchain.md) are
+      unchanged. Scope the check to those files — `docs/reference/` also holds
+      hand-written pages, so a directory-wide check reports your own edits.
+- [ ] **Every `composer <script>` mentioned exists** in `composer.json`.
+- [ ] **Every code reference resolves.** Class names, `Class::method()`, file paths, CLI
+      flags, config keys — check each against the source. This catches the most damaging
+      class of error, where confident prose describes an API that was renamed or never
+      existed.
+- [ ] **Command output was captured, not composed.** Any `--help` text, default config
+      dump or API listing should come from a real run.
+- [ ] **No line-number citations.** `Foo.php:123` rots silently; cite `Class::method()`.
+- [ ] **Links resolve.** Relative links point at files that exist; the site build fails on
+      dead internal links, so `composer docs:build` covers the rest.
+- [ ] **No volatile counts.** "six pages", "around 27 test files" — derive it, or drop the
+      number and describe it qualitatively.
+- [ ] **Version and requirement claims match** `composer.json`.
+- [ ] **No marketing filler** — "production-ready", "seamless", "powerful", "clean",
+      "simply", "robust", "comprehensive".
+- [ ] **No stock phrase repeated** across the diff. If the same formulation appears twice,
+      one of them is padding.
+
+### Checks that need reading
+
+- [ ] **Detail appears exactly once.** Two pages may introduce the same subject; only one
+      may carry the specifics. If you are writing something a second time, link instead.
+- [ ] **Claims are verified, not reasoned.** Hedges — "may", "should", "is expected to" —
+      usually mark a claim nobody tested. Run it, then state it plainly, or cut it.
+- [ ] **The page does not contradict itself.** A claim the reader must ignore two
+      paragraphs later is worse than no claim.
+- [ ] **The level matches the audience.** User-facing pages say what something does and
+      link onward; contributor pages carry the mechanism. Neither should hold the other's
+      half.
+- [ ] **Nothing restates what the page's own structure already shows.** A status table, a
+      heading, or a callout already told the reader; a sentence repeating it only rots.
+- [ ] **Spelling follows the file it is in** — `docs/` is US, `src/` is British. Neither is
+      worth correcting in bulk.
+- [ ] **Shared content is reused, not copied** — see [above](#reuse-the-content-do-not-copy-it).
+
