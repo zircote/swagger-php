@@ -126,6 +126,40 @@ abstract class DocGenerator
     }
 
     /**
+     * The `Configuration` section, which differs between pipelines only in what the
+     * configurable thing is called and how a build selects it.
+     *
+     * @param string       $noun     lowercase singular, e.g. `augmenter`
+     * @param string       $modeFlag CLI flag selecting the pipeline, empty for the default
+     * @param list<string> $examples CLI examples, without the leading `> `
+     * @param string       $php      the "Programmatically with PHP" body
+     */
+    protected function renderConfiguration(string $noun, string $modeFlag, array $examples, string $php): string
+    {
+        $openapi = rtrim('./vendor/bin/openapi ' . $modeFlag);
+
+        $out = "\n" . $this->renderer->sectionHeader(ucfirst($noun) . ' Configuration');
+
+        $out .= "\n### Command line\n";
+        $out .= "The `-c` option takes a name/value pair: the {$noun} name (starting lowercase)\n";
+        $out .= "and the option name, separated by a dot (`.`).\n";
+        $out .= "\n";
+        $out .= "To list the available {$noun} names and options use `-D`. It still requires a\n";
+        $out .= "source path, e.g. `{$openapi} -D src`. Unknown keys are\n";
+        $out .= "reported as warnings.\n";
+        $out .= "\n";
+        $out .= "```shell\n";
+        foreach ($examples as $example) {
+            $out .= "> {$openapi} {$example}\n";
+        }
+        $out .= "```\n";
+
+        $out .= "\n### Programmatically with PHP\n";
+
+        return $out . $php;
+    }
+
+    /**
      * Configuration options, read from the setters that match a configurable constructor
      * parameter.
      *

@@ -41,43 +41,32 @@ class ProcessorGenerator extends DocGenerator
 
     protected function renderConfigSection(): string
     {
-        $out = "\n" . $this->renderer->sectionHeader('Processor Configuration');
-
-        $out .= "\n### Command line\n";
-        $out .= <<<'EOT'
-The `-c` option takes a name/value pair: the processor name (starting lowercase)
-and the option name, separated by a dot (`.`).
-
-To list the available processor names and options use `-D`. It still requires a
-source path, e.g. `./vendor/bin/openapi -D src`.
-
-```shell
-> ./vendor/bin/openapi -c operationId.hash=true src
-> ./vendor/bin/openapi -c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ src
-```
-
-EOT;
-
-        $out .= "\n### Programmatically with PHP\n";
-
-        return $out . <<<'EOT'
-Configuration can be set using the `Generator::setConfig()` method. Keys can either be the same
-as on the command line or be broken down into nested arrays.
-
-```php
-(new Generator())
-    ->setConfig([
-        'operationId.hash' => true,
-        'pathFilter' => [
-            'tags' => [
-                '/pets/',
-                '/store/',
+        return parent::renderConfiguration(
+            'processor',
+            '',
+            [
+                '-c operationId.hash=true src',
+                '-c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ src',
             ],
-        ],
-    ]);
-```
+            <<<'EOT'
+                Configuration can be set using the `Generator::setConfig()` method. Keys can either be the same
+                as on the command line or be broken down into nested arrays.
 
-EOT;
+                ```php
+                (new Generator())
+                    ->setConfig([
+                        'operationId.hash' => true,
+                        'pathFilter' => [
+                            'tags' => [
+                                '/pets/',
+                                '/store/',
+                            ],
+                        ],
+                    ]);
+                ```
+
+                EOT,
+        );
     }
 
     /**

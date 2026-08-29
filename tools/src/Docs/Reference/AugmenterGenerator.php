@@ -74,39 +74,27 @@ class AugmenterGenerator extends DocGenerator
 
     protected function renderConfigSection(): string
     {
-        $out = "\n" . $this->renderer->sectionHeader('Augmenter Configuration');
+        return parent::renderConfiguration(
+            'augmenter',
+            '--mode spec',
+            [
+                '-c operationIds.hash=true src',
+                '-c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ src',
+            ],
+            <<<'EOT'
+                Configuration can be set using the `Builder::withAugmenters()` method to access the pipeline
+                and configure individual augmenters via `Pipeline::get()`.
 
-        $out .= "\n### Command line\n";
-        $out .= <<<'EOT'
-The `-c` option takes a name/value pair: the augmenter name (starting lowercase)
-and the option name, separated by a dot (`.`).
+                ```php
+                (new Builder())
+                    ->withAugmenters(function ($pipeline) {
+                        $pipeline->get(Augmenter\OperationIds::class)->setHash(true);
+                        $pipeline->get(Augmenter\PathFilter::class)->setTags(['/pets/', '/store/']);
+                    });
+                ```
 
-To list the available augmenter names and options use `-D`. It still requires a
-source path, e.g. `./vendor/bin/openapi --mode spec -D src`. Unknown keys are
-reported as warnings.
-
-```shell
-> ./vendor/bin/openapi --mode spec -c operationIds.hash=true src
-> ./vendor/bin/openapi --mode spec -c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ src
-```
-
-EOT;
-
-        $out .= "\n### Programmatically with PHP\n";
-
-        return $out . <<<'EOT'
-Configuration can be set using the `Builder::withAugmenters()` method to access the pipeline
-and configure individual augmenters via `Pipeline::get()`.
-
-```php
-(new Builder())
-    ->withAugmenters(function ($pipeline) {
-        $pipeline->get(Augmenter\OperationIds::class)->setHash(true);
-        $pipeline->get(Augmenter\PathFilter::class)->setTags(['/pets/', '/store/']);
-    });
-```
-
-EOT;
+                EOT,
+        );
     }
 
     /**

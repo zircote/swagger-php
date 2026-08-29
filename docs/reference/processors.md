@@ -14,7 +14,8 @@ The `-c` option takes a name/value pair: the processor name (starting lowercase)
 and the option name, separated by a dot (`.`).
 
 To list the available processor names and options use `-D`. It still requires a
-source path, e.g. `./vendor/bin/openapi -D src`.
+source path, e.g. `./vendor/bin/openapi -D src`. Unknown keys are
+reported as warnings.
 
 ```shell
 > ./vendor/bin/openapi -c operationId.hash=true src
