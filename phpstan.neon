@@ -7,7 +7,7 @@ parameters:
     paths:
         - src
         - tests
-            - tools
+        - tools
         - docs/examples
     parallel:
         processTimeout: 300.0
