@@ -25,6 +25,36 @@ Prefer adding a case to an existing provider over copying a whole test method. P
 adding new test cases over modifying existing ones — an existing case usually encodes a
 regression somebody cared about.
 
+### Build objects in the test, not in the provider
+
+PHPUnit evaluates providers while collecting tests, before coverage recording starts. Code
+that runs inside a provider is therefore **asserted but never counted as covered**.
+
+Yield the ingredients and construct in the test body:
+
+```php
+public static function typedOperations(): iterable
+{
+    yield 'head' => [OA\Operation\Head::class, 'head'];   // not: new OA\Operation\Head(...)
+}
+
+#[DataProvider('typedOperations')]
+public function testCompilesUnderItsHttpMethod(string $class, string $method): void
+{
+    $operation = new $class(path: '/ping');
+    // ...
+}
+```
+
+This is not a style preference. `UncoveredAttributesTest` was written the other way round
+first: every case passed, and `Operation\Head`, `Options`, `Trace`, three `Flow` classes,
+`MutualTls` and `OpenIdConnect` all still reported **0% coverage**. Moving construction into
+the test body took each to 100%, and `src/Spec/` from 79% to 99%, with no change to the
+assertions.
+
+The failure is silent — the tests pass either way — so it only shows up when someone runs
+coverage and wonders why a tested class reads as untouched.
+
 ## Shared helpers
 
 `tests/Concerns/` holds the reusable pieces. Look here before writing setup code:
