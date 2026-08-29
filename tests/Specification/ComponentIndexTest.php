@@ -15,7 +15,6 @@ use OpenApi\Tests\Fixtures\ComponentIndex\UnnamedTag;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-
 final class ComponentIndexTest extends TestCase
 {
     use AssemblesSpecification;
