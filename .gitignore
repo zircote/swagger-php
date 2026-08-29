@@ -1,5 +1,6 @@
 .phpunit.result.cache
 .php-cs-fixer.cache
+.php-cs-fixer.php
 bin/
 !bin/openapi
 composer.lock
@@ -9,6 +10,8 @@ docs/.vitepress/dist/
 docs/node_modules/
 docs/package-lock.json
 node_modules/
+phpstan.neon
+phpunit.xml
 vendor/
 .idea/
 .phpstan/
