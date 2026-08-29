@@ -19,18 +19,16 @@ attributes and annotations.
 - Compatible with the OpenAPI **3.0**, **3.1** and **3.2** specification.
 - Extracts information from code and existing phpdoc comments.
 - Can be used programmatically or via command-line tool.
-- [Documentation site](https://zircote.github.io/swagger-php/) with a getting started guide.
 - Error reporting (with hints, context).
-- All metadata is configured via PHP attributes.
 - 🧪 **Spec attributes pipeline (beta)** — a new processing mode with typed DTOs, grouped augmenters, and version-aware compilers.
 
 ## OpenAPI version support
 
-`swagger-php` allows to generate specs either for **OpenAPI 3.0.0**, **OpenAPI 3.1.0** and **OpenAPI 3.2.0**.
-By default, the spec will be in version `3.0.0`. The command line option `--version` may be used to change to
-any other supported version.
+`swagger-php` can generate specs for **OpenAPI 3.0.0**, **OpenAPI 3.1.0** and **OpenAPI 3.2.0**.
+Classic mode defaults to `3.0.0`, spec and hybrid mode to `3.1.0`.
 
-Programmatically, the method `Generator::setVersion()` can be used to change the version.
+The command line option `--version` selects a different version; programmatically, use
+`Builder::setVersion()`.
 
 ## Requirements
 
@@ -42,8 +40,9 @@ Programmatically, the method `Generator::setVersion()` can be used to change the
 composer require zircote/swagger-php
 ```
 
-For cli usage from anywhere, install swagger-php globally and make sure to place the `~/.composer/vendor/bin` directory
-in your PATH so the `openapi` executable can be located by your system.
+For cli usage from anywhere, install swagger-php globally and add Composer's global binary directory
+(`composer global config bin-dir --absolute`) to your PATH, so the `openapi` executable can be located by
+your system.
 
 ```shell
 composer global require zircote/swagger-php
@@ -111,7 +110,7 @@ $result = (new \OpenApi\Builder())
 ```
 
 **Hybrid mode** works with your existing `OpenApi\Attributes` code — no changes needed. It runs the classic scanner
-but uses the new augmenter pipeline and version-aware compilers, which is faster and easier to extend.
+but uses the new augmenter pipeline and version-aware compilers, which are easier to extend.
 If you'd like to help test the new pipeline, switching to hybrid is the easiest way:
 
 ```php
@@ -154,9 +153,9 @@ The `openapi` command line interface can be used to generate the documentation t
 ## Automatic type resolution
 
 As of version 6, resolving of types is done using the `TypeInfoTypeResolver` class. It uses the `symfony/type-info`
-library under the hood which allows handling of complext types.
+library under the hood which allows handling of complex types.
 
-With this change, `swagger-php` supports all available native type-hints and also complext generic type-hints via phpdoc
+With this change, `swagger-php` supports all available native type-hints and also complex generic type-hints via phpdoc
 blocks.
 This simplifies the definition of schemas.
 
