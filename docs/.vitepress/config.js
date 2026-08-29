@@ -52,6 +52,15 @@ function getGuideSidebar() {
         { text: 'Related Projects', link: '/related-projects' },
       ]
     },
+    {
+      text: 'Contributing',
+      items: [
+        { text: 'Spec pipeline internals', link: '/dev/pipeline' },
+        { text: 'Testing', link: '/dev/testing' },
+        { text: 'Documentation toolchain', link: '/dev/docs-toolchain' },
+        { text: 'Writing documentation', link: '/dev/writing-docs' },
+      ]
+    },
   ]
 }
 
@@ -104,6 +113,7 @@ module.exports = {
 
     sidebar: {
       '/guide/': getGuideSidebar(),
+      '/dev/': getGuideSidebar(),
       '/reference/': getReferenceSidebar()
     },
 

@@ -1,6 +1,10 @@
 # 🧪 Spec Pipeline Architecture
 
-This page documents the internals of the spec attributes pipeline — for users who want to understand how it works, write custom augmenters, or debug pipeline behavior.
+An overview of how the spec attributes pipeline turns your source code into an OpenAPI
+document.
+
+For the internals — how nesting is resolved, why the DTOs are shaped the way they are —
+see [Spec pipeline internals](/dev/pipeline).
 
 ## Pipeline overview
 
@@ -16,37 +20,17 @@ Source files → Assembler → Specification → Augmenters → Compiler → Ope
 
 ## Assembler
 
-The Assembler collects spec attributes from source files and resolves their nesting relationships.
+The Assembler reads spec attributes off your classes, methods, properties and parameters,
+and works out which ones belong inside which. An `#[OA\Response]` on a method ends up
+inside that method's operation; an `#[OA\Property]` on a class property ends up inside the
+class's schema.
 
-### Slot-map driven nesting
+Each attribute declares where it can go, rather than the Assembler hard-coding the rules.
+That is what lets you introduce your own attributes and have them nest correctly. The
+declaration mechanism is described in
+[Spec pipeline internals](/dev/pipeline).
 
-Each attribute declares its relationships via two methods:
-
-- `merge()` returns `[TargetClass => 'slot']` — how this attribute composes into siblings on the same reflector
-- `contained()` returns `[ParentClass => 'slot']` — which outer-level attribute types can absorb this attribute from inner reflector levels
-
-Slots use `[]` suffix for collection append (`'parameters[]'`), bare name for scalar assignment (`'requestBody'`).
-
-Both methods are child-driven: the attribute itself declares where it can go, whether same-level (merge) or cross-level (contained). This is what lets downstream code extend the system: custom attachables declare their own nesting targets without modifying native attributes.
-
-### Level-by-level resolution
-
-Assembler resolution itself is purely attribute-relationship driven — no PHP structural semantics:
-
-1. **Sibling merge** — attributes on the same reflector compose via `merge()` maps
-2. **Hierarchical absorb** — resolved attributes flow upward level by level via `contained()` maps (first match wins). If a level has containers, unmatched non-roots are errors. If a level has no containers, unmatched attributes pass through to the next level up.
-
-After resolution, only root attributes (should) remain and are added to the Specification.
-
-### Root attributes
-
-A "root" attribute is one that can exist independently in the Specification — it has its own bucket and doesn't require a parent container.
-
-Always root: `Schema`, `Operation`, `PathItem`, `OpenApi`, `Info`, `Tag`, `Server`, `ExternalDocumentation`, `Security\Scheme`, `Components`, `Attachable`
-
-Conditionally root: `Response` (when `response` key is set), `RequestBody` (when `request` key is set)
-
-Never root: `Parameter`, `Header`, `Link`, `Example`, `MediaType`, `Property`, etc. — these must be nested inside a parent or wrapped in a `Components` container.
+Whatever is left once nesting is resolved is added to the Specification.
 
 ## Specification
 
@@ -60,13 +44,15 @@ Augmenters form a grouped pipeline that enriches the Specification in three orde
 
 ### Pipeline phases
 
-| Phase       | Purpose                                                       | Examples                                                                   |
-| ----------- | ------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| **Resolve** | Infer data from PHP reflection and cross-bucket relationships | `Inheritance`, `Names`, `Enums`, `Shortcuts`, `PathItems`, `Types`, `Refs` |
-| **Reduce**  | Filter or remove entries                                      | `PathFilter`, `Cleanup`                                                    |
-| **Augment** | Add derived metadata                                          | `MediaTypes`, `Docblocks`, `OperationIds`, `Tags`, `EnumDescriptions`      |
+| Phase       | Purpose                                                       |
+| ----------- | ------------------------------------------------------------- |
+| **Resolve** | Infer data from PHP reflection and cross-bucket relationships |
+| **Reduce**  | Filter or remove entries                                      |
+| **Augment** | Add derived metadata                                          |
 
-Each augmenter implements `PipeInterface` and receives the full Specification. Augmenters within a phase run in registration order, which is defined in `Builder::getDefaultAugmenters()`.
+Each augmenter implements `PipeInterface` and receives the full Specification, and those
+within a phase run in registration order. The [Augmenters reference](/reference/augmenters)
+lists which augmenters belong to each phase, in the order they run.
 
 ### Configuring augmenters
 
@@ -136,45 +122,6 @@ Each OpenAPI version has its own compiler that handles version-specific output d
 | `OpenApi32Compiler` | 3.2.x   | Extends 3.1 (currently without additional features)               |
 
 The compiler transforms a Specification into a plain PHP array representing the OpenAPI document. Version selection is automatic based on `Builder::setVersion()` or the `#[OA\OpenApi(version: '...')]` attribute.
-
-## Design principles
-
-### Normalise early, store simple
-
-When a property has both a rich input type (e.g. a PHP enum) and a plain serialization type (e.g. string), accept both on input but normalise to the plain type immediately in the constructor. Properties always store the simple form — enums, objects, and convenience types are input sugar only. This keeps downstream code (augmenters, compilers, serialization) free of type-checking branches.
-
-```php
-// Example: FlowType enum accepted on input, stored as string
-public function __construct(string|FlowType|null $flow = null) {
-    parent::__construct([
-        'flow' => $flow instanceof \BackedEnum ? $flow->value : $flow,
-    ]);
-}
-```
-
-### Reflectors as glue
-
-Every root DTO carries its originating reflector (`ReflectionClass`, `ReflectionMethod`, etc.). This is the fundamental mechanism for resolving cross-bucket relationships at augmentation time.
-
-Key applications:
-
-- **PathItem ↔ Operation binding** — PathItem is placed on a class; operations on methods of that class. The `PathItems` augmenter walks `ReflectionMethod::getDeclaringClass()` to find which PathItem governs an operation.
-- **Prefix composition via inheritance** — PathItems on parent classes contribute prefixes. The augmenter walks `ReflectionClass::getParentClass()` to compose the full path prefix chain.
-- **OperationId generation** — the reflector provides class/method name context for auto-generated identifiers.
-- **Type inference** — the `Types` augmenter reads PHP type declarations from property/parameter reflectors.
-
-This design keeps the Assembler focused on nesting resolution and makes cross-cutting relationships resolvable without coupling DTOs to each other.
-
-### DTO class tree
-
-All spec attributes extend `AbstractAttribute` and live in the `OpenApi\Spec` namespace.
-Typed subclasses (e.g. `Operation\Get`, `Parameter\Path`) pre-fill fields that the base class
-requires explicitly; the base class can always be used directly for full control.
-
-Note that the directory layout does not mirror the class hierarchy: `Property` extends
-`AbstractAttribute` rather than `Schema`, `Encoding` is not a `MediaType`, and `Security` is a
-namespace rather than a class. For the current attributes, what each one accepts and where it
-can be nested, see the generated [Spec Attributes reference](/reference/spec-attributes).
 
 ## Classic processor mapping
 
