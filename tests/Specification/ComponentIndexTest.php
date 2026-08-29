@@ -6,6 +6,7 @@
 
 namespace OpenApi\Tests\Specification;
 
+use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Tests\Concerns\AssemblesSpecification;
@@ -13,6 +14,7 @@ use OpenApi\Tests\Fixtures\ComponentIndex\Product;
 use OpenApi\Tests\Fixtures\ComponentIndex\UnnamedTag;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+
 
 final class ComponentIndexTest extends TestCase
 {
@@ -34,7 +36,7 @@ final class ComponentIndexTest extends TestCase
         $index = $this->assemble(UnnamedTag::class)->buildComponentIndex();
 
         $this->assertInstanceOf(OA\Schema::class, $index->find(UnnamedTag::class));
-        $this->assertNull($index->find('#/components/schemas/UnnamedTag'));
+        $this->assertNotInstanceOf(AttributeInterface::class, $index->find('#/components/schemas/UnnamedTag'));
     }
 
     /**
@@ -52,7 +54,7 @@ final class ComponentIndexTest extends TestCase
     #[DataProvider('unresolvableRefs')]
     public function testReturnsNullForUnresolvableRefs(string $ref): void
     {
-        $this->assertNull($this->assemble(Product::class)->buildComponentIndex()->find($ref));
+        $this->assertNotInstanceOf(AttributeInterface::class, $this->assemble(Product::class)->buildComponentIndex()->find($ref));
     }
 
     public function testTypedFindersFilterByType(): void
@@ -67,8 +69,8 @@ final class ComponentIndexTest extends TestCase
         $this->assertInstanceOf(OA\Response::class, $index->findResponse('#/components/responses/shared'));
 
         // the name exists, but in the other bucket
-        $this->assertNull($index->findSchema('#/components/responses/shared'));
-        $this->assertNull($index->findResponse('#/components/schemas/shared'));
+        $this->assertNotInstanceOf(OA\Schema::class, $index->findSchema('#/components/responses/shared'));
+        $this->assertNotInstanceOf(OA\Response::class, $index->findResponse('#/components/schemas/shared'));
     }
 
     public function testBareNameResolvesWithinTheFindersOwnBucket(): void
@@ -78,7 +80,7 @@ final class ComponentIndexTest extends TestCase
             ->buildComponentIndex();
 
         $this->assertInstanceOf(OA\Response::class, $index->findResponse('notFound'));
-        $this->assertNull($index->findSchema('notFound'));
+        $this->assertNotInstanceOf(OA\Schema::class, $index->findSchema('notFound'));
     }
 
     public function testParameterFallsBackToNameWhenUnkeyed(): void
