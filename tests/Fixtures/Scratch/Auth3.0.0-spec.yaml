@@ -1,0 +1,65 @@
+openapi: 3.0.0
+info:
+  title: Auth
+  version: '1.0'
+paths:
+  /secured:
+    get:
+      operationId: getSecured
+      responses:
+        200:
+          description: 'All good'
+      security:
+        -
+          bearerAuth: []
+        -
+          oauth2:
+            - 'read:pets'
+components:
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: X-API-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: api_key
+      in: query
+    apiKeyCookie:
+      type: apiKey
+      name: SESSION
+      in: cookie
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    oauth2:
+      type: oauth2
+      description: 'All four flows on a single scheme.'
+      flows:
+        implicit:
+          authorizationUrl: 'https://example.com/oauth/authorize'
+          scopes:
+            'read:pets': 'Read pets'
+        password:
+          tokenUrl: 'https://example.com/oauth/token'
+          scopes:
+            'read:pets': 'Read pets'
+        clientCredentials:
+          tokenUrl: 'https://example.com/oauth/token'
+          refreshUrl: 'https://example.com/oauth/refresh'
+          scopes:
+            'write:pets': 'Write pets'
+        authorizationCode:
+          authorizationUrl: 'https://example.com/oauth/authorize'
+          tokenUrl: 'https://example.com/oauth/token'
+          refreshUrl: 'https://example.com/oauth/refresh'
+          scopes:
+            'read:pets': 'Read pets'
+            'write:pets': 'Write pets'
+    openIdConnect:
+      type: openIdConnect
+      openIdConnectUrl: 'https://example.com/.well-known/openid-configuration'

@@ -568,7 +568,7 @@ class OpenApi31Compiler implements CompilerInterface
             'parameters' => $this->compileNamedMap($specification->parameters, fn (OA\Parameter $parameter): string => $parameter->parameter ?? $parameter->name ?? 'param', $this->compileParameter(...)),
             'requestBodies' => $this->compileNamedMap($specification->requestBodies, fn (OA\RequestBody $body, int $index): string => $body->request ?? 'body' . $index, $this->compileRequestBody(...)),
             'headers' => $this->compileNamedMap($specification->headers, 'header', $this->compileHeader(...)),
-            'securitySchemes' => $this->compileNamedMap($specification->securitySchemes, 'securityScheme', $this->compileSecurityScheme(...)),
+            'securitySchemes' => $this->compileSecuritySchemes($specification->securitySchemes),
             'links' => $this->compileNamedMap($specification->links, fn (OA\Link $link): string => $link->link ?? $link->operationId ?? 'link', $this->compileLink(...)),
             'examples' => $this->compileNamedMap($specification->examples, 'example', $this->compileExample(...)),
         ]);
@@ -588,6 +588,15 @@ class OpenApi31Compiler implements CompilerInterface
 
             return $item;
         }, $security);
+    }
+
+    /**
+     * @param  list<OA\Security\Scheme> $schemes
+     * @return array<string,mixed>
+     */
+    protected function compileSecuritySchemes(array $schemes): array
+    {
+        return $this->compileNamedMap($schemes, 'securityScheme', $this->compileSecurityScheme(...));
     }
 
     protected function compileSecurityScheme(OA\Security\Scheme $scheme): array

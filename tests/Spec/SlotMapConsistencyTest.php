@@ -37,4 +37,34 @@ final class SlotMapConsistencyTest extends TestCase
 
         $this->assertEmpty($failures, implode("\n", $failures));
     }
+
+    public function testSlotsNameRealPropertiesOnTheirTarget(): void
+    {
+        $failures = [];
+        foreach (self::allSpecClasses() as $class) {
+            $instance = (new \ReflectionClass($class))->newInstanceWithoutConstructor();
+
+            foreach (['merge' => $instance->merge(), 'contained' => $instance->contained()] as $kind => $map) {
+                foreach ($map as $target => $slot) {
+                    if (!class_exists($target)) {
+                        $failures[] = sprintf('%s::%s() targets unknown class %s', $class, $kind, $target);
+                        continue;
+                    }
+
+                    $property = rtrim($slot, '[]');
+                    if (!property_exists($target, $property)) {
+                        $failures[] = sprintf(
+                            '%s::%s() declares slot "%s" on %s, which has no such property',
+                            $class,
+                            $kind,
+                            $slot,
+                            $target
+                        );
+                    }
+                }
+            }
+        }
+
+        $this->assertEmpty($failures, implode("\n", $failures));
+    }
 }

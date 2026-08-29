@@ -25,6 +25,34 @@ Prefer adding a case to an existing provider over copying a whole test method. P
 adding new test cases over modifying existing ones — an existing case usually encodes a
 regression somebody cared about.
 
+### Build objects in the test, not in the provider
+
+PHPUnit evaluates providers while collecting tests, before coverage recording starts, so
+anything constructed in a provider is **asserted but never counted as covered**. Yield class
+names and arguments; construct in the test body.
+
+The failure is silent — tests pass either way — and only shows up when someone runs coverage
+and wonders why a tested class reads as untouched.
+
+## Prefer a fixture to an assertion
+
+A test that asserts what the implementation currently produces captures the status quo. That
+is worth having, but it is not evidence the output is *correct* — it only pins today's
+behaviour so tomorrow's change is visible.
+
+Where the output is a specification document, a scratch fixture is stronger. It runs the
+whole pipeline rather than one stage, it produces a file per OpenAPI version, and those files
+are linted by `composer redocly` against the real schema. The expectation then comes from the
+specification rather than from whoever wrote the test.
+
+Concretely: the attributes now covered by `Fixtures/Scratch/Auth-spec.php` were first covered
+by a unit test asserting compiler output. Every case passed. The fixture that replaced it
+immediately failed Redocly, because the pipeline was emitting `type: mutualTLS` into OpenAPI
+3.0 documents, where that type does not exist. The assertions had faithfully encoded the bug.
+
+Reach for a unit test when there is no document to validate — `ComponentIndexTest` and
+`SlotMapConsistencyTest` are the right shape, because neither has a YAML counterpart.
+
 ## Shared helpers
 
 `tests/Concerns/` holds the reusable pieces. Look here before writing setup code:
