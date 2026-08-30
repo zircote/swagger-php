@@ -64,7 +64,7 @@ class Context implements \Stringable
         return array_filter(get_object_vars($this), static function ($value): bool {
             $rc = is_object($value) ? new \ReflectionClass($value) : null;
 
-            return (!$rc || !$rc->isAnonymous())
+            return (!$rc instanceof \ReflectionClass || !$rc->isAnonymous())
                 && !$value instanceof \Reflector
                 && !$value instanceof \Closure;
         });
