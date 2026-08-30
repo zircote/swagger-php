@@ -9,14 +9,15 @@ see [Spec pipeline internals](/dev/pipeline).
 ## Pipeline overview
 
 ```
-Source files → Assembler → Specification → Augmenters → Compiler → OpenAPI document
+Source files → Assembler → Specification → Resolver → Augmenters → Compiler → OpenAPI document
 ```
 
 1. **Assembler** — scans source files, instantiates attributes from reflection, resolves nesting via slot maps (merge + hierarchical absorb)
 2. **Specification** — a flat, typed container holding all collected attributes in buckets
-3. **Augmenters** — enrich the specification with inferred data (types, refs, tags, etc.) via a grouped pipeline
-4. **Compiler** — transforms the specification into a versioned OpenAPI document array
-5. **Builder** — the unified entry point that orchestrates the pipeline
+3. **Resolver** — discovers and resolves unresolved FQCNs (e.g. unannotated model classes) before augmentation
+4. **Augmenters** — enrich the specification with inferred data (types, refs, tags, etc.) via a grouped pipeline
+5. **Compiler** — transforms the specification into a versioned OpenAPI document array
+6. **Builder** — the unified entry point that orchestrates the pipeline
 
 ## Assembler
 
@@ -37,6 +38,37 @@ Whatever is left once nesting is resolved is added to the Specification.
 The Specification is a flat, typed container with one bucket per root attribute type. It holds all attributes collected by the Assembler, organized by type (schemas, operations, pathItems, tags, etc.).
 
 Augmenters read from and write to the Specification's buckets. The container is deliberately simple — no tree structure, no parent pointers. Cross-bucket relationships are resolved by augmenters using reflectors.
+
+## Resolver
+
+Between assembly and augmentation, the Resolver looks for classes the specification refers
+to but does not contain — a model used in a `$ref`, or the type of a property on a schema —
+and hands each one to a chain of `ResolverInterface` implementations.
+
+`Resolver\Reflection` is registered by default: it reflects the class and collects it with
+the assembler already in use. A class carrying no spec attributes contributes nothing, so
+resolution reports failure and the next resolver in the chain gets a turn — which is where
+something generating schemas for unannotated classes would slot in.
+
+Wiring resolvers into a build is covered in
+[Resolver configuration](/reference/builder#resolver); discovery and the convergence loop
+are in [Spec pipeline internals](/dev/pipeline).
+
+### Writing a resolver
+
+```php
+namespace OpenApi\Contracts;
+
+interface ResolverInterface
+{
+    public function resolve(string $fqcn, Assembler $assembler): bool;
+}
+```
+
+Resolvers are handed the `Assembler` that built the specification, so collecting a reflector
+with it adds the result straight into the specification in progress. A resolver that
+assembles differently can add to `$assembler->getSpecification()` directly. Return `true` to
+mark the FQCN handled and stop the chain for it.
 
 ## Augmenters
 

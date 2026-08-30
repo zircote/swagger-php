@@ -119,6 +119,26 @@ public function __construct(
 
 Augmenters, compilers and serialization then never need to branch on type.
 
+## Why resolution is its own step
+
+Resolving unknown classes inside the augmenter pipeline would create an ordering problem: an
+augmenter that adds schemas runs after `Names` and `Types`, so it would have to re-invoke
+them on whatever it added. Running resolution between assembly and augmentation means every
+schema exists before the augmenters start their single pass.
+
+Discovery draws on two sources, both readable before any augmenter has run:
+
+- **Ref values** — raw FQCN strings in `$ref`, not yet rewritten to `#/components/...`, so
+  no dependency on `Names` or `Refs`
+- **Reflector types** — non-builtin types on properties and constructor parameters, read
+  straight off `\ReflectionProperty::getType()`, so no dependency on `Types`
+
+A `ComponentIndex` deduplicates against what the specification already holds.
+
+Resolution then runs as a convergence loop: discover, hand each FQCN to the chain until one
+claims it, re-discover. That is what handles transitive references — resolving class A can
+introduce a schema referencing class B, which the next pass picks up.
+
 ## Augmenter ordering lives in one place
 
 Registration order is `Builder::getDefaultAugmenters()`. The phase each augmenter runs in

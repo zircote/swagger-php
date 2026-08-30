@@ -4,13 +4,13 @@ Swagger-php supports three processing modes that control how your source code is
 
 ## Overview
 
-|                 | Classic                | Hybrid                                           | Spec                              |
-| --------------- | ---------------------- | ------------------------------------------------ | --------------------------------- |
-| **Status**      | Stable                 | Beta                                             | Beta                              |
-| **Attributes**  | `OpenApi\Attributes`   | `OpenApi\Attributes`                             | `OpenApi\Spec`                    |
-| **Annotations** | Yes                    | Yes                                              | No                                |
-| **Pipeline**    | Generator → Processors | Generator → HybridBridge → Augmenters → Compiler | Assembler → Augmenters → Compiler |
-| **Best for**    | Existing projects      | Gradual migration                                | New projects                      |
+|                 | Classic                | Hybrid                                                       | Spec                                         |
+| --------------- | ---------------------- | ------------------------------------------------------------ | -------------------------------------------- |
+| **Status**      | Stable                 | Beta                                                         | Beta                                         |
+| **Attributes**  | `OpenApi\Attributes`   | `OpenApi\Attributes`                                         | `OpenApi\Spec`                               |
+| **Annotations** | Yes                    | Yes                                                          | No                                           |
+| **Pipeline**    | Generator → Processors | Assembler → Resolver → HybridBridge → Augmenters → Compiler  | Assembler → Resolver → Augmenters → Compiler |
+| **Best for**    | Existing projects      | Gradual migration                                            | New projects                                 |
 
 ## Classic (default)
 
@@ -102,13 +102,14 @@ $builder->setMode(Mode::SPEC);
 
 The modes aim for equivalent output from the same source, but differ in what they accept and in how they can be configured:
 
-| Behavior                                | Classic                | Hybrid                                               | Spec                          |
-| --------------------------------------- | ---------------------- | ---------------------------------------------------- | ----------------------------- |
-| Annotation support (`/** @OA\... */`)   | Yes                    | Yes                                                  | No                            |
-| `MergeJsonContent` / `MergeXmlContent`  | Yes                    | Yes                                                  | Yes (via `OA\MediaType\Json`) |
-| Processor chain (`withGenerator()`)     | Yes                    | Scanning only (`MergeJsonContent`/`MergeXmlContent`) | No                            |
-| Augmenter pipeline (`withAugmenters()`) | No                     | Yes                                                  | Yes                           |
-| Version-aware compilation               | No (single serializer) | Yes                                                  | Yes                           |
+| Behavior                                | Classic                | Hybrid                                               | Spec                                   |
+| --------------------------------------- | ---------------------- | ---------------------------------------------------- | -------------------------------------- |
+| Annotation support (`/** @OA\... */`)   | Yes                    | Yes                                                  | No                                     |
+| `MergeJsonContent` / `MergeXmlContent`  | Yes                    | Yes                                                  | Yes (via `OA\MediaType\Json`)          |
+| Processor chain (`withGenerator()`)     | Yes                    | Scanning only (`MergeJsonContent`/`MergeXmlContent`) | No                                     |
+| Resolver (`withResolver()`)             | No                     | Yes (`Resolver\Reflection` by default)               | Yes (`Resolver\Reflection` by default) |
+| Augmenter pipeline (`withAugmenters()`) | No                     | Yes                                                  | Yes                                    |
+| Version-aware compilation               | No (single serializer) | Yes                                                  | Yes                                    |
 
 ## Migration path
 

@@ -50,6 +50,8 @@ class Builder
 
     protected ?CompilerInterface $compiler = null;
 
+    protected ?Resolver $resolver = null;
+
     /**
      * @var Utils\Pipeline<Specification>|null
      */
@@ -106,6 +108,25 @@ class Builder
     public function setCompiler(CompilerInterface $compiler): static
     {
         $this->compiler = $compiler;
+
+        return $this;
+    }
+
+    public function getResolver(): Resolver
+    {
+        $this->resolver ??= new Resolver();
+
+        return $this->resolver;
+    }
+
+    /**
+     * Configure the resolver via callable.
+     *
+     * @param callable(Resolver): (Resolver|void) $hook
+     */
+    public function withResolver(callable $hook): static
+    {
+        $hook($this->getResolver());
 
         return $this;
     }
@@ -230,6 +251,8 @@ class Builder
         }
 
         $specification = $assembler->getSpecification();
+
+        $this->getResolver()->resolve($assembler);
 
         if ($hybrid) {
             $this->doHybridAssemble($specification);
