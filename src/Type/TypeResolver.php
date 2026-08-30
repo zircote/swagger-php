@@ -62,7 +62,7 @@ class TypeResolver
         }
 
         $nullable = null;
-        if (($docblockType && $docblockType->isNullable()) || ($reflectionType && $reflectionType->isNullable())) {
+        if (($docblockType instanceof Type && $docblockType->isNullable()) || ($reflectionType instanceof Type && $reflectionType->isNullable())) {
             $nullable = true;
         }
 
@@ -86,7 +86,7 @@ class TypeResolver
     {
         $docComment = match (true) {
             $reflector instanceof \ReflectionProperty => $reflector->isPromoted()
-                && $reflector->getDeclaringClass() && $reflector->getDeclaringClass()->getConstructor()
+                && $reflector->getDeclaringClass() instanceof \ReflectionClass && $reflector->getDeclaringClass()->getConstructor() instanceof \ReflectionMethod
                     ? $reflector->getDeclaringClass()->getConstructor()->getDocComment()
                     : $reflector->getDocComment(),
             $reflector instanceof \ReflectionParameter => $reflector->getDeclaringFunction()->getDocComment(),
