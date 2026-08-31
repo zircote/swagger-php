@@ -38,6 +38,10 @@ for the conventions those pages follow.
 
 Pull request titles follow `type(Scope): subject`, e.g. `feat(Spec): add encoding shortcut`.
 
+Pull request descriptions follow the [template](.github/PULL_REQUEST_TEMPLATE.md): a short
+**Overview** explaining why the change exists, in plain language — the problem, not the
+implementation — followed by a **Changes** list of the key changes, kept high level and
+free of code snippets unless one is genuinely unavoidable.
 
 ## Documentation
 

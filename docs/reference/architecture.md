@@ -143,6 +143,39 @@ class CustomAugmenter implements PipeInterface
 }
 ```
 
+### Declaring configuration
+
+Mark a constructor parameter with `#[Config]` to make it settable via `-D`/`-c` (see
+[Configuring augmenters](#configuring-augmenters) above) and to have it appear in the
+[generated reference docs](/reference/augmenters). It needs a matching `set*()` method —
+that's what `-c` and `Pipeline::configure()` call.
+
+```php
+use OpenApi\Utils\Config;
+use OpenApi\Utils\PipeInterface;
+
+class CustomAugmenter implements PipeInterface
+{
+    public function __construct(
+        #[Config('Whether the custom rule is applied.')]
+        protected bool $enabled = true,
+    ) {
+    }
+
+    public function setEnabled(bool $enabled): static
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    // ...
+}
+```
+
+Parameters without `#[Config]` are collaborators, not settings — `Pipeline::getConfig()`
+(what `-D` prints) won't report them.
+
 ## Compilers
 
 Each OpenAPI version has its own compiler that handles version-specific output differences:

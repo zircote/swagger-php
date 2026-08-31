@@ -8,6 +8,7 @@ namespace OpenApi\Augmenter;
 
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Utils\Config;
 use OpenApi\Utils\PipeInterface;
 
 /**
@@ -17,10 +18,8 @@ use OpenApi\Utils\PipeInterface;
  */
 class OperationIds implements PipeInterface
 {
-    /**
-     * @param bool $hash If set to true, generate ids (md5) instead of clear text operation ids
-     */
     public function __construct(
+        #[Config('If set to <code>true</code> generate ids (md5) instead of clear text operation ids.')]
         protected bool $hash = true,
     ) {
     }
@@ -41,9 +40,6 @@ class OperationIds implements PipeInterface
         return null;
     }
 
-    /**
-     * If set to <code>true</code> generate ids (md5) instead of clear text operation ids.
-     */
     public function setHash(bool $hash): static
     {
         $this->hash = $hash;
