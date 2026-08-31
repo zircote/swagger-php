@@ -16,6 +16,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\GeneratorAwareInterface;
+use OpenApi\Tests\Concerns\AssertsSpecEquals;
 use OpenApi\Type\LegacyTypeResolver;
 use OpenApi\Type\TypeInfoTypeResolver;
 use OpenApi\TypeResolverInterface;
@@ -24,11 +25,11 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use Symfony\Component\Yaml\Exception\ParseException;
-use Symfony\Component\Yaml\Yaml;
 
 class OpenApiTestCase extends TestCase
 {
+    use AssertsSpecEquals;
+
     /**
      * @var array
      */
@@ -156,81 +157,6 @@ class OpenApiTestCase extends TestCase
             }
             $this->assertStringContainsString($needle, (string) $entry, $message);
         }, $needle];
-    }
-
-    /**
-     * Compare OpenApi specs assuming strings to contain YAML.
-     *
-     * @param array|OA\OpenApi|\stdClass|string $actual     The generated output
-     * @param array|OA\OpenApi|\stdClass|string $expected   The specification
-     * @param bool                              $normalized flag indicating whether the inputs are already normalized or
-     *                                                      not
-     */
-    public function assertSpecEquals($actual, $expected, string $message = '', bool $normalized = false): void
-    {
-        $formattedValue = function ($value): string {
-            if (is_bool($value)) {
-                return $value ? 'true' : 'false';
-            }
-            if (is_numeric($value)) {
-                return (string) $value;
-            }
-            if (is_string($value)) {
-                return '"' . $value . '"';
-            }
-            if (is_object($value)) {
-                return $value::class;
-            }
-
-            return gettype($value);
-        };
-
-        $normalizeIn = function ($in) {
-            if ($in instanceof OA\OpenApi) {
-                $in = $in->toYaml();
-            }
-
-            if (is_string($in)) {
-                // assume YAML
-                try {
-                    $in = Yaml::parse($in, Yaml::PARSE_OBJECT_FOR_MAP);
-                } catch (ParseException $e) {
-                    $this->fail('Invalid YAML: ' . $e->getMessage() . PHP_EOL . $in);
-                }
-            }
-
-            return $in;
-        };
-
-        if (!$normalized) {
-            $actual = $normalizeIn($actual);
-            $expected = $normalizeIn($expected);
-        }
-
-        if ($actual instanceof \stdClass && $expected === []) {
-            $this->fail($message . PHP_EOL . 'Expected array ([]), got object ({}).');
-        }
-        if ($expected instanceof \stdClass && $actual === []) {
-            $this->fail($message . PHP_EOL . 'Expected object ({}), got array ([]).');
-        }
-        if ($actual === [] && $expected === []) {
-            return;
-        }
-
-        $isComposite = fn ($v): bool => is_iterable($v) || $v instanceof \stdClass;
-
-        if ($isComposite($actual) && $isComposite($expected)) {
-            foreach ((array) $actual as $key => $value) {
-                $this->assertArrayHasKey($key, (array) $expected, $message . ': property: "' . $key . '" should be absent, but has value: ' . $formattedValue($value));
-                $this->assertSpecEquals($value, ((array) $expected)[$key], $message . ' > ' . $key, true);
-            }
-            foreach ((array) $expected as $key => $value) {
-                $this->assertArrayHasKey($key, (array) $actual, $message . ': property: "' . $key . '" is missing');
-                $this->assertSpecEquals(((array) $actual)[$key], $value, $message . ' > ' . $key, true);
-            }
-        } else {
-            $this->assertEquals($expected, $actual, $message);
-        }
     }
 
     public static function fixture(string $file): ?string

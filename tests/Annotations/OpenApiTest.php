@@ -47,7 +47,7 @@ final class OpenApiTest extends OpenApiTestCase
         $openapi = $this->analysisFromFixtures(['Customer.php'])->openapi;
         $unserialized = unserialize(serialize($openapi));
 
-        $this->assertSpecEquals($openapi, $unserialized);
+        $this->assertSpecEquals($openapi?->toYaml(), $unserialized?->toYaml());
     }
 
     public static function versionMatchProvider(): iterable
