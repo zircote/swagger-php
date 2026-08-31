@@ -24,9 +24,10 @@ class LinkControllerSpec
             ),
         ],
     )]
-    #[OA\Parameter\Path(name: 'id', schema: new OA\Schema(type: 'string'))]
-    public function getWidget()
-    {
+    public function getWidget(
+        #[OA\Parameter\Path(name: 'id', schema: new OA\Schema(type: 'string'))]
+        string $id
+    ) {
     }
 
     #[OA\Operation\Get(
