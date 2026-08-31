@@ -41,7 +41,8 @@ Pull request titles follow `type(Scope): subject`, e.g. `feat(Spec): add encodin
 Pull request descriptions follow the [template](.github/PULL_REQUEST_TEMPLATE.md): a short
 **Overview** explaining why the change exists, in plain language — the problem, not the
 implementation — followed by a **Changes** list of the key changes, kept high level and
-free of code snippets unless one is genuinely unavoidable.
+free of code snippets unless one is genuinely unavoidable. Wrap class names, method calls,
+file paths and other identifiers in backticks.
 
 ## Documentation
 
