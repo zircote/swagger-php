@@ -21,6 +21,15 @@ class Property extends Schema
     public $property = Undefined::UNDEFINED;
 
     /**
+     * A boolean flags the property as required in its parent schema, or a list names the required members when it is an object.
+     *
+     * The <code>AugmentRequired</code> processor collects a boolean into the parent <code>Schema::$required</code>.
+     *
+     * @var bool|list<string>
+     */
+    public $required = Generator::UNDEFINED; // @phpstan-ignore property.phpDocType
+
+    /**
      * @var Encoding
      */
     public $encoding = Undefined::UNDEFINED;

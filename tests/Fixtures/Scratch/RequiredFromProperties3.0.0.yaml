@@ -1,0 +1,28 @@
+openapi: 3.0.0
+info:
+  title: 'Required From Properties Scratch'
+  version: '1.0'
+paths:
+  /items:
+    get:
+      operationId: getItems
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequiredFromProperties'
+components:
+  schemas:
+    RequiredFromProperties:
+      required:
+        - id
+      properties:
+        id:
+          type: string
+        nickname:
+          type: string
+        note:
+          type: string
+      type: object

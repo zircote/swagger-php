@@ -14,7 +14,7 @@ class Property extends OA\Property
 {
     /**
      * @param string|class-string|object|null                              $ref
-     * @param list<string>                                                 $required
+     * @param bool|list<string>                                            $required
      * @param list<Property>                                               $properties
      * @param string|non-empty-array<string>|null                          $type
      * @param array<Examples>                                              $examples
@@ -36,7 +36,7 @@ class Property extends OA\Property
         ?string $description = Undefined::UNDEFINED,
         ?int $maxProperties = null,
         ?int $minProperties = null,
-        ?array $required = null,
+        bool|array|null $required = null,
         ?array $properties = null,
         string|array|null $type = null,
         ?string $format = null,
