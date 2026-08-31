@@ -1,0 +1,25 @@
+openapi: 3.0.0
+info:
+  title: 'Http Methods'
+  version: '1.0'
+paths:
+  /things:
+    head:
+      operationId: headThings
+      responses:
+        200:
+          description: 'Headers only, no body'
+    options:
+      operationId: optionsThings
+      responses:
+        200:
+          description: 'Allowed methods'
+    trace:
+      operationId: traceThings
+      responses:
+        200:
+          description: 'Echo of the request'
+          content:
+            message/http:
+              schema:
+                type: string

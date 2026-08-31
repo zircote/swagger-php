@@ -1,0 +1,40 @@
+openapi: 3.1.0
+info:
+  title: Link
+  version: '1.0'
+paths:
+  '/widgets/{id}':
+    get:
+      operationId: getWidget
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'The widget'
+          links:
+            widgetOwner:
+              $ref: '#/components/links/WidgetOwner'
+  '/owners/{id}':
+    get:
+      operationId: getOwner
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'The owner'
+components:
+  links:
+    WidgetOwner:
+      operationId: getOwner
+      parameters:
+        id: '$response.body#/ownerId'
