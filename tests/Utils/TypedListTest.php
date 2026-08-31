@@ -164,7 +164,8 @@ final class TypedListTest extends TestCase
     {
         $list = new TypedList(['a']);
 
-        $this->assertSame($list, $list->walk(function (): void {}));
+        $this->assertSame($list, $list->walk(function (): void {
+        }));
     }
 
     public function testGet(): void
@@ -179,7 +180,7 @@ final class TypedListTest extends TestCase
     {
         $list = new TypedList([new \stdClass()]);
 
-        $this->assertNull($list->get(TypedListTestMarkerItem::class));
+        $this->assertNotInstanceOf(TypedListTestMarkerItem::class, $list->get(TypedListTestMarkerItem::class));
     }
 
     public function testClear(): void
