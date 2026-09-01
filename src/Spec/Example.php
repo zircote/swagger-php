@@ -6,6 +6,8 @@
 
 namespace OpenApi\Spec;
 
+use OpenApi\Undefined;
+
 /**
  * Describes an example value for a parameter, media type, or schema.
  *
@@ -28,7 +30,7 @@ class Example extends AbstractAttribute
         public ?string $example = null,
         public ?string $summary = null,
         public ?string $description = null,
-        public mixed $value = null,
+        public mixed $value = Undefined::UNDEFINED,
         public ?string $externalValue = null,
         public string|Schema\Ref|null $ref = null,
         ?array $x = null,

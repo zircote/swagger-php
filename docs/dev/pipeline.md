@@ -119,6 +119,27 @@ public function __construct(
 
 Augmenters, compilers and serialization then never need to branch on type.
 
+## `null` means unset, except where `null` is a value
+
+A nullable property defaults to `null`, and `filter()` in the compilers drops it. That
+breaks down for `mixed` properties: `null` is a legal example, default or const, so it
+cannot also mean "not set". Those default to `Undefined::UNDEFINED` instead.
+
+```php
+// OA\Schema — null is a valid default, so the sentinel has to be something else
+public mixed $default = Undefined::UNDEFINED,
+```
+
+`filter()` drops `null`, `Undefined::UNDEFINED` and `[]` alike, so a compiler that only
+needs "omit when unset" gets that behaviour without doing anything. Emitting an explicit
+`null` or `[]` — both legal values — takes a branch outside the `filter()` call, which is
+what `compileSchema()` does for `default`, `const` and `example`, and
+`compileExample()`/`compileLink()` for `value` and `requestBody`.
+
+Classic uses the same sentinel — `Generator::UNDEFINED` is an alias of
+`Undefined::UNDEFINED` — so `HybridBridge` passes these values straight through rather than
+translating them.
+
 ## Why resolution is its own step
 
 Resolving unknown classes inside the augmenter pipeline would create an ordering problem: an
