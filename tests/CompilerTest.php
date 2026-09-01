@@ -623,6 +623,183 @@ final class CompilerTest extends TestCase
         $this->assertArrayNotHasKey('requestBody', $output['components']['links']['plain']);
     }
 
+    // --- 3.2 only fields ---
+
+    public function test32EmitsSelf(): void
+    {
+        $spec = $this->createSpecification('3.2.0');
+        $spec->openapi->self = 'https://example.com/openapi.yaml';
+
+        $output = (new OpenApi32Compiler())->compile($spec);
+
+        $this->assertSame('https://example.com/openapi.yaml', $output['$self']);
+        $this->assertSame(['openapi', '$self'], array_slice(array_keys($output), 0, 2));
+    }
+
+    public function test31OmitsSelf(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->openapi->self = 'https://example.com/openapi.yaml';
+
+        $output = (new OpenApi31Compiler())->compile($spec);
+
+        $this->assertArrayNotHasKey('$self', $output);
+    }
+
+    public function test32EmitsServerName(): void
+    {
+        $spec = $this->createSpecification('3.2.0');
+        $spec->servers[] = new OA\Server(url: 'https://api.example.com', name: 'production');
+
+        $output = (new OpenApi32Compiler())->compile($spec);
+
+        $this->assertSame('production', $output['servers'][0]['name']);
+    }
+
+    public function test31OmitsServerName(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->servers[] = new OA\Server(url: 'https://api.example.com', name: 'production');
+
+        $output = (new OpenApi31Compiler())->compile($spec);
+
+        $this->assertArrayNotHasKey('name', $output['servers'][0]);
+    }
+
+    public function test32EmitsResponseSummary(): void
+    {
+        $spec = $this->createSpecification('3.2.0');
+        $spec->responses[] = new OA\Response(response: 'Ok', summary: 'All good', description: 'The request succeeded');
+
+        $output = (new OpenApi32Compiler())->compile($spec);
+
+        $this->assertSame('All good', $output['components']['responses']['Ok']['summary']);
+    }
+
+    public function test32KeepsResponseRefUntouched(): void
+    {
+        $spec = $this->createSpecification('3.2.0');
+        $spec->responses[] = new OA\Response(response: 'Ok', summary: 'ignored', ref: '#/components/responses/Other');
+
+        $output = (new OpenApi32Compiler())->compile($spec);
+
+        $this->assertSame(['$ref' => '#/components/responses/Other'], $output['components']['responses']['Ok']);
+    }
+
+    public function test32EmitsExampleDataValueAndSerializedValue(): void
+    {
+        $spec = $this->createSpecification('3.2.0');
+        $spec->examples[] = new OA\Example(
+            example: 'pet',
+            dataValue: ['name' => 'Milo'],
+            serializedValue: '{"name":"Milo"}',
+        );
+
+        $output = (new OpenApi32Compiler())->compile($spec);
+
+        $this->assertSame(['name' => 'Milo'], $output['components']['examples']['pet']['dataValue']);
+        $this->assertSame('{"name":"Milo"}', $output['components']['examples']['pet']['serializedValue']);
+    }
+
+    public function test32EmitsNullDataValue(): void
+    {
+        $spec = $this->createSpecification('3.2.0');
+        $spec->examples[] = new OA\Example(example: 'nothing', dataValue: null);
+
+        $output = (new OpenApi32Compiler())->compile($spec);
+
+        $this->assertArrayHasKey('dataValue', $output['components']['examples']['nothing']);
+        $this->assertNull($output['components']['examples']['nothing']['dataValue']);
+    }
+
+    public function test32OmitsUnsetDataValue(): void
+    {
+        $spec = $this->createSpecification('3.2.0');
+        $spec->examples[] = new OA\Example(example: 'plain', value: 'Milo');
+
+        $output = (new OpenApi32Compiler())->compile($spec);
+
+        $this->assertArrayNotHasKey('dataValue', $output['components']['examples']['plain']);
+        $this->assertSame('Milo', $output['components']['examples']['plain']['value']);
+    }
+
+    public function test31OmitsExampleDataValueAndSerializedValue(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->examples[] = new OA\Example(example: 'pet', dataValue: ['name' => 'Milo'], serializedValue: '{"name":"Milo"}');
+
+        $output = (new OpenApi31Compiler())->compile($spec);
+
+        $this->assertArrayNotHasKey('dataValue', $output['components']['examples']['pet']);
+        $this->assertArrayNotHasKey('serializedValue', $output['components']['examples']['pet']);
+    }
+
+    public function test32WarnsOnMutuallyExclusiveExampleValues(): void
+    {
+        $spec = $this->createSpecification('3.2.0');
+        $spec->examples[] = new OA\Example(example: 'pet', dataValue: ['name' => 'Milo'], value: 'Milo');
+        $spec->examples[] = new OA\Example(example: 'other', serializedValue: 'Milo', externalValue: 'https://example.com/milo.json');
+
+        $entries = (new OpenApi32Compiler())->validate($spec);
+        $messages = array_column($entries, 'message');
+
+        $this->assertCount(2, $messages);
+        $this->assertStringContainsString('value is mutually exclusive with dataValue and serializedValue', $messages[0]);
+        $this->assertStringContainsString('serializedValue and externalValue are mutually exclusive', $messages[1]);
+    }
+
+    public function test32EmitsSecuritySchemeDeprecatedAndMetadataUrl(): void
+    {
+        $spec = $this->createSpecification('3.2.0');
+        $spec->securitySchemes[] = new OA\Security\Scheme\OAuth2(
+            securityScheme: 'oauth2',
+            deprecated: true,
+            flows: [new OA\Flow\ClientCredentials(tokenUrl: 'https://example.com/token', scopes: ['read' => 'Read'])],
+            oauth2MetadataUrl: 'https://example.com/.well-known/oauth-authorization-server',
+        );
+
+        $output = (new OpenApi32Compiler())->compile($spec);
+        $scheme = $output['components']['securitySchemes']['oauth2'];
+
+        $this->assertTrue($scheme['deprecated']);
+        $this->assertSame('https://example.com/.well-known/oauth-authorization-server', $scheme['oauth2MetadataUrl']);
+    }
+
+    public function test32OmitsMetadataUrlForNonOAuth2Schemes(): void
+    {
+        $spec = $this->createSpecification('3.2.0');
+        $spec->securitySchemes[] = new OA\Security\Scheme(
+            securityScheme: 'basic',
+            type: OA\SchemeType::Http,
+            deprecated: true,
+            scheme: 'basic',
+            oauth2MetadataUrl: 'https://example.com/.well-known/oauth-authorization-server',
+        );
+
+        $output = (new OpenApi32Compiler())->compile($spec);
+        $scheme = $output['components']['securitySchemes']['basic'];
+
+        $this->assertTrue($scheme['deprecated']);
+        $this->assertArrayNotHasKey('oauth2MetadataUrl', $scheme);
+    }
+
+    public function test31OmitsSecuritySchemeDeprecatedAndMetadataUrl(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->securitySchemes[] = new OA\Security\Scheme\OAuth2(
+            securityScheme: 'oauth2',
+            deprecated: true,
+            flows: [new OA\Flow\ClientCredentials(tokenUrl: 'https://example.com/token', scopes: ['read' => 'Read'])],
+            oauth2MetadataUrl: 'https://example.com/.well-known/oauth-authorization-server',
+        );
+
+        $output = (new OpenApi31Compiler())->compile($spec);
+        $scheme = $output['components']['securitySchemes']['oauth2'];
+
+        $this->assertArrayNotHasKey('deprecated', $scheme);
+        $this->assertArrayNotHasKey('oauth2MetadataUrl', $scheme);
+    }
+
     protected function createSpecification(string $version = '3.1.0'): Specification
     {
         $spec = new Specification();

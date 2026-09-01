@@ -19,6 +19,7 @@ class Response extends AbstractAttribute
 
     /**
      * @param string|int|null                $response    The HTTP status code or 'default'
+     * @param string|null                    $summary     A short summary of the response (3.2+)
      * @param string|null                    $description A description of the response (CommonMark syntax)
      * @param string|Schema\Ref|null         $ref         A JSON Reference to a reusable response
      * @param list<Header>|null              $headers     Headers sent with the response
@@ -29,6 +30,7 @@ class Response extends AbstractAttribute
      */
     public function __construct(
         public string|int|null $response = null,
+        public ?string $summary = null,
         public ?string $description = null,
         public string|Schema\Ref|null $ref = null,
         public ?array $headers = null,

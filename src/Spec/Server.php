@@ -17,6 +17,7 @@ class Server extends AbstractAttribute
     /**
      * @param string|null               $url         A URL to the target host
      * @param string|null               $description A description of the host (CommonMark syntax)
+     * @param string|null               $name        A unique name for the server, for use in tooling (3.2+)
      * @param list<ServerVariable>|null $variables   Variables for server URL template substitution
      * @param array<string,mixed>|null  $x           Vendor extensions (x-* properties)
      * @param list<Attachable>|null     $attachables Reusable custom attachable attributes
@@ -24,6 +25,7 @@ class Server extends AbstractAttribute
     public function __construct(
         public ?string $url = null,
         public ?string $description = null,
+        public ?string $name = null,
         public ?array $variables = null,
         ?array $x = null,
         ?array $attachables = null,

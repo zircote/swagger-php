@@ -23,6 +23,7 @@ class Http extends OA\Security\Scheme
     public function __construct(
         ?string $securityScheme = null,
         ?string $description = null,
+        ?bool $deprecated = null,
         ?string $scheme = null,
         ?string $bearerFormat = null,
         ?array $x = null,
@@ -32,6 +33,7 @@ class Http extends OA\Security\Scheme
             securityScheme: $securityScheme,
             type: OA\SchemeType::Http,
             description: $description,
+            deprecated: $deprecated,
             scheme: $scheme,
             bearerFormat: $bearerFormat,
             x: $x,

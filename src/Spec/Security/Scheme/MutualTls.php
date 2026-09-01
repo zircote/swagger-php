@@ -23,6 +23,7 @@ class MutualTls extends OA\Security\Scheme
     public function __construct(
         ?string $securityScheme = null,
         ?string $description = null,
+        ?bool $deprecated = null,
         ?array $x = null,
         ?array $attachables = null,
     ) {
@@ -30,6 +31,7 @@ class MutualTls extends OA\Security\Scheme
             securityScheme: $securityScheme,
             type: OA\SchemeType::MutualTLS,
             description: $description,
+            deprecated: $deprecated,
             x: $x,
             attachables: $attachables,
         );

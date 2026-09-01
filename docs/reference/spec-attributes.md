@@ -157,6 +157,10 @@ Describes an example value for a parameter, media type, or schema.
   Short description of the example
 - **description** : `string|null`
   Long description of the example (CommonMark syntax)
+- **dataValue** : `mixed`
+  The example value before serialization (3.2+); mutually exclusive with `value`
+- **serializedValue** : `string|null`
+  The example value after serialization (3.2+); mutually exclusive with `value` and `externalValue`
 - **value** : `mixed`
   Embedded literal example value
 - **externalValue** : `string|null`
@@ -589,6 +593,8 @@ The root element of an OpenAPI definition.
 ---
 - **version** : `string|null`
   The OpenAPI specification version (e.g. '3.1.0')
+- **self** : `string|null`
+  A URI identifying this document, and the base URI for relative references (3.2+)
 - **security** : `list&lt;Security\Requirement&gt;|null`
   Default security requirements for the API
 
@@ -1363,6 +1369,8 @@ Describes a single response from an API operation.
 ---
 - **response** : `string|int|null`
   The HTTP status code or 'default'
+- **summary** : `string|null`
+  A short summary of the response (3.2+)
 - **description** : `string|null`
   A description of the response (CommonMark syntax)
 - **ref** : `string|Schema\Ref|null`
@@ -1878,6 +1886,8 @@ Typed subtypes are available for each security scheme type:
   The type of the security scheme (apiKey, http, mutualTLS, oauth2, openIdConnect)
 - **description** : `string|null`
   A description of the security scheme (CommonMark syntax)
+- **deprecated** : `bool|null`
+  Whether the security scheme is deprecated (3.2+)
 - **name** : `string|null`
   The name of the header, query, or cookie parameter (apiKey)
 - **in** : `string|OA\SchemeIn|null`
@@ -1890,6 +1900,8 @@ Typed subtypes are available for each security scheme type:
   The OpenID Connect URL to discover configuration (openIdConnect)
 - **flows** : `list&lt;OA\Flow&gt;|null`
   The available OAuth2 flows (oauth2)
+- **oauth2MetadataUrl** : `string|null`
+  The RFC 8414 authorization server metadata URL (oauth2, 3.2+)
 - **ref** : `string|null`
   A JSON Reference to a reusable security scheme
 
@@ -1910,6 +1922,8 @@ An API key security scheme (header, query, or cookie).
 - **securityScheme** : `string|null`
   No details available.
 - **description** : `string|null`
+  No details available.
+- **deprecated** : `bool|null`
   No details available.
 - **name** : `string|null`
   No details available.
@@ -1934,6 +1948,8 @@ An HTTP authentication security scheme (Basic, Bearer, etc.).
   No details available.
 - **description** : `string|null`
   No details available.
+- **deprecated** : `bool|null`
+  No details available.
 - **scheme** : `string|null`
   No details available.
 - **bearerFormat** : `string|null`
@@ -1957,6 +1973,8 @@ A Mutual TLS security scheme.
   No details available.
 - **description** : `string|null`
   No details available.
+- **deprecated** : `bool|null`
+  No details available.
 
 #### Reference
 ---
@@ -1976,7 +1994,11 @@ An OAuth2 security scheme with one or more flows.
   No details available.
 - **description** : `string|null`
   No details available.
+- **deprecated** : `bool|null`
+  No details available.
 - **flows** : `list&lt;OA\Flow&gt;|null`
+  No details available.
+- **oauth2MetadataUrl** : `string|null`
   No details available.
 
 #### Reference
@@ -1996,6 +2018,8 @@ An OpenID Connect Discovery security scheme.
 - **securityScheme** : `string|null`
   No details available.
 - **description** : `string|null`
+  No details available.
+- **deprecated** : `bool|null`
   No details available.
 - **openIdConnectUrl** : `string|null`
   No details available.
@@ -2022,6 +2046,8 @@ Represents a Server.
   A URL to the target host
 - **description** : `string|null`
   A description of the host (CommonMark syntax)
+- **name** : `string|null`
+  A unique name for the server, for use in tooling (3.2+)
 - **variables** : `list&lt;ServerVariable&gt;|null`
   Variables for server URL template substitution
 
