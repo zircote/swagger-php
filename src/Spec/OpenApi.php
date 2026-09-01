@@ -22,9 +22,6 @@ class OpenApi extends AbstractAttribute
      */
     public function __construct(
         public ?string $version = null,
-        /**
-         * @var list<Security\Requirement>|null
-         */
         public ?array $security = null,
         ?array $x = null,
         ?array $attachables = null,
