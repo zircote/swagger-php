@@ -18,7 +18,7 @@ $generators = [
     'example' => new ExampleGenerator($projectRoot),
 ];
 
-$requested = array_slice($argv, 1);
+$requested = array_slice($argv ?? [], 1);
 if ($requested) {
     $generators = array_intersect_key($generators, array_flip($requested));
 }
