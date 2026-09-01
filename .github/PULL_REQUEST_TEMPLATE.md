@@ -1,7 +1,9 @@
 ## Overview
 
 <!-- Why this change exists — the problem or situation, not the implementation. Skip
-technical detail unless it's fundamental to understanding the change. -->
+technical detail unless it's fundamental to understanding the change. Keep to the changes
+at hand: no history of earlier attempts, abandoned branches or related work elsewhere,
+unless it has a direct bearing on this diff. -->
 
 ## Changes
 

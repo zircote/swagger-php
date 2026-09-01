@@ -44,6 +44,10 @@ implementation — followed by a **Changes** list of the key changes, kept high 
 free of code snippets unless one is genuinely unavoidable. Wrap class names, method calls,
 file paths and other identifiers in backticks.
 
+Keep the description to the changes at hand. History that lives elsewhere — earlier
+attempts, abandoned branches, related work in other pull requests — belongs in the issue
+or commit trail, not here, unless it has a direct bearing on the change being reviewed.
+
 ## Documentation
 
 The documentation website is build from the [docs](docs/) folder with [vitepress](https://vitepress.vuejs.org).
