@@ -23,6 +23,7 @@ class OpenIdConnect extends OA\Security\Scheme
     public function __construct(
         ?string $securityScheme = null,
         ?string $description = null,
+        ?bool $deprecated = null,
         ?string $openIdConnectUrl = null,
         ?array $x = null,
         ?array $attachables = null,
@@ -31,6 +32,7 @@ class OpenIdConnect extends OA\Security\Scheme
             securityScheme: $securityScheme,
             type: OA\SchemeType::OpenIdConnect,
             description: $description,
+            deprecated: $deprecated,
             openIdConnectUrl: $openIdConnectUrl,
             x: $x,
             attachables: $attachables,

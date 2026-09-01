@@ -6,6 +6,8 @@
 
 namespace OpenApi\Spec;
 
+use OpenApi\Undefined;
+
 /**
  * Describes an example value for a parameter, media type, or schema.
  *
@@ -15,20 +17,24 @@ namespace OpenApi\Spec;
 class Example extends AbstractAttribute
 {
     /**
-     * @param string|null              $example       Reusable example identifier (component key)
-     * @param string|null              $summary       Short description of the example
-     * @param string|null              $description   Long description of the example (CommonMark syntax)
-     * @param mixed                    $value         Embedded literal example value
-     * @param string|null              $externalValue A URI pointing to the literal example
-     * @param string|null              $ref           A JSON Reference to a reusable example
-     * @param array<string,mixed>|null $x             Vendor extensions (x-* properties)
-     * @param list<Attachable>|null    $attachables   Reusable custom attachable attributes
+     * @param string|null              $example         Reusable example identifier (component key)
+     * @param string|null              $summary         Short description of the example
+     * @param string|null              $description     Long description of the example (CommonMark syntax)
+     * @param mixed                    $dataValue       The example value before serialization (3.2+); mutually exclusive with `value`
+     * @param string|null              $serializedValue The example value after serialization (3.2+); mutually exclusive with `value` and `externalValue`
+     * @param mixed                    $value           Embedded literal example value
+     * @param string|null              $externalValue   A URI pointing to the literal example
+     * @param string|null              $ref             A JSON Reference to a reusable example
+     * @param array<string,mixed>|null $x               Vendor extensions (x-* properties)
+     * @param list<Attachable>|null    $attachables     Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $example = null,
         public ?string $summary = null,
         public ?string $description = null,
-        public mixed $value = null,
+        public mixed $dataValue = Undefined::UNDEFINED,
+        public ?string $serializedValue = null,
+        public mixed $value = Undefined::UNDEFINED,
         public ?string $externalValue = null,
         public string|Schema\Ref|null $ref = null,
         ?array $x = null,

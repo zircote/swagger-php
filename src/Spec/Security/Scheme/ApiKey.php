@@ -23,6 +23,7 @@ class ApiKey extends OA\Security\Scheme
     public function __construct(
         ?string $securityScheme = null,
         ?string $description = null,
+        ?bool $deprecated = null,
         ?string $name = null,
         string|OA\SchemeIn|null $in = null,
         ?array $x = null,
@@ -32,6 +33,7 @@ class ApiKey extends OA\Security\Scheme
             securityScheme: $securityScheme,
             type: OA\SchemeType::ApiKey,
             description: $description,
+            deprecated: $deprecated,
             name: $name,
             in: $in,
             x: $x,

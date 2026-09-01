@@ -24,7 +24,9 @@ class OAuth2 extends OA\Security\Scheme
     public function __construct(
         ?string $securityScheme = null,
         ?string $description = null,
+        ?bool $deprecated = null,
         ?array $flows = null,
+        ?string $oauth2MetadataUrl = null,
         ?array $x = null,
         ?array $attachables = null,
     ) {
@@ -32,7 +34,9 @@ class OAuth2 extends OA\Security\Scheme
             securityScheme: $securityScheme,
             type: OA\SchemeType::OAuth2,
             description: $description,
+            deprecated: $deprecated,
             flows: $flows,
+            oauth2MetadataUrl: $oauth2MetadataUrl,
             x: $x,
             attachables: $attachables,
         );

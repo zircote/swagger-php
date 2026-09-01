@@ -16,15 +16,14 @@ class OpenApi extends AbstractAttribute
 {
     /**
      * @param string|null                     $version     The OpenAPI specification version (e.g. '3.1.0')
+     * @param string|null                     $self        A URI identifying this document, and the base URI for relative references (3.2+)
      * @param list<Security\Requirement>|null $security    Default security requirements for the API
      * @param array<string,mixed>|null        $x           Vendor extensions (x-* properties)
      * @param list<Attachable>|null           $attachables Reusable custom attachable attributes
      */
     public function __construct(
         public ?string $version = null,
-        /**
-         * @var list<Security\Requirement>|null
-         */
+        public ?string $self = null,
         public ?array $security = null,
         ?array $x = null,
         ?array $attachables = null,
