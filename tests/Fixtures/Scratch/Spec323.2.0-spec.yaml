@@ -1,0 +1,87 @@
+openapi: 3.2.0
+$self: 'https://spec.acme.dev/pets/openapi.yaml'
+info:
+  title: Spec32
+  version: '1.0'
+servers:
+  -
+    url: 'https://api.acme.dev'
+    description: Production
+    name: production
+paths:
+  /pets:
+    get:
+      operationId: listPets
+      responses:
+        200:
+          description: 'A list of pets'
+          content:
+            application/json:
+              schema:
+                type:
+                  - array
+                  - 'null'
+                items:
+                  type: string
+              examples:
+                serialized:
+                  summary: 'Both halves of the 3.2 example pair'
+                  serializedValue: '["Milo","Otis"]'
+                  dataValue: [Milo, Otis]
+                nullData:
+                  summary: 'An explicit null is a value, not an omission'
+                  dataValue: null
+                nullValue:
+                  summary: 'The same, for the pre-3.2 value field'
+                  value: null
+                noValue:
+                  summary: 'Nothing set, so nothing emitted'
+          links:
+            firstPet:
+              operationId: getPet
+              description: 'An explicit null request body'
+              requestBody: null
+          summary: 'All good'
+        404:
+          $ref: '#/components/responses/NotFound'
+      security:
+        -
+          bearerAuth: []
+        -
+          oauth2:
+            - 'read:pets'
+  '/pets/{id}':
+    get:
+      operationId: getPet
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'One pet'
+components:
+  responses:
+    NotFound:
+      description: 'The pet does not exist'
+      summary: 'Nothing there'
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: 'Deprecated, and advertises its authorization server metadata.'
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://auth.acme.dev/oauth/token'
+          scopes:
+            'read:pets': 'Read pets'
+      deprecated: true
+      oauth2MetadataUrl: 'https://auth.acme.dev/.well-known/oauth-authorization-server'
+    bearerAuth:
+      type: http
+      description: 'oauth2MetadataUrl is set but applies to oauth2 only, so it is dropped.'
+      scheme: bearer
+      bearerFormat: JWT
+      deprecated: true
