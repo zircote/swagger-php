@@ -10,7 +10,6 @@ use OpenApi\Builder;
 use OpenApi\Builder\Mode;
 use OpenApi\Generator;
 use OpenApi\Serializer;
-use OpenApi\Tests\Concerns\AssertsBuilderResult;
 use OpenApi\Tests\Concerns\GeneratesTestMatrix;
 use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\Type\LegacyTypeResolver;
@@ -19,7 +18,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 final class ExamplesTest extends OpenApiTestCase
 {
-    use AssertsBuilderResult;
     use GeneratesTestMatrix;
     use UsesExamples;
 
@@ -92,12 +90,10 @@ final class ExamplesTest extends OpenApiTestCase
     {
         $this->registerExampleClassloader($name, $implementation);
 
-        $compilerWarnings = [
+        $this->ignoreLogEntries(
             'Schema: const is not supported in OpenAPI 3.0, using enum fallback',
             'License identifier is not supported in OpenAPI 3.0, use url instead',
-        ];
-        $this->expectResultWarnings($compilerWarnings);
-        $this->ignoreLogEntries(...$compilerWarnings);
+        );
 
         $path = self::examplePath("{$name}/{$implementation}");
         $specFilename = self::getSpecFilename($name, $implementation, $version, $mode);
@@ -110,7 +106,7 @@ final class ExamplesTest extends OpenApiTestCase
             ->withGenerator(fn (Generator $generator): Generator => $generator->setTypeResolver($typeResolver))
             ->build();
         // file_put_contents($specFilename, $result->toYaml());
-        $this->assertBuilderResult($result);
+        $this->assertTrue($result->isValid());
         $this->assertSpecEquals(
             $result->toYaml(),
             file_get_contents($specFilename),

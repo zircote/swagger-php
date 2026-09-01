@@ -72,7 +72,7 @@ final class BuilderTest extends OpenApiTestCase
             })
             ->build();
 
-        $this->assertSpecEquals($generatorOutput, $builderResult->toYaml());
+        $this->assertSpecEquals($generatorOutput?->toYaml(), $builderResult->toYaml());
     }
 
     public function testBuildWithVersion(): void
