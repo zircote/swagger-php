@@ -10,6 +10,7 @@ use OpenApi\Tools\Docs\Sections\ConfigSettingsSection;
 use OpenApi\Tools\Docs\Sections\DescriptionSection;
 use OpenApi\Tools\Docs\Sections\ReferencesSection;
 use OpenApi\Tools\Docs\Sections\SectionInterface;
+use OpenApi\Utils\Config;
 use OpenApi\Utils\Pipeline;
 
 abstract class DocGenerator
@@ -57,15 +58,22 @@ abstract class DocGenerator
     /**
      * Names of the constructor parameters that count as public configuration.
      *
-     * Constructor parameters are the configuration contract by convention. Object typed
-     * ones (factories, resolvers, the generator) are collaborators rather than settings
-     * and are excluded, matching {@see Pipeline::getConfig()} and therefore the `-D`
-     * output.
+     * If any parameter carries a {@see Config} attribute, those are the configurable ones
+     * — explicit opt-in, matching {@see Pipeline::getConfig()} exactly. Otherwise falls
+     * back to the ctor-param heuristic: object typed parameters (factories, resolvers, the
+     * generator) are collaborators rather than settings and are excluded. Classes not yet
+     * converted to `#[Config]` (currently everything under `src/Processors/`) go through
+     * this fallback.
      *
      * @return list<string>
      */
     public function configurableParameters(\ReflectionClass $rc): array
     {
+        $attributed = array_keys(Config::forConstructor($rc));
+        if ($attributed !== []) {
+            return $attributed;
+        }
+
         if (!$rc->hasMethod('__construct')) {
             return [];
         }
@@ -241,6 +249,7 @@ abstract class DocGenerator
     {
         $options = [];
         $configurable = $this->configurableParameters($rc);
+        $configAttributes = Config::forConstructor($rc);
 
         foreach ($rc->getMethods() as $method) {
             if (!str_starts_with($method->getName(), 'set')) {
@@ -259,12 +268,18 @@ abstract class DocGenerator
                 }
             }
 
-            $phpdoc = $this->parseDocblock($method->getDocComment());
-            $description = '';
-            if ($phpdoc['content']) {
-                $description = $phpdoc['content'];
-            } elseif (array_key_exists($pname, $phpdoc['params']) && $phpdoc['params'][$pname]['content']) {
-                $description = $phpdoc['params'][$pname]['content'];
+            if (array_key_exists($pname, $configAttributes)) {
+                // #[Config] is the source of truth once a class uses it; the setter's
+                // docblock, if any, would only duplicate it.
+                $description = $configAttributes[$pname]->description;
+            } else {
+                $phpdoc = $this->parseDocblock($method->getDocComment());
+                $description = '';
+                if ($phpdoc['content']) {
+                    $description = $phpdoc['content'];
+                } elseif (array_key_exists($pname, $phpdoc['params']) && $phpdoc['params'][$pname]['content']) {
+                    $description = $phpdoc['params'][$pname]['content'];
+                }
             }
 
             $options[] = [

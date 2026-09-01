@@ -9,6 +9,7 @@ namespace OpenApi\Augmenter;
 use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Utils\Config;
 use OpenApi\Utils\PipeInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -28,6 +29,7 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
     protected const MAX_ITERATIONS = 10;
 
     public function __construct(
+        #[Config('Enables/disables removal of unreferenced components.')]
         protected bool $enabled = true,
     ) {
     }
@@ -51,9 +53,6 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
         return null;
     }
 
-    /**
-     * Enables/disables removal of unreferenced components.
-     */
     public function setEnabled(bool $enabled): static
     {
         $this->enabled = $enabled;

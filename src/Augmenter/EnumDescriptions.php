@@ -9,6 +9,7 @@ namespace OpenApi\Augmenter;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Undefined;
+use OpenApi\Utils\Config;
 use OpenApi\Utils\PipeInterface;
 
 /**
@@ -18,8 +19,10 @@ use OpenApi\Utils\PipeInterface;
  */
 class EnumDescriptions implements PipeInterface
 {
-    public function __construct(protected bool $enabled = false)
-    {
+    public function __construct(
+        #[Config('Enables/disables generation of descriptions for enum based properties.')]
+        protected bool $enabled = false,
+    ) {
     }
 
     public function __invoke(mixed $payload): mixed
@@ -33,9 +36,6 @@ class EnumDescriptions implements PipeInterface
         return null;
     }
 
-    /**
-     * Enables/disables generation of descriptions for enum based properties.
-     */
     public function setEnabled(bool $enabled): static
     {
         $this->enabled = $enabled;

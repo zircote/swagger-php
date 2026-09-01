@@ -8,6 +8,7 @@ namespace OpenApi\Augmenter;
 
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Utils\Config;
 use OpenApi\Utils\PipeInterface;
 
 /**
@@ -28,6 +29,7 @@ use OpenApi\Utils\PipeInterface;
 class Enums implements PipeInterface
 {
     public function __construct(
+        #[Config('If set, stores enum case names in a vendor extension with this key (e.g. <code>x-enum-varnames</code>).')]
         protected ?string $enumNames = null,
     ) {
     }
@@ -40,9 +42,6 @@ class Enums implements PipeInterface
         return null;
     }
 
-    /**
-     * If set, stores enum case names in a vendor extension with this key (e.g. <code>x-enum-varnames</code>).
-     */
     public function setEnumNames(?string $enumNames): static
     {
         $this->enumNames = $enumNames;

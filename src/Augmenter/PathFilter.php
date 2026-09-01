@@ -8,6 +8,7 @@ namespace OpenApi\Augmenter;
 
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Utils\Config;
 use OpenApi\Utils\PipeInterface;
 
 /**
@@ -25,7 +26,9 @@ class PathFilter implements PipeInterface
      * @param list<string> $paths Regular expressions to match operation paths
      */
     public function __construct(
+        #[Config('A list of regular expressions to match <code>tags</code> to include.')]
         protected array $tags = [],
+        #[Config('A list of regular expressions to match <code>paths</code> to include.')]
         protected array $paths = [],
     ) {
     }
@@ -45,8 +48,6 @@ class PathFilter implements PipeInterface
     }
 
     /**
-     * A list of regular expressions to match <code>tags</code> to include.
-     *
      * @param list<string> $tags
      */
     public function setTags(array $tags): static
@@ -57,8 +58,6 @@ class PathFilter implements PipeInterface
     }
 
     /**
-     * A list of regular expressions to match <code>paths</code> to include.
-     *
      * @param list<string> $paths
      */
     public function setPaths(array $paths): static
