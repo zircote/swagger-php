@@ -396,14 +396,19 @@ class OpenApi31Compiler implements CompilerInterface
             return ['$ref' => $link->ref];
         }
 
-        return $this->filter([
+        $result = $this->filter([
             'operationRef' => $link->operationRef,
             'operationId' => $link->operationId,
             'parameters' => $link->parameters,
-            'requestBody' => $link->requestBody,
             'description' => $link->description,
             'server' => $link->server instanceof OA\Server ? $this->compileServer($link->server) : null,
         ], $link);
+
+        if ($link->requestBody !== Undefined::UNDEFINED) {
+            $result['requestBody'] = $link->requestBody;
+        }
+
+        return $result;
     }
 
     protected function compileSchema(OA\Schema|string $schema): array|\stdClass
@@ -641,12 +646,17 @@ class OpenApi31Compiler implements CompilerInterface
 
     protected function compileExample(OA\Example $example): array
     {
-        return $this->filter([
+        $result = $this->filter([
             'summary' => $example->summary,
             'description' => $example->description,
-            'value' => $example->value,
             'externalValue' => $example->externalValue,
         ], $example);
+
+        if ($example->value !== Undefined::UNDEFINED) {
+            $result['value'] = $example->value;
+        }
+
+        return $result;
     }
 
     /**

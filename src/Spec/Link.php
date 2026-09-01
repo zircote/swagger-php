@@ -6,6 +6,8 @@
 
 namespace OpenApi\Spec;
 
+use OpenApi\Undefined;
+
 /**
  * Describes a possible design-time link for a response.
  *
@@ -31,7 +33,7 @@ class Link extends AbstractAttribute
         public ?string $operationRef = null,
         public ?string $operationId = null,
         public ?array $parameters = null,
-        public mixed $requestBody = null,
+        public mixed $requestBody = Undefined::UNDEFINED,
         public ?string $description = null,
         public string|Schema\Ref|null $ref = null,
         public ?Server $server = null,

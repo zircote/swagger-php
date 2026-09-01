@@ -579,6 +579,50 @@ final class CompilerTest extends TestCase
         $this->assertEquals(['oauth2' => ['read', 'write']], $output['security'][1]);
     }
 
+    // --- Undefined vs null on mixed properties ---
+
+    public function testExampleValueNullIsEmitted(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->examples[] = new OA\Example(example: 'nothing', value: null);
+
+        $output = (new OpenApi31Compiler())->compile($spec);
+
+        $this->assertArrayHasKey('value', $output['components']['examples']['nothing']);
+        $this->assertNull($output['components']['examples']['nothing']['value']);
+    }
+
+    public function testExampleValueUnsetIsOmitted(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->examples[] = new OA\Example(example: 'nothing', summary: 'No value');
+
+        $output = (new OpenApi31Compiler())->compile($spec);
+
+        $this->assertArrayNotHasKey('value', $output['components']['examples']['nothing']);
+    }
+
+    public function testLinkRequestBodyNullIsEmitted(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->links[] = new OA\Link(link: 'empty', operationId: 'getUser', requestBody: null);
+
+        $output = (new OpenApi31Compiler())->compile($spec);
+
+        $this->assertArrayHasKey('requestBody', $output['components']['links']['empty']);
+        $this->assertNull($output['components']['links']['empty']['requestBody']);
+    }
+
+    public function testLinkRequestBodyUnsetIsOmitted(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->links[] = new OA\Link(link: 'plain', operationId: 'getUser');
+
+        $output = (new OpenApi31Compiler())->compile($spec);
+
+        $this->assertArrayNotHasKey('requestBody', $output['components']['links']['plain']);
+    }
+
     protected function createSpecification(string $version = '3.1.0'): Specification
     {
         $spec = new Specification();
