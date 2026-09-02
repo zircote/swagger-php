@@ -48,6 +48,10 @@ Keep the description to the changes at hand. History that lives elsewhere — ea
 attempts, abandoned branches, related work in other pull requests — belongs in the issue
 or commit trail, not here, unless it has a direct bearing on the change being reviewed.
 
+The prose rules in [Writing documentation](docs/dev/writing-docs.md) apply to descriptions
+as well as to pages: state a fact once, do not claim what you have not verified, no
+marketing filler, no volatile values, no line-number citations.
+
 ## Documentation
 
 The documentation website is build from the [docs](docs/) folder with [vitepress](https://vitepress.vuejs.org).
