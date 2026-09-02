@@ -11,7 +11,7 @@ namespace OpenApi\Spec;
  *
  * @see [Server Variable Object](https://spec.openapis.org/oas/v3.1.1.html#server-variable-object)
  */
-#[\Attribute(\Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class ServerVariable extends AbstractAttribute
 {
     /**
