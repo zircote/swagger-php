@@ -13,7 +13,7 @@ use OpenApi\Spec as OA;
  *
  * @see [OAuth Flow Object](https://spec.openapis.org/oas/v3.1.1.html#oauth-flow-object)
  */
-#[\Attribute(\Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class AuthorizationCode extends OA\Flow
 {
     /**

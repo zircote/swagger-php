@@ -1,7 +1,23 @@
 # Writing documentation
 
-Conventions for the hand-written pages under `docs/`. For which pages are generated and
+Conventions for hand-written prose about this project. For which pages are generated and
 must not be edited, see [Documentation toolchain](/dev/docs-toolchain).
+
+## Where these rules apply
+
+Most of what follows is about precision and economy, which do not change with the surface.
+They apply to the pages under `docs/`, to docblocks in `src/` — which are spliced into the
+generated reference pages, so an imprecise one ships as published documentation — and to
+pull request descriptions and commit messages.
+
+Three sections are about pages only, and do not transfer: **Structure**, **Spelling**, and
+the generated-page items in the review checklist.
+
+Pull request descriptions carry one extra constraint of their own: they describe **the
+change**, and include context only where the change cannot be understood without it. How
+the work was found, what else was investigated, and what it might lead to are not part of
+the diff. [CONTRIBUTING](https://github.com/zircote/swagger-php/blob/master/CONTRIBUTING.md)
+has the template and the title format.
 
 ## State a fact once
 

@@ -13,7 +13,7 @@ use OpenApi\Undefined;
  *
  * @see [Example Object](https://spec.openapis.org/oas/v3.1.1.html#example-object)
  */
-#[\Attribute(\Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
 class Example extends AbstractAttribute
 {
     /**

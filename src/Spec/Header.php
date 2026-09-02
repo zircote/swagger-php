@@ -13,7 +13,7 @@ use OpenApi\Undefined;
  *
  * @see [Header Object](https://spec.openapis.org/oas/v3.1.1.html#header-object)
  */
-#[\Attribute(\Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Header extends AbstractAttribute
 {
     public ?string $style = null;
