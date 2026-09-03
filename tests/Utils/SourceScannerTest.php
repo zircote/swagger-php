@@ -6,14 +6,16 @@
 
 namespace OpenApi\Tests\Utils;
 
+use OpenApi\Tests\Concerns\ExpectsLogEntries;
 use OpenApi\Tests\Concerns\UsesExamples;
-use OpenApi\Tests\OpenApiTestCase;
 use OpenApi\Utils\SourceFinder;
 use OpenApi\Utils\SourceScanner;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
-final class SourceScannerTest extends OpenApiTestCase
+final class SourceScannerTest extends TestCase
 {
+    use ExpectsLogEntries;
     use UsesExamples;
 
     public static function sourcesProvider(): iterable
@@ -28,7 +30,7 @@ final class SourceScannerTest extends OpenApiTestCase
     #[DataProvider('sourcesProvider')]
     public function testScan(iterable $sources): void
     {
-        $scanner = new SourceScanner($this->getTrackingLogger());
+        $scanner = new SourceScanner($this->trackingLogger());
         $files = $scanner->scan($sources);
 
         $this->assertNotEmpty($files);
@@ -40,9 +42,9 @@ final class SourceScannerTest extends OpenApiTestCase
 
     public function testScanInvalidSource(): void
     {
-        $this->assertOpenApiLogEntryContains('Skipping invalid source: /tmp/__swagger_php_does_not_exist__');
+        $this->expectLogEntry('Skipping invalid source: /tmp/__swagger_php_does_not_exist__');
 
-        $scanner = new SourceScanner($this->getTrackingLogger());
+        $scanner = new SourceScanner($this->trackingLogger());
         $files = $scanner->scan(['/tmp/__swagger_php_does_not_exist__']);
 
         $this->assertEmpty($files);
@@ -53,7 +55,7 @@ final class SourceScannerTest extends OpenApiTestCase
         $sourceDir = self::examplePath('petstore/annotations');
         $nested = [new SourceFinder($sourceDir)];
 
-        $scanner = new SourceScanner($this->getTrackingLogger());
+        $scanner = new SourceScanner($this->trackingLogger());
         $files = $scanner->scan($nested);
 
         $this->assertNotEmpty($files);
@@ -66,7 +68,7 @@ final class SourceScannerTest extends OpenApiTestCase
         $splFiles = iterator_to_array($finder);
         $first = reset($splFiles);
 
-        $scanner = new SourceScanner($this->getTrackingLogger());
+        $scanner = new SourceScanner($this->trackingLogger());
         $files = $scanner->scan([$first]);
 
         $this->assertCount(1, $files);
@@ -77,7 +79,7 @@ final class SourceScannerTest extends OpenApiTestCase
     {
         $reflector = new \ReflectionClass(self::class);
 
-        $scanner = new SourceScanner($this->getTrackingLogger());
+        $scanner = new SourceScanner($this->trackingLogger());
         $files = $scanner->scan([$reflector]);
 
         $this->assertEmpty($files);
@@ -90,7 +92,7 @@ final class SourceScannerTest extends OpenApiTestCase
         $sourceDir = self::examplePath('petstore/annotations');
         $reflector = new \ReflectionClass(self::class);
 
-        $scanner = new SourceScanner($this->getTrackingLogger());
+        $scanner = new SourceScanner($this->trackingLogger());
         $files = $scanner->scan([$sourceDir, $reflector]);
 
         $this->assertNotEmpty($files);

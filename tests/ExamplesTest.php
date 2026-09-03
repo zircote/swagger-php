@@ -90,7 +90,7 @@ final class ExamplesTest extends OpenApiTestCase
     {
         $this->registerExampleClassloader($name, $implementation);
 
-        $this->ignoreLogEntries(
+        $this->allowLogEntry(
             'Schema: const is not supported in OpenAPI 3.0, using enum fallback',
             'License identifier is not supported in OpenAPI 3.0, use url instead',
         );
@@ -102,7 +102,7 @@ final class ExamplesTest extends OpenApiTestCase
             ->setMode($mode)
             ->addSource($path)
             ->setVersion($version)
-            ->setLogger($this->getTrackingLogger())
+            ->setLogger($this->trackingLogger())
             ->withGenerator(fn (Generator $generator): Generator => $generator->setTypeResolver($typeResolver))
             ->build();
         // file_put_contents($specFilename, $result->toYaml());

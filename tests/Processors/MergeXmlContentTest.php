@@ -85,7 +85,7 @@ END;
 
     public function testNoParent(): void
     {
-        $this->assertOpenApiLogEntryContains('Unexpected @OA\XmlContent() must be nested');
+        $this->expectLogEntry('Unexpected @OA\XmlContent() must be nested');
         $comment = <<<END
             @OA\XmlContent(type="array",
                 @OA\Items(ref="#/components/schemas/repository")
@@ -97,7 +97,7 @@ END;
 
     public function testInvalidParent(): void
     {
-        $this->assertOpenApiLogEntryContains('Unexpected @OA\XmlContent() in @OA\Property() in');
+        $this->expectLogEntry('Unexpected @OA\XmlContent() in @OA\Property() in');
         $comment = <<<END
             @OA\Property(
                 @OA\XmlContent(type="array",

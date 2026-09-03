@@ -95,9 +95,9 @@ final class ScratchTest extends OpenApiTestCase
     public function testScratch(TypeResolverInterface $typeResolver, string $scratch, Builder\Mode $mode, string $spec, string $version, array $expectedLogs, array $ignoredLogs = []): void
     {
         foreach ($expectedLogs as $logLine) {
-            $this->assertOpenApiLogEntryContains($logLine);
+            $this->expectLogEntry($logLine);
         }
-        $this->ignoreLogEntries(...$ignoredLogs);
+        $this->allowLogEntry(...$ignoredLogs);
 
         require_once $scratch;
 
@@ -105,7 +105,7 @@ final class ScratchTest extends OpenApiTestCase
             ->setMode($mode)
             ->addSource($scratch)
             ->setVersion($version)
-            ->setLogger($this->getTrackingLogger())
+            ->setLogger($this->trackingLogger())
             ->withAugmenters(function (Pipeline $pipeline): void {
                 $pipeline->get(Cleanup::class)->setEnabled(false);
             })
