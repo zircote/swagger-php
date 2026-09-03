@@ -88,6 +88,7 @@
         "performance": "Run performance regression tests",
         "analyse": "Run static analysis (phpstan)",
         "redocly": "Validate generated specs with Redocly",
+        "docs:check": "Verify documentation accuracy against the codebase",
         "docs:gen": "Rebuild reference documentation",
         "docs:dev": "Run dev server for local development of gh-pages",
         "docs:build": "Re-build static gh-pages"
@@ -105,6 +106,7 @@
             "export XDEBUG_MODE=off && phpstan clear-result-cache -q && phpstan analyse --memory-limit=3G"
         ],
         "redocly": "npm run redocly -- lint 'docs/examples/specs/**/*.yaml' 'tests/Fixtures/Scratch/*.yaml'",
+        "docs:check": "export XDEBUG_MODE=off && phpunit --filter DocsAccuracyTest",
         "docs:gen": "@php tools/docgen.php",
         "docs:dev": "cd docs && npm run dev",
         "docs:build": [
