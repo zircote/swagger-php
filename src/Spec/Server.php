@@ -7,7 +7,7 @@
 namespace OpenApi\Spec;
 
 /**
- * Represents a Server.
+ * A host the API is available on, optionally templated with `ServerVariable` substitutions.
  *
  * @see [Server Object](https://spec.openapis.org/oas/v3.1.1.html#server-object)
  */

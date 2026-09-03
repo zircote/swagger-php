@@ -2006,7 +2006,7 @@ An OpenID Connect Discovery security scheme.
 
 ### [Server](https://github.com/zircote/swagger-php/tree/master/src/Spec/Server.php)
 
-Represents a Server.
+A host the API is available on, optionally templated with `ServerVariable` substitutions.
 
 #### Allowed in
 ---
@@ -2031,7 +2031,7 @@ Represents a Server.
 
 ### [ServerVariable](https://github.com/zircote/swagger-php/tree/master/src/Spec/ServerVariable.php)
 
-Represents a Server Variable for server URL template substitution.
+The allowed and default substitutions for one template variable in a `Server` URL.
 
 #### Allowed in
 ---
