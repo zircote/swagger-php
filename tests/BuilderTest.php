@@ -26,7 +26,7 @@ final class BuilderTest extends OpenApiTestCase
 
         $result = (new Builder())
             ->addSource(self::examplePath('petstore/annotations'))
-            ->setLogger($this->getTrackingLogger())
+            ->setLogger($this->trackingLogger())
             ->withGenerator(function (Generator $generator): void {
                 $generator->setAnalyser($this->getAnalyzer());
                 $generator->setTypeResolver($this->getTypeResolver());
@@ -149,13 +149,13 @@ final class BuilderTest extends OpenApiTestCase
 
     public function testBuildEmptySources(): void
     {
-        $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
-        $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
+        $this->expectLogEntry('Required @OA\Info() not found');
+        $this->expectLogEntry('Required @OA\PathItem() not found');
 
         $result = (new Builder())
             ->setMode(Mode::CLASSIC)
             ->setSources([])
-            ->setLogger($this->getTrackingLogger())
+            ->setLogger($this->trackingLogger())
             ->build();
 
         $this->assertEmpty($result->files());

@@ -18,11 +18,11 @@ final class ContextTest extends OpenApiTestCase
 {
     public function testFullyQualifiedName(): void
     {
-        $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
+        $this->expectLogEntry('Required @OA\PathItem() not found');
         $result = (new Builder())
             ->setMode(Mode::CLASSIC)
             ->addSource($this->fixture('Customer.php'))
-            ->setLogger($this->getTrackingLogger())
+            ->setLogger($this->trackingLogger())
             ->withGenerator(fn (Generator $generator): Generator => $generator
                 ->setAnalyser($this->getAnalyzer())
                 ->setTypeResolver($this->getTypeResolver()))
@@ -44,7 +44,7 @@ final class ContextTest extends OpenApiTestCase
     public function testEnsureRoot(): void
     {
         $root = new Context(['logger' => new NullLogger(), 'version' => OA\OpenApi::VERSION_3_1_0]);
-        $context = new Context(['logger' => $this->getTrackingLogger()]);
+        $context = new Context(['logger' => $this->trackingLogger()]);
 
         // assert defaults set
         $this->assertNotInstanceOf(NullLogger::class, $context->logger);
@@ -59,11 +59,11 @@ final class ContextTest extends OpenApiTestCase
 
     public function testDebugLocation(): void
     {
-        $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
+        $this->expectLogEntry('Required @OA\PathItem() not found');
         $result = (new Builder())
             ->setMode(Mode::CLASSIC)
             ->addSource($this->fixture('Customer.php'))
-            ->setLogger($this->getTrackingLogger())
+            ->setLogger($this->trackingLogger())
             ->withGenerator(fn (Generator $generator): Generator => $generator->setTypeResolver($this->getTypeResolver()))
             ->build();
 

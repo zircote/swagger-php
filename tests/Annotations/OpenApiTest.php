@@ -14,8 +14,8 @@ final class OpenApiTest extends OpenApiTestCase
 {
     public function testValidVersion(): void
     {
-        $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
-        $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
+        $this->expectLogEntry('Required @OA\Info() not found');
+        $this->expectLogEntry('Required @OA\PathItem() not found');
 
         $openapi = new OA\OpenApi(['_context' => $this->getContext()]);
         $openapi->openapi = '3.0.3';
@@ -24,8 +24,8 @@ final class OpenApiTest extends OpenApiTestCase
 
     public function testValidVersion3_1_0(): void
     {
-        $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
-        $this->assertOpenApiLogEntryContains('At least one of @OA\PathItem(), @OA\Components() or @OA\Webhook() required');
+        $this->expectLogEntry('Required @OA\Info() not found');
+        $this->expectLogEntry('At least one of @OA\PathItem(), @OA\Components() or @OA\Webhook() required');
 
         $openapi = new OA\OpenApi(['_context' => $this->getContext()]);
         $openapi->openapi = '3.1.1';
@@ -34,8 +34,8 @@ final class OpenApiTest extends OpenApiTestCase
 
     public function testInvalidVersion(): void
     {
-        $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
-        $this->assertOpenApiLogEntryContains('Unsupported OpenAPI version "2". Allowed versions are:');
+        $this->expectLogEntry('Required @OA\Info() not found');
+        $this->expectLogEntry('Unsupported OpenAPI version "2". Allowed versions are:');
 
         $openapi = new OA\OpenApi(['_context' => $this->getContext()]);
         $openapi->openapi = '2';

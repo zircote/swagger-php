@@ -15,104 +15,28 @@ use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
-use OpenApi\GeneratorAwareInterface;
 use OpenApi\Tests\Concerns\AssertsSpecEquals;
+use OpenApi\Tests\Concerns\ExpectsLogEntries;
+use OpenApi\Tests\Concerns\UsesFixtures;
 use OpenApi\Type\LegacyTypeResolver;
 use OpenApi\Type\TypeInfoTypeResolver;
 use OpenApi\TypeResolverInterface;
 use OpenApi\Utils\Pipeline;
+use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\AbstractLogger;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 
 class OpenApiTestCase extends TestCase
 {
     use AssertsSpecEquals;
-
-    /**
-     * @var array
-     */
-    public $expectedLogMessages = [];
-
-    /** @var list<string> */
-    public array $ignoredLogMessages = [];
-
-    protected function setUp(): void
-    {
-        $this->expectedLogMessages = [];
-        $this->ignoredLogMessages = [];
-
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->assertEmpty(
-            $this->expectedLogMessages,
-            implode(PHP_EOL . '  => ', array_merge(
-                ['OpenApi\Logger messages were not triggered:'],
-                array_map(fn (array $value) => $value[1], $this->expectedLogMessages)
-            ))
-        );
-
-        parent::tearDown();
-    }
-
-    /**
-     * Log lines containing any of these are dropped rather than matched against
-     * expectations. For diagnostics that are incidental to what a test asserts — a
-     * compiler warning about the target version, say — where demanding they appear
-     * would couple the test to something it is not about.
-     */
-    public function ignoreLogEntries(string ...$needles): void
-    {
-        $this->ignoredLogMessages = array_merge($this->ignoredLogMessages, $needles);
-    }
-
-    public function getTrackingLogger(bool $debug = false): ?LoggerInterface
-    {
-        return new class ($this, $debug) extends AbstractLogger {
-            protected OpenApiTestCase $testCase;
-
-            protected bool $debug;
-
-            public function __construct(OpenApiTestCase $testCase, bool $debug = false)
-            {
-                $this->testCase = $testCase;
-                $this->debug = $debug;
-            }
-
-            public function log($level, $message, array $context = []): void
-            {
-                if (LogLevel::DEBUG == $level) {
-                    if (str_starts_with((string) $message, 'Analysing source:') || str_contains((string) $message, 'JetBrains')) {
-                        return;
-                    }
-                }
-
-                foreach ($this->testCase->ignoredLogMessages as $needle) {
-                    if (str_contains((string) $message, $needle)) {
-                        return;
-                    }
-                }
-
-                if (count($this->testCase->expectedLogMessages)) {
-                    [$assertion] = array_shift($this->testCase->expectedLogMessages);
-                    $assertion($message, $level);
-                } else {
-                    $this->testCase->fail('Unexpected log line: ' . $level . '("' . $message . '")');
-                }
-            }
-        };
-    }
+    use ExpectsLogEntries;
+    use UsesFixtures;
 
     public function getContext(array $properties = [], ?string $version = OA\OpenApi::DEFAULT_VERSION): Context
     {
         return new Context(
             [
                 'version' => $version,
-                'logger' => $this->getTrackingLogger(),
+                'logger' => $this->trackingLogger(),
             ] + $properties
         );
     }
@@ -135,47 +59,6 @@ class OpenApiTestCase extends TestCase
         ];
     }
 
-    public function initializeProcessors(array $processors): array
-    {
-        $generator = (new Generator())
-            ->setTypeResolver($this->getTypeResolver());
-
-        array_walk($processors, function ($processor) use ($generator): void {
-            if (is_a($processor, GeneratorAwareInterface::class)) {
-                $processor->setGenerator($generator);
-            }
-        });
-
-        return $processors;
-    }
-
-    public function assertOpenApiLogEntryContains(string $needle, string $message = ''): void
-    {
-        $this->expectedLogMessages[] = [function ($entry, $type) use ($needle, $message): void {
-            if ($entry instanceof \Exception) {
-                $entry = $entry->getMessage();
-            }
-            $this->assertStringContainsString($needle, (string) $entry, $message);
-        }, $needle];
-    }
-
-    public static function fixture(string $file): ?string
-    {
-        $fixtures = static::fixtures([$file]);
-
-        return $fixtures !== [] ? $fixtures[0] : null;
-    }
-
-    /**
-     * Resolve fixture filenames.
-     *
-     * @return array resolved filenames for loading scanning etc
-     */
-    public static function fixtures(array $files): array
-    {
-        return array_map(fn (string $file): string => __DIR__ . '/Fixtures/' . $file, $files);
-    }
-
     public function processorPipeline(?array $processors = null, array $strip = []): Pipeline
     {
         $generator = (new Generator())
@@ -193,7 +76,7 @@ class OpenApiTestCase extends TestCase
     {
         $analysis = new Analysis([], $this->getContext());
 
-        (new Generator($this->getTrackingLogger()))
+        (new Generator($this->trackingLogger()))
             ->setConfig($config)
             ->setAnalyser($analyzer ?: $this->getAnalyzer())
             ->setTypeResolver($this->getTypeResolver())
@@ -245,6 +128,12 @@ class OpenApiTestCase extends TestCase
         }
 
         return $classes;
+    }
+
+    #[Before]
+    protected function allowClassicDebugNoise(): void
+    {
+        $this->allowLogEntry('Analysing source:', 'JetBrains');
     }
 
     /**

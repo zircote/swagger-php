@@ -14,14 +14,14 @@ final class ItemsTest extends OpenApiTestCase
     public function testItemTypeArray(): void
     {
         $annotations = $this->annotationsFromDocBlockParser('@OA\Items(type="array")');
-        $this->assertOpenApiLogEntryContains('@OA\Items() is required when @OA\Items() has type "array" in ');
+        $this->expectLogEntry('@OA\Items() is required when @OA\Items() has type "array" in ');
         $annotations[0]->validate();
     }
 
     public function testSchemaTypeArray(): void
     {
         $annotations = $this->annotationsFromDocBlockParser('@OA\Schema(type="array")');
-        $this->assertOpenApiLogEntryContains('@OA\Items() is required when @OA\Schema() has type "array" in ');
+        $this->expectLogEntry('@OA\Items() is required when @OA\Schema() has type "array" in ');
         $annotations[0]->validate();
     }
 

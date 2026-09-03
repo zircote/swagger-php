@@ -24,7 +24,7 @@ final class AbstractAnnotationTest extends OpenApiTestCase
     {
         $openapi = $this->createOpenApiWithInfo();
         $openapi->merge($this->annotationsFromDocBlockParser('@OA\Items()'));
-        $this->assertOpenApiLogEntryContains('Unexpected @OA\Items(), expected to be inside @OA\\');
+        $this->expectLogEntry('Unexpected @OA\Items(), expected to be inside @OA\\');
         $openapi->validate();
     }
 
@@ -39,7 +39,7 @@ final class AbstractAnnotationTest extends OpenApiTestCase
 )
 END;
         $annotations = $this->annotationsFromDocBlockParser($comment);
-        $this->assertOpenApiLogEntryContains('Only one @OA\Contact() allowed for @OA\Info() multiple found in:');
+        $this->expectLogEntry('Only one @OA\Contact() allowed for @OA\Info() multiple found in:');
         $annotations[0]->validate();
     }
 
@@ -64,7 +64,7 @@ END;
 )
 END;
         $annotations = $this->annotationsFromDocBlockParser($comment);
-        $this->assertOpenApiLogEntryContains('Multiple @OA\Header() with the same header="X-CSRF-Token":');
+        $this->expectLogEntry('Multiple @OA\Header() with the same header="X-CSRF-Token":');
         $annotations[0]->validate();
     }
 
@@ -72,8 +72,8 @@ END;
     {
         $annotations = $this->annotationsFromDocBlockParser('@OA\Info()');
         $info = $annotations[0];
-        $this->assertOpenApiLogEntryContains('Missing required field "title" for @OA\Info() in ');
-        $this->assertOpenApiLogEntryContains('Missing required field "version" for @OA\Info() in ');
+        $this->expectLogEntry('Missing required field "title" for @OA\Info() in ');
+        $this->expectLogEntry('Missing required field "version" for @OA\Info() in ');
         $info->validate();
     }
 
@@ -91,9 +91,9 @@ END;
 END;
         $annotations = $this->annotationsFromDocBlockParser($comment);
         $parameter = $annotations[0];
-        $this->assertOpenApiLogEntryContains('@OA\Parameter(name=123,in="dunno")->name is a "integer", expecting a "string" in ');
-        $this->assertOpenApiLogEntryContains('@OA\Parameter(name=123,in="dunno")->in "dunno" is invalid, expecting "query", "header", "path", "cookie" in ');
-        $this->assertOpenApiLogEntryContains('@OA\Parameter(name=123,in="dunno")->required is a "string", expecting a "boolean" in ');
+        $this->expectLogEntry('@OA\Parameter(name=123,in="dunno")->name is a "integer", expecting a "string" in ');
+        $this->expectLogEntry('@OA\Parameter(name=123,in="dunno")->in "dunno" is invalid, expecting "query", "header", "path", "cookie" in ');
+        $this->expectLogEntry('@OA\Parameter(name=123,in="dunno")->required is a "string", expecting a "boolean" in ');
         $parameter->validate();
     }
 
@@ -120,7 +120,7 @@ END;
                 'DuplicateOperationId.php',
             ], $this->processorPipeline());
 
-        $this->assertOpenApiLogEntryContains('operationId must be unique. Duplicate value found: "getItem"');
+        $this->expectLogEntry('operationId must be unique. Duplicate value found: "getItem"');
         $this->assertFalse($analysis->validate());
     }
 
@@ -137,9 +137,9 @@ END;
             'BadExampleParameter.php',
         ], $this->processorPipeline());
 
-        $this->assertOpenApiLogEntryContains('Required @OA\Info() not found');
-        $this->assertOpenApiLogEntryContains('Required @OA\PathItem() not found');
-        $this->assertOpenApiLogEntryContains('"example" and "examples" are mutually exclusive');
+        $this->expectLogEntry('Required @OA\Info() not found');
+        $this->expectLogEntry('Required @OA\PathItem() not found');
+        $this->expectLogEntry('"example" and "examples" are mutually exclusive');
 
         $analysis->validate();
     }
@@ -185,7 +185,7 @@ END;
             '_context' => $this->getContext(),
         ]);
 
-        $this->assertOpenApiLogEntryContains('is missing key-field: "header"');
+        $this->expectLogEntry('is missing key-field: "header"');
         $response->validate();
     }
 }

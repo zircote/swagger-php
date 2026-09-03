@@ -19,7 +19,7 @@ final class ConstantsTest extends OpenApiTestCase
         self::$counter++;
         $const = 'OPENAPI_TEST_' . self::$counter;
         $this->assertFalse(defined($const));
-        $this->assertOpenApiLogEntryContains("[Semantical Error] Couldn't find constant " . $const);
+        $this->expectLogEntry("[Semantical Error] Couldn't find constant " . $const);
         $this->annotationsFromDocBlockParser('@OA\Contact(email=' . $const . ')');
 
         define($const, 'me@domain.org');
@@ -38,7 +38,7 @@ final class ConstantsTest extends OpenApiTestCase
 
     public function testInvalidClass(): void
     {
-        $this->assertOpenApiLogEntryContains("[Semantical Error] Couldn't find constant ConstantsTest::URL");
+        $this->expectLogEntry("[Semantical Error] Couldn't find constant ConstantsTest::URL");
         $this->annotationsFromDocBlockParser('@OA\Contact(url=ConstantsTest::URL)');
     }
 
