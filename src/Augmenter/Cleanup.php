@@ -10,6 +10,7 @@ use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Utils\Config;
+use OpenApi\Utils\JsonPointer;
 use OpenApi\Utils\PipeInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -110,7 +111,7 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
         $removed = false;
         foreach ($specification->{$field} as $index => $item) {
             $name = $nameExtractor($item);
-            if ($name !== null && !isset($usedRefs['#/components/' . $refPrefix . '/' . $name])) {
+            if ($name !== null && !isset($usedRefs[JsonPointer::ref('components', $refPrefix, $name)])) {
                 unset($specification->{$field}[$index]);
                 $removed = true;
             }

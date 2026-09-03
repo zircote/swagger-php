@@ -10,6 +10,7 @@ use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Specification\ComponentIndex;
 use OpenApi\Utils\AttributeFactory;
+use OpenApi\Utils\JsonPointer;
 
 /**
  * Expands PHP class hierarchy into OpenAPI composition (allOf).
@@ -109,7 +110,7 @@ class Schemas
         $schema->allOf ??= [];
         $name = $referenced->schema ?? $referenced->getShortClassName();
         if ($name !== null) {
-            $schema->allOf[] = new OA\Schema(ref: '#/components/schemas/' . $name);
+            $schema->allOf[] = new OA\Schema(ref: JsonPointer::ref('components', 'schemas', $name));
         }
     }
 

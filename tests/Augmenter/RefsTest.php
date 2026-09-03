@@ -30,6 +30,29 @@ final class RefsTest extends TestCase
         $this->assertSame('#/components/schemas/RefTarget', $schema->ref);
     }
 
+    /**
+     * The ref being rewritten carries the escaped name, while the lookup of schemas whose
+     * properties moved into `allOf` is keyed by the raw one — so the augmenter has to decode
+     * before matching and encode again when it rebuilds the pointer.
+     */
+    public function testRewritesAllOfPropertyRefForAnEscapedName(): void
+    {
+        $spec = new Specification();
+
+        $merged = new OA\Schema(schema: 'Odd/Name~With', allOf: [
+            new OA\Schema(properties: [new OA\Property(property: 'name', schema: new OA\Schema(type: 'string'))]),
+        ]);
+        $merged->setReflector(new \ReflectionClass(Fixtures\Augmenter\RefTarget::class));
+        $spec->schemas[] = $merged;
+
+        $pointing = new OA\Schema(schema: 'Pointer', ref: '#/components/schemas/Odd~1Name~0With/properties/name');
+        $spec->schemas[] = $pointing;
+
+        (new Augmenter\Refs())($spec);
+
+        $this->assertSame('#/components/schemas/Odd~1Name~0With/allOf/0/properties/name', $pointing->ref);
+    }
+
     public function testLeavesAlreadyResolvedUntouched(): void
     {
         $spec = new Specification();

@@ -10,6 +10,7 @@ use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Tests\Concerns\AssemblesSpecification;
+use OpenApi\Tests\Fixtures\ComponentIndex\OddlyNamed;
 use OpenApi\Tests\Fixtures\ComponentIndex\Product;
 use OpenApi\Tests\Fixtures\ComponentIndex\UnnamedTag;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -89,6 +90,34 @@ final class ComponentIndexTest extends TestCase
             ->buildComponentIndex();
 
         $this->assertInstanceOf(OA\Parameter::class, $index->findParameter('#/components/parameters/page'));
+    }
+
+    /**
+     * `/` and `~` are structural in a JSON Pointer, so a component name containing either has
+     * to be escaped where it is embedded in a `$ref` — and left raw as the map key, which is
+     * what the compiler emits under `components.schemas`.
+     */
+    public function testRefMapEscapesTheComponentName(): void
+    {
+        $map = $this->assemble(OddlyNamed::class)->buildComponentIndex()->buildRefMap();
+
+        $this->assertSame('#/components/schemas/Odd~1Name~0With', $map[OddlyNamed::class]);
+    }
+
+    /**
+     * The escaped form is what `buildRefMap()` produces and so what the pipeline resolves. The
+     * raw form resolves as well, because everything after the bucket is taken as the name —
+     * lenient rather than designed, but worth pinning so a stricter parse is a deliberate
+     * change.
+     */
+    public function testFindResolvesAnEscapedComponentPath(): void
+    {
+        $index = $this->assemble(OddlyNamed::class)->buildComponentIndex();
+
+        $escaped = $index->find('#/components/schemas/Odd~1Name~0With');
+
+        $this->assertInstanceOf(OA\Schema::class, $escaped);
+        $this->assertSame($escaped, $index->find('#/components/schemas/Odd/Name~With'));
     }
 
     public function testBuildRefMapMapsFqcnToComponentPath(): void
