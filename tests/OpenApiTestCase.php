@@ -31,12 +31,6 @@ class OpenApiTestCase extends TestCase
     use ExpectsLogEntries;
     use UsesFixtures;
 
-    #[Before]
-    protected function allowClassicDebugNoise(): void
-    {
-        $this->allowLogEntry('Analysing source:', 'JetBrains');
-    }
-
     public function getContext(array $properties = [], ?string $version = OA\OpenApi::DEFAULT_VERSION): Context
     {
         return new Context(
@@ -134,6 +128,12 @@ class OpenApiTestCase extends TestCase
         }
 
         return $classes;
+    }
+
+    #[Before]
+    protected function allowClassicDebugNoise(): void
+    {
+        $this->allowLogEntry('Analysing source:', 'JetBrains');
     }
 
     /**
