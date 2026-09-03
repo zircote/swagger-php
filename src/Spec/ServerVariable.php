@@ -7,7 +7,7 @@
 namespace OpenApi\Spec;
 
 /**
- * Represents a Server Variable for server URL template substitution.
+ * The allowed and default substitutions for one template variable in a `Server` URL.
  *
  * @see [Server Variable Object](https://spec.openapis.org/oas/v3.1.1.html#server-variable-object)
  */
