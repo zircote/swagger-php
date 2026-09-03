@@ -9,6 +9,7 @@ namespace OpenApi\Specification;
 use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Utils\JsonPointer;
 
 /**
  * Resolves `$ref` values to their corresponding component objects.
@@ -50,7 +51,7 @@ class ComponentIndex
             }
 
             $bucket = substr($path, 0, $slash);
-            $name = substr($path, $slash + 1);
+            $name = JsonPointer::decode(substr($path, $slash + 1));
 
             return $this->getIndex($bucket)[$name] ?? null;
         }
@@ -124,7 +125,7 @@ class ComponentIndex
                 $name = $this->getComponentName($item, $bucket);
                 $fqcn = $item->getClassName();
                 if ($name !== null && $fqcn !== null) {
-                    $map[$fqcn] = self::COMPONENTS_PREFIX . $bucket . '/' . $name;
+                    $map[$fqcn] = JsonPointer::ref('components', $bucket, $name);
                 }
             }
         }

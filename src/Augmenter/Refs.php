@@ -9,6 +9,7 @@ namespace OpenApi\Augmenter;
 use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Utils\JsonPointer;
 use OpenApi\Utils\PipeInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -137,11 +138,13 @@ class Refs implements PipeInterface, LoggerAwareInterface
                 return;
             }
 
-            $name = $matches[1];
+            // the captured name is escaped, `$candidates` is keyed by the raw one
+            $name = JsonPointer::decode($matches[1]);
             $path = $matches[2];
             if (array_key_exists($name, $candidates)) {
                 $index = $candidates[$name];
-                $attribute->ref = "#/components/schemas/{$name}/allOf/{$index}/{$path}";
+                // `$path` is copied through as captured — it is already-escaped tokens plus separators
+                $attribute->ref = JsonPointer::ref('components', 'schemas', $name, 'allOf', (string) $index) . '/' . $path;
             }
         });
     }

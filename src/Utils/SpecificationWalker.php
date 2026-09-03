@@ -54,7 +54,7 @@ class SpecificationWalker
             // special case
             if ($attribute instanceof OA\Security\Requirement) {
                 foreach (array_keys($attribute->toArray()) as $schemeName) {
-                    $visitor(new OA\Security\Scheme(ref: '#/components/securitySchemes/' . $schemeName));
+                    $visitor(new OA\Security\Scheme(ref: JsonPointer::ref('components', 'securitySchemes', $schemeName)));
                 }
             }
         });
