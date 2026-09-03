@@ -68,8 +68,12 @@ class SpecificationWalker
      */
     public function visit(string $visitee, callable $visitor): void
     {
+        // one `$seen` for every bucket: an attribute reachable from two of them — an
+        // operation held both directly and inside a path item — is still one attribute
+        $seen = new \SplObjectStorage();
+
         foreach (get_object_vars($this->specification) as $buckets) {
-            $this->walk($visitee, $visitor, $buckets instanceof AttributeInterface ? [$buckets] : (array) $buckets);
+            $this->walk($visitee, $visitor, $buckets instanceof AttributeInterface ? [$buckets] : (array) $buckets, $seen);
         }
     }
 

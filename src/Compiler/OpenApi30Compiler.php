@@ -251,6 +251,8 @@ class OpenApi30Compiler extends OpenApi31Compiler
                 $this->logger->warning('Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ' has type "array" but no items');
             }
 
+            $this->validateSchemaType($schema);
+
             if ($schema->prefixItems !== null) {
                 $this->logger->warning('Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ': prefixItems is not supported in OpenAPI 3.0');
             }

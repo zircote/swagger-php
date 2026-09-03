@@ -22,6 +22,14 @@ class OpenApi31Compiler implements CompilerInterface
 
     protected const OPERATION_REQUEST_BODY_METHODS = ['put', 'post', 'delete', 'patch'];
 
+    /**
+     * Every type the wire format accepts as input. `null` is included for 3.0 as well, where
+     * the compiler translates it to `nullable` rather than dropping it.
+     */
+    protected const SCHEMA_TYPES = ['string', 'number', 'integer', 'boolean', 'array', 'object', 'null'];
+
+    protected const RESPONSE_KEY = '/^(default|[1-5][0-9]{2}|[1-5]XX)$/';
+
     protected CollectingLogger $logger;
 
     public function __construct(?LoggerInterface $logger = null)
@@ -68,6 +76,10 @@ class OpenApi31Compiler implements CompilerInterface
         $this->validateSchemas($specification);
 
         $this->validateOperations($specification);
+
+        $this->validateOperationIds($specification);
+
+        $this->validateResponses($specification);
 
         return $this->logger->entries();
     }
@@ -678,6 +690,23 @@ class OpenApi31Compiler implements CompilerInterface
                     $this->logger->warning('Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ' has type "array" but no items in ' . $schema->getSourceLocation());
                 }
             }
+
+            $this->validateSchemaType($schema);
+        }
+    }
+
+    protected function validateSchemaType(OA\Schema $schema): void
+    {
+        if ($schema->type === null) {
+            return;
+        }
+
+        foreach (is_array($schema->type) ? $schema->type : [$schema->type] as $type) {
+            if (in_array($type, static::SCHEMA_TYPES, true)) {
+                continue;
+            }
+
+            $this->logger->warning('Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . " has unknown type \"$type\", expecting one of " . implode(', ', static::SCHEMA_TYPES) . ' in ' . $schema->getSourceLocation());
         }
     }
 
@@ -686,6 +715,55 @@ class OpenApi31Compiler implements CompilerInterface
         $specification->getWalker()->visit(OA\Operation::class, function (OA\Operation $operation): void {
             if ($operation->requestBody instanceof OA\RequestBody && !in_array($operation->method, static::OPERATION_REQUEST_BODY_METHODS)) {
                 $this->logger->warning("Request body not supported for method {$operation->method} in " . $operation->getSourceLocation());
+            }
+        });
+    }
+
+    /**
+     * Generated ids cannot collide — `OperationIds` derives them from method, path and
+     * source — so this only ever fires for values set by hand.
+     *
+     * Uniqueness is a property of the document, so an operation carrying neither a path nor
+     * a webhook is skipped: it is emitted nowhere and its id is never written down.
+     */
+    protected function validateOperationIds(Specification $specification): void
+    {
+        $seen = [];
+        $specification->getWalker()->visit(OA\Operation::class, function (OA\Operation $operation) use (&$seen): void {
+            if ($operation->operationId === null || ($operation->path === null && $operation->webhook === null)) {
+                return;
+            }
+
+            if (isset($seen[$operation->operationId])) {
+                $this->logger->warning("operationId must be unique, found \"{$operation->operationId}\" again in " . $operation->getSourceLocation());
+
+                return;
+            }
+
+            $seen[$operation->operationId] = true;
+        });
+    }
+
+    /**
+     * Only responses nested in an operation are checked, because position is what gives
+     * `Response::$response` its meaning: a status code there, and a component key in the
+     * `responses` bucket, where `components.responses.product` is a name. `isRoot()` cannot
+     * tell them apart — it is true whenever the key is set.
+     *
+     * A nested response carries no reflector of its own, so the operation is reported
+     * instead, which is where the reader has to go to fix it anyway.
+     */
+    protected function validateResponses(Specification $specification): void
+    {
+        $specification->getWalker()->visit(OA\Operation::class, function (OA\Operation $operation): void {
+            foreach ($operation->responses ?? [] as $response) {
+                if ($response->response === null) {
+                    continue;
+                }
+
+                if (preg_match(static::RESPONSE_KEY, (string) $response->response) !== 1) {
+                    $this->logger->warning("Invalid response \"{$response->response}\", expecting \"default\", a HTTP status code or a range such as \"2XX\" in " . $operation->getSourceLocation());
+                }
             }
         });
     }
