@@ -482,6 +482,90 @@ final class CompilerTest extends TestCase
             $specArrayNoItems,
             'Schema "Bad" has type "array" but no items',
         ];
+
+        $specDuplicateOperationId = new Specification();
+        $specDuplicateOperationId->openapi = new OA\OpenApi(version: '3.1.0');
+        $specDuplicateOperationId->info = new OA\Info(title: 'T', version: '1.0');
+        $specDuplicateOperationId->operations[] = new OA\Operation(path: '/a', method: 'get', operationId: 'getItem');
+        $specDuplicateOperationId->operations[] = new OA\Operation(path: '/b', method: 'get', operationId: 'getItem');
+
+        yield 'duplicate operationId' => [
+            new OpenApi31Compiler(),
+            $specDuplicateOperationId,
+            'operationId must be unique, found "getItem" again in unknown',
+        ];
+
+        $specBadResponseKey = new Specification();
+        $specBadResponseKey->openapi = new OA\OpenApi(version: '3.1.0');
+        $specBadResponseKey->info = new OA\Info(title: 'T', version: '1.0');
+        $specBadResponseKey->operations[] = new OA\Operation(path: '/a', method: 'get', responses: [
+            new OA\Response(response: 'Default', description: 'misspelled'),
+        ]);
+
+        yield 'invalid response key' => [
+            new OpenApi31Compiler(),
+            $specBadResponseKey,
+            'Invalid response "Default", expecting "default", a HTTP status code or a range such as "2XX" in unknown',
+        ];
+
+        $specBadSchemaType = new Specification();
+        $specBadSchemaType->openapi = new OA\OpenApi(version: '3.1.0');
+        $specBadSchemaType->info = new OA\Info(title: 'T', version: '1.0');
+        $specBadSchemaType->schemas[] = new OA\Schema(schema: 'Typo', type: 'strig');
+
+        yield 'unknown schema type' => [
+            new OpenApi31Compiler(),
+            $specBadSchemaType,
+            'Schema "Typo" has unknown type "strig", expecting one of string, number, integer, boolean, array, object, null in unknown',
+        ];
+    }
+
+    // --- input validation ---
+
+    /**
+     * In the `responses` bucket `Response::$response` is the component key, so
+     * `components.responses.product` is a name rather than a malformed status code. Position
+     * is the only thing that distinguishes the two — `isRoot()` is true for both.
+     */
+    public function testComponentResponseKeyIsNotValidatedAsStatusCode(): void
+    {
+        $spec = new Specification();
+        $spec->openapi = new OA\OpenApi(version: '3.1.0');
+        $spec->info = new OA\Info(title: 'T', version: '1.0');
+        $spec->responses[] = new OA\Response(response: 'product', description: 'a reusable response');
+
+        $messages = array_column((new OpenApi31Compiler())->validate($spec), 'message');
+
+        $this->assertEmpty(array_filter($messages, fn (string $m): bool => str_contains($m, 'Invalid response')));
+    }
+
+    /**
+     * An operation with neither a path nor a webhook reaches no document, so its id takes no
+     * part in uniqueness. Hybrid mode produces exactly one of these per webhook.
+     */
+    public function testUnemittedOperationDoesNotCollide(): void
+    {
+        $spec = new Specification();
+        $spec->openapi = new OA\OpenApi(version: '3.1.0');
+        $spec->info = new OA\Info(title: 'T', version: '1.0');
+        $spec->operations[] = new OA\Operation(webhook: 'ev', method: 'post', operationId: 'new-pet');
+        $spec->operations[] = new OA\Operation(method: 'post', operationId: 'new-pet');
+
+        $messages = array_column((new OpenApi31Compiler())->validate($spec), 'message');
+
+        $this->assertEmpty(array_filter($messages, fn (string $m): bool => str_contains($m, 'operationId must be unique')));
+    }
+
+    public function testValidSchemaTypesAreAccepted(): void
+    {
+        $spec = new Specification();
+        $spec->openapi = new OA\OpenApi(version: '3.1.0');
+        $spec->info = new OA\Info(title: 'T', version: '1.0');
+        $spec->schemas[] = new OA\Schema(schema: 'Ok', type: ['string', 'null']);
+
+        $messages = array_column((new OpenApi31Compiler())->validate($spec), 'message');
+
+        $this->assertEmpty(array_filter($messages, fn (string $m): bool => str_contains($m, 'unknown type')));
     }
 
     #[DataProvider('validationProvider')]
