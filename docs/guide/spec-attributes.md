@@ -167,6 +167,18 @@ public function show(int $id) {}
 public function show(int $id) {}
 ```
 
+The flat form extends to deeper nesting: a `MediaType` and `Schema` stacked alongside a `Response` merge into it, in any declaration order.
+
+```php
+#[OA\Operation\Get(path: '/pets/{id}')]
+#[OA\Response(response: 200, description: 'OK')]
+#[OA\MediaType(mediaType: 'application/json')]
+#[OA\Schema(type: 'string')]
+public function show(int $id) {}
+```
+
+The merge is by attribute type, so the flat form only works while it is unambiguous. Two `Response` siblings each expecting their own `MediaType`, or a `MediaType` next to both a `Response` and a `RequestBody`, fail with an `Ambiguous merge` error — nest those inline instead.
+
 ### Parameters on method arguments
 
 Parameters can be placed directly on method arguments:

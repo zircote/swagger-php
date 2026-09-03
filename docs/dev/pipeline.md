@@ -46,6 +46,12 @@ structural semantics:
 2. **Hierarchical absorb** — what remains flows upward a level at a time via `contained()`,
    first match wins
 
+Sibling merge chains resolve inner-to-outer, not in declaration order: a `MediaType`
+stacked with a `Response` and an `Operation` finds its `Response` before the `Response` is
+folded into the `Operation`, whichever way the three are declared. Only attributes whose
+types name each other as merge targets — possible with custom attachables, not among the
+native attributes — cannot be ordered that way and resolve in declaration order instead.
+
 If a level has containers, an unmatched non-root attribute is an error. If a level has no
 containers at all, unmatched attributes pass through to the level above.
 

@@ -11,23 +11,16 @@ use OpenApi\Spec as OA;
 #[OA\Info(title: 'Response', version: '1.0')]
 class ResponseControllerSpec
 {
+    // Stacked siblings instead of constructor nesting, declared container-first:
+    // the merge chain (Schema -> MediaType -> Response -> Post) resolves
+    // inner-to-outer, so declaration order does not matter.
     #[OA\Operation\Post(
         path: '/endpoint/response-schema',
         operationId: 'responseSchema',
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'All good',
-                content: new OA\MediaType(
-                    mediaType: 'application/octet-stream',
-                    schema: new OA\Schema(
-                        type: 'string',
-                        format: 'byte',
-                    ),
-                ),
-            ),
-        ]
     )]
+    #[OA\Response(response: 200, description: 'All good')]
+    #[OA\MediaType(mediaType: 'application/octet-stream')]
+    #[OA\Schema(type: 'string', format: 'byte')]
     public function responseSchema()
     {
     }

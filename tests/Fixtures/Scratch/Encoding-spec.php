@@ -39,23 +39,22 @@ class MultipartFormDataSpec
 #[OA\Info(title: 'Encoding', version: '1.0')]
 class EncodingControllerSpec
 {
+    // Stacked siblings: Schema -> MediaType -> RequestBody -> Post. Encoding
+    // only targets properties, so it stays inline on the MediaType.
+    #[OA\Schema(ref: MultipartFormDataSpec::class)]
+    #[OA\MediaType(
+        mediaType: 'multipart/form-data',
+        encoding: [
+            new OA\Encoding(
+                encoding: 'metadata',
+                contentType: 'application/xml; charset=utf-8',
+            ),
+        ]
+    )]
+    #[OA\RequestBody]
     #[OA\Operation\Post(
         path: '/endpoint/multipart-form-data-ref',
         operationId: 'multipartFormDataRef',
-        requestBody: new OA\RequestBody(
-            content: new OA\MediaType(
-                mediaType: 'multipart/form-data',
-                schema: new OA\Schema(
-                    ref: MultipartFormDataSpec::class,
-                ),
-                encoding: [
-                    new OA\Encoding(
-                        encoding: 'metadata',
-                        contentType: 'application/xml; charset=utf-8',
-                    ),
-                ]
-            ),
-        ),
         responses: [
             new OA\Response(
                 response: 200,
