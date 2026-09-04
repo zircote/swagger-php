@@ -68,8 +68,6 @@ class OpenApi30Compiler extends OpenApi31Compiler
             }
         }
 
-        $this->validateSchemas($specification);
-
         return $this->logger->entries();
     }
 
