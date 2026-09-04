@@ -60,15 +60,22 @@ Reach for a unit test when there is no document to validate — `ComponentIndexT
 | Trait | Use for |
 |---|---|
 | `AssemblesSpecification` | `assemble(...$classes)` — build a `Specification` from classes without touching the filesystem |
-| `AssertsBuilderResult` | asserting on a `Builder\Result`, including expected warnings and errors |
 | `AssertsSchemaStructure` | comparing compiled schema structure (`allOf` refs + property names) against a YAML fixture, independent of property order |
+| `AssertsSpecEquals` | deep-equality on a whole document — YAML, array or `stdClass` — order-independent for maps |
 | `CollectsSpecClasses` | enumerating every `OpenApi\Spec` attribute class, for suite-wide invariants |
+| `ExpectsLogEntries` | declaring which diagnostics a build is allowed to emit |
 | `GeneratesTestMatrix` | building version × mode combinations, with exclusions, and discovering fixtures by glob |
 | `UsesExamples` | registering a classloader for a `docs/examples` implementation |
+| `UsesFixtures` | resolving paths under `tests/Fixtures/` |
 
 `GeneratesTestMatrix` is the one to reach for when a test needs to run across versions and
 modes — it handles the cartesian product, the exclusions, and stable test-case naming, so
 providers stay short.
+
+`ExpectsLogEntries` is strict: an entry matching neither an expectation nor an allowance
+fails the test, so a new diagnostic cannot appear unnoticed. Prefer `expectLogEntry()` —
+`allowLogEntry()` asserts nothing, and is for diagnostics incidental to what the test is
+about.
 
 `SlotMapConsistencyTest` is a good example of the suite-wide-invariant style: rather than
 testing one attribute, it checks a property that must hold across all of them.
@@ -102,6 +109,11 @@ produces, and they are what the published docs display.
 - `tests/Fixtures/Scratch/` — spec-pipeline scratch fixtures with expected YAML, exercised
   by `ScratchTest`
 - `docs/examples/specs/` — full worked examples, doubling as published documentation
+
+A `Scratch` fixture that provokes a diagnostic declares it in `ScratchTest::scratchTestCases()`,
+keyed `{fixture}-{version}` when every mode raises it, or `{fixture}-{version}-{mode}` when
+only one does. Both keys apply when both are present, so a mode-specific entry adds to the
+shared one rather than replacing it.
 
 `composer redocly` validates the generated example specs against the OpenAPI schema. It
 passes, with warnings; known problems are suppressed via `.redocly.lint-ignore.yaml`, so a

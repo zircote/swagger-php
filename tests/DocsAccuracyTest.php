@@ -148,6 +148,27 @@ final class DocsAccuracyTest extends TestCase
         }
     }
 
+    public function testConcernsTableMatchesDocs(): void
+    {
+        $page = file_get_contents(self::DOCS . '/dev/testing.md');
+
+        preg_match('/^## Shared helpers$(.*?)^## /ms', $page, $section);
+        $this->assertNotEmpty($section, 'Could not find the "Shared helpers" section in docs/dev/testing.md');
+
+        preg_match_all('/^\| `(\w+)` \|/m', $section[1], $m);
+        $documented = $m[1];
+        sort($documented);
+
+        $traits = array_map(
+            static fn (string $file): string => basename($file, '.php'),
+            glob(__DIR__ . '/Concerns/*.php')
+        );
+        $traits = array_values(array_filter($traits, static fn (string $name): bool => !str_ends_with($name, 'Test')));
+        sort($traits);
+
+        $this->assertSame($traits, $documented, 'The tests/Concerns table in docs/dev/testing.md has drifted');
+    }
+
     public function testResultMethodListingMatchesDocs(): void
     {
         $page = file_get_contents(self::DOCS . '/reference/builder.md');
