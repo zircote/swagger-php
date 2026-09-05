@@ -177,9 +177,8 @@ if (!Undefined::isDefault($schema->description)) {
 ```
 
 Writing `description: null` therefore means **no description**, and the docblock is left
-alone; leaving it out means "infer one". The attribute always wins. Classic behaves
-identically, and uses the same sentinel to do it. A field nothing infers keeps a plain
-`null` default — there is nothing to suppress.
+alone; leaving it out means "infer one". The attribute always wins. Classic behaves the same
+way. A field nothing infers keeps a plain `null` default — there is nothing to suppress.
 
 That is what separates the two sets. `summary` and `description` on the operations,
 parameters and schemas default to the sentinel because `Docblocks` and `EnumDescriptions`
