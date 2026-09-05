@@ -10,8 +10,7 @@ Spec attributes are plain data containers, but they are **not** immutable, and n
 `Refs::mergeAllOf()` nulls `$schema->properties`, `Types` fills schema fields in place —
 and `Specification` exposes public arrays that `add()` appends to.
 
-What *is* true, and what distinguishes them from classic annotations, is that they carry no
-serialization logic. Serialization is the compiler's job.
+What *is* true is that they carry no serialization logic. Serialization is the compiler's job.
 
 ## Slot maps: the slot belongs to the parent
 
@@ -86,9 +85,8 @@ The user-facing version of this distinction is in
 
 `src/Spec/` nests directories for readability, not inheritance. Notably:
 
-- `Property extends AbstractAttribute` — **not** `Schema`. This is the deliberate change
-  from classic (where `Annotations\Property extends Schema`) and it is what makes stacking
-  `#[OA\Property]` and `#[OA\Schema]` on the same target work.
+- `Property extends AbstractAttribute` — **not** `Schema`. Being siblings is what lets
+  `#[OA\Property]` and `#[OA\Schema]` stack on the same target.
 - `Encoding extends AbstractAttribute` — **not** `MediaType`, despite `Property\Encoded`.
 - `Contact`, `License`, `ServerVariable` extend `AbstractAttribute`, not `Info`/`Server`.
 - `OA\Security` is a namespace, not a class. The classes are `Security\Requirement` and
