@@ -1278,6 +1278,10 @@ name+in (parameters).
 
 Defines a single property within a Schema object.
 
+The name comes from the property, parameter or constant the attribute sits on. A method
+supplies none, so a getter needs `property:` explicitly; without it the property is
+reported as missing one and omitted.
+
 #### Allowed in
 ---
 <a href="#schema">Schema</a>
@@ -1405,13 +1409,16 @@ Inline — used within parameters, responses, or other schemas:
 
   new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))
 
+Only a class supplies a name. On a method or a parameter, pass `schema:` explicitly;
+without it the schema has no component key and is reported as missing one.
+
 #### Allowed in
 ---
-<a href="#schema">Schema</a>
+<a href="#components">Components</a>, <a href="#property">Property</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>
 
 #### Nested elements
 ---
-<a href="#property">Property</a>, <a href="#property-encoded">Property\Encoded</a>, <a href="#schema">Schema</a>, <a href="#schema-additionalproperties">Schema\AdditionalProperties</a>, <a href="#schema-items">Schema\Items</a>, <a href="#schema-ref">Schema\Ref</a>
+<a href="#property">Property</a>, <a href="#property-encoded">Property\Encoded</a>
 
 #### Parameters
 ---
@@ -1543,7 +1550,7 @@ schemas with constrained additional properties:
 
 #### Allowed in
 ---
-<a href="#schema">Schema</a>
+<a href="#components">Components</a>, <a href="#property">Property</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>
 
 #### Parameters
 ---
@@ -1683,7 +1690,7 @@ Since Items extends Schema, the implicit `OA\Property` shortcut applies — no e
 
 #### Allowed in
 ---
-<a href="#schema">Schema</a>
+<a href="#components">Components</a>, <a href="#property">Property</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>
 
 #### Parameters
 ---
@@ -1816,7 +1823,7 @@ If used on a `$ref` directly, only the ref value is used.
 
 #### Allowed in
 ---
-<a href="#schema">Schema</a>
+<a href="#components">Components</a>, <a href="#property">Property</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>
 
 #### Parameters
 ---

@@ -34,6 +34,9 @@ use OpenApi\Undefined;
  *
  *   new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))
  *
+ * Only a class supplies a name. On a method or a parameter, pass `schema:` explicitly;
+ * without it the schema has no component key and is reported as missing one.
+ *
  * @see [Schema Object](https://spec.openapis.org/oas/v3.1.1.html#schema-object)
  * @see [JSON Schema](https://json-schema.org/draft/2020-12/json-schema-validation)
  */
@@ -209,13 +212,6 @@ class Schema extends AbstractAttribute
             Parameter::class => 'schema',
             Header::class => 'schema',
             MediaType::class => 'schema',
-        ];
-    }
-
-    public function contained(): array
-    {
-        return [
-            Schema::class => 'properties[]',
         ];
     }
 }

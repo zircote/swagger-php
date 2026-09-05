@@ -9,6 +9,10 @@ namespace OpenApi\Spec;
 /**
  * Defines a single property within a Schema object.
  *
+ * The name comes from the property, parameter or constant the attribute sits on. A method
+ * supplies none, so a getter needs `property:` explicitly; without it the property is
+ * reported as missing one and omitted.
+ *
  * @see [Schema Object](https://spec.openapis.org/oas/v3.1.1.html#schema-object)
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::TARGET_PARAMETER | \Attribute::TARGET_CLASS_CONSTANT | \Attribute::IS_REPEATABLE)]
