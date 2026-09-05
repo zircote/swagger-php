@@ -32,10 +32,17 @@ class Names implements PipeInterface
         return Group::Resolve;
     }
 
+    /**
+     * A schema takes its name from the class it is declared on. Declared anywhere else —
+     * a method, a parameter — the class reflector belongs to the *declaring* class, whose
+     * name is already taken by that class's own schema, so nothing is inferred.
+     */
     protected function inferSchemaNames(Specification $specification): void
     {
         foreach ($specification->schemas as $schema) {
-            $schema->schema ??= $schema->getShortClassName();
+            if ($schema->getReflector() instanceof \ReflectionClass) {
+                $schema->schema ??= $schema->getShortClassName();
+            }
         }
     }
 

@@ -81,6 +81,8 @@ class OpenApi31Compiler implements CompilerInterface
 
         $this->validateResponses($specification);
 
+        $this->validateNames($specification);
+
         return $this->logger->entries();
     }
 
@@ -604,6 +606,10 @@ class OpenApi31Compiler implements CompilerInterface
         $result = [];
 
         foreach ($properties as $property) {
+            if ($property->property === null) {
+                continue;
+            }
+
             $result[$property->property] = $property->schema instanceof OA\Schema
                 ? $this->compileSchema($property->schema)
                 : new \stdClass();
@@ -642,8 +648,11 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function compileComponents(Specification $specification): array
     {
+        $schemaName = fn (OA\Schema $schema): ?string => $schema->schema ?? $schema->title;
+        $namedSchemas = array_values(array_filter($specification->schemas, fn (OA\Schema $schema): bool => $schemaName($schema) !== null));
+
         return array_filter([
-            'schemas' => $this->compileNamedMap($specification->schemas, fn (OA\Schema $schema): string => $schema->schema ?? $schema->title ?? 'Schema', $this->compileSchema(...)),
+            'schemas' => $this->compileNamedMap($namedSchemas, $schemaName, $this->compileSchema(...)),
             'responses' => $this->compileNamedMap($specification->responses, fn (OA\Response $response): string => (string) $response->response, $this->compileResponse(...)),
             'parameters' => $this->compileNamedMap($specification->parameters, fn (OA\Parameter $parameter): string => $parameter->parameter ?? $parameter->name ?? 'param', $this->compileParameter(...)),
             'requestBodies' => $this->compileNamedMap($specification->requestBodies, fn (OA\RequestBody $body, int $index): string => $body->request ?? 'body' . $index, $this->compileRequestBody(...)),
@@ -752,6 +761,28 @@ class OpenApi31Compiler implements CompilerInterface
     protected function compileExamples(array $examples): array
     {
         return $this->compileNamedMap($examples, 'example', $this->compileExample(...));
+    }
+
+    /**
+     * A component schema takes its key from `schema`, and a property from `property`.
+     * Neither can be derived from a method or a non-constructor parameter, so an attribute
+     * declared there has to carry its own name — the same requirement classic enforces.
+     */
+    protected function validateNames(Specification $specification): void
+    {
+        foreach ($specification->schemas as $schema) {
+            if ($schema->schema === null && $schema->title === null) {
+                $this->logger->warning('Schema is missing key-field: "schema" in ' . $schema->getSourceLocation());
+            }
+        }
+
+        foreach ($this->collectSchemas($specification) as $schema) {
+            foreach ($schema->properties ?? [] as $property) {
+                if ($property->property === null) {
+                    $this->logger->warning('Property is missing key-field: "property" in ' . $property->getSourceLocation());
+                }
+            }
+        }
     }
 
     protected function validateSchemas(Specification $specification): void

@@ -483,6 +483,28 @@ final class CompilerTest extends TestCase
             'Schema "Bad" has type "array" but no items',
         ];
 
+        $specUnnamedSchema = new Specification();
+        $specUnnamedSchema->openapi = new OA\OpenApi(version: '3.1.0');
+        $specUnnamedSchema->info = new OA\Info(title: 'T', version: '1.0');
+        $specUnnamedSchema->schemas[] = new OA\Schema(type: 'string');
+
+        yield 'component schema without a name' => [
+            new OpenApi31Compiler(),
+            $specUnnamedSchema,
+            'Schema is missing key-field: "schema" in unknown',
+        ];
+
+        $specUnnamedProperty = new Specification();
+        $specUnnamedProperty->openapi = new OA\OpenApi(version: '3.1.0');
+        $specUnnamedProperty->info = new OA\Info(title: 'T', version: '1.0');
+        $specUnnamedProperty->schemas[] = new OA\Schema(schema: 'Thing', properties: [new OA\Property()]);
+
+        yield 'schema property without a name' => [
+            new OpenApi31Compiler(),
+            $specUnnamedProperty,
+            'Property is missing key-field: "property" in unknown',
+        ];
+
         $specDuplicateOperationId = new Specification();
         $specDuplicateOperationId->openapi = new OA\OpenApi(version: '3.1.0');
         $specDuplicateOperationId->info = new OA\Info(title: 'T', version: '1.0');
@@ -677,6 +699,30 @@ final class CompilerTest extends TestCase
     }
 
     // --- Undefined vs null on mixed properties ---
+
+    public function testUnnamedSchemaIsOmittedFromComponents(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->schemas[] = new OA\Schema(schema: 'Thing');
+        $spec->schemas[] = new OA\Schema(type: 'string');
+
+        $output = (new OpenApi31Compiler())->compile($spec);
+
+        $this->assertSame(['Thing'], array_keys($output['components']['schemas']));
+    }
+
+    public function testUnnamedPropertyIsOmittedFromSchema(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->schemas[] = new OA\Schema(schema: 'Thing', properties: [
+            new OA\Property(property: 'ok', schema: new OA\Schema(type: 'string')),
+            new OA\Property(schema: new OA\Schema(type: 'integer')),
+        ]);
+
+        $output = (new OpenApi31Compiler())->compile($spec);
+
+        $this->assertSame(['ok'], array_keys($output['components']['schemas']['Thing']['properties']));
+    }
 
     public function testExampleValueNullIsEmitted(): void
     {

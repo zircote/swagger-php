@@ -8,6 +8,11 @@ namespace OpenApi\Tests\Spec;
 
 use OpenApi\Tests\Concerns\CollectsSpecClasses;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\TypeInfo\Type;
+use Symfony\Component\TypeInfo\Type\CollectionType;
+use Symfony\Component\TypeInfo\Type\ObjectType;
+use Symfony\Component\TypeInfo\Type\UnionType;
+use Symfony\Component\TypeInfo\TypeResolver\TypeResolver;
 
 final class SlotMapConsistencyTest extends TestCase
 {
@@ -66,5 +71,72 @@ final class SlotMapConsistencyTest extends TestCase
         }
 
         $this->assertEmpty($failures, implode("\n", $failures));
+    }
+
+    /**
+     * A slot names a property on the target, so the target's own type has to admit the
+     * class declaring the slot. `Schema` once named `Schema::$properties`, a `list<Property>`,
+     * which crashed the inheritance augmenter as soon as anything reached it.
+     */
+    public function testSlotsAcceptTheDeclaringClass(): void
+    {
+        $typeResolver = TypeResolver::create();
+        $failures = [];
+
+        foreach (self::allSpecClasses() as $class) {
+            $instance = (new \ReflectionClass($class))->newInstanceWithoutConstructor();
+
+            foreach (['merge' => $instance->merge(), 'contained' => $instance->contained()] as $kind => $map) {
+                foreach ($map as $target => $slot) {
+                    $property = rtrim($slot, '[]');
+                    if (!class_exists($target) || !property_exists($target, $property)) {
+                        continue; // reported by testSlotsNameRealPropertiesOnTheirTarget
+                    }
+
+                    $accepted = self::objectTypesIn($typeResolver->resolve(new \ReflectionProperty($target, $property)));
+                    if ($accepted === []) {
+                        continue; // untyped or scalar slot: nothing to check against
+                    }
+
+                    foreach ($accepted as $candidate) {
+                        if ($class === $candidate || is_subclass_of($class, $candidate)) {
+                            continue 2;
+                        }
+                    }
+
+                    $failures[] = sprintf(
+                        '%s::%s() declares slot "%s" on %s, which accepts only %s',
+                        $class,
+                        $kind,
+                        $slot,
+                        $target,
+                        implode(', ', $accepted)
+                    );
+                }
+            }
+        }
+
+        $this->assertSame([], $failures, implode("\n", $failures));
+    }
+
+    /**
+     * @return list<class-string>
+     */
+    protected static function objectTypesIn(Type $type): array
+    {
+        if ($type instanceof UnionType) {
+            $types = [];
+            foreach ($type->getTypes() as $member) {
+                $types = [...$types, ...self::objectTypesIn($member)];
+            }
+
+            return $types;
+        }
+
+        if ($type instanceof CollectionType) {
+            return self::objectTypesIn($type->getCollectionValueType());
+        }
+
+        return $type instanceof ObjectType ? [$type->getClassName()] : [];
     }
 }
