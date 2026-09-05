@@ -163,6 +163,33 @@ Classic uses the same sentinel — `Generator::UNDEFINED` is an alias of
 `Undefined::UNDEFINED` — so `HybridBridge` passes these values straight through rather than
 translating them.
 
+### An inferred field needs the sentinel too
+
+There is a second reason to reach for `Undefined::UNDEFINED`, and it decides which nullable
+properties get it. `Undefined::isDefault()` is true only for the sentinel, never for `null`,
+so an augmenter that fills a field in guards on it:
+
+```php
+// Augmenter\Docblocks
+if (!Undefined::isDefault($schema->description)) {
+    return;
+}
+```
+
+Writing `description: null` therefore means **no description**, and the docblock is left
+alone; leaving it out means "infer one". The attribute always wins, which is the rule
+inherited from classic. A field nothing infers keeps a plain `null` default — there is
+nothing to suppress.
+
+That is what separates the two sets. `summary` and `description` on the operations,
+parameters and schemas default to the sentinel because `Docblocks` and `EnumDescriptions`
+fill them; the rest of the nullable properties do not.
+
+**Adding inference for a field means changing its default.** Guarding a field that still
+defaults to `null` makes the guard true for every attribute, and the inference silently never
+runs. `DocblocksTest` pins both halves — that an absent value is inferred, and that
+an explicit `null` suppresses it.
+
 ## Why resolution is its own step
 
 Resolving unknown classes inside the augmenter pipeline would create an ordering problem: an
