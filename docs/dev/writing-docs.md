@@ -19,6 +19,11 @@ the work was found, what else was investigated, and what it might lead to are no
 the diff. [CONTRIBUTING](https://github.com/zircote/swagger-php/blob/master/CONTRIBUTING.md)
 has the template and the title format.
 
+Commit message bodies carry the mirror of it: they document **what the diff does**, not why
+it exists. A sentence that starts explaining a motive belongs in the pull request
+description instead. Routine verification is not a fact about the diff either — that the
+change is tested is assumed, so a body noting it says nothing.
+
 ## State a fact once
 
 Do not restate something the page's own structure already establishes.
@@ -35,6 +40,11 @@ namespace to use, and what a mode does.
 Marketing filler and restatement filler are the same defect wearing different clothes.
 Replacing "the stable, production-ready mode" with "the only mode not marked beta" is not
 an improvement.
+
+A third form is the clause that explains why the fact matters — "which is what makes X
+possible", "which matters because…", "which is the point". It carries no fact of its own.
+State the fact and stop; where the significance is not visible from the fact, the fact is
+the wrong one.
 
 ## Detail belongs in exactly one place
 
@@ -169,8 +179,9 @@ correction would churn far more than it fixes.
 
 ## Reviewing documentation changes
 
-A pass to run over a documentation diff — your own or someone else's. Every item below
-caught a real defect in this codebase at least once.
+A pass to run over a documentation diff — your own or someone else's — and over a pull
+request description or commit message. Every item below caught a real defect in this
+codebase at least once.
 
 Where a check fails, fix the source rather than the symptom: a wrong generated page means
 a wrong docblock or generator, not a page to hand-edit.
@@ -221,6 +232,8 @@ a wrong docblock or generator, not a page to hand-edit.
       hanging off a link that explains the link.
 - [ ] **No page announcing its own audience or purpose.** "This page is for…", "these
       notes exist because…". Applies to contributor pages too, not just user-facing ones.
+- [ ] **No clause explaining the significance of the sentence before it** — "which is what
+      makes X possible", "which matters because…". State the fact and stop.
 - [ ] **Nothing restates what the page's own structure already shows.** A status table, a
       heading, or a callout already told the reader; a sentence repeating it only rots.
 - [ ] **Spelling follows the file it is in** — `docs/` is US, `src/` is British. Neither is
