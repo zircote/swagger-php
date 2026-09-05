@@ -34,6 +34,10 @@ public function contained(): array
 A `[]` suffix appends to a collection; a bare name assigns a scalar. It is easy to read
 backwards.
 
+The target's own type has to admit the class declaring the slot — `Schema` once named
+`Schema::$properties`, a `list<Property>`, which crashed the inheritance augmenter as soon
+as anything reached it. `SlotMapConsistencyTest` checks every slot against its target.
+
 Because the child declares the relationship, downstream code can extend the system: a
 custom attachable names its own nesting targets without touching any native attribute.
 
@@ -70,6 +74,11 @@ attribute is one that can stand alone — it owns a bucket and needs no parent.
 
 Each attribute decides for itself, in `isRoot()`.
 
+Root does not mean un-nested. `isRoot()` says what an attribute may be when nothing consumes
+it; `merge()` and `contained()` run first, and often do. `Schema` is always root, and is
+routinely merged into a sibling — a `Property` or a `MediaType`, say — instead of reaching
+the Specification at all.
+
 The user-facing version of this distinction is in
 [Using Spec Attributes](/guide/spec-attributes#components); this list is the full one.
 
@@ -103,8 +112,16 @@ buckets get resolved after assembly, without the DTOs having to reference each o
 - **OperationId generation** — class and method names come from the reflector
 - **Type inference** — `Types` reads PHP type declarations off property and parameter
   reflectors
+- **Naming** — a component schema takes its name from the class it sits on; a property
+  takes its name from the property, parameter or constant it sits on
 
 This is what keeps the Assembler concerned only with nesting.
+
+A method reflector supplies no name — `getUnnamed()` is not the property `unnamed`, and the
+pipeline does not guess at accessor prefixes. So a bare `Schema` becomes a `Property` only
+where the reflector declares a value the schema owns: a property, or a constructor
+parameter. On a method, or on a parameter of anything else, the attribute carries its own
+`schema` or `property` or the compiler reports it missing.
 
 ## Normalise on input, store the simple form
 

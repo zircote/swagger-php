@@ -77,6 +77,17 @@ This also applies to `OA\Schema` subclasses like `OA\Schema\Items`:
 public array $tags;
 ```
 
+The shortcut stops at methods, which supply no property name — `getTags()` is not `tags`, and the pipeline does not guess at
+accessor prefixes. A getter needs the explicit `OA\Property`, carrying the name:
+
+```php
+#[OA\Property(property: 'tags')]
+#[OA\Schema\Items(ref: Tag::class)]
+public function getTags(): array
+```
+
+Without it the property is reported as missing its name and left out of the schema.
+
 ## `OA\Parameter`
 
 The `OA\Parameter` annotation requires specifying the `in` property to indicate where in the request the parameter is located.
