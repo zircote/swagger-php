@@ -8,6 +8,9 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Spec as OA;
 
+// Responses stay nested in the operation here rather than stacked as siblings: two
+// operations share one target, so a stacked `OA\Response` matches both and fails with
+// `Ambiguous merge`.
 #[OA\Info(
     title: 'Multiple Paths For Endpoint Scratch',
     version: '1.0'

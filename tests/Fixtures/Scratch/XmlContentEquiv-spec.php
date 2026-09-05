@@ -19,14 +19,12 @@ class XmlContentEquivSpec
 #[OA\Operation\Get(
     path: '/endpoint/xml-content',
     operationId: 'xmlContentEquiv1',
-    responses: [
-        new OA\Response(
-            response: 200,
-            description: 'All good',
-            content: [
-                new OA\MediaType\Xml(ref: XmlContentEquivSpec::class),
-            ]
-        ),
+)]
+#[OA\Response(
+    response: 200,
+    description: 'All good',
+    content: [
+        new OA\MediaType\Xml(ref: XmlContentEquivSpec::class),
     ]
 )]
 class XmlContentEquivEndpoint1Spec
@@ -36,16 +34,14 @@ class XmlContentEquivEndpoint1Spec
 #[OA\Operation\Get(
     path: '/endpoint/media-type',
     operationId: 'xmlContentEquiv2',
-    responses: [
-        new OA\Response(
-            response: 200,
-            description: 'All good',
-            content: [
-                new OA\MediaType(
-                    mediaType: 'application/xml',
-                    schema: new OA\Schema(ref: XmlContentEquivSpec::class)
-                ),
-            ]
+)]
+#[OA\Response(
+    response: 200,
+    description: 'All good',
+    content: [
+        new OA\MediaType(
+            mediaType: 'application/xml',
+            schema: new OA\Schema(ref: XmlContentEquivSpec::class)
         ),
     ]
 )]
@@ -56,14 +52,12 @@ class XmlContentEquivEndpoint2Spec
 #[OA\Operation\Get(
     path: '/endpoint/xml-array',
     operationId: 'xmlContentEquiv3',
-    responses: [
-        new OA\Response(
-            response: 200,
-            description: 'All good',
-            content: [
-                new OA\MediaType\Xml(type: 'array', items: new OA\Schema\Items(ref: XmlContentEquivSpec::class)),
-            ]
-        ),
+)]
+#[OA\Response(
+    response: 200,
+    description: 'All good',
+    content: [
+        new OA\MediaType\Xml(items: new OA\Schema\Items(ref: XmlContentEquivSpec::class)),
     ]
 )]
 class XmlContentEquivEndpoint3Spec

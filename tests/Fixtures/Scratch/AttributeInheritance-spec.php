@@ -42,8 +42,8 @@ class Child2Spec extends BaseSpec
     path: '/api/endpoint',
     description: 'An endpoint',
     operationId: 'getEndpoint',
-    responses: [new OA\Response(response: 200, description: 'OK')]
 )]
+#[OA\Response(response: 200, description: 'OK')]
 class AttributeInheritanceEndpointSpec
 {
 }

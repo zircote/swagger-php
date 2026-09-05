@@ -16,8 +16,8 @@ use OpenApi\Spec as OA;
     path: '/api/endpoint',
     description: 'An endpoint',
     operationId: 'nestedAdditionalProperties',
-    responses: [new OA\Response(response: 200, description: 'OK')]
 )]
+#[OA\Response(response: 200, description: 'OK')]
 #[OA\Schema(
     schema: 'NestedAdditionalProperties',
     additionalProperties: new OA\Schema\AdditionalProperties(

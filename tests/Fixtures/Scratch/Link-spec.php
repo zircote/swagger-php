@@ -11,6 +11,9 @@ use OpenApi\Spec as OA;
 #[OA\Info(title: 'Link', version: '1.0')]
 class LinkControllerSpec
 {
+    // Responses stay nested in these operations rather than stacked as siblings: the
+    // `OA\Link` attributes merge into the response beside them, which only holds while
+    // that response is part of the operation.
     #[OA\Operation\Get(
         path: '/widgets/{id}',
         operationId: 'getWidget',

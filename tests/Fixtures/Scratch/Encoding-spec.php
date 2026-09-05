@@ -40,7 +40,9 @@ class MultipartFormDataSpec
 class EncodingControllerSpec
 {
     // Stacked siblings: Schema -> MediaType -> RequestBody -> Post. Encoding
-    // only targets properties, so it stays inline on the MediaType.
+    // only targets properties, so it stays inline on the MediaType, and the
+    // responses stay inline too — MediaType merges into Response and RequestBody
+    // alike, so stacking both would be ambiguous.
     #[OA\Schema(ref: MultipartFormDataSpec::class)]
     #[OA\MediaType(
         mediaType: 'multipart/form-data',

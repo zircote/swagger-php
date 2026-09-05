@@ -31,8 +31,8 @@ use OpenApi\Spec as OA;
             )
         ),
     ],
-    responses: [new OA\Response(response: 200, description: 'OK')]
 )]
+#[OA\Response(response: 200, description: 'OK')]
 class ParameterContentEndpointSpec
 {
 }

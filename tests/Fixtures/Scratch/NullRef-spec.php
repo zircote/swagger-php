@@ -22,16 +22,14 @@ class NullRefSpec
     #[OA\Operation\Get(
         path: '/api/refonly',
         operationId: 'refonly',
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Ref response',
-                content: new OA\MediaType\Json(
-                    ref: '#/components/schemas/repository',
-                    schema: new OA\Schema(nullable: true),
-                )
-            ),
-        ]
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Ref response',
+        content: new OA\MediaType\Json(
+            ref: '#/components/schemas/repository',
+            schema: new OA\Schema(nullable: true),
+        )
     )]
     public function refonly()
     {
@@ -40,19 +38,17 @@ class NullRefSpec
     #[OA\Operation\Get(
         path: '/api/refplus',
         operationId: 'refplus',
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Ref plus response',
-                content: new OA\MediaType\Json(
-                    ref: '#/components/schemas/repository',
-                    schema: new OA\Schema(
-                        description: 'The repository',
-                        nullable: true,
-                    ),
-                )
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Ref plus response',
+        content: new OA\MediaType\Json(
+            ref: '#/components/schemas/repository',
+            schema: new OA\Schema(
+                description: 'The repository',
+                nullable: true,
             ),
-        ]
+        )
     )]
     public function refplusy()
     {

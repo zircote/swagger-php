@@ -24,12 +24,10 @@ use OpenApi\Spec as OA;
     description: 'Sandbox endpoint',
     operationId: 'tagsEndpoint',
     tags: ['sandbox', 'other', 'nested', 'invalidparent'],
-    responses: [
-        new OA\Response(
-            response: 200,
-            description: 'All good'
-        ),
-    ]
+)]
+#[OA\Response(
+    response: 200,
+    description: 'All good'
 )]
 class TagsEndpointSpec
 {

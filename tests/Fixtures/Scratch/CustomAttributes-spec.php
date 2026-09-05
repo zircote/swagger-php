@@ -96,8 +96,8 @@ class CAModelSpec
     path: '/api/endpoint',
     description: 'An endpoint',
     operationId: 'CAEndpoint',
-    responses: [new OA\Response(response: 200, description: 'OK')]
 )]
+#[OA\Response(response: 200, description: 'OK')]
 class CAEndpointSpec
 {
 }

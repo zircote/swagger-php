@@ -17,14 +17,12 @@ class JsonContentEquivSpec
 #[OA\Operation\Get(
     path: '/endpoint/json-content',
     operationId: 'jsonContentEquiv1',
-    responses: [
-        new OA\Response(
-            response: 200,
-            description: 'All good',
-            content: [
-                new OA\MediaType\Json(ref: JsonContentEquivSpec::class),
-            ]
-        ),
+)]
+#[OA\Response(
+    response: 200,
+    description: 'All good',
+    content: [
+        new OA\MediaType\Json(ref: JsonContentEquivSpec::class),
     ]
 )]
 class JsonContentEquivEndpoint1Spec
@@ -34,16 +32,14 @@ class JsonContentEquivEndpoint1Spec
 #[OA\Operation\Get(
     path: '/endpoint/media-type',
     operationId: 'jsonContentEquiv2',
-    responses: [
-        new OA\Response(
-            response: 200,
-            description: 'All good',
-            content: [
-                new OA\MediaType(
-                    mediaType: 'application/json',
-                    schema: new OA\Schema(ref: JsonContentEquivSpec::class)
-                ),
-            ]
+)]
+#[OA\Response(
+    response: 200,
+    description: 'All good',
+    content: [
+        new OA\MediaType(
+            mediaType: 'application/json',
+            schema: new OA\Schema(ref: JsonContentEquivSpec::class)
         ),
     ]
 )]
