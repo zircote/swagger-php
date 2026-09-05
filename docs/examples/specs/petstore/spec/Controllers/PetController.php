@@ -19,11 +19,10 @@ class PetController
     /**
      * Add a new pet to the store.
      */
-    #[OA\Operation\Post(path: '/pet', operationId: 'addPet', tags: ['pet'], requestBody: new OA\RequestBody(ref: PetRequestBody::class), responses: [
-        new OA\Response(response: 405, description: 'Invalid input'),
-    ], security: [
+    #[OA\Operation\Post(path: '/pet', operationId: 'addPet', tags: ['pet'], requestBody: new OA\RequestBody(ref: PetRequestBody::class), security: [
         new OA\Security\Requirement(scheme: 'petstore_auth', scopes: ['write:pets', 'read:pets']),
     ])]
+    #[OA\Response(response: 405, description: 'Invalid input')]
     public function addPet()
     {
     }
@@ -31,13 +30,12 @@ class PetController
     /**
      * Update an existing pet.
      */
-    #[OA\Operation\Put(path: '/pet', operationId: 'updatePet', tags: ['pet'], requestBody: new OA\RequestBody(ref: PetRequestBody::class), responses: [
-        new OA\Response(response: 400, description: 'Invalid ID supplied'),
-        new OA\Response(response: 404, description: 'Pet not found'),
-        new OA\Response(response: 405, description: 'Validation exception'),
-    ], security: [
+    #[OA\Operation\Put(path: '/pet', operationId: 'updatePet', tags: ['pet'], requestBody: new OA\RequestBody(ref: PetRequestBody::class), security: [
         new OA\Security\Requirement(scheme: 'petstore_auth', scopes: ['write:pets', 'read:pets']),
     ])]
+    #[OA\Response(response: 400, description: 'Invalid ID supplied')]
+    #[OA\Response(response: 404, description: 'Pet not found')]
+    #[OA\Response(response: 405, description: 'Validation exception')]
     public function updatePet()
     {
     }
@@ -51,19 +49,18 @@ class PetController
             explode: true,
             schema: new OA\Schema(type: 'string', enum: ['available', 'pending', 'sold'], default: 'available'),
         ),
-    ], responses: [
-        new OA\Response(
-            response: 200,
-            description: 'successful operation',
-            content: [
-                new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema\Items(ref: Pet::class)),
-                new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
-            ],
-        ),
-        new OA\Response(response: 400, description: 'Invalid status value'),
     ], deprecated: true, security: [
         new OA\Security\Requirement(scheme: 'petstore_auth', scopes: ['write:pets', 'read:pets']),
     ])]
+    #[OA\Response(
+        response: 200,
+        description: 'successful operation',
+        content: [
+            new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema\Items(ref: Pet::class)),
+            new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
+        ],
+    )]
+    #[OA\Response(response: 400, description: 'Invalid status value')]
     public function findPetsByStatus()
     {
     }
@@ -77,19 +74,18 @@ class PetController
             explode: true,
             schema: new OA\Schema(type: 'array', items: new OA\Schema(type: 'string')),
         ),
-    ], responses: [
-        new OA\Response(
-            response: 200,
-            description: 'successful operation',
-            content: [
-                new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
-                new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
-            ],
-        ),
-        new OA\Response(response: 400, description: 'Invalid tag value'),
     ], security: [
         new OA\Security\Requirement(scheme: 'petstore_auth', scopes: ['write:pets', 'read:pets']),
     ])]
+    #[OA\Response(
+        response: 200,
+        description: 'successful operation',
+        content: [
+            new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
+            new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
+        ],
+    )]
+    #[OA\Response(response: 400, description: 'Invalid tag value')]
     public function findByTags()
     {
     }
@@ -102,20 +98,19 @@ class PetController
             required: true,
             schema: new OA\Schema(type: 'integer', format: 'int64'),
         ),
-    ], responses: [
-        new OA\Response(
-            response: 200,
-            description: 'successful operation',
-            content: [
-                new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: Pet::class)),
-                new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(ref: Pet::class)),
-            ],
-        ),
-        new OA\Response(response: 400, description: 'Invalid ID supplier'),
-        new OA\Response(response: 404, description: 'Pet not found'),
     ], security: [
         new OA\Security\Requirement(scheme: 'api_key', scopes: []),
     ])]
+    #[OA\Response(
+        response: 200,
+        description: 'successful operation',
+        content: [
+            new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: Pet::class)),
+            new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(ref: Pet::class)),
+        ],
+    )]
+    #[OA\Response(response: 400, description: 'Invalid ID supplier')]
+    #[OA\Response(response: 404, description: 'Pet not found')]
     public function getPetById(int $id)
     {
     }
@@ -142,11 +137,10 @@ class PetController
                 ),
             ),
         ],
-    ), responses: [
-        new OA\Response(response: 405, description: 'Invalid input'),
-    ], security: [
+    ), security: [
         new OA\Security\Requirement(scheme: 'petstore_auth', scopes: ['write:pets', 'read:pets']),
     ])]
+    #[OA\Response(response: 405, description: 'Invalid input')]
     public function updatePetWithForm()
     {
     }
@@ -154,12 +148,11 @@ class PetController
     #[OA\Operation\Delete(path: '/pet/{petId}', operationId: 'deletePet', summary: 'Deletes a pet', tags: ['pet'], parameters: [
         new OA\Parameter(name: 'api_key', in: 'header', required: false, schema: new OA\Schema(type: 'string')),
         new OA\Parameter(name: 'petId', in: 'path', description: 'Pet id to delete', required: true, schema: new OA\Schema(type: 'integer', format: 'int64')),
-    ], responses: [
-        new OA\Response(response: 400, description: 'Invalid ID supplied'),
-        new OA\Response(response: 404, description: 'Pet not found'),
     ], security: [
         new OA\Security\Requirement(scheme: 'petstore_auth', scopes: ['write:pets', 'read:pets']),
     ])]
+    #[OA\Response(response: 400, description: 'Invalid ID supplied')]
+    #[OA\Response(response: 404, description: 'Pet not found')]
     public function deletePet()
     {
     }
@@ -180,15 +173,14 @@ class PetController
                 schema: new OA\Schema(type: 'string', format: 'binary'),
             ),
         ],
-    ), responses: [
-        new OA\Response(
-            response: 200,
-            description: 'successful operation',
-            content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: ApiResponse::class))],
-        ),
-    ], security: [
+    ), security: [
         new OA\Security\Requirement(scheme: 'petstore_auth', scopes: ['write:pets', 'read:pets']),
     ])]
+    #[OA\Response(
+        response: 200,
+        description: 'successful operation',
+        content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: ApiResponse::class))],
+    )]
     public function uploadFile()
     {
     }

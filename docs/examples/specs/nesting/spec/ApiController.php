@@ -29,16 +29,14 @@ class ApiController
                 schema: new OA\Schema(type: 'integer', format: 'int64'),
             ),
         ],
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'successful operation',
-                content: [new OA\MediaType(
-                    mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/ActualModel'),
-                )],
-            ),
-        ],
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'successful operation',
+        content: [new OA\MediaType(
+            mediaType: 'application/json',
+            schema: new OA\Schema(ref: '#/components/schemas/ActualModel'),
+        )],
     )]
     public function get($id)
     {

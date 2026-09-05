@@ -17,10 +17,8 @@ class PropertyRefController
         parameters: [
             new OA\Parameter(ref: '#/components/schemas/Product/properties/id'),
         ],
-        responses: [
-            new OA\Response(response: 'default', ref: '#/components/responses/todo'),
-        ],
     )]
+    #[OA\Response(response: 'default', ref: '#/components/responses/todo')]
     public function doStuff($id)
     {
     }

@@ -18,10 +18,8 @@ class NewPetWebhook
             description: 'Information about a new pet in the system',
             content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: Pet::class))],
         ),
-        responses: [
-            new OA\Response(response: 200, description: 'Return a 200 status to indicate that the data was received successfully'),
-        ],
     )]
+    #[OA\Response(response: 200, description: 'Return a 200 status to indicate that the data was received successfully')]
     public function newPet()
     {
     }

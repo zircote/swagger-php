@@ -14,20 +14,19 @@ use OpenApi\Spec as OA;
  */
 class StoreController
 {
-    #[OA\Operation\Get(path: '/store', operationId: 'getInventory', summary: 'Returns pet inventories by status', description: 'Returns a map of status codes to quantities', tags: ['store'], responses: [
-        new OA\Response(
-            response: 200,
-            description: 'successful operation',
-            content: [
+    #[OA\Operation\Get(path: '/store', operationId: 'getInventory', summary: 'Returns pet inventories by status', description: 'Returns a map of status codes to quantities', tags: ['store'], security: [
+        new OA\Security\Requirement(scheme: 'api_key', scopes: []),
+    ])]
+    #[OA\Response(
+        response: 200,
+        description: 'successful operation',
+        content: [
                 new OA\MediaType(
                     mediaType: 'application/json',
                     schema: new OA\Schema(additionalProperties: new OA\Schema(type: 'integer', format: 'int32')),
                 ),
             ],
-        ),
-    ], security: [
-        new OA\Security\Requirement(scheme: 'api_key', scopes: []),
-    ])]
+    )]
     public function getInventory()
     {
     }
@@ -42,15 +41,13 @@ class StoreController
             required: true,
             content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: Order::class))],
         ),
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'successful operation',
-                content: [
-                    new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: Order::class)),
-                    new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(ref: Order::class)),
-                ],
-            ),
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'successful operation',
+        content: [
+            new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: Order::class)),
+            new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(ref: Order::class)),
         ],
     )]
     public function placeOrder()
@@ -71,19 +68,17 @@ class StoreController
                 schema: new OA\Schema(type: 'integer', format: 'int64', minimum: 1, maximum: 10),
             ),
         ],
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'successful operation',
-                content: [
-                    new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: Order::class)),
-                    new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(ref: Order::class)),
-                ],
-            ),
-            new OA\Response(response: 400, description: 'Invalid ID supplied'),
-            new OA\Response(response: 404, description: 'Order not found'),
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'successful operation',
+        content: [
+            new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: Order::class)),
+            new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(ref: Order::class)),
         ],
     )]
+    #[OA\Response(response: 400, description: 'Invalid ID supplied')]
+    #[OA\Response(response: 404, description: 'Order not found')]
     public function getOrderById()
     {
     }
@@ -103,11 +98,9 @@ class StoreController
                 schema: new OA\Schema(type: 'integer', format: 'int64', minimum: 1),
             ),
         ],
-        responses: [
-            new OA\Response(response: 400, description: 'Invalid ID supplied'),
-            new OA\Response(response: 404, description: 'Order not found'),
-        ],
     )]
+    #[OA\Response(response: 400, description: 'Invalid ID supplied')]
+    #[OA\Response(response: 404, description: 'Order not found')]
     public function deleteOrder()
     {
     }

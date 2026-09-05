@@ -26,10 +26,8 @@ class UserController
             required: true,
             content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: User::class))],
         ),
-        responses: [
-            new OA\Response(response: 'default', description: 'successful operation'),
-        ],
     )]
+    #[OA\Response(response: 'default', description: 'successful operation')]
     public function createUser()
     {
     }
@@ -40,10 +38,8 @@ class UserController
         summary: 'Create list of users with given input array',
         tags: ['user'],
         requestBody: new OA\RequestBody(ref: UserArrayRequestBody::class),
-        responses: [
-            new OA\Response(response: 'default', description: 'successful operation'),
-        ],
     )]
+    #[OA\Response(response: 'default', description: 'successful operation')]
     public function createUsersWithListInput()
     {
     }
@@ -57,22 +53,20 @@ class UserController
             new OA\Parameter(name: 'username', in: 'query', description: 'The user name for login', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'password', in: 'query', required: true, schema: new OA\Schema(type: 'string')),
         ],
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'successful operation',
-                headers: [
-                    new OA\Header(header: 'X-Rate-Limit', description: 'calls per hour allowed by the user', schema: new OA\Schema(type: 'integer', format: 'int32')),
-                    new OA\Header(header: 'X-Expires-After', description: 'date in UTC when token expires', schema: new OA\Schema(type: 'string', format: 'datetime')),
-                ],
-                content: [
-                    new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(type: 'string')),
-                    new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(type: 'string')),
-                ],
-            ),
-            new OA\Response(response: 400, description: 'Invalid username/password supplied'),
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'successful operation',
+        headers: [
+            new OA\Header(header: 'X-Rate-Limit', description: 'calls per hour allowed by the user', schema: new OA\Schema(type: 'integer', format: 'int32')),
+            new OA\Header(header: 'X-Expires-After', description: 'date in UTC when token expires', schema: new OA\Schema(type: 'string', format: 'datetime')),
+        ],
+        content: [
+            new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(type: 'string')),
+            new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(type: 'string')),
         ],
     )]
+    #[OA\Response(response: 400, description: 'Invalid username/password supplied')]
     public function loginUser()
     {
     }
@@ -82,10 +76,8 @@ class UserController
         operationId: 'logoutUser',
         summary: 'Logs out current logged in user session',
         tags: ['user'],
-        responses: [
-            new OA\Response(response: 'default', description: 'successful operation'),
-        ],
     )]
+    #[OA\Response(response: 'default', description: 'successful operation')]
     public function logoutUser()
     {
     }
@@ -97,19 +89,17 @@ class UserController
         parameters: [
             new OA\Parameter(name: 'username', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
         ],
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'successful operation',
-                content: [
-                    new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: User::class)),
-                    new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(ref: User::class)),
-                ],
-            ),
-            new OA\Response(response: 400, description: 'Invalid username supplied'),
-            new OA\Response(response: 404, description: 'User not found'),
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'successful operation',
+        content: [
+            new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: User::class)),
+            new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(ref: User::class)),
         ],
     )]
+    #[OA\Response(response: 400, description: 'Invalid username supplied')]
+    #[OA\Response(response: 404, description: 'User not found')]
     public function getUserByName()
     {
     }
@@ -127,11 +117,9 @@ class UserController
             required: true,
             content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: User::class))],
         ),
-        responses: [
-            new OA\Response(response: 400, description: 'Invalid user supplied'),
-            new OA\Response(response: 404, description: 'User not found'),
-        ],
     )]
+    #[OA\Response(response: 400, description: 'Invalid user supplied')]
+    #[OA\Response(response: 404, description: 'User not found')]
     public function updateUser()
     {
     }
@@ -144,11 +132,9 @@ class UserController
         parameters: [
             new OA\Parameter(name: 'username', in: 'path', description: 'The name that needs to be deleted', required: true, schema: new OA\Schema(type: 'string')),
         ],
-        responses: [
-            new OA\Response(response: 400, description: 'Invalid username supplied'),
-            new OA\Response(response: 404, description: 'User not found'),
-        ],
     )]
+    #[OA\Response(response: 400, description: 'Invalid username supplied')]
+    #[OA\Response(response: 404, description: 'User not found')]
     public function deleteUser()
     {
     }

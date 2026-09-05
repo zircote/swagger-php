@@ -32,23 +32,21 @@ class UserAddEndpoint
                 ),
             )],
         ),
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'OK',
-                content: [new OA\MediaType(
-                    mediaType: 'application/json',
-                    schema: new OA\Schema(oneOf: [
-                        new OA\Schema(ref: '#/components/schemas/Result'),
-                        new OA\Schema(type: 'boolean'),
-                    ]),
-                    examples: [
-                        new OA\Example(example: 'result', summary: 'An result object.', value: ['success' => true]),
-                        new OA\Example(example: 'bool', summary: 'A boolean value.', value: false),
-                    ],
-                )],
-            ),
-        ],
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'OK',
+        content: [new OA\MediaType(
+            mediaType: 'application/json',
+            schema: new OA\Schema(oneOf: [
+                new OA\Schema(ref: '#/components/schemas/Result'),
+                new OA\Schema(type: 'boolean'),
+            ]),
+            examples: [
+                new OA\Example(example: 'result', summary: 'An result object.', value: ['success' => true]),
+                new OA\Example(example: 'bool', summary: 'A boolean value.', value: false),
+            ],
+        )],
     )]
     public function addUser()
     {

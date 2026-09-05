@@ -18,13 +18,11 @@ class Controller
         operationId: 'test',
         description: 'Get test',
         tags: ['api'],
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Polymorphism',
-                content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: Request::class))],
-            ),
-        ],
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Polymorphism',
+        content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: Request::class))],
     )]
     public function getProduct($id)
     {
