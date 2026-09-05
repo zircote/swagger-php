@@ -16,15 +16,12 @@ $finder = PhpCsFixer\Finder::create()
             !strpos($file->getPathname(), 'tests/Fixtures/Customer.php')
             // multi arg use; 'use a, b;`
             && !strpos($file->getPathname(), 'tests/Fixtures/Parser/HelloTrait.php')
-            // FQDN in docblock
-            && !strpos($file->getPathname(), 'tests/Fixtures/TypedProperties.php')
+            && !strpos($file->getPathname(), 'tests/Fixtures/PHP/TraitUsage.php')
             // FQDN in docblock
             && !strpos($file->getPathname(), 'tests/Fixtures/PHP/DocblockAndTypehintTypes.php')
             // parameter docblock for PHP 8.6
             && !strpos($file->getPathname(), 'tests/Fixtures/Scratch/Docblocks.php')
             && !strpos($file->getPathname(), 'tests/Fixtures/Scratch/Docblocks-spec.php')
-            // FQDN in data provider
-            && !strpos($file->getPathname(), 'tests/Utils/TokenScannerTest.php')
         ;
     })
     ->in(__DIR__);

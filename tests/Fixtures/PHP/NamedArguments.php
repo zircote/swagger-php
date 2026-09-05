@@ -9,7 +9,7 @@ namespace OpenApi\Tests\Fixtures\PHP;
 use OpenApi\Attributes as OAT;
 
 #[OAT\Schema]
-class Php8NamedArguments
+class NamedArguments
 {
     public function useFoo(): void
     {

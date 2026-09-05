@@ -55,9 +55,9 @@ final class ReflectionAnalyserTest extends OpenApiTestCase
         ];
     }
 
-    public function testPhp8PromotedProperties(): void
+    public function testPromotedProperties(): void
     {
-        $analysis = $this->analysisFromFixtures(['PHP/Php8PromotedProperties.php']);
+        $analysis = $this->analysisFromFixtures(['PHP/PromotedProperties.php']);
         $schemas = $analysis->getAnnotationsOfType(OA\Schema::class, true);
 
         $this->assertCount(1, $schemas);
