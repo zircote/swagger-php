@@ -23,10 +23,8 @@ class Controller
                 )
             ),
         ],
-        responses: [
-            new OA\Response(response: '200', description: 'All good'),
-        ]
     )]
+    #[OA\Response(response: '200', description: 'All good')]
     public function endpoint()
     {
         // ...

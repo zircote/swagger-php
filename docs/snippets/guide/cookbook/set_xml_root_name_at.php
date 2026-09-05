@@ -11,16 +11,14 @@ use OpenApi\Attributes as OA;
 )]
 #[OA\Post(
     path: '/foobar',
-    responses: [
-        new OA\Response(
-            response: 400,
-            description: 'Request error',
-            content: new OA\XmlContent(
-                ref: '#/components/schemas/Error',
-                xml: new OA\Xml(name: 'error'),
-            ),
-        ),
-    ],
+)]
+#[OA\Response(
+    response: 400,
+    description: 'Request error',
+    content: new OA\XmlContent(
+        ref: '#/components/schemas/Error',
+        xml: new OA\Xml(name: 'error'),
+    ),
 )]
 class OpenApiSpec
 {
