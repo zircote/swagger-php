@@ -17,6 +17,7 @@ This is where things will start to turn:
 * All code marked `depecated` in **v6** will be removed
 * Bridge is marked `deprecated`
 * `Builder::setMode()` is marked `deprecated`
-
+* `nikic/php-parser` is raised to `^5.0` — the `^4.19` branch parses no further than
+  PHP 8.3 syntax
 ## v8
 `classic` is removed from the codebase, leaving only the spec pipeline. Annotations are no longer supported at all.
