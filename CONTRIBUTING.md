@@ -49,8 +49,11 @@ attempts, abandoned branches, related work in other pull requests — belongs in
 or commit trail, not here, unless it has a direct bearing on the change being reviewed.
 
 The prose rules in [Writing documentation](docs/dev/writing-docs.md) apply to descriptions
-as well as to pages: state a fact once, do not claim what you have not verified, no
-marketing filler, no volatile values, no line-number citations.
+and commit messages as well as to pages: state a fact once, do not claim what you have not
+verified, no marketing filler, no volatile values, no line-number citations.
+
+A commit message body documents what the diff does; the reasoning belongs in the pull
+request description.
 
 ## Documentation
 
