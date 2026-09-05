@@ -10,8 +10,7 @@ Spec attributes are plain data containers, but they are **not** immutable, and n
 `Refs::mergeAllOf()` nulls `$schema->properties`, `Types` fills schema fields in place —
 and `Specification` exposes public arrays that `add()` appends to.
 
-What *is* true, and what distinguishes them from classic annotations, is that they carry no
-serialization logic. Serialization is the compiler's job.
+What *is* true is that they carry no serialization logic. Serialization is the compiler's job.
 
 ## Slot maps: the slot belongs to the parent
 
@@ -86,9 +85,8 @@ The user-facing version of this distinction is in
 
 `src/Spec/` nests directories for readability, not inheritance. Notably:
 
-- `Property extends AbstractAttribute` — **not** `Schema`. This is the deliberate change
-  from classic (where `Annotations\Property extends Schema`) and it is what makes stacking
-  `#[OA\Property]` and `#[OA\Schema]` on the same target work.
+- `Property extends AbstractAttribute` — **not** `Schema`. Being siblings is what lets
+  `#[OA\Property]` and `#[OA\Schema]` stack on the same target.
 - `Encoding extends AbstractAttribute` — **not** `MediaType`, despite `Property\Encoded`.
 - `Contact`, `License`, `ServerVariable` extend `AbstractAttribute`, not `Info`/`Server`.
 - `OA\Security` is a namespace, not a class. The classes are `Security\Requirement` and
@@ -162,6 +160,32 @@ what `compileSchema()` does for `default`, `const` and `example`, and
 Classic uses the same sentinel — `Generator::UNDEFINED` is an alias of
 `Undefined::UNDEFINED` — so `HybridBridge` passes these values straight through rather than
 translating them.
+
+### An inferred field needs the sentinel too
+
+There is a second reason to reach for `Undefined::UNDEFINED`, and it decides which nullable
+properties get it. `Undefined::isDefault()` is true only for the sentinel, never for `null`,
+so an augmenter that fills a field in guards on it:
+
+```php
+// Augmenter\Docblocks
+if (!Undefined::isDefault($schema->description)) {
+    return;
+}
+```
+
+Writing `description: null` therefore means **no description**, and the docblock is left
+alone; leaving it out means "infer one". The attribute always wins. Classic behaves the same
+way. A field nothing infers keeps a plain `null` default — there is nothing to suppress.
+
+That is what separates the two sets. `summary` and `description` on the operations,
+parameters and schemas default to the sentinel because `Docblocks` and `EnumDescriptions`
+fill them; the rest of the nullable properties do not.
+
+**Adding inference for a field means changing its default.** Guarding a field that still
+defaults to `null` makes the guard true for every attribute, and the inference silently never
+runs. `DocblocksTest` pins both halves — that an absent value is inferred, and that
+an explicit `null` suppresses it.
 
 ## Why resolution is its own step
 
