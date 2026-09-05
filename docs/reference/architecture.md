@@ -86,24 +86,6 @@ Each augmenter implements `PipeInterface` and receives the full Specification, a
 within a phase run in registration order. The [Augmenters reference](/reference/augmenters)
 lists which augmenters belong to each phase, in the order they run.
 
-### Configuring augmenters
-
-```php
-$builder->withAugmenters(function (\OpenApi\Utils\Pipeline $pipeline) {
-    // Get a typed reference to configure
-    $pipeline->get(Augmenter\OperationIds::class)?->setHash(true);
-
-    // Enable/disable
-    $pipeline->get(Augmenter\Cleanup::class)?->setEnabled(false);
-
-    // Insert before another
-    $pipeline->insert(new CustomAugmenter(), Augmenter\Inheritance::class);
-
-    // Remove entirely
-    $pipeline->remove(Augmenter\EnumDescriptions::class);
-});
-```
-
 ### Writing a custom augmenter
 
 A custom augmenter implements `PipeInterface`:
@@ -145,8 +127,8 @@ class CustomAugmenter implements PipeInterface
 
 ### Declaring configuration
 
-Mark a constructor parameter with `#[Config]` to make it settable via `-D`/`-c` (see
-[Configuring augmenters](#configuring-augmenters) above) and to have it appear in the
+Mark a constructor parameter with `#[Config]` to make it settable via `-D`/`-c` and via
+[`withAugmenters()`](/reference/builder#augmenters), and to have it appear in the
 [generated reference docs](/reference/augmenters). It needs a matching `set*()` method —
 that's what `-c` and `Pipeline::configure()` call.
 
