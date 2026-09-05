@@ -12,12 +12,17 @@ use OpenApi\Contracts\AttributeInterface;
 use OpenApi\OpenApiException;
 use OpenApi\Spec as OA;
 use OpenApi\Tests\Fixtures\Assembler\AmbiguousMerge;
+use OpenApi\Tests\Fixtures\Assembler\Attachable\MutualFirstAttachable;
+use OpenApi\Tests\Fixtures\Assembler\Attachable\MutualSecondAttachable;
 use OpenApi\Tests\Fixtures\Assembler\Attachable\RequestPayload;
 use OpenApi\Tests\Fixtures\Assembler\ImplicitPropertyProduct;
+use OpenApi\Tests\Fixtures\Assembler\MutualMergeAttachables;
 use OpenApi\Tests\Fixtures\Assembler\SimpleController;
 use OpenApi\Tests\Fixtures\Assembler\SimpleProduct;
+use OpenApi\Tests\Fixtures\Assembler\StackedMergeChain;
 use OpenApi\Utils\AttributeFactory;
 use OpenApi\Utils\TypedList;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class AttributeFactoryTest extends TestCase
@@ -81,6 +86,61 @@ final class AttributeFactoryTest extends TestCase
 
         $factory = new AttributeFactory();
         $factory->fromReflector(new \ReflectionProperty(AmbiguousMerge::class, 'value'));
+    }
+
+    /**
+     * Mutual merge targets cannot resolve inner-to-outer; the first-declared
+     * attribute merges into the later one.
+     */
+    public static function mutualMergeCases(): iterable
+    {
+        yield 'first declared first' => ['firstDeclaredFirst', MutualSecondAttachable::class, MutualFirstAttachable::class];
+        yield 'second declared first' => ['secondDeclaredFirst', MutualFirstAttachable::class, MutualSecondAttachable::class];
+    }
+
+    #[DataProvider('mutualMergeCases')]
+    public function testMutualMergeTargetsResolveInDeclarationOrder(string $method, string $expectedRoot, string $expectedNested): void
+    {
+        $factory = new AttributeFactory();
+        $result = $factory->fromReflector(new \ReflectionMethod(MutualMergeAttachables::class, $method));
+
+        $this->assertCount(1, $result);
+        $root = $result[0];
+        $this->assertInstanceOf(OA\Attachable::class, $root);
+        $this->assertInstanceOf($expectedRoot, $root);
+        $this->assertNotNull($root->attachables);
+        $this->assertCount(1, $root->attachables);
+        $this->assertInstanceOf($expectedNested, $root->attachables[0]);
+    }
+
+    public static function mergeChainOrderCases(): iterable
+    {
+        yield 'outer first' => ['outerFirst', '/outer-first'];
+        yield 'inner first' => ['innerFirst', '/inner-first'];
+        yield 'mixed' => ['mixed', '/mixed'];
+    }
+
+    #[DataProvider('mergeChainOrderCases')]
+    public function testSiblingMergeChainIsOrderIndependent(string $method, string $path): void
+    {
+        $factory = new AttributeFactory();
+        $result = $factory->fromReflector(new \ReflectionMethod(StackedMergeChain::class, $method));
+
+        $this->assertCount(1, $result);
+        $operation = $result[0];
+        $this->assertInstanceOf(OA\Operation::class, $operation);
+        $this->assertSame($path, $operation->path);
+
+        $this->assertCount(1, $operation->responses);
+        $response = $operation->responses[0];
+        $this->assertInstanceOf(OA\Response::class, $response);
+
+        $this->assertCount(1, $response->content);
+        $mediaType = $response->content[0];
+        $this->assertInstanceOf(OA\MediaType::class, $mediaType);
+
+        $this->assertInstanceOf(OA\Schema::class, $mediaType->schema);
+        $this->assertSame('string', $mediaType->schema->type);
     }
 
     public function testMembersOfCollectsOwnProperties(): void

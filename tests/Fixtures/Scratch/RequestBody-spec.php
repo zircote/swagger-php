@@ -28,13 +28,14 @@ class RequestBodyRefFooSpec
 #[OA\Info(title: 'RequestBody', version: '1.0')]
 class RequestBodyControllerSpec
 {
+    // Stacked siblings: Json -> RequestBody -> Post. The responses stay inline
+    // because MediaType merges into Response and RequestBody alike — with both
+    // as siblings the merge would be ambiguous.
+    #[OA\MediaType\Json(ref: RequestBodySchemaSpec::class)]
+    #[OA\RequestBody(description: 'Information about a new pet in the system')]
     #[OA\Operation\Post(
         path: '/endpoint/schema-ref-json',
         operationId: 'postSchemaRefJson',
-        requestBody: new OA\RequestBody(
-            description: 'Information about a new pet in the system',
-            content: new OA\MediaType\Json(ref: RequestBodySchemaSpec::class),
-        ),
         responses: [
             new OA\Response(
                 response: 200,
@@ -46,16 +47,13 @@ class RequestBodyControllerSpec
     {
     }
 
+    // As above, one level deeper: Schema -> MediaType -> RequestBody -> Post.
+    #[OA\Schema(ref: RequestBodySchemaSpec::class)]
+    #[OA\MediaType(mediaType: 'application/json')]
+    #[OA\RequestBody(description: 'Information about a new pet in the system')]
     #[OA\Operation\Post(
         path: '/endpoint/schema-ref',
         operationId: 'postSchemaRef',
-        requestBody: new OA\RequestBody(
-            description: 'Information about a new pet in the system',
-            content: new OA\MediaType(
-                mediaType: 'application/json',
-                schema: new OA\Schema(ref: RequestBodySchemaSpec::class)
-            ),
-        ),
         responses: [
             new OA\Response(
                 response: 200,

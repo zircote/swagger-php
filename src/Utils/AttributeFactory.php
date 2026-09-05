@@ -285,6 +285,12 @@ class AttributeFactory
     /**
      * Stack-resolve: merge sibling attributes on the same reflector using merge().
      *
+     * Chains resolve inner-to-outer regardless of declaration order: an attribute is
+     * held back while another sibling still wants to merge into it, so a MediaType
+     * finds its Response before the Response is folded into the Operation. Mutual
+     * targets — possible with custom attachables, not among the native attributes —
+     * cannot be ordered that way and resolve in declaration order instead.
+     *
      * @param  list<AttributeInterface> $attributes
      * @return list<AttributeInterface>
      */
@@ -296,37 +302,30 @@ class AttributeFactory
 
         $merged = [];
 
+        $pending = [];
         foreach ($attributes as $index => $attribute) {
-            $mergeTargets = $attribute->merge();
-
-            if ($mergeTargets === []) {
-                continue;
+            if ($attribute->merge() !== []) {
+                $pending[$index] = true;
             }
+        }
 
-            $matchingTarget = null;
-            $matchingSlot = null;
-            foreach ($attributes as $candidateIndex => $candidate) {
-                if ($candidateIndex === $index || isset($merged[$candidateIndex])) {
+        while ($pending !== []) {
+            $progress = false;
+
+            foreach (array_keys($pending) as $index) {
+                if ($this->isMergeTarget($attributes, $pending, $index)) {
                     continue;
                 }
 
-                foreach ($mergeTargets as $targetClass => $slot) {
-                    if ($candidate instanceof $targetClass) {
-                        if ($matchingTarget instanceof AttributeInterface) {
-                            throw OpenApiException::fromSource(
-                                sprintf('Ambiguous merge: %s matches multiple siblings on the same target', $attribute::class),
-                                $attribute->getSourceLocation(),
-                            );
-                        }
-                        $matchingTarget = $candidate;
-                        $matchingSlot = $slot;
-                    }
-                }
+                $this->mergeIntoSibling($attributes, $index, $merged);
+                unset($pending[$index]);
+                $progress = true;
             }
 
-            if ($matchingTarget instanceof AttributeInterface) {
-                $this->nestChild($matchingTarget, $attribute, $matchingSlot);
-                $merged[$index] = true;
+            if (!$progress) {
+                $index = array_key_first($pending);
+                $this->mergeIntoSibling($attributes, $index, $merged);
+                unset($pending[$index]);
             }
         }
 
@@ -338,6 +337,67 @@ class AttributeFactory
         }
 
         return $roots;
+    }
+
+    /**
+     * Whether another pending sibling names this attribute's type as a merge target.
+     *
+     * @param list<AttributeInterface> $attributes
+     * @param array<int,true>          $pending
+     */
+    protected function isMergeTarget(array $attributes, array $pending, int $index): bool
+    {
+        foreach (array_keys($pending) as $otherIndex) {
+            if ($otherIndex === $index) {
+                continue;
+            }
+
+            foreach (array_keys($attributes[$otherIndex]->merge()) as $targetClass) {
+                if ($attributes[$index] instanceof $targetClass) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Merge one attribute into a matching unmerged sibling, if there is exactly one.
+     *
+     * @param list<AttributeInterface> $attributes
+     * @param array<int,true>          $merged
+     */
+    protected function mergeIntoSibling(array $attributes, int $index, array &$merged): void
+    {
+        $attribute = $attributes[$index];
+        $mergeTargets = $attribute->merge();
+
+        $matchingTarget = null;
+        $matchingSlot = null;
+        foreach ($attributes as $candidateIndex => $candidate) {
+            if ($candidateIndex === $index || isset($merged[$candidateIndex])) {
+                continue;
+            }
+
+            foreach ($mergeTargets as $targetClass => $slot) {
+                if ($candidate instanceof $targetClass) {
+                    if ($matchingTarget instanceof AttributeInterface) {
+                        throw OpenApiException::fromSource(
+                            sprintf('Ambiguous merge: %s matches multiple siblings on the same target', $attribute::class),
+                            $attribute->getSourceLocation(),
+                        );
+                    }
+                    $matchingTarget = $candidate;
+                    $matchingSlot = $slot;
+                }
+            }
+        }
+
+        if ($matchingTarget instanceof AttributeInterface) {
+            $this->nestChild($matchingTarget, $attribute, $matchingSlot);
+            $merged[$index] = true;
+        }
     }
 
     protected function nestChild(AttributeInterface $parent, AttributeInterface $child, string $slot): void
