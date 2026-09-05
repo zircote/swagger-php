@@ -7,19 +7,22 @@
 namespace OpenApi\Assembler;
 
 use OpenApi\Contracts\AttributeInterface;
+use OpenApi\Contracts\AttributeTranslatorInterface;
 use OpenApi\Spec as OA;
 
 /**
  * Add the required `OA\Property` on schema properties that only have:
  * - an `OA\Schema`
  * - an `OA\Encoding`
+ *
+ * @phpstan-import-type AttributeReflector from AttributeTranslatorInterface
  */
 class OptionalPropertyAttributeTranslator extends AbstractAttributeTranslator
 {
     /**
-     * @param  array<AttributeInterface>                                                                                    $attributes current attributes
-     * @param  array<object>                                                                                                $created    newly created attribute instances
-     * @param  \ReflectionClass<object>|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector
+     * @param  array<AttributeInterface> $attributes current attributes
+     * @param  array<object>             $created    newly created attribute instances
+     * @param  AttributeReflector        $reflector
      * @return array<AttributeInterface>
      */
     public function translate(array $attributes, array $created, \ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array

@@ -7,14 +7,17 @@
 namespace OpenApi\Assembler;
 
 use OpenApi\Contracts\AttributeInterface;
+use OpenApi\Contracts\AttributeTranslatorInterface;
 
 /**
  * Default implementation handling native (OpenApi) attributes.
+ *
+ * @phpstan-import-type AttributeReflector from AttributeTranslatorInterface
  */
 class DefaultAttributeTranslator extends AbstractAttributeTranslator
 {
     /**
-     * @param  \ReflectionClass<object>|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector
+     * @param  AttributeReflector                  $reflector
      * @return array<\ReflectionAttribute<object>>
      */
     public function getAttributes(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
