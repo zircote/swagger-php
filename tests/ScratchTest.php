@@ -24,16 +24,13 @@ final class ScratchTest extends OpenApiTestCase
         $basePath = self::fixture('Scratch');
         $phpVersion = self::phpVersion();
 
+        // Keyed `{fixture}-{version}`, applying to every mode, or `{fixture}-{version}-{mode}`
+        // for a diagnostic only one mode raises. Both keys contribute when both are present.
         $expectedLogs = [
             'Examples-3.0.0' => ['@OA\Schema() is only allowed as of 3.1.0'],
-        ];
-
-        // Compiler diagnostics raised in spec mode only. Tolerated rather than expected:
-        // the key has no mode component, so demanding them would fail the classic case.
-        $ignoredLogs = [
-            'Auth-3.0.0' => ['mutualTLS security schemes are not supported in OpenAPI 3.0'],
-            'Docblocks-3.0.0' => ['const is not supported in OpenAPI 3.0'],
-            'Tags-3.2.0' => ['references non-existent parent'],
+            'Auth-3.0.0-spec' => ['mutualTLS security schemes are not supported in OpenAPI 3.0'],
+            'Docblocks-3.0.0-spec' => ['const is not supported in OpenAPI 3.0'],
+            'Tags-3.2.0-spec' => ['references non-existent parent'],
         ];
 
         foreach (self::discoverFixtures("{$basePath}/*.php") as $scratchName => $scratch) {
@@ -58,7 +55,6 @@ final class ScratchTest extends OpenApiTestCase
                 if ($combo['mode'] === Builder\Mode::SPEC) {
                     $source = str_replace('.php', '-spec.php', $scratch);
                     if (!file_exists($source)) {
-                        echo $source . "\n";
                         continue;
                     }
                 }
@@ -84,20 +80,18 @@ final class ScratchTest extends OpenApiTestCase
                     $combo['mode'],
                     $spec,
                     $combo['version'],
-                    array_key_exists($logKey, $expectedLogs) ? $expectedLogs[$logKey] : [],
-                    array_key_exists($logKey, $ignoredLogs) ? $ignoredLogs[$logKey] : [],
+                    array_merge($expectedLogs[$logKey] ?? [], $expectedLogs["{$logKey}-{$combo['mode']->value}"] ?? []),
                 ];
             }
         }
     }
 
     #[DataProvider('scratchTestCases')]
-    public function testScratch(TypeResolverInterface $typeResolver, string $scratch, Builder\Mode $mode, string $spec, string $version, array $expectedLogs, array $ignoredLogs = []): void
+    public function testScratch(TypeResolverInterface $typeResolver, string $scratch, Builder\Mode $mode, string $spec, string $version, array $expectedLogs): void
     {
         foreach ($expectedLogs as $logLine) {
             $this->expectLogEntry($logLine);
         }
-        $this->allowLogEntry(...$ignoredLogs);
 
         require_once $scratch;
 

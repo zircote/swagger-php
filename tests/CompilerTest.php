@@ -568,6 +568,19 @@ final class CompilerTest extends TestCase
         $this->assertEmpty(array_filter($messages, fn (string $m): bool => str_contains($m, 'unknown type')));
     }
 
+    public function test30ReportsSchemaDiagnosticsOnce(): void
+    {
+        $spec = new Specification();
+        $spec->openapi = new OA\OpenApi(version: '3.0.0');
+        $spec->info = new OA\Info(title: 'T', version: '1.0');
+        $spec->operations[] = new OA\Operation(path: '/p', method: 'get');
+        $spec->schemas[] = new OA\Schema(schema: 'Bad', type: 'array');
+
+        $messages = array_column((new OpenApi30Compiler())->validate($spec), 'message');
+
+        $this->assertCount(1, array_filter($messages, fn (string $m): bool => str_contains($m, 'has type "array" but no items')));
+    }
+
     #[DataProvider('validationProvider')]
     public function testValidation(CompilerInterface $compiler, Specification $specification, string $expectedMessage): void
     {
