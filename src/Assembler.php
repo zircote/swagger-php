@@ -40,6 +40,8 @@ class Assembler
 
     /**
      * Collect all OpenAPI attributes from the given reflectors into the specification.
+     *
+     * @param \ReflectionClass<object>|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant ...$reflectors
      */
     public function collect(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant ...$reflectors): static
     {
@@ -50,6 +52,9 @@ class Assembler
         return $this;
     }
 
+    /**
+     * @param \ReflectionClass<object>|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector
+     */
     protected function collectFromReflector(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): void
     {
         $this->attributeFactory->resetTranslators();
@@ -61,6 +66,7 @@ class Assembler
 
     /**
      * @return list<AttributeInterface>
+     * @param  \ReflectionClass<object>|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector
      */
     protected function resolveReflector(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
     {

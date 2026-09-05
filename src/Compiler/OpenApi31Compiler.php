@@ -101,6 +101,9 @@ class OpenApi31Compiler implements CompilerInterface
         ], $specification->openapi);
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileInfo(OA\Info $info): array
     {
         return $this->filter([
@@ -114,6 +117,9 @@ class OpenApi31Compiler implements CompilerInterface
         ], $info);
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileContact(OA\Contact $contact): array
     {
         return $this->filter([
@@ -123,6 +129,9 @@ class OpenApi31Compiler implements CompilerInterface
         ], $contact);
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileLicense(OA\License $license): array
     {
         return $this->filter([
@@ -132,6 +141,9 @@ class OpenApi31Compiler implements CompilerInterface
         ], $license);
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileServer(OA\Server $server): array
     {
         $variables = null;
@@ -152,6 +164,9 @@ class OpenApi31Compiler implements CompilerInterface
         ], $server);
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileServerVariable(OA\ServerVariable $variable): array
     {
         return $this->filter([
@@ -161,6 +176,9 @@ class OpenApi31Compiler implements CompilerInterface
         ], $variable);
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileTag(OA\Tag $tag): array
     {
         return $this->filter([
@@ -170,6 +188,9 @@ class OpenApi31Compiler implements CompilerInterface
         ], $tag);
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileExternalDocs(OA\ExternalDocumentation $docs): array
     {
         return $this->filter([
@@ -207,6 +228,9 @@ class OpenApi31Compiler implements CompilerInterface
         return $paths;
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compilePathItem(OA\PathItem $pathItem): array
     {
         return $this->filter([
@@ -237,6 +261,9 @@ class OpenApi31Compiler implements CompilerInterface
         return $webhooks;
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileOperation(OA\Operation $operation): array
     {
         return $this->filter([
@@ -261,6 +288,9 @@ class OpenApi31Compiler implements CompilerInterface
 
     /**
      * Recursively compile callback structures, resolving any DTO objects found within.
+     *
+     * @param  array<string,mixed> $callbacks
+     * @return array<string,mixed>
      */
     protected function compileCallbacks(array $callbacks): array
     {
@@ -288,6 +318,9 @@ class OpenApi31Compiler implements CompilerInterface
         return $value;
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileParameter(OA\Parameter $parameter): array
     {
         if ($parameter->ref !== null) {
@@ -311,6 +344,9 @@ class OpenApi31Compiler implements CompilerInterface
         ], $parameter);
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileRequestBody(OA\RequestBody $body, ?string $method = null): array|\stdClass|null
     {
         if ($method && !in_array($method, static::OPERATION_REQUEST_BODY_METHODS)) {
@@ -339,6 +375,9 @@ class OpenApi31Compiler implements CompilerInterface
         return $this->compileNamedMap($responses, fn (OA\Response $response): string => (string) $response->response, $this->compileResponse(...));
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileResponse(OA\Response $response): array
     {
         if ($response->ref !== null) {
@@ -353,6 +392,9 @@ class OpenApi31Compiler implements CompilerInterface
         ], $response);
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileHeader(OA\Header $header): array
     {
         if ($header->ref !== null) {
@@ -381,6 +423,9 @@ class OpenApi31Compiler implements CompilerInterface
         return $this->compileNamedMap($mediaTypes, fn (OA\MediaType $mediaType): string => $mediaType->mediaType ?? 'application/json', $this->compileMediaType(...));
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileMediaType(OA\MediaType $mediaType): array
     {
         return $this->filter([
@@ -391,6 +436,9 @@ class OpenApi31Compiler implements CompilerInterface
         ], $mediaType);
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileEncoding(OA\Encoding $encoding): array
     {
         return $this->filter([
@@ -402,6 +450,9 @@ class OpenApi31Compiler implements CompilerInterface
         ], $encoding);
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileLink(OA\Link $link): array
     {
         if ($link->ref !== null) {
@@ -423,6 +474,9 @@ class OpenApi31Compiler implements CompilerInterface
         return $result;
     }
 
+    /**
+     * @return array<string,mixed>|\stdClass
+     */
     protected function compileSchema(OA\Schema|string $schema): array|\stdClass
     {
         if (is_string($schema)) {
@@ -558,6 +612,9 @@ class OpenApi31Compiler implements CompilerInterface
         return $result;
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileDiscriminator(OA\Discriminator $discriminator): array
     {
         return $this->filter([
@@ -566,6 +623,9 @@ class OpenApi31Compiler implements CompilerInterface
         ], $discriminator);
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileXml(OA\Xml $xml): array
     {
         return $this->filter([
@@ -577,6 +637,9 @@ class OpenApi31Compiler implements CompilerInterface
         ], $xml);
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileComponents(Specification $specification): array
     {
         return array_filter([
@@ -594,7 +657,8 @@ class OpenApi31Compiler implements CompilerInterface
     /**
      * Passing raw arrays is deprecated; use OA\Security\Requirement instances instead.
      *
-     * @param list<OA\Security\Requirement|array<string,list<string>>> $security
+     * @param  list<OA\Security\Requirement|array<string,list<string>>> $security
+     * @return list<array<string,mixed>>
      */
     protected function compileSecurity(array $security): array
     {
@@ -616,6 +680,9 @@ class OpenApi31Compiler implements CompilerInterface
         return $this->compileNamedMap($schemes, 'securityScheme', $this->compileSecurityScheme(...));
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileSecurityScheme(OA\Security\Scheme $scheme): array
     {
         return $this->filter([
@@ -631,7 +698,8 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * @param list<OA\Flow> $flows
+     * @param  list<OA\Flow>       $flows
+     * @return array<string,mixed>
      */
     protected function compileFlows(array $flows): array
     {
@@ -646,6 +714,9 @@ class OpenApi31Compiler implements CompilerInterface
         return $result;
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileFlow(OA\Flow $flow): array
     {
         return $this->filter([
@@ -656,6 +727,9 @@ class OpenApi31Compiler implements CompilerInterface
         ], $flow);
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function compileExample(OA\Example $example): array
     {
         $result = $this->filter([
@@ -844,6 +918,9 @@ class OpenApi31Compiler implements CompilerInterface
 
     /**
      * Remove null entries and apply x- extensions.
+     *
+     * @param  array<string,mixed> $result
+     * @return array<string,mixed>
      */
     protected function filter(array $result, OA\AbstractAttribute|null $attribute = null): array
     {

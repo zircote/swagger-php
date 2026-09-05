@@ -6,6 +6,7 @@
 
 namespace OpenApi\Assembler;
 
+use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
 
 /**
@@ -15,6 +16,12 @@ use OpenApi\Spec as OA;
  */
 class OptionalPropertyAttributeTranslator extends AbstractAttributeTranslator
 {
+    /**
+     * @param  array<AttributeInterface>                                                                                    $attributes current attributes
+     * @param  array<object>                                                                                                $created    newly created attribute instances
+     * @param  \ReflectionClass<object>|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector
+     * @return array<AttributeInterface>
+     */
     public function translate(array $attributes, array $created, \ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
     {
         $hasInstance = fn (array $list, string $class): bool => array_reduce(

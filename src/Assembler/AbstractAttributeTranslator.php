@@ -6,6 +6,7 @@
 
 namespace OpenApi\Assembler;
 
+use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Contracts\AttributeTranslatorInterface;
 
 /**
@@ -17,11 +18,21 @@ class AbstractAttributeTranslator implements AttributeTranslatorInterface
     {
     }
 
+    /**
+     * @param  \ReflectionClass<object>|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector
+     * @return array<\ReflectionAttribute<object>>
+     */
     public function getAttributes(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
     {
         return [];
     }
 
+    /**
+     * @param  array<AttributeInterface>                                                                                    $attributes current attributes
+     * @param  array<object>                                                                                                $created    newly created attribute instances
+     * @param  \ReflectionClass<object>|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector
+     * @return array<AttributeInterface>
+     */
     public function translate(array $attributes, array $created, \ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
     {
         return [...$attributes, ...$created];

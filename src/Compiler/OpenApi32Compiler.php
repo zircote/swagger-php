@@ -39,6 +39,9 @@ class OpenApi32Compiler extends OpenApi31Compiler
         return $this->logger->entries();
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     #[\Override]
     protected function compileTag(OA\Tag $tag): array
     {

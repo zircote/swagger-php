@@ -70,6 +70,9 @@ interface AttributeInterface
 
     public function setReflector(?\Reflector $reflector): static;
 
+    /**
+     * @return \ReflectionClass<object>|null
+     */
     public function getClassReflector(): ?\ReflectionClass;
 
     public function getClassName(): ?string;

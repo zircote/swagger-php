@@ -13,6 +13,10 @@ use OpenApi\Contracts\AttributeInterface;
  */
 class DefaultAttributeTranslator extends AbstractAttributeTranslator
 {
+    /**
+     * @param  \ReflectionClass<object>|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector
+     * @return array<\ReflectionAttribute<object>>
+     */
     public function getAttributes(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
     {
         return $reflector->getAttributes(

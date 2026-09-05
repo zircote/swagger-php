@@ -66,6 +66,9 @@ class Refs implements PipeInterface, LoggerAwareInterface
         });
     }
 
+    /**
+     * @param array<string,string> $refMap
+     */
     protected function resolveFQCNRefs(Specification $specification, array $refMap): void
     {
         $unresolved = [];

@@ -30,7 +30,8 @@ interface AttributeTranslatorInterface
     /**
      * Get attributes to load from the given reflector.
      *
-     * @return array<\ReflectionAttribute>
+     * @param  \ReflectionClass<object>|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector
+     * @return array<\ReflectionAttribute<object>>
      */
     public function getAttributes(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array;
 
@@ -42,8 +43,9 @@ interface AttributeTranslatorInterface
      * instances and newly instantiated objects from the current translator's
      * `getAttributes()` call.
      *
-     * @param  array<AttributeInterface> $attributes current attributes
-     * @param  array<object>             $created    newly created attribute instances
+     * @param  array<AttributeInterface>                                                                                    $attributes current attributes
+     * @param  array<object>                                                                                                $created    newly created attribute instances
+     * @param  \ReflectionClass<object>|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector
      * @return array<AttributeInterface>
      */
     public function translate(array $attributes, array $created, \ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array;
