@@ -61,7 +61,7 @@ class XmlContentEquivEndpoint2
             response: 200,
             description: 'All good',
             content: [
-                new OAT\XmlContent(type: 'array', items: new OAT\Items(ref: XmlContentEquiv::class)),
+                new OAT\XmlContent(items: new OAT\Items(ref: XmlContentEquiv::class)),
             ]
         ),
     ]

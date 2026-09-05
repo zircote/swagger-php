@@ -14,10 +14,8 @@ class HttpMethodsControllerSpec
     #[OA\Operation\Head(
         path: '/things',
         operationId: 'headThings',
-        responses: [
-            new OA\Response(response: 200, description: 'Headers only, no body'),
-        ],
     )]
+    #[OA\Response(response: 200, description: 'Headers only, no body')]
     public function headThings()
     {
     }
@@ -25,10 +23,8 @@ class HttpMethodsControllerSpec
     #[OA\Operation\Options(
         path: '/things',
         operationId: 'optionsThings',
-        responses: [
-            new OA\Response(response: 200, description: 'Allowed methods'),
-        ],
     )]
+    #[OA\Response(response: 200, description: 'Allowed methods')]
     public function optionsThings()
     {
     }
@@ -36,13 +32,11 @@ class HttpMethodsControllerSpec
     #[OA\Operation\Trace(
         path: '/things',
         operationId: 'traceThings',
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Echo of the request',
-                content: new OA\MediaType(mediaType: 'message/http', schema: new OA\Schema(type: 'string')),
-            ),
-        ],
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Echo of the request',
+        content: new OA\MediaType(mediaType: 'message/http', schema: new OA\Schema(type: 'string')),
     )]
     public function traceThings()
     {

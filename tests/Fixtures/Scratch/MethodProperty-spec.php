@@ -36,8 +36,8 @@ class MethodPropertySpec
     path: '/api/endpoint',
     description: 'An endpoint',
     operationId: 'getMethodProperty',
-    responses: [new OA\Response(response: 200, description: 'OK')]
 )]
+#[OA\Response(response: 200, description: 'OK')]
 class MethodPropertyEndpointSpec
 {
 }

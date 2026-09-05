@@ -11,19 +11,17 @@ use OpenApi\Spec as OA;
 )]
 #[OA\Operation\Post(
     path: '/foobar',
-    responses: [
-        new OA\Response(
-            response: 400,
-            description: 'Request error',
-            content: [new OA\MediaType(
-                mediaType: 'application/xml',
-                schema: new OA\Schema(
-                    ref: '#/components/schemas/Error',
-                    xml: new OA\Xml(name: 'error'),
-                ),
-            )],
+)]
+#[OA\Response(
+    response: 400,
+    description: 'Request error',
+    content: [new OA\MediaType(
+        mediaType: 'application/xml',
+        schema: new OA\Schema(
+            ref: '#/components/schemas/Error',
+            xml: new OA\Xml(name: 'error'),
         ),
-    ],
+    )],
 )]
 class OpenApiSpec
 {

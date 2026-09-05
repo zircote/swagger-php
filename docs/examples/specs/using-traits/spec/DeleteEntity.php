@@ -23,10 +23,8 @@ trait DeleteEntity
                 schema: new OA\Schema(type: 'string'),
             ),
         ],
-        responses: [
-            new OA\Response(response: 'default', description: 'successful operation'),
-        ],
     )]
+    #[OA\Response(response: 'default', description: 'successful operation')]
     public function deleteEntity($id)
     {
     }

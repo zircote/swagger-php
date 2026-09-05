@@ -73,8 +73,8 @@ class PromotedPropertyDescriptionSpec
     path: '/api/endpoint',
     description: 'An endpoint',
     operationId: 'getPromotedPropertyDescription',
-    responses: [new OA\Response(response: 200, description: 'OK')]
 )]
+#[OA\Response(response: 200, description: 'OK')]
 class PromotedPropertyDescriptionEndpointSpec
 {
 }

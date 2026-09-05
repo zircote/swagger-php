@@ -25,20 +25,18 @@ class ProductController
                 schema: new OA\Schema(type: 'string'),
             ),
         ],
-        responses: [
-            new OA\Response(
-                response: 'default',
-                description: 'successful operation',
-                content: [new OA\MediaType(
-                    mediaType: 'application/json',
-                    schema: new OA\Schema(oneOf: [
-                        new OA\Schema(ref: '#/components/schemas/SimpleProduct'),
-                        new OA\Schema(ref: '#/components/schemas/Product'),
-                        new OA\Schema(ref: '#/components/schemas/TrickyProduct'),
-                    ]),
-                )],
-            ),
-        ],
+    )]
+    #[OA\Response(
+        response: 'default',
+        description: 'successful operation',
+        content: [new OA\MediaType(
+            mediaType: 'application/json',
+            schema: new OA\Schema(oneOf: [
+                new OA\Schema(ref: '#/components/schemas/SimpleProduct'),
+                new OA\Schema(ref: '#/components/schemas/Product'),
+                new OA\Schema(ref: '#/components/schemas/TrickyProduct'),
+            ]),
+        )],
     )]
     public function getProduct($id)
     {

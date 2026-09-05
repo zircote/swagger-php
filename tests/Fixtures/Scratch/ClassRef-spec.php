@@ -17,13 +17,11 @@ class ClassRefSpec
 #[OA\Operation\Get(
     path: '/endpoint',
     operationId: 'ClassRefEndpoint',
-    responses: [
-        new OA\Response(
-            response: 200,
-            description: 'All good',
-            content: new OA\MediaType\Json(ref: ClassRefSpec::class)
-        ),
-    ]
+)]
+#[OA\Response(
+    response: 200,
+    description: 'All good',
+    content: new OA\MediaType\Json(ref: ClassRefSpec::class)
 )]
 class ClassRefEndpointSpec
 {

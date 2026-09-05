@@ -14,11 +14,9 @@ class UsingRefsParameterSpec
 {
 }
 
-#[OA\Components(
-    responses: [
-        new OA\Response(response: 'default', description: 'Item response'),
-    ]
-)]
+#[OA\Components
+]
+#[OA\Response(response: 'default', description: 'Item response')]
 class UsingRefsResponseSpec
 {
 }
@@ -30,10 +28,8 @@ class UsingRefsResponseSpec
     parameters: [
         new OA\Parameter(ref: '#/components/parameters/item_name'),
     ],
-    responses: [
-        new OA\Response(response: 200, ref: '#/components/responses/default'),
-    ]
 )]
+#[OA\Response(response: 200, ref: '#/components/responses/default')]
 class UsingRefsControllerSpec
 {
 }

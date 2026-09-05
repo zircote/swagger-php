@@ -17,10 +17,8 @@ class ProductController
         path: '/products/{product_id}',
         operationId: 'getProduct',
         tags: ['Products'],
-        responses: [
-            new OA\Response(response: 'default', ref: new OA\Schema\Ref(ref: '#/components/responses/product')),
-        ],
     )]
+    #[OA\Response(response: 'default', ref: new OA\Schema\Ref(ref: '#/components/responses/product'))]
     public function getProduct($id)
     {
     }
@@ -30,10 +28,8 @@ class ProductController
         operationId: 'updateProduct',
         tags: ['Products'],
         requestBody: new OA\RequestBody(ref: '#/components/requestBodies/product_in_body'),
-        responses: [
-            new OA\Response(response: 'default', ref: '#/components/responses/product'),
-        ],
     )]
+    #[OA\Response(response: 'default', ref: '#/components/responses/product')]
     public function updateProduct($id)
     {
     }

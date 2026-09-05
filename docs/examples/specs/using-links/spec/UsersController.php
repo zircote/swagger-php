@@ -19,14 +19,12 @@ class UsersController
         parameters: [
             new OA\Parameter(name: 'username', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
         ],
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'The User',
-                content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: '#/components/schemas/user'))],
-                links: [new OA\Link(link: 'userRepositories', ref: '#/components/links/UserRepositories')],
-            ),
-        ],
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'The User',
+        content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: '#/components/schemas/user'))],
+        links: [new OA\Link(link: 'userRepositories', ref: '#/components/links/UserRepositories')],
     )]
     public function getUserByName(string $username)
     {

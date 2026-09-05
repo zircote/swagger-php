@@ -74,8 +74,8 @@ class PropertyItemsSpec
     path: '/api/endpoint',
     description: 'An endpoint',
     operationId: 'getInheritedFilters',
-    responses: [new OA\Response(response: 200, description: 'OK')]
 )]
+#[OA\Response(response: 200, description: 'OK')]
 class PropertyItemsEndpointSpec
 {
 }

@@ -70,10 +70,8 @@ class AuthOtherSchemesSpec
         new OA\Security\Requirement(scheme: 'bearerAuth'),
         new OA\Security\Requirement(scheme: 'oauth2', scopes: ['read:pets']),
     ],
-    responses: [
-        new OA\Response(response: 200, description: 'All good'),
-    ],
 )]
+#[OA\Response(response: 200, description: 'All good')]
 class AuthEndpointSpec
 {
 }

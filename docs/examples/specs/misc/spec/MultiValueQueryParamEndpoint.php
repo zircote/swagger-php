@@ -30,11 +30,9 @@ class MultiValueQueryParamEndpoint
                 schema: new OA\Schema(type: 'array', items: new OA\Schema(type: 'integer')),
             ),
         ],
-        responses: [
-            new OA\Response(response: 200, ref: '#/components/responses/200'),
-        ],
         security: [new OA\Security\Requirement(scheme: 'bearerAuth', scopes: [])],
     )]
+    #[OA\Response(response: 200, ref: '#/components/responses/200')]
     public function anotherEndpoint()
     {
     }

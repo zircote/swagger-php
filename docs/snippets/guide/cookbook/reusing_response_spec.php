@@ -23,12 +23,10 @@ class ProductController
     #[OA\Operation\Get(
         tags: ['Products'],
         path: '/products/{product_id}',
-        responses: [
-            new OA\Response(
-                response: 'default',
-                ref: '#/components/responses/product'
-            ),
-        ],
+    )]
+    #[OA\Response(
+        response: 'default',
+        ref: '#/components/responses/product'
     )]
     public function getProduct($id)
     {

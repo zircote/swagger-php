@@ -37,12 +37,10 @@ class SecuritySpec
 #[OA\Operation\Get(
     path: '/endpoint',
     operationId: 'getInheritedFilters',
-    responses: [
-        new OA\Response(
-            response: 200,
-            description: 'All good',
-        ),
-    ]
+)]
+#[OA\Response(
+    response: 200,
+    description: 'All good',
 )]
 class SecurityEndpointSpec
 {

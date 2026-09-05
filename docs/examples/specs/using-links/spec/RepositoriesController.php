@@ -10,6 +10,9 @@ use OpenApi\Spec as OA;
 
 class RepositoriesController
 {
+    // Responses stay nested in these operations: the `OA\Link` attributes beside them
+    // are component links, and a sibling `OA\Response` would capture them into the
+    // response instead.
     #[OA\Operation\Get(
         path: '/2.0/repositories/{username}',
         operationId: 'getRepositoriesByOwner',

@@ -51,10 +51,8 @@ class ExampleSchemaSpec
             ]
         ),
     ],
-    responses: [
-        new OA\Response(response: 200, description: 'OK'),
-    ]
 )]
+#[OA\Response(response: 200, description: 'OK')]
 class ExamplesEndpointSpec
 {
 }

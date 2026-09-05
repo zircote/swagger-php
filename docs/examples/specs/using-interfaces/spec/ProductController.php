@@ -24,16 +24,14 @@ class ProductController
                 schema: new OA\Schema(type: 'string'),
             ),
         ],
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'successful operation',
-                content: [new OA\MediaType(
-                    mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/Product'),
-                )],
-            ),
-        ],
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'successful operation',
+        content: [new OA\MediaType(
+            mediaType: 'application/json',
+            schema: new OA\Schema(ref: '#/components/schemas/Product'),
+        )],
     )]
     public function getProduct($id)
     {
@@ -53,16 +51,14 @@ class ProductController
                 schema: new OA\Schema(type: 'string'),
             ),
         ],
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'successful operation',
-                content: [new OA\MediaType(
-                    mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/GreenProduct'),
-                )],
-            ),
-        ],
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'successful operation',
+        content: [new OA\MediaType(
+            mediaType: 'application/json',
+            schema: new OA\Schema(ref: '#/components/schemas/GreenProduct'),
+        )],
     )]
     public function getGreenProduct($id)
     {

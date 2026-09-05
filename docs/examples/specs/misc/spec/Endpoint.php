@@ -34,11 +34,9 @@ class Endpoint
                 )],
             ),
         ],
-        responses: [
-            new OA\Response(response: 200, ref: '#/components/responses/200'),
-        ],
         security: [new OA\Security\Requirement(scheme: 'bearerAuth', scopes: [])],
     )]
+    #[OA\Response(response: 200, ref: '#/components/responses/200')]
     public function endpoint()
     {
     }

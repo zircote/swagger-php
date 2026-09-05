@@ -32,8 +32,8 @@ class VendorExtensionsSpec
     path: '/api/endpoint',
     description: 'An endpoint',
     operationId: 'get',
-    responses: [new OA\Response(response: 200, description: 'OK')]
 )]
+#[OA\Response(response: 200, description: 'OK')]
 class VendorExtensionsEndpointSpec
 {
 }
