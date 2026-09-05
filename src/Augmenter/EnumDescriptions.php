@@ -76,6 +76,9 @@ class EnumDescriptions implements PipeInterface
         });
     }
 
+    /**
+     * @param \ReflectionEnum<\UnitEnum> $reflector
+     */
     protected function expandEnumDescriptionsForProperty(OA\Property $property, \ReflectionEnum $reflector): void
     {
         $values = [];

@@ -37,6 +37,8 @@ Read the relevant page before working in that part of the tree:
 - New pipeline work goes in `src/Spec/`, `src/Augmenter/`, `src/Compiler/`;
   `src/Annotations/` and `src/Attributes/` are classic and closed to new features —
   [ROADMAP.md](ROADMAP.md) has the v7/v8 plan
+- Repeated docblock unions get a `@phpstan-type` alias, imported with
+  `@phpstan-import-type` — see `BuilderSource` on `Builder`
 - Branches are `type/short-description`; commits are `type(Scope): subject`
   (`feat`, `fix`, `docs`, `chore`, `refactor`)
 

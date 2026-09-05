@@ -16,6 +16,8 @@ namespace OpenApi\Contracts;
  *
  * Processing order within the Assembler is guaranteed structural:
  * class → method → parameters (outer before inner).
+ *
+ * @phpstan-type AttributeReflector \ReflectionClass<object>|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant
  */
 interface AttributeTranslatorInterface
 {
@@ -30,7 +32,8 @@ interface AttributeTranslatorInterface
     /**
      * Get attributes to load from the given reflector.
      *
-     * @return array<\ReflectionAttribute>
+     * @param  AttributeReflector                  $reflector
+     * @return array<\ReflectionAttribute<object>>
      */
     public function getAttributes(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array;
 
@@ -44,6 +47,7 @@ interface AttributeTranslatorInterface
      *
      * @param  array<AttributeInterface> $attributes current attributes
      * @param  array<object>             $created    newly created attribute instances
+     * @param  AttributeReflector        $reflector
      * @return array<AttributeInterface>
      */
     public function translate(array $attributes, array $created, \ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array;

@@ -96,6 +96,10 @@ class Tags implements PipeInterface
         return array_values(array_unique($names));
     }
 
+    /**
+     * @param list<string>         $usedTagNames
+     * @param array<string,OA\Tag> $declaredTags
+     */
     protected function removeUnusedTags(array $usedTagNames, array $declaredTags, mixed $payload): void
     {
         if (in_array('*', $this->whitelist, true)) {

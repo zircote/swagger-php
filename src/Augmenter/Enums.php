@@ -91,6 +91,9 @@ class Enums implements PipeInterface
         }
     }
 
+    /**
+     * @param \ReflectionEnum<\UnitEnum> $reflector
+     */
     protected function shouldUseName(OA\Schema $schema, \ReflectionEnum $reflector): bool
     {
         if ($schema->type === null) {

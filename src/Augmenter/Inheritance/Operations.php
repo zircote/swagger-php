@@ -134,6 +134,8 @@ class Operations
      * Scan an ancestor class for operations and associate them with the child reflector.
      *
      * @return list<OA\Operation>
+     * @param  \ReflectionClass<object> $ancestor
+     * @param  \ReflectionClass<object> $childReflector
      */
     protected function discoverOperations(\ReflectionClass $ancestor, \ReflectionClass $childReflector): array
     {

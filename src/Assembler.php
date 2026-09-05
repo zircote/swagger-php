@@ -7,6 +7,7 @@
 namespace OpenApi;
 
 use OpenApi\Contracts\AttributeInterface;
+use OpenApi\Contracts\AttributeTranslatorInterface;
 use OpenApi\Utils\AttributeFactory;
 
 /**
@@ -19,6 +20,8 @@ use OpenApi\Utils\AttributeFactory;
  *
  * 2. Absorb (resolveHierarchy): resolved attributes flow upward level by level using
  *    contained() (first match wins). Roots that aren't absorbed pass through to the spec.
+ *
+ * @phpstan-import-type AttributeReflector from AttributeTranslatorInterface
  */
 class Assembler
 {
@@ -40,6 +43,8 @@ class Assembler
 
     /**
      * Collect all OpenAPI attributes from the given reflectors into the specification.
+     *
+     * @param AttributeReflector ...$reflectors
      */
     public function collect(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant ...$reflectors): static
     {
@@ -50,6 +55,9 @@ class Assembler
         return $this;
     }
 
+    /**
+     * @param AttributeReflector $reflector
+     */
     protected function collectFromReflector(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): void
     {
         $this->attributeFactory->resetTranslators();
@@ -61,6 +69,7 @@ class Assembler
 
     /**
      * @return list<AttributeInterface>
+     * @param  AttributeReflector       $reflector
      */
     protected function resolveReflector(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
     {

@@ -86,6 +86,9 @@ class OpenApi30Compiler extends OpenApi31Compiler
         )));
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     #[\Override]
     protected function compileInfo(OA\Info $info): array
     {
@@ -99,6 +102,9 @@ class OpenApi30Compiler extends OpenApi31Compiler
         ], $info);
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     #[\Override]
     protected function compileLicense(OA\License $license): array
     {
@@ -110,6 +116,8 @@ class OpenApi30Compiler extends OpenApi31Compiler
 
     /**
      * Compile schema using OAS 3.0 / JSON Schema draft-04 semantics.
+     *
+     * @return array<string,mixed>|\stdClass
      */
     #[\Override]
     protected function compileSchema(OA\Schema|string $schema): array|\stdClass

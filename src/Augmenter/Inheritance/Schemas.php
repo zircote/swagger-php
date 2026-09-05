@@ -46,6 +46,10 @@ class Schemas
         return null;
     }
 
+    /**
+     * @param \ReflectionClass<object> $reflector
+     * @param list<string|null>        $existingProperties
+     */
     protected function expandParents(OA\Schema $schema, \ReflectionClass $reflector, ComponentIndex $index, array &$existingProperties): void
     {
         $parent = $reflector->getParentClass();
@@ -61,6 +65,10 @@ class Schemas
         }
     }
 
+    /**
+     * @param \ReflectionClass<object> $reflector
+     * @param list<string|null>        $existingProperties
+     */
     protected function expandTraits(OA\Schema $schema, \ReflectionClass $reflector, ComponentIndex $index, array &$existingProperties): void
     {
         foreach ($this->attributeFactory->getDirectTraits($reflector) as $trait) {
@@ -91,6 +99,10 @@ class Schemas
         }
     }
 
+    /**
+     * @param \ReflectionClass<object> $reflector
+     * @param list<string|null>        $existingProperties
+     */
     protected function expandInterfaces(OA\Schema $schema, \ReflectionClass $reflector, ComponentIndex $index, array &$existingProperties): void
     {
         $ownInterfaces = $this->attributeFactory->getDirectInterfaces($reflector);
@@ -114,6 +126,10 @@ class Schemas
         }
     }
 
+    /**
+     * @param \ReflectionClass<object> $class
+     * @param list<string|null>        $existingProperties
+     */
     protected function mergeMembers(OA\Schema $schema, \ReflectionClass $class, array &$existingProperties): void
     {
         $members = $this->attributeFactory->membersOf($class);

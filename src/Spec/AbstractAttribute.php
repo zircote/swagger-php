@@ -45,6 +45,9 @@ abstract class AbstractAttribute implements AttributeInterface
         return $this->reflector;
     }
 
+    /**
+     * @return \ReflectionClass<object>|null
+     */
     public function getClassReflector(): ?\ReflectionClass
     {
         $reflector = $this->reflector;
