@@ -1,0 +1,24 @@
+openapi: 3.1.0
+info:
+  title: 'Method Property Scratch'
+  version: '1.0'
+paths:
+  /api/endpoint:
+    get:
+      description: 'An endpoint'
+      operationId: getMethodProperty
+      responses:
+        200:
+          description: OK
+components:
+  schemas:
+    MethodProperty:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: 'The identifier.'
+        name:
+          type:
+            - string
+            - 'null'
