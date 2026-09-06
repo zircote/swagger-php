@@ -20,10 +20,9 @@ a translator turns it into a spec attribute:
 <<< @/snippets/guide/extension-points/route_translator.php
 
 Turning a foreign attribute into a spec one is a use, not the use. The other is adding a
-native attribute nobody wrote, which is how swagger-php uses the mechanism itself:
-`DefaultAttributeTranslator` reads the `OpenApi\Spec` attributes, and
-`OptionalPropertyAttributeTranslator` implements the [implicit
-`OA\Property`](/guide/shortcuts#oa-property-spec-only) shortcut.
+native attribute nobody wrote, which is how swagger-php uses the mechanism itself — both
+`DefaultAttributeTranslator` and `OptionalPropertyAttributeTranslator` ship by default. The
+[extension points reference](/reference/extension-points) says what each does.
 
 `translate()` sees `$created`, what this translator read on this pass, and `$attributes`,
 what earlier translators already resolved. It can add to either, replace them, or leave them
