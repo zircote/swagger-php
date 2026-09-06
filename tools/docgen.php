@@ -5,6 +5,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use OpenApi\Tools\Docs\Reference\AttributeGenerator;
 use OpenApi\Tools\Docs\Reference\AugmenterGenerator;
 use OpenApi\Tools\Docs\Reference\ExampleGenerator;
+use OpenApi\Tools\Docs\Reference\ExtensionPointGenerator;
 use OpenApi\Tools\Docs\Reference\ProcessorGenerator;
 use OpenApi\Tools\Docs\Reference\SpecAttributeGenerator;
 
@@ -16,6 +17,7 @@ $generators = [
     'proc' => new ProcessorGenerator($projectRoot),
     'aug' => new AugmenterGenerator($projectRoot),
     'example' => new ExampleGenerator($projectRoot),
+    'ext' => new ExtensionPointGenerator($projectRoot),
 ];
 
 $requested = array_slice($argv ?? [], 1);
@@ -29,6 +31,7 @@ $outputMap = [
     'spec-attributes' => 'reference/spec-attributes.md',
     'processors' => 'reference/processors.md',
     'augmenters' => 'reference/augmenters.md',
+    'extension-points' => 'reference/extension-points.md',
     'examples' => 'guide/examples.md',
 ];
 

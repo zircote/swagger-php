@@ -30,6 +30,7 @@ function getGuideSidebar() {
         { text: 'Extension points', link: '/guide/extension-points' },
         { text: 'Spec Attributes Reference', link: '/reference/spec-attributes' },
         { text: 'Augmenters Reference', link: '/reference/augmenters' },
+        { text: 'Extension Points Reference', link: '/reference/extension-points' },
         { text: 'Inheritance', link: '/reference/inheritance' },
         { text: 'Architecture', link: '/reference/architecture' },
       ]
@@ -82,6 +83,7 @@ function getReferenceSidebar() {
         { text: 'Generator', link: '/reference/generator' },
         { text: 'Processors', link: '/reference/processors' },
         { text: '🧪 Augmenters', link: '/reference/augmenters' },
+        { text: '🧪 Extension Points', link: '/reference/extension-points' },
         { text: '🧪 Inheritance', link: '/reference/inheritance' },
         { text: '🧪 Architecture', link: '/reference/architecture' },
       ]

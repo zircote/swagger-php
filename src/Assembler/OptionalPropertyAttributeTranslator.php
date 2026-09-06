@@ -15,6 +15,9 @@ use OpenApi\Spec as OA;
  * - an `OA\Schema`
  * - an `OA\Encoding`
  *
+ * This is what implements the implicit `OA\Property` shortcut. The `OA\MediaType` shortcuts
+ * are the `Augmenter\Shortcuts` augmenter; the `OA\Parameter` ones are plain subclasses.
+ *
  * @phpstan-import-type AttributeReflector from AttributeTranslatorInterface
  */
 class OptionalPropertyAttributeTranslator extends AbstractAttributeTranslator
