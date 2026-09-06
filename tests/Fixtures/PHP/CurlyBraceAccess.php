@@ -9,7 +9,7 @@ namespace OpenApi\Tests\Fixtures\PHP;
 use OpenApi\Attributes as OAT;
 
 #[OAT\Info(title: 'Test', version: '1.0')]
-class MultipleFunctions
+class CurlyBraceAccess
 {
     public function first()
     {

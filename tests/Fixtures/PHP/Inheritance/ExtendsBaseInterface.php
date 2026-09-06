@@ -6,6 +6,6 @@
 
 namespace OpenApi\Tests\Fixtures\PHP\Inheritance;
 
-interface ExtenedsBaseInterface extends BaseInterface
+interface ExtendsBaseInterface extends BaseInterface
 {
 }

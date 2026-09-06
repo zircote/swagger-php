@@ -12,7 +12,7 @@ use OpenApi\Attributes as OAT;
 /**
  * @OA\Schema
  */
-class Php8PromotedProperties
+class PromotedProperties
 {
     public function __construct(
         /**

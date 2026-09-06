@@ -6,6 +6,7 @@
 
 namespace OpenApi\Tests\Utils;
 
+use OpenApi\Tests\Fixtures\PHP\Inheritance\ExtendsClass;
 use OpenApi\Tests\OpenApiTestCase;
 use OpenApi\Utils\TokenScanner;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -50,13 +51,13 @@ final class TokenScannerTest extends OpenApiTestCase
             ],
         ];
 
-        yield 'php7' => [
-            'PHP/php7.php',
+        yield 'anonymous classes' => [
+            'PHP/AnonymousClasses.php',
             [],
         ];
 
-        yield 'php8' => [
-            'PHP/php8.php',
+        yield 'attribute syntax' => [
+            'PHP/AttributeSyntax.php',
             [
                 'OpenApi\Tests\Fixtures\PHP\MethodAttr' => [
                     'uses' => [],
@@ -88,6 +89,39 @@ final class TokenScannerTest extends OpenApiTestCase
             ],
         ];
 
+        yield 'readonly and union types' => [
+            'PHP/ReadonlyAndUnionTypes.php',
+            [
+                'OpenApi\Tests\Fixtures\PHP\ReadonlyAndUnionTypes' => [
+                    'uses' => [],
+                    // the anonymous class in the constructor implements both, and must not
+                    // contribute to the enclosing class
+                    'interfaces' => [],
+                    'traits' => [],
+                    'enums' => [],
+                    'methods' => ['__construct', 'never'],
+                    'properties' => ['alwaysTrue', 'falseOrInt', 'dnf', 'intersection', 'alwaysNull'],
+                    'consts' => [],
+                ],
+            ],
+        ];
+
+        yield 'typed constants' => [
+            'PHP/TypedConstants.php',
+            [
+                'OpenApi\Tests\Fixtures\PHP\TypedConstants' => [
+                    'uses' => [],
+                    'interfaces' => [],
+                    'traits' => [],
+                    'enums' => [],
+                    // `self::{$which}` is a fetch, not a declaration
+                    'methods' => ['fetch'],
+                    'properties' => [],
+                    'consts' => ['NAME', 'COUNT', 'TAGS', 'CONTRACT'],
+                ],
+            ],
+        ];
+
         yield 'ExtendsClass' => [
             'PHP/Inheritance/ExtendsClass.php',
             [
@@ -104,9 +138,9 @@ final class TokenScannerTest extends OpenApiTestCase
         ];
 
         yield 'ExtendsInterface' => [
-            'PHP/Inheritance/ExtenedsBaseInterface.php',
+            'PHP/Inheritance/ExtendsBaseInterface.php',
             [
-                'OpenApi\Tests\Fixtures\PHP\Inheritance\ExtenedsBaseInterface' => [
+                'OpenApi\Tests\Fixtures\PHP\Inheritance\ExtendsBaseInterface' => [
                     'uses' => [],
                     'interfaces' => ['OpenApi\Tests\Fixtures\PHP\Inheritance\BaseInterface'],
                     'traits' => [],
@@ -118,85 +152,36 @@ final class TokenScannerTest extends OpenApiTestCase
             ],
         ];
 
-        yield 'CustomerInterface' => [
-            'CustomerInterface.php',
+        yield 'trait usage' => [
+            'PHP/TraitUsage.php',
             [
-                'OpenApi\Tests\Fixtures\CustomerInterface' => [
-                    'uses' => ['OAT' => 'OpenApi\\Attributes'],
-                    'interfaces' => [],
-                    'traits' => [],
-                    'enums' => [],
-                    'methods' => ['firstname', 'secondname', 'thirdname', 'fourthname', 'lastname', 'tags', 'submittedBy', 'friends', 'bestFriend'],
-                    'properties' => [],
-                    'consts' => [],
-                ],
-            ],
-        ];
-
-        yield 'AllTraits' => [
-            'Parser/AllTraits.php',
-            [
-                'OpenApi\Tests\Fixtures\Parser\AllTraits' => [
-                    'uses' => [],
-                    'interfaces' => [],
+                'OpenApi\Tests\Fixtures\PHP\AlphaTrait' => self::traitUsageImports(),
+                'OpenApi\Tests\Fixtures\PHP\BetaTrait' => self::traitUsageImports(),
+                'OpenApi\Tests\Fixtures\PHP\GammaTrait' => self::traitUsageImports(),
+                'OpenApi\Tests\Fixtures\PHP\CombinedTrait' => self::traitUsageImports([
                     'traits' => [
-                        'OpenApi\Tests\Fixtures\Parser\AsTrait',
-                        'OpenApi\Tests\Fixtures\Parser\HelloTrait',
+                        'OpenApi\Tests\Fixtures\PHP\AlphaTrait',
+                        'OpenApi\Tests\Fixtures\PHP\BetaTrait',
                     ],
-                    'enums' => [],
-                    'methods' => [],
-                    'properties' => [],
-                    'consts' => [],
-                ],
-            ],
-        ];
-
-        yield 'User' => [
-            'Parser/User.php',
-            [
-                'OpenApi\Tests\Fixtures\Parser\User' => [
-                    'uses' => [
-                        'Hello' => 'OpenApi\Tests\Fixtures\Parser\HelloTrait',
-                        'ParentClass' => 'OpenApi\Tests\Fixtures\Parser\Sub\SubClass',
-                        'OA' => 'OpenApi\\Annotations',
-                    ],
-                    'interfaces' => ['OpenApi\Tests\Fixtures\Parser\UserInterface'],
-                    'traits' => ['OpenApi\Tests\Fixtures\Parser\HelloTrait'],
-                    'enums' => [],
-                    'methods' => ['getFirstName'],
-                    'properties' => [],
-                    'consts' => [
-                        'CONSTANT',
-                    ],
-                ],
-            ],
-        ];
-
-        yield 'HelloTrait' => [
-            'Parser/HelloTrait.php',
-            [
-                'OpenApi\Tests\Fixtures\Parser\HelloTrait' => [
-                    'uses' => [
-                        'Aliased' => 'OpenApi\Tests\Fixtures\Parser\AsTrait',
-                        'OAT' => 'OpenApi\\Attributes',
-                    ],
-                    'interfaces' => [],
+                ]),
+                'OpenApi\Tests\Fixtures\PHP\TraitUsage' => self::traitUsageImports([
+                    // both resolved through the aliases the file imports them under
+                    'interfaces' => ['OpenApi\Tests\Fixtures\PHP\Inheritance\BaseInterface'],
                     'traits' => [
-                        'OpenApi\Tests\Fixtures\Parser\OtherTrait',
-                        'OpenApi\Tests\Fixtures\Parser\AsTrait',
+                        'OpenApi\Tests\Fixtures\PHP\CombinedTrait',
+                        'OpenApi\Tests\Fixtures\PHP\GammaTrait',
                     ],
-                    'enums' => [],
-                    'methods' => [],
-                    'properties' => ['greet'],
-                    'consts' => [],
-                ],
+                    'methods' => ['method'],
+                    'properties' => ['name'],
+                    'consts' => ['CONSTANT'],
+                ]),
             ],
         ];
 
-        yield 'Php8PromotedProperties' => [
-            'PHP/Php8PromotedProperties.php',
+        yield 'PromotedProperties' => [
+            'PHP/PromotedProperties.php',
             [
-                \OpenApi\Tests\Fixtures\PHP\Php8PromotedProperties::class => [
+                'OpenApi\Tests\Fixtures\PHP\PromotedProperties' => [
                     'uses' => [
                         'OAT' => 'OpenApi\\Attributes',
                         'OA' => 'OpenApi\\Annotations',
@@ -211,10 +196,10 @@ final class TokenScannerTest extends OpenApiTestCase
             ],
         ];
 
-        yield 'Php8NamedArguments' => [
-            'PHP/Php8NamedArguments.php',
+        yield 'NamedArguments' => [
+            'PHP/NamedArguments.php',
             [
-                \OpenApi\Tests\Fixtures\PHP\Php8NamedArguments::class => [
+                'OpenApi\Tests\Fixtures\PHP\NamedArguments' => [
                     'uses' => [
                         'OAT' => 'OpenApi\\Attributes',
                     ],
@@ -277,10 +262,10 @@ final class TokenScannerTest extends OpenApiTestCase
             ],
         ];
 
-        yield 'CurlyBrace' => [
-            'PHP/MultipleFunctions.php',
+        yield 'curly brace property access' => [
+            'PHP/CurlyBraceAccess.php',
             [
-                'OpenApi\Tests\Fixtures\PHP\MultipleFunctions' => [
+                'OpenApi\Tests\Fixtures\PHP\CurlyBraceAccess' => [
                     'uses' => [
                         'OAT' => 'OpenApi\\Attributes',
                     ],
@@ -297,8 +282,8 @@ final class TokenScannerTest extends OpenApiTestCase
             ],
         ];
 
-        yield 'namespaces1' => [
-            'PHP/namespaces1.php',
+        yield 'namespaces declared sequentially' => [
+            'PHP/NamespacesSequential.php',
             [
                 'Foo\FooClass' => [
                     'uses' => [],
@@ -321,8 +306,8 @@ final class TokenScannerTest extends OpenApiTestCase
             ],
         ];
 
-        yield 'namespaces2' => [
-            'PHP/namespaces2.php',
+        yield 'namespaces declared with braces' => [
+            'PHP/NamespacesBraced.php',
             [
                 'Foo\FooClass' => [
                     'uses' => [],
@@ -345,8 +330,8 @@ final class TokenScannerTest extends OpenApiTestCase
             ],
         ];
 
-        yield 'namespaces3' => [
-            'PHP/namespaces3.php',
+        yield 'no namespace' => [
+            'PHP/NoNamespace.php',
             [
                 '\\BarClass' => [
                     'uses' => [],
@@ -440,7 +425,7 @@ final class TokenScannerTest extends OpenApiTestCase
     public function testDetailsForReturnsMatchingEntry(): void
     {
         $scanner = new TokenScanner();
-        $rc = new \ReflectionClass(\OpenApi\Tests\Fixtures\PHP\Inheritance\ExtendsClass::class);
+        $rc = new \ReflectionClass(ExtendsClass::class);
 
         $details = $scanner->detailsFor($rc);
 
@@ -455,5 +440,25 @@ final class TokenScannerTest extends OpenApiTestCase
         $rc = new \ReflectionClass(\stdClass::class);
 
         $this->assertNull($scanner->detailsFor($rc));
+    }
+
+    /**
+     * @param  array<string, mixed> $overrides
+     * @return array<string, mixed>
+     */
+    protected static function traitUsageImports(array $overrides = []): array
+    {
+        return $overrides + [
+            'uses' => [
+                'ParentClass' => 'OpenApi\\Tests\\Fixtures\\PHP\\Inheritance\\BaseClass',
+                'Contract' => 'OpenApi\\Tests\\Fixtures\\PHP\\Inheritance\\BaseInterface',
+            ],
+            'interfaces' => [],
+            'traits' => [],
+            'enums' => [],
+            'methods' => [],
+            'properties' => [],
+            'consts' => [],
+        ];
     }
 }
