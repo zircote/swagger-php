@@ -9,6 +9,9 @@ parameters:
         - tests
         - tools
         - docs/examples
+    scanDirectories:
+        # snippets are transcluded into the docs and exercised by tests; known, not analysed
+        - docs/snippets
     parallel:
         processTimeout: 300.0
     excludePaths:
