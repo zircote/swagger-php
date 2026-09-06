@@ -27,6 +27,7 @@ function getGuideSidebar() {
       items: [
         { text: 'Processing Modes', link: '/guide/modes' },
         { text: 'Using Spec Attributes', link: '/guide/spec-attributes' },
+        { text: 'Extension points', link: '/guide/extension-points' },
         { text: 'Spec Attributes Reference', link: '/reference/spec-attributes' },
         { text: 'Augmenters Reference', link: '/reference/augmenters' },
         { text: 'Inheritance', link: '/reference/inheritance' },
