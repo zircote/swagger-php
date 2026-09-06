@@ -28,9 +28,10 @@ final class ScratchTest extends OpenApiTestCase
         // for a diagnostic only one mode raises. Both keys contribute when both are present.
         $expectedLogs = [
             'Examples-3.0.0' => ['@OA\Schema() is only allowed as of 3.1.0'],
-            'Auth-3.0.0-spec' => ['mutualTLS security schemes are not supported in OpenAPI 3.0'],
             'Docblocks-3.0.0-spec' => ['const is not supported in OpenAPI 3.0'],
+            'Docblocks-3.0.0-hybrid' => ['const is not supported in OpenAPI 3.0'],
             'Tags-3.2.0-spec' => ['references non-existent parent'],
+            'Tags-3.2.0-hybrid' => ['references non-existent parent'],
         ];
 
         foreach (self::discoverFixtures("{$basePath}/*.php") as $scratchName => $scratch) {
@@ -44,7 +45,7 @@ final class ScratchTest extends OpenApiTestCase
                 [
                     'version' => self::versions(),
                     'resolverName' => array_keys($resolvers),
-                    'mode' => [Builder\Mode::CLASSIC, Builder\Mode::SPEC],
+                    'mode' => [Builder\Mode::CLASSIC, Builder\Mode::HYBRID, Builder\Mode::SPEC],
                 ],
                 [
                     fn (array $c): bool => $c['mode'] !== Builder\Mode::CLASSIC
@@ -59,9 +60,17 @@ final class ScratchTest extends OpenApiTestCase
                     }
                 }
 
+                // Hybrid bridges the classic annotations into the spec compilers, so it is held
+                // to the spec expectation where the fixture has a spec pair, and to classic's
+                // otherwise. A `-hybrid` file overrides both, for the few documents the two
+                // pipelines render differently.
                 $spec = self::mostSpecific([
                     "{$basePath}/{$scratchName}{$combo['version']}-{$combo['resolverName']}-{$combo['mode']->value}.yaml",
                     "{$basePath}/{$scratchName}{$combo['version']}-{$combo['mode']->value}.yaml",
+                    ...$combo['mode'] === Builder\Mode::HYBRID ? [
+                        "{$basePath}/{$scratchName}{$combo['version']}-{$combo['resolverName']}-spec.yaml",
+                        "{$basePath}/{$scratchName}{$combo['version']}-spec.yaml",
+                    ] : [],
                     "{$basePath}/{$scratchName}{$combo['version']}-{$combo['resolverName']}.yaml",
                     "{$basePath}/{$scratchName}{$combo['version']}-{$phpVersion}.yaml",
                     "{$basePath}/{$scratchName}{$combo['version']}.yaml",

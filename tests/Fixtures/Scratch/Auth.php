@@ -68,9 +68,6 @@ class AuthOtherSchemes
 {
 }
 
-// `mutualTLS` has no classic counterpart: OAT\SecurityScheme validates `type` against
-// http / apiKey / oauth2 / openIdConnect only, so it is spec-only. See Auth-spec.php.
-
 #[OAT\Info(title: 'Auth', version: '1.0')]
 #[OAT\Get(
     path: '/secured',

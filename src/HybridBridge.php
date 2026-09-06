@@ -33,11 +33,11 @@ class HybridBridge
                 $annotation instanceof Annotations\PathItem && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->path) && !($annotation instanceof Annotations\Webhook) => $this->collectPathItem($annotation, $specification),
                 $annotation instanceof Annotations\Components && !$annotation->_context->is('nested') => $this->convertComponents($annotation, $specification),
                 $annotation instanceof Annotations\Operation && !$annotation->_context->is('nested') => $specification->operations[] = $this->convertOperation($annotation, $this->val($annotation->path), $this->methodFromAnnotation($annotation)),
-                $annotation instanceof Annotations\Schema && $annotation->_context->reflector instanceof \ReflectionClass && !$annotation->_context->is('nested') => $classSchemas[$annotation->_context->reflector->getName()][] = $annotation,
+                $annotation instanceof Annotations\Schema && !$this->isNestedSchemaType($annotation) && $annotation->_context->reflector instanceof \ReflectionClass && !$annotation->_context->is('nested') => $classSchemas[$annotation->_context->reflector->getName()][] = $annotation,
                 $annotation instanceof Annotations\Property && $this->isClassMember($annotation) => $memberProperties[] = $annotation,
                 $annotation instanceof Annotations\Response && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->response) => $specification->responses[] = $this->convertResponse($annotation),
-                $annotation instanceof Annotations\RequestBody && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->request) => $specification->requestBodies[] = $this->convertRequestBody($annotation),
-                $annotation instanceof Annotations\Parameter && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->parameter) => $specification->parameters[] = $this->convertParameter($annotation),
+                $annotation instanceof Annotations\RequestBody && !$annotation->_context->is('nested') && ($annotation->_context->reflector instanceof \ReflectionClass || !Undefined::isDefault($annotation->request)) => $specification->requestBodies[] = $this->convertRequestBody($annotation),
+                $annotation instanceof Annotations\Parameter && !$annotation->_context->is('nested') && ($annotation->_context->reflector instanceof \ReflectionClass || !Undefined::isDefault($annotation->parameter)) => $specification->parameters[] = $this->convertParameter($annotation),
                 $annotation instanceof Annotations\Header && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->header) => $specification->headers[] = $this->convertHeader($annotation),
                 $annotation instanceof Annotations\Link && !$annotation->_context->is('nested') => $specification->links[] = $this->convertLink($annotation),
                 $annotation instanceof Annotations\ExternalDocumentation && !$annotation->_context->is('nested') => $specification->externalDocs[] = $this->convertExternalDocs($annotation),
@@ -55,6 +55,17 @@ class HybridBridge
         $specification->openapi ??= new Spec\OpenApi();
 
         return $specification;
+    }
+
+    /**
+     * Schema subclasses that only ever occur inside another schema.
+     *
+     * The analyser records them next to the schema holding them, so collecting them as class
+     * schemas would emit each nesting level as a component in its own right.
+     */
+    protected function isNestedSchemaType(Annotations\Schema $schema): bool
+    {
+        return in_array(Annotations\Schema::class, $schema::$_parents, true);
     }
 
     protected function isClassMember(Annotations\Property $property): bool
@@ -254,10 +265,13 @@ class HybridBridge
     {
         return new Spec\Tag(
             name: $this->val($tag->name),
+            summary: $this->val($tag->summary),
             description: $this->val($tag->description),
             externalDocs: Undefined::isDefault($tag->externalDocs)
                 ? null
                 : $this->convertExternalDocs($tag->externalDocs),
+            parent: $this->val($tag->parent),
+            kind: $this->val($tag->kind),
             x: $this->extensions($tag),
         );
     }
@@ -537,6 +551,9 @@ class HybridBridge
         return new Spec\Encoding(
             encoding: $this->val($encoding->property),
             contentType: $this->val($encoding->contentType),
+            headers: Undefined::isDefault($encoding->headers)
+                ? null
+                : array_map($this->convertHeader(...), $encoding->headers),
             style: $this->val($encoding->style),
             explode: $this->val($encoding->explode),
             allowReserved: $this->val($encoding->allowReserved),
@@ -565,6 +582,8 @@ class HybridBridge
             minLength: $this->val($schema->minLength),
             maxLength: $this->val($schema->maxLength),
             pattern: $this->val($schema->pattern),
+            contentMediaType: $this->val($schema->contentMediaType),
+            contentEncoding: $this->val($schema->contentEncoding),
             minimum: $this->val($schema->minimum),
             maximum: $this->val($schema->maximum),
             exclusiveMinimum: $this->val($schema->exclusiveMinimum),
@@ -574,11 +593,19 @@ class HybridBridge
             minItems: $this->val($schema->minItems),
             maxItems: $this->val($schema->maxItems),
             uniqueItems: $this->val($schema->uniqueItems),
+            contains: $this->convertSchemaOrBool($schema->contains),
             properties: $properties,
             required: Undefined::isDefault($schema->required) ? null : $schema->required,
             additionalProperties: $this->convertAdditionalProperties($schema),
+            patternProperties: Undefined::isDefault($schema->patternProperties)
+                ? null
+                : array_map($this->convertSchema(...), $schema->patternProperties),
             minProperties: $this->val($schema->minProperties),
             maxProperties: $this->val($schema->maxProperties),
+            unevaluatedProperties: $this->convertSchemaOrBool($schema->unevaluatedProperties),
+            propertyNames: Undefined::isDefault($schema->propertyNames)
+                ? null
+                : $this->convertSchema($schema->propertyNames),
             allOf: Undefined::isDefault($schema->allOf) ? null : array_map($this->convertSchema(...), $schema->allOf),
             anyOf: Undefined::isDefault($schema->anyOf) ? null : array_map($this->convertSchema(...), $schema->anyOf),
             oneOf: Undefined::isDefault($schema->oneOf) ? null : array_map($this->convertSchema(...), $schema->oneOf),
@@ -586,6 +613,9 @@ class HybridBridge
             enum: Undefined::isDefault($schema->enum) ? null : $schema->enum,
             const: Undefined::isDefault($schema->const) ? Undefined::UNDEFINED : $schema->const,
             example: Undefined::isDefault($schema->example) ? Undefined::UNDEFINED : $schema->example,
+            examples: Undefined::isDefault($schema->examples)
+                ? null
+                : array_map($this->convertExample(...), $schema->examples),
             deprecated: $this->val($schema->deprecated),
             readOnly: $this->val($schema->readOnly),
             writeOnly: $this->val($schema->writeOnly),
@@ -604,14 +634,32 @@ class HybridBridge
         return $result;
     }
 
+    /**
+     * JSON Schema keywords that take a schema or a plain `true`/`false`.
+     */
+    protected function convertSchemaOrBool(mixed $value): Spec\Schema|bool|null
+    {
+        return match (true) {
+            Undefined::isDefault($value) => null,
+            $value instanceof Annotations\Schema => $this->convertSchema($value),
+            default => $value,
+        };
+    }
+
     protected function convertProperty(Annotations\Property $prop): Spec\Property
     {
         $schema = $this->convertSchema($prop);
 
-        $result = new Spec\Property(
-            property: $this->val($prop->property),
-            schema: $schema,
-        );
+        $result = Undefined::isDefault($prop->encoding)
+            ? new Spec\Property(
+                property: $this->val($prop->property),
+                schema: $schema,
+            )
+            : new Spec\Property\Encoded(
+                property: $this->val($prop->property),
+                schema: $schema,
+                encoding: $this->convertEncoding($prop->encoding),
+            );
         $this->copyReflector($prop, $result);
 
         return $result;
