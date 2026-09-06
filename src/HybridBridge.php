@@ -30,9 +30,9 @@ class HybridBridge
                 $annotation instanceof Annotations\Server => $specification->servers[] = $this->convertServer($annotation),
                 $annotation instanceof Annotations\Tag => $specification->tags[] = $this->convertTag($annotation),
                 $annotation instanceof Annotations\SecurityScheme => $specification->securitySchemes[] = $this->convertSecurityScheme($annotation),
-                $annotation instanceof Annotations\PathItem && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->path) && !($annotation instanceof Annotations\Webhook) => $specification->pathItems[] = $this->convertPathItem($annotation),
+                $annotation instanceof Annotations\PathItem && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->path) && !($annotation instanceof Annotations\Webhook) => $this->collectPathItem($annotation, $specification),
                 $annotation instanceof Annotations\Components && !$annotation->_context->is('nested') => $this->convertComponents($annotation, $specification),
-                $annotation instanceof Annotations\Operation => $specification->operations[] = $this->convertOperation($annotation, $this->val($annotation->path), $this->methodFromAnnotation($annotation)),
+                $annotation instanceof Annotations\Operation && !$annotation->_context->is('nested') => $specification->operations[] = $this->convertOperation($annotation, $this->val($annotation->path), $this->methodFromAnnotation($annotation)),
                 $annotation instanceof Annotations\Schema && $annotation->_context->reflector instanceof \ReflectionClass && !$annotation->_context->is('nested') => $classSchemas[$annotation->_context->reflector->getName()][] = $annotation,
                 $annotation instanceof Annotations\Property && $this->isClassMember($annotation) => $memberProperties[] = $annotation,
                 $annotation instanceof Annotations\Response && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->response) => $specification->responses[] = $this->convertResponse($annotation),
@@ -273,16 +273,40 @@ class HybridBridge
 
     protected function convertWebhook(Annotations\PathItem $webhook, Specification $spec): void
     {
-        $methods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
         $name = $webhook instanceof Annotations\Webhook
             ? $this->val($webhook->webhook)
             : $this->val($webhook->path);
 
-        foreach ($methods as $method) {
-            if (!Undefined::isDefault($webhook->{$method})) {
-                $operation = $this->convertOperation($webhook->{$method}, null, $method);
-                $operation->webhook = $name;
-                $spec->operations[] = $operation;
+        foreach ($this->nestedOperations($webhook) as $method => $operation) {
+            $converted = $this->convertOperation($operation, null, $method);
+            $converted->webhook = $name;
+            $spec->operations[] = $converted;
+        }
+    }
+
+    /**
+     * A `PathItem` and the operations nested in it. The operations carry no path of their
+     * own — it belongs to the `PathItem` — so they are collected here rather than by the
+     * flat `Operation` branch, which would leave them pathless and unemitted.
+     */
+    protected function collectPathItem(Annotations\PathItem $pathItem, Specification $spec): void
+    {
+        $spec->pathItems[] = $this->convertPathItem($pathItem);
+
+        $path = $this->val($pathItem->path);
+        foreach ($this->nestedOperations($pathItem) as $method => $operation) {
+            $spec->operations[] = $this->convertOperation($operation, $path, $method);
+        }
+    }
+
+    /**
+     * @return iterable<string, Annotations\Operation>
+     */
+    protected function nestedOperations(Annotations\PathItem $pathItem): iterable
+    {
+        foreach (['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'] as $method) {
+            if (!Undefined::isDefault($pathItem->{$method})) {
+                yield $method => $pathItem->{$method};
             }
         }
     }
