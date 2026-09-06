@@ -52,4 +52,36 @@ final class DocblocksTest extends TestCase
 
         $this->assertSame('the thing identifier', $spec->operations[0]->parameters[0]->description);
     }
+
+    /**
+     * `null` is an explicit "no description", not an absent one — the attribute wins over
+     * the docblock. Only `Undefined::UNDEFINED` invites inference.
+     */
+    public function testExplicitNullSuppressesInferredSchemaDescription(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\SuppressedSchema::class);
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertNull($spec->schemas[0]->description);
+    }
+
+    public function testExplicitNullSuppressesInferredOperationSummaryAndDescription(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\SuppressedController::class);
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertNull($spec->operations[0]->summary);
+        $this->assertNull($spec->operations[0]->description);
+    }
+
+    public function testExplicitNullSuppressesInferredParameterDescription(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\SuppressedController::class);
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertNull($spec->operations[0]->parameters[0]->description);
+    }
 }
