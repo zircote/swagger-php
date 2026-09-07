@@ -78,6 +78,12 @@ class DocblockAndTypehintTypes
     public DocblockAndTypehintTypes $class;
 
     /**
+     * @var DocblockAndTypehintTypes<string>
+     */
+    #[OAT\Property]
+    public DocblockAndTypehintTypes $genericClass;
+
+    /**
      * @var DocblockAndTypehintTypes|null
      */
     #[OAT\Property]

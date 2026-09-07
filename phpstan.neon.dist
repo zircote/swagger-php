@@ -12,6 +12,9 @@ parameters:
     scanDirectories:
         # snippets are transcluded into the docs and exercised by tests; known, not analysed
         - docs/snippets
+    scanFiles:
+        # global namespace on purpose, so not autoloadable and not discovered on its own
+        - tests/Fixtures/PHP/GlobalNamespaceTypes.php
     parallel:
         processTimeout: 300.0
     excludePaths:
