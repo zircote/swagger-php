@@ -1,0 +1,31 @@
+openapi: 3.0.0
+info:
+  title: DocblockGenerics
+  version: '1.0'
+paths:
+  /holder:
+    get:
+      operationId: getHolder
+      responses:
+        '200':
+          description: 'All good'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocblockGenericsHolder'
+components:
+  schemas:
+    DocblockGenericsTarget:
+      properties:
+        name:
+          type: string
+      type: object
+    DocblockGenericsHolder:
+      properties:
+        native:
+          $ref: '#/components/schemas/DocblockGenericsTarget'
+        docblock:
+          $ref: '#/components/schemas/DocblockGenericsTarget'
+        generic:
+          $ref: '#/components/schemas/DocblockGenericsTarget'
+      type: object

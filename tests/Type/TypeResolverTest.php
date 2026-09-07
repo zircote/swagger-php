@@ -8,6 +8,7 @@ namespace OpenApi\Tests\Type;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
+use OpenApi\Builder;
 use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Processors\AugmentSchemas;
@@ -36,6 +37,7 @@ final class TypeResolverTest extends OpenApiTestCase
                 'nullablestringlist' => '{ "type": "array", "items": { "type": "string" }, "nullable": true, "property": "nullableStringList" }',
                 'nullablestringlistunion' => '{ "type": "array", "items": { "type": "string" }, "nullable": true, "property": "nullableStringListUnion" }',
                 'class' => '{ "$ref": "#/components/schemas/DocblockAndTypehintTypes" }',
+                'genericclass' => '{ "$ref": "#/components/schemas/DocblockAndTypehintTypes" }',
                 'nullableclass' => '{ "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } ], "nullable": true, "property": "nullableClass" }',
                 'namespacedglobalclass' => '{ "type": "string", "format": "date-time", "property": "namespacedGlobalClass" }',
                 'nullablenamespacedglobalclass' => '{ "type": "string", "format": "date-time", "nullable": true, "property": "nullableNamespacedGlobalClass" }',
@@ -97,6 +99,7 @@ final class TypeResolverTest extends OpenApiTestCase
                 'nullablestringlist' => '{ "type": [ "array", "null" ], "items": { "type": "string" }, "property": "nullableStringList" }',
                 'nullablestringlistunion' => '{ "type": [ "array", "null" ], "items": { "type": "string" }, "property": "nullableStringListUnion" }',
                 'class' => '{ "$ref": "#/components/schemas/DocblockAndTypehintTypes" }',
+                'genericclass' => '{ "$ref": "#/components/schemas/DocblockAndTypehintTypes" }',
                 'nullableclass' => '{ "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "null" } ], "property": "nullableClass" }',
                 'namespacedglobalclass' => '{ "type": "string", "format": "date-time", "property": "namespacedGlobalClass" }',
                 'nullablenamespacedglobalclass' => '{ "type": [ "string", "null" ], "format": "date-time", "property": "nullableNamespacedGlobalClass" }',
@@ -202,5 +205,49 @@ final class TypeResolverTest extends OpenApiTestCase
         $typeResolver->augmentSchemaType($analysis, $schema);
 
         $this->assertSpecEquals($schema->toJson(), $expected, $schema->toJson());
+    }
+
+    /**
+     * @return iterable<string, array{TypeResolverInterface}>
+     */
+    public static function typeResolvers(): iterable
+    {
+        foreach (self::getTypeResolvers() as $name => $typeResolver) {
+            yield $name => [$typeResolver];
+        }
+    }
+
+    /**
+     * A short-name docblock resolves against the declaring class's namespace, and only in the
+     * global namespace can that come back with a leading slash. Every `Scratch` fixture is
+     * namespaced, so the case has nowhere else to run.
+     */
+    #[DataProvider('typeResolvers')]
+    public function testGlobalNamespaceClassResolvesWithoutLeadingSlash(TypeResolverInterface $typeResolver): void
+    {
+        $fixture = self::fixture('PHP/GlobalNamespaceTypes.php');
+        require_once $fixture;
+
+        $compiled = (new Builder())
+            ->setMode(Builder\Mode::CLASSIC)
+            ->addSource($fixture)
+            ->withGenerator(fn (Generator $generator): Generator => $generator->setTypeResolver($typeResolver))
+            ->build()
+            ->toArray();
+
+        $properties = (array) $compiled['components']['schemas']['GlobalNamespaceHolder']['properties'];
+
+        $this->assertSame(
+            ['native', 'shortName', 'fullyQualified', 'shortNameGeneric'],
+            array_keys($properties),
+        );
+
+        foreach ($properties as $property => $schema) {
+            $this->assertSame(
+                ['$ref' => '#/components/schemas/GlobalNamespaceTarget'],
+                (array) $schema,
+                $property,
+            );
+        }
     }
 }

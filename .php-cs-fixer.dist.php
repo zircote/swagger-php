@@ -22,6 +22,11 @@ $finder = PhpCsFixer\Finder::create()
             // parameter docblock for PHP 8.6
             && !strpos($file->getPathname(), 'tests/Fixtures/Scratch/Docblocks.php')
             && !strpos($file->getPathname(), 'tests/Fixtures/Scratch/Docblocks-spec.php')
+            // the short-name docblocks are the subject of the test; no_superfluous_phpdoc_tags
+            // deletes them and fully_qualified_strict_types rewrites what is left
+            && !strpos($file->getPathname(), 'tests/Fixtures/PHP/GlobalNamespaceTypes.php')
+            && !strpos($file->getPathname(), 'tests/Fixtures/Scratch/DocblockGenerics.php')
+            && !strpos($file->getPathname(), 'tests/Fixtures/Scratch/DocblockGenerics-spec.php')
         ;
     })
     ->in(__DIR__);
