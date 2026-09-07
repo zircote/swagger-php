@@ -57,7 +57,6 @@ class AuthOAuth2SchemeSpec
     securityScheme: 'openIdConnect',
     openIdConnectUrl: 'https://example.com/.well-known/openid-configuration',
 )]
-#[OA\Security\Scheme\MutualTls(securityScheme: 'mutualTls', description: 'Client certificate.')]
 class AuthOtherSchemesSpec
 {
 }

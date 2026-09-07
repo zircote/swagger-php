@@ -52,7 +52,7 @@ Delegates to:
 
 Infers component names from PHP reflectors when not explicitly set.
 
-Sets schema name from the class/interface/trait/enum short name,
+Sets schema and request body names from the class/interface/trait/enum short name,
 and parameter component key from its name property.
 
 ### [Enums](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Enums.php)

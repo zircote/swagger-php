@@ -12,7 +12,7 @@ use OpenApi\Utils\PipeInterface;
 /**
  * Infers component names from PHP reflectors when not explicitly set.
  *
- * Sets schema name from the class/interface/trait/enum short name,
+ * Sets schema and request body names from the class/interface/trait/enum short name,
  * and parameter component key from its name property.
  *
  * @implements PipeInterface<Specification>
@@ -23,6 +23,7 @@ class Names implements PipeInterface
     {
         $this->inferSchemaNames($payload);
         $this->inferParameterNames($payload);
+        $this->inferRequestBodyNames($payload);
 
         return null;
     }
@@ -50,6 +51,19 @@ class Names implements PipeInterface
     {
         foreach ($specification->parameters as $parameter) {
             $parameter->parameter ??= $parameter->name;
+        }
+    }
+
+    /**
+     * A request body declared on a class is named after it, so it can be referenced by class
+     * name the way a schema can. Declared on a method it is inline, and needs no name.
+     */
+    protected function inferRequestBodyNames(Specification $specification): void
+    {
+        foreach ($specification->requestBodies as $requestBody) {
+            if ($requestBody->getReflector() instanceof \ReflectionClass) {
+                $requestBody->request ??= $requestBody->getShortClassName();
+            }
         }
     }
 }

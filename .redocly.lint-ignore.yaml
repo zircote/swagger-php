@@ -128,10 +128,19 @@ tests/Fixtures/Scratch/Types3.1.0.yaml:
 tests/Fixtures/Scratch/ThirdPartyAnnotation3.2.0.yaml:
   no-unused-components:
     - '#/components/schemas/Child'
+tests/Fixtures/Scratch/ThirdPartyAnnotation3.2.0-hybrid.yaml:
+  no-unused-components:
+    - '#/components/schemas/Child'
 tests/Fixtures/Scratch/ThirdPartyAnnotation3.1.0.yaml:
   no-unused-components:
     - '#/components/schemas/Child'
+tests/Fixtures/Scratch/ThirdPartyAnnotation3.1.0-hybrid.yaml:
+  no-unused-components:
+    - '#/components/schemas/Child'
 tests/Fixtures/Scratch/ThirdPartyAnnotation3.0.0.yaml:
+  no-unused-components:
+    - '#/components/schemas/Child'
+tests/Fixtures/Scratch/ThirdPartyAnnotation3.0.0-hybrid.yaml:
   no-unused-components:
     - '#/components/schemas/Child'
 tests/Fixtures/Scratch/Tags3.2.0.yaml:
