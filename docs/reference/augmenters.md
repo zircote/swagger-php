@@ -50,10 +50,16 @@ Delegates to:
 
 ### [Names](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Names.php)
 
-Infers component names from PHP reflectors when not explicitly set.
+Infers component keys from PHP reflectors when not explicitly set.
 
-Sets schema and request body names from the class/interface/trait/enum short name,
-and parameter component key from its name property.
+A component declared on a class is named after that class, so it can be referenced by
+class name. Declared anywhere else — a method, a parameter — the class reflector belongs
+to the *declaring* class, whose name is already taken by that class's own component, so
+nothing is inferred and the component stays inline.
+
+A parameter is the one exception: its `name` is its identity in OpenAPI, so a parameter
+component is keyed by it wherever it was declared, and falls back to the class name only
+when it has no name either.
 
 ### [Enums](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Enums.php)
 
