@@ -505,6 +505,29 @@ final class CompilerTest extends TestCase
             'Property is missing key-field: "property" in unknown',
         ];
 
+        $specUnnamedHeader = new Specification();
+        $specUnnamedHeader->openapi = new OA\OpenApi(version: '3.1.0');
+        $specUnnamedHeader->info = new OA\Info(title: 'T', version: '1.0');
+        $specUnnamedHeader->headers[] = new OA\Header(description: 'nameless');
+
+        yield 'component header without a name' => [
+            new OpenApi31Compiler(),
+            $specUnnamedHeader,
+            'Header is missing key-field: "header" in unknown',
+        ];
+
+        $specDuplicateResponse = new Specification();
+        $specDuplicateResponse->openapi = new OA\OpenApi(version: '3.1.0');
+        $specDuplicateResponse->info = new OA\Info(title: 'T', version: '1.0');
+        $specDuplicateResponse->responses[] = new OA\Response(response: 'Dup', description: 'first');
+        $specDuplicateResponse->responses[] = new OA\Response(response: 'Dup', description: 'second');
+
+        yield 'component key claimed twice' => [
+            new OpenApi31Compiler(),
+            $specDuplicateResponse,
+            'Response "Dup" is declared more than once in unknown',
+        ];
+
         $specDuplicateOperationId = new Specification();
         $specDuplicateOperationId->openapi = new OA\OpenApi(version: '3.1.0');
         $specDuplicateOperationId->info = new OA\Info(title: 'T', version: '1.0');
@@ -709,6 +732,45 @@ final class CompilerTest extends TestCase
         $output = (new OpenApi31Compiler())->compile($spec);
 
         $this->assertSame(['Thing'], array_keys($output['components']['schemas']));
+    }
+
+    /**
+     * A positional fallback would key the bucket by integer, which serializes as a JSON array
+     * where OpenAPI requires a map — and nothing could reference the entry anyway.
+     */
+    public function testUnnamedComponentsAreOmittedFromEveryBucket(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->responses[] = new OA\Response(response: 'Named', description: 'ok');
+        $spec->responses[] = new OA\Response(description: 'nameless');
+        $spec->headers[] = new OA\Header(header: 'Named', description: 'ok');
+        $spec->headers[] = new OA\Header(description: 'nameless');
+        $spec->examples[] = new OA\Example(example: 'Named', value: 'ok');
+        $spec->examples[] = new OA\Example(value: 'nameless');
+        $spec->links[] = new OA\Link(link: 'Named', operationId: 'getThing');
+        $spec->links[] = new OA\Link(operationId: 'getThing');
+
+        $components = (new OpenApi31Compiler())->compile($spec)['components'];
+
+        foreach (['responses', 'headers', 'examples', 'links'] as $bucket) {
+            $this->assertSame(['Named'], array_keys($components[$bucket]), $bucket);
+        }
+    }
+
+    /**
+     * The second wins, as a map key must. Silently is what makes it worth reporting.
+     */
+    public function testDuplicateComponentKeyKeepsTheLast(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->responses[] = new OA\Response(response: 'Dup', description: 'first');
+        $spec->responses[] = new OA\Response(response: 'Dup', description: 'second');
+
+        $compiler = new OpenApi31Compiler();
+        $components = $compiler->compile($spec)['components'];
+
+        $this->assertSame(['Dup'], array_keys($components['responses']));
+        $this->assertSame('second', $components['responses']['Dup']['description']);
     }
 
     public function testUnnamedPropertyIsOmittedFromSchema(): void

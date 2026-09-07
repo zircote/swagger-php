@@ -7,8 +7,8 @@
 namespace OpenApi\Augmenter;
 
 use OpenApi\Contracts\AttributeInterface;
-use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Specification\ComponentName;
 use OpenApi\Utils\Config;
 use OpenApi\Utils\JsonPointer;
 use OpenApi\Utils\PipeInterface;
@@ -77,8 +77,8 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
         });
 
         $removed = false;
-        foreach ($this->componentDescriptors() as [$field, $refPrefix, $nameExtractor]) {
-            if ($this->removeUnused($specification, $field, $refPrefix, $nameExtractor, $usedRefs)) {
+        foreach (ComponentName::BUCKETS as $bucket) {
+            if ($this->removeUnused($specification, $bucket, $usedRefs)) {
                 $removed = true;
             }
         }
@@ -87,37 +87,23 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
     }
 
     /**
-     * @return list<array{string, string, \Closure}>
-     */
-    protected function componentDescriptors(): array
-    {
-        return [
-            ['schemas', 'schemas', static fn (OA\Schema $s): ?string => $s->schema ?? $s->title],
-            ['responses', 'responses', static fn (OA\Response $r): ?string => $r->response !== null ? (string) $r->response : null],
-            ['parameters', 'parameters', static fn (OA\Parameter $p): ?string => $p->parameter ?? $p->name],
-            ['requestBodies', 'requestBodies', static fn (OA\RequestBody $b): ?string => $b->request],
-            ['headers', 'headers', static fn (OA\Header $h): ?string => $h->header],
-            ['securitySchemes', 'securitySchemes', static fn (OA\Security\Scheme $s): ?string => $s->securityScheme],
-            ['links', 'links', static fn (OA\Link $l): ?string => $l->link],
-            ['examples', 'examples', static fn (OA\Example $e): ?string => $e->example],
-        ];
-    }
-
-    /**
+     * A component with no key is left alone: nothing can reference it, so "unreferenced"
+     * says nothing about whether it is wanted. The compiler reports it instead.
+     *
      * @param array<string, true> $usedRefs
      */
-    protected function removeUnused(Specification $specification, string $field, string $refPrefix, \Closure $nameExtractor, array $usedRefs): bool
+    protected function removeUnused(Specification $specification, string $bucket, array $usedRefs): bool
     {
         $removed = false;
-        foreach ($specification->{$field} as $index => $item) {
-            $name = $nameExtractor($item);
-            if ($name !== null && !isset($usedRefs[JsonPointer::ref('components', $refPrefix, $name)])) {
-                unset($specification->{$field}[$index]);
+        foreach ($specification->{$bucket} as $index => $item) {
+            $name = ComponentName::of($item);
+            if ($name !== null && !isset($usedRefs[JsonPointer::ref('components', $bucket, $name)])) {
+                unset($specification->{$bucket}[$index]);
                 $removed = true;
             }
         }
         if ($removed) {
-            $specification->{$field} = array_values($specification->{$field});
+            $specification->{$bucket} = array_values($specification->{$bucket});
         }
 
         return $removed;

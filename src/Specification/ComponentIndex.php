@@ -23,17 +23,6 @@ class ComponentIndex
 {
     protected const COMPONENTS_PREFIX = '#/components/';
 
-    protected const BUCKET_MAP = [
-        'schemas' => 'schemas',
-        'responses' => 'responses',
-        'parameters' => 'parameters',
-        'requestBodies' => 'requestBodies',
-        'headers' => 'headers',
-        'securitySchemes' => 'securitySchemes',
-        'links' => 'links',
-        'examples' => 'examples',
-    ];
-
     /** @var array<string, array<string, AttributeInterface>|null> */ protected array $indexes = [];
 
     public function __construct(
@@ -56,7 +45,7 @@ class ComponentIndex
             return $this->getIndex($bucket)[$name] ?? null;
         }
 
-        foreach (array_keys(self::BUCKET_MAP) as $bucket) {
+        foreach (ComponentName::BUCKETS as $bucket) {
             $found = $this->getIndex($bucket)[$ref] ?? null;
             if ($found !== null) {
                 return $found;
@@ -118,11 +107,11 @@ class ComponentIndex
     {
         $map = [];
 
-        foreach (self::BUCKET_MAP as $bucket => $property) {
-            $items = $this->specification->{$property};
+        foreach (ComponentName::BUCKETS as $bucket) {
+            $items = $this->specification->{$bucket};
 
             foreach ($items as $item) {
-                $name = $this->getComponentName($item, $bucket);
+                $name = ComponentName::of($item);
                 $fqcn = $item->getClassName();
                 if ($name !== null && $fqcn !== null) {
                     $map[$fqcn] = JsonPointer::ref('components', $bucket, $name);
@@ -138,7 +127,7 @@ class ComponentIndex
      */
     protected function getIndex(string $bucket): array
     {
-        if (!isset(self::BUCKET_MAP[$bucket])) {
+        if (!in_array($bucket, ComponentName::BUCKETS, true)) {
             return [];
         }
 
@@ -154,12 +143,11 @@ class ComponentIndex
      */
     protected function buildIndex(string $bucket): array
     {
-        $property = self::BUCKET_MAP[$bucket];
-        $items = $this->specification->{$property};
+        $items = $this->specification->{$bucket};
         $index = [];
 
         foreach ($items as $item) {
-            $name = $this->getComponentName($item, $bucket);
+            $name = ComponentName::of($item);
             if ($name !== null) {
                 $index[$name] = $item;
             }
@@ -171,20 +159,5 @@ class ComponentIndex
         }
 
         return $index;
-    }
-
-    protected function getComponentName(AttributeInterface $item, string $bucket): ?string
-    {
-        return match ($bucket) {
-            'schemas' => $item instanceof OA\Schema ? ($item->schema ?? $item->title) : null,
-            'responses' => $item instanceof OA\Response ? ($item->response !== null ? (string) $item->response : null) : null,
-            'requestBodies' => $item instanceof OA\RequestBody ? $item->request : null,
-            'headers' => $item instanceof OA\Header ? $item->header : null,
-            'parameters' => $item instanceof OA\Parameter ? ($item->parameter ?? $item->name) : null,
-            'securitySchemes' => $item instanceof OA\Security\Scheme ? $item->securityScheme : null,
-            'links' => $item instanceof OA\Link ? $item->link : null,
-            'examples' => $item instanceof OA\Example ? $item->example : null,
-            default => null,
-        };
     }
 }

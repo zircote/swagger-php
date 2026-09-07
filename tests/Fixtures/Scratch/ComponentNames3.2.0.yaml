@@ -1,0 +1,43 @@
+openapi: 3.2.0
+info:
+  title: ComponentNames
+  version: '1.0'
+paths:
+  /pet:
+    get:
+      operationId: getPet
+      responses:
+        '200':
+          description: 'A pet'
+          headers:
+            X-Rate-Limit:
+              $ref: '#/components/headers/RateLimitHeader'
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                minimal:
+                  $ref: '#/components/examples/PetExample'
+          links:
+            pet:
+              $ref: '#/components/links/PetLink'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  responses:
+    ErrorResponse:
+      description: 'Something went wrong'
+  examples:
+    PetExample:
+      summary: 'A minimal pet'
+      value: Rex
+  headers:
+    RateLimitHeader:
+      description: 'Requests left in the window'
+      schema:
+        type: integer
+  links:
+    PetLink:
+      operationId: getPet
+      description: 'The pet that was found'

@@ -6,9 +6,11 @@
 
 namespace OpenApi\Compiler;
 
+use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Contracts\CompilerInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Specification\ComponentName;
 use OpenApi\Undefined;
 use OpenApi\Utils\CollectingLogger;
 use Psr\Log\LoggerInterface;
@@ -648,19 +650,27 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function compileComponents(Specification $specification): array
     {
-        $schemaName = fn (OA\Schema $schema): ?string => $schema->schema ?? $schema->title;
-        $namedSchemas = array_values(array_filter($specification->schemas, fn (OA\Schema $schema): bool => $schemaName($schema) !== null));
-
         return array_filter([
-            'schemas' => $this->compileNamedMap($namedSchemas, $schemaName, $this->compileSchema(...)),
-            'responses' => $this->compileNamedMap($specification->responses, fn (OA\Response $response): string => (string) $response->response, $this->compileResponse(...)),
-            'parameters' => $this->compileNamedMap($specification->parameters, fn (OA\Parameter $parameter): string => $parameter->parameter ?? $parameter->name ?? 'param', $this->compileParameter(...)),
-            'requestBodies' => $this->compileNamedMap($specification->requestBodies, fn (OA\RequestBody $body, int $index): string => $body->request ?? 'body' . $index, $this->compileRequestBody(...)),
-            'headers' => $this->compileNamedMap($specification->headers, 'header', $this->compileHeader(...)),
+            'schemas' => $this->compileComponentMap($specification->schemas, $this->compileSchema(...)),
+            'responses' => $this->compileComponentMap($specification->responses, $this->compileResponse(...)),
+            'parameters' => $this->compileComponentMap($specification->parameters, $this->compileParameter(...)),
+            'requestBodies' => $this->compileComponentMap($specification->requestBodies, $this->compileRequestBody(...)),
+            'headers' => $this->compileComponentMap($specification->headers, $this->compileHeader(...)),
             'securitySchemes' => $this->compileSecuritySchemes($specification->securitySchemes),
-            'links' => $this->compileNamedMap($specification->links, fn (OA\Link $link): string => $link->link ?? $link->operationId ?? 'link', $this->compileLink(...)),
-            'examples' => $this->compileNamedMap($specification->examples, 'example', $this->compileExample(...)),
+            'links' => $this->compileComponentMap($specification->links, $this->compileLink(...)),
+            'examples' => $this->compileComponentMap($specification->examples, $this->compileExample(...)),
         ]);
+    }
+
+    /**
+     * A version that does not support every scheme type filters here; the keying stays shared.
+     *
+     * @param  list<OA\Security\Scheme> $schemes
+     * @return array<string,mixed>
+     */
+    protected function compileSecuritySchemes(array $schemes): array
+    {
+        return $this->compileComponentMap($schemes, $this->compileSecurityScheme(...));
     }
 
     /**
@@ -678,15 +688,6 @@ class OpenApi31Compiler implements CompilerInterface
 
             return $item;
         }, $security);
-    }
-
-    /**
-     * @param  list<OA\Security\Scheme> $schemes
-     * @return array<string,mixed>
-     */
-    protected function compileSecuritySchemes(array $schemes): array
-    {
-        return $this->compileNamedMap($schemes, 'securityScheme', $this->compileSecurityScheme(...));
     }
 
     /**
@@ -741,6 +742,10 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function compileExample(OA\Example $example): array
     {
+        if ($example->ref !== null) {
+            return ['$ref' => $example->ref];
+        }
+
         $result = $this->filter([
             'summary' => $example->summary,
             'description' => $example->description,
@@ -764,15 +769,33 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * A component schema takes its key from `schema`, and a property from `property`.
-     * Neither can be derived from a method or a non-constructor parameter, so an attribute
-     * declared there has to carry its own name — the same requirement classic enforces.
+     * Every component takes its key from one field, and a property from `property`. None can
+     * be derived from a method or a non-constructor parameter, so an attribute declared there
+     * has to carry its own name — the same requirement classic enforces. `Augmenter\Names`
+     * fills the key in for anything declared on a class, so what reaches here is unnameable.
      */
     protected function validateNames(Specification $specification): void
     {
-        foreach ($specification->schemas as $schema) {
-            if ($schema->schema === null && $schema->title === null) {
-                $this->logger->warning('Schema is missing key-field: "schema" in ' . $schema->getSourceLocation());
+        foreach (ComponentName::BUCKETS as $bucket) {
+            $seen = [];
+            foreach ($specification->{$bucket} as $component) {
+                $type = (new \ReflectionClass($component))->getShortName();
+                $name = ComponentName::of($component);
+
+                if ($name === null) {
+                    $this->logger->warning(sprintf(
+                        '%s is missing key-field: "%s" in %s',
+                        $type,
+                        ComponentName::keyField($component),
+                        $component->getSourceLocation(),
+                    ));
+                    continue;
+                }
+
+                if (isset($seen[$name])) {
+                    $this->logger->warning(sprintf('%s "%s" is declared more than once in %s', $type, $name, $component->getSourceLocation()));
+                }
+                $seen[$name] = true;
             }
         }
 
@@ -884,6 +907,32 @@ class OpenApi31Compiler implements CompilerInterface
         });
 
         return $schemas;
+    }
+
+    /**
+     * Compiles one `components` bucket, keyed the way `ComponentIndex` resolves a `$ref`.
+     *
+     * A component with no key is dropped rather than given a positional one: it cannot be
+     * referenced, and an integer key turns the whole bucket into a JSON array where OpenAPI
+     * requires a map. A key claimed twice keeps the last. `validateNames()` reports both.
+     *
+     * @param  list<AttributeInterface> $components
+     * @return array<string,mixed>
+     */
+    protected function compileComponentMap(array $components, \Closure $compiler): array
+    {
+        $result = [];
+
+        foreach ($components as $component) {
+            $name = ComponentName::of($component);
+            if ($name === null) {
+                continue;
+            }
+
+            $result[$name] = $compiler($component);
+        }
+
+        return $result;
     }
 
     /**
