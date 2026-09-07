@@ -32,6 +32,18 @@ class OpenApi31Compiler implements CompilerInterface
 
     protected const RESPONSE_KEY = '/^(default|[1-5][0-9]{2}|[1-5]XX)$/';
 
+    /**
+     * Maps nested in another object, as container => [property => the member field keying it].
+     * `Schema::$examples` is absent: it is the JSON Schema keyword, which takes a list.
+     */
+    protected const NESTED_MAPS = [
+        OA\Response::class => ['headers' => 'header', 'links' => 'link'],
+        OA\MediaType::class => ['examples' => 'example', 'encoding' => 'encoding'],
+        OA\Encoding::class => ['headers' => 'header'],
+        OA\Parameter::class => ['examples' => 'example'],
+        OA\Header::class => ['examples' => 'example'],
+    ];
+
     protected CollectingLogger $logger;
 
     public function __construct(?LoggerInterface $logger = null)
@@ -84,6 +96,8 @@ class OpenApi31Compiler implements CompilerInterface
         $this->validateResponses($specification);
 
         $this->validateNames($specification);
+
+        $this->validateNestedNames($specification);
 
         return $this->logger->entries();
     }
@@ -343,7 +357,7 @@ class OpenApi31Compiler implements CompilerInterface
             'allowReserved' => $parameter->allowReserved,
             'schema' => $parameter->schema instanceof OA\Schema ? $this->compileSchema($parameter->schema) : null,
             'example' => $parameter->example,
-            'examples' => $this->compileExamples($parameter->examples ?? []),
+            'examples' => $this->compileKeyedMap($parameter->examples ?? [], 'example', $this->compileExample(...)),
             'content' => $this->compileMediaTypes($parameter->content ?? []),
         ], $parameter);
     }
@@ -390,9 +404,9 @@ class OpenApi31Compiler implements CompilerInterface
 
         return $this->filter([
             'description' => $response->description,
-            'headers' => $this->compileNamedMap($response->headers ?? [], 'header', $this->compileHeader(...)),
+            'headers' => $this->compileKeyedMap($response->headers ?? [], 'header', $this->compileHeader(...)),
             'content' => $this->compileMediaTypes($response->content ?? []),
-            'links' => $this->compileNamedMap($response->links ?? [], fn (OA\Link $link): string => $link->link ?? $link->operationId ?? 'link', $this->compileLink(...)),
+            'links' => $this->compileKeyedMap($response->links ?? [], 'link', $this->compileLink(...)),
         ], $response);
     }
 
@@ -413,7 +427,7 @@ class OpenApi31Compiler implements CompilerInterface
             'explode' => $header->explode,
             'schema' => $header->schema instanceof OA\Schema ? $this->compileSchema($header->schema) : null,
             'example' => $header->example,
-            'examples' => $this->compileExamples($header->examples ?? []),
+            'examples' => $this->compileKeyedMap($header->examples ?? [], 'example', $this->compileExample(...)),
             'content' => $this->compileMediaTypes($header->content ?? []),
         ], $header);
     }
@@ -435,8 +449,8 @@ class OpenApi31Compiler implements CompilerInterface
         return $this->filter([
             'schema' => $mediaType->schema instanceof OA\Schema ? $this->compileSchema($mediaType->schema) : null,
             'example' => $mediaType->example,
-            'examples' => $this->compileExamples($mediaType->examples ?? []),
-            'encoding' => $this->compileNamedMap($mediaType->encoding ?? [], 'encoding', $this->compileEncoding(...)),
+            'examples' => $this->compileKeyedMap($mediaType->examples ?? [], 'example', $this->compileExample(...)),
+            'encoding' => $this->compileKeyedMap($mediaType->encoding ?? [], 'encoding', $this->compileEncoding(...)),
         ], $mediaType);
     }
 
@@ -447,7 +461,7 @@ class OpenApi31Compiler implements CompilerInterface
     {
         return $this->filter([
             'contentType' => $encoding->contentType,
-            'headers' => $this->compileNamedMap($encoding->headers ?? [], 'header', $this->compileHeader(...)),
+            'headers' => $this->compileKeyedMap($encoding->headers ?? [], 'header', $this->compileHeader(...)),
             'style' => $encoding->style,
             'explode' => $encoding->explode,
             'allowReserved' => $encoding->allowReserved,
@@ -760,6 +774,10 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
+     * `Schema::$examples` only. Every other `examples` is a map of Example Objects and goes
+     * through {@see compileKeyedMap()}; this one is the JSON Schema keyword, and that it
+     * compiles to a map at all is a separate question.
+     *
      * @param  list<OA\Example>    $examples
      * @return array<string,mixed>
      */
@@ -805,6 +823,35 @@ class OpenApi31Compiler implements CompilerInterface
                     $this->logger->warning('Property is missing key-field: "property" in ' . $property->getSourceLocation());
                 }
             }
+        }
+    }
+
+    /**
+     * A member of one of these maps carries the key, so an entry without one cannot be placed.
+     * The compiler drops it; without this it would go silently, and classic rejects the same
+     * input outright.
+     */
+    protected function validateNestedNames(Specification $specification): void
+    {
+        $walker = $specification->getWalker();
+
+        foreach (static::NESTED_MAPS as $container => $maps) {
+            $walker->visit($container, function (AttributeInterface $attribute) use ($maps): void {
+                foreach ($maps as $property => $keyField) {
+                    foreach ($attribute->{$property} ?? [] as $item) {
+                        if (($item->{$keyField} ?? null) !== null) {
+                            continue;
+                        }
+
+                        $this->logger->warning(sprintf(
+                            '%s is missing key-field: "%s" in %s',
+                            (new \ReflectionClass($item))->getShortName(),
+                            $keyField,
+                            $item->getSourceLocation(),
+                        ));
+                    }
+                }
+            });
         }
     }
 
@@ -936,6 +983,37 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
+     * Compiles a map keyed by a field of its own members — a response's `headers`, a media
+     * type's `encoding`.
+     *
+     * An entry with no key is dropped rather than given its position: an integer key turns
+     * the map into a JSON array, and OpenAPI requires `Map[string, Object]` everywhere one of
+     * these appears. `validateNestedNames()` reports it.
+     *
+     * @param  list<object>        $items
+     * @return array<string,mixed>
+     */
+    protected function compileKeyedMap(array $items, string $keyField, \Closure $compiler): array
+    {
+        $result = [];
+
+        foreach ($items as $item) {
+            $name = $item->{$keyField} ?? null;
+            if ($name === null) {
+                continue;
+            }
+
+            $result[$name] = $compiler($item);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Compiles a map whose key is a *value* rather than a name — a status code, a media type.
+     * Those have a meaningful fallback; a missing name does not, so it goes to
+     * {@see compileKeyedMap()} instead.
+     *
      * @param  list<object>        $items
      * @param  string|\Closure     $key   Property name or fn($item, $index): string
      * @return array<string,mixed>

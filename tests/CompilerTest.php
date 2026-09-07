@@ -516,6 +516,19 @@ final class CompilerTest extends TestCase
             'Header is missing key-field: "header" in unknown',
         ];
 
+        $specNestedUnnamed = new Specification();
+        $specNestedUnnamed->openapi = new OA\OpenApi(version: '3.1.0');
+        $specNestedUnnamed->info = new OA\Info(title: 'T', version: '1.0');
+        $specNestedUnnamed->operations[] = new OA\Operation(path: '/p', method: 'get', responses: [
+            new OA\Response(response: 200, description: 'ok', headers: [new OA\Header(description: 'nameless')]),
+        ]);
+
+        yield 'nested header without a name' => [
+            new OpenApi31Compiler(),
+            $specNestedUnnamed,
+            'Header is missing key-field: "header" in unknown',
+        ];
+
         $specDuplicateResponse = new Specification();
         $specDuplicateResponse->openapi = new OA\OpenApi(version: '3.1.0');
         $specDuplicateResponse->info = new OA\Info(title: 'T', version: '1.0');
@@ -755,6 +768,58 @@ final class CompilerTest extends TestCase
         foreach (['responses', 'headers', 'examples', 'links'] as $bucket) {
             $this->assertSame(['Named'], array_keys($components[$bucket]), $bucket);
         }
+    }
+
+    /**
+     * The same rule one level down: an integer key would serialize the map as a JSON array,
+     * which OpenAPI allows in none of these positions.
+     */
+    public function testUnnamedNestedEntriesAreOmittedFromEveryMap(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->operations[] = new OA\Operation(path: '/p', method: 'get', responses: [
+            new OA\Response(response: 200, description: 'ok', headers: [
+                new OA\Header(header: 'Named', description: 'kept'),
+                new OA\Header(description: 'nameless'),
+            ], content: [
+                new OA\MediaType(mediaType: 'application/json', examples: [
+                    new OA\Example(example: 'Named', value: 'kept'),
+                    new OA\Example(value: 'nameless'),
+                ], encoding: [
+                    new OA\Encoding(encoding: 'Named'),
+                    new OA\Encoding(),
+                ]),
+            ], links: [
+                new OA\Link(link: 'Named', operationId: 'other'),
+                new OA\Link(operationId: 'other'),
+            ]),
+        ]);
+
+        $response = (new OpenApi31Compiler())->compile($spec)['paths']['/p']['get']['responses'][200];
+        $mediaType = $response['content']['application/json'];
+
+        $this->assertSame(['Named'], array_keys($response['headers']), 'headers');
+        $this->assertSame(['Named'], array_keys($response['links']), 'links');
+        $this->assertSame(['Named'], array_keys($mediaType['examples']), 'examples');
+        $this->assertSame(['Named'], array_keys($mediaType['encoding']), 'encoding');
+    }
+
+    /**
+     * A link used to fall back to the id of the operation it points at, which names it after
+     * its target and collides as soon as two links share one.
+     */
+    public function testNestedLinkIsNotNamedAfterItsOperationId(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->operations[] = new OA\Operation(path: '/p', method: 'get', responses: [
+            new OA\Response(response: 200, description: 'ok', links: [
+                new OA\Link(operationId: 'getThing'),
+            ]),
+        ]);
+
+        $response = (new OpenApi31Compiler())->compile($spec)['paths']['/p']['get']['responses'][200];
+
+        $this->assertArrayNotHasKey('links', $response);
     }
 
     /**
