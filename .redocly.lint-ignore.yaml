@@ -304,12 +304,6 @@ tests/Fixtures/Scratch/ExclusiveMinMax3.1.0.yaml:
 tests/Fixtures/Scratch/ExclusiveMinMax3.0.0.yaml:
   no-unused-components:
     - '#/components/schemas/minMaxClass'
-tests/Fixtures/Scratch/Examples3.2.0.yaml:
-  struct:
-    - '#/components/schemas/YoYo/examples'
-tests/Fixtures/Scratch/Examples3.1.0.yaml:
-  struct:
-    - '#/components/schemas/YoYo/examples'
 tests/Fixtures/Scratch/DynamicEnumCase3.2.0.yaml:
   no-unused-components:
     - '#/components/schemas/DynamicEnumCase'

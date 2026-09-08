@@ -371,6 +371,12 @@ class Schema extends AbstractAnnotation
             if (isset($data->not) && is_array($data->not) && array_key_exists('const', $data->not)) {
                 $data->not = ['enum' => [$data->not['const']]];
             }
+        } elseif (isset($data->examples)) {
+            $data->examples = $this->exampleValues();
+
+            if ($data->examples === []) {
+                unset($data->examples);
+            }
         }
 
         return $data;
@@ -395,5 +401,27 @@ class Schema extends AbstractAnnotation
         }
 
         return $isValid;
+    }
+
+    /**
+     * `examples` on a schema is the JSON Schema keyword, and takes a list of values. The
+     * nesting collects `@OA\Examples` here, so only the value survives — an example carrying
+     * an `externalValue`, or nothing but a summary, has none to give, and a list has nowhere
+     * to put the rest of an Example Object. Use a media type, parameter or header for those:
+     * their `examples` is a map of Example Objects and keeps every field.
+     *
+     * @return list<mixed>
+     */
+    protected function exampleValues(): array
+    {
+        $values = [];
+
+        foreach ((array) $this->examples as $example) {
+            if ($example instanceof Examples && !Undefined::isDefault($example->value)) {
+                $values[] = $example->value;
+            }
+        }
+
+        return $values;
     }
 }
