@@ -27,7 +27,9 @@ final class ScratchTest extends OpenApiTestCase
         // Keyed `{fixture}-{version}`, applying to every mode, or `{fixture}-{version}-{mode}`
         // for a diagnostic only one mode raises. Both keys contribute when both are present.
         $expectedLogs = [
-            'Examples-3.0.0' => ['@OA\Schema() is only allowed as of 3.1.0'],
+            'Examples-3.0.0-classic' => ['@OA\Schema::examples is only allowed as of 3.1.0'],
+            'Examples-3.0.0-spec' => ['examples array is not supported in OpenAPI 3.0'],
+            'Examples-3.0.0-hybrid' => ['examples array is not supported in OpenAPI 3.0'],
             'Docblocks-3.0.0-spec' => ['const is not supported in OpenAPI 3.0'],
             'Docblocks-3.0.0-hybrid' => ['const is not supported in OpenAPI 3.0'],
             'Tags-3.2.0-spec' => ['references non-existent parent'],
