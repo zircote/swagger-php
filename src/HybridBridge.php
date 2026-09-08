@@ -561,6 +561,28 @@ class HybridBridge
         );
     }
 
+    /**
+     * Classic nests `@OA\Examples` under a schema and keys them by name. The spec property is
+     * the JSON Schema keyword, a list of values, so only the value crosses over — an example
+     * carrying an `externalValue` or nothing but a summary has none to give, and a list has
+     * nowhere to put the rest of an Example Object.
+     *
+     * @param  array<Annotations\Examples> $examples
+     * @return list<mixed>
+     */
+    protected function convertSchemaExamples(array $examples): array
+    {
+        $values = [];
+
+        foreach ($examples as $example) {
+            if (!Undefined::isDefault($example->value)) {
+                $values[] = $example->value;
+            }
+        }
+
+        return $values;
+    }
+
     protected function convertSchema(Annotations\Schema $schema): Spec\Schema
     {
         $properties = null;
@@ -615,7 +637,7 @@ class HybridBridge
             example: Undefined::isDefault($schema->example) ? Undefined::UNDEFINED : $schema->example,
             examples: Undefined::isDefault($schema->examples)
                 ? null
-                : array_map($this->convertExample(...), $schema->examples),
+                : $this->convertSchemaExamples($schema->examples),
             deprecated: $this->val($schema->deprecated),
             readOnly: $this->val($schema->readOnly),
             writeOnly: $this->val($schema->writeOnly),

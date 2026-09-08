@@ -99,6 +99,8 @@ class OpenApi31Compiler implements CompilerInterface
 
         $this->validateNestedNames($specification);
 
+        $this->validateSchemaExamples($specification);
+
         return $this->logger->entries();
     }
 
@@ -586,8 +588,8 @@ class OpenApi31Compiler implements CompilerInterface
             'then' => $schema->then instanceof OA\Schema ? $this->compileSchema($schema->then) : null,
             'else' => $schema->else instanceof OA\Schema ? $this->compileSchema($schema->else) : null,
 
-            // Examples
-            'examples' => $this->compileExamples($schema->examples ?? []),
+            // Examples — the JSON Schema keyword, a list of values rather than a map
+            'examples' => $schema->examples,
 
             // Meta
             'deprecated' => $schema->deprecated,
@@ -774,19 +776,6 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * `Schema::$examples` only. Every other `examples` is a map of Example Objects and goes
-     * through {@see compileKeyedMap()}; this one is the JSON Schema keyword, and that it
-     * compiles to a map at all is a separate question.
-     *
-     * @param  list<OA\Example>    $examples
-     * @return array<string,mixed>
-     */
-    protected function compileExamples(array $examples): array
-    {
-        return $this->compileNamedMap($examples, 'example', $this->compileExample(...));
-    }
-
-    /**
      * Every component takes its key from one field, and a property from `property`. None can
      * be derived from a method or a non-constructor parameter, so an attribute declared there
      * has to carry its own name — the same requirement classic enforces. `Augmenter\Names`
@@ -853,6 +842,29 @@ class OpenApi31Compiler implements CompilerInterface
                 }
             });
         }
+    }
+
+    /**
+     * `Schema::$examples` is the JSON Schema keyword: a list of values, as its own docblock
+     * says. An Example Object belongs to the `examples` a media type, parameter or header
+     * takes, which is a map. Nothing else catches the mix-up — the property is `?array`, so
+     * `mixed` accepts an Example and the output merely looks odd.
+     */
+    protected function validateSchemaExamples(Specification $specification): void
+    {
+        $specification->getWalker()->visit(OA\Schema::class, function (OA\Schema $schema): void {
+            foreach ($schema->examples ?? [] as $example) {
+                if (!$example instanceof OA\Example) {
+                    continue;
+                }
+
+                $this->logger->warning(sprintf(
+                    'Schema%s: examples takes values, not Example objects, in %s',
+                    $schema->schema !== null ? " \"{$schema->schema}\"" : '',
+                    $example->getSourceLocation(),
+                ));
+            }
+        });
     }
 
     protected function validateSchemas(Specification $specification): void

@@ -191,10 +191,11 @@ final class CompilerTest extends TestCase
             'only',
         ];
 
+        // The JSON Schema keyword: a list of values, so it compiles through untouched.
         yield 'examples array' => [
-            new OA\Schema(schema: 'F', type: 'string', examples: [new OA\Example(example: 'foo', value: false)]),
+            new OA\Schema(schema: 'F', type: 'string', examples: [false, 'foo']),
             'examples',
-            ['foo' => ['value' => false]],
+            [false, 'foo'],
         ];
 
         yield 'unevaluatedProperties false' => [

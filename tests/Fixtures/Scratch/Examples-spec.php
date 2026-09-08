@@ -8,15 +8,11 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Spec as OA;
 
+// `Schema::$examples` is the JSON Schema keyword: values, not Example objects. Classic nests
+// `@OA\Examples` here instead and keys them, which is why the two have separate expectations.
 #[OA\Schema(
     schema: 'YoYo',
-    examples: [
-        new OA\Example(
-            example: 'yo',
-            summary: 'the yo',
-            value: 'YoYo'
-        ),
-    ]
+    examples: ['YoYo']
 )]
 class ExampleSchemaSpec
 {
