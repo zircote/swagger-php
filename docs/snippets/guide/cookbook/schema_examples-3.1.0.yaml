@@ -1,0 +1,8 @@
+openapi: 3.1.0
+components:
+  schemas:
+    Port:
+      type: integer
+      examples:
+        - 80
+        - 443

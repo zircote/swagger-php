@@ -104,10 +104,11 @@ Adds additional metadata to describe the XML representation of this property.</p
 <br />
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
 contain the example with escaping where necessary.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;mixed&gt;</span></dt>
   <dd><p>Examples of the schema.<br />
 <br />
-Each example should contain a value in the correct format as specified in the parameter encoding.<br />
+This is the JSON Schema keyword, so it takes a list of values. A nested <code>@OA\Examples</code><br />
+contributes its <code>value</code> and nothing else.<br />
 The examples object is mutually exclusive of the example object.<br />
 Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.<br />
 <br />
@@ -556,7 +557,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
   <dt><strong>example</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The key into <code>#/components/examples</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Short description for the example.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
+  <dd><p>Short description for the example.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Embedded literal example.<br />
 <br />
@@ -1050,14 +1051,14 @@ value of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Require
   <dd><p>The minimum number of properties allowed in an object instance.<br />
 An object instance is valid against this property if its number of properties is greater than, or equal to, the<br />
 value of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>required</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;</span></dt>
   <dd><p>An object instance is valid against this property if its property set contains all elements in this property's<br />
 array value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>properties</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">list&lt;Property&gt;</span></dt>
   <dd><p>A collection of properties to define for an object.<br />
 <br />
 Each property is represented as an instance of the <a href="#property">Property</a> class.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>type</strong> : <span style="font-family: monospace;">array|string|null</span></dt>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">string|non-empty-array&lt;string&gt;|null</span></dt>
   <dd><p>The type of the schema/property.<br />
 <br />
 OpenApi v3.0: The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".<br />
@@ -1114,10 +1115,11 @@ Adds additional metadata to describe the XML representation of this property.</p
 <br />
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
 contain the example with escaping where necessary.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>examples</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;mixed&gt;</span></dt>
   <dd><p>Examples of the schema.<br />
 <br />
-Each example should contain a value in the correct format as specified in the parameter encoding.<br />
+This is the JSON Schema keyword, so it takes a list of values. A nested <code>@OA\Examples</code><br />
+contributes its <code>value</code> and nothing else.<br />
 The examples object is mutually exclusive of the example object.<br />
 Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.<br />
 <br />
@@ -1131,13 +1133,13 @@ instead make the "type" property an array and add "null" as a possible type.</p>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a schema is deprecated and should be transitioned out of usage.<br />
 Default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dt><strong>allOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against all schemas<br />
 defined by this property's value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against at least one<br />
 schema defined by this property's value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">array&lt;Schema|OA\Schema&gt;</span></dt>
   <dd><p>An instance validates successfully against this property if it validates successfully against exactly one schema<br />
 defined by this property's value.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>contentEncoding</strong> : <span style="font-family: monospace;">string|null</span></dt>
@@ -1186,7 +1188,7 @@ of this attribute.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:
   <dd><p>A boolean value indicating whether all items in an array property must be unique.<br />
 <br />
 If this attribute is set to true, then all items in the array must be unique.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">array|string|null</span></dt>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">list&lt;string|int|float|bool|\UnitEnum|null&gt;|class-string|null</span></dt>
   <dd><p>A list of allowable values for a property.<br />
 <br />
 A property instance is valid against this attribute if its value is one of the values specified in this<br />
@@ -1209,11 +1211,11 @@ list.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td styl
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>const</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>x</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
 The keys inside the array will be prefixed with <code>x-</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>attachables</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dt><strong>attachables</strong> : <span style="font-family: monospace;">list&lt;Attachable&gt;|null</span></dt>
   <dd><p>Arbitrary attachables for this annotation.<br />
 These will be ignored but can be used for custom processing.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
 </dl>
@@ -1329,13 +1331,10 @@ Adds additional metadata to describe the XML representation of this property.</p
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
 contain the example with escaping where necessary.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
-  <dd><p>Examples of the schema.<br />
+  <dd><p>Examples of the media type.<br />
 <br />
-Each example should contain a value in the correct format as specified in the parameter encoding.<br />
-The examples object is mutually exclusive of the example object.<br />
-Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.<br />
-<br />
-@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+These belong to the generated media type rather than to the schema, so unlike the JSON<br />
+Schema keyword inherited from <code>Schema</code> they are Example Objects and keep every field.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
 Default value is false.<br />
@@ -2246,10 +2245,11 @@ Adds additional metadata to describe the XML representation of this property.</p
 <br />
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
 contain the example with escaping where necessary.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;mixed&gt;</span></dt>
   <dd><p>Examples of the schema.<br />
 <br />
-Each example should contain a value in the correct format as specified in the parameter encoding.<br />
+This is the JSON Schema keyword, so it takes a list of values. A nested <code>@OA\Examples</code><br />
+contributes its <code>value</code> and nothing else.<br />
 The examples object is mutually exclusive of the example object.<br />
 Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.<br />
 <br />
@@ -2817,10 +2817,11 @@ Adds additional metadata to describe the XML representation of this property.</p
 <br />
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
 contain the example with escaping where necessary.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;mixed&gt;</span></dt>
   <dd><p>Examples of the schema.<br />
 <br />
-Each example should contain a value in the correct format as specified in the parameter encoding.<br />
+This is the JSON Schema keyword, so it takes a list of values. A nested <code>@OA\Examples</code><br />
+contributes its <code>value</code> and nothing else.<br />
 The examples object is mutually exclusive of the example object.<br />
 Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.<br />
 <br />
@@ -3367,13 +3368,10 @@ Adds additional metadata to describe the XML representation of this property.</p
 To represent examples that cannot naturally be represented in JSON or YAML, a string value can be used to<br />
 contain the example with escaping where necessary.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;</span></dt>
-  <dd><p>Examples of the schema.<br />
+  <dd><p>Examples of the media type.<br />
 <br />
-Each example should contain a value in the correct format as specified in the parameter encoding.<br />
-The examples object is mutually exclusive of the example object.<br />
-Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.<br />
-<br />
-@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+These belong to the generated media type rather than to the schema, so unlike the JSON<br />
+Schema keyword inherited from <code>Schema</code> they are Example Objects and keep every field.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Allows sending a null value for the defined schema.<br />
 Default value is false.<br />
