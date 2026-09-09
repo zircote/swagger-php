@@ -40,6 +40,16 @@ class JsonContent extends Schema
     public $encoding = Undefined::UNDEFINED;
 
     /**
+     * Examples of the media type.
+     *
+     * These belong to the generated media type rather than to the schema, so unlike the JSON
+     * Schema keyword inherited from <code>Schema</code> they are Example Objects and keep every field.
+     *
+     * @var array<Examples>
+     */
+    public $examples = Undefined::UNDEFINED;
+
+    /**
      * @inheritdoc
      */
     public static $_parents = [];

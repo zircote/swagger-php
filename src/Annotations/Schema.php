@@ -218,12 +218,13 @@ class Schema extends AbstractAnnotation
     /**
      * Examples of the schema.
      *
-     * Each example should contain a value in the correct format as specified in the parameter encoding.
+     * This is the JSON Schema keyword, so it takes a list of values. A nested <code>@OA\Examples</code>
+     * contributes its <code>value</code> and nothing else.
      * The examples object is mutually exclusive of the example object.
      * Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.
      *
      * @since OpenAPI 3.1.0
-     * @var array<Examples>
+     * @var array<mixed>
      */
     public $examples = Undefined::UNDEFINED;
 
@@ -404,11 +405,11 @@ class Schema extends AbstractAnnotation
     }
 
     /**
-     * `examples` on a schema is the JSON Schema keyword, and takes a list of values. The
-     * nesting collects `@OA\Examples` here, so only the value survives — an example carrying
-     * an `externalValue`, or nothing but a summary, has none to give, and a list has nowhere
-     * to put the rest of an Example Object. Use a media type, parameter or header for those:
-     * their `examples` is a map of Example Objects and keeps every field.
+     * `examples` on a schema is the JSON Schema keyword, and takes a list of values. Values are
+     * kept as written; a nested `@OA\Examples` contributes its value, so an example carrying an
+     * `externalValue`, or nothing but a summary, has none to give and drops out — a list has
+     * nowhere to put the rest of an Example Object. Use a media type, parameter or header for
+     * those: their `examples` is a map of Example Objects and keeps every field.
      *
      * @return list<mixed>
      */
@@ -417,7 +418,9 @@ class Schema extends AbstractAnnotation
         $values = [];
 
         foreach ((array) $this->examples as $example) {
-            if ($example instanceof Examples && !Undefined::isDefault($example->value)) {
+            if (!$example instanceof Examples) {
+                $values[] = $example;
+            } elseif (!Undefined::isDefault($example->value)) {
                 $values[] = $example->value;
             }
         }

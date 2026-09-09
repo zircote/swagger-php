@@ -562,12 +562,12 @@ class HybridBridge
     }
 
     /**
-     * Classic nests `@OA\Examples` under a schema and keys them by name. The spec property is
-     * the JSON Schema keyword, a list of values, so only the value crosses over — an example
-     * carrying an `externalValue` or nothing but a summary has none to give, and a list has
-     * nowhere to put the rest of an Example Object.
+     * Both sides hold the JSON Schema keyword, a list of values, so values cross over as
+     * written. A nested `@OA\Examples` gives up its value only — one carrying an
+     * `externalValue` or nothing but a summary has none to give, and a list has nowhere to put
+     * the rest of an Example Object.
      *
-     * @param  array<Annotations\Examples> $examples
+     * @param  array<mixed> $examples
      * @return list<mixed>
      */
     protected function convertSchemaExamples(array $examples): array
@@ -575,7 +575,9 @@ class HybridBridge
         $values = [];
 
         foreach ($examples as $example) {
-            if (!Undefined::isDefault($example->value)) {
+            if (!$example instanceof Annotations\Examples) {
+                $values[] = $example;
+            } elseif (!Undefined::isDefault($example->value)) {
                 $values[] = $example->value;
             }
         }

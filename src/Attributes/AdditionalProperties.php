@@ -17,7 +17,7 @@ class AdditionalProperties extends OA\AdditionalProperties
      * @param list<string>                                                 $required
      * @param list<Property>                                               $properties
      * @param string|non-empty-array<string>|null                          $type
-     * @param array<Examples>                                              $examples
+     * @param array<mixed>                                                 $examples
      * @param array<Schema|OA\Schema>                                      $allOf
      * @param array<Schema|OA\Schema>                                      $anyOf
      * @param array<Schema|OA\Schema>                                      $oneOf
@@ -132,7 +132,8 @@ class AdditionalProperties extends OA\AdditionalProperties
             // abstract annotation
             'x' => $x ?? Undefined::UNDEFINED,
             'attachables' => $attachables ?? Undefined::UNDEFINED,
-            'value' => $this->combine($items, $discriminator, $externalDocs, $examples),
+            'examples' => $examples ?: Undefined::UNDEFINED,
+            'value' => $this->combine($items, $discriminator, $externalDocs),
         ]);
     }
 }
