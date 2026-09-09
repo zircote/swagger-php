@@ -323,7 +323,7 @@ class Schema extends AbstractAnnotation
         Items::class => 'items',
         Property::class => ['properties', 'property'],
         ExternalDocumentation::class => 'externalDocs',
-        Examples::class => ['examples', 'example'],
+        Examples::class => ['examples'],
         Xml::class => 'xml',
         AdditionalProperties::class => 'additionalProperties',
         Attachable::class => ['attachables'],

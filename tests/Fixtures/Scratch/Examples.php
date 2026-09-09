@@ -8,12 +8,12 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Attributes as OAT;
 
+// `Schema::$examples` is the JSON Schema keyword: a list of values, so `example` and `summary`
+// have nowhere to go and are not asked for.
 #[OAT\Schema(
     schema: 'YoYo',
     examples: [
         new OAT\Examples(
-            example: 'yo',
-            summary: 'the yo',
             value: 'YoYo'
         ),
     ]

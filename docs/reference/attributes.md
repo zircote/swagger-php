@@ -556,7 +556,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
   <dt><strong>example</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The key into <code>#/components/examples</code>.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Short description for the example.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
+  <dd><p>Short description for the example.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Embedded literal example.<br />
 <br />

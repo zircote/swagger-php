@@ -16,20 +16,6 @@ class Items extends Schema
     /**
      * @inheritdoc
      */
-    public static $_nested = [
-        Discriminator::class => 'discriminator',
-        Items::class => 'items',
-        Property::class => ['properties', 'property'],
-        ExternalDocumentation::class => 'externalDocs',
-        Examples::class => ['examples', 'example'],
-        Xml::class => 'xml',
-        AdditionalProperties::class => 'additionalProperties',
-        Attachable::class => ['attachables'],
-    ];
-
-    /**
-     * @inheritdoc
-     */
     public static $_parents = [
         Property::class,
         AdditionalProperties::class,

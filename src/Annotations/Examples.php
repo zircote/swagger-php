@@ -78,8 +78,6 @@ class Examples extends AbstractAnnotation
         'externalValue' => 'string',
     ];
 
-    public static $_required = ['summary'];
-
     public static $_parents = [
         AdditionalProperties::class,
         Components::class,
