@@ -43,6 +43,39 @@ support further grouping via the vendor extension `x-tagGroups`.
   </template>
 </codeblock>
 
+## Adding examples to `@OA\Schema`
+
+A schema's `examples` is the JSON Schema keyword rather than a map of Example Objects, so it
+takes a list of values. `@OA\Property`, `@OA\Items` and `@OA\AdditionalProperties` are schemas
+too and take the same list.
+
+<codeblock id="schema-examples">
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/schema_examples_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/schema_examples_an.php
+
+  </template>
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/schema_examples_spec.php
+
+  </template>
+</codeblock>
+
+A nested `@OA\Examples` is accepted here and contributes its `value`. The rest of an Example
+Object — the key, `summary`, `description`, `externalValue` — has nowhere to go in a list and
+is dropped, so reach for a media type, parameter or header when you want those.
+
+::: info 🧪 Mode difference
+The keyword arrived in OpenAPI 3.1. Generating 3.0 from the same source drops the list in
+`classic` and carries the first value across as `example` in `spec`; both warn.
+:::
+
 ## External documentation
 OpenApi allows a single reference to external documentation. This is a part of the top level `@OA\OpenApi`.
 

@@ -176,6 +176,10 @@ correction would churn far more than it fixes.
   the three implementations in sync.
 - Internal links use site-absolute paths (`/reference/architecture`), not relative file
   paths, so they survive being rendered at a different depth.
+- Prose describing behaviour that differs between `classic` and `spec` goes in an
+  `::: info 🧪 Mode difference` container, so the divergences can be listed again when the
+  pipelines converge. A page whose subject is modes carries this in its structure and does
+  not mark individual paragraphs.
 
 ## Reviewing documentation changes
 
