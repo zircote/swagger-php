@@ -6,6 +6,7 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Analysis;
 use OpenApi\Undefined;
 
 /**
@@ -97,4 +98,41 @@ class Examples extends AbstractAnnotation
     public static $_nested = [
         Attachable::class => ['attachables'],
     ];
+
+    #[\Override]
+    public function validate(?Analysis $analysis = null, string $version = OpenApi::DEFAULT_VERSION, ?object $context = null): bool
+    {
+        $isValid = parent::validate($analysis, $version, $context);
+
+        if (!Undefined::isDefault($this->value) && !Undefined::isDefault($this->externalValue)) {
+            $this->_context->logger->warning($this->identity() . ' value and externalValue are mutually exclusive in ' . $this->_context);
+            $isValid = false;
+        }
+
+        if ($this->isSchemaExample() && Undefined::isDefault($this->value)) {
+            $this->_context->logger->warning('Missing required field "value" for ' . $this->identity() . ' in ' . $this->_context);
+            $isValid = false;
+        }
+
+        return $isValid;
+    }
+
+    /**
+     * Whether this sits in the JSON Schema <code>examples</code> keyword rather than in a map of
+     * Example Objects.
+     *
+     * The parent says which: one that collects examples without a key-field holds a list of
+     * values, where only <code>value</code> survives and the rest of an Example Object — the key,
+     * <code>summary</code>, <code>description</code>, <code>externalValue</code> — has nowhere
+     * to go.
+     */
+    protected function isSchemaExample(): bool
+    {
+        $parent = $this->_context->nested;
+        if (!$parent instanceof AbstractAnnotation || !$nested = $parent->matchNested($this)) {
+            return false;
+        }
+
+        return is_array($nested->value) && count($nested->value) === 1;
+    }
 }
