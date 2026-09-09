@@ -6,6 +6,8 @@
 
 namespace OpenApi\Tests\Annotations;
 
+use OpenApi\Annotations\Property;
+use OpenApi\Annotations\Schema;
 use OpenApi\Tests\OpenApiTestCase;
 
 final class ExamplesValidationTest extends OpenApiTestCase
@@ -36,5 +38,18 @@ final class ExamplesValidationTest extends OpenApiTestCase
 
         $annotations = $this->annotationsFromDocBlockParser('@OA\Examples(example="e", value="yo", externalValue="http://localhost/e.json")');
         $annotations[0]->validate(version: '3.1.1');
+    }
+
+    public function testSchemaExamplesHoldingAnotherAnnotation(): void
+    {
+        $this->expectLogEntry('@OA\Schema(schema="s")->examples takes values, not @OA\Property(property="oops") in ');
+
+        $context = $this->getContext();
+        $schema = new Schema([
+            'schema' => 's',
+            'examples' => [new Property(['property' => 'oops', '_context' => $context])],
+            '_context' => $context,
+        ]);
+        $schema->validate(version: '3.1.1');
     }
 }

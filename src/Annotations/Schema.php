@@ -401,6 +401,17 @@ class Schema extends AbstractAnnotation
             }
         }
 
+        // the keyword takes values, so an annotation other than `@OA\Examples` is serialised whole
+        $nested = static::$_nested[Examples::class] ?? null;
+        if (is_array($nested) && count($nested) === 1) {
+            foreach ((array) $this->examples as $example) {
+                if ($example instanceof AbstractAnnotation && !$example instanceof Examples) {
+                    $this->_context->logger->warning($this->identity() . '->examples takes values, not ' . $example->identity() . ' in ' . $example->_context);
+                    $isValid = false;
+                }
+            }
+        }
+
         return $isValid;
     }
 
