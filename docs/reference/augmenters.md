@@ -131,6 +131,9 @@ Removes unreferenced components from the specification.
 Iterates multiple times to catch nested dependencies (a schema only
 referenced by another unused schema should also be removed).
 
+Removal is silent, with one exception: a response component keyed by a status code is
+reported, because it is a response that was meant to nest into an operation.
+
 #### Config settings
 - **cleanup.enabled** : `bool` · default: `true`  
   Enables/disables removal of unreferenced components.

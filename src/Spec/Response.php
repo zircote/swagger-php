@@ -14,6 +14,13 @@ namespace OpenApi\Spec;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Response extends AbstractAttribute
 {
+    /**
+     * The shape of `$response` when the response is nested in an operation: a status code,
+     * a range, or `default`. In the `responses` bucket the same field is a component name
+     * instead, and matching this there means the response was meant to nest and did not.
+     */
+    public const STATUS_CODE_PATTERN = '/^(default|[1-5][0-9]{2}|[1-5]XX)$/';
+
     /** @var list<MediaType>|null */
     public ?array $content = null;
 
