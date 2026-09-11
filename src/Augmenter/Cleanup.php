@@ -7,6 +7,7 @@
 namespace OpenApi\Augmenter;
 
 use OpenApi\Contracts\AttributeInterface;
+use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Specification\ComponentName;
 use OpenApi\Utils\Config;
@@ -20,6 +21,9 @@ use Psr\Log\LoggerAwareTrait;
  *
  * Iterates multiple times to catch nested dependencies (a schema only
  * referenced by another unused schema should also be removed).
+ *
+ * Removal is silent, with one exception: a response component keyed by a status code is
+ * reported, because it is a response that was meant to nest into an operation.
  *
  * @implements PipeInterface<Specification>
  */
@@ -98,6 +102,7 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
         foreach ($specification->{$bucket} as $index => $item) {
             $name = ComponentName::of($item);
             if ($name !== null && !isset($usedRefs[JsonPointer::ref('components', $bucket, $name)])) {
+                $this->reportStatusCodeKey($item, $name);
                 unset($specification->{$bucket}[$index]);
                 $removed = true;
             }
@@ -107,5 +112,34 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
         }
 
         return $removed;
+    }
+
+    /**
+     * `Response::$response` is the status code when the response is nested in an operation
+     * and the component name when it is not, and `isRoot()` cannot tell the two apart — it
+     * is true whenever the key is set. So a response that fails to nest becomes a component
+     * named after its status code, which nothing references and this then removes.
+     *
+     * Removing it is right, and silence is not: the response the author wrote disappears
+     * from the document with nothing said. This is the last point at which it is visible.
+     *
+     * A component whose key does not look like a status code is left alone. An unreferenced
+     * reusable response is ordinary — a library may declare more than any one document uses.
+     */
+    protected function reportStatusCodeKey(AttributeInterface $item, string $name): void
+    {
+        if (!$item instanceof OA\Response) {
+            return;
+        }
+
+        if (preg_match(OA\Response::STATUS_CODE_PATTERN, $name) !== 1) {
+            return;
+        }
+
+        $this->logger?->warning(sprintf(
+            'Response "%s" is a component named after a status code; it was most likely meant to nest into an operation in %s',
+            $name,
+            $item->getSourceLocation(),
+        ));
     }
 }

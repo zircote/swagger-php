@@ -30,7 +30,7 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected const SCHEMA_TYPES = ['string', 'number', 'integer', 'boolean', 'array', 'object', 'null'];
 
-    protected const RESPONSE_KEY = '/^(default|[1-5][0-9]{2}|[1-5]XX)$/';
+    protected const RESPONSE_KEY = OA\Response::STATUS_CODE_PATTERN;
 
     /**
      * Maps nested in another object, as container => [property => the member field keying it].

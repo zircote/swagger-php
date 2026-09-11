@@ -9,10 +9,13 @@ namespace OpenApi\Tests\Augmenter;
 use OpenApi\Augmenter;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Tests\Concerns\ExpectsLogEntries;
 use PHPUnit\Framework\TestCase;
 
 final class CleanupTest extends TestCase
 {
+    use ExpectsLogEntries;
+
     public function testRemovesUnreferencedSchema(): void
     {
         $spec = new Specification();
@@ -188,5 +191,69 @@ final class CleanupTest extends TestCase
         (new Augmenter\Cleanup())($spec);
 
         $this->assertCount(1, $spec->securitySchemes);
+    }
+
+    public function testReportsAResponseComponentNamedAfterAStatusCode(): void
+    {
+        $spec = new Specification();
+        $spec->responses = [new OA\Response(response: 200, description: 'OK')];
+
+        $this->expectLogEntry('Response "200" is a component named after a status code', 'warning');
+
+        $cleanup = new Augmenter\Cleanup();
+        $cleanup->setLogger($this->trackingLogger());
+        $cleanup($spec);
+
+        $this->assertSame([], $spec->responses);
+    }
+
+    public function testReportsARangeAndDefaultTheSameWay(): void
+    {
+        $spec = new Specification();
+        $spec->responses = [
+            new OA\Response(response: '2XX', description: 'OK'),
+            new OA\Response(response: 'default', description: 'fallback'),
+        ];
+
+        $this->expectLogEntry('Response "2XX" is a component named after a status code', 'warning');
+        $this->expectLogEntry('Response "default" is a component named after a status code', 'warning');
+
+        $cleanup = new Augmenter\Cleanup();
+        $cleanup->setLogger($this->trackingLogger());
+        $cleanup($spec);
+
+        $this->assertSame([], $spec->responses);
+    }
+
+    /**
+     * An unreferenced reusable response is ordinary — a library may declare more than any
+     * one document uses — so removal is silent unless the key looks like a status code.
+     */
+    public function testRemovesAnUnreferencedNamedResponseWithoutReporting(): void
+    {
+        $spec = new Specification();
+        $spec->responses = [new OA\Response(response: 'NotFound', description: 'nope')];
+
+        $cleanup = new Augmenter\Cleanup();
+        $cleanup->setLogger($this->trackingLogger());
+        $cleanup($spec);
+
+        $this->assertSame([], $spec->responses);
+    }
+
+    public function testKeepsAndDoesNotReportAReferencedStatusCodeKey(): void
+    {
+        $spec = new Specification();
+        $spec->responses = [new OA\Response(response: 200, description: 'OK')];
+
+        $operation = new OA\Operation(path: '/test', method: 'get');
+        $operation->responses = [new OA\Response(response: 404, ref: '#/components/responses/200')];
+        $spec->operations[] = $operation;
+
+        $cleanup = new Augmenter\Cleanup();
+        $cleanup->setLogger($this->trackingLogger());
+        $cleanup($spec);
+
+        $this->assertCount(1, $spec->responses);
     }
 }
