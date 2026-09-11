@@ -40,7 +40,8 @@ Read the relevant page before working in that part of the tree:
 - Repeated docblock unions get a `@phpstan-type` alias, imported with
   `@phpstan-import-type` — see `BuilderSource` on `Builder`
 - Branches are `type/short-description`; commits are `type(Scope): subject`
-  (`feat`, `fix`, `docs`, `chore`, `refactor`)
+  (`feat`, `fix`, `docs`, `test`, `chore`, `refactor`) — [CONTRIBUTING](CONTRIBUTING.md)
+  covers what a message body should contain
 
 ## Before opening a pull request
 

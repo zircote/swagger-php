@@ -52,8 +52,9 @@ The prose rules in [Writing documentation](docs/dev/writing-docs.md) apply to de
 and commit messages as well as to pages: state a fact once, do not claim what you have not
 verified, no marketing filler, no volatile values, no line-number citations.
 
-A commit message body documents what the diff does; the reasoning belongs in the pull
-request description.
+Commit subjects follow the same `type(Scope): subject` shape as the title, with `type` one
+of `feat`, `fix`, `docs`, `test`, `chore` or `refactor`. A commit message body documents
+what the diff does; the reasoning belongs in the pull request description.
 
 ## Documentation
 
