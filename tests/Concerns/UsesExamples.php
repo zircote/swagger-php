@@ -18,14 +18,23 @@ trait UsesExamples
 
     public static function getSpecFilename(string $name, string $implementation = 'annotations', string $version = '3.0.0', Mode $mode = Mode::CLASSIC): string
     {
+        $basePath = static::examplePath($name);
+
         $specs = [
             "{$name}-{$implementation}-{$mode->value}-{$version}.yaml",
-            "{$name}-{$implementation}-{$version}.yaml",
             "{$name}-{$mode->value}-{$version}.yaml",
-            "{$name}-{$version}.yaml",
         ];
 
-        $basePath = static::examplePath($name);
+        // Hybrid uses spec compilers — prefer the spec expectation before falling
+        // back to the generic (classic) one, same precedence as ScratchTest.
+        if ($mode === Mode::HYBRID) {
+            $specs[] = "{$name}-{$implementation}-spec-{$version}.yaml";
+            $specs[] = "{$name}-spec-{$version}.yaml";
+        }
+
+        $specs[] = "{$name}-{$implementation}-{$version}.yaml";
+        $specs[] = "{$name}-{$version}.yaml";
+
         foreach ($specs as $spec) {
             $specFilename = "{$basePath}/{$spec}";
             if (file_exists($specFilename)) {

@@ -29,7 +29,7 @@ final class DocSnippetsTest extends OpenApiTestCase
 
         foreach ($finder as $file) {
             $key = str_replace('_an', '', $file->getBasename('.php'));
-            $snippet_spec = str_replace('_an.php', '-3.1.0.yaml', $file->getPathname());
+            $basePath = dirname($file->getPathname());
 
             foreach (['an', 'at', 'spec'] as $implementation) {
                 $snippet = str_replace('_an.php', "_{$implementation}.php", $file->getPathname());
@@ -41,12 +41,32 @@ final class DocSnippetsTest extends OpenApiTestCase
                         continue;
                     }
 
+                    $candidates = [
+                        "{$basePath}/{$key}-{$mode->value}-3.1.0.yaml",
+                    ];
+                    if ($mode === Mode::HYBRID) {
+                        $candidates[] = "{$basePath}/{$key}-spec-3.1.0.yaml";
+                    }
+                    $candidates[] = "{$basePath}/{$key}-3.1.0.yaml";
+
+                    $snippet_spec = null;
+                    foreach ($candidates as $candidate) {
+                        if (file_exists($candidate)) {
+                            $snippet_spec = $candidate;
+                            break;
+                        }
+                    }
+
+                    if ($snippet_spec === null) {
+                        continue;
+                    }
+
                     yield "{$key}-{$implementation}-$mode->value" => [
                         $snippet,
                         $implementation,
                         $mode,
                         $snippet_spec,
-                        ];
+                    ];
                 }
             }
         }
