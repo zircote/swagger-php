@@ -59,7 +59,7 @@ final class ExamplesTest extends OpenApiTestCase
                             'mode' => self::modes(),
                         ],
                         [
-                            fn (array $c): bool => $implementation === 'spec' && in_array($c['mode'], [Mode::CLASSIC, Mode::HYBRID], true),
+                            fn (array $c): bool => $implementation === 'spec' && $c['mode'] === Mode::CLASSIC,
                             fn (array $c): bool => $implementation !== 'spec' && $c['mode'] === Mode::SPEC,
                             fn (array $c): bool => $implementation === 'hybrid' && $c['mode'] !== Mode::HYBRID,
                             fn (array $c): bool => $typeResolver instanceof LegacyTypeResolver && $c['mode'] !== Mode::CLASSIC,
