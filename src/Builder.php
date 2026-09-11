@@ -283,10 +283,7 @@ class Builder
             $generator->setVersion($this->version);
         }
 
-        $generator->setProcessorPipeline(new Utils\Pipeline([
-            new Processors\MergeJsonContent(),
-            new Processors\MergeXmlContent(),
-        ]));
+        $generator->setProcessorPipeline(new Utils\Pipeline([]));
 
         if ($this->generatorHook !== null) {
             $generator = ($this->generatorHook)($generator) ?? $generator;
