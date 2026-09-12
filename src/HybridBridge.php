@@ -651,6 +651,7 @@ class HybridBridge
             pattern: $this->val($schema->pattern),
             contentMediaType: $this->val($schema->contentMediaType),
             contentEncoding: $this->val($schema->contentEncoding),
+            contentSchema: Undefined::isDefault($schema->contentSchema) ? null : $this->convertSchemaValue($schema->contentSchema),
             minimum: $this->val($schema->minimum),
             maximum: $this->val($schema->maximum),
             exclusiveMinimum: $this->val($schema->exclusiveMinimum),
@@ -660,7 +661,11 @@ class HybridBridge
             minItems: $this->val($schema->minItems),
             maxItems: $this->val($schema->maxItems),
             uniqueItems: $this->val($schema->uniqueItems),
+            prefixItems: Undefined::isDefault($schema->prefixItems) ? null : array_map($this->convertSchemaValue(...), $schema->prefixItems),
             contains: $this->convertSchemaOrBool($schema->contains),
+            minContains: $this->val($schema->minContains),
+            maxContains: $this->val($schema->maxContains),
+            unevaluatedItems: $this->convertSchemaOrBool($schema->unevaluatedItems),
             properties: $properties,
             required: Undefined::isDefault($schema->required) ? null : $schema->required,
             additionalProperties: $this->convertAdditionalProperties($schema),
@@ -673,10 +678,15 @@ class HybridBridge
             propertyNames: Undefined::isDefault($schema->propertyNames)
                 ? null
                 : $this->convertSchema($schema->propertyNames),
+            dependentRequired: Undefined::isDefault($schema->dependentRequired) ? null : $schema->dependentRequired,
+            dependentSchemas: Undefined::isDefault($schema->dependentSchemas) ? null : array_map($this->convertSchemaValue(...), $schema->dependentSchemas),
             allOf: Undefined::isDefault($schema->allOf) ? null : array_map($this->convertSchema(...), $schema->allOf),
             anyOf: Undefined::isDefault($schema->anyOf) ? null : array_map($this->convertSchema(...), $schema->anyOf),
             oneOf: Undefined::isDefault($schema->oneOf) ? null : array_map($this->convertSchema(...), $schema->oneOf),
             not: Undefined::isDefault($schema->not) ? null : $this->convertSchema($schema->not),
+            if: Undefined::isDefault($schema->if) ? null : $this->convertSchemaValue($schema->if),
+            then: Undefined::isDefault($schema->then) ? null : $this->convertSchemaValue($schema->then),
+            else: Undefined::isDefault($schema->else) ? null : $this->convertSchemaValue($schema->else),
             enum: Undefined::isDefault($schema->enum) ? null : $schema->enum,
             const: Undefined::isDefault($schema->const) ? Undefined::UNDEFINED : $schema->const,
             example: Undefined::isDefault($schema->example) ? Undefined::UNDEFINED : $schema->example,
@@ -708,9 +718,24 @@ class HybridBridge
     {
         return match (true) {
             Undefined::isDefault($value) => null,
-            $value instanceof OA\Schema => $this->convertSchema($value),
+            $value instanceof OA\Schema, is_array($value) => $this->convertSchemaValue($value),
             default => $value,
         };
+    }
+
+    /**
+     * Convert a schema-valued keyword; classic docblocks and attributes may carry the
+     * schema as a plain array instead of a Schema annotation.
+     *
+     * @param OA\Schema|array<string,mixed> $value
+     */
+    protected function convertSchemaValue(OA\Schema|array $value): Spec\Schema
+    {
+        if (is_array($value)) {
+            $value = new OA\Schema([...$value, '_context' => new Context(['generated' => true])]);
+        }
+
+        return $this->convertSchema($value);
     }
 
     protected function convertProperty(OA\Property $prop): Spec\Property

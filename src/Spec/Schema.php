@@ -68,6 +68,7 @@ class Schema extends AbstractAttribute
      * @param string|null                                                             $pattern               Regular expression pattern the string must match
      * @param string|null                                                             $contentMediaType      The media type of string content encoding
      * @param string|null                                                             $contentEncoding       The encoding used for string content (e.g. base64)
+     * @param Schema|null                                                             $contentSchema         Schema for the decoded content described by contentMediaType
      * @param int|float|null                                                          $minimum               Minimum numeric value (inclusive)
      * @param int|float|null                                                          $maximum               Maximum numeric value (inclusive)
      * @param int|float|bool|null                                                     $exclusiveMinimum      Exclusive minimum value
@@ -133,6 +134,7 @@ class Schema extends AbstractAttribute
         public ?string $pattern = null,
         public ?string $contentMediaType = null,
         public ?string $contentEncoding = null,
+        public ?Schema $contentSchema = null,
 
         // Numeric constraints
         public int|float|null $minimum = null,

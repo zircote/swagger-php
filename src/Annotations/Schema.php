@@ -312,6 +312,9 @@ class Schema extends AbstractAnnotation
         'allOf' => '[' . Schema::class . ']',
         'oneOf' => '[' . Schema::class . ']',
         'anyOf' => '[' . Schema::class . ']',
+        'prefixItems' => '[' . Schema::class . ']',
+        'minContains' => 'integer',
+        'maxContains' => 'integer',
         'contentEncoding' => 'string',
         'contentMediaType' => 'string',
     ];
@@ -365,6 +368,14 @@ class Schema extends AbstractAnnotation
 
         if ($this->_context->isVersion('3.0.x')) {
             unset($data->examples);
+            foreach ([
+                'contains', 'minContains', 'maxContains', 'prefixItems',
+                'patternProperties', 'propertyNames', 'unevaluatedProperties', 'unevaluatedItems',
+                'dependentRequired', 'dependentSchemas', 'if', 'then', 'else',
+                'contentMediaType', 'contentEncoding', 'contentSchema',
+            ] as $keyword) {
+                unset($data->{$keyword});
+            }
             if (isset($data->const)) {
                 $data->enum = [$data->const];
                 unset($data->const);
@@ -388,7 +399,10 @@ class Schema extends AbstractAnnotation
     {
         $isValid = parent::validate($analysis, $version, $context);
 
-        if ($this->hasType('array') && Undefined::isDefault($this->items)) {
+        if ($this->hasType('array') && Undefined::isDefault($this->items)
+            && (OpenApi::versionMatch($version, '3.0.x')
+                || (Undefined::isDefault($this->prefixItems) && Undefined::isDefault($this->contains)))) {
+            // 3.1 array schemas may describe their items via prefixItems or contains; 3.0 requires items
             $this->_context->logger->warning('@OA\\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
 
             $isValid = false;
@@ -397,6 +411,18 @@ class Schema extends AbstractAnnotation
         if (OpenApi::versionMatch($version, '3.0.x')) {
             if (!Undefined::isDefault($this->examples)) {
                 $this->_context->logger->warning(static::shorten(static::class) . '::examples is only allowed as of 3.1.0 in ' . $this->_context);
+                $isValid = false;
+            }
+
+            // the same keywords the spec compiler warns about; the rest drop silently
+            foreach (['prefixItems', 'unevaluatedProperties', 'unevaluatedItems'] as $keyword) {
+                if (!Undefined::isDefault($this->{$keyword})) {
+                    $this->_context->logger->warning($this->identity() . ': ' . $keyword . ' is not supported in OpenAPI 3.0 in ' . $this->_context);
+                    $isValid = false;
+                }
+            }
+            if (!Undefined::isDefault($this->if) || !Undefined::isDefault($this->then) || !Undefined::isDefault($this->else)) {
+                $this->_context->logger->warning($this->identity() . ': if/then/else is not supported in OpenAPI 3.0 in ' . $this->_context);
                 $isValid = false;
             }
         }

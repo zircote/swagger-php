@@ -1,0 +1,36 @@
+openapi: 3.0.0
+info:
+  title: SchemaKeywords
+  version: '1.0'
+paths:
+  /endpoint:
+    get:
+      operationId: endpoint
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/conditional'
+components:
+  schemas:
+    conditional:
+      type: object
+      properties:
+        country:
+          type: string
+        postalCode:
+          type: string
+        region:
+          type: string
+    tuple:
+      type: array
+    dependent:
+      type: object
+    embedded:
+      type: string
+    decoded:
+      type: object
+    envelope:
+      type: string
