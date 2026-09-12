@@ -64,6 +64,23 @@ final class CommandlineTest extends OpenApiTestCase
         $this->assertStringContainsString('The "--exclude" option requires a value.', $output);
     }
 
+    public static function invalidEnumOptionCases(): iterable
+    {
+        yield 'format' => ['-f xml', 'The value "xml" is not valid for the "format" option. Supported values are "json", "yaml", "auto".'];
+        yield 'mode' => ['-m bogus', 'The value "bogus" is not valid for the "mode" option. Supported values are "classic", "hybrid", "spec".'];
+    }
+
+    #[DataProvider('invalidEnumOptionCases')]
+    public function testInvalidEnumOption(string $args, string $expected): void
+    {
+        $basePath = self::examplePath('petstore');
+        $path = "{$basePath}/annotations";
+        exec($this->getCommandToExecute(__DIR__ . '/../bin/openapi ' . $args . ' ' . escapeshellarg($path) . ' 2>&1'), $output, $retval);
+
+        $this->assertSame(1, $retval);
+        $this->assertStringContainsString($expected, (string) preg_replace('/\s+/', ' ', implode(' ', $output)));
+    }
+
     public static function versionCases(): iterable
     {
         yield 'default' => ['', '3.1.0'];
