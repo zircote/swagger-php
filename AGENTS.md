@@ -35,7 +35,9 @@ Read the relevant page before working in that part of the tree:
 - `protected` over `private` for methods and properties, so downstream can subclass
 - British spelling in `src/`, US in `docs/` — follow whichever is local to the file
 - New pipeline work goes in `src/Spec/`, `src/Augmenter/`, `src/Compiler/`;
-  `src/Annotations/` and `src/Attributes/` are classic and closed to new features —
+  `src/Annotations/` and `src/Attributes/` are classic and closed to new capabilities,
+  with one carve-out: an OpenAPI construct classic claims to model but cannot express
+  is a spec-compliance defect, and fixing it is in scope —
   [ROADMAP.md](ROADMAP.md) has the v7/v8 plan
 - Repeated docblock unions get a `@phpstan-type` alias, imported with
   `@phpstan-import-type` — see `BuilderSource` on `Builder`
