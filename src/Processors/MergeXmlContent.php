@@ -22,7 +22,7 @@ class MergeXmlContent
 
         foreach ($annotations as $xmlContent) {
             $parent = $xmlContent->_context->nested;
-            if (!($parent instanceof OA\Response) && !($parent instanceof OA\RequestBody) && !($parent instanceof OA\Parameter)) {
+            if (!($parent instanceof OA\Response) && !($parent instanceof OA\RequestBody) && !($parent instanceof OA\Parameter) && !($parent instanceof OA\Header)) {
                 if ($parent) {
                     $xmlContent->_context->logger->warning('Unexpected ' . $xmlContent->identity() . ' in ' . $parent->identity() . ' in ' . $parent->_context);
                 } else {

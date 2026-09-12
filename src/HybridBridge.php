@@ -563,7 +563,16 @@ class HybridBridge
             required: $this->val($header->required),
             deprecated: $this->val($header->deprecated),
             ref: $this->val($header->ref),
+            style: $this->val($header->style),
+            explode: $this->val($header->explode),
             schema: Undefined::isDefault($header->schema) ? null : $this->convertSchema($header->schema),
+            example: Undefined::isDefault($header->example) ? Undefined::UNDEFINED : $header->example,
+            examples: Undefined::isDefault($header->examples)
+                ? null
+                : array_map($this->convertExample(...), $header->examples),
+            content: Undefined::isDefault($header->content)
+                ? null
+                : array_map($this->convertMediaType(...), $header->content),
             x: $this->extensions($header),
         );
         $this->copyReflector($header, $result);

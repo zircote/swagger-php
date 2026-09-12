@@ -12,9 +12,11 @@ use OpenApi\Undefined;
 class Header extends OA\Header
 {
     /**
-     * @param string|class-string|object|null $ref
-     * @param array<string,mixed>|null        $x
-     * @param list<Attachable>|null           $attachables
+     * @param string|class-string|object|null                         $ref
+     * @param array<Examples>|null                                    $examples
+     * @param array<MediaType>|JsonContent|XmlContent|Attachable|null $content
+     * @param array<string,mixed>|null                                $x
+     * @param list<Attachable>|null                                   $attachables
      */
     public function __construct(
         string|object|null $ref = null,
@@ -24,6 +26,11 @@ class Header extends OA\Header
         ?Schema $schema = null,
         ?bool $deprecated = null,
         ?bool $allowEmptyValue = null,
+        ?string $style = null,
+        ?bool $explode = null,
+        mixed $example = Undefined::UNDEFINED,
+        ?array $examples = null,
+        array|JsonContent|XmlContent|Attachable|null $content = null,
 
         // abstract annotation
         ?array $x = null,
@@ -36,9 +43,12 @@ class Header extends OA\Header
             'required' => $required ?? Undefined::UNDEFINED,
             'deprecated' => $deprecated ?? Undefined::UNDEFINED,
             'allowEmptyValue' => $allowEmptyValue ?? Undefined::UNDEFINED,
+            'style' => $style ?? Undefined::UNDEFINED,
+            'explode' => $explode ?? Undefined::UNDEFINED,
+            'example' => $example,
             'x' => $x ?? Undefined::UNDEFINED,
             'attachables' => $attachables ?? Undefined::UNDEFINED,
-            'value' => $this->combine($schema),
+            'value' => $this->combine($schema, $examples, $content),
         ]);
     }
 }

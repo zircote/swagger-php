@@ -85,6 +85,7 @@ class MediaType extends AbstractAnnotation
     public static $_parents = [
         Response::class,
         RequestBody::class,
+        Header::class,
     ];
 
     protected function encodingCompat($encoding, callable $factory)
