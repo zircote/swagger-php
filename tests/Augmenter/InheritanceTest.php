@@ -32,6 +32,7 @@ final class InheritanceTest extends TestCase
             new \ReflectionClass(HierarchyFixtures\PlainParent::class),
             new \ReflectionClass(HierarchyFixtures\ChildOfPlainParent::class),
             new \ReflectionClass(HierarchyFixtures\StandaloneSchema::class),
+            new \ReflectionClass(HierarchyFixtures\ClassUsingOrderedTraits::class),
         );
 
         $spec = $assembler->getSpecification();

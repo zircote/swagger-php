@@ -38,9 +38,17 @@ class Schemas
 
             $existingProperties = array_map(fn (OA\Property $property): ?string => $property->property, $schema->properties ?? []);
 
-            $this->expandParents($schema, $reflector, $index, $existingProperties);
-            $this->expandTraits($schema, $reflector, $index, $existingProperties);
-            $this->expandInterfaces($schema, $reflector, $index, $existingProperties);
+            // merged members accumulate in visit order and are prepended once; prepending per
+            // source would emit each group of siblings - traits, most of all - in reverse
+            $merged = [];
+
+            $this->expandParents($schema, $reflector, $index, $existingProperties, $merged);
+            $this->expandTraits($schema, $reflector, $index, $existingProperties, $merged);
+            $this->expandInterfaces($schema, $reflector, $index, $existingProperties, $merged);
+
+            if ($merged !== []) {
+                $schema->properties = [...$merged, ...($schema->properties ?? [])];
+            }
         }
 
         return null;
@@ -49,8 +57,9 @@ class Schemas
     /**
      * @param \ReflectionClass<object> $reflector
      * @param list<string|null>        $existingProperties
+     * @param list<OA\Property>        $merged
      */
-    protected function expandParents(OA\Schema $schema, \ReflectionClass $reflector, ComponentIndex $index, array &$existingProperties): void
+    protected function expandParents(OA\Schema $schema, \ReflectionClass $reflector, ComponentIndex $index, array &$existingProperties, array &$merged): void
     {
         $parent = $reflector->getParentClass();
         while ($parent !== false) {
@@ -60,7 +69,7 @@ class Schemas
                 break;
             }
 
-            $this->mergeMembers($schema, $parent, $existingProperties);
+            $this->mergeMembers($parent, $existingProperties, $merged);
             $parent = $parent->getParentClass();
         }
     }
@@ -68,15 +77,16 @@ class Schemas
     /**
      * @param \ReflectionClass<object> $reflector
      * @param list<string|null>        $existingProperties
+     * @param list<OA\Property>        $merged
      */
-    protected function expandTraits(OA\Schema $schema, \ReflectionClass $reflector, ComponentIndex $index, array &$existingProperties): void
+    protected function expandTraits(OA\Schema $schema, \ReflectionClass $reflector, ComponentIndex $index, array &$existingProperties, array &$merged): void
     {
         foreach ($this->attributeFactory->getDirectTraits($reflector) as $trait) {
             $traitSchema = $index->findSchema($trait->getName());
             if ($traitSchema instanceof OA\Schema) {
                 $this->addAllOfRef($schema, $traitSchema);
             } else {
-                $this->mergeMembers($schema, $trait, $existingProperties);
+                $this->mergeMembers($trait, $existingProperties, $merged);
             }
         }
 
@@ -91,7 +101,7 @@ class Schemas
                 if ($traitSchema instanceof OA\Schema) {
                     $this->addAllOfRef($schema, $traitSchema);
                 } else {
-                    $this->mergeMembers($schema, $trait, $existingProperties);
+                    $this->mergeMembers($trait, $existingProperties, $merged);
                 }
             }
 
@@ -102,8 +112,9 @@ class Schemas
     /**
      * @param \ReflectionClass<object> $reflector
      * @param list<string|null>        $existingProperties
+     * @param list<OA\Property>        $merged
      */
-    protected function expandInterfaces(OA\Schema $schema, \ReflectionClass $reflector, ComponentIndex $index, array &$existingProperties): void
+    protected function expandInterfaces(OA\Schema $schema, \ReflectionClass $reflector, ComponentIndex $index, array &$existingProperties, array &$merged): void
     {
         $ownInterfaces = $this->attributeFactory->getDirectInterfaces($reflector);
 
@@ -112,7 +123,7 @@ class Schemas
             if ($interfaceSchema instanceof OA\Schema) {
                 $this->addAllOfRef($schema, $interfaceSchema);
             } else {
-                $this->mergeMembers($schema, $interface, $existingProperties);
+                $this->mergeMembers($interface, $existingProperties, $merged);
             }
         }
     }
@@ -129,11 +140,11 @@ class Schemas
     /**
      * @param \ReflectionClass<object> $class
      * @param list<string|null>        $existingProperties
+     * @param list<OA\Property>        $merged
      */
-    protected function mergeMembers(OA\Schema $schema, \ReflectionClass $class, array &$existingProperties): void
+    protected function mergeMembers(\ReflectionClass $class, array &$existingProperties, array &$merged): void
     {
         $members = $this->attributeFactory->membersOf($class);
-        $merged = [];
         foreach ($members as $member) {
             if ($member instanceof OA\Property) {
                 // fallback to reflector if name not (yet) set
@@ -143,10 +154,6 @@ class Schemas
                     $merged[] = $member;
                 }
             }
-        }
-
-        if ($merged !== []) {
-            $schema->properties = [...$merged, ...($schema->properties ?? [])];
         }
     }
 }

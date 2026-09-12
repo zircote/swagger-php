@@ -19,6 +19,10 @@ components:
       type: object
       description: 'This model can be ignored, it is just used for inheritance.'
       properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
         created_at:
           type: string
           format: date-time
@@ -26,10 +30,6 @@ components:
         updated_at:
           type: string
           format: date-time
-          readOnly: true
-        id:
-          type: integer
-          format: int64
           readOnly: true
     Product:
       type: object

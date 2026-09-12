@@ -614,10 +614,6 @@ oneOf:
   - { type: 'null' }
 ```
 
-### Trait property ordering
-
-When traits without their own `#[OA\Schema]` are merged inline, the property order in the output may differ between modes. Spec mode orders properties by trait `use` declaration order, which may place trait properties differently than classic mode.
-
 ### Nullable type inference from PHP types
 
 Spec mode consistently infers nullability from PHP type declarations (e.g. `?\DateTime`). For OpenAPI 3.0 this adds `nullable: true`; for 3.1+ it emits `type: ['string', 'null']`. Classic mode may not infer nullability in all cases where the PHP type is nullable.
