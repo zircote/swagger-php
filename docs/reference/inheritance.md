@@ -70,7 +70,7 @@ User:
 
 ### Duplicate $ref deduplication
 
-If you explicitly declare an `allOf` entry that matches one the augmenter would add (e.g. you extend a class and also manually reference it), the `Refs` augmenter (`dedupAllOfRefs()`) deduplicates — only one `$ref` survives.
+If you explicitly declare an `allOf` entry that matches one the augmenter would add (e.g. you extend a class and also manually reference it), the `Refs` augmenter (`dedupAllOfRefs()`) deduplicates — only one `$ref` survives. Deduplication runs after class-strings are resolved, so `ref: Parent::class` and `#/components/schemas/parent` count as the same entry.
 
 ## PathItem Inheritance
 

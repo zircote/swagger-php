@@ -28,3 +28,11 @@ components:
           required:
             - name
             - email
+    update-user:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/abstract-user'
+        -
+          required:
+            - name
