@@ -16,6 +16,13 @@ ChildOfPlainParent:
         - parentProp
         - childProp
 
+ClassUsingOrderedTraits:
+    properties:
+        - parentProp
+        - traitProp
+        - orderedProp
+        - ownProp
+
 ClassUsingPlainTrait:
     properties:
         - traitProp

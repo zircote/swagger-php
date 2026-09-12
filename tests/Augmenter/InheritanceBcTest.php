@@ -31,6 +31,20 @@ final class InheritanceBcTest extends TestCase
         $this->assertCompiledSchemasMatchFile($schemas, self::EXPECTED_FILE, $pipeline);
     }
 
+    /**
+     * Property order carries no meaning in OpenAPI, but reversed `use` order is nobody's
+     * intent - and `assertCompiledSchemasMatchFile()` sorts, so only this pins it.
+     */
+    #[DataProvider('pipelines')]
+    public function testMergedMemberOrderFollowsDeclaration(string $pipeline, array $schemas): void
+    {
+        $this->assertSame(
+            ['parentProp', 'traitProp', 'orderedProp', 'ownProp'],
+            array_keys($schemas['ClassUsingOrderedTraits']['properties'] ?? []),
+            "[{$pipeline}] merged members follow visit order: parent, then traits in `use` order, own properties last",
+        );
+    }
+
     public static function pipelines(): iterable
     {
         yield 'spec' => ['spec', self::buildSpec(__DIR__ . '/../Fixtures/Augmenter/Hierarchy/Spec')];

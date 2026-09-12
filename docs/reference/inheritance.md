@@ -52,7 +52,9 @@ Only **direct** interfaces of the schema's class are processed. Unlike parents, 
 
 ### Property merging
 
-When an ancestor has no schema, its `#[OA\Property]` members are merged into the current schema. Deduplication is by property name — if the schema already declares a property with the same name, the ancestor's version is skipped. Merged properties are prepended to the schema's property list.
+When an ancestor has no schema, its `#[OA\Property]` members are merged into the current schema. Deduplication is by property name — if the schema already declares a property with the same name, the ancestor's version is skipped.
+
+Everything merged from ancestors is prepended to the schema's own properties as a single block, in the order the augmenter visited it: parents from nearest to root, then the class's direct traits in `use` order, then the traits of each non-schema ancestor, then interfaces. The schema's own properties come last.
 
 ### allOf restructuring
 
