@@ -40,3 +40,16 @@ class AbstractUserSpec
 class CreateUserSpec extends AbstractUserSpec
 {
 }
+
+// the same duplicate written as a FQCN: the inheritance augmenter adds the component
+// pointer, the attribute names the class, and both resolve to `abstract-user`
+#[OA\Schema(
+    schema: 'update-user',
+    allOf: [
+        new OA\Schema(ref: AbstractUserSpec::class),
+        new OA\Schema(required: ['name']),
+    ]
+)]
+class UpdateUserSpec extends AbstractUserSpec
+{
+}

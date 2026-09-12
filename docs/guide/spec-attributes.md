@@ -541,12 +541,6 @@ create-user:
 
 This is semantically stricter — the schema explicitly declares it must be an object, rather than leaving the type to be inferred from the `allOf` members.
 
-### Duplicate `$ref` deduplication in `allOf`
-
-When a class extends a parent that has its own schema, the `Inheritance` augmenter adds a `$ref` to the parent in `allOf`. If you also declare that same `$ref` explicitly, spec mode deduplicates it — only one entry survives. Classic mode may emit the same `$ref` twice.
-
-Reusing the `CreateUser` example above: it both extends `AbstractUser` and names `abstract-user` in its own `allOf`. In spec mode that `$ref` appears once rather than twice — `Refs::dedupAllOfRefs()` drops the duplicate.
-
 ### Single-element `type` arrays reduced to string
 
 When a schema's `type` is an array with a single element (e.g. `['string']`), spec mode compiles it as a plain string (`type: 'string'`). Classic mode may emit the array form.

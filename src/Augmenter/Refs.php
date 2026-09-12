@@ -29,23 +29,33 @@ class Refs implements PipeInterface, LoggerAwareInterface
     public function __invoke(mixed $payload): mixed
     {
         foreach ($payload->schemas as $schema) {
-            $reflector = $schema->getClassReflector();
-            if ($reflector === null) {
+            if ($schema->getClassReflector() === null) {
                 continue;
             }
             $this->mergeAllOf($schema);
-            $this->dedupAllOfRefs($schema);
         }
 
         $index = $payload->buildComponentIndex();
         $refMap = $index->buildRefMap();
 
+        if ($refMap !== []) {
+            $this->resolveRefRefs($payload);
+            $this->resolveFQCNRefs($payload, $refMap);
+        }
+
+        // deduplicate once every ref carries its final value: a FQCN and the component
+        // pointer added by Augmenter\Inheritance name the same schema but differ as strings
+        foreach ($payload->schemas as $schema) {
+            if ($schema->getClassReflector() === null) {
+                continue;
+            }
+            $this->dedupAllOfRefs($schema);
+        }
+
         if ($refMap === []) {
             return null;
         }
 
-        $this->resolveRefRefs($payload);
-        $this->resolveFQCNRefs($payload, $refMap);
         $this->resolveDiscriminatorMappings($payload, $refMap);
         $this->resolveAllOfPropertyRefs($payload);
 
