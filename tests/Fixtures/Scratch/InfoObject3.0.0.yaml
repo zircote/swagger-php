@@ -1,0 +1,19 @@
+openapi: 3.0.0
+info:
+  title: InfoObject
+  description: 'What the API is for, at more length.'
+  termsOfService: 'https://example.com/terms'
+  contact:
+    name: Support
+    url: 'https://example.com/support'
+    email: support@example.com
+  license:
+    name: MIT
+  version: '1.0'
+paths:
+  /endpoint:
+    get:
+      operationId: endpoint
+      responses:
+        200:
+          description: OK

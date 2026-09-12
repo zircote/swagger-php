@@ -1003,6 +1003,10 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 CommonMark syntax may be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The title of the application.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A short summary of the API.<br />
+<br />
+Exists as of 3.1; a 3.0 document omits it.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>termsOfService</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>An URL to the Terms of Service for the API.<br />
 <br />
