@@ -1,0 +1,40 @@
+openapi: 3.0.0
+info:
+  title: HeaderObject
+  version: '1.0'
+paths:
+  /endpoint:
+    get:
+      operationId: endpoint
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Rate-Limit-Limit:
+              description: 'The number of allowed requests in the current period'
+              schema:
+                type: integer
+              example: 100
+            X-Expires-After:
+              style: simple
+              explode: true
+              schema:
+                type: string
+                format: date-time
+              examples:
+                midnight:
+                  summary: 'End of day'
+                  value: '2027-01-01T00:00:00Z'
+            X-Request-Id:
+              $ref: '#/components/headers/X-Request-Id'
+            X-Complex:
+              content:
+                application/json:
+                  schema: { type: object }
+components:
+  headers:
+    X-Request-Id:
+      required: true
+      schema:
+        type: string
+        format: uuid

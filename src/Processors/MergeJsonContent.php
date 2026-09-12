@@ -22,7 +22,7 @@ class MergeJsonContent
 
         foreach ($annotations as $jsonContent) {
             $parent = $jsonContent->_context->nested;
-            if (!($parent instanceof OA\Response) && !($parent instanceof OA\RequestBody) && !($parent instanceof OA\Parameter)) {
+            if (!($parent instanceof OA\Response) && !($parent instanceof OA\RequestBody) && !($parent instanceof OA\Parameter) && !($parent instanceof OA\Header)) {
                 if ($parent) {
                     $jsonContent->_context->logger->warning('Unexpected ' . $jsonContent->identity() . ' in ' . $parent->identity() . ' in ' . $parent->_context);
                 } else {

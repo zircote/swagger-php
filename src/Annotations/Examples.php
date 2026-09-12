@@ -88,6 +88,7 @@ class Examples extends AbstractAnnotation
         PathParameter::class,
         Property::class,
         MediaType::class,
+        Header::class,
         JsonContent::class,
         XmlContent::class,
     ];

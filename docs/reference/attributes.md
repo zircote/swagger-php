@@ -545,7 +545,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 #### Allowed in
 ---
-<a href="#additionalproperties">AdditionalProperties</a>, <a href="#components">Components</a>, <a href="#items">Items</a>, <a href="#schema">Schema</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#property">Property</a>, <a href="#mediatype">MediaType</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#xmlcontent">XmlContent</a>
+<a href="#additionalproperties">AdditionalProperties</a>, <a href="#components">Components</a>, <a href="#items">Items</a>, <a href="#schema">Schema</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#property">Property</a>, <a href="#mediatype">MediaType</a>, <a href="#header">Header</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#xmlcontent">XmlContent</a>
 
 #### Nested elements
 ---
@@ -842,7 +842,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 #### Nested elements
 ---
-<a href="#schema">Schema</a>, <a href="#attachable">Attachable</a>
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#mediatype">MediaType</a>, <a href="#attachable">Attachable</a>
 
 #### Parameters
 ---
@@ -859,7 +859,7 @@ CommonMark syntax MAY be used for rich text representation.</p><table class="tab
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Attributes\Schema|null</span></dt>
-  <dd><p>Schema object.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
+  <dd><p>Schema object.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Specifies that a parameter is deprecated and SHOULD be transitioned out of usage.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool|null</span></dt>
@@ -870,6 +870,34 @@ This is valid only for query parameters and allows sending a parameter with an e
 Default value is false.<br />
 <br />
 If style is used, and if behavior is n/a (cannot be serialized), the value of allowEmptyValue SHALL be ignored.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>style</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Describes how the header value will be serialized.<br />
+<br />
+Headers support only the "simple" style; it is also the default.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>When this is true, header values of type array or object generate a single header<br />
+whose value is a comma-separated list of the array items or key-value pairs of the map.<br />
+<br />
+The default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>Example of the header.<br />
+<br />
+The example should match the specified schema if present.<br />
+The example object is mutually exclusive of the examples object.<br />
+Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">array&lt;Examples&gt;|null</span></dt>
+  <dd><p>Examples of the header.<br />
+<br />
+Each example should match the specified schema if present.<br />
+The examples object is mutually exclusive of the example object.<br />
+Furthermore, if referencing a schema which contains an example, the examples value shall override the example provided by the schema.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable|null</span></dt>
+  <dd><p>A map containing the representations for the header.<br />
+<br />
+The key is the media type and the value describes it.<br />
+The map must only contain one entry.<br />
+<br />
+The content map is mutually exclusive of the schema property.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>x</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
   <dd><p>While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.<br />
 For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions<br />
@@ -1520,7 +1548,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 #### Allowed in
 ---
-<a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>
+<a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#header">Header</a>
 
 #### Nested elements
 ---
