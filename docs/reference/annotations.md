@@ -92,7 +92,7 @@ A <code>@OA\Request</code> cookie parameter.
 
 #### Nested elements
 ---
-<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#mediatype">MediaType</a>, <a href="#attachable">Attachable</a>
 
 #### Properties
 ---
@@ -371,7 +371,7 @@ A <code>@OA\Request</code> header parameter.
 
 #### Nested elements
 ---
-<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#mediatype">MediaType</a>, <a href="#attachable">Attachable</a>
 
 #### Properties
 ---
@@ -548,7 +548,7 @@ Parameter encodings can be set either here, or on nested `Property` annotations 
 
 #### Allowed in
 ---
-<a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>
+<a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#parameter">Parameter</a>
 
 #### Nested elements
 ---
@@ -634,7 +634,7 @@ A unique parameter is defined by a combination of a name and location.
 
 #### Nested elements
 ---
-<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#mediatype">MediaType</a>, <a href="#attachable">Attachable</a>
 
 #### Properties
 ---
@@ -699,11 +699,6 @@ The example should match the specified schema and encoding properties if present
 The example object is mutually exclusive of the examples object.<br />
 Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.<br />
 To represent examples of media types that cannot naturally be represented in JSON or YAML, a string value can contain the example with escaping where necessary.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType&gt;|JsonContent|XmlContent|Attachable</span></dt>
-  <dd><p>A map containing the representations for the parameter.<br />
-<br />
-The key is the media type and the value describes it.<br />
-The map must only contain one entry.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>matrix</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>Path-style parameters defined by RFC6570.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://tools.ietf.org/html/rfc6570#section-3.2.7">RFC6570</a></td></tr></tbody></table></dd>
   <dt><strong>label</strong> : <span style="font-family: monospace;">string</span></dt>
@@ -791,7 +786,7 @@ A <code>@OA\Request</code> path parameter.
 
 #### Nested elements
 ---
-<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#mediatype">MediaType</a>, <a href="#attachable">Attachable</a>
 
 #### Properties
 ---
@@ -882,7 +877,7 @@ A <code>@OA\Request</code> query parameter.
 
 #### Nested elements
 ---
-<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#mediatype">MediaType</a>, <a href="#attachable">Attachable</a>
 
 #### Properties
 ---
