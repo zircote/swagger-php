@@ -6,6 +6,7 @@
 
 namespace OpenApi\Annotations;
 
+use OpenApi\Analysis;
 use OpenApi\Undefined;
 
 /**
@@ -100,7 +101,7 @@ class SecurityScheme extends AbstractAnnotation
      * @inheritdoc
      */
     public static $_types = [
-        'type' => ['http', 'apiKey', 'oauth2', 'openIdConnect'],
+        'type' => ['http', 'apiKey', 'mutualTLS', 'oauth2', 'openIdConnect'],
         'description' => 'string',
         'name' => 'string',
         'bearerFormat' => 'string',
@@ -121,6 +122,19 @@ class SecurityScheme extends AbstractAnnotation
     public static $_parents = [
         Components::class,
     ];
+
+    #[\Override]
+    public function validate(?Analysis $analysis = null, string $version = OpenApi::DEFAULT_VERSION, ?object $context = null): bool
+    {
+        $isValid = parent::validate($analysis, $version, $context);
+
+        if (OpenApi::versionMatch($version, '3.0.x') && $this->type === 'mutualTLS') {
+            $this->_context->logger->warning('mutualTLS security schemes are not supported in OpenAPI 3.0 and will be omitted: ' . $this->identity() . ' in ' . $this->_context);
+            $isValid = false;
+        }
+
+        return $isValid;
+    }
 
     /**
      * @inheritdoc

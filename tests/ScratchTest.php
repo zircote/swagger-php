@@ -27,6 +27,7 @@ final class ScratchTest extends OpenApiTestCase
         // Keyed `{fixture}-{version}`, applying to every mode, or `{fixture}-{version}-{mode}`
         // for a diagnostic only one mode raises. Both keys contribute when both are present.
         $expectedLogs = [
+            'Auth-3.0.0' => ['mutualTLS security schemes are not supported in OpenAPI 3.0 and will be omitted'],
             'Examples-3.0.0-classic' => ['@OA\Schema::examples is only allowed as of 3.1.0'],
             'Examples-3.0.0-spec' => ['examples array is not supported in OpenAPI 3.0'],
             'Examples-3.0.0-hybrid' => ['examples array is not supported in OpenAPI 3.0'],
