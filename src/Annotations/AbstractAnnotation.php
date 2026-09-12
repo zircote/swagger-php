@@ -111,6 +111,9 @@ abstract class AbstractAnnotation implements \JsonSerializable
         $nestedContext = new Context(['nested' => $this], $this->_context);
         foreach ($properties as $property => $value) {
             if (property_exists($this, $property)) {
+                if ($value instanceof AbstractAnnotation) {
+                    $value = $this->nested($value, $nestedContext);
+                }
                 $this->{$property} = $value;
                 if (is_array($value)) {
                     foreach ($value as $key => $annotation) {

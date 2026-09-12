@@ -1,0 +1,71 @@
+openapi: 3.1.0
+info:
+  title: SchemaKeywords
+  version: '1.0'
+paths:
+  /endpoint:
+    get:
+      operationId: endpoint
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/conditional'
+components:
+  schemas:
+    conditional:
+      type: object
+      properties:
+        country:
+          type: string
+        postalCode:
+          type: string
+        region:
+          type: string
+      if:
+        required:
+          - country
+      then:
+        required:
+          - postalCode
+      else:
+        required:
+          - region
+    tuple:
+      type: array
+      prefixItems:
+        -
+          type: string
+        -
+          type: integer
+      contains:
+        type: string
+      minContains: 1
+      maxContains: 3
+      unevaluatedItems: false
+      unevaluatedProperties:
+        type: string
+    dependent:
+      type: object
+      dependentRequired:
+        creditCard:
+          - billingAddress
+      dependentSchemas:
+        creditCard:
+          required:
+            - billingAddress
+    embedded:
+      type: string
+      contentMediaType: application/json
+      contentEncoding: base64
+      contentSchema:
+        type: object
+    decoded:
+      type: object
+    envelope:
+      type: string
+      contentMediaType: application/json
+      contentSchema:
+        $ref: '#/components/schemas/decoded'

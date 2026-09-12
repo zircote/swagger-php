@@ -1523,6 +1523,8 @@ without it the schema has no component key and is reported as missing one.
   <dd><p>The media type of string content encoding</p></dd>
   <dt><strong>contentEncoding</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The encoding used for string content (e.g. base64)</p></dd>
+  <dt><strong>contentSchema</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>Schema for the decoded content described by contentMediaType</p></dd>
   <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
   <dd><p>Minimum numeric value (inclusive)</p></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
@@ -1657,6 +1659,8 @@ schemas with constrained additional properties:
   <dd><p>The media type of string content encoding</p></dd>
   <dt><strong>contentEncoding</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The encoding used for string content (e.g. base64)</p></dd>
+  <dt><strong>contentSchema</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>Schema for the decoded content described by contentMediaType</p></dd>
   <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
   <dd><p>Minimum numeric value (inclusive)</p></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
@@ -1799,6 +1803,8 @@ Since Items extends Schema, the implicit `OA\Property` shortcut applies — no e
   <dd><p>The media type of string content encoding</p></dd>
   <dt><strong>contentEncoding</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The encoding used for string content (e.g. base64)</p></dd>
+  <dt><strong>contentSchema</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>Schema for the decoded content described by contentMediaType</p></dd>
   <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
   <dd><p>Minimum numeric value (inclusive)</p></dd>
   <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
