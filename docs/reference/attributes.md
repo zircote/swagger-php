@@ -1221,6 +1221,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 </dl>
 
 ### [JsonContent](https://github.com/zircote/swagger-php/tree/master/src/Attributes/JsonContent.php)
+
 Shorthand for a json response.
 
 Example:
@@ -2439,6 +2440,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 </dl>
 
 ### [Query](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Query.php)
+
 @since OpenAPI 3.2.0
 
 #### Allowed in

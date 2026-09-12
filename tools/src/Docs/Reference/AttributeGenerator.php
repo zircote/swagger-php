@@ -9,6 +9,12 @@ namespace OpenApi\Tools\Docs\Reference;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Tools\Docs\DocGenerator;
 use OpenApi\Tools\Docs\Renderer;
+use OpenApi\Tools\Docs\Sections\AllowedInSection;
+use OpenApi\Tools\Docs\Sections\DescriptionSection;
+use OpenApi\Tools\Docs\Sections\NestedElementsSection;
+use OpenApi\Tools\Docs\Sections\ParametersSection;
+use OpenApi\Tools\Docs\Sections\ReferencesSection;
+use OpenApi\Tools\Docs\Sections\SectionInterface;
 use OpenApi\Utils\TokenScanner;
 
 class AttributeGenerator extends DocGenerator
@@ -33,13 +39,14 @@ class AttributeGenerator extends DocGenerator
             );
             $content .= "\n" . $this->renderer->sectionHeader($type);
 
-            $paramHeading = $type === 'Annotations' ? 'Properties' : 'Parameters';
+            // an annotation documents properties, an attribute documents constructor arguments
+            $this->setSections($this->sectionsFor($type === 'Annotations' ? 'Properties' : 'Parameters'));
 
             foreach ($this->classesForType($type) as $name => $details) {
                 $content .= "\n" . $this->renderer->classHeader($name, $type);
                 $method = "collect{$type}Details";
                 $data = $this->$method($name, $details['fqdn'], $details['filename']);
-                $content .= $this->renderClassDetails($data, $paramHeading);
+                $content .= $this->renderSections($data);
             }
 
             $output[strtolower((string) $type)] = $content;
@@ -147,25 +154,18 @@ class AttributeGenerator extends DocGenerator
         ];
     }
 
-    protected function renderClassDetails(array $data, string $paramHeading = 'Parameters'): string
+    /**
+     * @return list<SectionInterface>
+     */
+    protected function sectionsFor(string $paramHeading): array
     {
-        $out = '';
-        $out .= $this->renderer->classDescription($data['description']);
-
-        $sections = [
-            $this->renderer->allowedIn($data['parents']),
-            $this->renderer->nestedElements($data['nested']),
-            $this->renderer->parameters($data['parameters'], $paramHeading),
-            $this->renderer->references($data['see']),
+        return [
+            new DescriptionSection(),
+            new AllowedInSection(),
+            new NestedElementsSection(),
+            new ParametersSection($paramHeading),
+            new ReferencesSection(),
         ];
-
-        foreach ($sections as $section) {
-            if ($section !== '') {
-                $out .= "\n" . $section;
-            }
-        }
-
-        return $out;
     }
 
     /**

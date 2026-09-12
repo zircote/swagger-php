@@ -27,6 +27,11 @@ Note that some prose lives *inside* the generators rather than in any markdown f
 `-c` and `-D` explanations in the "Configuration" sections are string literals in
 `tools/src/Docs/Reference/{Augmenter,Processor}Generator.php`.
 
+Every generator renders through `tools/src/Docs/Sections/`; `Renderer` builds only the page
+frame — preamble, headers, and the example blocks. Parameters render as a definition list:
+a description is prose with its own paragraph breaks and a type arrives HTML-escaped, so
+both need markup that reaches the page without the markdown parser reading it again.
+
 Everything else under `docs/` is hand-written — including the top-level
 `docs/examples/Readme.md`, since only the per-example ones feed the generated page.
 
@@ -81,9 +86,6 @@ by construction; if you change one, check the other. The check is that
 
 ## Known rough edge
 
-`AugmenterGenerator` and `ProcessorGenerator` share a lot of near-identical code —
-`collectOptions()`, `resolveDefault()`, and their CLI prose blocks. A fix to one usually
-needs applying to the other. They have also diverged: `AugmenterGenerator` renders through
-the `tools/src/Docs/Sections/` abstraction and emits markdown lists, while
-`ProcessorGenerator` renders inline and emits HTML `<span>` markup, which is why the two
-reference pages look different.
+`AugmenterGenerator::renderConfigSection()` and `ProcessorGenerator::renderConfigSection()`
+are the same method twice, differing in the noun, the mode flag, and the programmatic
+example. A fix to one usually needs applying to the other.
