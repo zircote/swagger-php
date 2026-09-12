@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Utils;
+namespace OpenApi\Loggers;
 
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;

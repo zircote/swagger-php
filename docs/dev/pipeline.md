@@ -98,6 +98,25 @@ Genuinely nested: `Schema\{AdditionalProperties,Items,Ref}`, `Property\Encoded`,
 The [Spec Attributes reference](/reference/spec-attributes) lists every attribute with its
 parameters and what it can nest into.
 
+### What belongs in `Utils/`
+
+A class goes in `Utils/` when it is about PHP rather than about OpenAPI, and the rest of the
+tree would use it whatever the pipeline compiled — `TypedList`, `JsonPointer`, `TokenScanner`,
+`SourceFinder`. Everything else belongs to a subsystem, and the directory named for that
+subsystem already exists: a logger in `Loggers/`, a `Specification` traversal in
+`Specification/`, a type concern in `Type/`.
+
+Two things this rule is not. It is not about who calls a class: `AttributeFactory` stays
+because the Assembler and the augmenters both manufacture spec objects from reflection, and
+a class two subsystems share is not owned by either. And it is not about visibility, which
+is what makes `Contracts/` narrower than "the public interfaces" — what it holds describes
+OpenAPI concepts, so replacing the implementation behind one leaves the contract standing.
+`PipeInterface` is a pipe in a generic pipeline; swap `Utils\Pipeline` for a library and the
+interface leaves with it, which is why it sits beside `Pipeline` rather than in `Contracts/`.
+
+Moving one is a rename plus imports, and a deprecated subclass left at the old location for
+anything documented — `OpenApi\Pipeline` and `Analysers\TokenScanner` are the pattern.
+
 ## Reflectors are the glue
 
 Every root DTO keeps the reflector it came from. This is how relationships that span

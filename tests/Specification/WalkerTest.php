@@ -4,13 +4,13 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests\Utils;
+namespace OpenApi\Tests\Specification;
 
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use PHPUnit\Framework\TestCase;
 
-final class SpecificationWalkerTest extends TestCase
+final class WalkerTest extends TestCase
 {
     /**
      * A reusable response sits in the `responses` bucket and in the operation that uses it.

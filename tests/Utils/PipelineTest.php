@@ -9,7 +9,7 @@ namespace OpenApi\Tests\Utils;
 use OpenApi\Augmenter\OperationIds;
 use OpenApi\Augmenter\Tags;
 use OpenApi\Augmenter\Types;
-use OpenApi\Utils\CollectingLogger;
+use OpenApi\Loggers\CollectingLogger;
 use OpenApi\Utils\PipeInterface;
 use OpenApi\Utils\Pipeline;
 use PHPUnit\Framework\Attributes\DataProvider;

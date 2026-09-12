@@ -4,10 +4,10 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests\Utils;
+namespace OpenApi\Tests\Type;
 
 use OpenApi\Tests\OpenApiTestCase;
-use OpenApi\Utils\TypeMapper;
+use OpenApi\Type\TypeMapper;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class TypeMapperTest extends OpenApiTestCase

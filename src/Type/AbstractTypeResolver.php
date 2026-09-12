@@ -11,7 +11,6 @@ use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations as OA;
 use OpenApi\TypeResolverInterface;
 use OpenApi\Undefined;
-use OpenApi\Utils\TypeMapper;
 
 abstract class AbstractTypeResolver implements TypeResolverInterface
 {

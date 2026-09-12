@@ -7,7 +7,7 @@
 namespace OpenApi;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Utils\TypeMapper;
+use OpenApi\Type\TypeMapper;
 
 interface TypeResolverInterface
 {
