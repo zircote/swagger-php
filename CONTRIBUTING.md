@@ -44,6 +44,11 @@ implementation — followed by a **Changes** list of the key changes, kept high 
 free of code snippets unless one is genuinely unavoidable. Wrap class names, method calls,
 file paths and other identifiers in backticks.
 
+A **Changes** entry names what moved, in one line; the diff is what says how. A condition,
+a count, a signature or a renamed method's new behaviour is something the reader gets by
+opening the diff, and restating it buries the one or two entries that carry the shape of
+the change. The Overview holds the reasoning, so an entry needs no *because*.
+
 Keep the description to the changes at hand. History that lives elsewhere — earlier
 attempts, abandoned branches, related work in other pull requests — belongs in the issue
 or commit trail, not here, unless it has a direct bearing on the change being reviewed.
