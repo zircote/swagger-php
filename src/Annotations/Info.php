@@ -27,6 +27,15 @@ class Info extends AbstractAnnotation
     public $title = Undefined::UNDEFINED;
 
     /**
+     * A short summary of the API.
+     *
+     * Exists as of 3.1; a 3.0 document omits it.
+     *
+     * @var string
+     */
+    public $summary = Undefined::UNDEFINED;
+
+    /**
      * A short description of the application.
      *
      * CommonMark syntax may be used for rich text representation.
@@ -75,6 +84,7 @@ class Info extends AbstractAnnotation
      */
     public static $_types = [
         'title' => 'string',
+        'summary' => 'string',
         'version' => 'string',
         'description' => 'string',
         'termsOfService' => 'string',
@@ -95,4 +105,15 @@ class Info extends AbstractAnnotation
     public static $_parents = [
         OpenApi::class,
     ];
+
+    public function jsonSerialize(): \stdClass
+    {
+        $data = parent::jsonSerialize();
+
+        if ($this->_context->isVersion('3.0.x')) {
+            unset($data->summary);
+        }
+
+        return $data;
+    }
 }

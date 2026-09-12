@@ -399,6 +399,10 @@ The metadata may be used by the clients if needed and may be presented in editin
 <dl>
   <dt><strong>title</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The title of the application.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>yes</b></td></tr></tbody></table></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dd><p>A short summary of the API.<br />
+<br />
+Exists as of 3.1; a 3.0 document omits it.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>A short description of the application.<br />
 <br />
