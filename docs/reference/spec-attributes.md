@@ -56,22 +56,24 @@ can be declared directly on a class without needing a Components wrapper.
 
 #### Parameters
 ---
-- **schemas** : `list&lt;Schema&gt;`
-  No details available.
-- **parameters** : `list&lt;Parameter&gt;`
-  No details available.
-- **responses** : `list&lt;Response&gt;`
-  No details available.
-- **requestBodies** : `list&lt;RequestBody&gt;`
-  No details available.
-- **headers** : `list&lt;Header&gt;`
-  No details available.
-- **securitySchemes** : `list&lt;Security\Scheme&gt;`
-  No details available.
-- **links** : `list&lt;Link&gt;`
-  No details available.
-- **examples** : `list&lt;Example&gt;`
-  No details available.
+<dl>
+  <dt><strong>schemas</strong> : <span style="font-family: monospace;">list&lt;Schema&gt;</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;Parameter&gt;</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;Response&gt;</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>requestBodies</strong> : <span style="font-family: monospace;">list&lt;RequestBody&gt;</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>headers</strong> : <span style="font-family: monospace;">list&lt;Header&gt;</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>securitySchemes</strong> : <span style="font-family: monospace;">list&lt;Security\Scheme&gt;</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>links</strong> : <span style="font-family: monospace;">list&lt;Link&gt;</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">list&lt;Example&gt;</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 ### [Contact](https://github.com/zircote/swagger-php/tree/master/src/Spec/Contact.php)
 
@@ -83,12 +85,14 @@ Contact information for the exposed API.
 
 #### Parameters
 ---
-- **name** : `string|null`
-  The identifying name of the contact person/organization
-- **url** : `string|null`
-  A URL pointing to the contact information
-- **email** : `string|null`
-  The email address of the contact person/organization
+<dl>
+  <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The identifying name of the contact person/organization</p></dd>
+  <dt><strong>url</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A URL pointing to the contact information</p></dd>
+  <dt><strong>email</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The email address of the contact person/organization</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -105,10 +109,12 @@ can be one of several schemas (used with oneOf, anyOf, allOf).
 
 #### Parameters
 ---
-- **propertyName** : `string|null`
-  The name of the property in the payload that distinguishes types
-- **mapping** : `array&lt;string,string&gt;|null`
-  Maps payload values to schema names or references
+<dl>
+  <dt><strong>propertyName</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The name of the property in the payload that distinguishes types</p></dd>
+  <dt><strong>mapping</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dd><p>Maps payload values to schema names or references</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -124,18 +130,20 @@ Describes the encoding for a single property in a media type.
 
 #### Parameters
 ---
-- **encoding** : `string|null`
-  The property name this encoding applies to
-- **contentType** : `string|null`
-  The Content-Type for encoding a specific property
-- **headers** : `list&lt;Header&gt;|null`
-  Additional headers for multipart media types
-- **style** : `string|ParameterStyle|null`
-  How the property value is serialized
-- **explode** : `bool|null`
-  Whether arrays/objects generate separate parameters
-- **allowReserved** : `bool|null`
-  Whether reserved characters are allowed without encoding
+<dl>
+  <dt><strong>encoding</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The property name this encoding applies to</p></dd>
+  <dt><strong>contentType</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The Content-Type for encoding a specific property</p></dd>
+  <dt><strong>headers</strong> : <span style="font-family: monospace;">list&lt;Header&gt;|null</span></dt>
+  <dd><p>Additional headers for multipart media types</p></dd>
+  <dt><strong>style</strong> : <span style="font-family: monospace;">string|ParameterStyle|null</span></dt>
+  <dd><p>How the property value is serialized</p></dd>
+  <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether arrays/objects generate separate parameters</p></dd>
+  <dt><strong>allowReserved</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether reserved characters are allowed without encoding</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -151,18 +159,20 @@ Describes an example value for a parameter, media type, or schema.
 
 #### Parameters
 ---
-- **example** : `string|null`
-  Reusable example identifier (component key)
-- **summary** : `string|null`
-  Short description of the example
-- **description** : `string|null`
-  Long description of the example (CommonMark syntax)
-- **value** : `mixed`
-  Embedded literal example value
-- **externalValue** : `string|null`
-  A URI pointing to the literal example
-- **ref** : `string|null`
-  A JSON Reference to a reusable example
+<dl>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Reusable example identifier (component key)</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Short description of the example</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Long description of the example (CommonMark syntax)</p></dd>
+  <dt><strong>value</strong> : <span style="font-family: monospace;">mixed</span></dt>
+  <dd><p>Embedded literal example value</p></dd>
+  <dt><strong>externalValue</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A URI pointing to the literal example</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A JSON Reference to a reusable example</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -178,10 +188,12 @@ Allows referencing an external resource for extended documentation.
 
 #### Parameters
 ---
-- **url** : `string|null`
-  The URL for the target documentation
-- **description** : `string|null`
-  A description of the target documentation (CommonMark syntax)
+<dl>
+  <dt><strong>url</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The URL for the target documentation</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A description of the target documentation (CommonMark syntax)</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -224,16 +236,18 @@ Produces:
 
 #### Parameters
 ---
-- **flow** : `string|FlowType|null`
-  The OAuth2 flow type (implicit, password, clientCredentials, authorizationCode)
-- **authorizationUrl** : `string|null`
-  The authorization URL for this flow
-- **tokenUrl** : `string|null`
-  The token URL for this flow
-- **refreshUrl** : `string|null`
-  The URL for obtaining refresh tokens
-- **scopes** : `array&lt;string,string&gt;|null`
-  The available scopes for the OAuth2 security scheme
+<dl>
+  <dt><strong>flow</strong> : <span style="font-family: monospace;">string|FlowType|null</span></dt>
+  <dd><p>The OAuth2 flow type (implicit, password, clientCredentials, authorizationCode)</p></dd>
+  <dt><strong>authorizationUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The authorization URL for this flow</p></dd>
+  <dt><strong>tokenUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The token URL for this flow</p></dd>
+  <dt><strong>refreshUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The URL for obtaining refresh tokens</p></dd>
+  <dt><strong>scopes</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dd><p>The available scopes for the OAuth2 security scheme</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -250,14 +264,16 @@ Configuration for the OAuth2 Authorization Code flow.
 
 #### Parameters
 ---
-- **authorizationUrl** : `string|null`
-  No details available.
-- **tokenUrl** : `string|null`
-  No details available.
-- **refreshUrl** : `string|null`
-  No details available.
-- **scopes** : `array&lt;string,string&gt;|null`
-  No details available.
+<dl>
+  <dt><strong>authorizationUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>tokenUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>refreshUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>scopes</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -273,12 +289,14 @@ Configuration for the OAuth2 Client Credentials flow.
 
 #### Parameters
 ---
-- **tokenUrl** : `string|null`
-  No details available.
-- **refreshUrl** : `string|null`
-  No details available.
-- **scopes** : `array&lt;string,string&gt;|null`
-  No details available.
+<dl>
+  <dt><strong>tokenUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>refreshUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>scopes</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -294,12 +312,14 @@ Configuration for the OAuth2 Implicit flow.
 
 #### Parameters
 ---
-- **authorizationUrl** : `string|null`
-  No details available.
-- **refreshUrl** : `string|null`
-  No details available.
-- **scopes** : `array&lt;string,string&gt;|null`
-  No details available.
+<dl>
+  <dt><strong>authorizationUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>refreshUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>scopes</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -315,12 +335,14 @@ Configuration for the OAuth2 Resource Owner Password flow.
 
 #### Parameters
 ---
-- **tokenUrl** : `string|null`
-  No details available.
-- **refreshUrl** : `string|null`
-  No details available.
-- **scopes** : `array&lt;string,string&gt;|null`
-  No details available.
+<dl>
+  <dt><strong>tokenUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>refreshUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>scopes</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -340,28 +362,30 @@ Describes a single HTTP header.
 
 #### Parameters
 ---
-- **header** : `string|null`
-  The header name (component key)
-- **description** : `string|null`
-  A brief description of the header (CommonMark syntax)
-- **required** : `bool|null`
-  Whether the header is mandatory
-- **deprecated** : `bool|null`
-  Whether the header is deprecated
-- **ref** : `string|Schema\Ref|null`
-  A JSON Reference to a reusable header
-- **style** : `string|ParameterStyle|null`
-  How the header value is serialized
-- **explode** : `bool|null`
-  Whether arrays/objects generate separate parameters
-- **schema** : `Schema|null`
-  The schema defining the type for the header
-- **example** : `mixed`
-  Example of the header's value
-- **examples** : `list&lt;Example&gt;|null`
-  Examples of the header's value
-- **content** : `MediaType|list&lt;MediaType&gt;|null`
-  Content-type based header serialization
+<dl>
+  <dt><strong>header</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The header name (component key)</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A brief description of the header (CommonMark syntax)</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the header is mandatory</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the header is deprecated</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|Schema\Ref|null</span></dt>
+  <dd><p>A JSON Reference to a reusable header</p></dd>
+  <dt><strong>style</strong> : <span style="font-family: monospace;">string|ParameterStyle|null</span></dt>
+  <dd><p>How the header value is serialized</p></dd>
+  <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether arrays/objects generate separate parameters</p></dd>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>The schema defining the type for the header</p></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed</span></dt>
+  <dd><p>Example of the header's value</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">list&lt;Example&gt;|null</span></dt>
+  <dd><p>Examples of the header's value</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|list&lt;MediaType&gt;|null</span></dt>
+  <dd><p>Content-type based header serialization</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -377,20 +401,22 @@ Metadata about the API.
 
 #### Parameters
 ---
-- **title** : `string|null`
-  The title of the API
-- **description** : `string|null`
-  A description of the API (CommonMark syntax)
-- **termsOfService** : `string|null`
-  A URL to the Terms of Service for the API
-- **version** : `string|null`
-  The version of the API document
-- **contact** : `Contact|null`
-  Contact information for the API
-- **license** : `License|null`
-  License information for the API
-- **summary** : `string|null`
-  A short summary of the API
+<dl>
+  <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The title of the API</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A description of the API (CommonMark syntax)</p></dd>
+  <dt><strong>termsOfService</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A URL to the Terms of Service for the API</p></dd>
+  <dt><strong>version</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The version of the API document</p></dd>
+  <dt><strong>contact</strong> : <span style="font-family: monospace;">Contact|null</span></dt>
+  <dd><p>Contact information for the API</p></dd>
+  <dt><strong>license</strong> : <span style="font-family: monospace;">License|null</span></dt>
+  <dd><p>License information for the API</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A short summary of the API</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -406,12 +432,14 @@ License information for the exposed API.
 
 #### Parameters
 ---
-- **name** : `string|null`
-  The license name used for the API
-- **identifier** : `string|null`
-  An SPDX license expression for the API
-- **url** : `string|null`
-  A URL to the license used for the API
+<dl>
+  <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The license name used for the API</p></dd>
+  <dt><strong>identifier</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>An SPDX license expression for the API</p></dd>
+  <dt><strong>url</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A URL to the license used for the API</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -427,22 +455,24 @@ Describes a possible design-time link for a response.
 
 #### Parameters
 ---
-- **link** : `string|null`
-  Reusable link identifier (component key)
-- **operationRef** : `string|null`
-  A relative or absolute URI reference to a linked operation
-- **operationId** : `string|null`
-  The name of an existing operation (mutually exclusive with operationRef)
-- **parameters** : `array&lt;string,mixed&gt;|null`
-  Values to pass to the linked operation's parameters
-- **requestBody** : `mixed`
-  A value to use as the request body for the linked operation
-- **description** : `string|null`
-  A description of the link (CommonMark syntax)
-- **ref** : `string|null`
-  A JSON Reference to a reusable link
-- **server** : `Server|null`
-  A server object to be used by the target operation
+<dl>
+  <dt><strong>link</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Reusable link identifier (component key)</p></dd>
+  <dt><strong>operationRef</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A relative or absolute URI reference to a linked operation</p></dd>
+  <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The name of an existing operation (mutually exclusive with operationRef)</p></dd>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>Values to pass to the linked operation's parameters</p></dd>
+  <dt><strong>requestBody</strong> : <span style="font-family: monospace;">mixed</span></dt>
+  <dd><p>A value to use as the request body for the linked operation</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A description of the link (CommonMark syntax)</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A JSON Reference to a reusable link</p></dd>
+  <dt><strong>server</strong> : <span style="font-family: monospace;">Server|null</span></dt>
+  <dd><p>A server object to be used by the target operation</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -462,16 +492,18 @@ Describes the content payload for a specific media type.
 
 #### Parameters
 ---
-- **mediaType** : `string|null`
-  The media type identifier (e.g. 'application/json')
-- **schema** : `Schema|null`
-  The schema defining the content
-- **example** : `mixed`
-  Example of the media type content
-- **examples** : `list&lt;Example&gt;|null`
-  Examples of the media type content
-- **encoding** : `list&lt;Encoding&gt;|array&lt;string,Encoding&gt;|null`
-  Encoding information for specific properties
+<dl>
+  <dt><strong>mediaType</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The media type identifier (e.g. 'application/json')</p></dd>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>The schema defining the content</p></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed</span></dt>
+  <dd><p>Example of the media type content</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">list&lt;Example&gt;|null</span></dt>
+  <dd><p>Examples of the media type content</p></dd>
+  <dt><strong>encoding</strong> : <span style="font-family: monospace;">list&lt;Encoding&gt;|array&lt;string,Encoding&gt;|null</span></dt>
+  <dd><p>Encoding information for specific properties</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -504,24 +536,26 @@ The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema
 
 #### Parameters
 ---
-- **ref** : `string|null`
-  A JSON Reference to a reusable schema
-- **type** : `string|list&lt;string&gt;|null`
-  The value type(s) (string, number, integer, boolean, array, object, null)
-- **items** : `Schema|string|null`
-  Schema for array items
-- **properties** : `list&lt;Property&gt;|null`
-  Object property definitions
-- **required** : `list&lt;string&gt;|null`
-  List of required property names
-- **schema** : `Schema|null`
-  The schema defining the content
-- **example** : `mixed`
-  Example of the media type content
-- **examples** : `list&lt;OA\Example&gt;|null`
-  Examples of the media type content
-- **encoding** : `list&lt;OA\Encoding&gt;|array&lt;string,OA\Encoding&gt;|null`
-  Encoding information for specific properties
+<dl>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A JSON Reference to a reusable schema</p></dd>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">string|list&lt;string&gt;|null</span></dt>
+  <dd><p>The value type(s) (string, number, integer, boolean, array, object, null)</p></dd>
+  <dt><strong>items</strong> : <span style="font-family: monospace;">Schema|string|null</span></dt>
+  <dd><p>Schema for array items</p></dd>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">list&lt;Property&gt;|null</span></dt>
+  <dd><p>Object property definitions</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
+  <dd><p>List of required property names</p></dd>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>The schema defining the content</p></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed</span></dt>
+  <dd><p>Example of the media type content</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">list&lt;OA\Example&gt;|null</span></dt>
+  <dd><p>Examples of the media type content</p></dd>
+  <dt><strong>encoding</strong> : <span style="font-family: monospace;">list&lt;OA\Encoding&gt;|array&lt;string,OA\Encoding&gt;|null</span></dt>
+  <dd><p>Encoding information for specific properties</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -554,24 +588,26 @@ The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema
 
 #### Parameters
 ---
-- **ref** : `string|null`
-  A JSON Reference to a reusable schema
-- **type** : `string|list&lt;string&gt;|null`
-  The value type(s) (string, number, integer, boolean, array, object, null)
-- **items** : `Schema|string|null`
-  Schema for array items
-- **properties** : `list&lt;Property&gt;|null`
-  Object property definitions
-- **required** : `list&lt;string&gt;|null`
-  List of required property names
-- **schema** : `Schema|null`
-  The schema defining the content
-- **example** : `mixed`
-  Example of the media type content
-- **examples** : `list&lt;OA\Example&gt;|null`
-  Examples of the media type content
-- **encoding** : `list&lt;OA\Encoding&gt;|array&lt;string,OA\Encoding&gt;|null`
-  Encoding information for specific properties
+<dl>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A JSON Reference to a reusable schema</p></dd>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">string|list&lt;string&gt;|null</span></dt>
+  <dd><p>The value type(s) (string, number, integer, boolean, array, object, null)</p></dd>
+  <dt><strong>items</strong> : <span style="font-family: monospace;">Schema|string|null</span></dt>
+  <dd><p>Schema for array items</p></dd>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">list&lt;Property&gt;|null</span></dt>
+  <dd><p>Object property definitions</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
+  <dd><p>List of required property names</p></dd>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>The schema defining the content</p></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed</span></dt>
+  <dd><p>Example of the media type content</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">list&lt;OA\Example&gt;|null</span></dt>
+  <dd><p>Examples of the media type content</p></dd>
+  <dt><strong>encoding</strong> : <span style="font-family: monospace;">list&lt;OA\Encoding&gt;|array&lt;string,OA\Encoding&gt;|null</span></dt>
+  <dd><p>Encoding information for specific properties</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -587,10 +623,12 @@ The root element of an OpenAPI definition.
 
 #### Parameters
 ---
-- **version** : `string|null`
-  The OpenAPI specification version (e.g. '3.1.0')
-- **security** : `list&lt;Security\Requirement&gt;|null`
-  Default security requirements for the API
+<dl>
+  <dt><strong>version</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The OpenAPI specification version (e.g. '3.1.0')</p></dd>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">list&lt;Security\Requirement&gt;|null</span></dt>
+  <dd><p>Default security requirements for the API</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -632,36 +670,38 @@ For webhooks, use `webhook` instead of `path`:
 
 #### Parameters
 ---
-- **path** : `string|null`
-  The URL path for the operation
-- **webhook** : `string|null`
-  The webhook name (mutually exclusive with path)
-- **method** : `string|HttpMethod|null`
-  The HTTP method (get, post, put, delete, etc.)
-- **operationId** : `string|null`
-  Unique identifier for the operation
-- **summary** : `string|null`
-  A short summary of what the operation does
-- **description** : `string|null`
-  A verbose explanation of the operation (CommonMark syntax)
-- **tags** : `list&lt;string&gt;|null`
-  Tags for API documentation grouping
-- **parameters** : `list&lt;Parameter&gt;|null`
-  Parameters applicable to this operation
-- **requestBody** : `RequestBody|null`
-  The request body applicable to this operation
-- **responses** : `list&lt;Response&gt;|null`
-  The list of possible responses
-- **callbacks** : `array&lt;string,mixed&gt;|null`
-  Possible out-of-band callbacks related to the operation
-- **deprecated** : `bool|null`
-  Whether the operation is deprecated
-- **security** : `list&lt;Security\Requirement&gt;|null`
-  Security mechanisms that can be used for this operation
-- **servers** : `list&lt;Server&gt;|null`
-  Alternative servers for this operation
-- **externalDocs** : `ExternalDocumentation|null`
-  Additional external documentation
+<dl>
+  <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The URL path for the operation</p></dd>
+  <dt><strong>webhook</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The webhook name (mutually exclusive with path)</p></dd>
+  <dt><strong>method</strong> : <span style="font-family: monospace;">string|HttpMethod|null</span></dt>
+  <dd><p>The HTTP method (get, post, put, delete, etc.)</p></dd>
+  <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Unique identifier for the operation</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A short summary of what the operation does</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A verbose explanation of the operation (CommonMark syntax)</p></dd>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
+  <dd><p>Tags for API documentation grouping</p></dd>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;Parameter&gt;|null</span></dt>
+  <dd><p>Parameters applicable to this operation</p></dd>
+  <dt><strong>requestBody</strong> : <span style="font-family: monospace;">RequestBody|null</span></dt>
+  <dd><p>The request body applicable to this operation</p></dd>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;Response&gt;|null</span></dt>
+  <dd><p>The list of possible responses</p></dd>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>Possible out-of-band callbacks related to the operation</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the operation is deprecated</p></dd>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">list&lt;Security\Requirement&gt;|null</span></dt>
+  <dd><p>Security mechanisms that can be used for this operation</p></dd>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;Server&gt;|null</span></dt>
+  <dd><p>Alternative servers for this operation</p></dd>
+  <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">ExternalDocumentation|null</span></dt>
+  <dd><p>Additional external documentation</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -674,34 +714,36 @@ Shorthand for an HTTP DELETE operation.
 
 #### Parameters
 ---
-- **path** : `string|null`
-  No details available.
-- **webhook** : `string|null`
-  No details available.
-- **operationId** : `string|null`
-  No details available.
-- **summary** : `string|null`
-  No details available.
-- **description** : `string|null`
-  No details available.
-- **tags** : `list&lt;string&gt;|null`
-  No details available.
-- **parameters** : `list&lt;OA\Parameter&gt;|null`
-  No details available.
-- **requestBody** : `OpenApi\Spec\RequestBody|null`
-  No details available.
-- **responses** : `list&lt;OA\Response&gt;|null`
-  No details available.
-- **callbacks** : `array&lt;string,mixed&gt;|null`
-  No details available.
-- **deprecated** : `bool|null`
-  No details available.
-- **security** : `list&lt;OA\Security\Requirement&gt;|null`
-  No details available.
-- **servers** : `list&lt;OA\Server&gt;|null`
-  No details available.
-- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`
-  No details available.
+<dl>
+  <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>webhook</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;OA\Parameter&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>requestBody</strong> : <span style="font-family: monospace;">OpenApi\Spec\RequestBody|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;OA\Response&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">list&lt;OA\Security\Requirement&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;OA\Server&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Spec\ExternalDocumentation|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -713,32 +755,34 @@ Shorthand for an HTTP GET operation.
 
 #### Parameters
 ---
-- **path** : `string|null`
-  No details available.
-- **webhook** : `string|null`
-  No details available.
-- **operationId** : `string|null`
-  No details available.
-- **summary** : `string|null`
-  No details available.
-- **description** : `string|null`
-  No details available.
-- **tags** : `list&lt;string&gt;|null`
-  No details available.
-- **parameters** : `list&lt;Parameter&gt;|null`
-  No details available.
-- **responses** : `list&lt;Response&gt;|null`
-  No details available.
-- **callbacks** : `array&lt;string,mixed&gt;|null`
-  No details available.
-- **deprecated** : `bool|null`
-  No details available.
-- **security** : `list&lt;OA\Security\Requirement&gt;|null`
-  No details available.
-- **servers** : `list&lt;Server&gt;|null`
-  No details available.
-- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`
-  No details available.
+<dl>
+  <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>webhook</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;Parameter&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;Response&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">list&lt;OA\Security\Requirement&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;Server&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Spec\ExternalDocumentation|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -750,32 +794,34 @@ Shorthand for an HTTP HEAD operation.
 
 #### Parameters
 ---
-- **path** : `string|null`
-  No details available.
-- **webhook** : `string|null`
-  No details available.
-- **operationId** : `string|null`
-  No details available.
-- **summary** : `string|null`
-  No details available.
-- **description** : `string|null`
-  No details available.
-- **tags** : `list&lt;string&gt;|null`
-  No details available.
-- **parameters** : `list&lt;OA\Parameter&gt;|null`
-  No details available.
-- **responses** : `list&lt;OA\Response&gt;|null`
-  No details available.
-- **callbacks** : `array&lt;string,mixed&gt;|null`
-  No details available.
-- **deprecated** : `bool|null`
-  No details available.
-- **security** : `list&lt;OA\Security\Requirement&gt;|null`
-  No details available.
-- **servers** : `list&lt;OA\Server&gt;|null`
-  No details available.
-- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`
-  No details available.
+<dl>
+  <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>webhook</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;OA\Parameter&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;OA\Response&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">list&lt;OA\Security\Requirement&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;OA\Server&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Spec\ExternalDocumentation|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -787,32 +833,34 @@ Shorthand for an HTTP OPTIONS operation.
 
 #### Parameters
 ---
-- **path** : `string|null`
-  No details available.
-- **webhook** : `string|null`
-  No details available.
-- **operationId** : `string|null`
-  No details available.
-- **summary** : `string|null`
-  No details available.
-- **description** : `string|null`
-  No details available.
-- **tags** : `list&lt;string&gt;|null`
-  No details available.
-- **parameters** : `list&lt;OA\Parameter&gt;|null`
-  No details available.
-- **responses** : `list&lt;OA\Response&gt;|null`
-  No details available.
-- **callbacks** : `array&lt;string,mixed&gt;|null`
-  No details available.
-- **deprecated** : `bool|null`
-  No details available.
-- **security** : `list&lt;OA\Security\Requirement&gt;|null`
-  No details available.
-- **servers** : `list&lt;OA\Server&gt;|null`
-  No details available.
-- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`
-  No details available.
+<dl>
+  <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>webhook</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;OA\Parameter&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;OA\Response&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">list&lt;OA\Security\Requirement&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;OA\Server&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Spec\ExternalDocumentation|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -824,34 +872,36 @@ Shorthand for an HTTP PATCH operation.
 
 #### Parameters
 ---
-- **path** : `string|null`
-  No details available.
-- **webhook** : `string|null`
-  No details available.
-- **operationId** : `string|null`
-  No details available.
-- **summary** : `string|null`
-  No details available.
-- **description** : `string|null`
-  No details available.
-- **tags** : `list&lt;string&gt;|null`
-  No details available.
-- **parameters** : `list&lt;OA\Parameter&gt;|null`
-  No details available.
-- **requestBody** : `OpenApi\Spec\RequestBody|null`
-  No details available.
-- **responses** : `list&lt;OA\Response&gt;|null`
-  No details available.
-- **callbacks** : `array&lt;string,mixed&gt;|null`
-  No details available.
-- **deprecated** : `bool|null`
-  No details available.
-- **security** : `list&lt;OA\Security\Requirement&gt;|null`
-  No details available.
-- **servers** : `list&lt;OA\Server&gt;|null`
-  No details available.
-- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`
-  No details available.
+<dl>
+  <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>webhook</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;OA\Parameter&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>requestBody</strong> : <span style="font-family: monospace;">OpenApi\Spec\RequestBody|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;OA\Response&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">list&lt;OA\Security\Requirement&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;OA\Server&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Spec\ExternalDocumentation|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -863,34 +913,36 @@ Shorthand for an HTTP POST operation.
 
 #### Parameters
 ---
-- **path** : `string|null`
-  No details available.
-- **webhook** : `string|null`
-  No details available.
-- **operationId** : `string|null`
-  No details available.
-- **summary** : `string|null`
-  No details available.
-- **description** : `string|null`
-  No details available.
-- **tags** : `list&lt;string&gt;|null`
-  No details available.
-- **parameters** : `list&lt;OA\Parameter&gt;|null`
-  No details available.
-- **requestBody** : `OpenApi\Spec\RequestBody|null`
-  No details available.
-- **responses** : `list&lt;OA\Response&gt;|null`
-  No details available.
-- **callbacks** : `array&lt;string,mixed&gt;|null`
-  No details available.
-- **deprecated** : `bool|null`
-  No details available.
-- **security** : `list&lt;OA\Security\Requirement&gt;|null`
-  No details available.
-- **servers** : `list&lt;OA\Server&gt;|null`
-  No details available.
-- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`
-  No details available.
+<dl>
+  <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>webhook</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;OA\Parameter&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>requestBody</strong> : <span style="font-family: monospace;">OpenApi\Spec\RequestBody|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;OA\Response&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">list&lt;OA\Security\Requirement&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;OA\Server&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Spec\ExternalDocumentation|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -902,34 +954,36 @@ Shorthand for an HTTP PUT operation.
 
 #### Parameters
 ---
-- **path** : `string|null`
-  No details available.
-- **webhook** : `string|null`
-  No details available.
-- **operationId** : `string|null`
-  No details available.
-- **summary** : `string|null`
-  No details available.
-- **description** : `string|null`
-  No details available.
-- **tags** : `list&lt;string&gt;|null`
-  No details available.
-- **parameters** : `list&lt;OA\Parameter&gt;|null`
-  No details available.
-- **requestBody** : `OpenApi\Spec\RequestBody|null`
-  No details available.
-- **responses** : `list&lt;OA\Response&gt;|null`
-  No details available.
-- **callbacks** : `array&lt;string,mixed&gt;|null`
-  No details available.
-- **deprecated** : `bool|null`
-  No details available.
-- **security** : `list&lt;OA\Security\Requirement&gt;|null`
-  No details available.
-- **servers** : `list&lt;OA\Server&gt;|null`
-  No details available.
-- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`
-  No details available.
+<dl>
+  <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>webhook</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;OA\Parameter&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>requestBody</strong> : <span style="font-family: monospace;">OpenApi\Spec\RequestBody|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;OA\Response&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">list&lt;OA\Security\Requirement&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;OA\Server&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Spec\ExternalDocumentation|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -941,32 +995,34 @@ Shorthand for an HTTP TRACE operation.
 
 #### Parameters
 ---
-- **path** : `string|null`
-  No details available.
-- **webhook** : `string|null`
-  No details available.
-- **operationId** : `string|null`
-  No details available.
-- **summary** : `string|null`
-  No details available.
-- **description** : `string|null`
-  No details available.
-- **tags** : `list&lt;string&gt;|null`
-  No details available.
-- **parameters** : `list&lt;OA\Parameter&gt;|null`
-  No details available.
-- **responses** : `list&lt;OA\Response&gt;|null`
-  No details available.
-- **callbacks** : `array&lt;string,mixed&gt;|null`
-  No details available.
-- **deprecated** : `bool|null`
-  No details available.
-- **security** : `list&lt;OA\Security\Requirement&gt;|null`
-  No details available.
-- **servers** : `list&lt;OA\Server&gt;|null`
-  No details available.
-- **externalDocs** : `OpenApi\Spec\ExternalDocumentation|null`
-  No details available.
+<dl>
+  <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>webhook</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;OA\Parameter&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;OA\Response&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">list&lt;OA\Security\Requirement&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;OA\Server&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Spec\ExternalDocumentation|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -1012,36 +1068,38 @@ Produces:
 
 #### Parameters
 ---
-- **parameter** : `string|null`
-  Reusable parameter identifier (component key)
-- **name** : `string|null`
-  The name of the parameter
-- **in** : `string|ParameterIn|null`
-  The location of the parameter (query, header, path, cookie)
-- **description** : `string|null`
-  A brief description of the parameter (CommonMark syntax)
-- **required** : `bool|null`
-  Whether the parameter is mandatory
-- **deprecated** : `bool|null`
-  Whether the parameter is deprecated
-- **allowEmptyValue** : `bool|null`
-  Whether empty-valued parameters are allowed
-- **ref** : `string|Schema\Ref|null`
-  A JSON Reference to a reusable parameter
-- **style** : `string|ParameterStyle|null`
-  How the parameter value is serialized
-- **explode** : `bool|null`
-  Whether arrays/objects generate separate parameters
-- **allowReserved** : `bool|null`
-  Whether reserved characters are allowed without encoding
-- **schema** : `Schema|null`
-  The schema defining the type for the parameter
-- **example** : `mixed`
-  Example of the parameter's value
-- **examples** : `list&lt;Example&gt;|null`
-  Examples of the parameter's value
-- **content** : `MediaType|list&lt;MediaType&gt;|null`
-  Content-type based parameter serialization
+<dl>
+  <dt><strong>parameter</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Reusable parameter identifier (component key)</p></dd>
+  <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The name of the parameter</p></dd>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">string|ParameterIn|null</span></dt>
+  <dd><p>The location of the parameter (query, header, path, cookie)</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A brief description of the parameter (CommonMark syntax)</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the parameter is mandatory</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the parameter is deprecated</p></dd>
+  <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether empty-valued parameters are allowed</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|Schema\Ref|null</span></dt>
+  <dd><p>A JSON Reference to a reusable parameter</p></dd>
+  <dt><strong>style</strong> : <span style="font-family: monospace;">string|ParameterStyle|null</span></dt>
+  <dd><p>How the parameter value is serialized</p></dd>
+  <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether arrays/objects generate separate parameters</p></dd>
+  <dt><strong>allowReserved</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether reserved characters are allowed without encoding</p></dd>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>The schema defining the type for the parameter</p></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed</span></dt>
+  <dd><p>Example of the parameter's value</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">list&lt;Example&gt;|null</span></dt>
+  <dd><p>Examples of the parameter's value</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|list&lt;MediaType&gt;|null</span></dt>
+  <dd><p>Content-type based parameter serialization</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -1057,28 +1115,30 @@ A parameter passed via an HTTP cookie.
 
 #### Parameters
 ---
-- **parameter** : `string|null`
-  No details available.
-- **name** : `string|null`
-  No details available.
-- **description** : `string|null`
-  No details available.
-- **required** : `bool|null`
-  No details available.
-- **deprecated** : `bool|null`
-  No details available.
-- **ref** : `OpenApi\Spec\Schema\Ref|string|null`
-  No details available.
-- **explode** : `bool|null`
-  No details available.
-- **schema** : `OpenApi\Spec\Schema|null`
-  No details available.
-- **example** : `mixed|null`
-  No details available.
-- **examples** : `list&lt;OA\Example&gt;|null`
-  No details available.
-- **content** : `OA\MediaType|list&lt;OA\MediaType&gt;|null`
-  No details available.
+<dl>
+  <dt><strong>parameter</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">OpenApi\Spec\Schema\Ref|string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Spec\Schema|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">list&lt;OA\Example&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">OA\MediaType|list&lt;OA\MediaType&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -1094,28 +1154,30 @@ A parameter passed via an HTTP header.
 
 #### Parameters
 ---
-- **parameter** : `string|null`
-  No details available.
-- **name** : `string|null`
-  No details available.
-- **description** : `string|null`
-  No details available.
-- **required** : `bool|null`
-  No details available.
-- **deprecated** : `bool|null`
-  No details available.
-- **ref** : `OpenApi\Spec\Schema\Ref|string|null`
-  No details available.
-- **explode** : `bool|null`
-  No details available.
-- **schema** : `OpenApi\Spec\Schema|null`
-  No details available.
-- **example** : `mixed|null`
-  No details available.
-- **examples** : `list&lt;OA\Example&gt;|null`
-  No details available.
-- **content** : `OA\MediaType|list&lt;OA\MediaType&gt;|null`
-  No details available.
+<dl>
+  <dt><strong>parameter</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">OpenApi\Spec\Schema\Ref|string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Spec\Schema|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">list&lt;OA\Example&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">OA\MediaType|list&lt;OA\MediaType&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -1131,30 +1193,32 @@ A parameter passed via the URL path (always required).
 
 #### Parameters
 ---
-- **parameter** : `string|null`
-  No details available.
-- **name** : `string|null`
-  No details available.
-- **description** : `string|null`
-  No details available.
-- **required** : `bool|null`
-  No details available.
-- **deprecated** : `bool|null`
-  No details available.
-- **ref** : `OpenApi\Spec\Schema\Ref|string|null`
-  No details available.
-- **style** : `OpenApi\Spec\ParameterStyle|string|null`
-  No details available.
-- **explode** : `bool|null`
-  No details available.
-- **schema** : `OpenApi\Spec\Schema|null`
-  No details available.
-- **example** : `mixed|null`
-  No details available.
-- **examples** : `list&lt;OA\Example&gt;|null`
-  No details available.
-- **content** : `OA\MediaType|list&lt;OA\MediaType&gt;|null`
-  No details available.
+<dl>
+  <dt><strong>parameter</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">OpenApi\Spec\Schema\Ref|string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>style</strong> : <span style="font-family: monospace;">OpenApi\Spec\ParameterStyle|string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Spec\Schema|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">list&lt;OA\Example&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">OA\MediaType|list&lt;OA\MediaType&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -1170,34 +1234,36 @@ A parameter passed via the URL query string.
 
 #### Parameters
 ---
-- **parameter** : `string|null`
-  No details available.
-- **name** : `string|null`
-  No details available.
-- **description** : `string|null`
-  No details available.
-- **required** : `bool|null`
-  No details available.
-- **deprecated** : `bool|null`
-  No details available.
-- **allowEmptyValue** : `bool|null`
-  No details available.
-- **ref** : `OpenApi\Spec\Schema\Ref|string|null`
-  No details available.
-- **style** : `OpenApi\Spec\ParameterStyle|string|null`
-  No details available.
-- **explode** : `bool|null`
-  No details available.
-- **allowReserved** : `bool|null`
-  No details available.
-- **schema** : `OpenApi\Spec\Schema|null`
-  No details available.
-- **example** : `mixed|null`
-  No details available.
-- **examples** : `list&lt;OA\Example&gt;|null`
-  No details available.
-- **content** : `OA\MediaType|list&lt;OA\MediaType&gt;|null`
-  No details available.
+<dl>
+  <dt><strong>parameter</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">OpenApi\Spec\Schema\Ref|string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>style</strong> : <span style="font-family: monospace;">OpenApi\Spec\ParameterStyle|string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>explode</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>allowReserved</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">OpenApi\Spec\Schema|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">list&lt;OA\Example&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">OA\MediaType|list&lt;OA\MediaType&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -1251,24 +1317,26 @@ name+in (parameters).
 
 #### Parameters
 ---
-- **ref** : `string|null`
-  A JSON Reference to a reusable path item
-- **prefix** : `string|null`
-  Path prefix — composable via class hierarchy
-- **summary** : `string|null`
-  An optional summary, intended to apply to all operations in this path
-- **description** : `string|null`
-  An optional description, intended to apply to all operations in this path
-- **parameters** : `list&lt;Parameter&gt;|null`
-  Parameters applicable to all operations under this path
-- **servers** : `list&lt;Server&gt;|null`
-  Alternative servers for all operations under this path
-- **tags** : `list&lt;string&gt;|null`
-  Tags to clone to contained operations
-- **security** : `list&lt;Security\Requirement&gt;|null`
-  Security requirements to clone to contained operations
-- **responses** : `list&lt;Response&gt;|null`
-  Shared responses to clone to contained operations
+<dl>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A JSON Reference to a reusable path item</p></dd>
+  <dt><strong>prefix</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Path prefix — composable via class hierarchy</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>An optional summary, intended to apply to all operations in this path</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>An optional description, intended to apply to all operations in this path</p></dd>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;Parameter&gt;|null</span></dt>
+  <dd><p>Parameters applicable to all operations under this path</p></dd>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;Server&gt;|null</span></dt>
+  <dd><p>Alternative servers for all operations under this path</p></dd>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
+  <dd><p>Tags to clone to contained operations</p></dd>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">list&lt;Security\Requirement&gt;|null</span></dt>
+  <dd><p>Security requirements to clone to contained operations</p></dd>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;Response&gt;|null</span></dt>
+  <dd><p>Shared responses to clone to contained operations</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -1288,10 +1356,12 @@ reported as missing one and omitted.
 
 #### Parameters
 ---
-- **property** : `string|null`
-  The property name
-- **schema** : `Schema|null`
-  The schema defining the property type and constraints
+<dl>
+  <dt><strong>property</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The property name</p></dd>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>The schema defining the property type and constraints</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -1311,12 +1381,14 @@ encoding to the parent MediaType automatically.
 
 #### Parameters
 ---
-- **property** : `string|null`
-  The property name
-- **schema** : `OA\Schema|null`
-  The schema defining the property type and constraints
-- **encoding** : `OpenApi\Spec\Encoding|null`
-  No details available.
+<dl>
+  <dt><strong>property</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The property name</p></dd>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">OA\Schema|null</span></dt>
+  <dd><p>The schema defining the property type and constraints</p></dd>
+  <dt><strong>encoding</strong> : <span style="font-family: monospace;">OpenApi\Spec\Encoding|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -1336,16 +1408,18 @@ Describes a single request body.
 
 #### Parameters
 ---
-- **request** : `string|null`
-  Reusable request body identifier (component key)
-- **description** : `string|null`
-  A brief description of the request body (CommonMark syntax)
-- **required** : `bool|null`
-  Whether the request body is required
-- **ref** : `string|Schema\Ref|null`
-  A JSON Reference to a reusable request body
-- **content** : `MediaType|list&lt;MediaType&gt;|null`
-  The content of the request body
+<dl>
+  <dt><strong>request</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Reusable request body identifier (component key)</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A brief description of the request body (CommonMark syntax)</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the request body is required</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|Schema\Ref|null</span></dt>
+  <dd><p>A JSON Reference to a reusable request body</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|list&lt;MediaType&gt;|null</span></dt>
+  <dd><p>The content of the request body</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -1365,18 +1439,20 @@ Describes a single response from an API operation.
 
 #### Parameters
 ---
-- **response** : `string|int|null`
-  The HTTP status code or 'default'
-- **description** : `string|null`
-  A description of the response (CommonMark syntax)
-- **ref** : `string|Schema\Ref|null`
-  A JSON Reference to a reusable response
-- **headers** : `list&lt;Header&gt;|null`
-  Headers sent with the response
-- **content** : `MediaType|list&lt;MediaType&gt;|null`
-  Possible response payloads
-- **links** : `list&lt;Link&gt;|null`
-  Design-time links for the response
+<dl>
+  <dt><strong>response</strong> : <span style="font-family: monospace;">string|int|null</span></dt>
+  <dd><p>The HTTP status code or 'default'</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A description of the response (CommonMark syntax)</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|Schema\Ref|null</span></dt>
+  <dd><p>A JSON Reference to a reusable response</p></dd>
+  <dt><strong>headers</strong> : <span style="font-family: monospace;">list&lt;Header&gt;|null</span></dt>
+  <dd><p>Headers sent with the response</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|list&lt;MediaType&gt;|null</span></dt>
+  <dd><p>Possible response payloads</p></dd>
+  <dt><strong>links</strong> : <span style="font-family: monospace;">list&lt;Link&gt;|null</span></dt>
+  <dd><p>Design-time links for the response</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -1422,114 +1498,116 @@ without it the schema has no component key and is reported as missing one.
 
 #### Parameters
 ---
-- **schema** : `string|null`
-  Reusable schema identifier (component key)
-- **title** : `string|null`
-  A title for the schema
-- **description** : `string|null`
-  A description of the schema (CommonMark syntax)
-- **ref** : `string|null`
-  A JSON Reference to a reusable schema
-- **type** : `string|list&lt;string&gt;|null`
-  The value type(s) (string, number, integer, boolean, array, object, null)
-- **format** : `string|null`
-  Further refines the type (e.g. int32, int64, float, double, date-time, email)
-- **nullable** : `bool|null`
-  Whether the value can be null (OAS 3.0 only; use type array in 3.1+)
-- **minLength** : `int|null`
-  Minimum string length
-- **maxLength** : `int|null`
-  Maximum string length
-- **pattern** : `string|null`
-  Regular expression pattern the string must match
-- **contentMediaType** : `string|null`
-  The media type of string content encoding
-- **contentEncoding** : `string|null`
-  The encoding used for string content (e.g. base64)
-- **minimum** : `int|float|null`
-  Minimum numeric value (inclusive)
-- **maximum** : `int|float|null`
-  Maximum numeric value (inclusive)
-- **exclusiveMinimum** : `int|float|bool|null`
-  Exclusive minimum value
-- **exclusiveMaximum** : `int|float|bool|null`
-  Exclusive maximum value
-- **multipleOf** : `int|float|null`
-  The value must be a multiple of this number
-- **items** : `Schema|string|null`
-  Schema for array items
-- **minItems** : `int|null`
-  Minimum number of array items
-- **maxItems** : `int|null`
-  Maximum number of array items
-- **uniqueItems** : `bool|null`
-  Whether array items must be unique
-- **prefixItems** : `list&lt;Schema&gt;|null`
-  Schemas for positional array items (tuple validation)
-- **contains** : `Schema|bool|null`
-  Schema that at least one array item must match
-- **minContains** : `int|null`
-  Minimum number of items matching contains
-- **maxContains** : `int|null`
-  Maximum number of items matching contains
-- **unevaluatedItems** : `Schema|bool|null`
-  Schema for items not covered by other keywords
-- **properties** : `list&lt;Property&gt;|null`
-  Object property definitions
-- **required** : `list&lt;string&gt;|null`
-  List of required property names
-- **additionalProperties** : `Schema|Schema\AdditionalProperties|bool|null`
-  Schema or boolean for additional properties
-- **patternProperties** : `array&lt;string,Schema&gt;|null`
-  Schemas for properties matching regex patterns
-- **minProperties** : `int|null`
-  Minimum number of properties
-- **maxProperties** : `int|null`
-  Maximum number of properties
-- **unevaluatedProperties** : `Schema|bool|null`
-  Schema for properties not covered by other keywords
-- **propertyNames** : `Schema|null`
-  Schema that property names must validate against
-- **dependentRequired** : `array&lt;string,list&lt;string&gt;&gt;|null`
-  Property-level required dependencies
-- **dependentSchemas** : `array&lt;string,Schema&gt;|null`
-  Property-level schema dependencies
-- **allOf** : `list&lt;Schema&gt;|null`
-  All schemas must match (AND composition)
-- **anyOf** : `list&lt;Schema&gt;|null`
-  At least one schema must match (OR composition)
-- **oneOf** : `list&lt;Schema&gt;|null`
-  Exactly one schema must match (XOR composition)
-- **not** : `Schema|null`
-  The schema must NOT match
-- **if** : `Schema|null`
-  Conditional schema (if-then-else)
-- **then** : `Schema|null`
-  Applied when 'if' succeeds
-- **else** : `Schema|null`
-  Applied when 'if' fails
-- **enum** : `list&lt;string|int|float|bool|\UnitEnum|class-string&lt;\UnitEnum&gt;|null&gt;|null`
-  Allowed values
-- **const** : `mixed`
-  A single allowed value
-- **example** : `mixed`
-  An example value
-- **examples** : `list&lt;mixed&gt;|null`
-  A list of example values
-- **deprecated** : `bool|null`
-  Whether the schema is deprecated
-- **readOnly** : `bool|null`
-  Whether the value is read-only
-- **writeOnly** : `bool|null`
-  Whether the value is write-only
-- **default** : `mixed`
-  The default value
-- **discriminator** : `Discriminator|null`
-  Discriminator for polymorphism
-- **externalDocs** : `ExternalDocumentation|null`
-  Additional external documentation
-- **xml** : `Xml|null`
-  XML representation metadata
+<dl>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Reusable schema identifier (component key)</p></dd>
+  <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A title for the schema</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A description of the schema (CommonMark syntax)</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A JSON Reference to a reusable schema</p></dd>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">string|list&lt;string&gt;|null</span></dt>
+  <dd><p>The value type(s) (string, number, integer, boolean, array, object, null)</p></dd>
+  <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Further refines the type (e.g. int32, int64, float, double, date-time, email)</p></dd>
+  <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the value can be null (OAS 3.0 only; use type array in 3.1+)</p></dd>
+  <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Minimum string length</p></dd>
+  <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Maximum string length</p></dd>
+  <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Regular expression pattern the string must match</p></dd>
+  <dt><strong>contentMediaType</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The media type of string content encoding</p></dd>
+  <dt><strong>contentEncoding</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The encoding used for string content (e.g. base64)</p></dd>
+  <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>Minimum numeric value (inclusive)</p></dd>
+  <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>Maximum numeric value (inclusive)</p></dd>
+  <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
+  <dd><p>Exclusive minimum value</p></dd>
+  <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
+  <dd><p>Exclusive maximum value</p></dd>
+  <dt><strong>multipleOf</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>The value must be a multiple of this number</p></dd>
+  <dt><strong>items</strong> : <span style="font-family: monospace;">Schema|string|null</span></dt>
+  <dd><p>Schema for array items</p></dd>
+  <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Minimum number of array items</p></dd>
+  <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Maximum number of array items</p></dd>
+  <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether array items must be unique</p></dd>
+  <dt><strong>prefixItems</strong> : <span style="font-family: monospace;">list&lt;Schema&gt;|null</span></dt>
+  <dd><p>Schemas for positional array items (tuple validation)</p></dd>
+  <dt><strong>contains</strong> : <span style="font-family: monospace;">Schema|bool|null</span></dt>
+  <dd><p>Schema that at least one array item must match</p></dd>
+  <dt><strong>minContains</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Minimum number of items matching contains</p></dd>
+  <dt><strong>maxContains</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Maximum number of items matching contains</p></dd>
+  <dt><strong>unevaluatedItems</strong> : <span style="font-family: monospace;">Schema|bool|null</span></dt>
+  <dd><p>Schema for items not covered by other keywords</p></dd>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">list&lt;Property&gt;|null</span></dt>
+  <dd><p>Object property definitions</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
+  <dd><p>List of required property names</p></dd>
+  <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">Schema|Schema\AdditionalProperties|bool|null</span></dt>
+  <dd><p>Schema or boolean for additional properties</p></dd>
+  <dt><strong>patternProperties</strong> : <span style="font-family: monospace;">array&lt;string,Schema&gt;|null</span></dt>
+  <dd><p>Schemas for properties matching regex patterns</p></dd>
+  <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Minimum number of properties</p></dd>
+  <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Maximum number of properties</p></dd>
+  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">Schema|bool|null</span></dt>
+  <dd><p>Schema for properties not covered by other keywords</p></dd>
+  <dt><strong>propertyNames</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>Schema that property names must validate against</p></dd>
+  <dt><strong>dependentRequired</strong> : <span style="font-family: monospace;">array&lt;string,list&lt;string&gt;&gt;|null</span></dt>
+  <dd><p>Property-level required dependencies</p></dd>
+  <dt><strong>dependentSchemas</strong> : <span style="font-family: monospace;">array&lt;string,Schema&gt;|null</span></dt>
+  <dd><p>Property-level schema dependencies</p></dd>
+  <dt><strong>allOf</strong> : <span style="font-family: monospace;">list&lt;Schema&gt;|null</span></dt>
+  <dd><p>All schemas must match (AND composition)</p></dd>
+  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">list&lt;Schema&gt;|null</span></dt>
+  <dd><p>At least one schema must match (OR composition)</p></dd>
+  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">list&lt;Schema&gt;|null</span></dt>
+  <dd><p>Exactly one schema must match (XOR composition)</p></dd>
+  <dt><strong>not</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>The schema must NOT match</p></dd>
+  <dt><strong>if</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>Conditional schema (if-then-else)</p></dd>
+  <dt><strong>then</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>Applied when 'if' succeeds</p></dd>
+  <dt><strong>else</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>Applied when 'if' fails</p></dd>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">list&lt;string|int|float|bool|\UnitEnum|class-string&lt;\UnitEnum&gt;|null&gt;|null</span></dt>
+  <dd><p>Allowed values</p></dd>
+  <dt><strong>const</strong> : <span style="font-family: monospace;">mixed</span></dt>
+  <dd><p>A single allowed value</p></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed</span></dt>
+  <dd><p>An example value</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">list&lt;mixed&gt;|null</span></dt>
+  <dd><p>A list of example values</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the schema is deprecated</p></dd>
+  <dt><strong>readOnly</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the value is read-only</p></dd>
+  <dt><strong>writeOnly</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the value is write-only</p></dd>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed</span></dt>
+  <dd><p>The default value</p></dd>
+  <dt><strong>discriminator</strong> : <span style="font-family: monospace;">Discriminator|null</span></dt>
+  <dd><p>Discriminator for polymorphism</p></dd>
+  <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">ExternalDocumentation|null</span></dt>
+  <dd><p>Additional external documentation</p></dd>
+  <dt><strong>xml</strong> : <span style="font-family: monospace;">Xml|null</span></dt>
+  <dd><p>XML representation metadata</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -1554,114 +1632,116 @@ schemas with constrained additional properties:
 
 #### Parameters
 ---
-- **schema** : `string|null`
-  Reusable schema identifier (component key)
-- **title** : `string|null`
-  A title for the schema
-- **description** : `string|null`
-  A description of the schema (CommonMark syntax)
-- **ref** : `string|null`
-  A JSON Reference to a reusable schema
-- **type** : `string|list&lt;string&gt;|null`
-  The value type(s) (string, number, integer, boolean, array, object, null)
-- **format** : `string|null`
-  Further refines the type (e.g. int32, int64, float, double, date-time, email)
-- **nullable** : `bool|null`
-  Whether the value can be null (OAS 3.0 only; use type array in 3.1+)
-- **minLength** : `int|null`
-  Minimum string length
-- **maxLength** : `int|null`
-  Maximum string length
-- **pattern** : `string|null`
-  Regular expression pattern the string must match
-- **contentMediaType** : `string|null`
-  The media type of string content encoding
-- **contentEncoding** : `string|null`
-  The encoding used for string content (e.g. base64)
-- **minimum** : `int|float|null`
-  Minimum numeric value (inclusive)
-- **maximum** : `int|float|null`
-  Maximum numeric value (inclusive)
-- **exclusiveMinimum** : `int|float|bool|null`
-  Exclusive minimum value
-- **exclusiveMaximum** : `int|float|bool|null`
-  Exclusive maximum value
-- **multipleOf** : `int|float|null`
-  The value must be a multiple of this number
-- **items** : `Schema|string|null`
-  Schema for array items
-- **minItems** : `int|null`
-  Minimum number of array items
-- **maxItems** : `int|null`
-  Maximum number of array items
-- **uniqueItems** : `bool|null`
-  Whether array items must be unique
-- **prefixItems** : `list&lt;Schema&gt;|null`
-  Schemas for positional array items (tuple validation)
-- **contains** : `Schema|bool|null`
-  Schema that at least one array item must match
-- **minContains** : `int|null`
-  Minimum number of items matching contains
-- **maxContains** : `int|null`
-  Maximum number of items matching contains
-- **unevaluatedItems** : `Schema|bool|null`
-  Schema for items not covered by other keywords
-- **properties** : `list&lt;Property&gt;|null`
-  Object property definitions
-- **required** : `list&lt;string&gt;|null`
-  List of required property names
-- **additionalProperties** : `Schema|Schema\AdditionalProperties|bool|null`
-  Schema or boolean for additional properties
-- **patternProperties** : `array&lt;string,Schema&gt;|null`
-  Schemas for properties matching regex patterns
-- **minProperties** : `int|null`
-  Minimum number of properties
-- **maxProperties** : `int|null`
-  Maximum number of properties
-- **unevaluatedProperties** : `Schema|bool|null`
-  Schema for properties not covered by other keywords
-- **propertyNames** : `Schema|null`
-  Schema that property names must validate against
-- **dependentRequired** : `array&lt;string,list&lt;string&gt;&gt;|null`
-  Property-level required dependencies
-- **dependentSchemas** : `array&lt;string,Schema&gt;|null`
-  Property-level schema dependencies
-- **allOf** : `list&lt;Schema&gt;|null`
-  All schemas must match (AND composition)
-- **anyOf** : `list&lt;Schema&gt;|null`
-  At least one schema must match (OR composition)
-- **oneOf** : `list&lt;Schema&gt;|null`
-  Exactly one schema must match (XOR composition)
-- **not** : `Schema|null`
-  The schema must NOT match
-- **if** : `Schema|null`
-  Conditional schema (if-then-else)
-- **then** : `Schema|null`
-  Applied when 'if' succeeds
-- **else** : `Schema|null`
-  Applied when 'if' fails
-- **enum** : `list&lt;string|int|float|bool|\UnitEnum|class-string&lt;\UnitEnum&gt;|null&gt;|null`
-  Allowed values
-- **const** : `mixed`
-  A single allowed value
-- **example** : `mixed`
-  An example value
-- **examples** : `list&lt;mixed&gt;|null`
-  A list of example values
-- **deprecated** : `bool|null`
-  Whether the schema is deprecated
-- **readOnly** : `bool|null`
-  Whether the value is read-only
-- **writeOnly** : `bool|null`
-  Whether the value is write-only
-- **default** : `mixed`
-  The default value
-- **discriminator** : `Discriminator|null`
-  Discriminator for polymorphism
-- **externalDocs** : `ExternalDocumentation|null`
-  Additional external documentation
-- **xml** : `Xml|null`
-  XML representation metadata
+<dl>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Reusable schema identifier (component key)</p></dd>
+  <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A title for the schema</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A description of the schema (CommonMark syntax)</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A JSON Reference to a reusable schema</p></dd>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">string|list&lt;string&gt;|null</span></dt>
+  <dd><p>The value type(s) (string, number, integer, boolean, array, object, null)</p></dd>
+  <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Further refines the type (e.g. int32, int64, float, double, date-time, email)</p></dd>
+  <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the value can be null (OAS 3.0 only; use type array in 3.1+)</p></dd>
+  <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Minimum string length</p></dd>
+  <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Maximum string length</p></dd>
+  <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Regular expression pattern the string must match</p></dd>
+  <dt><strong>contentMediaType</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The media type of string content encoding</p></dd>
+  <dt><strong>contentEncoding</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The encoding used for string content (e.g. base64)</p></dd>
+  <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>Minimum numeric value (inclusive)</p></dd>
+  <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>Maximum numeric value (inclusive)</p></dd>
+  <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
+  <dd><p>Exclusive minimum value</p></dd>
+  <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
+  <dd><p>Exclusive maximum value</p></dd>
+  <dt><strong>multipleOf</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>The value must be a multiple of this number</p></dd>
+  <dt><strong>items</strong> : <span style="font-family: monospace;">Schema|string|null</span></dt>
+  <dd><p>Schema for array items</p></dd>
+  <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Minimum number of array items</p></dd>
+  <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Maximum number of array items</p></dd>
+  <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether array items must be unique</p></dd>
+  <dt><strong>prefixItems</strong> : <span style="font-family: monospace;">list&lt;Schema&gt;|null</span></dt>
+  <dd><p>Schemas for positional array items (tuple validation)</p></dd>
+  <dt><strong>contains</strong> : <span style="font-family: monospace;">Schema|bool|null</span></dt>
+  <dd><p>Schema that at least one array item must match</p></dd>
+  <dt><strong>minContains</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Minimum number of items matching contains</p></dd>
+  <dt><strong>maxContains</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Maximum number of items matching contains</p></dd>
+  <dt><strong>unevaluatedItems</strong> : <span style="font-family: monospace;">Schema|bool|null</span></dt>
+  <dd><p>Schema for items not covered by other keywords</p></dd>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">list&lt;Property&gt;|null</span></dt>
+  <dd><p>Object property definitions</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
+  <dd><p>List of required property names</p></dd>
+  <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">Schema|Schema\AdditionalProperties|bool|null</span></dt>
+  <dd><p>Schema or boolean for additional properties</p></dd>
+  <dt><strong>patternProperties</strong> : <span style="font-family: monospace;">array&lt;string,Schema&gt;|null</span></dt>
+  <dd><p>Schemas for properties matching regex patterns</p></dd>
+  <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Minimum number of properties</p></dd>
+  <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Maximum number of properties</p></dd>
+  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">Schema|bool|null</span></dt>
+  <dd><p>Schema for properties not covered by other keywords</p></dd>
+  <dt><strong>propertyNames</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>Schema that property names must validate against</p></dd>
+  <dt><strong>dependentRequired</strong> : <span style="font-family: monospace;">array&lt;string,list&lt;string&gt;&gt;|null</span></dt>
+  <dd><p>Property-level required dependencies</p></dd>
+  <dt><strong>dependentSchemas</strong> : <span style="font-family: monospace;">array&lt;string,Schema&gt;|null</span></dt>
+  <dd><p>Property-level schema dependencies</p></dd>
+  <dt><strong>allOf</strong> : <span style="font-family: monospace;">list&lt;Schema&gt;|null</span></dt>
+  <dd><p>All schemas must match (AND composition)</p></dd>
+  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">list&lt;Schema&gt;|null</span></dt>
+  <dd><p>At least one schema must match (OR composition)</p></dd>
+  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">list&lt;Schema&gt;|null</span></dt>
+  <dd><p>Exactly one schema must match (XOR composition)</p></dd>
+  <dt><strong>not</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>The schema must NOT match</p></dd>
+  <dt><strong>if</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>Conditional schema (if-then-else)</p></dd>
+  <dt><strong>then</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>Applied when 'if' succeeds</p></dd>
+  <dt><strong>else</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>Applied when 'if' fails</p></dd>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">list&lt;string|int|float|bool|\UnitEnum|class-string&lt;\UnitEnum&gt;|null&gt;|null</span></dt>
+  <dd><p>Allowed values</p></dd>
+  <dt><strong>const</strong> : <span style="font-family: monospace;">mixed</span></dt>
+  <dd><p>A single allowed value</p></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed</span></dt>
+  <dd><p>An example value</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">list&lt;mixed&gt;|null</span></dt>
+  <dd><p>A list of example values</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the schema is deprecated</p></dd>
+  <dt><strong>readOnly</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the value is read-only</p></dd>
+  <dt><strong>writeOnly</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the value is write-only</p></dd>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed</span></dt>
+  <dd><p>The default value</p></dd>
+  <dt><strong>discriminator</strong> : <span style="font-family: monospace;">Discriminator|null</span></dt>
+  <dd><p>Discriminator for polymorphism</p></dd>
+  <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">ExternalDocumentation|null</span></dt>
+  <dd><p>Additional external documentation</p></dd>
+  <dt><strong>xml</strong> : <span style="font-family: monospace;">Xml|null</span></dt>
+  <dd><p>XML representation metadata</p></dd>
+</dl>
 
 ### [Schema\Items](https://github.com/zircote/swagger-php/tree/master/src/Spec/Schema/Items.php)
 
@@ -1694,114 +1774,116 @@ Since Items extends Schema, the implicit `OA\Property` shortcut applies — no e
 
 #### Parameters
 ---
-- **schema** : `string|null`
-  Reusable schema identifier (component key)
-- **title** : `string|null`
-  A title for the schema
-- **description** : `string|null`
-  A description of the schema (CommonMark syntax)
-- **ref** : `string|null`
-  A JSON Reference to a reusable schema
-- **type** : `string|list&lt;string&gt;|null`
-  The value type(s) (string, number, integer, boolean, array, object, null)
-- **format** : `string|null`
-  Further refines the type (e.g. int32, int64, float, double, date-time, email)
-- **nullable** : `bool|null`
-  Whether the value can be null (OAS 3.0 only; use type array in 3.1+)
-- **minLength** : `int|null`
-  Minimum string length
-- **maxLength** : `int|null`
-  Maximum string length
-- **pattern** : `string|null`
-  Regular expression pattern the string must match
-- **contentMediaType** : `string|null`
-  The media type of string content encoding
-- **contentEncoding** : `string|null`
-  The encoding used for string content (e.g. base64)
-- **minimum** : `int|float|null`
-  Minimum numeric value (inclusive)
-- **maximum** : `int|float|null`
-  Maximum numeric value (inclusive)
-- **exclusiveMinimum** : `int|float|bool|null`
-  Exclusive minimum value
-- **exclusiveMaximum** : `int|float|bool|null`
-  Exclusive maximum value
-- **multipleOf** : `int|float|null`
-  The value must be a multiple of this number
-- **items** : `Schema|string|null`
-  Schema for array items
-- **minItems** : `int|null`
-  Minimum number of array items
-- **maxItems** : `int|null`
-  Maximum number of array items
-- **uniqueItems** : `bool|null`
-  Whether array items must be unique
-- **prefixItems** : `list&lt;Schema&gt;|null`
-  Schemas for positional array items (tuple validation)
-- **contains** : `Schema|bool|null`
-  Schema that at least one array item must match
-- **minContains** : `int|null`
-  Minimum number of items matching contains
-- **maxContains** : `int|null`
-  Maximum number of items matching contains
-- **unevaluatedItems** : `Schema|bool|null`
-  Schema for items not covered by other keywords
-- **properties** : `list&lt;Property&gt;|null`
-  Object property definitions
-- **required** : `list&lt;string&gt;|null`
-  List of required property names
-- **additionalProperties** : `Schema|Schema\AdditionalProperties|bool|null`
-  Schema or boolean for additional properties
-- **patternProperties** : `array&lt;string,Schema&gt;|null`
-  Schemas for properties matching regex patterns
-- **minProperties** : `int|null`
-  Minimum number of properties
-- **maxProperties** : `int|null`
-  Maximum number of properties
-- **unevaluatedProperties** : `Schema|bool|null`
-  Schema for properties not covered by other keywords
-- **propertyNames** : `Schema|null`
-  Schema that property names must validate against
-- **dependentRequired** : `array&lt;string,list&lt;string&gt;&gt;|null`
-  Property-level required dependencies
-- **dependentSchemas** : `array&lt;string,Schema&gt;|null`
-  Property-level schema dependencies
-- **allOf** : `list&lt;Schema&gt;|null`
-  All schemas must match (AND composition)
-- **anyOf** : `list&lt;Schema&gt;|null`
-  At least one schema must match (OR composition)
-- **oneOf** : `list&lt;Schema&gt;|null`
-  Exactly one schema must match (XOR composition)
-- **not** : `Schema|null`
-  The schema must NOT match
-- **if** : `Schema|null`
-  Conditional schema (if-then-else)
-- **then** : `Schema|null`
-  Applied when 'if' succeeds
-- **else** : `Schema|null`
-  Applied when 'if' fails
-- **enum** : `list&lt;string|int|float|bool|\UnitEnum|class-string&lt;\UnitEnum&gt;|null&gt;|null`
-  Allowed values
-- **const** : `mixed`
-  A single allowed value
-- **example** : `mixed`
-  An example value
-- **examples** : `list&lt;mixed&gt;|null`
-  A list of example values
-- **deprecated** : `bool|null`
-  Whether the schema is deprecated
-- **readOnly** : `bool|null`
-  Whether the value is read-only
-- **writeOnly** : `bool|null`
-  Whether the value is write-only
-- **default** : `mixed`
-  The default value
-- **discriminator** : `Discriminator|null`
-  Discriminator for polymorphism
-- **externalDocs** : `ExternalDocumentation|null`
-  Additional external documentation
-- **xml** : `Xml|null`
-  XML representation metadata
+<dl>
+  <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Reusable schema identifier (component key)</p></dd>
+  <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A title for the schema</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A description of the schema (CommonMark syntax)</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A JSON Reference to a reusable schema</p></dd>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">string|list&lt;string&gt;|null</span></dt>
+  <dd><p>The value type(s) (string, number, integer, boolean, array, object, null)</p></dd>
+  <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Further refines the type (e.g. int32, int64, float, double, date-time, email)</p></dd>
+  <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the value can be null (OAS 3.0 only; use type array in 3.1+)</p></dd>
+  <dt><strong>minLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Minimum string length</p></dd>
+  <dt><strong>maxLength</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Maximum string length</p></dd>
+  <dt><strong>pattern</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Regular expression pattern the string must match</p></dd>
+  <dt><strong>contentMediaType</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The media type of string content encoding</p></dd>
+  <dt><strong>contentEncoding</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The encoding used for string content (e.g. base64)</p></dd>
+  <dt><strong>minimum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>Minimum numeric value (inclusive)</p></dd>
+  <dt><strong>maximum</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>Maximum numeric value (inclusive)</p></dd>
+  <dt><strong>exclusiveMinimum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
+  <dd><p>Exclusive minimum value</p></dd>
+  <dt><strong>exclusiveMaximum</strong> : <span style="font-family: monospace;">int|float|bool|null</span></dt>
+  <dd><p>Exclusive maximum value</p></dd>
+  <dt><strong>multipleOf</strong> : <span style="font-family: monospace;">int|float|null</span></dt>
+  <dd><p>The value must be a multiple of this number</p></dd>
+  <dt><strong>items</strong> : <span style="font-family: monospace;">Schema|string|null</span></dt>
+  <dd><p>Schema for array items</p></dd>
+  <dt><strong>minItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Minimum number of array items</p></dd>
+  <dt><strong>maxItems</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Maximum number of array items</p></dd>
+  <dt><strong>uniqueItems</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether array items must be unique</p></dd>
+  <dt><strong>prefixItems</strong> : <span style="font-family: monospace;">list&lt;Schema&gt;|null</span></dt>
+  <dd><p>Schemas for positional array items (tuple validation)</p></dd>
+  <dt><strong>contains</strong> : <span style="font-family: monospace;">Schema|bool|null</span></dt>
+  <dd><p>Schema that at least one array item must match</p></dd>
+  <dt><strong>minContains</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Minimum number of items matching contains</p></dd>
+  <dt><strong>maxContains</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Maximum number of items matching contains</p></dd>
+  <dt><strong>unevaluatedItems</strong> : <span style="font-family: monospace;">Schema|bool|null</span></dt>
+  <dd><p>Schema for items not covered by other keywords</p></dd>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">list&lt;Property&gt;|null</span></dt>
+  <dd><p>Object property definitions</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
+  <dd><p>List of required property names</p></dd>
+  <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">Schema|Schema\AdditionalProperties|bool|null</span></dt>
+  <dd><p>Schema or boolean for additional properties</p></dd>
+  <dt><strong>patternProperties</strong> : <span style="font-family: monospace;">array&lt;string,Schema&gt;|null</span></dt>
+  <dd><p>Schemas for properties matching regex patterns</p></dd>
+  <dt><strong>minProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Minimum number of properties</p></dd>
+  <dt><strong>maxProperties</strong> : <span style="font-family: monospace;">int|null</span></dt>
+  <dd><p>Maximum number of properties</p></dd>
+  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">Schema|bool|null</span></dt>
+  <dd><p>Schema for properties not covered by other keywords</p></dd>
+  <dt><strong>propertyNames</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>Schema that property names must validate against</p></dd>
+  <dt><strong>dependentRequired</strong> : <span style="font-family: monospace;">array&lt;string,list&lt;string&gt;&gt;|null</span></dt>
+  <dd><p>Property-level required dependencies</p></dd>
+  <dt><strong>dependentSchemas</strong> : <span style="font-family: monospace;">array&lt;string,Schema&gt;|null</span></dt>
+  <dd><p>Property-level schema dependencies</p></dd>
+  <dt><strong>allOf</strong> : <span style="font-family: monospace;">list&lt;Schema&gt;|null</span></dt>
+  <dd><p>All schemas must match (AND composition)</p></dd>
+  <dt><strong>anyOf</strong> : <span style="font-family: monospace;">list&lt;Schema&gt;|null</span></dt>
+  <dd><p>At least one schema must match (OR composition)</p></dd>
+  <dt><strong>oneOf</strong> : <span style="font-family: monospace;">list&lt;Schema&gt;|null</span></dt>
+  <dd><p>Exactly one schema must match (XOR composition)</p></dd>
+  <dt><strong>not</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>The schema must NOT match</p></dd>
+  <dt><strong>if</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>Conditional schema (if-then-else)</p></dd>
+  <dt><strong>then</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>Applied when 'if' succeeds</p></dd>
+  <dt><strong>else</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>Applied when 'if' fails</p></dd>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">list&lt;string|int|float|bool|\UnitEnum|class-string&lt;\UnitEnum&gt;|null&gt;|null</span></dt>
+  <dd><p>Allowed values</p></dd>
+  <dt><strong>const</strong> : <span style="font-family: monospace;">mixed</span></dt>
+  <dd><p>A single allowed value</p></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed</span></dt>
+  <dd><p>An example value</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">list&lt;mixed&gt;|null</span></dt>
+  <dd><p>A list of example values</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the schema is deprecated</p></dd>
+  <dt><strong>readOnly</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the value is read-only</p></dd>
+  <dt><strong>writeOnly</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the value is write-only</p></dd>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">mixed</span></dt>
+  <dd><p>The default value</p></dd>
+  <dt><strong>discriminator</strong> : <span style="font-family: monospace;">Discriminator|null</span></dt>
+  <dd><p>Discriminator for polymorphism</p></dd>
+  <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">ExternalDocumentation|null</span></dt>
+  <dd><p>Additional external documentation</p></dd>
+  <dt><strong>xml</strong> : <span style="font-family: monospace;">Xml|null</span></dt>
+  <dd><p>XML representation metadata</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -1827,12 +1909,14 @@ If used on a `$ref` directly, only the ref value is used.
 
 #### Parameters
 ---
-- **ref** : `string`
-  No details available.
-- **title** : `string|null`
-  No details available.
-- **description** : `string|null`
-  No details available.
+<dl>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 ### [Security\Requirement](https://github.com/zircote/swagger-php/tree/master/src/Spec/Security/Requirement.php)
 
@@ -1847,12 +1931,14 @@ Multiple schemes within a single requirement represent AND logic.
 
 #### Parameters
 ---
-- **scheme** : `string|null`
-  Single scheme name (shorthand for simple requirements)
-- **scopes** : `list&lt;string&gt;|null`
-  Scopes for the single scheme (OAuth2/OpenIdConnect)
-- **schemes** : `array&lt;string,list&lt;string&gt;&gt;|null`
-  Map of scheme names to scopes (for AND logic with multiple schemes)
+<dl>
+  <dt><strong>scheme</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Single scheme name (shorthand for simple requirements)</p></dd>
+  <dt><strong>scopes</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
+  <dd><p>Scopes for the single scheme (OAuth2/OpenIdConnect)</p></dd>
+  <dt><strong>schemes</strong> : <span style="font-family: monospace;">array&lt;string,list&lt;string&gt;&gt;|null</span></dt>
+  <dd><p>Map of scheme names to scopes (for AND logic with multiple schemes)</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -1879,26 +1965,28 @@ Typed subtypes are available for each security scheme type:
 
 #### Parameters
 ---
-- **securityScheme** : `string|null`
-  Reusable security scheme identifier (component key)
-- **type** : `string|OA\SchemeType|null`
-  The type of the security scheme (apiKey, http, mutualTLS, oauth2, openIdConnect)
-- **description** : `string|null`
-  A description of the security scheme (CommonMark syntax)
-- **name** : `string|null`
-  The name of the header, query, or cookie parameter (apiKey)
-- **in** : `string|OA\SchemeIn|null`
-  The location of the API key (query, header, cookie)
-- **scheme** : `string|null`
-  The HTTP authorization scheme (http)
-- **bearerFormat** : `string|null`
-  A hint about the format of the bearer token (http/bearer)
-- **openIdConnectUrl** : `string|null`
-  The OpenID Connect URL to discover configuration (openIdConnect)
-- **flows** : `list&lt;OA\Flow&gt;|null`
-  The available OAuth2 flows (oauth2)
-- **ref** : `string|null`
-  A JSON Reference to a reusable security scheme
+<dl>
+  <dt><strong>securityScheme</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Reusable security scheme identifier (component key)</p></dd>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">string|OA\SchemeType|null</span></dt>
+  <dd><p>The type of the security scheme (apiKey, http, mutualTLS, oauth2, openIdConnect)</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A description of the security scheme (CommonMark syntax)</p></dd>
+  <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The name of the header, query, or cookie parameter (apiKey)</p></dd>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">string|OA\SchemeIn|null</span></dt>
+  <dd><p>The location of the API key (query, header, cookie)</p></dd>
+  <dt><strong>scheme</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The HTTP authorization scheme (http)</p></dd>
+  <dt><strong>bearerFormat</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A hint about the format of the bearer token (http/bearer)</p></dd>
+  <dt><strong>openIdConnectUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The OpenID Connect URL to discover configuration (openIdConnect)</p></dd>
+  <dt><strong>flows</strong> : <span style="font-family: monospace;">list&lt;OA\Flow&gt;|null</span></dt>
+  <dd><p>The available OAuth2 flows (oauth2)</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A JSON Reference to a reusable security scheme</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -1914,14 +2002,16 @@ An API key security scheme (header, query, or cookie).
 
 #### Parameters
 ---
-- **securityScheme** : `string|null`
-  No details available.
-- **description** : `string|null`
-  No details available.
-- **name** : `string|null`
-  No details available.
-- **in** : `OpenApi\Spec\SchemeIn|string|null`
-  No details available.
+<dl>
+  <dt><strong>securityScheme</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>in</strong> : <span style="font-family: monospace;">OpenApi\Spec\SchemeIn|string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -1937,14 +2027,16 @@ An HTTP authentication security scheme (Basic, Bearer, etc.).
 
 #### Parameters
 ---
-- **securityScheme** : `string|null`
-  No details available.
-- **description** : `string|null`
-  No details available.
-- **scheme** : `string|null`
-  No details available.
-- **bearerFormat** : `string|null`
-  No details available.
+<dl>
+  <dt><strong>securityScheme</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>scheme</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>bearerFormat</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -1960,10 +2052,12 @@ A Mutual TLS security scheme.
 
 #### Parameters
 ---
-- **securityScheme** : `string|null`
-  No details available.
-- **description** : `string|null`
-  No details available.
+<dl>
+  <dt><strong>securityScheme</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -1979,12 +2073,14 @@ An OAuth2 security scheme with one or more flows.
 
 #### Parameters
 ---
-- **securityScheme** : `string|null`
-  No details available.
-- **description** : `string|null`
-  No details available.
-- **flows** : `list&lt;OA\Flow&gt;|null`
-  No details available.
+<dl>
+  <dt><strong>securityScheme</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>flows</strong> : <span style="font-family: monospace;">list&lt;OA\Flow&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -2000,12 +2096,14 @@ An OpenID Connect Discovery security scheme.
 
 #### Parameters
 ---
-- **securityScheme** : `string|null`
-  No details available.
-- **description** : `string|null`
-  No details available.
-- **openIdConnectUrl** : `string|null`
-  No details available.
+<dl>
+  <dt><strong>securityScheme</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>openIdConnectUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -2025,12 +2123,14 @@ A host the API is available on, optionally templated with `ServerVariable` subst
 
 #### Parameters
 ---
-- **url** : `string|null`
-  A URL to the target host
-- **description** : `string|null`
-  A description of the host (CommonMark syntax)
-- **variables** : `list&lt;ServerVariable&gt;|null`
-  Variables for server URL template substitution
+<dl>
+  <dt><strong>url</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A URL to the target host</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A description of the host (CommonMark syntax)</p></dd>
+  <dt><strong>variables</strong> : <span style="font-family: monospace;">list&lt;ServerVariable&gt;|null</span></dt>
+  <dd><p>Variables for server URL template substitution</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -2046,14 +2146,16 @@ The allowed and default substitutions for one template variable in a `Server` UR
 
 #### Parameters
 ---
-- **serverVariable** : `string|null`
-  The variable name
-- **default** : `string|null`
-  The default value to use for substitution
-- **description** : `string|null`
-  A description of the server variable (CommonMark syntax)
-- **enum** : `list&lt;string&gt;|null`
-  Enumeration of allowed string values for substitution
+<dl>
+  <dt><strong>serverVariable</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The variable name</p></dd>
+  <dt><strong>default</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The default value to use for substitution</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A description of the server variable (CommonMark syntax)</p></dd>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
+  <dd><p>Enumeration of allowed string values for substitution</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -2069,18 +2171,20 @@ Adds metadata to a single tag used by the Operation Object.
 
 #### Parameters
 ---
-- **name** : `string|null`
-  The name of the tag
-- **summary** : `string|null`
-  A short summary of the tag, used for display purposes
-- **description** : `string|null`
-  A description of the tag (CommonMark syntax)
-- **externalDocs** : `ExternalDocumentation|null`
-  Additional external documentation for this tag
-- **parent** : `string|null`
-  The name of a tag that this tag is nested under
-- **kind** : `string|null`
-  A machine-readable string to categorize the tag
+<dl>
+  <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The name of the tag</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A short summary of the tag, used for display purposes</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A description of the tag (CommonMark syntax)</p></dd>
+  <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">ExternalDocumentation|null</span></dt>
+  <dd><p>Additional external documentation for this tag</p></dd>
+  <dt><strong>parent</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The name of a tag that this tag is nested under</p></dd>
+  <dt><strong>kind</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A machine-readable string to categorize the tag</p></dd>
+</dl>
 
 #### Reference
 ---
@@ -2096,16 +2200,18 @@ Metadata for XML representation of a schema property.
 
 #### Parameters
 ---
-- **name** : `string|null`
-  Replaces the name of the element/attribute
-- **namespace** : `string|null`
-  The URI of the XML namespace
-- **prefix** : `string|null`
-  The namespace prefix to use
-- **attribute** : `bool|null`
-  Whether the property translates to an XML attribute
-- **wrapped** : `bool|null`
-  Whether array items are wrapped in an additional element
+<dl>
+  <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>Replaces the name of the element/attribute</p></dd>
+  <dt><strong>namespace</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The URI of the XML namespace</p></dd>
+  <dt><strong>prefix</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The namespace prefix to use</p></dd>
+  <dt><strong>attribute</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the property translates to an XML attribute</p></dd>
+  <dt><strong>wrapped</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether array items are wrapped in an additional element</p></dd>
+</dl>
 
 #### Reference
 ---

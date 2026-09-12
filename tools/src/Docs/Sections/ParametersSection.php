@@ -8,6 +8,13 @@ namespace OpenApi\Tools\Docs\Sections;
 
 use OpenApi\Tools\Docs\DocGenerator;
 
+/**
+ * Renders parameters as a definition list.
+ *
+ * Both halves of an entry carry content this section does not control: a description is
+ * prose with its own paragraph breaks, and a type arrives already HTML-escaped. The markup
+ * is HTML so that both reach the page as written.
+ */
 class ParametersSection implements SectionInterface
 {
     public function __construct(
@@ -24,17 +31,22 @@ class ParametersSection implements SectionInterface
 
         $out = "#### {$this->heading}\n";
         $out .= "---\n";
+        $out .= "<dl>\n";
 
         foreach ($parameters as $param) {
-            $type = ($param['type'] ?? '') !== '' ? ' : `' . $param['type'] . '`' : '';
-            $out .= '- **' . $param['name'] . '**' . $type . "\n";
+            $type = ($param['type'] ?? '') !== ''
+                ? ' : <span style="font-family: monospace;">' . $param['type'] . '</span>'
+                : '';
+
+            $out .= '  <dt><strong>' . $param['name'] . '</strong>' . $type . "</dt>\n";
+            $out .= '  <dd>';
 
             $desc = ($param['description'] ?? '') ?: DocGenerator::NO_DETAILS_AVAILABLE;
-            $out .= '  ' . $desc . "\n";
+            $out .= '<p>' . nl2br($desc) . '</p>';
 
-            $meta = [];
+            $rows = [];
             if (array_key_exists('required', $param)) {
-                $meta[] = '*Required*: ' . ($param['required'] ? 'yes' : 'no');
+                $rows[] = '<tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>' . ($param['required'] ? 'yes' : 'no') . '</b></td></tr>';
             }
 
             if (!empty($param['see'])) {
@@ -45,16 +57,19 @@ class ParametersSection implements SectionInterface
                     }
                 }
                 if ($links) {
-                    $meta[] = '*See*: ' . implode(', ', $links);
+                    $rows[] = '<tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;">' . implode(', ', $links) . '</td></tr>';
                 }
             }
 
-            if ($meta) {
-                $out .= '  ' . implode(' | ', $meta) . "\n";
+            // spec attributes carry no required flag, and a parameter may have no reference
+            if ($rows !== []) {
+                $out .= '<table class="table-plain"><tbody>' . implode('', $rows) . '</tbody></table>';
             }
+
+            $out .= "</dd>\n";
         }
 
-        return $out;
+        return $out . "</dl>\n";
     }
 
     protected function linkFromMarkup(string $see): ?string
