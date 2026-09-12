@@ -9,7 +9,7 @@ namespace OpenApi;
 use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification\ComponentIndex;
-use OpenApi\Utils\SpecificationWalker;
+use OpenApi\Specification\Walker;
 
 /**
  * Flat container for all collected spec attributes.
@@ -98,9 +98,9 @@ class Specification
         return $this;
     }
 
-    public function getWalker(): SpecificationWalker
+    public function getWalker(): Walker
     {
-        return new SpecificationWalker($this);
+        return new Walker($this);
     }
 
     public function buildComponentIndex(): ComponentIndex

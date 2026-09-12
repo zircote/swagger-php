@@ -8,11 +8,11 @@ namespace OpenApi\Compiler;
 
 use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Contracts\CompilerInterface;
+use OpenApi\Loggers\CollectingLogger;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Specification\ComponentName;
 use OpenApi\Undefined;
-use OpenApi\Utils\CollectingLogger;
 use Psr\Log\LoggerInterface;
 
 /**

@@ -6,7 +6,6 @@
 
 namespace OpenApi\Type;
 
-use OpenApi\Utils\TypeMapper;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;

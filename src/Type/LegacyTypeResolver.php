@@ -10,7 +10,6 @@ use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Undefined;
-use OpenApi\Utils\TypeMapper;
 
 /**
  * @deprecated use `TypeInfoTypeResolver` instead
