@@ -298,7 +298,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 #### Nested elements
 ---
-<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#mediatype">MediaType</a>, <a href="#attachable">Attachable</a>
 
 #### Parameters
 ---
@@ -915,7 +915,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 #### Nested elements
 ---
-<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#mediatype">MediaType</a>, <a href="#attachable">Attachable</a>
 
 #### Parameters
 ---
@@ -1552,7 +1552,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 #### Allowed in
 ---
-<a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#header">Header</a>
+<a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#header">Header</a>, <a href="#parameter">Parameter</a>
 
 #### Nested elements
 ---
@@ -1747,7 +1747,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 #### Nested elements
 ---
-<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#mediatype">MediaType</a>, <a href="#attachable">Attachable</a>
 
 #### Parameters
 ---
@@ -1999,7 +1999,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 #### Nested elements
 ---
-<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#mediatype">MediaType</a>, <a href="#attachable">Attachable</a>
 
 #### Parameters
 ---
@@ -2569,7 +2569,7 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 #### Nested elements
 ---
-<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#mediatype">MediaType</a>, <a href="#attachable">Attachable</a>
 
 #### Parameters
 ---

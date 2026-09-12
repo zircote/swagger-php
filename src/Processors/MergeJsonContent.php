@@ -41,9 +41,7 @@ class MergeJsonContent
                 '_context' => new Context(['generated' => true], $jsonContent->_context),
             ]);
             $analysis->addAnnotation($mediaType, $mediaType->_context);
-            if (!$parent instanceof OA\Parameter) {
-                $parent->content['application/json']->mediaType = 'application/json';
-            }
+            $parent->content['application/json']->mediaType = 'application/json';
             $jsonContent->example = Undefined::UNDEFINED;
             $jsonContent->examples = Undefined::UNDEFINED;
             /* @phpstan-ignore assign.propertyType */
