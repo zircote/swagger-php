@@ -7,7 +7,9 @@ unless it has a direct bearing on this diff. -->
 
 ## Changes
 
-<!-- Key changes, high level. No code snippets unless genuinely unavoidable. Wrap class
-names, method calls, file paths and other identifiers in backticks. -->
+<!-- Key changes, high level. One line each, naming what moved rather than how it works —
+a condition, a count or a signature is what the diff is for. No code snippets unless
+genuinely unavoidable. Wrap class names, method calls, file paths and other identifiers in
+backticks. -->
 
 -
