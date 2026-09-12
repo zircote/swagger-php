@@ -24,6 +24,12 @@ class AuthHttpSchemesSpec
 {
 }
 
+// mutualTLS exists as of 3.1; the 3.0 document omits it with a warning
+#[OA\Security\Scheme\MutualTls(securityScheme: 'mutualTls', description: 'Client certificate authentication')]
+class AuthMutualTlsSchemeSpec
+{
+}
+
 #[OA\Security\Scheme\OAuth2(
     securityScheme: 'oauth2',
     description: 'All four flows on a single scheme.',

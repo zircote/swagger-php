@@ -115,6 +115,26 @@ class Components extends AbstractAnnotation
         Attachable::class => ['attachables'],
     ];
 
+    #[\Override]
+    public function jsonSerialize(): \stdClass
+    {
+        $data = parent::jsonSerialize();
+
+        // mutualTLS security schemes exist as of 3.1
+        if (isset($data->securitySchemes) && $this->_context->isVersion('3.0.x')) {
+            foreach ((array) $data->securitySchemes as $key => $scheme) {
+                if (($scheme->type ?? null) === 'mutualTLS') {
+                    unset($data->securitySchemes->{$key});
+                }
+            }
+            if ((array) $data->securitySchemes === []) {
+                unset($data->securitySchemes);
+            }
+        }
+
+        return $data;
+    }
+
     /**
      * Returns a list of component annotation types.
      *
