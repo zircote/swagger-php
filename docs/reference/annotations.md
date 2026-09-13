@@ -183,7 +183,7 @@ A single encoding definition applied to a single schema property.
 
 #### Allowed in
 ---
-<a href="#additionalproperties">AdditionalProperties</a>, <a href="#components">Components</a>, <a href="#items">Items</a>, <a href="#schema">Schema</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#property">Property</a>, <a href="#mediatype">MediaType</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#xmlcontent">XmlContent</a>
+<a href="#additionalproperties">AdditionalProperties</a>, <a href="#components">Components</a>, <a href="#items">Items</a>, <a href="#schema">Schema</a>, <a href="#parameter">Parameter</a>, <a href="#pathparameter">PathParameter</a>, <a href="#property">Property</a>, <a href="#mediatype">MediaType</a>, <a href="#header">Header</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#xmlcontent">XmlContent</a>
 
 #### Nested elements
 ---
@@ -329,7 +329,7 @@ A map between the scope name and a short description for it.</p><table class="ta
 
 #### Nested elements
 ---
-<a href="#schema">Schema</a>, <a href="#attachable">Attachable</a>
+<a href="#schema">Schema</a>, <a href="#examples">Examples</a>, <a href="#mediatype">MediaType</a>, <a href="#attachable">Attachable</a>
 
 #### Properties
 ---
@@ -345,6 +345,21 @@ This could contain examples of use.<br />
 CommonMark syntax MAY be used for rich text representation.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>style</strong> : <span style="font-family: monospace;">string</span></dt>
+  <dd><p>Describes how the header value will be serialized.<br />
+<br />
+Headers support only the "simple" style; it is also the default.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>explode</strong> : <span style="font-family: monospace;">bool</span></dt>
+  <dd><p>When this is true, header values of type array or object generate a single header<br />
+whose value is a comma-separated list of the array items or key-value pairs of the map.<br />
+<br />
+The default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed</span></dt>
+  <dd><p>Example of the header.<br />
+<br />
+The example should match the specified schema if present.<br />
+The example object is mutually exclusive of the examples object.<br />
+Furthermore, if referencing a schema which contains an example, the example value shall override the example provided by the schema.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool</span></dt>
   <dd><p>Specifies that a parameter is deprecated and SHOULD be transitioned out of usage.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>allowEmptyValue</strong> : <span style="font-family: monospace;">bool</span></dt>
@@ -548,7 +563,7 @@ Parameter encodings can be set either here, or on nested `Property` annotations 
 
 #### Allowed in
 ---
-<a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>
+<a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#header">Header</a>
 
 #### Nested elements
 ---
