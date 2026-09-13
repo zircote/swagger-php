@@ -546,6 +546,7 @@ class OpenApi31Compiler implements CompilerInterface
             'pattern' => $schema->pattern,
             'contentMediaType' => $schema->contentMediaType,
             'contentEncoding' => $schema->contentEncoding,
+            'contentSchema' => $schema->contentSchema instanceof OA\Schema ? $this->compileSchema($schema->contentSchema) : null,
 
             // Numeric
             'minimum' => $this->compileMinimum($schema),
@@ -873,7 +874,7 @@ class OpenApi31Compiler implements CompilerInterface
 
         foreach ($allSchemas as $schema) {
             if ($schema->type !== null && (is_array($schema->type) ? in_array('array', $schema->type, true) : $schema->type === 'array')) {
-                if ($schema->items === null) {
+                if ($schema->items === null && $schema->prefixItems === null && $schema->contains === null) {
                     $this->logger->warning('Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ' has type "array" but no items in ' . $schema->getSourceLocation());
                 }
             }

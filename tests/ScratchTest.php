@@ -28,6 +28,15 @@ final class ScratchTest extends OpenApiTestCase
         // for a diagnostic only one mode raises. Both keys contribute when both are present.
         $expectedLogs = [
             'Auth-3.0.0' => ['mutualTLS security schemes are not supported in OpenAPI 3.0 and will be omitted'],
+            'SchemaKeywords-3.0.0' => [
+                'prefixItems is not supported in OpenAPI 3.0',
+                'unevaluatedProperties is not supported in OpenAPI 3.0',
+                'unevaluatedItems is not supported in OpenAPI 3.0',
+                'if/then/else is not supported in OpenAPI 3.0',
+            ],
+            'SchemaKeywords-3.0.0-classic' => ['@OA\Items() is required when @OA\Schema() has type "array"'],
+            'SchemaKeywords-3.0.0-spec' => ['has type "array" but no items'],
+            'SchemaKeywords-3.0.0-hybrid' => ['has type "array" but no items'],
             'Examples-3.0.0-classic' => ['@OA\Schema::examples is only allowed as of 3.1.0'],
             'Examples-3.0.0-spec' => ['examples array is not supported in OpenAPI 3.0'],
             'Examples-3.0.0-hybrid' => ['examples array is not supported in OpenAPI 3.0'],
