@@ -31,6 +31,16 @@ use OpenApi\Attributes as OAT;
                 ]
             )
         ),
+        new OAT\Parameter(
+            name: 'coords',
+            in: 'query',
+            content: [
+                new OAT\MediaType(
+                    mediaType: 'application/json',
+                    schema: new OAT\Schema(type: 'object')
+                ),
+            ]
+        ),
     ],
     responses: [new OAT\Response(response: 200, description: 'OK')]
 )]

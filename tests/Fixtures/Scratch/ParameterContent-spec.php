@@ -30,6 +30,13 @@ use OpenApi\Spec as OA;
                 ]
             )
         ),
+        new OA\Parameter\Query(
+            name: 'coords',
+            content: new OA\MediaType(
+                mediaType: 'application/json',
+                schema: new OA\Schema(type: 'object')
+            )
+        ),
     ],
 )]
 #[OA\Response(response: 200, description: 'OK')]

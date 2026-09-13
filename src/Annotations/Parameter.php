@@ -257,6 +257,7 @@ class Parameter extends AbstractAnnotation
     public static $_nested = [
         Schema::class => 'schema',
         Examples::class => ['examples', 'example'],
+        MediaType::class => ['content', 'mediaType'],
         Attachable::class => ['attachables'],
     ];
 

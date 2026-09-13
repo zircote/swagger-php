@@ -40,9 +40,7 @@ class MergeXmlContent
                 '_context' => new Context(['generated' => true], $xmlContent->_context),
             ]);
             $analysis->addAnnotation($mediaType, $mediaType->_context);
-            if (!$parent instanceof OA\Parameter) {
-                $parent->content['application/xml']->mediaType = 'application/xml';
-            }
+            $parent->content['application/xml']->mediaType = 'application/xml';
             $xmlContent->example = Undefined::UNDEFINED;
             $xmlContent->examples = Undefined::UNDEFINED;
             $xmlContent->_context = new Context(['nested' => $mediaType, 'generated' => true], $mediaType->_context);
