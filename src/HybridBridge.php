@@ -234,6 +234,7 @@ class HybridBridge
             version: $this->val($info->version),
             contact: $contact,
             license: $license,
+            summary: $this->val($info->summary),
             x: $this->extensions($info),
         );
     }
