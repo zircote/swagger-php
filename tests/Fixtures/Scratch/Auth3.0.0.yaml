@@ -7,7 +7,7 @@ paths:
     get:
       operationId: getSecured
       responses:
-        '200':
+        200:
           description: 'All good'
       security:
         -
@@ -34,8 +34,8 @@ components:
       scheme: basic
     bearerAuth:
       type: http
-      bearerFormat: JWT
       scheme: bearer
+      bearerFormat: JWT
     oauth2:
       type: oauth2
       description: 'All four flows on a single scheme.'

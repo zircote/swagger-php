@@ -25,6 +25,12 @@ class AuthHttpSchemes
 {
 }
 
+// mutualTLS exists as of 3.1; the 3.0 document omits it with a warning
+#[OAT\SecurityScheme(securityScheme: 'mutualTls', type: 'mutualTLS', description: 'Client certificate authentication')]
+class AuthMutualTlsScheme
+{
+}
+
 #[OAT\SecurityScheme(
     securityScheme: 'oauth2',
     type: 'oauth2',
