@@ -18,7 +18,12 @@ if (class_exists(Undefined::class) === false) {
 
 $input = new class extends ArgvInput
 {
-    public function hasParameterOption(array|string $values, bool $onlyParams = false): bool
+    /**
+     * Untyped to keep compat with Symfony 5.4
+     *
+     * @param string|string[] $values
+     */
+    public function hasParameterOption($values, bool $onlyParams = false): bool
     {
         // Skip the built-in version option check
         // thus the command can use it for its own purpose
@@ -41,6 +46,14 @@ $options = $definition->getOptions();
 unset($options['version'], $options['no-interaction']);
 $definition->setOptions($options);
 
-$app->addCommand(new GenerateCommand($logger));
+$command = new GenerateCommand($logger);
+
+// Application::addCommand() replaces the deprecated add() as of symfony/console 7.4
+if (method_exists($app, 'addCommand')) {
+    $app->addCommand($command);
+} else {
+    $app->add($command);
+}
+
 $app->setDefaultCommand('openapi', true);
 $app->run($input, $output);

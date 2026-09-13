@@ -26,11 +26,11 @@ final class DocsAccuracyTest extends TestCase
 
         preg_match('/^> \.\/vendor\/bin\/openapi -h\n\n(.+?)```$/ms', $page, $m);
         $this->assertNotEmpty($m, 'Could not find the help block in the docs');
-        $documented = rtrim($m[1]);
+        $documented = $this->commandHelp(rtrim($m[1]));
 
         exec('php ' . escapeshellarg(__DIR__ . '/../bin/openapi') . ' -h 2>/dev/null', $lines, $ret);
         $this->assertSame(0, $ret);
-        $actual = implode("\n", $lines);
+        $actual = $this->commandHelp(implode("\n", $lines));
 
         $this->assertSame($documented, $actual, 'openapi -h output has drifted from docs/guide/generating-openapi-documents.md');
     }
@@ -219,6 +219,17 @@ final class DocsAccuracyTest extends TestCase
                 "{$short}::__construct() should not have \$requestBody (docs/guide/spec-attributes.md)"
             );
         }
+    }
+
+    /**
+     * The command's own help, without the built-in options symfony/console appends.
+     *
+     * Those differ per console version (`--silent` only exists as of 7.3) and the
+     * supported range is 5.4 to 8.x, so only the command's own section is compared.
+     */
+    private function commandHelp(string $help): string
+    {
+        return rtrim((string) preg_replace('/\n\s+-h, --help.*$/s', '', $help));
     }
 
     /**
