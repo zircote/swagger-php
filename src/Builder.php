@@ -11,6 +11,7 @@ use OpenApi\Builder\Result;
 use OpenApi\Contracts\CompilerInterface;
 use OpenApi\Loggers\CollectingLogger;
 use OpenApi\Utils\AttributeFactory;
+use OpenApi\Utils\ClassReflector;
 use OpenApi\Utils\PipeInterface;
 use OpenApi\Utils\SourceScanner;
 use Psr\Log\LoggerInterface;
@@ -238,15 +239,22 @@ class Builder
 
         foreach ($sourceScanner->getFiles() as $file) {
             foreach (array_keys($tokenScanner->scanFile($file)) as $class) {
-                if (class_exists($class) || interface_exists($class) || enum_exists($class) || trait_exists($class)) {
-                    $assembler->collect(new \ReflectionClass($class));
+                [$rc, $reason] = ClassReflector::tryReflect($class);
+                if (!$rc instanceof \ReflectionClass) {
+                    $this->getLogger()->warning($reason === null
+                        ? 'Skipping unknown ' . $class
+                        : "Skipping unloadable {$class}: {$reason}");
+
+                    continue;
                 }
+
+                $this->collectSafely($assembler, $rc);
             }
         }
 
         foreach ($sourceScanner->getReflectors() as $reflector) {
             if ($reflector instanceof \ReflectionClass) {
-                $assembler->collect($reflector);
+                $this->collectSafely($assembler, $reflector);
             }
         }
 
@@ -272,6 +280,18 @@ class Builder
         $output = $compiler->compile($specification);
 
         return Result::fromSpec($sourceScanner->getFiles(), $specification, $output, $diagnostics);
+    }
+
+    /**
+     * @param \ReflectionClass<object> $reflector
+     */
+    protected function collectSafely(Assembler $assembler, \ReflectionClass $reflector): void
+    {
+        try {
+            $assembler->collect($reflector);
+        } catch (\Throwable $throwable) {
+            $this->getLogger()->warning("Skipping unloadable {$reflector->getName()}: {$throwable->getMessage()}");
+        }
     }
 
     protected function doHybridAssemble(Specification $specification): void

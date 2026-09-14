@@ -174,6 +174,53 @@ final class BuilderTest extends OpenApiTestCase
         $this->assertContains('Required @OA\PathItem() not found', $result->warnings());
     }
 
+    /**
+     * A class that exists by name but will not load — its parent is missing — must cost
+     * the scan one class, not the whole run: https://github.com/zircote/swagger-php/issues/1600.
+     */
+    public function testBuildSkipsClassThatWillNotLoadClassic(): void
+    {
+        $result = (new Builder())
+            ->setMode(Mode::CLASSIC)
+            ->addSource(self::fixture('PHP/UnloadableClassRepro'))
+            ->build();
+
+        $this->assertStringContainsString('getEndpoint', $result->toYaml());
+        $this->assertContains(
+            'Skipping unloadable OpenApi\Tests\Fixtures\PHP\UnloadableClassRepro\BrokenStub: Class "OpenApi\Tests\Fixtures\PHP\UnloadableClassRepro\DeliberatelyAbsentParent" not found',
+            $result->warnings(),
+        );
+    }
+
+    public function testBuildSkipsClassThatWillNotLoadHybrid(): void
+    {
+        // hybrid scans twice — the spec-side Assembler pass and doHybridAssemble()'s
+        // classic pass — so the broken class is independently skipped, and warned about,
+        // by each
+        $this->expectLogEntry('Skipping unloadable', 'warning');
+        $this->expectLogEntry('Skipping unloadable', 'warning');
+
+        $result = (new Builder())
+            ->setMode(Mode::HYBRID)
+            ->addSource(self::fixture('PHP/UnloadableClassRepro'))
+            ->setLogger($this->trackingLogger())
+            ->build();
+
+        $this->assertStringContainsString('getEndpoint', $result->toYaml());
+    }
+
+    public function testBuildSkipsClassThatWillNotLoadSpec(): void
+    {
+        $this->expectLogEntry('Skipping unloadable', 'warning');
+        $this->allowLogEntry('info is required', 'At least one of paths, webhooks, or components is required');
+
+        (new Builder())
+            ->setMode(Mode::SPEC)
+            ->addSource(self::fixture('PHP/UnloadableClassRepro'))
+            ->setLogger($this->trackingLogger())
+            ->build();
+    }
+
     public function testCompilerDiagnosticsReachTheConfiguredLogger(): void
     {
         $received = [];
