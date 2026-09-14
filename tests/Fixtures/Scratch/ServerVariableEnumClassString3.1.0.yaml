@@ -1,0 +1,21 @@
+openapi: 3.1.0
+info:
+  title: 'Server Variable Enum Class String Scratch'
+  version: '1.0'
+servers:
+  -
+    url: '{env}.example.com'
+    variables:
+      env:
+        enum:
+          - prod
+          - staging
+        default: prod
+paths:
+  /api/endpoint:
+    get:
+      description: 'An endpoint'
+      operationId: serverVariableEnumClassString
+      responses:
+        '200':
+          description: OK

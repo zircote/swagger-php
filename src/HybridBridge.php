@@ -249,7 +249,7 @@ class HybridBridge
                     serverVariable: $this->val($variable->serverVariable),
                     default: $this->val($variable->default),
                     description: $this->val($variable->description),
-                    enum: Undefined::isDefault($variable->enum) ? null : $variable->enum,
+                    enum: Undefined::isDefault($variable->enum) ? null : (is_string($variable->enum) ? [$variable->enum] : $variable->enum),
                     x: $this->extensions($variable),
                 );
             }
