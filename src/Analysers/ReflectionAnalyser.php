@@ -12,6 +12,7 @@ use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\GeneratorAwareTrait;
 use OpenApi\OpenApiException;
+use OpenApi\Utils\ClassReflector;
 use OpenApi\Utils\TokenScanner;
 
 /**
@@ -87,13 +88,30 @@ class ReflectionAnalyser implements AnalyserInterface
 
     protected function analyzeFqdn(string $fqdn, Analysis $analysis, array $details): Analysis
     {
-        if (!class_exists($fqdn) && !interface_exists($fqdn) && !trait_exists($fqdn) && (!function_exists('enum_exists') || !enum_exists($fqdn))) {
-            $analysis->context->logger->warning('Skipping unknown ' . $fqdn);
+        [$rc, $reason] = ClassReflector::tryReflect($fqdn);
+        if ($rc === null) {
+            $analysis->context->logger->warning($reason === null
+                ? 'Skipping unknown ' . $fqdn
+                : "Skipping unloadable {$fqdn}: {$reason}");
 
             return $analysis;
         }
 
-        $rc = new \ReflectionClass($fqdn);
+        try {
+            return $this->buildDefinition($rc, $analysis, $details);
+        } catch (\Throwable $exception) {
+            $analysis->context->logger->warning("Skipping unloadable {$fqdn}: {$exception->getMessage()}");
+
+            return $analysis;
+        }
+    }
+
+    /**
+     * @param \ReflectionClass<object> $rc
+     * @param array<string, mixed>     $details
+     */
+    protected function buildDefinition(\ReflectionClass $rc, Analysis $analysis, array $details): Analysis
+    {
         $contextType = $rc->isInterface()
             ? 'interface'
             : ($rc->isTrait() ? 'trait' : ($rc->isEnum() ? 'enum' : 'class'));
