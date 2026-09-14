@@ -8,6 +8,9 @@ namespace OpenApi\Tools\CSFixer;
 
 trait ScopedTrait
 {
+    /**
+     * @var list<string>
+     */
     protected array $scopes = [];
 
     public function supports(\SplFileInfo $file): bool
@@ -15,7 +18,10 @@ trait ScopedTrait
         return parent::supports($file) && $this->isScoped($file);
     }
 
-    public function scope(array $scopes)
+    /**
+     * @param list<string> $scopes
+     */
+    public function scope(array $scopes): static
     {
         $this->scopes = $scopes;
 
