@@ -17,6 +17,9 @@ use OpenApi\Tools\Docs\Sections\SectionInterface;
 
 class SpecAttributeGenerator extends DocGenerator
 {
+    /**
+     * @return array<string, string>
+     */
     public function generate(): array
     {
         $classes = $this->discoverClasses();
@@ -83,6 +86,7 @@ class SpecAttributeGenerator extends DocGenerator
                 continue;
             }
 
+            /** @var class-string<OA\AbstractAttribute> $fqdn */
             $shortName = $this->shortName($fqdn);
             $classes[$shortName] = $fqdn;
         }
@@ -117,6 +121,7 @@ class SpecAttributeGenerator extends DocGenerator
     }
 
     /**
+     * @param class-string<OA\AbstractAttribute>                      $fqdn
      * @param array<string,list<array{name: string, anchor: string}>> $parentMap
      * @param array<string,list<array{name: string, anchor: string}>> $nestedMap
      *
@@ -145,6 +150,9 @@ class SpecAttributeGenerator extends DocGenerator
     }
 
     /**
+     * @param \ReflectionClass<object>                                                                                                 $rc
+     * @param array{content: string, see: list<string>, var: string, params: array<string, array{type: string, content: string|null}>} $ctorDoc
+     *
      * @return list<array{name: string, type: string, description: string, see: list<string>}>
      */
     protected function collectParameters(\ReflectionClass $rc, array $ctorDoc): array
