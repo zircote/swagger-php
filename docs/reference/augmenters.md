@@ -66,7 +66,8 @@ when it has no name either.
 Expands PHP enums into schema enum values.
 
 For schemas attached to a PHP enum, determines schema name, type, and enum values.
-Also resolves UnitEnum instances and enum class-strings in any schema's enum array.
+Also resolves UnitEnum instances and enum class-strings in any schema's or server
+variable's enum array.
 
 Rules for name vs. value:
 - Unit enums (not backed): always use case names, type becomes "string"
