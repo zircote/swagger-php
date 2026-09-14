@@ -8,6 +8,8 @@ namespace OpenApi;
 
 /**
  * @deprecated use {@see Utils\Pipeline} instead
+ *
+ * @extends Utils\Pipeline<mixed>
  */
 class Pipeline extends Utils\Pipeline
 {
