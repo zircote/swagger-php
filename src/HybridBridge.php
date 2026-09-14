@@ -71,6 +71,12 @@ class HybridBridge
 
     protected function isClassMember(OA\Property $property): bool
     {
+        // A Property nested inside another annotation's `properties` array describes
+        // that annotation's payload, not the class member its reflector happens to be.
+        if ($property->_context->nested instanceof OA\AbstractAnnotation) {
+            return false;
+        }
+
         $reflector = $property->_context->reflector;
 
         return $reflector instanceof \ReflectionProperty

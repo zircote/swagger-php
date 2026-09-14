@@ -239,10 +239,10 @@ class Types implements PipeInterface
         }
 
         if (!$property->schema instanceof OA\Schema) {
-            $property->schema = new OA\Schema();
+            $property->schema = $this->schemaTypeToSchema($resolved);
+        } else {
+            $this->mergeIntoSchema($property->schema, $resolved);
         }
-
-        $this->applySchemaType($property->schema, $resolved);
     }
 
     protected function augmentOperationParameters(OA\Operation $operation): void
