@@ -26,6 +26,9 @@ class SpecNamespaceAliasFixerTest extends TestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}|array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'already correct - no change' => [
