@@ -697,7 +697,7 @@ class HybridBridge
             if: Undefined::isDefault($schema->if) ? null : $this->convertSchemaValue($schema->if),
             then: Undefined::isDefault($schema->then) ? null : $this->convertSchemaValue($schema->then),
             else: Undefined::isDefault($schema->else) ? null : $this->convertSchemaValue($schema->else),
-            enum: Undefined::isDefault($schema->enum) ? null : $schema->enum,
+            enum: Undefined::isDefault($schema->enum) ? null : (is_string($schema->enum) ? [$schema->enum] : $schema->enum),
             const: Undefined::isDefault($schema->const) ? Undefined::UNDEFINED : $schema->const,
             example: Undefined::isDefault($schema->example) ? Undefined::UNDEFINED : $schema->example,
             examples: Undefined::isDefault($schema->examples)

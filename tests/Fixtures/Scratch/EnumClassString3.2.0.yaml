@@ -1,0 +1,22 @@
+openapi: 3.2.0
+info:
+  title: 'Enum Class String Scratch'
+  version: '1.0'
+paths:
+  '/api/asset/{type}':
+    get:
+      description: 'An endpoint'
+      operationId: enumClassString
+      parameters:
+        -
+          name: type
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - album
+              - background
+      responses:
+        '200':
+          description: OK
