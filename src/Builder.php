@@ -240,7 +240,7 @@ class Builder
         foreach ($sourceScanner->getFiles() as $file) {
             foreach (array_keys($tokenScanner->scanFile($file)) as $class) {
                 [$rc, $reason] = ClassReflector::tryReflect($class);
-                if ($rc === null) {
+                if (!$rc instanceof \ReflectionClass) {
                     $this->getLogger()->warning($reason === null
                         ? 'Skipping unknown ' . $class
                         : "Skipping unloadable {$class}: {$reason}");
@@ -289,8 +289,8 @@ class Builder
     {
         try {
             $assembler->collect($reflector);
-        } catch (\Throwable $exception) {
-            $this->getLogger()->warning("Skipping unloadable {$reflector->getName()}: {$exception->getMessage()}");
+        } catch (\Throwable $throwable) {
+            $this->getLogger()->warning("Skipping unloadable {$reflector->getName()}: {$throwable->getMessage()}");
         }
     }
 

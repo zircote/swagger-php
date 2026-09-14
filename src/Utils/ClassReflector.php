@@ -32,8 +32,8 @@ class ClassReflector
             }
 
             return [new \ReflectionClass($fqdn), null];
-        } catch (\Throwable $exception) {
-            return [null, $exception->getMessage()];
+        } catch (\Throwable $throwable) {
+            return [null, $throwable->getMessage()];
         }
     }
 }

@@ -89,7 +89,7 @@ class ReflectionAnalyser implements AnalyserInterface
     protected function analyzeFqdn(string $fqdn, Analysis $analysis, array $details): Analysis
     {
         [$rc, $reason] = ClassReflector::tryReflect($fqdn);
-        if ($rc === null) {
+        if (!$rc instanceof \ReflectionClass) {
             $analysis->context->logger->warning($reason === null
                 ? 'Skipping unknown ' . $fqdn
                 : "Skipping unloadable {$fqdn}: {$reason}");
@@ -99,8 +99,8 @@ class ReflectionAnalyser implements AnalyserInterface
 
         try {
             return $this->buildDefinition($rc, $analysis, $details);
-        } catch (\Throwable $exception) {
-            $analysis->context->logger->warning("Skipping unloadable {$fqdn}: {$exception->getMessage()}");
+        } catch (\Throwable $throwable) {
+            $analysis->context->logger->warning("Skipping unloadable {$fqdn}: {$throwable->getMessage()}");
 
             return $analysis;
         }
