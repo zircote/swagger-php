@@ -11,8 +11,14 @@ use Symfony\Component\Finder\Finder;
 
 class ExampleGenerator extends DocGenerator
 {
+    /**
+     * @var list<string>
+     */
     protected array $examples = ['api', 'petstore', 'polymorphism'];
 
+    /**
+     * @return array<string, string>
+     */
     public function generate(): array
     {
         $content = $this->renderer->preamble('Example', $this->snippetContent('example'));
@@ -22,6 +28,7 @@ class ExampleGenerator extends DocGenerator
             $readme = file_exists("{$exampleFolder}/Readme.md")
                 ? file_get_contents("{$exampleFolder}/Readme.md")
                 : null;
+            $readme = false === $readme ? null : $readme;
 
             $files = $this->collectExampleFiles($name);
             $content .= "\n" . $this->renderer->exampleSection($name, $readme, $files);

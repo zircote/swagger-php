@@ -33,6 +33,9 @@ class Renderer
         return "### [{$name}](https://github.com/zircote/swagger-php/tree/master/src/{$namespace}/{$name}.php)\n";
     }
 
+    /**
+     * @param array<string, array{basename: string, attributes: bool}> $files
+     */
     public function exampleSection(string $name, ?string $readme, array $files): string
     {
         $out = $readme ? rtrim($readme) . "\n" : '## ' . $name . "\n";
