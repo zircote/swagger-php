@@ -7,6 +7,8 @@
 namespace OpenApi\Utils;
 
 use PhpParser\Error;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassLike;
 use PhpParser\Node\Stmt\ClassMethod;
@@ -48,9 +50,14 @@ class TokenScanner
             return $this->cache[$filename];
         }
 
+        $code = file_get_contents($filename);
+        if (false === $code) {
+            throw new \RuntimeException("Unable to read {$filename}");
+        }
+
         $parser = (new ParserFactory())->createForNewestSupportedVersion();
         try {
-            $stmts = $parser->parse(file_get_contents($filename));
+            $stmts = $parser->parse($code) ?? [];
         } catch (Error $error) {
             throw new \RuntimeException($error->getMessage(), $error->getCode(), $error);
         }
@@ -75,6 +82,8 @@ class TokenScanner
      *
      * Scans the file on demand if not already cached.
      *
+     * @param \ReflectionClass<object> $class
+     *
      * @return ScannerDetails|null
      */
     public function detailsFor(\ReflectionClass $class): ?array
@@ -89,16 +98,27 @@ class TokenScanner
         return $results[$class->getName()] ?? null;
     }
 
+    /**
+     * @param array<Stmt> $stmts
+     *
+     * @return array<class-string, ScannerDetails>
+     */
     protected function collect_stmts(array $stmts, string $namespace): array
     {
-        /** @var array $uses */
+        /** @var array<string, class-string> $uses */
         $uses = [];
-        $resolve = static function (string $name) use ($namespace, &$uses) {
+        /**
+         * @return class-string
+         */
+        $resolve = static function (string $name) use ($namespace, &$uses): string {
             if (array_key_exists($name, $uses)) {
                 return $uses[$name];
             }
 
-            return $namespace . '\\' . $name;
+            /** @var class-string $fqdn */
+            $fqdn = $namespace . '\\' . $name;
+
+            return $fqdn;
         };
         $details = static function () use (&$uses): array {
             return [
@@ -133,17 +153,29 @@ class TokenScanner
         return $result;
     }
 
+    /**
+     * @return array<string, class-string>
+     */
     protected function collect_uses(Use_ $stmt): array
     {
+        /** @var array<string, class-string> $uses */
         $uses = [];
 
         foreach ($stmt->uses as $use) {
-            $uses[(string) $use->getAlias()] = (string) $use->name;
+            /** @var class-string $name */
+            $name = (string) $use->name;
+            $uses[(string) $use->getAlias()] = $name;
         }
 
         return $uses;
     }
 
+    /**
+     * @param ScannerDetails                 $details
+     * @param callable(string): class-string $resolve
+     *
+     * @return array<class-string, ScannerDetails>
+     */
     protected function collect_classlike(ClassLike $stmt, array $details, callable $resolve): array
     {
         foreach ($stmt->getProperties() as $properties) {
@@ -173,6 +205,12 @@ class TokenScanner
         ];
     }
 
+    /**
+     * @param ScannerDetails                 $details
+     * @param callable(string): class-string $resolve
+     *
+     * @return array<class-string, ScannerDetails>
+     */
     protected function collect_class(Class_ $stmt, array $details, callable $resolve): array
     {
         foreach ($stmt->implements as $implement) {
@@ -182,7 +220,7 @@ class TokenScanner
         // promoted properties
         if (($ctor = $stmt->getMethod('__construct')) instanceof ClassMethod) {
             foreach ($ctor->getParams() as $param) {
-                if ($param->flags) {
+                if ($param->flags && $param->var instanceof Variable && is_string($param->var->name)) {
                     $details['properties'][] = $param->var->name;
                 }
             }
@@ -191,6 +229,12 @@ class TokenScanner
         return $this->collect_classlike($stmt, $details, $resolve);
     }
 
+    /**
+     * @param ScannerDetails                 $details
+     * @param callable(string): class-string $resolve
+     *
+     * @return array<class-string, ScannerDetails>
+     */
     protected function collect_interface(Interface_ $stmt, array $details, callable $resolve): array
     {
         foreach ($stmt->extends as $extend) {
