@@ -255,6 +255,10 @@ class HybridBridge
                     serverVariable: $this->val($variable->serverVariable),
                     default: $this->val($variable->default),
                     description: $this->val($variable->description),
+                    // Spec\ServerVariable::$enum is list<string> per the OpenAPI spec, while
+                    // classic's accepts int/float/bool/UnitEnum too; whether a server variable
+                    // enum may carry non-strings is a compliance question, not a typing one, so
+                    // the mismatch is left reported rather than cast away
                     enum: Undefined::isDefault($variable->enum) ? null : (is_string($variable->enum) ? [$variable->enum] : $variable->enum),
                     x: $this->extensions($variable),
                 );

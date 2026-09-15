@@ -109,6 +109,11 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
 
         if ($schemaType->additionalProperties instanceof SchemaType) {
             $schema->type = 'object';
+            // $schema->additionalProperties is bool|AdditionalProperties, and isDefault() only
+            // rules out the UNDEFINED sentinel — an explicit `additionalProperties: false`
+            // reaches the elseif below and is dereferenced as an object. Reported rather than
+            // guarded: which of the explicit false and the inferred nested type should win is a
+            // behaviour decision, and silencing it here would settle it by accident.
             if (Undefined::isDefault($schema->additionalProperties)) {
                 $schema->additionalProperties = new OA\AdditionalProperties(['_context' => new Context(['generated' => true], $schema->_context)]);
                 $this->applyToAnnotation($schema->additionalProperties, $schemaType->additionalProperties, $analysis, $sourceClass);
