@@ -23,6 +23,8 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
 
     /**
      * @inheritdoc
+     *
+     * @param class-string<OA\AbstractAnnotation> $sourceClass
      */
     protected function doAugment(Analysis $analysis, OA\Schema $schema, \Reflector $reflector, string $sourceClass = OA\Schema::class): void
     {
@@ -64,10 +66,15 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
         }
     }
 
+    /**
+     * @param class-string<OA\AbstractAnnotation> $sourceClass
+     */
     protected function applyToAnnotation(OA\Schema $schema, SchemaType $schemaType, Analysis $analysis, string $sourceClass = OA\Schema::class): void
     {
         if ($schemaType->type !== null) {
-            $schema->type = $schemaType->type;
+            /** @var non-empty-array<string>|string $type every SchemaType array type is built non-empty */
+            $type = $schemaType->type;
+            $schema->type = $type;
         }
 
         if ($schemaType->format !== null && Undefined::isDefault($schema->format)) {

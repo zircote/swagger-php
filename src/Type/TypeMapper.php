@@ -72,9 +72,9 @@ class TypeMapper
     /**
      * Map an array of native types to their spec type strings.
      *
-     * @param list<string> $types
+     * @param array<string> $types
      *
-     * @return list<string>
+     * @return array<string>
      */
     public function toSpecTypes(array $types): array
     {

@@ -30,6 +30,7 @@ use Symfony\Component\TypeInfo\Type\NullableType;
 use Symfony\Component\TypeInfo\Type\ObjectType;
 use Symfony\Component\TypeInfo\Type\UnionType;
 use Symfony\Component\TypeInfo\TypeContext\TypeContextFactory;
+use Symfony\Component\TypeInfo\TypeIdentifier;
 use Symfony\Component\TypeInfo\TypeResolver\ReflectionTypeResolver;
 
 /**
@@ -197,6 +198,9 @@ class TypeResolver
         return new SchemaType();
     }
 
+    /**
+     * @param CompositeTypeInterface<Type> $type
+     */
     protected function mapCompositeType(CompositeTypeInterface $type): SchemaType
     {
         $types = $type->getTypes();
@@ -249,6 +253,9 @@ class TypeResolver
         return new SchemaType();
     }
 
+    /**
+     * @param BuiltinType<TypeIdentifier> $type
+     */
     protected function mapBuiltinType(BuiltinType $type): SchemaType
     {
         $typeName = (string) $type;
@@ -259,6 +266,9 @@ class TypeResolver
         return new SchemaType();
     }
 
+    /**
+     * @param CollectionType<BuiltinType<TypeIdentifier::ARRAY>|BuiltinType<TypeIdentifier::ITERABLE>|ObjectType<class-string>|GenericType<BuiltinType<TypeIdentifier::ARRAY>|BuiltinType<TypeIdentifier::ITERABLE>|ObjectType<class-string>>> $type
+     */
     protected function mapCollectionType(CollectionType $type): SchemaType
     {
         if ($type->isList() || $type->getCollectionKeyType() instanceof UnionType) {
@@ -328,14 +338,16 @@ class TypeResolver
                 }
             }
         } elseif (is_array($schema->type)) {
-            $schema->type = $this->typeMapper->toSpecTypes(
+            /** @var list<string> $mapped neither array_map() nor toSpecTypes() change a list's shape */
+            $mapped = $this->typeMapper->toSpecTypes(
                 array_map(static fn ($t): string => strtolower((string) $t), $schema->type),
             );
+            $schema->type = $mapped;
         }
     }
 
     /**
-     * @param \ReflectionProperty|\ReflectionParameter|\ReflectionMethod|\ReflectionClass $reflector
+     * @param \ReflectionProperty|\ReflectionParameter|\ReflectionMethod|\ReflectionClass<object>|\ReflectionClassConstant $reflector
      */
     protected function getReflectionType(\Reflector $reflector): ?Type
     {
