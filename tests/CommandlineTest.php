@@ -64,6 +64,9 @@ final class CommandlineTest extends OpenApiTestCase
         $this->assertStringContainsString('The "--exclude" option requires a value.', $output);
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function versionCases(): iterable
     {
         yield 'default' => ['', '3.1.0'];
@@ -83,6 +86,8 @@ final class CommandlineTest extends OpenApiTestCase
     /**
      * `--defaults` must report the config keys `--config` actually accepts,
      * which differ per mode: spec configures augmenters, classic/hybrid the Generator.
+     *
+     * @return iterable<mixed>
      */
     public static function defaultsCases(): iterable
     {

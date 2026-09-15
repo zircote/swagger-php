@@ -21,6 +21,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 final class TypeResolverTest extends OpenApiTestCase
 {
+    /**
+     * @return iterable<mixed>
+     */
     public static function resolverAugmentCases(): iterable
     {
         $expectations = [

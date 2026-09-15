@@ -26,6 +26,11 @@ final class PathFilterTest extends TestCase
         yield 'no match' => [['/^nonexistent$/'], [], []];
     }
 
+    /**
+     * @param array<mixed> $expectedPaths
+     * @param array<mixed> $paths
+     * @param array<mixed> $tags
+     */
     #[DataProvider('filterProvider')]
     public function testFilter(array $tags, array $paths, array $expectedPaths): void
     {
