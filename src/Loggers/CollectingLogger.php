@@ -21,6 +21,9 @@ class CollectingLogger extends AbstractLogger
     {
     }
 
+    /**
+     * @param string|\Stringable $message
+     */
     public function log($level, $message, array $context = []): void
     {
         $this->entries[] = ['level' => (string) $level, 'message' => (string) $message];
