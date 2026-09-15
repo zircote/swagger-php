@@ -232,7 +232,7 @@ final class BuilderTest extends OpenApiTestCase
             {
             }
 
-            public function log($level, $message, array $context = []): void
+            public function log($level, string|\Stringable $message, array $context = []): void
             {
                 $this->received[] = (string) $message;
             }

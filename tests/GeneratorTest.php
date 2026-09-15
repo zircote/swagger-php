@@ -108,7 +108,7 @@ final class GeneratorTest extends OpenApiTestCase
 
     public function testDefaultConfig(): void
     {
-        $walker = function (callable $pipe) use (&$collectedConfig): void {
+        $walker = function (object $pipe) use (&$collectedConfig): void {
             $rc = new \ReflectionClass($pipe);
             $ctorparams = [];
             foreach ($rc->getConstructor()?->getParameters() ?? [] as $rparam) {

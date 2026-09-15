@@ -73,7 +73,7 @@ trait ExpectsLogEntries
             {
             }
 
-            public function log($level, $message, array $context = []): void
+            public function log($level, string|\Stringable $message, array $context = []): void
             {
                 ($this->recorder)((string) $level, (string) $message);
 

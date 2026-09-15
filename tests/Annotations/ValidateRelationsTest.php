@@ -24,6 +24,7 @@ final class ValidateRelationsTest extends OpenApiTestCase
         foreach ($class::$_parents as $parent) {
             $found = false;
             foreach (array_keys($parent::$_nested) as $nestedClass) {
+                /** @var class-string $nestedClass */
                 if ($nestedClass === $class || is_subclass_of($class, $nestedClass)) {
                     $found = true;
                     break;

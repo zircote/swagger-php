@@ -158,9 +158,10 @@ final class TypeResolverTest extends OpenApiTestCase
         $expectations[OA\OpenApi::VERSION_3_2_0] = $expectations[OA\OpenApi::VERSION_3_1_0];
 
         $rc = new \ReflectionClass(DocblockAndTypehintTypes::class);
-        $fixtureFolder = dirname($rc->getFileName());
+        $fixtureFile = (string) $rc->getFileName();
+        $fixtureFolder = dirname($fixtureFile);
         $sources = [
-            $rc->getFileName(),
+            $fixtureFile,
             "{$fixtureFolder}/FirstInterface.php",
             "{$fixtureFolder}/SecondInterface.php",
         ];

@@ -103,7 +103,7 @@ final class ResolverTest extends TestCase
 
     protected function resolver(ResolverInterface ...$resolvers): Resolver
     {
-        return new Resolver(new TypedList($resolvers));
+        return new Resolver(new TypedList(array_values($resolvers)));
     }
 
     /**

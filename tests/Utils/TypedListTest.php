@@ -201,11 +201,13 @@ final class TypedListTest extends TestCase
     }
 
     /**
+     * @param TypedList<mixed> $list
+     *
      * @return list<mixed>
      */
     protected function items(TypedList $list): array
     {
-        return iterator_to_array($list);
+        return array_values(iterator_to_array($list));
     }
 }
 

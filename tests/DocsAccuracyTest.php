@@ -246,8 +246,9 @@ final class DocsAccuracyTest extends TestCase
                 continue;
             }
 
-            /* @var class-string<AttributeInterface> $fqcn implementsInterface() above is the guarantee */
-            $classes[] = $fqcn;
+            /** @var class-string<AttributeInterface> $attributeClass implementsInterface() above is the guarantee */
+            $attributeClass = $fqcn;
+            $classes[] = $attributeClass;
         }
 
         sort($classes);

@@ -75,7 +75,16 @@ trait AssertsSchemaStructure
                 $this->assertNotNull($schema->allOf, "{$prefix}Schema '{$name}' should have allOf");
 
                 $actualRefs = array_values(array_filter(
-                    array_map(fn (OA\Schema $s): ?string => $s->ref, $schema->allOf),
+                    // Schema\Ref extends Schema, so its own $ref inherits the parent's
+                    // Schema\Ref|string|null type even though it only ever holds the string
+                    array_map(
+                        function (OA\Schema $s): ?string {
+                            $ref = $s->ref instanceof OA\Schema\Ref ? $s->ref->ref : $s->ref;
+
+                            return is_string($ref) ? $ref : null;
+                        },
+                        $schema->allOf,
+                    ),
                 ));
                 $this->assertSame($expectedSchema['allOf'], $actualRefs, "{$prefix}Schema '{$name}' allOf refs");
 
@@ -129,7 +138,7 @@ trait AssertsSchemaStructure
         $names = [];
         foreach ($allOf as $entry) {
             if (isset($entry['properties'])) {
-                array_push($names, ...array_keys($entry['properties']));
+                array_push($names, ...array_map(strval(...), array_keys($entry['properties'])));
             }
         }
 

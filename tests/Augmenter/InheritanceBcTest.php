@@ -67,7 +67,7 @@ final class InheritanceBcTest extends TestCase
         $tokenScanner = new TokenScanner();
         $assembler = new Assembler();
 
-        foreach (glob($directory . '/*.php') as $file) {
+        foreach (glob($directory . '/*.php') ?: [] as $file) {
             require_once $file;
             foreach (array_keys($tokenScanner->scanFile($file)) as $class) {
                 if (class_exists($class) || interface_exists($class) || enum_exists($class) || trait_exists($class)) {
