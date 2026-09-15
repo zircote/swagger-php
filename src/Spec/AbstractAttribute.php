@@ -69,6 +69,9 @@ abstract class AbstractAttribute implements AttributeInterface
         return null;
     }
 
+    /**
+     * @return class-string|null
+     */
     public function getClassName(): ?string
     {
         return $this->getClassReflector()?->getName();
@@ -111,6 +114,13 @@ abstract class AbstractAttribute implements AttributeInterface
             return null;
         }
 
-        return is_array($value) ? $value : [$value];
+        if (!is_array($value)) {
+            return [$value];
+        }
+
+        /** @var list<T> $list array_values() guarantees the list shape the return type declares */
+        $list = array_values($value);
+
+        return $list;
     }
 }

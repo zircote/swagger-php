@@ -184,11 +184,14 @@ class Refs implements PipeInterface, LoggerAwareInterface
 
         $unique = [];
         foreach ($schema->allOf as $ii => $allOf) {
-            if ($allOf->ref !== null) {
-                if (isset($unique[$allOf->ref])) {
+            // resolveRefRefs() has collapsed every Schema\Ref into its string by now, but only
+            // runs when the ref map is non-empty; key on the string form defensively
+            $ref = $allOf->ref instanceof OA\Schema\Ref ? $allOf->ref->ref : $allOf->ref;
+            if (is_string($ref)) {
+                if (isset($unique[$ref])) {
                     continue;
                 }
-                $unique[$allOf->ref] = $allOf;
+                $unique[$ref] = $allOf;
             } else {
                 $unique[$ii] = $allOf;
             }
