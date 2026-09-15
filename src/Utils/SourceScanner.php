@@ -29,7 +29,7 @@ class SourceScanner
     /**
      * Scan sources and return resolved file paths.
      *
-     * @param list<BuilderSource|iterable<BuilderSource>> $sources
+     * @param iterable<BuilderSource|iterable<BuilderSource>> $sources
      *
      * @return list<string> resolved absolute file paths
      */
@@ -62,6 +62,9 @@ class SourceScanner
         return $this->reflectors;
     }
 
+    /**
+     * @param iterable<BuilderSource|iterable<BuilderSource>> $sources
+     */
     protected function collect(iterable $sources): void
     {
         foreach ($sources as $source) {
