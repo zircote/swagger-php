@@ -436,7 +436,7 @@ class HybridBridge
             example: Undefined::isDefault($param->example) ? Undefined::UNDEFINED : $param->example,
             examples: Undefined::isDefault($param->examples)
                 ? null
-                : array_map($this->convertExample(...), $param->examples),
+                : array_values(array_map($this->convertExample(...), $param->examples)),
             content: $this->resolveContent($param),
             x: $this->extensions($param),
         );
@@ -508,7 +508,7 @@ class HybridBridge
             example: Undefined::isDefault($mediaType->example) ? Undefined::UNDEFINED : $mediaType->example,
             examples: Undefined::isDefault($mediaType->examples)
                 ? null
-                : array_map($this->convertExample(...), $mediaType->examples),
+                : array_values(array_map($this->convertExample(...), $mediaType->examples)),
             encoding: $encoding,
             x: $this->extensions($mediaType),
         );
@@ -521,7 +521,9 @@ class HybridBridge
     {
         $content = [];
 
-        if (!Undefined::isDefault($parent->content)) {
+        // a JsonContent/XmlContent set directly on $content (rather than left in _unmerged,
+        // which the loop below handles) is not a media type map; the declared type allows it
+        if (!Undefined::isDefault($parent->content) && is_array($parent->content)) {
             foreach ($parent->content as $mediaType) {
                 if ($mediaType instanceof OA\MediaType) {
                     $content[] = $this->convertMediaType($mediaType);
@@ -557,7 +559,7 @@ class HybridBridge
             example: Undefined::isDefault($annotation->example) ? Undefined::UNDEFINED : $annotation->example,
             examples: Undefined::isDefault($annotation->examples)
                 ? null
-                : array_map($this->convertExample(...), $annotation->examples),
+                : array_values(array_map($this->convertExample(...), $annotation->examples)),
             encoding: $encoding,
         );
     }
@@ -576,7 +578,7 @@ class HybridBridge
             example: Undefined::isDefault($header->example) ? Undefined::UNDEFINED : $header->example,
             examples: Undefined::isDefault($header->examples)
                 ? null
-                : array_map($this->convertExample(...), $header->examples),
+                : array_values(array_map($this->convertExample(...), $header->examples)),
             content: $this->resolveContent($header),
             x: $this->extensions($header),
         );
@@ -675,7 +677,7 @@ class HybridBridge
             minItems: $this->val($schema->minItems),
             maxItems: $this->val($schema->maxItems),
             uniqueItems: $this->val($schema->uniqueItems),
-            prefixItems: Undefined::isDefault($schema->prefixItems) ? null : array_map($this->convertSchemaValue(...), $schema->prefixItems),
+            prefixItems: Undefined::isDefault($schema->prefixItems) ? null : array_values(array_map($this->convertSchemaValue(...), $schema->prefixItems)),
             contains: $this->convertSchemaOrBool($schema->contains),
             minContains: $this->val($schema->minContains),
             maxContains: $this->val($schema->maxContains),
@@ -694,9 +696,9 @@ class HybridBridge
                 : $this->convertSchema($schema->propertyNames),
             dependentRequired: Undefined::isDefault($schema->dependentRequired) ? null : $schema->dependentRequired,
             dependentSchemas: Undefined::isDefault($schema->dependentSchemas) ? null : array_map($this->convertSchemaValue(...), $schema->dependentSchemas),
-            allOf: Undefined::isDefault($schema->allOf) ? null : array_map($this->convertSchema(...), $schema->allOf),
-            anyOf: Undefined::isDefault($schema->anyOf) ? null : array_map($this->convertSchema(...), $schema->anyOf),
-            oneOf: Undefined::isDefault($schema->oneOf) ? null : array_map($this->convertSchema(...), $schema->oneOf),
+            allOf: Undefined::isDefault($schema->allOf) ? null : array_values(array_map($this->convertSchema(...), $schema->allOf)),
+            anyOf: Undefined::isDefault($schema->anyOf) ? null : array_values(array_map($this->convertSchema(...), $schema->anyOf)),
+            oneOf: Undefined::isDefault($schema->oneOf) ? null : array_values(array_map($this->convertSchema(...), $schema->oneOf)),
             not: Undefined::isDefault($schema->not) ? null : $this->convertSchema($schema->not),
             if: Undefined::isDefault($schema->if) ? null : $this->convertSchemaValue($schema->if),
             then: Undefined::isDefault($schema->then) ? null : $this->convertSchemaValue($schema->then),
@@ -864,6 +866,8 @@ class HybridBridge
     }
 
     /**
+     * @param array<mixed> $security classic security blocks: each entry is a scheme => scopes map
+     *
      * @return list<Spec\Security\Requirement>
      */
     protected function convertSecurityRequirements(array $security): array
@@ -929,6 +933,11 @@ class HybridBridge
         }
     }
 
+    /**
+     * @param array<string, mixed> $callbacks
+     *
+     * @return array<string, mixed>
+     */
     protected function convertCallbacks(array $callbacks): array
     {
         $result = [];
@@ -992,6 +1001,9 @@ class HybridBridge
         return null;
     }
 
+    /**
+     * @return list<string>|string|null
+     */
     protected function filterType(mixed $type): string|array|null
     {
         if (Undefined::isDefault($type)) {
