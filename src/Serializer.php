@@ -14,6 +14,9 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Serializer
 {
+    /**
+     * @var list<class-string<OA\AbstractAnnotation>>
+     */
     private static array $VALID_ANNOTATIONS = [
         OA\AdditionalProperties::class,
         OA\Attachable::class,
@@ -87,10 +90,17 @@ class Serializer
         }
 
         $contents = file_get_contents($filename);
+        if (false === $contents) {
+            throw new OpenApiException("Unable to read {$filename}");
+        }
 
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
         if ('yaml' === $format || in_array($ext, ['yml', 'yaml'], strict: true)) {
-            $contents = json_encode(Yaml::parse($contents));
+            $encoded = json_encode(Yaml::parse($contents));
+            if (false === $encoded) {
+                throw new OpenApiException("Unable to convert {$filename} from YAML to JSON");
+            }
+            $contents = $encoded;
         }
 
         return $this->doDeserialize(json_decode($contents), $className, $context ?? new Context(['generated' => true]));
@@ -137,6 +147,10 @@ class Serializer
 
     /**
      * Deserialize the annotation's property.
+     *
+     * @param mixed $value
+     *
+     * @return mixed
      */
     protected function doDeserializeProperty(OA\AbstractAnnotation $annotation, string $property, $value, Context $context)
     {
@@ -151,7 +165,7 @@ class Serializer
             if (is_string($declaration)) {
                 // property is an annotation
                 if ($declaration === $property) {
-                    if (is_object($value)) {
+                    if ($value instanceof \stdClass) {
                         return $this->doDeserialize($value, $nestedClass, $context);
                     }
 
@@ -184,20 +198,22 @@ class Serializer
     /**
      * Deserialize base annotation property.
      *
-     * @param array|string $type  The property type
-     * @param mixed        $value The value to deserialization
+     * @param array<string>|string $type  The property type
+     * @param mixed                $value The value to deserialization
      *
-     * @return array|OA\AbstractAnnotation
+     * @return array<mixed>|OA\AbstractAnnotation
      */
     protected function doDeserializeBaseProperty(array|string $type, mixed $value, Context $context)
     {
         $isAnnotationClass = is_string($type) && is_subclass_of(trim($type, '[]'), OA\AbstractAnnotation::class);
 
         if ($isAnnotationClass) {
+            /** @var class-string<OA\AbstractAnnotation> $type */
             $isArray = str_starts_with($type, '[') && str_ends_with($type, ']');
 
             if ($isArray) {
                 $annotationArr = [];
+                /** @var class-string<OA\AbstractAnnotation> $class */
                 $class = trim($type, '[]');
 
                 foreach ($value as $v) {
