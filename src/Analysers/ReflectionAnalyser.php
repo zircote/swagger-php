@@ -69,8 +69,12 @@ class ReflectionAnalyser implements AnalyserInterface
         return $analysis;
     }
 
+    /**
+     * @param class-string $fqdn
+     */
     public function fromFqdn(string $fqdn, Analysis $analysis): Analysis
     {
+        /** @var class-string $fqdn ltrim() does not change that */
         $fqdn = ltrim($fqdn, '\\');
 
         $rc = new \ReflectionClass($fqdn);
@@ -86,6 +90,9 @@ class ReflectionAnalyser implements AnalyserInterface
         return $analysis;
     }
 
+    /**
+     * @param array<string, mixed> $details
+     */
     protected function analyzeFqdn(string $fqdn, Analysis $analysis, array $details): Analysis
     {
         [$rc, $reason] = ClassReflector::tryReflect($fqdn);
