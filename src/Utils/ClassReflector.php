@@ -17,7 +17,8 @@ namespace OpenApi\Utils;
 class ClassReflector
 {
     /**
-     * @param class-string $fqdn
+     * $fqdn is deliberately plain `string`, not `class-string`: the whole point of this
+     * method is to accept a name a caller does not yet know resolves to anything.
      *
      * @return array{0: \ReflectionClass<object>|null, 1: string|null} the reflector, or a
      *                                                                 reason it could not be produced: `null` when nothing by that name exists, the
