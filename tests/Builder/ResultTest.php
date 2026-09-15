@@ -14,6 +14,9 @@ use PHPUnit\Framework\TestCase;
 
 final class ResultTest extends TestCase
 {
+    /**
+     * @return iterable<mixed>
+     */
     public static function validityCases(): iterable
     {
         yield 'no log' => [[], true];
@@ -26,6 +29,9 @@ final class ResultTest extends TestCase
         ];
     }
 
+    /**
+     * @param array<mixed> $log
+     */
     #[DataProvider('validityCases')]
     public function testIsValidOnlyErrorsCount(array $log, bool $expected): void
     {
@@ -34,6 +40,9 @@ final class ResultTest extends TestCase
         $this->assertSame($expected, $result->isValid());
     }
 
+    /**
+     * @param array<mixed> $log
+     */
     #[DataProvider('validityCases')]
     public function testIsValidOnlyErrorsCountForClassic(array $log, bool $expected): void
     {

@@ -21,6 +21,9 @@ final class DocSnippetsTest extends OpenApiTestCase
 {
     use UsesExamples;
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function snippetSets(): iterable
     {
         $finder = (new Finder())

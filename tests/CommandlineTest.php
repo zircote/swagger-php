@@ -64,6 +64,9 @@ final class CommandlineTest extends OpenApiTestCase
         $this->assertStringContainsString('The "--exclude" option requires a value.', $output);
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function invalidEnumOptionCases(): iterable
     {
         yield 'format' => ['-f xml', 'The value "xml" is not valid for the "format" option. Supported values are "json", "yaml", "auto".'];
@@ -81,6 +84,9 @@ final class CommandlineTest extends OpenApiTestCase
         $this->assertStringContainsString($expected, (string) preg_replace('/\s+/', ' ', implode(' ', $output)));
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function versionCases(): iterable
     {
         yield 'default' => ['', '3.1.0'];
@@ -100,6 +106,8 @@ final class CommandlineTest extends OpenApiTestCase
     /**
      * `--defaults` must report the config keys `--config` actually accepts,
      * which differ per mode: spec configures augmenters, classic/hybrid the Generator.
+     *
+     * @return iterable<mixed>
      */
     public static function defaultsCases(): iterable
     {

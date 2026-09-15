@@ -60,6 +60,9 @@ final class ResolverTest extends TestCase
         $this->assertSame([Fixtures\Resolver\Weight::class => 1], $spy->attempts);
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function fullBuildProvider(): iterable
     {
         yield 'single-controller' => [

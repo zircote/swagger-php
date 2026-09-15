@@ -36,6 +36,9 @@ final class OperationTest extends OpenApiTestCase
         ];
     }
 
+    /**
+     * @param array<mixed> $security
+     */
     #[DataProvider('securityData')]
     public function testSecuritySerialization(array $security, string $docBlock, string $expected): void
     {

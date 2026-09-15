@@ -126,6 +126,9 @@ final class AttributesSyncTest extends OpenApiTestCase
         }
     }
 
+    /**
+     * @return array<mixed>
+     */
     protected function prepDocComment(string $docComment): array
     {
         if (!$docComment) {

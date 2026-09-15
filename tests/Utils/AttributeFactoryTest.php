@@ -91,6 +91,8 @@ final class AttributeFactoryTest extends TestCase
     /**
      * Mutual merge targets cannot resolve inner-to-outer; the first-declared
      * attribute merges into the later one.
+     *
+     * @return iterable<mixed>
      */
     public static function mutualMergeCases(): iterable
     {
@@ -113,6 +115,9 @@ final class AttributeFactoryTest extends TestCase
         $this->assertInstanceOf($expectedNested, $root->attachables[0]);
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function mergeChainOrderCases(): iterable
     {
         yield 'outer first' => ['outerFirst', '/outer-first'];

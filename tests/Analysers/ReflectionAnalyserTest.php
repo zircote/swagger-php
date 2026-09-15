@@ -47,6 +47,9 @@ final class ReflectionAnalyserTest extends OpenApiTestCase
         $this->assertSame($expected, array_keys($annotationFactory->reflectors));
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function analysers(): iterable
     {
         return [

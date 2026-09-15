@@ -16,6 +16,9 @@ final class GeneratorTest extends OpenApiTestCase
 {
     use UsesExamples;
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function sourcesProvider(): iterable
     {
         $name = 'petstore';
@@ -26,6 +29,9 @@ final class GeneratorTest extends OpenApiTestCase
         yield 'finder-list' => [$name, [new SourceFinder($sourceDir)]];
     }
 
+    /**
+     * @param array<mixed> $sources
+     */
     #[DataProvider('sourcesProvider')]
     public function testGenerate(string $name, iterable $sources): void
     {
@@ -51,6 +57,9 @@ final class GeneratorTest extends OpenApiTestCase
             ->generate(['/tmp/__swagger_php_does_not_exist__']);
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function processorCases(): iterable
     {
         return [
@@ -84,6 +93,9 @@ final class GeneratorTest extends OpenApiTestCase
         yield 'dots-string' => [['operationId.hash=false'], false];
     }
 
+    /**
+     * @param array<mixed> $config
+     */
     #[DataProvider('configCases')]
     public function testConfig(array $config, bool $expected): void
     {

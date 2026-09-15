@@ -42,6 +42,9 @@ final class CompilerTest extends TestCase
 
     // --- Nullable handling ---
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function nullableProvider(): iterable
     {
         yield '3.0 type array with null → string type + nullable keyword' => [
@@ -81,10 +84,13 @@ final class CompilerTest extends TestCase
         ];
     }
 
+    /**
+     * @param array<mixed> $expected
+     */
     #[DataProvider('nullableProvider')]
     public function testNullableHandling(CompilerInterface $compiler, OA\Schema $schema, array $expected): void
     {
-        $result = $this->compileSchema($compiler, $schema);
+        $result = $this->compileSchemaArray($compiler, $schema);
 
         foreach ($expected as $key => $value) {
             $this->assertArrayHasKey($key, $result);
@@ -98,6 +104,9 @@ final class CompilerTest extends TestCase
 
     // --- ExclusiveMinimum/Maximum ---
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function exclusiveBoundsProvider(): iterable
     {
         yield '3.0 numeric exclusiveMinimum → minimum + boolean' => [
@@ -142,11 +151,12 @@ final class CompilerTest extends TestCase
 
     /**
      * @param list<string> $absent
+     * @param array<mixed> $expected
      */
     #[DataProvider('exclusiveBoundsProvider')]
     public function testExclusiveBounds(CompilerInterface $compiler, OA\Schema $schema, array $expected, array $absent = []): void
     {
-        $result = $this->compileSchema($compiler, $schema);
+        $result = $this->compileSchemaArray($compiler, $schema);
 
         foreach ($expected as $key => $value) {
             $this->assertArrayHasKey($key, $result, "Expected key '{$key}' in output");
@@ -162,7 +172,7 @@ final class CompilerTest extends TestCase
 
     public function test30RefStripsDescription(): void
     {
-        $result = $this->compileSchema(
+        $result = $this->compileSchemaArray(
             new OpenApi30Compiler(),
             new OA\Schema(schema: 'Alias', description: 'Stripped', ref: '#/components/schemas/Original'),
         );
@@ -173,7 +183,7 @@ final class CompilerTest extends TestCase
 
     public function test31RefAllowsSiblings(): void
     {
-        $result = $this->compileSchema(
+        $result = $this->compileSchemaArray(
             new OpenApi31Compiler(),
             new OA\Schema(schema: 'Alias', description: 'Kept', ref: '#/components/schemas/Original'),
         );
@@ -184,6 +194,9 @@ final class CompilerTest extends TestCase
 
     // --- Schema features: 3.0 omits, 3.1 includes ---
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function schemaFeatureProvider(): iterable
     {
         yield 'const' => [
@@ -221,7 +234,7 @@ final class CompilerTest extends TestCase
     #[DataProvider('schemaFeatureProvider')]
     public function test30OmitsSchemaFeature(OA\Schema $schema, string $key, mixed $expectedIn31): void
     {
-        $result = $this->compileSchema(new OpenApi30Compiler(), $schema);
+        $result = $this->compileSchemaArray(new OpenApi30Compiler(), $schema);
 
         $this->assertArrayNotHasKey($key, $result);
     }
@@ -229,7 +242,7 @@ final class CompilerTest extends TestCase
     #[DataProvider('schemaFeatureProvider')]
     public function test31IncludesSchemaFeature(OA\Schema $schema, string $key, mixed $expectedIn31): void
     {
-        $result = $this->compileSchema(new OpenApi31Compiler(), $schema);
+        $result = $this->compileSchemaArray(new OpenApi31Compiler(), $schema);
 
         $this->assertArrayHasKey($key, $result);
         $this->assertEquals($expectedIn31, $result[$key]);
@@ -252,7 +265,7 @@ final class CompilerTest extends TestCase
 
     public function test31IncludesIfThenElse(): void
     {
-        $result = $this->compileSchema(
+        $result = $this->compileSchemaArray(
             new OpenApi31Compiler(),
             new OA\Schema(
                 schema: 'Cond',
@@ -322,6 +335,9 @@ final class CompilerTest extends TestCase
 
     // --- Default and example values ---
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function defaultAndExampleProvider(): iterable
     {
         yield 'string default emitted' => [
@@ -348,7 +364,7 @@ final class CompilerTest extends TestCase
     #[DataProvider('defaultAndExampleProvider')]
     public function testDefaultAndExampleEmitted(OA\Schema $schema, string $key, mixed $expected): void
     {
-        $result = $this->compileSchema(new OpenApi31Compiler(), $schema);
+        $result = $this->compileSchemaArray(new OpenApi31Compiler(), $schema);
 
         $this->assertArrayHasKey($key, $result);
         $this->assertSame($expected, $result[$key]);
@@ -356,7 +372,7 @@ final class CompilerTest extends TestCase
 
     public function testUndefinedDefaultNotEmitted(): void
     {
-        $result = $this->compileSchema(new OpenApi31Compiler(), new OA\Schema(schema: 'X', type: 'string'));
+        $result = $this->compileSchemaArray(new OpenApi31Compiler(), new OA\Schema(schema: 'X', type: 'string'));
 
         $this->assertArrayNotHasKey('default', $result);
         $this->assertArrayNotHasKey('example', $result);
@@ -431,6 +447,9 @@ final class CompilerTest extends TestCase
         $this->assertSame(['mtls', 'basic'], array_keys($compiled31['components']['securitySchemes']));
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function validationProvider(): iterable
     {
         $specWithWebhook = new Specification();
@@ -654,7 +673,7 @@ final class CompilerTest extends TestCase
 
     public function testExtensionsEmitted(): void
     {
-        $result = $this->compileSchema(
+        $result = $this->compileSchemaArray(
             new OpenApi31Compiler(),
             new OA\Schema(schema: 'Ext', type: 'object', x: ['custom' => 'value', 'flag' => true]),
         );
@@ -667,7 +686,7 @@ final class CompilerTest extends TestCase
 
     public function testAllOfCompiled(): void
     {
-        $result = $this->compileSchema(
+        $result = $this->compileSchemaArray(
             new OpenApi31Compiler(),
             new OA\Schema(
                 schema: 'Dog',
@@ -687,7 +706,7 @@ final class CompilerTest extends TestCase
 
     public function testDiscriminatorCompiled(): void
     {
-        $result = $this->compileSchema(
+        $result = $this->compileSchemaArray(
             new OpenApi31Compiler(),
             new OA\Schema(
                 schema: 'Pet',
@@ -965,13 +984,34 @@ final class CompilerTest extends TestCase
         return $spec;
     }
 
+    /**
+     * An empty compiled schema comes back as a stdClass so it serialises as `{}` rather than
+     * `[]` — see test30OmitsIfThenElse — so the union is real, not defensive.
+     *
+     * @return array<string, mixed>|\stdClass
+     */
     protected function compileSchema(CompilerInterface $compiler, OA\Schema $schema): array|\stdClass
     {
         $spec = $this->createSpecification($compiler->getVersion());
         $spec->schemas[] = $schema;
 
         $output = $compiler->compile($spec);
+        $compiled = $output['components']['schemas'][$schema->schema];
+        $this->assertTrue(is_array($compiled) || $compiled instanceof \stdClass);
 
-        return $output['components']['schemas'][$schema->schema];
+        return $compiled;
+    }
+
+    /**
+     * compileSchema() for the majority of callers, which index into the result.
+     *
+     * @return array<string, mixed>
+     */
+    protected function compileSchemaArray(CompilerInterface $compiler, OA\Schema $schema): array
+    {
+        $compiled = $this->compileSchema($compiler, $schema);
+        $this->assertIsArray($compiled);
+
+        return $compiled;
     }
 }

@@ -19,6 +19,9 @@ final class ScratchTest extends OpenApiTestCase
 {
     use GeneratesTestMatrix;
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function scratchTestCases(): iterable
     {
         $basePath = self::fixture('Scratch');
@@ -107,6 +110,9 @@ final class ScratchTest extends OpenApiTestCase
         }
     }
 
+    /**
+     * @param array<mixed> $expectedLogs
+     */
     #[DataProvider('scratchTestCases')]
     public function testScratch(TypeResolverInterface $typeResolver, string $scratch, Builder\Mode $mode, string $spec, string $version, array $expectedLogs): void
     {

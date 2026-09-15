@@ -19,7 +19,7 @@ trait AssertsSchemaStructure
     /**
      * Assert that compiled schemas (arrays) match the expected structure file.
      *
-     * @param array<string, array> $schemas compiled schema arrays keyed by name
+     * @param array<string, array<mixed>> $schemas compiled schema arrays keyed by name
      */
     protected function assertCompiledSchemasMatchFile(array $schemas, string $expectedFile, string $context = ''): void
     {
@@ -120,6 +120,8 @@ trait AssertsSchemaStructure
     }
 
     /**
+     * @param array<mixed> $allOf
+     *
      * @return list<string>
      */
     protected function extractAllOfPropertyNames(array $allOf): array
