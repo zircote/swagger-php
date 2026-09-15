@@ -22,11 +22,9 @@ final class DocsAccuracyTest extends TestCase
 
     public function testCliHelpOutputMatchesDocs(): void
     {
-        $page = file_get_contents(self::DOCS . '/guide/generating-openapi-documents.md');
+        $page = $this->readFile(self::DOCS . '/guide/generating-openapi-documents.md');
 
-        preg_match('/^> \.\/vendor\/bin\/openapi -h\n\n(.+?)```$/ms', $page, $m);
-        $this->assertNotEmpty($m, 'Could not find the help block in the docs');
-        $documented = rtrim($m[1]);
+        $documented = rtrim($this->captureGroup('/^> \.\/vendor\/bin\/openapi -h\n\n(.+?)```$/ms', $page, 'Could not find the help block in the docs'));
 
         exec('php ' . escapeshellarg(__DIR__ . '/../bin/openapi') . ' -h 2>/dev/null', $lines, $ret);
         $this->assertSame(0, $ret);
@@ -37,15 +35,11 @@ final class DocsAccuracyTest extends TestCase
 
     public function testIsRootClassificationMatchesDocs(): void
     {
-        $page = file_get_contents(self::DOCS . '/dev/pipeline.md');
+        $page = $this->readFile(self::DOCS . '/dev/pipeline.md');
 
-        preg_match('/\*\*Always root\*\*: (.+?)(?=\n- \*\*)/s', $page, $alwaysMatch);
-        preg_match('/\*\*Conditionally root\*\*[^:]*:(.+?)(?=\n- \*\*)/s', $page, $condMatch);
-        preg_match('/\*\*Never root\*\*: (.+?)(?= —)/s', $page, $neverMatch);
-
-        $this->assertNotEmpty($alwaysMatch, 'Could not find "Always root" list');
-        $this->assertNotEmpty($condMatch, 'Could not find "Conditionally root" list');
-        $this->assertNotEmpty($neverMatch, 'Could not find "Never root" list');
+        $always = $this->captureGroup('/\*\*Always root\*\*: (.+?)(?=\n- \*\*)/s', $page, 'Could not find "Always root" list');
+        $cond = $this->captureGroup('/\*\*Conditionally root\*\*[^:]*:(.+?)(?=\n- \*\*)/s', $page, 'Could not find "Conditionally root" list');
+        $never = $this->captureGroup('/\*\*Never root\*\*: (.+?)(?= —)/s', $page, 'Could not find "Never root" list');
 
         $parseNames = static function (string $text): array {
             preg_match_all('/`([A-Z][A-Za-z\\\\]+)`/', $text, $m);
@@ -53,9 +47,9 @@ final class DocsAccuracyTest extends TestCase
             return $m[1];
         };
 
-        $docAlways = $parseNames($alwaysMatch[1]);
-        $docConditional = $parseNames($condMatch[1]);
-        $docNever = $parseNames($neverMatch[1]);
+        $docAlways = $parseNames($always);
+        $docConditional = $parseNames($cond);
+        $docNever = $parseNames($never);
 
         $specClasses = $this->concreteAttributeClasses();
 
@@ -76,7 +70,7 @@ final class DocsAccuracyTest extends TestCase
                 continue;
             }
 
-            $source = file_get_contents($method->getFileName());
+            $source = $this->readFile((string) $method->getFileName());
             $lines = array_slice(
                 explode("\n", $source),
                 $method->getStartLine() - 1,
@@ -116,7 +110,7 @@ final class DocsAccuracyTest extends TestCase
 
     public function testCompilerTableMatchesDocs(): void
     {
-        $page = file_get_contents(self::DOCS . '/reference/architecture.md');
+        $page = $this->readFile(self::DOCS . '/reference/architecture.md');
 
         preg_match_all('/`(OpenApi\d+Compiler)`\s*\|\s*([\d.x]+)/', $page, $m);
         $this->assertNotEmpty($m[0], 'Could not find the compiler table in docs/reference/architecture.md');
@@ -142,6 +136,7 @@ final class DocsAccuracyTest extends TestCase
                 "{$short} does not implement CompilerInterface"
             );
 
+            /** @var CompilerInterface $compiler implementsInterface() asserted above */
             $compiler = new $fqcn();
             $majorMinor = substr($versionPattern, 0, 3);
             $this->assertStringStartsWith($majorMinor, $compiler->getVersion(), "{$short}::getVersion() does not match documented version {$versionPattern}");
@@ -150,18 +145,17 @@ final class DocsAccuracyTest extends TestCase
 
     public function testConcernsTableMatchesDocs(): void
     {
-        $page = file_get_contents(self::DOCS . '/dev/testing.md');
+        $page = $this->readFile(self::DOCS . '/dev/testing.md');
 
-        preg_match('/^## Shared helpers$(.*?)^## /ms', $page, $section);
-        $this->assertNotEmpty($section, 'Could not find the "Shared helpers" section in docs/dev/testing.md');
+        $section = $this->captureGroup('/^## Shared helpers$(.*?)^## /ms', $page, 'Could not find the "Shared helpers" section in docs/dev/testing.md');
 
-        preg_match_all('/^\| `(\w+)` \|/m', $section[1], $m);
+        preg_match_all('/^\| `(\w+)` \|/m', $section, $m);
         $documented = $m[1];
         sort($documented);
 
         $traits = array_map(
             static fn (string $file): string => basename($file, '.php'),
-            glob(__DIR__ . '/Concerns/*.php')
+            glob(__DIR__ . '/Concerns/*.php') ?: []
         );
         $traits = array_values(array_filter($traits, static fn (string $name): bool => !str_ends_with($name, 'Test')));
         sort($traits);
@@ -171,7 +165,7 @@ final class DocsAccuracyTest extends TestCase
 
     public function testResultMethodListingMatchesDocs(): void
     {
-        $page = file_get_contents(self::DOCS . '/reference/builder.md');
+        $page = $this->readFile(self::DOCS . '/reference/builder.md');
 
         preg_match_all('/\$result->(\w+)\(/', $page, $m);
         $documentedMethods = array_unique($m[1]);
@@ -227,7 +221,7 @@ final class DocsAccuracyTest extends TestCase
     private function concreteAttributeClasses(): array
     {
         $classes = [];
-        $srcDir = realpath(__DIR__ . '/../src');
+        $srcDir = (string) realpath(__DIR__ . '/../src');
         $dir = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($srcDir . '/Spec', \FilesystemIterator::SKIP_DOTS)
         );
@@ -237,7 +231,7 @@ final class DocsAccuracyTest extends TestCase
                 continue;
             }
 
-            $relative = str_replace('/', '\\', substr($file->getRealPath(), strlen($srcDir) + 1));
+            $relative = str_replace('/', '\\', substr((string) $file->getRealPath(), strlen($srcDir) + 1));
             $fqcn = 'OpenApi\\' . substr($relative, 0, -4);
 
             if (!class_exists($fqcn)) {
@@ -252,12 +246,39 @@ final class DocsAccuracyTest extends TestCase
                 continue;
             }
 
+            /* @var class-string<AttributeInterface> $fqcn implementsInterface() above is the guarantee */
             $classes[] = $fqcn;
         }
 
         sort($classes);
 
         return $classes;
+    }
+
+    /**
+     * Capture group 1 of a pattern the test requires to match, failing with a useful message
+     * rather than indexing into an empty match array. PHPUnit's assertions do not narrow
+     * types for static analysis; fail() returns never, so this does.
+     */
+    private function captureGroup(string $pattern, string $subject, string $message): string
+    {
+        if (1 !== preg_match($pattern, $subject, $m) || !isset($m[1])) {
+            $this->fail($message);
+        }
+
+        return $m[1];
+    }
+
+    /**
+     * Read a file that the test requires to exist, failing with its path rather than letting
+     * a `false` flow on into preg_match()/explode().
+     */
+    private function readFile(string $path): string
+    {
+        $content = file_get_contents($path);
+        $this->assertIsString($content, "Could not read {$path}");
+
+        return $content;
     }
 
     private function shortSpecName(string $fqcn): string
