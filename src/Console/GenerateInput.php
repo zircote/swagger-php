@@ -7,50 +7,75 @@
 namespace OpenApi\Console;
 
 use OpenApi\Builder\Mode;
-use Symfony\Component\Console\Attribute\Argument;
-use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Input\InputInterface;
 
 class GenerateInput
 {
-    #[Argument('Source path(s) to scan')]
-    public array $paths;
+    /**
+     * @var array<string>
+     */
+    public array $paths = [];
 
-    #[Option('Generator/Augmenter config; keys differ per mode, see -D (e.g. -c operationId.hash=false)', shortcut: 'c')]
+    /**
+     * @var array<string>
+     */
     public array $config = [];
 
-    #[Option('Show default config', shortcut: 'D')]
     public bool $defaults = false;
 
-    #[Option('Path to store the generated documentation (e.g. -o openapi.yaml)', shortcut: 'o')]
     public ?string $output = null;
 
-    #[Option('Force yaml or json', shortcut: 'f')]
     public GenerateFormat $format = GenerateFormat::AUTO;
 
-    #[Option('Exclude path(s) (e.g. -e vendor -e library/Zend)', shortcut: 'e')]
+    /**
+     * @var array<string>
+     */
     public array $exclude = [];
 
-    #[Option('Pattern of files to scan (e.g. -n "/\.(phps|php)$/")', shortcut: 'n')]
     public string $pattern = '*.php';
 
-    #[Option('Bootstrap php file(s) for defining constants, etc. (e.g. -b config/constants.php)', shortcut: 'b')]
+    /**
+     * @var array<string>
+     */
     public array $bootstrap = [];
 
-    #[Option('Register an additional processor', shortcut: 'a')]
+    /**
+     * @var array<string>
+     */
     public array $addProcessor = [];
 
-    #[Option('Remove an existing processor', shortcut: 'r')]
+    /**
+     * @var array<string>
+     */
     public array $removeProcessor = [];
 
-    #[Option('The OpenAPI version')]
     public ?string $version = null;
 
-    #[Option('Set mode classic, hybrid or spec', shortcut: 'm')]
     public Mode $mode = Mode::CLASSIC;
 
-    #[Option('Show additional error information', shortcut: 'd')]
     public bool $debug = false;
+
+    public static function fromInput(InputInterface $input): self
+    {
+        $generateInput = new self();
+
+        $generateInput->paths = self::strings($input->getArgument('paths'));
+        $generateInput->config = self::strings($input->getOption('config'));
+        $generateInput->defaults = (bool) $input->getOption('defaults');
+        $generateInput->output = self::nullableString($input->getOption('output'));
+        $generateInput->format = self::format($input->getOption('format'));
+        $generateInput->exclude = self::strings($input->getOption('exclude'));
+        $generateInput->pattern = self::string($input->getOption('pattern'), $generateInput->pattern);
+        $generateInput->bootstrap = self::strings($input->getOption('bootstrap'));
+        $generateInput->addProcessor = self::strings($input->getOption('add-processor'));
+        $generateInput->removeProcessor = self::strings($input->getOption('remove-processor'));
+        $generateInput->version = self::nullableString($input->getOption('version'));
+        $generateInput->mode = self::mode($input->getOption('mode'));
+        $generateInput->debug = (bool) $input->getOption('debug');
+
+        return $generateInput;
+    }
 
     /**
      * @return iterable<string>
@@ -66,5 +91,52 @@ class GenerateInput
 
             yield from $filenames;
         }
+    }
+
+    /**
+     * @return array<string>
+     */
+    protected static function strings(mixed $value): array
+    {
+        return is_array($value)
+            ? array_values(array_filter($value, is_string(...)))
+            : [];
+    }
+
+    protected static function string(mixed $value, string $default): string
+    {
+        return is_string($value) && $value !== '' ? $value : $default;
+    }
+
+    protected static function nullableString(mixed $value): ?string
+    {
+        return is_string($value) && $value !== '' ? $value : null;
+    }
+
+    protected static function format(mixed $value): GenerateFormat
+    {
+        $format = is_string($value) ? GenerateFormat::tryFrom(strtolower($value)) : null;
+
+        return $format ?? throw new InvalidArgumentException(self::invalidValue('--format', $value, array_column(GenerateFormat::cases(), 'value')));
+    }
+
+    protected static function mode(mixed $value): Mode
+    {
+        $mode = is_string($value) ? Mode::tryFrom(strtolower($value)) : null;
+
+        return $mode ?? throw new InvalidArgumentException(self::invalidValue('--mode', $value, array_column(Mode::cases(), 'value')));
+    }
+
+    /**
+     * @param array<string> $expected
+     */
+    protected static function invalidValue(string $option, mixed $value, array $expected): string
+    {
+        return sprintf(
+            'Invalid `%s` value: "%s"; expected one of %s',
+            $option,
+            is_scalar($value) ? (string) $value : get_debug_type($value),
+            implode(', ', $expected)
+        );
     }
 }
