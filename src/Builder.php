@@ -41,7 +41,7 @@ class Builder
     /**
      * @var list<BuilderSource|iterable<BuilderSource>>
      */
-    protected string|\SplFileInfo|\Reflector|iterable $sources = [];
+    protected array $sources = [];
 
     protected Mode $mode = Mode::CLASSIC;
 
@@ -338,7 +338,7 @@ class Builder
     }
 
     /**
-     * @return list<PipeInterface>
+     * @return list<PipeInterface<Specification>>
      */
     protected function getDefaultAugmenters(): array
     {
