@@ -27,9 +27,9 @@ final class PathFilterTest extends TestCase
     }
 
     /**
-     * @param array<mixed> $expectedPaths
-     * @param array<mixed> $paths
-     * @param array<mixed> $tags
+     * @param list<string> $tags
+     * @param list<string> $paths
+     * @param list<string> $expectedPaths
      */
     #[DataProvider('filterProvider')]
     public function testFilter(array $tags, array $paths, array $expectedPaths): void

@@ -108,6 +108,10 @@ END;
         yield 'sub-invalid' => [SubSchema::class, null];
     }
 
+    /**
+     * @param class-string<OA\AbstractAnnotation> $class
+     * @param mixed                               $expected
+     */
     #[DataProvider('nestedMatches')]
     public function testMatchNested(string $class, $expected): void
     {

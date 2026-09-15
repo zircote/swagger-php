@@ -90,7 +90,10 @@ JSON;
             $this->getPetstoreExpected()->toJson()
         );
 
-        $schema = $annotation->paths['/products']->post->requestBody->content['application/json']->schema;
+        $content = $annotation->paths['/products']->post->requestBody->content;
+        $this->assertIsArray($content);
+        $schema = $content['application/json']->schema;
+        $this->assertInstanceOf(OA\Schema::class, $schema);
         $this->assertTrue($schema->additionalProperties);
     }
 

@@ -100,6 +100,10 @@ final class AttributeFactoryTest extends TestCase
         yield 'second declared first' => ['secondDeclaredFirst', MutualFirstAttachable::class, MutualSecondAttachable::class];
     }
 
+    /**
+     * @param class-string $expectedRoot
+     * @param class-string $expectedNested
+     */
     #[DataProvider('mutualMergeCases')]
     public function testMutualMergeTargetsResolveInDeclarationOrder(string $method, string $expectedRoot, string $expectedNested): void
     {

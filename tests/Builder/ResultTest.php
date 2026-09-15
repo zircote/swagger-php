@@ -30,7 +30,7 @@ final class ResultTest extends TestCase
     }
 
     /**
-     * @param array<mixed> $log
+     * @param list<array{level: string, message: string}> $log
      */
     #[DataProvider('validityCases')]
     public function testIsValidOnlyErrorsCount(array $log, bool $expected): void
@@ -41,7 +41,7 @@ final class ResultTest extends TestCase
     }
 
     /**
-     * @param array<mixed> $log
+     * @param list<array{level: string, message: string}> $log
      */
     #[DataProvider('validityCases')]
     public function testIsValidOnlyErrorsCountForClassic(array $log, bool $expected): void
