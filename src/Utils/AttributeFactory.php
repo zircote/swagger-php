@@ -88,6 +88,8 @@ class AttributeFactory
      *
      * For methods, also resolves parameter-level attributes into the method-level ones.
      *
+     * @param \ReflectionClass<object>|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector
+     *
      * @return list<AttributeInterface>
      */
     public function fromReflector(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
@@ -123,6 +125,8 @@ class AttributeFactory
      *
      * Each member is fully resolved internally (merge + parameter absorption for methods),
      * then all results are returned for hierarchical absorption into class-level containers.
+     *
+     * @param \ReflectionClass<object> $class
      *
      * @return list<AttributeInterface>
      */
@@ -168,6 +172,8 @@ class AttributeFactory
 
     /**
      * Check whether a reflector has any `AttributeInterface` attributes.
+     *
+     * @param \ReflectionClass<object>|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector
      */
     public function hasAttributes(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): bool
     {
@@ -176,6 +182,8 @@ class AttributeFactory
 
     /**
      * Get methods directly implemented by a class (not inherited from parents).
+     *
+     * @param \ReflectionClass<object> $class
      *
      * @return list<\ReflectionMethod>
      */
@@ -201,7 +209,9 @@ class AttributeFactory
     /**
      * Get interfaces directly implemented by a class (not inherited from parents).
      *
-     * @return list<\ReflectionClass>
+     * @param \ReflectionClass<object> $class
+     *
+     * @return list<\ReflectionClass<object>>
      */
     public function getDirectInterfaces(\ReflectionClass $class): array
     {
@@ -228,19 +238,21 @@ class AttributeFactory
      * PHP's ReflectionClass::getTraits() flattens the entire trait tree, so we
      * must exclude traits that come from a parent class or from another trait's use.
      *
-     * @return list<\ReflectionClass>
+     * @param \ReflectionClass<object> $class
+     *
+     * @return list<\ReflectionClass<object>>
      */
     public function getDirectTraits(\ReflectionClass $class): array
     {
         $scannerDetails = $this->tokenScanner->detailsFor($class);
 
         if ($scannerDetails !== null) {
-            return array_filter(
+            return array_values(array_filter(
                 array_map(
                     fn (string $name): ?\ReflectionClass => class_exists($name) || trait_exists($name) ? new \ReflectionClass($name) : null,
                     $scannerDetails['traits'],
                 ),
-            );
+            ));
         }
 
         return [];
@@ -434,6 +446,8 @@ class AttributeFactory
     }
 
     /**
+     * @param \ReflectionClass<object>|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector
+     *
      * @return list<AttributeInterface>
      */
     protected function readAttributes(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
