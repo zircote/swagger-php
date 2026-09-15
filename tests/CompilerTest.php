@@ -12,6 +12,7 @@ use OpenApi\Compiler\OpenApi32Compiler;
 use OpenApi\Contracts\CompilerInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Undefined;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -892,6 +893,67 @@ final class CompilerTest extends TestCase
         $output = (new OpenApi31Compiler())->compile($spec);
 
         $this->assertArrayNotHasKey('requestBody', $output['components']['links']['plain']);
+    }
+
+    /**
+     * @return iterable<string, array{0: \Closure(Specification, mixed): void, 1: \Closure(array): mixed}>
+     */
+    public static function exampleValueProvider(): iterable
+    {
+        yield 'MediaType' => [
+            function (Specification $spec, mixed $example): void {
+                $spec->responses[] = new OA\Response(
+                    response: 'Empty',
+                    description: 'No results',
+                    content: [new OA\MediaType(mediaType: 'application/json', example: $example)],
+                );
+            },
+            fn (array $output) => $output['components']['responses']['Empty']['content']['application/json'],
+        ];
+
+        yield 'Parameter' => [
+            function (Specification $spec, mixed $example): void {
+                $spec->parameters[] = new OA\Parameter(parameter: 'q', name: 'q', in: 'query', example: $example);
+            },
+            fn (array $output) => $output['components']['parameters']['q'],
+        ];
+
+        yield 'Header' => [
+            function (Specification $spec, mixed $example): void {
+                $spec->headers[] = new OA\Header(header: 'X-Empty', example: $example);
+            },
+            fn (array $output) => $output['components']['headers']['X-Empty'],
+        ];
+    }
+
+    /**
+     * An explicitly declared `example: []` is a real, meaningful value — "the example is an
+     * empty list" — and must survive compilation distinctly from not declaring an example at
+     * all. filter() drops `[]` because that's the right call for the *derived* collections
+     * (examples/encoding/headers/...) it shares this array with, so `example` itself has to
+     * bypass it via withDefined() instead of going through the same array_filter() pass.
+     */
+    #[DataProvider('exampleValueProvider')]
+    public function testExampleEmptyArrayIsEmitted(\Closure $build, \Closure $extract): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $build($spec, []);
+
+        $result = $extract((new OpenApi31Compiler())->compile($spec));
+
+        $this->assertArrayHasKey('example', $result);
+        $this->assertSame([], $result['example']);
+    }
+
+    #[DataProvider('exampleValueProvider')]
+    public function testExampleUnsetIsOmitted(\Closure $build, \Closure $extract): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $build($spec, Undefined::UNDEFINED);
+
+        $result = $extract((new OpenApi31Compiler())->compile($spec));
+
+        $this->assertArrayNotHasKey('example', $result);
     }
 
     protected function createSpecification(string $version = '3.1.0'): Specification

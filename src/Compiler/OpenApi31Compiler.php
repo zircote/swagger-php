@@ -347,7 +347,7 @@ class OpenApi31Compiler implements CompilerInterface
             return ['$ref' => $parameter->ref];
         }
 
-        return $this->filter([
+        $result = $this->filter([
             'name' => $parameter->name,
             'in' => $parameter->in,
             'description' => $parameter->description,
@@ -358,10 +358,11 @@ class OpenApi31Compiler implements CompilerInterface
             'explode' => $parameter->explode,
             'allowReserved' => $parameter->allowReserved,
             'schema' => $parameter->schema instanceof OA\Schema ? $this->compileSchema($parameter->schema) : null,
-            'example' => $parameter->example,
             'examples' => $this->compileKeyedMap($parameter->examples ?? [], 'example', $this->compileExample(...)),
             'content' => $this->compileMediaTypes($parameter->content ?? []),
         ], $parameter);
+
+        return $this->withDefined($result, 'example', $parameter->example);
     }
 
     /**
@@ -421,17 +422,18 @@ class OpenApi31Compiler implements CompilerInterface
             return ['$ref' => $header->ref];
         }
 
-        return $this->filter([
+        $result = $this->filter([
             'description' => $header->description,
             'required' => $header->required,
             'deprecated' => $header->deprecated,
             'style' => $header->style,
             'explode' => $header->explode,
             'schema' => $header->schema instanceof OA\Schema ? $this->compileSchema($header->schema) : null,
-            'example' => $header->example,
             'examples' => $this->compileKeyedMap($header->examples ?? [], 'example', $this->compileExample(...)),
             'content' => $this->compileMediaTypes($header->content ?? []),
         ], $header);
+
+        return $this->withDefined($result, 'example', $header->example);
     }
 
     /**
@@ -448,12 +450,13 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function compileMediaType(OA\MediaType $mediaType): array
     {
-        return $this->filter([
+        $result = $this->filter([
             'schema' => $mediaType->schema instanceof OA\Schema ? $this->compileSchema($mediaType->schema) : null,
-            'example' => $mediaType->example,
             'examples' => $this->compileKeyedMap($mediaType->examples ?? [], 'example', $this->compileExample(...)),
             'encoding' => $this->compileKeyedMap($mediaType->encoding ?? [], 'encoding', $this->compileEncoding(...)),
         ], $mediaType);
+
+        return $this->withDefined($result, 'example', $mediaType->example);
     }
 
     /**
@@ -487,11 +490,7 @@ class OpenApi31Compiler implements CompilerInterface
             'server' => $link->server instanceof OA\Server ? $this->compileServer($link->server) : null,
         ], $link);
 
-        if ($link->requestBody !== Undefined::UNDEFINED) {
-            $result['requestBody'] = $link->requestBody;
-        }
-
-        return $result;
+        return $this->withDefined($result, 'requestBody', $link->requestBody);
     }
 
     /**
@@ -603,15 +602,9 @@ class OpenApi31Compiler implements CompilerInterface
             'xml' => $schema->xml instanceof OA\Xml ? $this->compileXml($schema->xml) : null,
         ], $schema);
 
-        if ($schema->default !== Undefined::UNDEFINED) {
-            $result['default'] = $schema->default;
-        }
-        if ($schema->const !== Undefined::UNDEFINED) {
-            $result['const'] = $schema->const;
-        }
-        if ($schema->example !== Undefined::UNDEFINED) {
-            $result['example'] = $schema->example;
-        }
+        $result = $this->withDefined($result, 'default', $schema->default);
+        $result = $this->withDefined($result, 'const', $schema->const);
+        $result = $this->withDefined($result, 'example', $schema->example);
 
         return $result ?: new \stdClass();
     }
@@ -769,11 +762,7 @@ class OpenApi31Compiler implements CompilerInterface
             'externalValue' => $example->externalValue,
         ], $example);
 
-        if ($example->value !== Undefined::UNDEFINED) {
-            $result['value'] = $example->value;
-        }
-
-        return $result;
+        return $this->withDefined($result, 'value', $example->value);
     }
 
     /**
@@ -1101,6 +1090,26 @@ class OpenApi31Compiler implements CompilerInterface
             foreach ($attribute->x as $key => $value) {
                 $result['x-' . $key] = $value;
             }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Adds $key => $value to $result unless $value was left at its Undefined-sentinel default.
+     *
+     * For fields whose meaningful values overlap what {@see filter()} treats as "unset"
+     * (`null`, `[]`) — `example` is the case in point, since an explicitly declared `[]` is
+     * valid and distinct from not declaring it at all — bypass filter() and gate on the
+     * sentinel directly instead.
+     *
+     * @param  array<string,mixed> $result
+     * @return array<string,mixed>
+     */
+    protected function withDefined(array $result, string $key, mixed $value): array
+    {
+        if (!Undefined::isDefault($value)) {
+            $result[$key] = $value;
         }
 
         return $result;
