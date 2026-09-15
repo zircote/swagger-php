@@ -19,6 +19,10 @@ use OpenApi\Undefined;
  *      - inherit from first with schema; all other with scheme can be ignored
  *      - merge from all without schema
  *        => update all $ref that might reference a property merged.
+ *
+ * @phpstan-import-type ClassDefinition from Analysis
+ * @phpstan-import-type InterfaceDefinition from Analysis
+ * @phpstan-import-type TraitDefinition from Analysis
  */
 trait MergePropertiesTrait
 {
@@ -35,6 +39,10 @@ trait MergePropertiesTrait
         $analysis->addAnnotation($refSchema, $refSchema->_context);
     }
 
+    /**
+     * @param ClassDefinition|InterfaceDefinition|TraitDefinition $from
+     * @param list<string|null>                                   $existing
+     */
     protected function mergeProperties(OA\Schema $schema, array $from, array &$existing): void
     {
         foreach ($from['properties'] as $context) {
@@ -49,6 +57,10 @@ trait MergePropertiesTrait
         }
     }
 
+    /**
+     * @param ClassDefinition|InterfaceDefinition|TraitDefinition $from
+     * @param list<string|null>                                   $existing
+     */
     protected function mergeMethods(OA\Schema $schema, array $from, array &$existing): void
     {
         foreach ($from['methods'] as $context) {
