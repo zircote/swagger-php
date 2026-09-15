@@ -35,7 +35,7 @@ END;
         $this->assertIsArray($response->content);
         $this->assertCount(1, (array) $response->content);
         $this->assertCount(0, $response->_unmerged);
-        $json = json_decode(json_encode($response), true);
+        $json = json_decode((string) json_encode($response), true);
         $this->assertSame('#/components/schemas/repository', $json['content']['application/json']['schema']['items']['$ref']);
     }
 
@@ -51,11 +51,11 @@ END;
 END;
         $analysis = new Analysis($this->annotationsFromDocBlockParser($comment), $this->getContext());
         $response = $analysis->getAnnotationsOfType(OA\Response::class)[0];
-        $this->assertCount(1, $response->content);
+        $this->assertCount(1, (array) $response->content);
 
         $this->processorPipeline([new MergeJsonContent()])->process($analysis);
 
-        $this->assertCount(2, $response->content);
+        $this->assertCount(2, (array) $response->content);
     }
 
     public function testParameter(): void
@@ -79,7 +79,7 @@ END;
         $this->assertIsArray($parameter->content);
         $this->assertCount(1, (array) $parameter->content);
         $this->assertCount(0, $parameter->_unmerged);
-        $json = json_decode(json_encode($parameter), true);
+        $json = json_decode((string) json_encode($parameter), true);
         $this->assertSame('query', $json['in']);
         $this->assertSame('application/json', array_keys($json['content'])[0]);
         $this->assertArrayNotHasKey('mediaType', $json['content']['application/json']);

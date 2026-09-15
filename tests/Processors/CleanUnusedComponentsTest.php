@@ -21,6 +21,9 @@ final class CleanUnusedComponentsTest extends OpenApiTestCase
         yield 'unreferenced-clean' => [$configEnable, 'Unreferenced.php', 0, 5];
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     #[DataProvider('countCases')]
     public function testCounts(array $config, string $fixture, int $expectedSchemaCount, int $expectedAnnotationCount): void
     {

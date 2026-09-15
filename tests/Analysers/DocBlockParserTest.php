@@ -31,6 +31,7 @@ final class DocBlockParserTest extends OpenApiTestCase
             'ctest' => ConstantsTest::class, // use OpenApi\Tests\ConstantsTest as CTest;
         ];
         $annotations = $this->annotationsFromDocBlockParser('@Contact(url=CTest::URL)', $extraAliases);
+        $this->assertInstanceOf(Contact::class, $annotations[0]);
         $this->assertSame('http://example.com', $annotations[0]->url);
     }
 }

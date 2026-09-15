@@ -7,6 +7,7 @@
 namespace OpenApi\Tests;
 
 use AnotherNamespace\Annotations\Constants;
+use OpenApi\Annotations\Contact;
 
 final class ConstantsTest extends OpenApiTestCase
 {
@@ -24,15 +25,18 @@ final class ConstantsTest extends OpenApiTestCase
 
         define($const, 'me@domain.org');
         $annotations = $this->annotationsFromDocBlockParser('@OA\Contact(email=' . $const . ')');
+        $this->assertInstanceOf(Contact::class, $annotations[0]);
         $this->assertSame('me@domain.org', $annotations[0]->email);
     }
 
     public function testFQCNConstant(): void
     {
         $annotations = $this->annotationsFromDocBlockParser('@OA\Contact(url=' . ConstantsTest::class . '::URL)');
+        $this->assertInstanceOf(Contact::class, $annotations[0]);
         $this->assertSame('http://example.com', $annotations[0]->url);
 
         $annotations = $this->annotationsFromDocBlockParser('@OA\Contact(url=' . ConstantsTest::class . '::URL)');
+        $this->assertInstanceOf(Contact::class, $annotations[0]);
         $this->assertSame('http://example.com', $annotations[0]->url);
     }
 
@@ -48,6 +52,7 @@ final class ConstantsTest extends OpenApiTestCase
             $this->markTestSkipped();
         }
         $annotations = $this->annotationsFromDocBlockParser('@OA\Contact(name=' . Constants::class . '::INVALID_TIMEZONE_LOCATION)');
+        $this->assertInstanceOf(Contact::class, $annotations[0]);
         $this->assertSame('invalidTimezoneLocation', $annotations[0]->name);
     }
 }

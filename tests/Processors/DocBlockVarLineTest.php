@@ -14,6 +14,9 @@ final class DocBlockVarLineTest extends OpenApiTestCase
 {
     use DocblockTrait;
 
+    /**
+     * @return iterable<string, array{string, array<string, mixed>}>
+     */
     public static function varLineCases(): iterable
     {
         yield 'multi-line' => [
@@ -54,6 +57,9 @@ END,
         ];
     }
 
+    /**
+     * @param array<string, mixed> $expected
+     */
     #[DataProvider('varLineCases')]
     public function testDocBlockVarLine(string $comment, array $expected): void
     {
