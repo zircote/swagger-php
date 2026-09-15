@@ -21,6 +21,11 @@ use OpenApi\Utils\TokenScanner;
  * Can read either PHP <code>DocBlock</code>s or <code>Attribute</code>s.
  *
  * Due to the nature of reflection, this requires all related classes to be auto-loadable.
+ *
+ * @phpstan-import-type ClassDefinition from Analysis
+ * @phpstan-import-type InterfaceDefinition from Analysis
+ * @phpstan-import-type TraitDefinition from Analysis
+ * @phpstan-import-type EnumDefinition from Analysis
  */
 class ReflectionAnalyser implements AnalyserInterface
 {
@@ -204,8 +209,28 @@ class ReflectionAnalyser implements AnalyserInterface
             }
         }
 
-        $addDefinition = 'add' . ucfirst($contextType) . 'Definition';
-        $analysis->{$addDefinition}($definition);
+        switch ($contextType) {
+            case 'interface':
+                /** @var InterfaceDefinition $interfaceDefinition */
+                $interfaceDefinition = $definition;
+                $analysis->addInterfaceDefinition($interfaceDefinition);
+                break;
+            case 'trait':
+                /** @var TraitDefinition $traitDefinition */
+                $traitDefinition = $definition;
+                $analysis->addTraitDefinition($traitDefinition);
+                break;
+            case 'enum':
+                /** @var EnumDefinition $enumDefinition */
+                $enumDefinition = $definition;
+                $analysis->addEnumDefinition($enumDefinition);
+                break;
+            default:
+                /** @var ClassDefinition $classDefinition */
+                $classDefinition = $definition;
+                $analysis->addClassDefinition($classDefinition);
+                break;
+        }
 
         return $analysis;
     }

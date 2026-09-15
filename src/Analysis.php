@@ -12,6 +12,51 @@ use OpenApi\Annotations as OA;
  * Result of the analyser.
  *
  * Pretends to be an array of annotations but also contains detected classes and helper functions for the processors.
+ *
+ * The four definition shapes differ only in which name key they carry, and in `extends` — a
+ * single parent for a class, a list of parents for an interface — which is why they are spelled
+ * out separately rather than as one shape with optional keys.
+ *
+ * @phpstan-type ClassDefinition array{
+ *     class: string,
+ *     extends: string|null,
+ *     implements: list<string>,
+ *     traits: list<string>,
+ *     properties: array<string, Context>,
+ *     methods: array<string, Context>,
+ *     constants?: array<string, Context>,
+ *     context: Context,
+ * }
+ * @phpstan-type InterfaceDefinition array{
+ *     interface: string,
+ *     extends: list<string>,
+ *     implements: list<string>,
+ *     traits: list<string>,
+ *     properties: array<string, Context>,
+ *     methods: array<string, Context>,
+ *     constants?: array<string, Context>,
+ *     context: Context,
+ * }
+ * @phpstan-type TraitDefinition array{
+ *     trait: string,
+ *     extends: string|null,
+ *     implements: list<string>,
+ *     traits: list<string>,
+ *     properties: array<string, Context>,
+ *     methods: array<string, Context>,
+ *     constants?: array<string, Context>,
+ *     context: Context,
+ * }
+ * @phpstan-type EnumDefinition array{
+ *     enum: string,
+ *     extends: string|null,
+ *     implements: list<string>,
+ *     traits: list<string>,
+ *     properties: array<string, Context>,
+ *     methods: array<string, Context>,
+ *     constants?: array<string, Context>,
+ *     context: Context,
+ * }
  */
 class Analysis
 {
@@ -20,21 +65,29 @@ class Analysis
 
     /**
      * Class definitions.
+     *
+     * @var array<class-string, ClassDefinition>
      */
     public array $classes = [];
 
     /**
      * Interface definitions.
+     *
+     * @var array<class-string, InterfaceDefinition>
      */
     public array $interfaces = [];
 
     /**
      * Trait definitions.
+     *
+     * @var array<class-string, TraitDefinition>
      */
     public array $traits = [];
 
     /**
      * Enum definitions.
+     *
+     * @var array<class-string, EnumDefinition>
      */
     public array $enums = [];
 
@@ -147,27 +200,51 @@ class Analysis
         return $unmerged;
     }
 
+    /**
+     * @param ClassDefinition $definition
+     */
     public function addClassDefinition(array $definition): void
     {
         $class = $definition['context']->fullyQualifiedName($definition['class']);
+        if (null === $class) {
+            throw new OpenApiException('Class definition has no class name');
+        }
         $this->classes[$class] = $definition;
     }
 
+    /**
+     * @param InterfaceDefinition $definition
+     */
     public function addInterfaceDefinition(array $definition): void
     {
         $interface = $definition['context']->fullyQualifiedName($definition['interface']);
+        if (null === $interface) {
+            throw new OpenApiException('Interface definition has no interface name');
+        }
         $this->interfaces[$interface] = $definition;
     }
 
+    /**
+     * @param TraitDefinition $definition
+     */
     public function addTraitDefinition(array $definition): void
     {
         $trait = $definition['context']->fullyQualifiedName($definition['trait']);
+        if (null === $trait) {
+            throw new OpenApiException('Trait definition has no trait name');
+        }
         $this->traits[$trait] = $definition;
     }
 
+    /**
+     * @param EnumDefinition $definition
+     */
     public function addEnumDefinition(array $definition): void
     {
         $enum = $definition['context']->fullyQualifiedName($definition['enum']);
+        if (null === $enum) {
+            throw new OpenApiException('Enum definition has no enum name');
+        }
         $this->enums[$enum] = $definition;
     }
 
@@ -190,7 +267,7 @@ class Analysis
      *
      * @param class-string $parent the parent class
      *
-     * @return array map of class => definition pairs of sub-classes
+     * @return array<class-string, ClassDefinition> map of class => definition pairs of sub-classes
      */
     public function getSubClasses(string $parent): array
     {
@@ -208,10 +285,11 @@ class Analysis
     /**
      * Get a list of all super classes for the given class.
      *
-     * @param class-string|null $class  the class name
-     * @param bool              $direct flag to find only the actual class parents
+     * @param string|null $class  the class name; also called with a trait/interface name by
+     *                            getTraitsOfClass()/getInterfacesOfClass(), so not class-string
+     * @param bool        $direct flag to find only the actual class parents
      *
-     * @return array map of class => definition pairs of parent classes
+     * @return array<class-string, ClassDefinition> map of class => definition pairs of parent classes
      */
     public function getSuperClasses(?string $class, bool $direct = false): array
     {
@@ -221,6 +299,11 @@ class Analysis
             return [];
         }
 
+        if (!is_string($classDefinition['extends'])) {
+            // a class extends at most one class; a list here means this definition is an interface's
+            return [];
+        }
+        /** @var class-string $extends */
         $extends = $classDefinition['extends'];
         $extendsDefinition = $this->classes[$extends] ?? null;
         if (!$extendsDefinition) {
@@ -242,7 +325,7 @@ class Analysis
      * @param class-string|null $class  the class name
      * @param bool              $direct flag to find only the actual class interfaces
      *
-     * @return array map of class => definition pairs of interfaces
+     * @return array<string, InterfaceDefinition> map of class => definition pairs of interfaces
      */
     public function getInterfacesOfClass(?string $class, bool $direct = false): array
     {
@@ -266,11 +349,15 @@ class Analysis
 
         if (!$direct) {
             // expand recursively for interfaces extending other interfaces
-            $collect = function ($interfaces, $cb) use (&$definitions): void {
+            /**
+             * @param list<string> $interfaces
+             */
+            $collect = function (array $interfaces, callable $cb) use (&$definitions): void {
                 foreach ($interfaces as $interface) {
-                    if (isset($this->interfaces[$interface]['extends'])) {
-                        $cb($this->interfaces[$interface]['extends'], $cb);
-                        foreach ($this->interfaces[$interface]['extends'] as $fqdn) {
+                    $parentInterfaces = $this->interfaces[$interface]['extends'] ?? null;
+                    if (is_array($parentInterfaces)) {
+                        $cb($parentInterfaces, $cb);
+                        foreach ($parentInterfaces as $fqdn) {
                             $definitions[$fqdn] = $this->interfaces[$fqdn];
                         }
                     }
@@ -288,7 +375,7 @@ class Analysis
      * @param string|null $source the source name
      * @param bool        $direct flag to find only the actual class traits
      *
-     * @return array map of class => definition pairs of traits
+     * @return array<string, TraitDefinition> map of class => definition pairs of traits
      */
     public function getTraitsOfClass(?string $source, bool $direct = false): array
     {
@@ -298,6 +385,9 @@ class Analysis
 
         $definitions = [];
         foreach ($sources as $sourze) {
+            if (null === $sourze) {
+                continue;
+            }
             if (isset($this->classes[$sourze]) || isset($this->traits[$sourze])) {
                 $definition = $this->classes[$sourze] ?? $this->traits[$sourze];
                 if (isset($definition['traits'])) {
