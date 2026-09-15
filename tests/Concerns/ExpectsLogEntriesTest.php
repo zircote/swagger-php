@@ -8,9 +8,9 @@ namespace OpenApi\Tests\Concerns;
 
 use OpenApi\Builder;
 use OpenApi\Builder\Mode;
+use OpenApi\Tests\Doubles\RecordingLogger;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\AbstractLogger;
 
 final class ExpectsLogEntriesTest extends TestCase
 {
@@ -60,19 +60,7 @@ final class ExpectsLogEntriesTest extends TestCase
     public function testDelegateReceivesEntries(): void
     {
         $received = [];
-        $delegate = new class ($received) extends AbstractLogger {
-            /**
-             * @param list<string> $received
-             */
-            public function __construct(public array &$received)
-            {
-            }
-
-            public function log($level, string|\Stringable $message, array $context = []): void
-            {
-                $this->received[] = (string) $message;
-            }
-        };
+        $delegate = new RecordingLogger($received);
 
         $this->allowLogEntry('forwarded');
         $this->trackingLogger($delegate)->warning('forwarded message');
