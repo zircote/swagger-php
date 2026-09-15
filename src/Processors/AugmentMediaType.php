@@ -25,7 +25,9 @@ class AugmentMediaType
             if ($schema instanceof OA\Schema) {
                 if (!Undefined::isDefault($schema->properties)) {
                     $this->mergePropertyEncodings($mediaType, $schema->properties);
-                } elseif (!Undefined::isDefault($schema->ref)) {
+                } elseif (!Undefined::isDefault($schema->ref) && is_string($schema->ref)) {
+                    // classic's $ref may hold a class-string or an object; only a '#/' pointer
+                    // resolves here, and ref() rejects anything else anyway
                     try {
                         $refSchema = $analysis->openapi->ref($schema->ref);
                     } catch (OpenApiException) {

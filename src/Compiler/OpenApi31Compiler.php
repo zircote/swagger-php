@@ -994,7 +994,8 @@ class OpenApi31Compiler implements CompilerInterface
      * the map into a JSON array, and OpenAPI requires `Map[string, Object]` everywhere one of
      * these appears. `validateNestedNames()` reports it.
      *
-     * @param  list<object>        $items
+     * @param  array<object>       $items only the values are read, so the caller's keys — a
+     *                                    list, or a name-keyed map — make no difference here
      * @return array<string,mixed>
      */
     protected function compileKeyedMap(array $items, string $keyField, \Closure $compiler): array
