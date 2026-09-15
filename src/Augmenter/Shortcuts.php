@@ -24,8 +24,6 @@ use OpenApi\Utils\PipeInterface;
  */
 class Shortcuts implements PipeInterface
 {
-    private const MEDIA_TYPE_SCHEMA_PROPERTIES = ['ref', 'type', 'items', 'properties', 'required'];
-
     private const ITEMS_KEEP_PROPERTIES = ['schema', 'title', 'description', 'deprecated', 'readOnly', 'writeOnly', 'xml', 'externalDocs', 'x', 'attachables'];
 
     public function __invoke(mixed $payload): mixed
@@ -56,22 +54,49 @@ class Shortcuts implements PipeInterface
 
     protected function processMediaType(OA\MediaType\Json|OA\MediaType\Xml $mediaType): void
     {
+        // spelled out per property rather than looped over a list of property names: the
+        // shortcut properties mirror OA\Schema's one for one, but a dynamic
+        // `$x->{$prop} = $y->{$prop}` makes that invisible — phpstan can only see the union
+        // of all five types on each side, so every assignment looks like a type error
         if (!$mediaType->schema instanceof OA\Schema) {
-            $args = [];
-            foreach (self::MEDIA_TYPE_SCHEMA_PROPERTIES as $prop) {
-                if ($mediaType->{$prop} !== null) {
-                    $args[$prop] = $mediaType->{$prop};
-                    $mediaType->{$prop} = null;
-                }
-            }
-            $mediaType->schema = new OA\Schema(...$args);
-        } else {
-            foreach (self::MEDIA_TYPE_SCHEMA_PROPERTIES as $prop) {
-                if ($mediaType->{$prop} !== null && $mediaType->schema->{$prop} === null) {
-                    $mediaType->schema->{$prop} = $mediaType->{$prop};
-                    $mediaType->{$prop} = null;
-                }
-            }
+            $mediaType->schema = new OA\Schema(
+                ref: $mediaType->ref,
+                type: $mediaType->type,
+                items: $mediaType->items,
+                properties: $mediaType->properties,
+                required: $mediaType->required,
+            );
+            $mediaType->ref = null;
+            $mediaType->type = null;
+            $mediaType->items = null;
+            $mediaType->properties = null;
+            $mediaType->required = null;
+
+            return;
+        }
+
+        // only a shortcut the schema has no value for is moved across; one the schema already
+        // sets is left on the media type untouched, as it was before
+        $schema = $mediaType->schema;
+        if ($mediaType->ref !== null && $schema->ref === null) {
+            $schema->ref = $mediaType->ref;
+            $mediaType->ref = null;
+        }
+        if ($mediaType->type !== null && $schema->type === null) {
+            $schema->type = $mediaType->type;
+            $mediaType->type = null;
+        }
+        if ($mediaType->items !== null && $schema->items === null) {
+            $schema->items = $mediaType->items;
+            $mediaType->items = null;
+        }
+        if ($mediaType->properties !== null && $schema->properties === null) {
+            $schema->properties = $mediaType->properties;
+            $mediaType->properties = null;
+        }
+        if ($mediaType->required !== null && $schema->required === null) {
+            $schema->required = $mediaType->required;
+            $mediaType->required = null;
         }
     }
 
