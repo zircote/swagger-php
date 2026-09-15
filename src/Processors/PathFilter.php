@@ -20,10 +20,20 @@ class PathFilter
 {
     use Concerns\AnnotationTrait;
 
+    /**
+     * @var array<string>
+     */
     protected array $tags;
 
+    /**
+     * @var array<string>
+     */
     protected array $paths;
 
+    /**
+     * @param array<string> $tags
+     * @param array<string> $paths
+     */
     public function __construct(array $tags = [], array $paths = [])
     {
         $this->tags = $tags;
@@ -67,6 +77,9 @@ class PathFilter
         }
     }
 
+    /**
+     * @return array<string>
+     */
     public function getTags(): array
     {
         return $this->tags;
@@ -84,6 +97,9 @@ class PathFilter
         return $this;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getPaths(): array
     {
         return $this->paths;
