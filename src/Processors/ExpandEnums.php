@@ -67,7 +67,9 @@ class ExpandEnums implements GeneratorAwareInterface
 
         foreach ($schemas as $schema) {
             if ($schema->_context->is('enum')) {
-                $re = new \ReflectionEnum($schema->_context->fullyQualifiedName($schema->_context->enum) ?? '');
+                /** @var class-string<\UnitEnum> $enumName the 'enum' context key is the guarantee */
+                $enumName = $schema->_context->fullyQualifiedName($schema->_context->enum) ?? '';
+                $re = new \ReflectionEnum($enumName);
                 $schema->schema = Undefined::isDefault($schema->schema) ? $re->getShortName() : $schema->schema;
 
                 $schemaType = $schema->type;
@@ -79,7 +81,7 @@ class ExpandEnums implements GeneratorAwareInterface
                 // no (or invalid) schema type means name
                 $useName = Undefined::isDefault($schemaType) || ($enumType && $this->generator->getTypeResolver()->native2spec($enumType) != $schemaType);
 
-                $schema->enum = array_map(static fn (\ReflectionEnumUnitCase $case): int|string => ($useName || !($case instanceof \ReflectionEnumBackedCase)) ? $case->name : $case->getBackingValue(), $re->getCases());
+                $schema->enum = array_values(array_map(static fn (\ReflectionEnumUnitCase $case): int|string => ($useName || !($case instanceof \ReflectionEnumBackedCase)) ? $case->name : $case->getBackingValue(), $re->getCases()));
 
                 if ($this->enumNames !== null && !$useName) {
                     $schemaX = Undefined::isDefault($schema->x) ? [] : $schema->x;
@@ -132,7 +134,7 @@ class ExpandEnums implements GeneratorAwareInterface
 
             $enums = [];
             foreach ($cases as $enum) {
-                $enums[] = is_a($enum, \UnitEnum::class) ? $enum->value ?? $enum->name : $enum;
+                $enums[] = $enum instanceof \UnitEnum ? ($enum instanceof \BackedEnum ? $enum->value : $enum->name) : $enum;
             }
 
             $schema->enum = $enums;

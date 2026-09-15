@@ -41,7 +41,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     /**
      * Annotations that couldn't be merged by mapping or postprocessing.
      *
-     * @var array
+     * @var list<AbstractAnnotation>
      */
     public $_unmerged = [];
 
