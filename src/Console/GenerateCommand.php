@@ -42,7 +42,7 @@ class GenerateCommand
 
         if ($input->defaults) {
             $io->title('Default config');
-            $io->writeln(json_encode($this->getDefaultConfig($input), JSON_PRETTY_PRINT));
+            $io->writeln(json_encode($this->getDefaultConfig($input), JSON_PRETTY_PRINT) ?: '{}');
 
             return 0;
         }
@@ -96,7 +96,10 @@ class GenerateCommand
         if ($input->config || $input->addProcessor || $input->removeProcessor) {
             $builder->withGenerator(function (Generator $generator) use ($input): void {
                 if ($input->config && $input->mode !== Builder\Mode::SPEC) {
-                    $generator->setConfig($input->config);
+                    // -c takes `key=value` strings; Generator::setConfig() normalises them
+                    /** @var array<string, mixed> $config */
+                    $config = $input->config;
+                    $generator->setConfig($config);
                 }
 
                 foreach ($input->addProcessor as $processor) {
@@ -106,14 +109,20 @@ class GenerateCommand
                     } elseif (class_exists($processor)) {
                         $processor = new $processor();
                     }
-                    $generator->getProcessorPipeline()->add($processor);
+                    // neither branch above matching leaves $processor as the raw -a string,
+                    // which the pipeline cannot invoke; not validated here, as it never was
+                    /** @var callable&object $pipe */
+                    $pipe = $processor;
+                    $generator->getProcessorPipeline()->add($pipe);
                 }
 
                 foreach ($input->removeProcessor as $processor) {
                     $class = class_exists($processor)
                         ? $processor
                         : '\OpenApi\Processors\\' . ucfirst((string) $processor);
-                    $generator->getProcessorPipeline()->remove($class);
+                    /** @var class-string $remove */
+                    $remove = $class;
+                    $generator->getProcessorPipeline()->remove($remove);
                 }
             });
         }

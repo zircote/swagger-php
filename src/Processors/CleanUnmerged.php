@@ -20,11 +20,13 @@ class CleanUnmerged
         /** @var OA\AbstractAnnotation $annotation */
         foreach ($analysis->annotations as $annotation) {
             if (property_exists($annotation, '_unmerged')) {
-                foreach ($annotation->_unmerged as $ii => $item) {
-                    if ($merged->offsetExists($item)) {
-                        unset($annotation->_unmerged[$ii]); // Property was merged
+                $kept = [];
+                foreach ($annotation->_unmerged as $item) {
+                    if (!$merged->offsetExists($item)) {
+                        $kept[] = $item; // drop the ones that were merged
                     }
                 }
+                $annotation->_unmerged = $kept;
             }
         }
         $analysis->openapi->_unmerged = [];

@@ -81,8 +81,10 @@ class Walker
     /**
      * @template T of AttributeInterface
      *
-     * @param class-string<T>   $visitee
-     * @param callable(T): void $visitor
+     * @param class-string<T>                       $visitee
+     * @param callable(T): void                     $visitor
+     * @param array<mixed>                          $candidates
+     * @param \SplObjectStorage<object, mixed>|null $seen
      */
     protected function walk(string $visitee, callable $visitor, array $candidates, ?\SplObjectStorage $seen = null): void
     {
