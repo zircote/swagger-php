@@ -24,6 +24,8 @@ class Config
     /**
      * This attribute's instances on $rc's constructor parameters, keyed by parameter name.
      *
+     * @param \ReflectionClass<object> $rc
+     *
      * @return array<string,self>
      */
     public static function forConstructor(\ReflectionClass $rc): array

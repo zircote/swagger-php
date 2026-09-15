@@ -13,6 +13,10 @@ use Symfony\Component\Finder\Finder;
  */
 class SourceFinder extends Finder
 {
+    /**
+     * @param string|list<string>      $directory
+     * @param string|list<string>|null $exclude
+     */
     public function __construct(string|array $directory, null|array|string $exclude = null, string $pattern = '*.php')
     {
         parent::__construct();
@@ -49,6 +53,9 @@ class SourceFinder extends Finder
      * and conform specifically to what is expected by functions like <code>exclude()</code> and <code>notPath()</code>.
      *
      * In particular, leading and trailing slashes are removed.
+     */
+    /**
+     * @param list<string> $directories
      */
     private function getRelativePath(string $fullPath, array $directories): string
     {
