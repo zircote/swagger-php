@@ -7,50 +7,70 @@
 namespace OpenApi\Console;
 
 use OpenApi\Builder\Mode;
-use Symfony\Component\Console\Attribute\Argument;
-use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Exception\InvalidOptionException;
+use Symfony\Component\Console\Input\InputInterface;
 
 class GenerateInput
 {
-    #[Argument('Source path(s) to scan')]
-    public array $paths;
+    /** @var array<string> */
+    public array $paths = [];
 
-    #[Option('Generator/Augmenter config; keys differ per mode, see -D (e.g. -c operationId.hash=false)', shortcut: 'c')]
+    /** @var array<string> */
     public array $config = [];
 
-    #[Option('Show default config', shortcut: 'D')]
     public bool $defaults = false;
 
-    #[Option('Path to store the generated documentation (e.g. -o openapi.yaml)', shortcut: 'o')]
     public ?string $output = null;
 
-    #[Option('Force yaml or json', shortcut: 'f')]
     public GenerateFormat $format = GenerateFormat::AUTO;
 
-    #[Option('Exclude path(s) (e.g. -e vendor -e library/Zend)', shortcut: 'e')]
+    /** @var array<string> */
     public array $exclude = [];
 
-    #[Option('Pattern of files to scan (e.g. -n "/\.(phps|php)$/")', shortcut: 'n')]
     public string $pattern = '*.php';
 
-    #[Option('Bootstrap php file(s) for defining constants, etc. (e.g. -b config/constants.php)', shortcut: 'b')]
+    /** @var array<string> */
     public array $bootstrap = [];
 
-    #[Option('Register an additional processor', shortcut: 'a')]
+    /** @var array<string> */
     public array $addProcessor = [];
 
-    #[Option('Remove an existing processor', shortcut: 'r')]
+    /** @var array<string> */
     public array $removeProcessor = [];
 
-    #[Option('The OpenAPI version')]
     public ?string $version = null;
 
-    #[Option('Set mode classic, hybrid or spec', shortcut: 'm')]
     public Mode $mode = Mode::CLASSIC;
 
-    #[Option('Show additional error information', shortcut: 'd')]
     public bool $debug = false;
+
+    /**
+     * Map the console input onto this data object.
+     *
+     * The console definition lives in {@see GenerateCommand::configure()}; the two
+     * are aligned by hand. Option names arrive kebab-cased, properties are camelCase.
+     */
+    public static function fromInput(InputInterface $input): self
+    {
+        $generateInput = new self();
+
+        $generateInput->paths = $input->getArgument('paths');
+        $generateInput->config = $input->getOption('config');
+        $generateInput->defaults = (bool) $input->getOption('defaults');
+        $generateInput->output = $input->getOption('output');
+        $generateInput->format = self::enum(GenerateFormat::class, 'format', $input->getOption('format'));
+        $generateInput->exclude = $input->getOption('exclude');
+        $generateInput->pattern = $input->getOption('pattern');
+        $generateInput->bootstrap = $input->getOption('bootstrap');
+        $generateInput->addProcessor = $input->getOption('add-processor');
+        $generateInput->removeProcessor = $input->getOption('remove-processor');
+        $generateInput->version = $input->getOption('version');
+        $generateInput->mode = self::enum(Mode::class, 'mode', $input->getOption('mode'));
+        $generateInput->debug = (bool) $input->getOption('debug');
+
+        return $generateInput;
+    }
 
     /**
      * @return iterable<string>
@@ -66,5 +86,30 @@ class GenerateInput
 
             yield from $filenames;
         }
+    }
+
+    /**
+     * Resolve a backed enum option, reporting unknown values the way Symfony does.
+     *
+     * @template T of \BackedEnum
+     *
+     * @param class-string<T> $enum
+     *
+     * @return T
+     */
+    protected static function enum(string $enum, string $name, string $value): \BackedEnum
+    {
+        $case = $enum::tryFrom($value);
+
+        if ($case === null) {
+            throw new InvalidOptionException(sprintf(
+                'The value "%s" is not valid for the "%s" option. Supported values are "%s".',
+                $value,
+                $name,
+                implode('", "', array_column($enum::cases(), 'value'))
+            ));
+        }
+
+        return $case;
     }
 }

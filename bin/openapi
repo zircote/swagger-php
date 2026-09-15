@@ -41,6 +41,6 @@ $options = $definition->getOptions();
 unset($options['version'], $options['no-interaction']);
 $definition->setOptions($options);
 
-$app->addCommand(new GenerateCommand($logger));
+$app->addCommands([new GenerateCommand($logger)]);
 $app->setDefaultCommand('openapi', true);
 $app->run($input, $output);

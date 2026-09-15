@@ -12,7 +12,10 @@ use OpenApi\Generator;
 use OpenApi\Utils\Pipeline;
 use OpenApi\Utils\SourceFinder;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Attribute\MapInput;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -21,18 +24,40 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'openapi',
     description: 'Generate OpenAPI documentation',
 )]
-class GenerateCommand
+class GenerateCommand extends Command
 {
     public function __construct(
         private ConsoleLogger $logger,
     ) {
+        parent::__construct();
     }
 
-    public function __invoke(#[MapInput] GenerateInput $input, SymfonyStyle $io): int
+    protected function configure(): void
     {
-        $io->setVerbosity($input->debug ? OutputInterface::VERBOSITY_DEBUG : $io->getVerbosity());
+        $this
+            ->addArgument('paths', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Source path(s) to scan')
+            ->addOption('config', 'c', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Generator/Augmenter config; keys differ per mode, see -D (e.g. -c operationId.hash=false)')
+            ->addOption('defaults', 'D', InputOption::VALUE_NONE, 'Show default config')
+            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Path to store the generated documentation (e.g. -o openapi.yaml)')
+            ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Force yaml or json', GenerateFormat::AUTO->value)
+            ->addOption('exclude', 'e', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Exclude path(s) (e.g. -e vendor -e library/Zend)')
+            ->addOption('pattern', 'n', InputOption::VALUE_REQUIRED, 'Pattern of files to scan (e.g. -n "/\.(phps|php)$/")', '*.php')
+            ->addOption('bootstrap', 'b', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Bootstrap php file(s) for defining constants, etc. (e.g. -b config/constants.php)')
+            ->addOption('add-processor', 'a', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Register an additional processor')
+            ->addOption('remove-processor', 'r', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Remove an existing processor')
+            ->addOption('version', null, InputOption::VALUE_REQUIRED, 'The OpenAPI version')
+            ->addOption('mode', 'm', InputOption::VALUE_REQUIRED, 'Set mode classic, hybrid or spec', Builder\Mode::CLASSIC->value)
+            ->addOption('debug', 'd', InputOption::VALUE_NONE, 'Show additional error information');
+    }
 
-        foreach ($input->getBootstrapFilenames() as $filename) {
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = new SymfonyStyle($input, $output);
+        $generateInput = GenerateInput::fromInput($input);
+
+        $io->setVerbosity($generateInput->debug ? OutputInterface::VERBOSITY_DEBUG : $io->getVerbosity());
+
+        foreach ($generateInput->getBootstrapFilenames() as $filename) {
             if ($io->isVerbose()) {
                 $io->info('Bootstrapping: ' . $filename);
             }
@@ -40,28 +65,28 @@ class GenerateCommand
             require_once $filename;
         }
 
-        if ($input->defaults) {
+        if ($generateInput->defaults) {
             $io->title('Default config');
-            $io->writeln(json_encode($this->getDefaultConfig($input), JSON_PRETTY_PRINT));
+            $io->writeln(json_encode($this->getDefaultConfig($generateInput), JSON_PRETTY_PRINT));
 
             return 0;
         }
 
-        $result = $this->generate($input);
+        $result = $this->generate($generateInput);
 
-        if (!$input->output) {
-            if ($input->format->isJson()) {
+        if (!$generateInput->output) {
+            if ($generateInput->format->isJson()) {
                 echo $result->toJson();
             } else {
                 echo $result->toYaml();
             }
             echo "\n";
         } else {
-            $outputPath = $input->output;
+            $outputPath = $generateInput->output;
             if (is_dir($outputPath)) {
                 $outputPath .= '/openapi.yaml';
             }
-            $result->saveAs($outputPath, $input->format->value);
+            $result->saveAs($outputPath, $generateInput->format->value);
         }
 
         return $this->logger->hasErrored() ? 1 : 0;
