@@ -84,6 +84,9 @@ final class ExpandEnumsTest extends OpenApiTestCase
         $this->assertEquals(['DRAFT', 'PUBLISHED', 'ARCHIVED'], $schema->x['enumNames']);
     }
 
+    /**
+     * @return iterable<string, array{list<string>, string}>
+     */
     public static function expandEnumClassStringFixtures(): iterable
     {
         if (!class_exists('\\ReflectionEnum')) {
@@ -162,6 +165,9 @@ final class ExpandEnumsTest extends OpenApiTestCase
         ];
     }
 
+    /**
+     * @param list<string> $files
+     */
     #[DataProvider('expandEnumClassStringFixtures')]
     public function testExpandEnumClassString(array $files, string $title, mixed $expected): void
     {
