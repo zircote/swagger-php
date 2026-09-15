@@ -12,22 +12,30 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 final class AttributesSyncTest extends OpenApiTestCase
 {
-    public static $SCHEMA_EXCLUSIONS = ['multipleOf', 'dependencies', 'propertyNames'];
+    /** @var list<string> */
+    public static array $SCHEMA_EXCLUSIONS = ['multipleOf', 'dependencies', 'propertyNames'];
 
-    public static $PATHITEM_EXCLUSIONS = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
+    /** @var list<string> */
+    public static array $PATHITEM_EXCLUSIONS = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
 
-    public static $PARAMETER_EXCLUSIONS = ['matrix', 'label', 'form', 'simple'];
+    /** @var list<string> */
+    public static array $PARAMETER_EXCLUSIONS = ['matrix', 'label', 'form', 'simple'];
 
     public function testCounts(): void
     {
         $this->assertSameSize($this->allAnnotationClasses(), $this->allAttributeClasses());
     }
 
+    /**
+     * @param class-string $annotation
+     */
     #[DataProvider('allAnnotationClasses')]
     public function testParameterCompleteness(string $annotation): void
     {
         $annotationRC = new \ReflectionClass($annotation);
-        $attributeRC = new \ReflectionClass('OpenApi\\Attributes\\' . $annotationRC->getShortName());
+        /** @var class-string $attributeName */
+        $attributeName = 'OpenApi\\Attributes\\' . $annotationRC->getShortName();
+        $attributeRC = new \ReflectionClass($attributeName);
         $attributeCtor = $attributeRC->getMethod('__construct');
         $attributeParameters = $attributeCtor->getParameters();
 
@@ -101,11 +109,16 @@ final class AttributesSyncTest extends OpenApiTestCase
         }
     }
 
+    /**
+     * @param class-string $attribute
+     */
     #[DataProvider('allAttributeClasses')]
     public function testPropertyCompleteness(string $attribute): void
     {
         $attributeRC = new \ReflectionClass($attribute);
-        $annotationRC = new \ReflectionClass('OpenApi\\Annotations\\' . $attributeRC->getShortName());
+        /** @var class-string $annotationName */
+        $annotationName = 'OpenApi\\Annotations\\' . $attributeRC->getShortName();
+        $annotationRC = new \ReflectionClass($annotationName);
         $attributeCtor = $attributeRC->getMethod('__construct');
 
         $stale = [];
@@ -129,13 +142,18 @@ final class AttributesSyncTest extends OpenApiTestCase
     /**
      * @return array<mixed>
      */
-    protected function prepDocComment(string $docComment): array
+    /**
+     * @param string|false $docComment as getDocComment() returns it
+     *
+     * @return list<string>
+     */
+    protected function prepDocComment(string|false $docComment): array
     {
         if (!$docComment) {
             return [];
         }
 
-        $lines = preg_split('/(\n|\r\n)/', $docComment);
+        $lines = preg_split('/(\n|\r\n)/', $docComment) ?: [];
         $lines[0] = preg_replace('/[ \t]*\\/\*\*/', '', $lines[0]); // strip '/**'
         $i = count($lines) - 1;
         $lines[$i] = preg_replace('/\*\/[ \t]*$/', '', (string) $lines[$i]); // strip '*/'
@@ -175,7 +193,10 @@ final class AttributesSyncTest extends OpenApiTestCase
             if ($type instanceof \ReflectionUnionType) {
                 $var = [];
                 foreach ($type->getTypes() as $unionType) {
-                    if ('null' != $unionType->getName()) {
+                    if (!$unionType instanceof \ReflectionNamedType) {
+                        continue;
+                    }
+                    if ('null' !== $unionType->getName()) {
                         // null means default for most parameters
                         $var[] = $unionType->getName();
                     }
@@ -202,13 +223,15 @@ final class AttributesSyncTest extends OpenApiTestCase
             }
         }
 
-        if ($var) {
-            $var = str_replace(['OpenApi\\Annotations\\', 'OpenApi\\Attributes\\', 'OA'], '', $var);
-            if (!str_contains($var, '<')) {
-                $var = explode('|', $var);
-                sort($var);
-                $var = implode('|', $var);
-            }
+        if (!is_string($var) || '' === $var) {
+            return null;
+        }
+
+        $var = str_replace(['OpenApi\\Annotations\\', 'OpenApi\\Attributes\\', 'OA'], '', $var);
+        if (!str_contains($var, '<')) {
+            $parts = explode('|', $var);
+            sort($parts);
+            $var = implode('|', $parts);
         }
 
         return $var;
