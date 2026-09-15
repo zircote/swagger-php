@@ -10,11 +10,17 @@ use OpenApi\Builder\Mode;
 
 trait GeneratesTestMatrix
 {
+    /**
+     * @return list<string>
+     */
     protected static function versions(): array
     {
         return ['3.0.0', '3.1.0', '3.2.0'];
     }
 
+    /**
+     * @return list<Mode>
+     */
     protected static function modes(): array
     {
         return [Mode::CLASSIC, Mode::HYBRID, Mode::SPEC];
@@ -25,6 +31,9 @@ trait GeneratesTestMatrix
         return PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;
     }
 
+    /**
+     * @param list<string> $candidates
+     */
     protected static function mostSpecific(array $candidates): ?string
     {
         foreach ($candidates as $candidate) {
@@ -39,8 +48,8 @@ trait GeneratesTestMatrix
     /**
      * Generate cross-product of axes, filtered by exclusion rules.
      *
-     * @param array<string, array> $axes       Named axes with their values
-     * @param list<callable>       $exclusions Callables that return true to exclude a combination
+     * @param array<string, list<mixed>> $axes       Named axes with their values
+     * @param list<callable>             $exclusions Callables that return true to exclude a combination
      *
      * @return iterable<array<string, mixed>>
      */
@@ -67,11 +76,13 @@ trait GeneratesTestMatrix
     }
 
     /**
+     * @param list<string> $skipPrefixes
+     *
      * @return iterable<string, string> name => path
      */
     protected static function discoverFixtures(string $pattern, array $skipPrefixes = ['Abstract']): iterable
     {
-        foreach (glob($pattern) as $file) {
+        foreach (glob($pattern) ?: [] as $file) {
             $name = pathinfo($file, PATHINFO_FILENAME);
 
             foreach ($skipPrefixes as $prefix) {
@@ -84,11 +95,19 @@ trait GeneratesTestMatrix
         }
     }
 
+    /**
+     * @param array<string|null> $parts
+     */
     protected static function matrixKey(array $parts): string
     {
         return implode('-', array_filter($parts));
     }
 
+    /**
+     * @param list<list<mixed>> $arrays
+     *
+     * @return iterable<list<mixed>>
+     */
     private static function cartesian(array $arrays): iterable
     {
         if ($arrays === []) {

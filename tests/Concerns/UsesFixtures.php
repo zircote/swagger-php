@@ -18,7 +18,9 @@ trait UsesFixtures
     /**
      * Resolve fixture filenames.
      *
-     * @return array resolved filenames for loading scanning etc
+     * @param list<string> $files
+     *
+     * @return list<string> resolved filenames for loading scanning etc
      */
     public static function fixtures(array $files): array
     {
