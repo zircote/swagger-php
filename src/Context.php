@@ -246,13 +246,13 @@ class Context implements \Stringable
 
         $thisSource = $this->class ?? $this->interface ?? $this->trait;
         if ($thisSource && strcasecmp($source, $thisSource) === 0) {
-            return self::asClassString($namespace . $thisSource);
+            return $this->asClassString($namespace . $thisSource);
         }
         $pos = strpos($source, '\\');
         if ($pos !== false) {
             if ($pos === 0) {
                 // Fully qualified name (\Foo\Bar)
-                return self::asClassString($source);
+                return $this->asClassString($source);
             }
             // Qualified name (Foo\Bar)
             if ($this->uses) {
@@ -260,7 +260,7 @@ class Context implements \Stringable
                     $alias .= '\\';
                     if (strcasecmp(substr($source, 0, strlen($alias)), $alias) === 0) {
                         // Aliased namespace (use \Long\Namespace as Foo)
-                        return self::asClassString('\\' . $aliasedNamespace . substr($source, strlen($alias) - 1));
+                        return $this->asClassString('\\' . $aliasedNamespace . substr($source, strlen($alias) - 1));
                     }
                 }
             }
@@ -268,12 +268,12 @@ class Context implements \Stringable
             // Unqualified name (Foo)
             foreach ($this->uses as $alias => $aliasedNamespace) {
                 if (strcasecmp((string) $alias, $source) === 0) {
-                    return self::asClassString('\\' . $aliasedNamespace);
+                    return $this->asClassString('\\' . $aliasedNamespace);
                 }
             }
         }
 
-        return self::asClassString($namespace . $source);
+        return $this->asClassString($namespace . $source);
     }
 
     /**
@@ -282,7 +282,7 @@ class Context implements \Stringable
      *
      * @return class-string
      */
-    private static function asClassString(string $name): string
+    private function asClassString(string $name): string
     {
         /** @var class-string $className */
         $className = $name;
