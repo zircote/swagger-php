@@ -115,6 +115,75 @@ keyed `{fixture}-{version}` when every mode raises it, or `{fixture}-{version}-{
 only one does. Both keys apply when both are present, so a mode-specific entry adds to the
 shared one rather than replacing it.
 
+### What belongs in a `Scratch` fixture
+
+**The unit is the field family, with the attribute as the default when it is small enough to
+hold one.** `HeaderObject` carries every `Header` case; `Schema` has too many fields for that,
+so it is split by keyword family — `SchemaKeywords`, `Types`, `Nullable`, `ExclusiveMinMax`,
+`PropertyItems`, `NestedAdditionalProperties`. A new case belongs in the existing fixture for
+its family. It earns a file of its own only when it needs expected logs the rest of the file
+must not inherit, or when it cannot be written in the spec attribute API (see the two
+constraints below).
+
+**Multi-case files are the norm, not a compromise.** `SchemaKeywords` is the model: a
+file-level comment stating the scheme, then one class per case, each named for its case
+(`SchemaKeywordsConditional`, `SchemaKeywordsTuple`, `SchemaKeywordsDependent`). The case
+documentation lives in the fixture — the comment, and a `description:` on the attribute where
+one reads naturally in the output — not in the file name.
+
+**Name the shape, never the bug.** A fixture is named for what it holds, not for why it was
+written: no ticket numbers, no `Repro`, no abbreviations. This matters most for the fixtures
+that arrive with a bug fix, which is where the pressure to name them after the bug comes from.
+
+Mechanics that are easy to get wrong:
+
+- The namespace is always `OpenApi\Tests\Fixtures\Scratch`, and `Fixtures\Scratch` in the
+  `-spec.php` pair. A fixture never declares a namespace of its own.
+- The class is the fixture base name plus a case suffix (`HeaderObjectController`), so the
+  file name deliberately does not match the class.
+- Which means **`Scratch` fixtures are not autoloadable**: `tests/Fixtures` is
+  `exclude-from-classmap`, and `ScratchTest` `require_once`s the path instead. Pointing
+  `bin/openapi` at a fixture to see what it produces prints `Skipping unknown
+  OpenApi\Tests\Fixtures\Scratch\…` and an empty document. That is the autoloader, not a
+  broken fixture — `require` the file from a script if you want to run one by hand.
+
+Two constraints cap how much a single fixture should absorb, and both are worth weighing
+before folding a case in:
+
+- **Expected logs are per file.** The `{fixture}-{version}` keying above applies to every case
+  in the fixture, so folding a diagnostic-raising case into a clean one makes that diagnostic
+  expected file-wide, and nothing ties the warning back to the case that raised it.
+  `SchemaKeywords-3.0.0` carries four warnings for seven classes.
+- **The `-spec.php` pair is all-or-nothing.** `ScratchTest` skips spec mode entirely when the
+  pair is missing, so one case that cannot be expressed in the spec attribute API costs spec
+  coverage for every other case in the file.
+
+### What goes away with classic
+
+`src/Annotations/`, the classic and hybrid modes and everything that exists to compare them
+are v7-only, and v8 removes the lot. What follows carries the mode marker
+[ROADMAP.md](../../ROADMAP.md) defines for the things `@deprecated` cannot reach, so the
+removal is a grep rather than an untangling:
+
+- **`[classic]` the `{fixture}.php` / `{fixture}-spec.php` pairing itself.** The unsuffixed
+  file is the classic source, written in `OpenApi\Attributes`; the `-spec.php` pair is the same
+  document in `OpenApi\Spec`. When classic goes the pair is the only source left, and the
+  suffix stops meaning anything.
+- **`[classic/hybrid]` the mode axis in `ScratchTest::scratchTestCases()`** — `Mode::CLASSIC`
+  and `Mode::HYBRID`, the rule that hybrid is held to the spec expectation where a pair
+  exists, and the `-classic` / `-hybrid` suffixes on both expected-log keys and yaml overrides
+  (`ThirdPartyAnnotation3.1.0-hybrid.yaml` and its siblings).
+- **`[classic]` the `legacy` type resolver and its `*-legacy.yaml` expectations.** The matrix
+  already excludes `LegacyTypeResolver` from every non-classic mode, so those files are
+  classic-only by construction.
+- **`[hybrid]` `HybridBridgeTest` and the fixtures under `tests/Fixtures/HybridBridge/`.**
+
+The bridge is the reason some `Scratch` cases exist at all: `tests/Processors/` is classic-only
+by construction, so no test there can catch a hybrid run that fails to replicate a processor.
+A case added for that reason — a `Header` whose `content` is a `JsonContent`, an `enum` given
+as a class string — still earns its place in v8 as a plain spec case, but the *motivation*
+recorded in its comment stops applying.
+
 `composer redocly` validates the generated example specs against the OpenAPI schema. It
 passes, with warnings; known problems are suppressed via `.redocly.lint-ignore.yaml`, so a
 *new* failure means something genuinely regressed.

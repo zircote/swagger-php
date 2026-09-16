@@ -517,7 +517,7 @@ class HybridBridge
     /**
      * @return list<Spec\MediaType>|null
      */
-    protected function resolveContent(OA\Response|OA\RequestBody|OA\Parameter $parent): ?array
+    protected function resolveContent(OA\Response|OA\RequestBody|OA\Parameter|OA\Header $parent): ?array
     {
         $content = [];
 
@@ -577,9 +577,7 @@ class HybridBridge
             examples: Undefined::isDefault($header->examples)
                 ? null
                 : array_map($this->convertExample(...), $header->examples),
-            content: Undefined::isDefault($header->content)
-                ? null
-                : array_map($this->convertMediaType(...), $header->content),
+            content: $this->resolveContent($header),
             x: $this->extensions($header),
         );
         $this->copyReflector($header, $result);

@@ -53,6 +53,21 @@ class HeaderObjectControllerSpec
             schema: new OA\Schema(type: 'object'),
         ),
     )]
+    #[OA\Header(
+        header: 'X-Filter',
+        description: 'Applied filter, as a JsonContent rather than a MediaType list',
+        content: new OA\MediaType\Json(
+            properties: [
+                new OA\Property(property: 'type', schema: new OA\Schema(type: 'string')),
+                new OA\Property(property: 'color', schema: new OA\Schema(type: 'string')),
+            ],
+        ),
+    )]
+    #[OA\Header(
+        header: 'X-Coords',
+        description: 'The same shape via XmlContent',
+        content: new OA\MediaType\Xml(schema: new OA\Schema(type: 'object')),
+    )]
     public function endpoint(): void
     {
     }

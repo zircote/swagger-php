@@ -21,3 +21,16 @@ This is where things will start to turn:
   PHP 8.3 syntax
 ## v8
 `classic` is removed from the codebase, leaving only the spec pipeline. Annotations are no longer supported at all.
+
+**Finding what to remove.** Code carries `@deprecated` from **v7**, which is the primary
+marker and the one tooling understands. Documentation, fixture layout and test-matrix
+structure cannot carry it — nothing consumes a docblock in a markdown file or a yaml
+expectation — so those are marked inline with the mode they exist to serve: `[classic]`,
+`[hybrid]`, or `[classic/hybrid]` for what serves both. `grep -rnE '\[(classic|hybrid)'`
+lists them, and all of it goes when `classic` does.
+
+The marker names the mode rather than the release on purpose. A thing is `[hybrid]` for as
+long as hybrid exists, which stays true whatever happens to this timeline; `[v8: drop]` would
+be a claim about a schedule, and would need revisiting if the schedule moved. The two markers
+do not overlap with `@deprecated`: if a thing can carry a docblock, it gets `@deprecated` and
+not this.
