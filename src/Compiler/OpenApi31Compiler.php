@@ -362,7 +362,7 @@ class OpenApi31Compiler implements CompilerInterface
             'content' => $this->compileMediaTypes($parameter->content ?? []),
         ], $parameter);
 
-        return $this->withDefined($result, 'example', $parameter->example);
+        return $this->withDefined($result, ['example' => $parameter->example]);
     }
 
     /**
@@ -433,7 +433,7 @@ class OpenApi31Compiler implements CompilerInterface
             'content' => $this->compileMediaTypes($header->content ?? []),
         ], $header);
 
-        return $this->withDefined($result, 'example', $header->example);
+        return $this->withDefined($result, ['example' => $header->example]);
     }
 
     /**
@@ -456,7 +456,7 @@ class OpenApi31Compiler implements CompilerInterface
             'encoding' => $this->compileKeyedMap($mediaType->encoding ?? [], 'encoding', $this->compileEncoding(...)),
         ], $mediaType);
 
-        return $this->withDefined($result, 'example', $mediaType->example);
+        return $this->withDefined($result, ['example' => $mediaType->example]);
     }
 
     /**
@@ -490,7 +490,7 @@ class OpenApi31Compiler implements CompilerInterface
             'server' => $link->server instanceof OA\Server ? $this->compileServer($link->server) : null,
         ], $link);
 
-        return $this->withDefined($result, 'requestBody', $link->requestBody);
+        return $this->withDefined($result, ['requestBody' => $link->requestBody]);
     }
 
     /**
@@ -602,9 +602,11 @@ class OpenApi31Compiler implements CompilerInterface
             'xml' => $schema->xml instanceof OA\Xml ? $this->compileXml($schema->xml) : null,
         ], $schema);
 
-        $result = $this->withDefined($result, 'default', $schema->default);
-        $result = $this->withDefined($result, 'const', $schema->const);
-        $result = $this->withDefined($result, 'example', $schema->example);
+        $result = $this->withDefined($result, [
+            'default' => $schema->default,
+            'const' => $schema->const,
+            'example' => $schema->example,
+        ]);
 
         return $result ?: new \stdClass();
     }
@@ -762,7 +764,7 @@ class OpenApi31Compiler implements CompilerInterface
             'externalValue' => $example->externalValue,
         ], $example);
 
-        return $this->withDefined($result, 'value', $example->value);
+        return $this->withDefined($result, ['value' => $example->value]);
     }
 
     /**
@@ -1096,7 +1098,7 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * Adds $key => $value to $result unless $value was left at its Undefined-sentinel default.
+     * Adds each of $values to $result unless it was left at its Undefined-sentinel default.
      *
      * For fields whose meaningful values overlap what {@see filter()} treats as "unset"
      * (`null`, `[]`) — `example` is the case in point, since an explicitly declared `[]` is
@@ -1104,12 +1106,15 @@ class OpenApi31Compiler implements CompilerInterface
      * sentinel directly instead.
      *
      * @param  array<string,mixed> $result
+     * @param  array<string,mixed> $values
      * @return array<string,mixed>
      */
-    protected function withDefined(array $result, string $key, mixed $value): array
+    protected function withDefined(array $result, array $values): array
     {
-        if (!Undefined::isDefault($value)) {
-            $result[$key] = $value;
+        foreach ($values as $key => $value) {
+            if (!Undefined::isDefault($value)) {
+                $result[$key] = $value;
+            }
         }
 
         return $result;
