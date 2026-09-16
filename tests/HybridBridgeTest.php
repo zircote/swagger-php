@@ -23,6 +23,9 @@ final class HybridBridgeTest extends TestCase
 {
     use AssertsSpecEquals;
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function fixtures(): iterable
     {
         yield 'operation nested in a PathItem' => ['NestedPathItem'];

@@ -13,9 +13,11 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 
 class GenerateInput
 {
+    /** @var list<string> */
     #[Argument('Source path(s) to scan')]
     public array $paths;
 
+    /** @var list<string> */
     #[Option('Generator/Augmenter config; keys differ per mode, see -D (e.g. -c operationId.hash=false)', shortcut: 'c')]
     public array $config = [];
 
@@ -28,18 +30,22 @@ class GenerateInput
     #[Option('Force yaml or json', shortcut: 'f')]
     public GenerateFormat $format = GenerateFormat::AUTO;
 
+    /** @var list<string> */
     #[Option('Exclude path(s) (e.g. -e vendor -e library/Zend)', shortcut: 'e')]
     public array $exclude = [];
 
     #[Option('Pattern of files to scan (e.g. -n "/\.(phps|php)$/")', shortcut: 'n')]
     public string $pattern = '*.php';
 
+    /** @var list<string> */
     #[Option('Bootstrap php file(s) for defining constants, etc. (e.g. -b config/constants.php)', shortcut: 'b')]
     public array $bootstrap = [];
 
+    /** @var list<string> */
     #[Option('Register an additional processor', shortcut: 'a')]
     public array $addProcessor = [];
 
+    /** @var list<string> */
     #[Option('Remove an existing processor', shortcut: 'r')]
     public array $removeProcessor = [];
 

@@ -8,6 +8,7 @@ namespace OpenApi\Augmenter;
 
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Utils\ClassReflector;
 use OpenApi\Utils\PipeInterface;
 
 /**
@@ -115,6 +116,7 @@ class PathItems implements PipeInterface
     }
 
     /**
+     * @param class-string                     $className
      * @param array<class-string, OA\PathItem> $classToPathItem
      */
     protected function findGoverningPathItem(string $className, array $classToPathItem): ?OA\PathItem
@@ -123,9 +125,10 @@ class PathItems implements PipeInterface
             return $classToPathItem[$className];
         }
 
-        try {
-            $rc = new \ReflectionClass($className);
-        } catch (\ReflectionException) {
+        // not `new \ReflectionClass()` in a try/catch: a class-string is a name, not a promise
+        // the class loads (see PR 48 / ClassReflector), and phpstan reads the catch as dead
+        [$rc] = ClassReflector::tryReflect($className);
+        if (!$rc instanceof \ReflectionClass) {
             return null;
         }
 

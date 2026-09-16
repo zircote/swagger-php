@@ -10,6 +10,8 @@ use OpenApi\OpenApiException;
 
 /**
  * @template T
+ *
+ * @implements \IteratorAggregate<int, T>
  */
 class TypedList implements \IteratorAggregate
 {
@@ -26,6 +28,9 @@ class TypedList implements \IteratorAggregate
         $this->items = $items;
     }
 
+    /**
+     * @return \Traversable<int, T>
+     */
     public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->items);
@@ -92,9 +97,9 @@ class TypedList implements \IteratorAggregate
                 return $this;
             }
 
-            unset($this->items[$key]);
-
-            $this->items = array_values($this->items);
+            $items = $this->items;
+            unset($items[$key]);
+            $this->items = array_values($items);
         }
 
         return $this;

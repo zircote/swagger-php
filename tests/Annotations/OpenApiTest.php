@@ -50,6 +50,9 @@ final class OpenApiTest extends OpenApiTestCase
         $this->assertSpecEquals($openapi?->toYaml(), $unserialized?->toYaml());
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function versionMatchProvider(): iterable
     {
         yield '3.0.0-3.0.0' => ['3.0.0', '3.0.0', true];

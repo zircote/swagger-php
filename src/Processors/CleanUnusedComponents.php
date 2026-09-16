@@ -53,6 +53,10 @@ class CleanUnusedComponents
         return $this;
     }
 
+    /**
+     * @param array<array-key, true>           $usedRefs
+     * @param \SplObjectStorage<object, mixed> $visited
+     */
     protected function collectAnnotationRefs(OA\AbstractAnnotation $annotation, array &$usedRefs, \SplObjectStorage $visited): void
     {
         if ($visited->offsetExists($annotation)) {
@@ -92,7 +96,9 @@ class CleanUnusedComponents
 
     protected function cleanup(Analysis $analysis): bool
     {
+        /** @var array<array-key, true> $usedRefs */
         $usedRefs = [];
+        /** @var \SplObjectStorage<object, mixed> $visited */
         $visited = new \SplObjectStorage();
         foreach ($analysis->annotations as $annotation) {
             $this->collectAnnotationRefs($annotation, $usedRefs, $visited);
@@ -111,7 +117,8 @@ class CleanUnusedComponents
         $unusedComponents = [];
         $seen = [];
         foreach (OA\Components::$_nested as $nested) {
-            if (2 == count($nested)) {
+            // the [property, key] form; a bare string names a single-value slot
+            if (is_array($nested) && 2 === count($nested)) {
                 [$componentType] = $nested;
                 if (isset($seen[$componentType])) {
                     continue;

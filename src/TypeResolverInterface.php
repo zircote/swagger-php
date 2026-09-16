@@ -14,6 +14,9 @@ interface TypeResolverInterface
     /** @deprecated Use TypeMapper::NATIVE_TYPE_MAP instead */
     public const NATIVE_TYPE_MAP = TypeMapper::NATIVE_TYPE_MAP;
 
+    /**
+     * @param string|non-empty-array<string> $type
+     */
     public function mapNativeType(OA\Schema $schema, $type): bool;
 
     public function native2spec(string $type): string;

@@ -37,12 +37,6 @@ parameters:
 			path: src/Processors/DocBlockDescriptions.php
 
 		-
-			message: '#^Parameter \#1 \$annotation of method OpenApi\\Processors\\DocBlockDescriptions\:\:summaryAndDescription\(\) expects OpenApi\\Annotations\\Operation\|OpenApi\\Annotations\\Parameter\|OpenApi\\Annotations\\Schema, OpenApi\\Annotations\\AbstractAnnotation given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Processors/DocBlockDescriptions.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function spl_autoload_register expects \(callable\(string\)\: void\)\|null, array\{Composer\\Autoload\\ClassLoader, ''findFile''\} given\.$#'
 			identifier: argument.type
 			count: 1

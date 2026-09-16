@@ -31,6 +31,9 @@ class OpenApiTestCase extends TestCase
     use ExpectsLogEntries;
     use UsesFixtures;
 
+    /**
+     * @param array<string, mixed> $properties
+     */
     public function getContext(array $properties = [], ?string $version = OA\OpenApi::DEFAULT_VERSION): Context
     {
         return new Context(
@@ -51,6 +54,9 @@ class OpenApiTestCase extends TestCase
         return new TypeInfoTypeResolver();
     }
 
+    /**
+     * @return array<string, TypeResolverInterface>
+     */
     public static function getTypeResolvers(): array
     {
         return [
@@ -59,6 +65,12 @@ class OpenApiTestCase extends TestCase
         ];
     }
 
+    /**
+     * @param list<callable&object>|null $processors
+     * @param list<class-string>         $strip
+     *
+     * @return Pipeline<Analysis>
+     */
     public function processorPipeline(?array $processors = null, array $strip = []): Pipeline
     {
         $generator = (new Generator())
@@ -72,6 +84,11 @@ class OpenApiTestCase extends TestCase
             ->remove(fn ($processor): bool => is_object($processor) && in_array($processor::class, $strip));
     }
 
+    /**
+     * @param list<string>            $files
+     * @param Pipeline<Analysis>|null $pipeline
+     * @param array<string, mixed>    $config
+     */
     public function analysisFromFixtures(array $files, ?Pipeline $pipeline = null, ?AnalyserInterface $analyzer = null, array $config = []): Analysis
     {
         $analysis = new Analysis([], $this->getContext());
@@ -103,7 +120,9 @@ class OpenApiTestCase extends TestCase
             if (in_array($class, ['AbstractAnnotation', 'JsonSchemaTrait', 'Operation'])) {
                 continue;
             }
-            $classes[$class] = ['OpenApi\\Annotations\\' . $class];
+            /** @var class-string<OA\AbstractAnnotation> $fqdn */
+            $fqdn = 'OpenApi\\Annotations\\' . $class;
+            $classes[$class] = [$fqdn];
         }
 
         return $classes;
@@ -111,6 +130,9 @@ class OpenApiTestCase extends TestCase
 
     /**
      * Collect list of all non-abstract attribute classes.
+     */
+    /**
+     * @return array<string, list<class-string>>
      */
     public static function allAttributeClasses(): array
     {
@@ -124,7 +146,9 @@ class OpenApiTestCase extends TestCase
             if (in_array($class, ['OperationTrait', 'ParameterTrait'])) {
                 continue;
             }
-            $classes[$class] = ['OpenApi\\Attributes\\' . $class];
+            /** @var class-string $fqdn */
+            $fqdn = 'OpenApi\\Attributes\\' . $class;
+            $classes[$class] = [$fqdn];
         }
 
         return $classes;
@@ -154,6 +178,11 @@ class OpenApiTestCase extends TestCase
         ]);
     }
 
+    /**
+     * @param array<string, string> $extraAliases
+     *
+     * @return list<OA\AbstractAnnotation>
+     */
     protected function annotationsFromDocBlockParser(string $docBlock, array $extraAliases = [], string $version = OA\OpenApi::DEFAULT_VERSION): array
     {
         return (new Generator())

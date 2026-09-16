@@ -6,9 +6,9 @@
 
 namespace OpenApi\Tests\Concerns;
 
+use OpenApi\Tests\Doubles\ForwardingLogger;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Before;
-use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -64,22 +64,7 @@ trait ExpectsLogEntries
      */
     public function trackingLogger(?LoggerInterface $delegate = null): LoggerInterface
     {
-        $recorder = function (string $level, string $message): void {
-            $this->recordedLogEntries[] = ['level' => $level, 'message' => $message];
-        };
-
-        return new class ($recorder, $delegate) extends AbstractLogger {
-            public function __construct(protected \Closure $recorder, protected ?LoggerInterface $delegate)
-            {
-            }
-
-            public function log($level, $message, array $context = []): void
-            {
-                ($this->recorder)((string) $level, (string) $message);
-
-                $this->delegate?->log($level, $message, $context);
-            }
-        };
+        return new ForwardingLogger($this->recordedLogEntries, $delegate);
     }
 
     /**

@@ -63,18 +63,20 @@ class Enums implements PipeInterface
                 continue;
             }
 
-            $reflector = new \ReflectionEnum($reflector->getName());
+            /** @var class-string<\UnitEnum> $enumName isEnum() above is the guarantee */
+            $enumName = $reflector->getName();
+            $reflector = new \ReflectionEnum($enumName);
 
             $schema->schema ??= $reflector->getShortName();
 
             $useName = $this->shouldUseName($schema, $reflector);
 
-            $schema->enum = array_map(
+            $schema->enum = array_values(array_map(
                 static fn (\ReflectionEnumUnitCase $case): int|string => ($useName || !$case instanceof \ReflectionEnumBackedCase)
                     ? $case->name
                     : $case->getBackingValue(),
                 $reflector->getCases(),
-            );
+            ));
 
             if ($useName) {
                 $schema->type = 'string';

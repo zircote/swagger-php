@@ -32,6 +32,9 @@ final class PipelineTest extends TestCase
         yield 'dots-string' => [['operationIds.hash=false'], false];
     }
 
+    /**
+     * @param array<int|string, mixed> $config
+     */
     #[DataProvider('configCases')]
     public function testConfigure(array $config, bool $expected): void
     {
@@ -80,6 +83,9 @@ final class PipelineTest extends TestCase
         $this->assertSame(['operationIds' => ['hash' => false]], $pipeline->getConfig());
     }
 
+    /**
+     * @return iterable<string, array{array<int|string, mixed>, string}>
+     */
     public static function unknownConfigCases(): iterable
     {
         yield 'unknown pipe' => [
@@ -96,6 +102,9 @@ final class PipelineTest extends TestCase
         ];
     }
 
+    /**
+     * @param array<int|string, mixed> $config
+     */
     #[DataProvider('unknownConfigCases')]
     public function testConfigureWarnsAboutUnknownConfig(array $config, string $expected): void
     {
@@ -180,14 +189,22 @@ final class PipelineTest extends TestCase
         $this->assertSame('abc', $pipeline->process(''));
     }
 
-    protected function pipe(string $add): callable
+    protected function pipe(string $add): \Closure
     {
         return fn (string $payload): string => $payload . $add;
     }
 
+    /**
+     * @param list<string> $log
+     *
+     * @return PipeInterface<mixed>
+     */
     protected function groupedPipe(string $group, array &$log): PipeInterface
     {
         return new class ($group, $log) implements PipeInterface {
+            /**
+             * @param list<string> $log
+             */
             public function __construct(
                 protected string $group,
                 protected array &$log,

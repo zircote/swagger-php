@@ -11,6 +11,9 @@ use OpenApi\Tools\Docs\DocGenerator;
 
 class AugmenterGenerator extends DocGenerator
 {
+    /**
+     * @return array<string, string>
+     */
     public function generate(): array
     {
         $content = $this->renderer->preamble(
@@ -70,6 +73,11 @@ class AugmenterGenerator extends DocGenerator
         return $augmenters;
     }
 
+    /**
+     * @param \ReflectionClass<object> $rc
+     *
+     * @return array{name: string, description: string, configPrefix: string, options: list<array{name: string, type: string, default: string, description: string}>, see: list<string>}
+     */
     protected function collectAugmenterData(\ReflectionClass $rc): array
     {
         $classDoc = $this->parseDocblock($rc->getDocComment());

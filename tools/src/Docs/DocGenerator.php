@@ -26,7 +26,11 @@ abstract class DocGenerator
 
     public function __construct(string $projectRoot, ?Renderer $renderer = null)
     {
-        $this->projectRoot = realpath($projectRoot);
+        $resolved = realpath($projectRoot);
+        if (false === $resolved) {
+            throw new \InvalidArgumentException("Invalid project root: {$projectRoot}");
+        }
+        $this->projectRoot = $resolved;
         $this->renderer = $renderer ?? new Renderer();
         $this->sections = $this->defaultSections();
     }
@@ -39,10 +43,18 @@ abstract class DocGenerator
     public function snippetContent(string $type): ?string
     {
         $path = $this->docPath('snippets' . DIRECTORY_SEPARATOR . 'preamble_' . strtolower($type) . '.md');
+        if (!file_exists($path)) {
+            return null;
+        }
 
-        return file_exists($path) ? file_get_contents($path) : null;
+        $content = file_get_contents($path);
+
+        return false === $content ? null : $content;
     }
 
+    /**
+     * @return array<string, string>
+     */
     abstract public function generate(): array;
 
     /**
@@ -64,6 +76,8 @@ abstract class DocGenerator
      * generator) are collaborators rather than settings and are excluded. Classes not yet
      * converted to `#[Config]` (currently everything under `src/Processors/`) go through
      * this fallback.
+     *
+     * @param \ReflectionClass<object> $rc
      *
      * @return list<string>
      */
@@ -101,6 +115,9 @@ abstract class DocGenerator
         }
 
         $comment = preg_split('/(\n|\r\n)/', $docblock);
+        if (false === $comment) {
+            return ['content' => '', 'see' => [], 'var' => '', 'params' => []];
+        }
 
         $comment[0] = preg_replace('/[ \t]*\\/\*\*/', '', $comment[0]); // strip '/**'
         $lastIndex = count($comment) - 1;
@@ -243,6 +260,8 @@ abstract class DocGenerator
      * Configuration options, read from the setters that match a configurable constructor
      * parameter.
      *
+     * @param \ReflectionClass<object> $rc
+     *
      * @return list<array{name: string, type: string, default: string, description: string}>
      */
     protected function collectOptions(\ReflectionClass $rc): array
@@ -295,6 +314,8 @@ abstract class DocGenerator
 
     /**
      * The documented default for an option, taken from the matching constructor parameter.
+     *
+     * @param \ReflectionClass<object> $rc
      */
     protected function resolveDefault(\ReflectionClass $rc, string $pname): string
     {

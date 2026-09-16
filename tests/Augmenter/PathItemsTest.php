@@ -31,6 +31,10 @@ final class PathItemsTest extends TestCase
         ];
     }
 
+    /**
+     * @param array<mixed> $classes
+     * @param array<mixed> $expectedPaths
+     */
     #[DataProvider('prefixCompositionProvider')]
     public function testPrefixComposition(array $classes, array $expectedPaths): void
     {
@@ -55,6 +59,10 @@ final class PathItemsTest extends TestCase
         ];
     }
 
+    /**
+     * @param array<mixed> $classes
+     * @param array<mixed> $expectedTags
+     */
     #[DataProvider('tagsProvider')]
     public function testTagsClonedToOperations(array $classes, array $expectedTags): void
     {

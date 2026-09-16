@@ -6,6 +6,8 @@
 
 namespace OpenApi\Tools\Docs\Reference;
 
+use OpenApi\Contracts\AttributeTranslatorInterface;
+use OpenApi\Contracts\ResolverInterface;
 use OpenApi\Resolver;
 use OpenApi\Tools\Docs\DocGenerator;
 use OpenApi\Utils\AttributeFactory;
@@ -20,6 +22,9 @@ use OpenApi\Utils\TypedList;
  */
 class ExtensionPointGenerator extends DocGenerator
 {
+    /**
+     * @return array<string, string>
+     */
     public function generate(): array
     {
         $content = $this->renderer->preamble(
@@ -43,22 +48,25 @@ class ExtensionPointGenerator extends DocGenerator
     }
 
     /**
-     * @return list<object>
+     * @return list<AttributeTranslatorInterface>
      */
     protected function translators(): array
     {
-        return iterator_to_array((new AttributeFactory())->getTranslators());
+        return array_values(iterator_to_array((new AttributeFactory())->getTranslators()));
     }
 
     /**
-     * @return list<object>
+     * @return list<ResolverInterface>
      */
     protected function resolvers(): array
     {
         $resolvers = [];
-        (new Resolver())->withResolvers(function (TypedList $list) use (&$resolvers): void {
-            $resolvers = iterator_to_array($list);
-        });
+        (new Resolver())->withResolvers(
+            /** @param TypedList<ResolverInterface> $list */
+            function (TypedList $list) use (&$resolvers): void {
+                $resolvers = array_values(iterator_to_array($list));
+            }
+        );
 
         return $resolvers;
     }

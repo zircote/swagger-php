@@ -21,6 +21,9 @@ final class DocSnippetsTest extends OpenApiTestCase
 {
     use UsesExamples;
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function snippetSets(): iterable
     {
         $finder = (new Finder())
@@ -79,7 +82,9 @@ final class DocSnippetsTest extends OpenApiTestCase
     public function testSnippets(string $snippet, string $implementation, Mode $mode, string $spec): void
     {
         // normalize and make namespace unique
-        $contents = preg_replace('/(namespace [^;]+);/', "\\1\\{$implementation};", file_get_contents($snippet));
+        $source = file_get_contents($snippet);
+        $this->assertIsString($source, "Could not read {$snippet}");
+        $contents = preg_replace('/(namespace [^;]+);/', "\\1\\{$implementation};", $source);
         $namespace = basename($snippet, '.php');
 
         // write to file so we can load it for reflection to work

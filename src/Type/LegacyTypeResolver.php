@@ -105,6 +105,11 @@ class LegacyTypeResolver extends AbstractTypeResolver
         $schema->type = 'array';
     }
 
+    /**
+     * @param array<mixed>|null $explicitDetails a min/max range shape, or a list of them for a disjoint range;
+     *                                           shape varies by caller, only ever read back verbatim
+     * @param list<string>      $types
+     */
     protected function normaliseTypeResult(?string $explicitType = null, ?array $explicitDetails = null, array $types = [], ?string $name = null, ?bool $nullable = null, ?bool $isArray = null, bool $unsupported = false, ?Context $context = null): \stdClass
     {
         $types = array_filter($types, static fn (string $t): bool => !in_array($t, ['null', ''], strict: true));

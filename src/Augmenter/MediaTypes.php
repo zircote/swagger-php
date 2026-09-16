@@ -43,8 +43,13 @@ class MediaTypes implements PipeInterface
                 return;
             }
 
-            if ($mediaType->schema->ref !== null) {
-                $refSchema = $index->findSchema($mediaType->schema->ref);
+            // Refs runs in Group::Resolve, before this augmenter, so a Schema\Ref object has
+            // already been collapsed into its string; narrow defensively rather than assume
+            $ref = $mediaType->schema->ref instanceof OA\Schema\Ref
+                ? $mediaType->schema->ref->ref
+                : $mediaType->schema->ref;
+            if (is_string($ref)) {
+                $refSchema = $index->findSchema($ref);
                 if ($refSchema instanceof OA\Schema && $refSchema->properties !== null) {
                     $this->mergeEncoded($mediaType, $refSchema->properties);
                 }

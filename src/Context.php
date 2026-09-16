@@ -21,13 +21,11 @@ use Psr\Log\LoggerInterface;
  * @property int|null                         $line
  * @property int|null                         $character
  * @property string|null                      $namespace
- * @property array|null                       $uses
+ * @property array<string,string>|null        $uses
  * @property string|null                      $class
  * @property string|null                      $interface
  * @property string|null                      $trait
  * @property string|null                      $enum
- * @property array|string|null                $extends     Interfaces may extend a list of interfaces
- * @property array|null                       $implements
  * @property string|null                      $method
  * @property string|null                      $property
  * @property \Reflector|null                  $reflector   Optional reflection details
@@ -36,9 +34,9 @@ use Psr\Log\LoggerInterface;
  *                                                         type resolver or serializer
  * @property OA\AbstractAnnotation|null       $nested
  * @property list<OA\AbstractAnnotation>|null $annotations
- * @property list<OA\AbstractAnnotation>|null $other       Annotations not related to OpenApi
+ * @property list<object>|null                $other       Annotations not related to OpenApi
  * @property LoggerInterface|null             $logger      Guaranteed to be set when using the <code>Generator</code>
- * @property array|null                       $scanned     Details of file scanner when using ReflectionAnalyser
+ * @property array<string,mixed>|null         $scanned     Details of file scanner when using ReflectionAnalyser
  * @property string|null                      $version     The OpenAPI version in use
  */
 #[\AllowDynamicProperties]
@@ -49,6 +47,9 @@ class Context implements \Stringable
      */
     protected ?Context $parent;
 
+    /**
+     * @param array<string, mixed> $properties
+     */
     public function __construct(array $properties = [], ?Context $parent = null)
     {
         foreach ($properties as $property => $value) {
@@ -70,6 +71,9 @@ class Context implements \Stringable
         });
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function __unserialize(array $data): void
     {
         foreach ($data as $name => $value) {
@@ -178,7 +182,7 @@ class Context implements \Stringable
     /**
      * Check if one of the given version numbers matches the current OpenAPI version.
      *
-     * @param string|array $version The version to compare. Allows patch version placeholder `x`; e.g. `3.1.x`.
+     * @param string|list<string> $version The version to compare. Allows patch version placeholder `x`; e.g. `3.1.x`.
      */
     public function isVersion(string|array $version): bool
     {
@@ -242,13 +246,13 @@ class Context implements \Stringable
 
         $thisSource = $this->class ?? $this->interface ?? $this->trait;
         if ($thisSource && strcasecmp($source, $thisSource) === 0) {
-            return $namespace . $thisSource;
+            return $this->asClassString($namespace . $thisSource);
         }
         $pos = strpos($source, '\\');
         if ($pos !== false) {
             if ($pos === 0) {
                 // Fully qualified name (\Foo\Bar)
-                return $source;
+                return $this->asClassString($source);
             }
             // Qualified name (Foo\Bar)
             if ($this->uses) {
@@ -256,7 +260,7 @@ class Context implements \Stringable
                     $alias .= '\\';
                     if (strcasecmp(substr($source, 0, strlen($alias)), $alias) === 0) {
                         // Aliased namespace (use \Long\Namespace as Foo)
-                        return '\\' . $aliasedNamespace . substr($source, strlen($alias) - 1);
+                        return $this->asClassString('\\' . $aliasedNamespace . substr($source, strlen($alias) - 1));
                     }
                 }
             }
@@ -264,11 +268,25 @@ class Context implements \Stringable
             // Unqualified name (Foo)
             foreach ($this->uses as $alias => $aliasedNamespace) {
                 if (strcasecmp((string) $alias, $source) === 0) {
-                    return '\\' . $aliasedNamespace;
+                    return $this->asClassString('\\' . $aliasedNamespace);
                 }
             }
         }
 
-        return $namespace . $source;
+        return $this->asClassString($namespace . $source);
+    }
+
+    /**
+     * A resolved name is syntactically a class name; not verified to exist, since a source's
+     * fully qualified name may name a class not yet loaded (or not autoloadable at all).
+     *
+     * @return class-string
+     */
+    private function asClassString(string $name): string
+    {
+        /** @var class-string $className */
+        $className = $name;
+
+        return $className;
     }
 }

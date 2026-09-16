@@ -137,6 +137,13 @@ final class SlotMapConsistencyTest extends TestCase
             return self::objectTypesIn($type->getCollectionValueType());
         }
 
-        return $type instanceof ObjectType ? [$type->getClassName()] : [];
+        if (!$type instanceof ObjectType) {
+            return [];
+        }
+
+        /** @var class-string $className */
+        $className = $type->getClassName();
+
+        return [$className];
     }
 }

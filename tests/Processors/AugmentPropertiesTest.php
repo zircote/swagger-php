@@ -373,7 +373,7 @@ final class AugmentPropertiesTest extends OpenApiTestCase
             'property' => 'stringMap',
             'type' => 'object',
         ]);
-        $this->assertFalse(Undefined::isDefault($stringMap->additionalProperties));
+        $this->assertInstanceOf(OA\AdditionalProperties::class, $stringMap->additionalProperties);
         $this->assertSame('string', $stringMap->additionalProperties->type);
         $this->assertTrue(Undefined::isDefault($stringMap->items));
 
@@ -391,7 +391,7 @@ final class AugmentPropertiesTest extends OpenApiTestCase
             'property' => 'unmappableMap',
             'type' => 'object',
         ]);
-        $this->assertFalse(Undefined::isDefault($unmappableMap->additionalProperties));
+        $this->assertInstanceOf(OA\AdditionalProperties::class, $unmappableMap->additionalProperties);
         $this->assertTrue(
             Undefined::isDefault($unmappableMap->additionalProperties->type),
             'callable has no OpenAPI representation, so additionalProperties stays open instead of emitting type: callable',
@@ -401,7 +401,7 @@ final class AugmentPropertiesTest extends OpenApiTestCase
             'property' => 'mixedMap',
             'type' => 'object',
         ]);
-        $this->assertFalse(Undefined::isDefault($mixedMap->additionalProperties));
+        $this->assertInstanceOf(OA\AdditionalProperties::class, $mixedMap->additionalProperties);
         $this->assertTrue(
             Undefined::isDefault($mixedMap->additionalProperties->type),
             'mixed has no OpenAPI representation, so additionalProperties stays open instead of emitting type: mixed',
@@ -451,6 +451,9 @@ final class AugmentPropertiesTest extends OpenApiTestCase
         $this->assertSame('Nullable inline with description', $nullableInlineDesc->description);
     }
 
+    /**
+     * @param array<string, mixed> $expectedValues
+     */
     protected function assertName(OA\Property $property, array $expectedValues): void
     {
         foreach ($expectedValues as $key => $val) {

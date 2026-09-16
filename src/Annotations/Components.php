@@ -139,10 +139,12 @@ class Components extends AbstractAnnotation
      * Returns a list of component annotation types.
      *
      * Each may be used as a root to resolve component refs
+     *
+     * @return list<class-string<AbstractAnnotation>>
      */
     public static function componentTypes(): array
     {
-        return array_filter(array_keys(self::$_nested), static fn (string $value): bool => $value !== Attachable::class);
+        return array_values(array_filter(array_keys(self::$_nested), static fn (string $value): bool => $value !== Attachable::class));
     }
 
     /**
@@ -156,8 +158,8 @@ class Components extends AbstractAnnotation
     {
         if ($component instanceof AbstractAnnotation) {
             foreach (Components::$_nested as $type => $nested) {
-                // exclude attachables
-                if (2 == count($nested)) {
+                // exclude attachables; the [property, key] form, a bare string is a single slot
+                if (is_array($nested) && 2 === count($nested)) {
                     if ($component instanceof $type) {
                         $type = $nested[0];
                         $name = $component->{$nested[1]};

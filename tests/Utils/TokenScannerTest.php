@@ -13,6 +13,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 final class TokenScannerTest extends OpenApiTestCase
 {
+    /**
+     * @return iterable<mixed>
+     */
     public static function scanCases(): iterable
     {
         yield 'abstract' => [
@@ -404,6 +407,9 @@ final class TokenScannerTest extends OpenApiTestCase
         ];
     }
 
+    /**
+     * @param array<mixed> $expected
+     */
     #[DataProvider('scanCases')]
     public function testScanFile(string $fixture, array $expected): void
     {

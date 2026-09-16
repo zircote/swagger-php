@@ -46,6 +46,9 @@ class SchemaType
     ) {
     }
 
+    /**
+     * @phpstan-assert-if-true string $this->type
+     */
     public function isRef(): bool
     {
         return is_string($this->type) && !$this->isNativeType();

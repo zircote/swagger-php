@@ -38,6 +38,9 @@ final class AugmentParametersTest extends OpenApiTestCase
         $this->assertEquals('ItemName', $openapi->components->parameters[0]->parameter, 'When no @OA\Parameter()->parameter is specified, use @OA\Parameter()->name');
     }
 
+    /**
+     * @return iterable<string, array{string, array<string, mixed>}>
+     */
     public static function tagCases(): iterable
     {
         yield 'complete' => [
@@ -61,6 +64,9 @@ final class AugmentParametersTest extends OpenApiTestCase
         ];
     }
 
+    /**
+     * @param array<string, mixed> $expected
+     */
     #[DataProvider('tagCases')]
     public function testParseTags(string $params, array $expected): void
     {
