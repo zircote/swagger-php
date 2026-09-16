@@ -31,6 +31,16 @@ paths:
               content:
                 application/json:
                   schema: { type: object }
+            X-Filter:
+              description: 'Applied filter, as a JsonContent rather than a MediaType list'
+              content:
+                application/json:
+                  schema: { type: object, properties: { type: { type: string }, color: { type: string } } }
+            X-Coords:
+              description: 'The same shape via XmlContent'
+              content:
+                application/xml:
+                  schema: { type: object }
 components:
   headers:
     X-Request-Id:

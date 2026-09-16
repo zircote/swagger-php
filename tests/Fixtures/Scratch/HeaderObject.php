@@ -52,6 +52,24 @@ class HeaderObjectController
                             ),
                         ],
                     ),
+                    // X-Filter and X-Coords reach content through JsonContent/XmlContent
+                    // instead of a MediaType list. Only the merge processors unwrap those,
+                    // so every mode that runs without them has to replicate the unwrapping.
+                    new OAT\Header(
+                        header: 'X-Filter',
+                        description: 'Applied filter, as a JsonContent rather than a MediaType list',
+                        content: new OAT\JsonContent(
+                            properties: [
+                                new OAT\Property(property: 'type', type: 'string'),
+                                new OAT\Property(property: 'color', type: 'string'),
+                            ],
+                        ),
+                    ),
+                    new OAT\Header(
+                        header: 'X-Coords',
+                        description: 'The same shape via XmlContent',
+                        content: new OAT\XmlContent(type: 'object'),
+                    ),
                 ],
             ),
         ],
