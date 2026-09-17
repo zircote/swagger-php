@@ -117,6 +117,9 @@ class Resolver
         return array_values(array_unique($unresolved));
     }
 
+    /**
+     * @param list<string> $unresolved
+     */
     protected function collectFromRefs(Specification $specification, ComponentIndex $index, array &$unresolved): void
     {
         $specification->getWalker()->eachRef(function (AttributeInterface $attribute) use ($index, &$unresolved): void {
@@ -142,6 +145,9 @@ class Resolver
         });
     }
 
+    /**
+     * @param list<string> $unresolved
+     */
     protected function collectFromReflectors(Specification $specification, ComponentIndex $index, array &$unresolved): void
     {
         foreach ($specification->schemas as $schema) {
@@ -168,6 +174,8 @@ class Resolver
     }
 
     /**
+     * @param \ReflectionClass<object> $reflector
+     *
      * @return list<\ReflectionNamedType>
      */
     protected function getTypedReflectors(\ReflectionClass $reflector): array

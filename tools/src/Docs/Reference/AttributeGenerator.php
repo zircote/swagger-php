@@ -55,11 +55,17 @@ class AttributeGenerator extends DocGenerator
         return $output;
     }
 
+    /**
+     * @return list<string>
+     */
     public function types(): array
     {
         return ['Annotations', 'Attributes'];
     }
 
+    /**
+     * @return array<string, array{fqdn: class-string<AbstractAnnotation>, filename: string}>
+     */
     public function classesForType(string $type): array
     {
         $classes = [];
@@ -72,8 +78,10 @@ class AttributeGenerator extends DocGenerator
             if (in_array($class, ['AbstractAnnotation', 'Operation', 'ParameterTrait', 'OperationTrait', 'JsonSchemaTrait'])) {
                 continue;
             }
+            /** @var class-string<AbstractAnnotation> $fqdn */
+            $fqdn = 'OpenApi\\' . $type . '\\' . $class;
             $classes[$class] = [
-                'fqdn' => 'OpenApi\\' . $type . '\\' . $class,
+                'fqdn' => $fqdn,
                 'filename' => $entry->getPathname(),
             ];
         }
@@ -84,6 +92,8 @@ class AttributeGenerator extends DocGenerator
     }
 
     /**
+     * @param class-string<AbstractAnnotation> $fqdn
+     *
      * @return array{description: string, parents: list<array{name: string, anchor: string}>, nested: list<array{name: string, anchor: string}>, parameters: list<array{name: string, type: string, description: string, required: bool, see: list<string>}>, see: list<string>}
      */
     protected function collectAttributesDetails(string $name, string $fqdn, string $filename): array
@@ -120,6 +130,8 @@ class AttributeGenerator extends DocGenerator
     }
 
     /**
+     * @param class-string<AbstractAnnotation> $fqdn
+     *
      * @return array{description: string, parents: list<array{name: string, anchor: string}>, nested: list<array{name: string, anchor: string}>, parameters: list<array{name: string, type: string, description: string, required: bool, see: list<string>}>, see: list<string>}
      */
     protected function collectAnnotationsDetails(string $name, string $fqdn, string $filename): array
@@ -169,6 +181,8 @@ class AttributeGenerator extends DocGenerator
     }
 
     /**
+     * @param class-string<AbstractAnnotation> $fqdn
+     *
      * @return list<array{name: string, anchor: string}>
      */
     protected function collectParents(string $fqdn): array
@@ -185,6 +199,8 @@ class AttributeGenerator extends DocGenerator
     }
 
     /**
+     * @param class-string<AbstractAnnotation> $fqdn
+     *
      * @return list<array{name: string, anchor: string}>
      */
     protected function collectNested(string $fqdn): array
@@ -200,6 +216,9 @@ class AttributeGenerator extends DocGenerator
         }, array_keys($fqdn::$_nested));
     }
 
+    /**
+     * @return array{content: string, see: list<string>, var: string, params: array<string, array{type: string, content: string|null}>, required: bool}
+     */
     protected function getPropertyDocumentation(string $fqdn, string $name): array
     {
         /** @var class-string<AbstractAnnotation> $class */
@@ -218,6 +237,8 @@ class AttributeGenerator extends DocGenerator
 
     /**
      * @param class-string<AbstractAnnotation> $fqdn
+     *
+     * @return list<string>
      */
     protected function getNestedProperties(string $fqdn): array
     {

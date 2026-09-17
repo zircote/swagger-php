@@ -12,8 +12,8 @@ use OpenApi\Builder\Mode;
 use OpenApi\Examples\Specs\Webhooks\Spec as WebhooksSpec;
 use OpenApi\Generator;
 use OpenApi\Tests\Concerns\UsesExamples;
+use OpenApi\Tests\Doubles\RecordingLogger;
 use OpenApi\Utils\SourceFinder;
-use Psr\Log\AbstractLogger;
 use Psr\Log\NullLogger;
 
 final class BuilderTest extends OpenApiTestCase
@@ -224,19 +224,7 @@ final class BuilderTest extends OpenApiTestCase
     public function testCompilerDiagnosticsReachTheConfiguredLogger(): void
     {
         $received = [];
-        $logger = new class ($received) extends AbstractLogger {
-            /**
-             * @param list<string> $received
-             */
-            public function __construct(public array &$received)
-            {
-            }
-
-            public function log($level, $message, array $context = []): void
-            {
-                $this->received[] = (string) $message;
-            }
-        };
+        $logger = new RecordingLogger($received);
 
         // spec mode: an empty source set leaves the compiler with nothing to validate
         (new Builder())

@@ -18,6 +18,9 @@ final class SourceScannerTest extends TestCase
     use ExpectsLogEntries;
     use UsesExamples;
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function sourcesProvider(): iterable
     {
         $sourceDir = self::examplePath('petstore/annotations');
@@ -27,6 +30,9 @@ final class SourceScannerTest extends TestCase
         yield 'finder-list' => [[new SourceFinder($sourceDir)]];
     }
 
+    /**
+     * @param array<mixed> $sources
+     */
     #[DataProvider('sourcesProvider')]
     public function testScan(iterable $sources): void
     {
@@ -65,8 +71,9 @@ final class SourceScannerTest extends TestCase
     {
         $sourceDir = self::examplePath('petstore/annotations');
         $finder = new SourceFinder($sourceDir);
-        $splFiles = iterator_to_array($finder);
-        $first = reset($splFiles);
+        $splFiles = array_values(iterator_to_array($finder));
+        $this->assertNotEmpty($splFiles);
+        $first = $splFiles[0];
 
         $scanner = new SourceScanner($this->trackingLogger());
         $files = $scanner->scan([$first]);

@@ -12,6 +12,9 @@ use OpenApi\Tools\Docs\DocGenerator;
 
 class ProcessorGenerator extends DocGenerator
 {
+    /**
+     * @return array<string, string>
+     */
     public function generate(): array
     {
         $content = $this->renderer->preamble(
@@ -76,8 +79,13 @@ class ProcessorGenerator extends DocGenerator
                 $processors[] = $this->collectProcessorData($rc);
             });
 
-        $processorsDir = dirname((new \ReflectionClass(MergeIntoOpenApi::class))->getFileName());
-        foreach (glob("{$processorsDir}/*.php") as $processor) {
+        $filename = (new \ReflectionClass(MergeIntoOpenApi::class))->getFileName();
+        if (false === $filename) {
+            throw new \RuntimeException('Unable to locate ' . MergeIntoOpenApi::class . "'s source file");
+        }
+        $processorsDir = dirname($filename);
+        foreach (glob("{$processorsDir}/*.php") ?: [] as $processor) {
+            /** @var class-string $class */
             $class = 'OpenApi\\Processors\\' . pathinfo($processor, PATHINFO_FILENAME);
             if (!in_array($class, $defaultProcessors)) {
                 $rc = new \ReflectionClass($class);
@@ -90,6 +98,11 @@ class ProcessorGenerator extends DocGenerator
         return $processors;
     }
 
+    /**
+     * @param \ReflectionClass<object> $rc
+     *
+     * @return array{name: string, description: string, configPrefix: string, options: list<array{name: string, type: string, default: string, description: string}>, see: list<string>}
+     */
     protected function collectProcessorData(\ReflectionClass $rc): array
     {
         $classDoc = $this->parseDocblock($rc->getDocComment());

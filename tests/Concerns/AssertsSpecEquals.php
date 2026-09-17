@@ -23,10 +23,15 @@ trait AssertsSpecEquals
     /**
      * Compare OpenApi specs assuming strings to contain YAML.
      *
-     * @param array|\stdClass|string|null $actual     The generated output
-     * @param array|\stdClass|string|null $expected   The specification
-     * @param bool                        $normalized flag indicating whether the inputs are already normalized or
-     *                                                not
+     * @param array<mixed>|\stdClass|string|false|null $actual     The generated output; `false`
+     *                                                             is accepted so a caller can
+     *                                                             pass file_get_contents()
+     *                                                             straight in and fail on the
+     *                                                             comparison rather than the
+     *                                                             argument
+     * @param array<mixed>|\stdClass|string|false|null $expected   The specification
+     * @param bool                                     $normalized flag indicating whether the inputs are already normalized or
+     *                                                             not
      */
     public function assertSpecEquals($actual, $expected, string $message = '', bool $normalized = false): void
     {

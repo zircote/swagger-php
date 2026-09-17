@@ -108,6 +108,10 @@ END;
         yield 'sub-invalid' => [SubSchema::class, null];
     }
 
+    /**
+     * @param class-string<OA\AbstractAnnotation> $class
+     * @param mixed                               $expected
+     */
     #[DataProvider('nestedMatches')]
     public function testMatchNested(string $class, $expected): void
     {
@@ -144,6 +148,9 @@ END;
         $analysis->validate();
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function identityCases(): iterable
     {
         yield 'default' => [new OA\Response(['response' => 200]), null, '@OA\Response(response=200)'];
@@ -151,6 +158,9 @@ END;
         yield 'custom' => [new OA\Response(['response' => 200]), ['response'], '@OA\Response(response=200)'];
     }
 
+    /**
+     * @param array<mixed> $identityArgs
+     */
     #[DataProvider('identityCases')]
     public function testIdentity(OA\AbstractAnnotation $annotation, ?array $identityArgs, string $expected): void
     {

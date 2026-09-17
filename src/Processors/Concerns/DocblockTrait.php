@@ -53,6 +53,9 @@ trait DocblockTrait
         return false;
     }
 
+    /**
+     * @param array{param?: array<string, array{type: string|null, description: string|null}>}|null $tags
+     */
     public function parseDocblock(?string $docblock, ?array &$tags = null): string
     {
         return $this->docBlockParser()->parseDocblock($docblock, $tags);

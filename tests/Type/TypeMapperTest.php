@@ -19,6 +19,9 @@ final class TypeMapperTest extends OpenApiTestCase
         $this->mapper = new TypeMapper();
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function mapCases(): iterable
     {
         yield 'string' => ['string', ['type' => 'string', 'format' => null]];
@@ -48,12 +51,18 @@ final class TypeMapperTest extends OpenApiTestCase
         yield 'class name' => ['App\\Model\\User', null];
     }
 
+    /**
+     * @param array<mixed> $expected
+     */
     #[DataProvider('mapCases')]
     public function testMap(string $type, ?array $expected): void
     {
         $this->assertSame($expected, $this->mapper->map($type));
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function toSpecTypeCases(): iterable
     {
         yield 'string' => ['string', 'string'];
@@ -77,6 +86,9 @@ final class TypeMapperTest extends OpenApiTestCase
         );
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function hasOpenApiTypeCases(): iterable
     {
         yield 'string' => ['string', true];

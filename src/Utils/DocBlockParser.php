@@ -64,6 +64,10 @@ class DocBlockParser
         return (string) $typeNode;
     }
 
+    /**
+     * @param array{param?: array<string, array{type: string|null, description: string|null}>}|null $tags
+     *                                                                                                    collected tag values, by tag name; only `param` is populated today
+     */
     public function parseDocblock(?string $docblock, ?array &$tags = null): string
     {
         $docNode = $this->parsePhpDoc($docblock);
@@ -115,7 +119,7 @@ class DocBlockParser
             return Undefined::UNDEFINED;
         }
 
-        $lines = preg_split('/(\n|\r\n)/', $content);
+        $lines = preg_split('/(\n|\r\n)/', $content) ?: [];
         $summary = '';
         foreach ($lines as $line) {
             $summary .= $line . "\n";

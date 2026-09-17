@@ -30,7 +30,9 @@ class MergeJsonContent
                 }
                 continue;
             }
-            if (Undefined::isDefault($parent->content)) {
+            if (Undefined::isDefault($parent->content) || !is_array($parent->content)) {
+                // a nested JsonContent/XmlContent arrives in _unmerged, never on content
+                // itself, so this only ever replaces the UNDEFINED sentinel
                 $parent->content = [];
             }
             $parent->content['application/json'] = $mediaType = new OA\MediaType([

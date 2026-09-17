@@ -47,6 +47,9 @@ final class ReflectionAnalyserTest extends OpenApiTestCase
         $this->assertSame($expected, array_keys($annotationFactory->reflectors));
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function analysers(): iterable
     {
         return [
@@ -82,7 +85,8 @@ final class ReflectionAnalyserTest extends OpenApiTestCase
     protected function collectingAnnotationFactory(): AnnotationFactoryInterface
     {
         return new class () implements AnnotationFactoryInterface {
-            public $reflectors = [];
+            /** @var array<string, \Reflector> */
+            public array $reflectors = [];
 
             public function build(\Reflector $reflector, Context $context): array
             {

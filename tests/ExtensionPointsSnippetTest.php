@@ -29,7 +29,7 @@ final class ExtensionPointsSnippetTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        foreach (glob(self::SNIPPETS . '/*.php') as $snippet) {
+        foreach (glob(self::SNIPPETS . '/*.php') ?: [] as $snippet) {
             require_once $snippet;
         }
     }

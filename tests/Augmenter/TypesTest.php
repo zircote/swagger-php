@@ -36,6 +36,7 @@ final class TypesTest extends TestCase
         $this->assertTrue($props['score']->nullable);
         $this->assertSame('boolean', $props['active']->type);
         $this->assertSame('array', $props['tags']->type);
+        $this->assertInstanceOf(OA\Schema::class, $props['tags']->items);
         $this->assertSame('string', $props['tags']->items->type);
     }
 

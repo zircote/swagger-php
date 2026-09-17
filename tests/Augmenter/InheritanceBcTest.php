@@ -25,6 +25,9 @@ final class InheritanceBcTest extends TestCase
 
     private const EXPECTED_FILE = __DIR__ . '/../Fixtures/Augmenter/Hierarchy/expected.yaml';
 
+    /**
+     * @param array<mixed> $schemas
+     */
     #[DataProvider('pipelines')]
     public function testMatchesExpected(string $pipeline, array $schemas): void
     {
@@ -34,6 +37,8 @@ final class InheritanceBcTest extends TestCase
     /**
      * Property order carries no meaning in OpenAPI, but reversed `use` order is nobody's
      * intent - and `assertCompiledSchemasMatchFile()` sorts, so only this pins it.
+     *
+     * @param array<mixed> $schemas
      */
     #[DataProvider('pipelines')]
     public function testMergedMemberOrderFollowsDeclaration(string $pipeline, array $schemas): void
@@ -45,18 +50,24 @@ final class InheritanceBcTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function pipelines(): iterable
     {
         yield 'spec' => ['spec', self::buildSpec(__DIR__ . '/../Fixtures/Augmenter/Hierarchy/Spec')];
         yield 'classic' => ['classic', self::buildClassic(__DIR__ . '/../Fixtures/Augmenter/Hierarchy/Classic')];
     }
 
+    /**
+     * @return array<mixed>
+     */
     protected static function buildSpec(string $directory): array
     {
         $tokenScanner = new TokenScanner();
         $assembler = new Assembler();
 
-        foreach (glob($directory . '/*.php') as $file) {
+        foreach (glob($directory . '/*.php') ?: [] as $file) {
             require_once $file;
             foreach (array_keys($tokenScanner->scanFile($file)) as $class) {
                 if (class_exists($class) || interface_exists($class) || enum_exists($class) || trait_exists($class)) {
@@ -78,6 +89,9 @@ final class InheritanceBcTest extends TestCase
         return $output['components']['schemas'] ?? [];
     }
 
+    /**
+     * @return array<mixed>
+     */
     protected static function buildClassic(string $directory): array
     {
         $result = (new Builder())

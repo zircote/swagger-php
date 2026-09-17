@@ -42,6 +42,9 @@ final class ExamplesTest extends OpenApiTestCase
         'spec',
     ];
 
+    /**
+     * @return iterable<mixed>
+     */
     public static function exampleSpecs(): iterable
     {
         $resolvers = self::getTypeResolvers();

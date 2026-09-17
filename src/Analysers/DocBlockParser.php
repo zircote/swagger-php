@@ -19,14 +19,16 @@ class DocBlockParser
     protected DocParser $docParser;
 
     /**
-     * @param array<string, class-string> $aliases
+     * @param array<string, string> $aliases
      */
     public function __construct(array $aliases = [])
     {
         if (DocBlockParser::isEnabled()) {
             $docParser = new DocParser();
             $docParser->setIgnoreNotImportedAnnotations(true);
-            $docParser->setImports($aliases);
+            /** @var array<string, class-string> $importedAliases doctrine wants class-string; ours may be bare namespaces too */
+            $importedAliases = $aliases;
+            $docParser->setImports($importedAliases);
             $this->docParser = $docParser;
         }
     }
@@ -40,11 +42,13 @@ class DocBlockParser
     }
 
     /**
-     * @param array<string, class-string> $aliases
+     * @param array<string, string> $aliases
      */
     public function setAliases(array $aliases): void
     {
-        $this->docParser->setImports($aliases);
+        /** @var array<string, class-string> $importedAliases doctrine wants class-string; ours may be bare namespaces too */
+        $importedAliases = $aliases;
+        $this->docParser->setImports($importedAliases);
     }
 
     /**
@@ -69,7 +73,7 @@ class DocBlockParser
             if (preg_match('/^(.+) at position ([0-9]+) in ' . preg_quote((string) $context, '/') . '\.$/', $exception->getMessage(), $matches)) {
                 $errorMessage = $matches[1];
                 $errorPos = (int) $matches[2];
-                $atPos = strpos($comment, '@');
+                $atPos = strpos($comment, '@') ?: 0;
                 $context->line -= substr_count($comment, "\n", $atPos + $errorPos) + 1;
                 $lines = explode("\n", substr($comment, $atPos, $errorPos));
                 $context->character = strlen(array_pop($lines)) + 1; // position starts at 0 character starts at 1

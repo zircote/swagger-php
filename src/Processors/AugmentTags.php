@@ -20,6 +20,9 @@ class AugmentTags
 
     protected bool $withDescription;
 
+    /**
+     * @param array<string> $whitelist
+     */
     public function __construct(array $whitelist = [], bool $withDescription = true)
     {
         $this->whitelist = $whitelist;
@@ -78,6 +81,8 @@ class AugmentTags
 
     /**
      * Whitelist tags to keep even if not used. <code>*</code> may be used to keep all unused.
+     *
+     * @param array<string> $whitelist
      */
     public function setWhitelist(array $whitelist): AugmentTags
     {
@@ -96,6 +101,10 @@ class AugmentTags
         return $this;
     }
 
+    /**
+     * @param array<string> $usedTagNames
+     * @param array<OA\Tag> $declaredTags
+     */
     private function removeUnusedTags(array $usedTagNames, array $declaredTags, Analysis $analysis): void
     {
         if (in_array('*', $this->whitelist)) {
