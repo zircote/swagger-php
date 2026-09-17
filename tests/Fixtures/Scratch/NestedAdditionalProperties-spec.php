@@ -31,3 +31,21 @@ use OpenApi\Spec as OA;
 class NestedAdditionalPropertiesSpec
 {
 }
+
+/**
+ * See the classic twin: a map value type carrying no annotations of its own.
+ */
+class NestedAdditionalPropertiesWidgetSpec
+{
+    public string $name = '';
+}
+
+#[OA\Schema(schema: 'ExplicitlyClosedMap', type: 'object')]
+class NestedAdditionalPropertiesClosedMapSpec
+{
+    /**
+     * @var array<string, NestedAdditionalPropertiesWidgetSpec>
+     */
+    #[OA\Property(property: 'items', schema: new OA\Schema(additionalProperties: false))]
+    public array $items = [];
+}
