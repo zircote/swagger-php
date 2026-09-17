@@ -915,7 +915,7 @@ final class CompilerTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{0: \Closure(Specification, mixed): void, 1: \Closure(array): mixed}>
+     * @return iterable<string, array{0: \Closure(Specification, mixed): void, 1: \Closure(array<string, mixed>): array<string, mixed>}>
      */
     public static function exampleValueProvider(): iterable
     {

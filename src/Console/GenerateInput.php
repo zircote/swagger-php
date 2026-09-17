@@ -13,10 +13,10 @@ use Symfony\Component\Console\Input\InputInterface;
 
 class GenerateInput
 {
-    /** @var array<string> */
+    /** @var list<string> */
     public array $paths = [];
 
-    /** @var array<string> */
+    /** @var list<string> */
     public array $config = [];
 
     public bool $defaults = false;
@@ -25,18 +25,18 @@ class GenerateInput
 
     public GenerateFormat $format = GenerateFormat::AUTO;
 
-    /** @var array<string> */
+    /** @var list<string> */
     public array $exclude = [];
 
     public string $pattern = '*.php';
 
-    /** @var array<string> */
+    /** @var list<string> */
     public array $bootstrap = [];
 
-    /** @var array<string> */
+    /** @var list<string> */
     public array $addProcessor = [];
 
-    /** @var array<string> */
+    /** @var list<string> */
     public array $removeProcessor = [];
 
     public ?string $version = null;
