@@ -32,7 +32,11 @@ final class DocsAccuracyTest extends TestCase
         $this->assertSame(0, $ret);
         $actual = implode("\n", $lines);
 
-        $this->assertSame($documented, $actual, 'openapi -h output has drifted from docs/guide/generating-openapi-documents.md');
+        $this->assertSame(
+            $this->ownHelpOptions($documented),
+            $this->ownHelpOptions($actual),
+            'openapi -h output has drifted from docs/guide/generating-openapi-documents.md'
+        );
     }
 
     public function testIsRootClassificationMatchesDocs(): void
@@ -219,6 +223,25 @@ final class DocsAccuracyTest extends TestCase
                 "{$short}::__construct() should not have \$requestBody (docs/guide/spec-attributes.md)"
             );
         }
+    }
+
+    /**
+     * Drop the built-in options Symfony Console appends, from `-h, --help` on.
+     *
+     * Their wording differs per Symfony version, so only the part the command
+     * itself defines is compared. The docs still show the full help output.
+     */
+    private function ownHelpOptions(string $help): string
+    {
+        $lines = explode("\n", $help);
+
+        foreach ($lines as $i => $line) {
+            if (str_starts_with(ltrim($line), '-h, --help')) {
+                return implode("\n", array_slice($lines, 0, $i));
+            }
+        }
+
+        $this->fail('Could not find the "-h, --help" line in the help output');
     }
 
     /**
