@@ -45,6 +45,9 @@ final class ScratchTest extends OpenApiTestCase
             'Examples-3.0.0-hybrid' => ['examples array is not supported in OpenAPI 3.0'],
             'Docblocks-3.0.0-spec' => ['const is not supported in OpenAPI 3.0'],
             'Docblocks-3.0.0-hybrid' => ['const is not supported in OpenAPI 3.0'],
+            'ServerVariableEnumClassString-3.0.0' => ['ServerVariable(secure): enum values must be strings, dropping true', 'ServerVariable(secure): enum values must be strings, dropping false'],
+            'ServerVariableEnumClassString-3.1.0' => ['ServerVariable(secure): enum values must be strings, dropping true', 'ServerVariable(secure): enum values must be strings, dropping false'],
+            'ServerVariableEnumClassString-3.2.0' => ['ServerVariable(secure): enum values must be strings, dropping true', 'ServerVariable(secure): enum values must be strings, dropping false'],
             'Tags-3.2.0-spec' => ['references non-existent parent'],
             'Tags-3.2.0-hybrid' => ['references non-existent parent'],
         ];

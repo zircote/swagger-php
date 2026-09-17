@@ -12,6 +12,7 @@ use OpenApi\GeneratorAwareInterface;
 use OpenApi\GeneratorAwareTrait;
 use OpenApi\OpenApiException;
 use OpenApi\Undefined;
+use OpenApi\Utils\ServerVariableEnum;
 
 /**
  * Expands PHP enums.
@@ -135,6 +136,21 @@ class ExpandEnums implements GeneratorAwareInterface
             $enums = [];
             foreach ($cases as $enum) {
                 $enums[] = $enum instanceof \UnitEnum ? ($enum instanceof \BackedEnum ? $enum->value : $enum->name) : $enum;
+            }
+
+            // A Schema enum may hold any JSON value; a ServerVariable enum may not. Only the
+            // latter narrows, which is why this sits here rather than in the loop above.
+            if ($schema instanceof OA\ServerVariable) {
+                $enums = ServerVariableEnum::asStrings($enums, $schema->_context->logger, Undefined::isDefault($schema->serverVariable) ? null : $schema->serverVariable);
+
+                if ([] === $enums) {
+                    // The spec says the array MUST NOT be empty, so an enum that normalised
+                    // away is dropped rather than emitted empty. The spec compilers filter `[]`
+                    // out on their own; this is classic catching up with them.
+                    $schema->enum = Undefined::UNDEFINED;
+
+                    continue;
+                }
             }
 
             $schema->enum = $enums;

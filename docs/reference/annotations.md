@@ -1178,8 +1178,10 @@ An object representing a server variable for server URL template substitution.
 <dl>
   <dt><strong>serverVariable</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The key into Server->variables array.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">list&lt;string|int|float|bool|\UnitEnum&gt;|class-string</span></dt>
-  <dd><p>An enumeration of values to be used if the substitution options are from a limited set.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">list&lt;string|int|float|bool|\UnitEnum&gt;|string</span></dt>
+  <dd><p>An enumeration of values to be used if the substitution options are from a limited set.<br />
+<br />
+All allowed types are cast to string in the specification; a bool is dropped with a warning.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>default</strong> : <span style="font-family: monospace;">string</span></dt>
   <dd><p>The default value to use for substitution, and to send, if an alternate value is not supplied.<br />
 <br />

@@ -16,12 +16,22 @@ enum ServerVariableEnumClassStringEnvTypeSpec: string
 
 #[OA\Info(title: 'Server Variable Enum Class String Scratch', version: '1.0')]
 #[OA\Server(
-    url: '{env}.example.com',
+    url: '{env}.example.com:{port}',
     variables: [
         new OA\ServerVariable(
             serverVariable: 'env',
             default: 'prod',
             enum: [ServerVariableEnumClassStringEnvTypeSpec::class]
+        ),
+        new OA\ServerVariable(
+            serverVariable: 'port',
+            default: '443',
+            enum: [8080, 443]
+        ),
+        new OA\ServerVariable(
+            serverVariable: 'secure',
+            default: 'yes',
+            enum: [true, false]
         ),
     ]
 )]

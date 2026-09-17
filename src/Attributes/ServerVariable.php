@@ -13,9 +13,9 @@ use OpenApi\Undefined;
 class ServerVariable extends OA\ServerVariable
 {
     /**
-     * @param list<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
-     * @param array<string,mixed>|null                                     $x
-     * @param list<Attachable>|null                                        $attachables
+     * @param list<string|int|float|bool|\UnitEnum|null>|string|null $enum
+     * @param array<string,mixed>|null                               $x
+     * @param list<Attachable>|null                                  $attachables
      */
     public function __construct(
         ?string $serverVariable = null,
