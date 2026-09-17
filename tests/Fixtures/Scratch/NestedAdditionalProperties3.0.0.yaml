@@ -18,3 +18,9 @@ components:
         additionalProperties:
           type: string
           additionalProperties: false
+    ExplicitlyClosedMap:
+      type: object
+      properties:
+        items:
+          type: object
+          additionalProperties: false

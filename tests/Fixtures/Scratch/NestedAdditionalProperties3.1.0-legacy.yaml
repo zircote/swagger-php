@@ -8,7 +8,7 @@ paths:
       description: 'An endpoint'
       operationId: nestedAdditionalProperties
       responses:
-        200:
+        '200':
           description: OK
 components:
   schemas:
@@ -19,8 +19,9 @@ components:
           type: string
           additionalProperties: false
     ExplicitlyClosedMap:
-      type: object
       properties:
         items:
-          type: object
+          type: array
+          items: {}
           additionalProperties: false
+      type: object

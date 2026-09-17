@@ -109,21 +109,22 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
 
         if ($schemaType->additionalProperties instanceof SchemaType) {
             $schema->type = 'object';
-            // $schema->additionalProperties is bool|AdditionalProperties, and isDefault() only
-            // rules out the UNDEFINED sentinel — an explicit `additionalProperties: false`
-            // reaches the elseif below and is dereferenced as an object. Reported rather than
-            // guarded: which of the explicit false and the inferred nested type should win is a
-            // behaviour decision, and silencing it here would settle it by accident.
-            if (Undefined::isDefault($schema->additionalProperties)) {
-                $schema->additionalProperties = new OA\AdditionalProperties(['_context' => new Context(['generated' => true], $schema->_context)]);
-                $this->applyToAnnotation($schema->additionalProperties, $schemaType->additionalProperties, $analysis, $sourceClass);
-                $this->type2ref($schema->additionalProperties, $analysis, $sourceClass);
-                $analysis->addAnnotation($schema->additionalProperties, $schema->additionalProperties->_context);
-            } elseif (Undefined::isDefault($schema->additionalProperties->type, $schema->additionalProperties->oneOf, $schema->additionalProperties->allOf, $schema->additionalProperties->anyOf)) {
-                $this->applyToAnnotation($schema->additionalProperties, $schemaType->additionalProperties, $analysis, $sourceClass);
-                $this->type2ref($schema->additionalProperties, $analysis, $sourceClass);
+            // An explicit `true|false` is the whole answer for this map — nothing for the
+            // inferred value type to attach to, and hybrid and spec already keep it.
+            // `isDefault()` only rules out the UNDEFINED sentinel, so without this guard a
+            // declared `false` is dereferenced as a Schema.
+            if (!is_bool($schema->additionalProperties)) {
+                if (Undefined::isDefault($schema->additionalProperties)) {
+                    $schema->additionalProperties = new OA\AdditionalProperties(['_context' => new Context(['generated' => true], $schema->_context)]);
+                    $this->applyToAnnotation($schema->additionalProperties, $schemaType->additionalProperties, $analysis, $sourceClass);
+                    $this->type2ref($schema->additionalProperties, $analysis, $sourceClass);
+                    $analysis->addAnnotation($schema->additionalProperties, $schema->additionalProperties->_context);
+                } elseif (Undefined::isDefault($schema->additionalProperties->type, $schema->additionalProperties->oneOf, $schema->additionalProperties->allOf, $schema->additionalProperties->anyOf)) {
+                    $this->applyToAnnotation($schema->additionalProperties, $schemaType->additionalProperties, $analysis, $sourceClass);
+                    $this->type2ref($schema->additionalProperties, $analysis, $sourceClass);
+                }
+                $this->mapNativeType($schema->additionalProperties, $schema->additionalProperties->type);
             }
-            $this->mapNativeType($schema->additionalProperties, $schema->additionalProperties->type);
         } elseif ($schemaType->additionalProperties === true) {
             if (Undefined::isDefault($schema->additionalProperties)) {
                 $schema->additionalProperties = new OA\AdditionalProperties(['_context' => new Context(['generated' => true], $schema->_context)]);
