@@ -9,13 +9,16 @@ namespace OpenApi\Attributes;
 use OpenApi\Annotations as OA;
 use OpenApi\Undefined;
 
+/**
+ * @phpstan-import-type EnumValue from \OpenApi\Spec\Schema
+ */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class ServerVariable extends OA\ServerVariable
 {
     /**
-     * @param list<string|int|float|bool|\UnitEnum|null>|string|null $enum
-     * @param array<string,mixed>|null                               $x
-     * @param list<Attachable>|null                                  $attachables
+     * @param list<EnumValue|null>|string|null $enum
+     * @param array<string,mixed>|null         $x
+     * @param list<Attachable>|null            $attachables
      */
     public function __construct(
         ?string $serverVariable = null,

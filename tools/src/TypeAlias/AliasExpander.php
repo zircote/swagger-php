@@ -67,6 +67,14 @@ final class AliasExpander
         $parsed = self::parse($rc->getDocComment());
         $aliases = $parsed['aliases'];
 
+        // A docblock inherited from a trait or a parent carries that scope's aliases with it:
+        // `ReflectionProperty::getDeclaringClass()` names the using class, while the `@var`
+        // being expanded — and the import that explains it — live in the trait. Nearest scope
+        // wins, so a class can still override what it inherits.
+        foreach ([...array_values($rc->getTraits()), ...($rc->getParentClass() ? [$rc->getParentClass()] : [])] as $inherited) {
+            $aliases += self::aliasesFor($inherited);
+        }
+
         foreach ($parsed['imports'] as $local => $import) {
             if (null !== $source = self::resolveSource($import['from'], $rc)) {
                 $imported = self::parse($source->getDocComment())['aliases'];
