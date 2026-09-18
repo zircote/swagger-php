@@ -255,6 +255,9 @@ class AttributeGenerator extends DocGenerator
         return str_replace(['OpenApi\\Annotations\\', 'OpenApi\\Attributes\\'], '', $class);
     }
 
+    /**
+     * @param class-string $fqdn
+     */
     protected function getReflectionType(string $fqdn, \ReflectionProperty|\ReflectionParameter $rp, bool $preferDefault = false, string $def = ''): string
     {
         $var = [];
@@ -269,7 +272,9 @@ class AttributeGenerator extends DocGenerator
             if ($preferDefault) {
                 $var = [];
             }
-            $var = array_merge($var, explode('|', $def));
+            $rc = new \ReflectionClass($fqdn);
+            $def = $this->expandTypeAliases($def, $this->parseDocblock($rc->getDocComment()), $rc);
+            $var = array_merge($var, $this->splitUnion($def));
         }
 
         return implode('|', array_map(htmlentities(...), array_unique($var)));

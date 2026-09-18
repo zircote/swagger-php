@@ -2796,7 +2796,7 @@ CommonMark syntax may be used for rich text representation.</p><table class="tab
 <br />
 If the parameter location is "path", this property is required and its value must be true.<br />
 Otherwise, the property may be included and its default value is false.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType|JsonContent|XmlContent&gt;|MediaType|XmlContent|Attachable|null</span></dt>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">array&lt;MediaType|JsonContent|XmlContent&gt;|MediaType|JsonContent|XmlContent|Attachable|null</span></dt>
   <dd><p>The content of the request body.<br />
 <br />
 The key is a media type or media type range and the value describes it. For requests that match multiple keys,<br />
@@ -2839,7 +2839,7 @@ CommonMark syntax may be used for rich text representation.</p><table class="tab
 RFC7230 states header names are case-insensitive.<br />
 <br />
 If a response header is defined with the name "Content-Type", it shall be ignored.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr><tr><td style="padding-left: 0;"><i>See</i>:</td><td style="padding-left: 0;"><a href="https://tools.ietf.org/html/rfc7230#page-22">RFC7230</a></td></tr></tbody></table></dd>
-  <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|JsonContent|XmlContent|Attachable|array&lt;MediaType|Attachable&gt;</span></dt>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|JsonContent|XmlContent|Attachable|array&lt;MediaType|JsonContent|XmlContent|Attachable&gt;</span></dt>
   <dd><p>A map containing descriptions of potential response payloads.<br />
 <br />
 The key is a media type or media type range and the value describes it.<br />
