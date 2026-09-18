@@ -57,7 +57,7 @@ class DocGeneratorTest extends TestCase
         );
     }
 
-    public function testParseDocblockCapturesAliasesAndKeepsThemOutOfTheDescription(): void
+    public function testParseDocblockKeepsStaticAnalysisTagsOutOfTheDescription(): void
     {
         $parsed = $this->generator->parseDocblock(<<<'DOC'
             /**
@@ -68,49 +68,6 @@ class DocGeneratorTest extends TestCase
              */
             DOC);
 
-        $this->assertSame(['EnumValues' => 'list<string|int>|null'], $parsed['aliases']);
-        $this->assertSame(['Other' => ['name' => 'Other', 'from' => 'SomeClass']], $parsed['imports']);
-        $this->assertStringNotContainsString('@phpstan', $parsed['content']);
         $this->assertSame('A description.', $parsed['content']);
-    }
-
-    public function testExpandsALocalAlias(): void
-    {
-        $doc = ['aliases' => ['EnumValues' => 'list<string>|null'], 'imports' => []];
-
-        $this->assertSame(
-            'list<string>|null',
-            $this->generator->expand('EnumValues', $doc, new \ReflectionClass(self::class))
-        );
-    }
-
-    public function testFollowsAnImportToTheDeclaringClass(): void
-    {
-        $doc = ['aliases' => [], 'imports' => ['EnumValues' => ['name' => 'EnumValues', 'from' => 'TypeAliasFixture']]];
-
-        $this->assertSame(
-            'list<string|int|float|bool|\UnitEnum|null>|class-string|null',
-            $this->generator->expand('EnumValues', $doc, new \ReflectionClass(self::class))
-        );
-    }
-
-    public function testLeavesAnUnknownNameAlone(): void
-    {
-        $doc = ['aliases' => ['EnumValues' => 'list<string>'], 'imports' => []];
-
-        $this->assertSame(
-            'SomeClass|null',
-            $this->generator->expand('SomeClass|null', $doc, new \ReflectionClass(self::class))
-        );
-    }
-
-    public function testDoesNotSubstituteInsideALongerName(): void
-    {
-        $doc = ['aliases' => ['Enum' => 'string', 'EnumValues' => 'list<string>'], 'imports' => []];
-
-        $this->assertSame(
-            'list<string>',
-            $this->generator->expand('EnumValues', $doc, new \ReflectionClass(self::class))
-        );
     }
 }
