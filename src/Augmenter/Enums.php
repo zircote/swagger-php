@@ -10,6 +10,9 @@ use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Utils\Config;
 use OpenApi\Utils\PipeInterface;
+use OpenApi\Utils\ServerVariableEnum;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
 /**
  * Expands PHP enums into schema enum values.
@@ -27,8 +30,10 @@ use OpenApi\Utils\PipeInterface;
  *
  * @implements PipeInterface<Specification>
  */
-class Enums implements PipeInterface
+class Enums implements PipeInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         #[Config('If set, stores enum case names in a vendor extension with this key (e.g. <code>x-enum-varnames</code>).')]
         protected ?string $enumNames = null,
@@ -122,7 +127,13 @@ class Enums implements PipeInterface
 
         $specification->getWalker()->visit(OA\ServerVariable::class, function (OA\ServerVariable $variable): void {
             if ($variable->enum !== null) {
-                $variable->enum = $this->resolveEnumArray($variable->enum);
+                // resolveEnumArray() is shared with Schema, whose enum may hold any JSON value.
+                // Only a server variable's is narrowed, and only after the cases are resolved.
+                $variable->enum = ServerVariableEnum::asStrings(
+                    $this->resolveEnumArray($variable->enum),
+                    $this->logger,
+                    $variable->serverVariable
+                );
             }
         });
     }

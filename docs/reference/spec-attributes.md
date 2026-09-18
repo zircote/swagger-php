@@ -2159,8 +2159,8 @@ The allowed and default substitutions for one template variable in a `Server` UR
   <dd><p>The default value to use for substitution</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A description of the server variable (CommonMark syntax)</p></dd>
-  <dt><strong>enum</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
-  <dd><p>Enumeration of allowed string values for substitution</p></dd>
+  <dt><strong>enum</strong> : <span style="font-family: monospace;">list&lt;string|int|float|bool|\UnitEnum|class-string&lt;\UnitEnum&gt;|null&gt;|null</span></dt>
+  <dd><p>Allowed values for substitution; all cast to string in the specification</p></dd>
 </dl>
 
 #### Reference

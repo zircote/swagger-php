@@ -4,13 +4,20 @@ info:
   version: '1.0'
 servers:
   -
-    url: '{env}.example.com'
+    url: '{env}.example.com:{port}'
     variables:
       env:
         enum:
           - prod
           - staging
         default: prod
+      port:
+        enum:
+          - '8080'
+          - '443'
+        default: '443'
+      secure:
+        default: 'yes'
 paths:
   /api/endpoint:
     get:

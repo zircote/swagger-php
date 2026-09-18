@@ -27,7 +27,9 @@ class ServerVariable extends AbstractAnnotation
     /**
      * An enumeration of values to be used if the substitution options are from a limited set.
      *
-     * @var list<string|int|float|bool|\UnitEnum>|class-string
+     * All allowed types are cast to string in the specification; a bool is dropped with a warning.
+     *
+     * @var list<string|int|float|bool|\UnitEnum>|string
      */
     public $enum = Undefined::UNDEFINED;
 
