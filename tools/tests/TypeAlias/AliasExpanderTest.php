@@ -49,6 +49,16 @@ class AliasExpanderTest extends TestCase
         );
     }
 
+    public function testFindsAnAliasImportedByATraitTheClassUses(): void
+    {
+        // ReflectionProperty::getDeclaringClass() names the using class, not the trait, so an
+        // alias reachable only through the trait has to be found by walking the scopes.
+        $this->assertSame(
+            'list<string|int|float|bool|\UnitEnum>',
+            AliasExpander::expand('list<EnumValue>', new \ReflectionClass(InheritingFixture::class))
+        );
+    }
+
     public function testLeavesAnUnknownNameAlone(): void
     {
         $this->assertSame(

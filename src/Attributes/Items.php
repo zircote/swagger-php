@@ -9,21 +9,24 @@ namespace OpenApi\Attributes;
 use OpenApi\Annotations as OA;
 use OpenApi\Undefined;
 
+/**
+ * @phpstan-import-type EnumValue from \OpenApi\Spec\Schema
+ */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 class Items extends OA\Items
 {
     /**
-     * @param string|class-string|object|null                              $ref
-     * @param list<string>                                                 $required
-     * @param list<Property>                                               $properties
-     * @param string|non-empty-array<string>|null                          $type
-     * @param array<mixed>                                                 $examples
-     * @param array<Schema|OA\Schema>                                      $allOf
-     * @param array<Schema|OA\Schema>                                      $anyOf
-     * @param array<Schema|OA\Schema>                                      $oneOf
-     * @param list<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
-     * @param array<string,mixed>|null                                     $x
-     * @param list<Attachable>|null                                        $attachables
+     * @param string|class-string|object|null        $ref
+     * @param list<string>                           $required
+     * @param list<Property>                         $properties
+     * @param string|non-empty-array<string>|null    $type
+     * @param array<mixed>                           $examples
+     * @param array<Schema|OA\Schema>                $allOf
+     * @param array<Schema|OA\Schema>                $anyOf
+     * @param array<Schema|OA\Schema>                $oneOf
+     * @param list<EnumValue|null>|class-string|null $enum
+     * @param array<string,mixed>|null               $x
+     * @param list<Attachable>|null                  $attachables
      */
     public function __construct(
         // Schema

@@ -29,23 +29,24 @@ use OpenApi\Undefined;
  * ```
  *
  * @Annotation
+ * @phpstan-import-type EnumValue from \OpenApi\Spec\Schema
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class JsonContent extends OA\JsonContent
 {
     /**
-     * @param list<Encoding>                                               $encoding
-     * @param string|class-string|object|null                              $ref
-     * @param list<string>                                                 $required
-     * @param list<Property>                                               $properties
-     * @param string|non-empty-array<string>|null                          $type
-     * @param array<Examples>                                              $examples
-     * @param array<Schema|OA\Schema>                                      $allOf
-     * @param array<Schema|OA\Schema>                                      $anyOf
-     * @param array<Schema|OA\Schema>                                      $oneOf
-     * @param list<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
-     * @param array<string,mixed>|null                                     $x
-     * @param list<Attachable>|null                                        $attachables
+     * @param list<Encoding>                         $encoding
+     * @param string|class-string|object|null        $ref
+     * @param list<string>                           $required
+     * @param list<Property>                         $properties
+     * @param string|non-empty-array<string>|null    $type
+     * @param array<Examples>                        $examples
+     * @param array<Schema|OA\Schema>                $allOf
+     * @param array<Schema|OA\Schema>                $anyOf
+     * @param array<Schema|OA\Schema>                $oneOf
+     * @param list<EnumValue|null>|class-string|null $enum
+     * @param array<string,mixed>|null               $x
+     * @param list<Attachable>|null                  $attachables
      */
     public function __construct(
         ?array $encoding = null,

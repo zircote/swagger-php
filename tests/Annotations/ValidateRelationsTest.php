@@ -7,17 +7,19 @@
 namespace OpenApi\Tests\Annotations;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Tests\Concerns\ResolvesDeclaredTypes;
 use OpenApi\Tests\OpenApiTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\TypeInfo\Type\CollectionType;
 use Symfony\Component\TypeInfo\Type\ObjectType;
-use Symfony\Component\TypeInfo\TypeResolver\TypeResolver;
 
 /**
  * Test if the annotation class nesting parent/child relations are coherent.
  */
 final class ValidateRelationsTest extends OpenApiTestCase
 {
+    use ResolvesDeclaredTypes;
+
     #[DataProvider('allAnnotationClasses')]
     public function testAncestors(string $class): void
     {
@@ -56,13 +58,12 @@ final class ValidateRelationsTest extends OpenApiTestCase
         }
 
         // check via property type too
-        $typeResolver = TypeResolver::create();
         foreach ((new \ReflectionClass($class))->getProperties() as $rp) {
             if (in_array($rp->getName(), $class::$_blacklist, strict: true) || $rp->getName()[0] === '_') {
                 continue;
             }
 
-            $type = $typeResolver->resolve($rp);
+            $type = $this->resolveDeclaredType($rp);
 
             if ($type instanceof CollectionType) {
                 $type = $type->getCollectionValueType();
