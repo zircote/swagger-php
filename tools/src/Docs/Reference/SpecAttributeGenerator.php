@@ -14,6 +14,7 @@ use OpenApi\Tools\Docs\Sections\NestedElementsSection;
 use OpenApi\Tools\Docs\Sections\ParametersSection;
 use OpenApi\Tools\Docs\Sections\ReferencesSection;
 use OpenApi\Tools\Docs\Sections\SectionInterface;
+use OpenApi\Tools\TypeAlias\AliasExpander;
 
 class SpecAttributeGenerator extends DocGenerator
 {
@@ -207,7 +208,7 @@ class SpecAttributeGenerator extends DocGenerator
         if ($docType) {
             $rc = $rp->getDeclaringClass();
             if (null !== $rc) {
-                $docType = $this->expandTypeAliases($docType, $this->parseDocblock($rc->getDocComment()), $rc);
+                $docType = AliasExpander::expand($docType, $rc);
             }
 
             return htmlentities($docType);

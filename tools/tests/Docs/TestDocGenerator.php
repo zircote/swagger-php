@@ -28,13 +28,4 @@ class TestDocGenerator extends DocGenerator
     {
         return $this->splitUnion($type);
     }
-
-    /**
-     * @param array{aliases?: array<string, string>, imports?: array<string, array{name: string, from: string}>} $doc
-     * @param \ReflectionClass<object>                                                                           $rc
-     */
-    public function expand(string $type, array $doc, \ReflectionClass $rc): string
-    {
-        return $this->expandTypeAliases($type, $doc, $rc);
-    }
 }

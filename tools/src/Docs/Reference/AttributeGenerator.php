@@ -15,6 +15,7 @@ use OpenApi\Tools\Docs\Sections\NestedElementsSection;
 use OpenApi\Tools\Docs\Sections\ParametersSection;
 use OpenApi\Tools\Docs\Sections\ReferencesSection;
 use OpenApi\Tools\Docs\Sections\SectionInterface;
+use OpenApi\Tools\TypeAlias\AliasExpander;
 use OpenApi\Utils\TokenScanner;
 
 class AttributeGenerator extends DocGenerator
@@ -273,7 +274,7 @@ class AttributeGenerator extends DocGenerator
                 $var = [];
             }
             $rc = new \ReflectionClass($fqdn);
-            $def = $this->expandTypeAliases($def, $this->parseDocblock($rc->getDocComment()), $rc);
+            $def = AliasExpander::expand($def, $rc);
             $var = array_merge($var, $this->splitUnion($def));
         }
 
