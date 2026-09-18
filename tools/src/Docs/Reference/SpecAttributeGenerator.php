@@ -205,6 +205,11 @@ class SpecAttributeGenerator extends DocGenerator
     protected function resolveType(\ReflectionParameter $rp, string $docType): string
     {
         if ($docType) {
+            $rc = $rp->getDeclaringClass();
+            if (null !== $rc) {
+                $docType = $this->expandTypeAliases($docType, $this->parseDocblock($rc->getDocComment()), $rc);
+            }
+
             return htmlentities($docType);
         }
 

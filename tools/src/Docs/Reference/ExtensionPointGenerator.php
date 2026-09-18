@@ -82,7 +82,7 @@ class ExtensionPointGenerator extends DocGenerator
         foreach ($instances as $instance) {
             $rc = new \ReflectionClass($instance);
             $classDoc = $this->parseDocblock($rc->getDocComment());
-            $description = preg_replace('/\n?@phpstan-\w+[^\n]+/', '', $classDoc['content']);
+            $description = $classDoc['content'];
 
             $collected[] = [
                 'name' => $rc->getShortName(),

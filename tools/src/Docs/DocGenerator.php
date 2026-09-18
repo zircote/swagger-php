@@ -106,17 +106,17 @@ abstract class DocGenerator
     }
 
     /**
-     * @return array{content: string, see: list<string>, var: string, params: array<string, array{type: string, content: string|null}>}
+     * @return array{content: string, see: list<string>, var: string, params: array<string, array{type: string, content: string|null}>, aliases: array<string, string>, imports: array<string, array{name: string, from: string}>}
      */
     public function parseDocblock(string|false|null $docblock): array
     {
         if (!$docblock) {
-            return ['content' => '', 'see' => [], 'var' => '', 'params' => []];
+            return ['content' => '', 'see' => [], 'var' => '', 'params' => [], 'aliases' => [], 'imports' => []];
         }
 
         $comment = preg_split('/(\n|\r\n)/', $docblock);
         if (false === $comment) {
-            return ['content' => '', 'see' => [], 'var' => '', 'params' => []];
+            return ['content' => '', 'see' => [], 'var' => '', 'params' => [], 'aliases' => [], 'imports' => []];
         }
 
         $comment[0] = preg_replace('/[ \t]*\\/\*\*/', '', $comment[0]); // strip '/**'
@@ -126,6 +126,8 @@ abstract class DocGenerator
         $see = [];
         $var = '';
         $params = [];
+        $aliases = [];
+        $imports = [];
         $contentLines = [];
         $append = false;
         foreach ($comment as $line) {
@@ -133,6 +135,22 @@ abstract class DocGenerator
             if (str_starts_with((string) $line, '@')) {
                 if (str_starts_with((string) $line, '@see ')) {
                     $see[] = trim(substr((string) $line, 5));
+                    continue;
+                }
+                if (str_starts_with((string) $line, '@phpstan-type ')) {
+                    // `@phpstan-type Name <definition>`; the definition runs to end of line.
+                    if (preg_match('/^@phpstan-type\s+(\w+)\s+(.+)$/', (string) $line, $match) === 1) {
+                        $aliases[$match[1]] = trim($match[2]);
+                    }
+
+                    continue;
+                }
+                if (str_starts_with((string) $line, '@phpstan-import-type ')) {
+                    // `@phpstan-import-type Name from Source [as Local]`.
+                    if (preg_match('/^@phpstan-import-type\s+(\w+)\s+from\s+([\w\\\\]+)(?:\s+as\s+(\w+))?/', (string) $line, $match) === 1) {
+                        $imports[($match[3] ?? '') ?: $match[1]] = ['name' => $match[1], 'from' => $match[2]];
+                    }
+
                     continue;
                 }
                 if (str_starts_with((string) $line, '@var ')) {
@@ -165,7 +183,102 @@ abstract class DocGenerator
 
         $content = trim(implode("\n", $contentLines));
 
-        return ['content' => $content, 'see' => $see, 'var' => $var, 'params' => $params];
+        return ['content' => $content, 'see' => $see, 'var' => $var, 'params' => $params, 'aliases' => $aliases, 'imports' => $imports];
+    }
+
+    /**
+     * Split a union on `|`, ignoring separators nested inside `<>`, `{}` or `()`.
+     *
+     * `explode('|', ...)` cuts `list<string|int>` into `list<string` and `int>`. It survived
+     * because the pieces were only ever reassembled in order, but an expanded alias puts a far
+     * longer generic in reach of `array_unique()`, where a duplicated fragment would be dropped.
+     *
+     * @return list<string>
+     */
+    protected function splitUnion(string $type): array
+    {
+        $parts = [];
+        $depth = 0;
+        $current = '';
+
+        foreach (str_split($type) as $char) {
+            if (in_array($char, ['<', '{', '('], true)) {
+                ++$depth;
+            } elseif (in_array($char, ['>', '}', ')'], true)) {
+                --$depth;
+            } elseif ('|' === $char && 0 === $depth) {
+                $parts[] = trim($current);
+                $current = '';
+
+                continue;
+            }
+
+            $current .= $char;
+        }
+
+        if ('' !== trim($current)) {
+            $parts[] = trim($current);
+        }
+
+        return $parts;
+    }
+
+    /**
+     * Expand `@phpstan-type` aliases inside a docblock type.
+     *
+     * The reference renders docblock types verbatim, so an unexpanded alias would publish a
+     * name the reader has no way to look up. Imports are followed one hop: `@phpstan-import-type
+     * X from Y` reads Y's own `@phpstan-type X`. Unknown names are left alone — a type that
+     * merely looks like an alias is far more likely to be a class name.
+     *
+     * @param array{aliases?: array<string, string>, imports?: array<string, array{name: string, from: string}>} $doc
+     * @param \ReflectionClass<object>                                                                           $rc
+     */
+    protected function expandTypeAliases(string $type, array $doc, \ReflectionClass $rc): string
+    {
+        /** @var array<string, string> $aliases */
+        $aliases = $doc['aliases'] ?? [];
+
+        foreach ($doc['imports'] ?? [] as $local => $import) {
+            if (null !== $source = $this->resolveAliasSource($import['from'], $rc)) {
+                $imported = $this->parseDocblock($source->getDocComment())['aliases'] ?? [];
+                if (isset($imported[$import['name']])) {
+                    $aliases[$local] = $imported[$import['name']];
+                }
+            }
+        }
+
+        if ([] === $aliases) {
+            return $type;
+        }
+
+        // Longest first, so `EnumValues` is not half-replaced by an alias named `Enum`.
+        uksort($aliases, static fn (string $a, string $b): int => strlen($b) <=> strlen($a));
+
+        foreach ($aliases as $name => $definition) {
+            $type = (string) preg_replace('/(?<![\\\w])' . preg_quote($name, '/') . '(?![\w])/', $definition, $type);
+        }
+
+        return $type;
+    }
+
+    /**
+     * Resolve the class an `@phpstan-import-type` points at: as written, then relative to the
+     * importing class's namespace. Anything else is the caller's problem to declare properly.
+     *
+     * @param \ReflectionClass<object> $rc
+     *
+     * @return \ReflectionClass<object>|null
+     */
+    protected function resolveAliasSource(string $from, \ReflectionClass $rc): ?\ReflectionClass
+    {
+        foreach ([ltrim($from, '\\'), $rc->getNamespaceName() . '\\' . ltrim($from, '\\')] as $candidate) {
+            if (class_exists($candidate) || interface_exists($candidate) || trait_exists($candidate)) {
+                return new \ReflectionClass($candidate);
+            }
+        }
+
+        return null;
     }
 
     /**
