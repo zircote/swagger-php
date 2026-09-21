@@ -12,6 +12,7 @@ use OpenApi\Undefined;
  * Sets a default value to the parameter. The type of the value depends on the defined type.
  *
  * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html)
+ * @phpstan-import-type EnumValue from \OpenApi\Spec\Schema
  */
 trait JsonSchemaTrait
 {
@@ -111,7 +112,7 @@ trait JsonSchemaTrait
      * A property instance is valid against this attribute if its value is one of the values specified in this
      * list.
      *
-     * @var list<string|int|float|bool|\UnitEnum>|class-string
+     * @var list<EnumValue>|class-string
      */
     public $enum = Undefined::UNDEFINED;
 
@@ -234,7 +235,7 @@ trait JsonSchemaTrait
  *
 ** TYPE-HINTS:
 
-     * @param list<string|int|float|bool|\UnitEnum|null>|class-string|null $enum
+     * @param list<EnumValue|null>|class-string|null $enum
 
 
 ** PARAMETERS:

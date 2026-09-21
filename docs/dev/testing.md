@@ -65,6 +65,7 @@ Reach for a unit test when there is no document to validate — `ComponentIndexT
 | `CollectsSpecClasses` | enumerating every `OpenApi\Spec` attribute class, for suite-wide invariants |
 | `ExpectsLogEntries` | declaring which diagnostics a build is allowed to emit |
 | `GeneratesTestMatrix` | building version × mode combinations, with exclusions, and discovering fixtures by glob |
+| `ResolvesDeclaredTypes` | resolving a declared property type through `symfony/type-info`, seeing past `@phpstan-type` aliases |
 | `UsesExamples` | registering a classloader for a `docs/examples` implementation |
 | `UsesFixtures` | resolving paths under `tests/Fixtures/` |
 
