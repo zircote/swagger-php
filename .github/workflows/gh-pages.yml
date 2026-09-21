@@ -1,12 +1,19 @@
 name: gh-pages
 
 on:
+  push:
+    branches:
+      - master
   workflow_dispatch:
     inputs:
       dryrun:
         description: Dry run
         type: boolean
         required: false
+
+concurrency:
+  group: gh-pages
+  cancel-in-progress: true
 
 jobs:
   gh-pages:
@@ -36,7 +43,7 @@ jobs:
         with:
           target_branch: gh-pages
           build_dir: docs/.vitepress/dist
-          dry_run: ${{ github.event.inputs.dryrun }}
+          dry_run: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.dryrun == 'true' }}
           verbose: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
