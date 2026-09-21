@@ -163,8 +163,8 @@ before folding a case in:
 
 `src/Annotations/`, the classic and hybrid modes and everything that exists to compare them
 are v7-only, and v8 removes the lot. What follows carries the mode marker
-[ROADMAP.md](../../ROADMAP.md) defines for the things `@deprecated` cannot reach, so the
-removal is a grep rather than an untangling:
+[ROADMAP.md](https://github.com/zircote/swagger-php/blob/master/ROADMAP.md) defines for the
+things `@deprecated` cannot reach, so the removal is a grep rather than an untangling:
 
 - **`[classic]` the `{fixture}.php` / `{fixture}-spec.php` pairing itself.** The unsuffixed
   file is the classic source, written in `OpenApi\Attributes`; the `-spec.php` pair is the same
