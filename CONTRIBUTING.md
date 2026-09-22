@@ -61,6 +61,43 @@ Commit subjects follow the same `type(Scope): subject` shape as the title, with 
 of `feat`, `fix`, `docs`, `test`, `chore` or `refactor`. A commit message body documents
 what the diff does; the reasoning belongs in the pull request description.
 
+## Versioning
+
+swagger-php follows [semantic versioning](https://semver.org). What a change earns:
+
+**Patch** — a fix that changes generated output only where the old output was wrong, an
+internal refactor, a documentation or CI change. Anything a consumer can take without
+reading the release notes.
+
+**Minor** — new public API, a new annotation or attribute, a new field on an existing one,
+and **any widening of a `require` constraint**. A dependency change is a minor even when it
+only widens: a patch is expected to be a drop-in with no effect on resolution, and widening
+lets consumers install combinations that were impossible before.
+
+**Major** — removing or re-signing public API, narrowing a `require` constraint, raising the
+PHP floor, or changing generated output that a correct document could have depended on.
+
+**The commit type does not decide this.** #2196 carried no `feat` — its subject is *"Drop
+symfony/console 7.4 requirement"*, which reads like a fix — but it is a minor, because
+applications on Symfony 6.4 that could not install the library at all now can. Read the
+effect on a consumer, not the prefix. The reverse holds too: a `feat` that only adds a test
+helper changes nothing for anyone and is not a minor on its own.
+
+**Generated output is the case that needs care**, because most fixes here change it. Correcting
+output that was invalid, or that no valid document could have relied on, is a patch — that is
+the bug being fixed. Changing output that was already valid is at least a minor, even when the
+new output is better, because a consumer's committed spec file or downstream generator will
+see a diff it did not ask for.
+
+**Public API is every class under `src/` that a consumer can reach**, which today means all of
+them — nothing is marked `@internal`. In practice the classes people build on are `Generator`,
+the analysers and processors, the annotations and attributes, and the `Spec` classes; the
+`Console` classes exist for `bin/openapi` and are reached through the command line rather than
+extended. That is a description of how things are used, not a promise, so when a change touches
+a class outside that list, say so in the pull request rather than assuming nobody is on it.
+
+If a release mixes levels, the highest one wins.
+
 ## Documentation
 
 The documentation website is build from the [docs](docs/) folder with [vitepress](https://vitepress.vuejs.org).
