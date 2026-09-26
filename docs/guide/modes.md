@@ -10,7 +10,6 @@ Swagger-php supports three processing modes that control how your source code is
 | **Attributes**  | `OpenApi\Attributes`   | `OpenApi\Attributes`                                         | `OpenApi\Spec`                               |
 | **Annotations** | Yes                    | Yes                                                          | No                                           |
 | **Pipeline**    | Generator → Processors | Assembler → Resolver → HybridBridge → Augmenters → Compiler  | Assembler → Resolver → Augmenters → Compiler |
-| **Best for**    | Existing projects      | Gradual migration                                            | New projects                                 |
 
 ## Classic (default)
 
