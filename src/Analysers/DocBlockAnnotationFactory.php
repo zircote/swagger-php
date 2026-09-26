@@ -11,11 +11,19 @@ use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\GeneratorAwareTrait;
 
+/**
+ * Builds annotations from docblock comments.
+ *
+ * @deprecated since 6.11, removed in 8.0 - use attributes instead
+ */
 class DocBlockAnnotationFactory implements AnnotationFactoryInterface
 {
     use GeneratorAwareTrait;
 
     protected ?DocBlockParser $docBlockParser = null;
+
+    /** Reset per generator run, so a scan of a thousand annotated files reports once. */
+    protected bool $deprecationReported = false;
 
     public function __construct(?DocBlockParser $docBlockParser = null)
     {
@@ -30,6 +38,7 @@ class DocBlockAnnotationFactory implements AnnotationFactoryInterface
     public function setGenerator(Generator $generator): static
     {
         $this->generator = $generator;
+        $this->deprecationReported = false;
 
         $this->docBlockParser->setAliases($generator->getAliases());
 
@@ -60,6 +69,7 @@ class DocBlockAnnotationFactory implements AnnotationFactoryInterface
             $annotations = [];
             foreach ($this->docBlockParser->fromComment($comment, $context) as $instance) {
                 if ($instance instanceof OA\AbstractAnnotation) {
+                    $this->reportDeprecation();
                     $annotations[] = $instance;
                 } else {
                     if ($context->is('other') === false) {
@@ -73,5 +83,19 @@ class DocBlockAnnotationFactory implements AnnotationFactoryInterface
         }
 
         return [];
+    }
+
+    /**
+     * Reported on the first docblock annotation actually parsed, not on the first docblock
+     * seen: a project that has migrated to attributes still has docblocks everywhere.
+     */
+    protected function reportDeprecation(): void
+    {
+        if ($this->deprecationReported) {
+            return;
+        }
+
+        $this->deprecationReported = true;
+        trigger_deprecation('zircote/swagger-php', '6.11', 'Docblock annotations are deprecated and will be removed in 8.0; use attributes instead');
     }
 }

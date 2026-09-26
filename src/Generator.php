@@ -26,7 +26,7 @@ use Psr\Log\LoggerInterface;
  */
 class Generator
 {
-    /** @deprecated Use {@see Undefined::UNDEFINED} instead. */
+    /** @deprecated since 6.3.1, removed in 8.0 - use {@see Undefined::UNDEFINED} instead */
     public const UNDEFINED = Undefined::UNDEFINED;
 
     /** @var array<string,string> */
@@ -77,7 +77,7 @@ class Generator
     }
 
     /**
-     * @deprecated use {@see Undefined::isDefault()} instead
+     * @deprecated since 6.3.1, removed in 8.0 - use {@see Undefined::isDefault()} instead
      *
      * @param mixed ...$value
      */
@@ -88,12 +88,17 @@ class Generator
 
     /**
      * @return array<string, string>
+     *
+     * @deprecated since 6.11, removed in 8.0 - docblock annotations only
      */
     public function getAliases(): array
     {
         return $this->aliases;
     }
 
+    /**
+     * @deprecated since 6.11, removed in 8.0 - docblock annotations only
+     */
     public function addAlias(string $alias, string $namespace): Generator
     {
         $this->aliases[$alias] = $namespace;
@@ -103,6 +108,8 @@ class Generator
 
     /**
      * @param array<string, string> $aliases
+     *
+     * @deprecated since 6.11, removed in 8.0 - docblock annotations only
      */
     public function setAliases(array $aliases): Generator
     {
@@ -113,12 +120,17 @@ class Generator
 
     /**
      * @return list<string>|null
+     *
+     * @deprecated since 6.11, removed in 8.0 - docblock annotations only
      */
     public function getNamespaces(): ?array
     {
         return $this->namespaces;
     }
 
+    /**
+     * @deprecated since 6.11, removed in 8.0 - docblock annotations only
+     */
     public function addNamespace(string $namespace): Generator
     {
         $namespaces = (array) $this->getNamespaces();
@@ -129,6 +141,8 @@ class Generator
 
     /**
      * @param list<string>|null $namespaces
+     *
+     * @deprecated since 6.11, removed in 8.0 - docblock annotations only
      */
     public function setNamespaces(?array $namespaces): Generator
     {
