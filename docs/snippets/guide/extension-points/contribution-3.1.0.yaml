@@ -1,0 +1,27 @@
+openapi: 3.1.0
+info:
+  title: 'Registered routes'
+  version: 1.0.0
+paths:
+  /pets:
+    get:
+      operationId: a258179ad504a1eacaafc2ef43cbd7ba
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+components:
+  schemas:
+    Pet:
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+      required:
+        - name
+        - age
