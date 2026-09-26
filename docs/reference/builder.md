@@ -129,8 +129,8 @@ The hook runs during the build, and a second call replaces the first.
 
 ### Contributing attributes (spec/hybrid mode) {#contributions}
 
-`withSpecification()` runs after assembly and before resolution, where metadata that has no
-reflector to scan enters the pipeline:
+`withSpecification()` runs after assembly and before resolution, and takes attributes the
+assembler did not build, with or without a reflector:
 
 ```php
 $builder->withSpecification(function (\OpenApi\Specification $specification) {

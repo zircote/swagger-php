@@ -60,9 +60,13 @@ That produces:
 
 <<< @/snippets/guide/extension-points/contribution-3.1.0.yaml
 
-This is the seam for metadata with no reflector to scan. A translator needs an attribute to
-read; a route registered as `Route::get('/users', [UserController::class, 'index'])` has none,
-and neither does an entity registry or a serializer's configuration.
+The pipeline reads a reflector, not a source file, so where an attribute came from does not
+matter. A contribution that carries one is treated as the assembler's own: an operation given
+its `ReflectionMethod` takes summary, description and operation id from the method, and a
+parameter given its `ReflectionParameter` takes its name, type and whether it is required. A
+router that knows `[UserController::class, 'index']` for a route can hand all of that over.
+What has no reflector anywhere, an entity registry or a serializer's configuration, goes in
+bare, and this is the only way it gets in.
 
 An augmenter can also `add()` attributes, but it runs after resolution, so a `$ref` inside
 what it adds stays unresolved. Use an augmenter to enrich what is there, and this to put

@@ -11,6 +11,7 @@ use OpenApi\Builder\Mode;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Tests\Fixtures\Augmenter\RefTarget;
+use OpenApi\Tests\Fixtures\Builder\PlainController;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -87,6 +88,40 @@ final class SpecificationContributionTest extends TestCase
             'an operation with no reflector still gets an id, derived from method and path',
         );
         $this->assertSame('Things', $document['tags'][0]['name'], 'a tag used by a contribution is declared globally');
+    }
+
+    public function testAContributionCarryingAReflectorIsTreatedAsScanned(): void
+    {
+        $method = new \ReflectionMethod(PlainController::class, 'index');
+        $parameters = [];
+        foreach ($method->getParameters() as $parameter) {
+            $parameters[] = (new OA\Parameter\Query())->setReflector($parameter);
+        }
+
+        $result = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->withSpecification(function (Specification $specification) use ($method, $parameters): void {
+                $specification->add(
+                    new OA\Info(title: 'Reflected', version: '1.0.0'),
+                    (new OA\Operation\Get(path: '/things', parameters: $parameters, responses: [
+                        new OA\Response(response: 200, description: 'Things'),
+                    ]))->setReflector($method),
+                );
+            })
+            ->build();
+
+        $operation = $result->toArray()['paths']['/things']['get'];
+
+        $this->assertSame('List the things.', $operation['summary'], 'the summary is read from the method docblock');
+        $this->assertSame('page', $operation['parameters'][0]['name']);
+        $this->assertSame('integer', $operation['parameters'][0]['schema']['type'], 'the type is read from the parameter');
+        $this->assertTrue($operation['parameters'][0]['required']);
+        $this->assertFalse($operation['parameters'][1]['required'], 'a defaulted parameter is optional');
+        $this->assertSame(
+            md5('GET::/things::' . PlainController::class . '::index'),
+            $operation['operationId'],
+            'the id names the method, as it does for a scanned operation',
+        );
     }
 
     public function testHooksRunInRegistrationOrderAndAccumulate(): void

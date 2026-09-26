@@ -195,8 +195,8 @@ class Builder
      *
      * The callable receives the assembled `Specification` and adds attributes to it with
      * `Specification::add()`. A `$ref` in a contribution resolves as one in a scanned attribute
-     * does, and every augmenter sees what was contributed. This is where metadata with no
-     * reflector to scan enters the pipeline.
+     * does, and every augmenter sees what was contributed. A contribution carrying a reflector
+     * is treated as the assembler's own; one without is metadata nothing else reaches.
      *
      * Runs during the build, once the `Specification` exists. Hooks accumulate: every one
      * runs, in registration order. Classic mode assembles no `Specification`, so the hooks
