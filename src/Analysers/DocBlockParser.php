@@ -14,6 +14,9 @@ use OpenApi\Generator;
 /**
  * Extract swagger-php annotations from a [PHPDoc](http://en.wikipedia.org/wiki/PHPDoc) using Doctrine's DocParser.
  */
+/**
+ * @deprecated since 6.11, removed in 8.0 - use attributes instead
+ */
 class DocBlockParser
 {
     protected DocParser $docParser;

@@ -124,5 +124,5 @@ The recommended migration path is:
 ::: tip Version timeline
 - **v6** — spec/hybrid ship as opt-in beta. Classic remains default.
 - **v7** — hybrid becomes the default mode. Classic still available. `setMode()` and all classic code deprecated.
-- **v8** — classic removed. `setMode()` removed. Spec becomes default. Spec code might move to `OpenApi\Attributes`.
+- **v8** — classic removed. `setMode()` removed. Spec becomes default. Spec attributes move to `OpenApi\Attributes`, one `use` line per file.
 :::

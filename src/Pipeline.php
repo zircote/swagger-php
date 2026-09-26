@@ -7,7 +7,7 @@
 namespace OpenApi;
 
 /**
- * @deprecated use {@see Utils\Pipeline} instead
+ * @deprecated since 6.3.1, removed in 7.0 - use {@see Utils\Pipeline} instead
  *
  * @extends Utils\Pipeline<mixed>
  */

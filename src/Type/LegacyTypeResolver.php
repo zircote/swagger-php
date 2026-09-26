@@ -12,7 +12,7 @@ use OpenApi\Context;
 use OpenApi\Undefined;
 
 /**
- * @deprecated use `TypeInfoTypeResolver` instead
+ * @deprecated since 6.0.0, removed in 7.0 - use `TypeInfoTypeResolver` instead
  */
 class LegacyTypeResolver extends AbstractTypeResolver
 {

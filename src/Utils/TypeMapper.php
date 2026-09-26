@@ -9,7 +9,7 @@ namespace OpenApi\Utils;
 use OpenApi\Type;
 
 /**
- * @deprecated use {@see Type\TypeMapper} instead
+ * @deprecated since 6.9.0, removed in 7.0 - use {@see Type\TypeMapper} instead
  */
 class TypeMapper extends Type\TypeMapper
 {
