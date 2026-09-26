@@ -46,7 +46,10 @@ This is where things turn:
   relies on a lot of actual `classic` features)
 * all classic code - annotations, attributes and the related pipeline code - is marked
   `@deprecated`, removed in `8.0`
-* the bridge and `Builder::setMode()` are marked `@deprecated`, removed in `8.0`
+* the bridge and mode selection are marked `@deprecated`, removed in `8.0` - that is
+  `Builder::setMode()`, the `Builder\Mode` enum, `Console\GenerateInput::$mode` and the CLI's
+  `-m`/`--mode` option, which go together because there is one pipeline in `8.0` and nothing
+  left to select. These markers name no replacement, unlike every other marker here
 * everything whose marker says `7.0` is removed
 * `nikic/php-parser` is raised to `^5.0` - the `^4.19` branch parses no further than
   PHP 8.3 syntax
