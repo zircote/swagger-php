@@ -49,6 +49,25 @@ code:
 without either being written out. The subclass is an `OA\Schema` as far as the rest of the
 pipeline is concerned, so merging, containment and compilation treat it the same.
 
+## Contributing to the Specification
+
+`Builder::withSpecification()` hands you the assembled `Specification` before the resolver
+runs. Add attributes to it and they go through the rest of the pipeline as scanned ones do:
+
+<<< @/snippets/guide/extension-points/contribution.php
+
+That produces:
+
+<<< @/snippets/guide/extension-points/contribution-3.1.0.yaml
+
+This is the seam for metadata with no reflector to scan. A translator needs an attribute to
+read; a route registered as `Route::get('/users', [UserController::class, 'index'])` has none,
+and neither does an entity registry or a serializer's configuration.
+
+An augmenter can also `add()` attributes, but it runs after resolution, so a `$ref` inside
+what it adds stays unresolved. Use an augmenter to enrich what is there, and this to put
+something there.
+
 ## Resolvers
 
 Seeding from reflectors means the specification can name a class that was never a source: a
@@ -126,8 +145,8 @@ alternative.
 makes the DTOs worth having. Metadata that only means something to one integration belongs
 in an `Attachable`, not in a widened `$ref: string|object`.
 
-**There is no framework-specific code, and no plans for any.** Translators, augmenters and
-attachables are the contract; anything a framework needs can be built from them, outside
+**There is no framework-specific code, and no plans for any.** Translators, contributions,
+augmenters and attachables are the contract; anything a framework needs can be built from them, outside
 this repository.
 
 **There are no events or listeners.** The pipeline is deterministic and reads top to bottom,

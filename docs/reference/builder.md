@@ -54,6 +54,9 @@ See the [Processing Modes](/guide/modes) guide for a full comparison and migrati
 
 ## API
 
+A `with*()` hook runs either when called, against an object the builder already holds, or
+during the build, once its subject exists.
+
 ### Sources
 
 ```php
@@ -122,10 +125,27 @@ $builder->withGenerator(function (\OpenApi\Generator $generator) {
 ```
 
 The callable receives a pre-configured `Generator` instance and may either modify it in-place or return a new instance.
+The hook runs during the build, and a second call replaces the first.
+
+### Contributing attributes (spec/hybrid mode) {#contributions}
+
+`withSpecification()` runs after assembly and before resolution, where metadata that has no
+reflector to scan enters the pipeline:
+
+```php
+$builder->withSpecification(function (\OpenApi\Specification $specification) {
+    $specification->add(new \OpenApi\Spec\Operation\Get(path: '/users'));
+});
+```
+
+Contributions are resolved, augmented and compiled with everything else. Hooks accumulate:
+every one runs, in registration order. See
+[Contributing to the Specification](/guide/extension-points#contributing-to-the-specification).
 
 ### Augmenter configuration (spec/hybrid mode) {#augmenters}
 
-For spec and hybrid modes, use `withAugmenters()` to configure the augmenter pipeline:
+For spec and hybrid modes, use `withAugmenters()` to configure the augmenter pipeline. The
+hook runs when called; repeated calls configure the same pipeline:
 
 ```php
 use OpenApi\Augmenter;
@@ -158,7 +178,8 @@ The resolver handles FQCNs that are referenced by the specification but have no 
 
 `Resolver\Reflection` is registered by default: it collects the referenced class with the assembler in use, so adding a single controller is enough to pick up everything it references — no need to list all related classes as sources.
 
-Use `withResolver()` to add your own:
+Use `withResolver()` to add your own. The hook runs when called; repeated calls configure the
+same instance:
 
 ```php
 use OpenApi\Resolver;
@@ -174,7 +195,8 @@ Resolvers implement `OpenApi\Contracts\ResolverInterface` and receive the FQCN a
 
 ### Attribute factory configuration (spec mode) {#attribute-factory}
 
-Use `withAttributeFactory()` to add custom attribute translators:
+Use `withAttributeFactory()` to add custom attribute translators. The hook runs when called;
+repeated calls configure the same instance:
 
 ```php
 use OpenApi\Utils\AttributeFactory;
@@ -206,22 +228,3 @@ $result->specification(); // ?Specification — spec/hybrid only, null in classi
 $result->openApi();       // ?OA\OpenApi — classic only, null in spec/hybrid
 ```
 
-## Full example (spec mode)
-
-```php
-use OpenApi\Builder;
-use OpenApi\Builder\Mode;
-use OpenApi\Augmenter;
-
-$result = (new Builder())
-    ->setMode(Mode::SPEC)
-    ->setVersion('3.1.0')
-    ->addSource('src/Api')
-    ->withAugmenters(function (\OpenApi\Utils\Pipeline $pipeline) {
-        $pipeline->get(Augmenter\Cleanup::class)?->setEnabled(false);
-        $pipeline->get(Augmenter\OperationIds::class)?->setHash(true);
-    })
-    ->build();
-
-echo $result->toYaml();
-```
