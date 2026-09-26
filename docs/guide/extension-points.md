@@ -82,6 +82,11 @@ pipeline's default group:
 $pipeline->add(fn (Specification $spec) => $spec);
 ```
 
+`Specification` carries the views an augmenter needs over the assembled tree: `getWalker()`
+for traversal, `buildComponentIndex()` to resolve a `$ref`, and `buildPathItemHierarchy()` for
+the `PathItem`s governing a class — which is what path-level metadata has to be read through,
+since a class without its own `PathItem` is governed by its ancestors'.
+
 `Builder::withAugmenters()` hands the pipeline to a callable, which adds, replaces or
 removes. Phases run **resolve** → **reduce** → **augment**, and within a phase in
 registration order.

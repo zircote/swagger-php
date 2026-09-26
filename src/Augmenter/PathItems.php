@@ -8,16 +8,18 @@ namespace OpenApi\Augmenter;
 
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
-use OpenApi\Utils\ClassReflector;
+use OpenApi\Specification\PathItemHierarchy;
 use OpenApi\Utils\PipeInterface;
 
 /**
  * Resolves PathItem prefixes, clones metadata to operations, and sets path-level output.
  *
- * Walks the class hierarchy to compose path prefixes from ancestor PathItems,
- * prepends them to operation paths, clones tags/security/responses to operations
- * that don't declare their own, and marks PathItems that have spec-level output
- * (parameters, summary, description, servers) with their resolved path.
+ * Composes path prefixes from the PathItems governing each operation's class, prepends them
+ * to operation paths, clones tags/security/responses to operations that don't declare their
+ * own, and marks PathItems that have spec-level output (parameters, summary, description,
+ * servers) with their resolved path.
+ *
+ * The ancestor walk itself belongs to `Specification\PathItemHierarchy`.
  *
  * @implements PipeInterface<Specification>
  */
@@ -25,35 +27,28 @@ class PathItems implements PipeInterface
 {
     public function __invoke(mixed $payload): mixed
     {
-        $classToPathItem = $this->indexPathItems($payload);
+        $hierarchy = $payload->buildPathItemHierarchy();
 
-        if ($classToPathItem === []) {
+        if ($hierarchy->classes() === []) {
             return null;
         }
 
-        $prefixCache = [];
-
         foreach ($payload->operations as $operation) {
-            $className = $operation->getClassName();
-            if ($className === null) {
+            $chain = $hierarchy->forOperation($operation);
+            if ($chain === []) {
                 continue;
             }
 
-            $pathItem = $this->findGoverningPathItem($className, $classToPathItem);
-            if (!$pathItem instanceof OA\PathItem) {
-                continue;
-            }
-
-            $prefix = $this->resolvePrefix($pathItem, $classToPathItem, $prefixCache);
+            $prefix = $this->resolvePrefix($chain);
             if ($prefix !== '' && $operation->path !== null) {
                 $operationPath = ltrim($operation->path, '/');
                 $operation->path = $operationPath !== '' ? $prefix . '/' . $operationPath : $prefix;
             }
 
-            $this->cloneMetadata($pathItem, $operation, $classToPathItem);
+            $this->cloneMetadata($chain, $operation);
         }
 
-        $this->resolvePathItemPaths($payload, $classToPathItem, $prefixCache);
+        $this->resolvePathItemPaths($payload, $hierarchy);
 
         return null;
     }
@@ -64,91 +59,28 @@ class PathItems implements PipeInterface
     }
 
     /**
-     * @return array<class-string, OA\PathItem>
+     * Compose the path prefix declared across a chain, outermost first.
+     *
+     * @param list<OA\PathItem> $chain
      */
-    protected function indexPathItems(Specification $specification): array
+    protected function resolvePrefix(array $chain): string
     {
-        $map = [];
-
-        foreach ($specification->pathItems as $pathItem) {
-            $className = $pathItem->getClassName();
-            if ($className !== null) {
-                $map[$className] = $pathItem;
-            }
-        }
-
-        return $map;
-    }
-
-    /**
-     * @param array<class-string, OA\PathItem> $classToPathItem
-     * @param array<class-string, string>      $cache
-     */
-    protected function resolvePrefix(OA\PathItem $pathItem, array $classToPathItem, array &$cache): string
-    {
-        $reflector = $pathItem->getClassReflector();
-        if (!$reflector instanceof \ReflectionClass) {
-            return $pathItem->prefix ?? '';
-        }
-
-        $className = $reflector->getName();
-        if (isset($cache[$className])) {
-            return $cache[$className];
-        }
-
         $parts = [];
-        $current = $reflector;
-        while ($current !== false) {
-            if (isset($classToPathItem[$current->getName()])) {
-                $pi = $classToPathItem[$current->getName()];
-                if ($pi->prefix !== null) {
-                    $parts[] = trim($pi->prefix, '/');
-                }
+        foreach ($chain as $pathItem) {
+            if ($pathItem->prefix !== null && ($part = trim($pathItem->prefix, '/')) !== '') {
+                $parts[] = $part;
             }
-            $current = $current->getParentClass();
         }
 
-        $parts = array_filter(array_reverse($parts), static fn (string $p): bool => $p !== '');
-        $prefix = $parts !== [] ? '/' . implode('/', $parts) : '';
-        $cache[$className] = $prefix;
-
-        return $prefix;
+        return $parts !== [] ? '/' . implode('/', $parts) : '';
     }
 
     /**
-     * @param class-string                     $className
-     * @param array<class-string, OA\PathItem> $classToPathItem
+     * @param list<OA\PathItem> $chain
      */
-    protected function findGoverningPathItem(string $className, array $classToPathItem): ?OA\PathItem
+    protected function cloneMetadata(array $chain, OA\Operation $operation): void
     {
-        if (isset($classToPathItem[$className])) {
-            return $classToPathItem[$className];
-        }
-
-        // not `new \ReflectionClass()` in a try/catch: a class-string is a name, not a promise
-        // the class loads (see PR 48 / ClassReflector), and phpstan reads the catch as dead
-        [$rc] = ClassReflector::tryReflect($className);
-        if (!$rc instanceof \ReflectionClass) {
-            return null;
-        }
-
-        $parent = $rc->getParentClass();
-        while ($parent !== false) {
-            if (isset($classToPathItem[$parent->getName()])) {
-                return $classToPathItem[$parent->getName()];
-            }
-            $parent = $parent->getParentClass();
-        }
-
-        return null;
-    }
-
-    /**
-     * @param array<class-string, OA\PathItem> $classToPathItem
-     */
-    protected function cloneMetadata(OA\PathItem $pathItem, OA\Operation $operation, array $classToPathItem): void
-    {
-        $merged = $this->collectMergedMetadata($pathItem, $classToPathItem);
+        $merged = $this->collectMergedMetadata($chain);
 
         if ($merged['tags'] !== null) {
             $operation->tags = array_values(array_unique([...$operation->tags ?? [], ...$merged['tags']]));
@@ -185,42 +117,28 @@ class PathItems implements PipeInterface
     }
 
     /**
-     * Collect merged metadata walking up the class hierarchy.
+     * Collect merged metadata across a chain.
      * All collections merge additively — tags, security, and responses accumulate from all ancestors.
      *
-     * @param  array<class-string, OA\PathItem>                                                                                $classToPathItem
+     * @param  list<OA\PathItem>                                                                                               $chain
      * @return array{tags: list<string>|null, security: list<OA\Security\Requirement>|null, responses: list<OA\Response>|null}
      */
-    protected function collectMergedMetadata(OA\PathItem $pathItem, array $classToPathItem): array
+    protected function collectMergedMetadata(array $chain): array
     {
-        $reflector = $pathItem->getClassReflector();
-        if (!$reflector instanceof \ReflectionClass) {
-            return [
-                'tags' => $pathItem->tags,
-                'security' => $pathItem->security,
-                'responses' => $pathItem->responses,
-            ];
-        }
-
         $tags = [];
         $security = [];
         $responses = [];
 
-        $current = $reflector;
-        while ($current !== false) {
-            $pi = $classToPathItem[$current->getName()] ?? null;
-            if ($pi !== null) {
-                if ($pi->tags !== null) {
-                    array_push($tags, ...$pi->tags);
-                }
-                if ($pi->security !== null) {
-                    array_push($security, ...$pi->security);
-                }
-                if ($pi->responses !== null) {
-                    array_push($responses, ...$pi->responses);
-                }
+        foreach ($chain as $pathItem) {
+            if ($pathItem->tags !== null) {
+                array_push($tags, ...$pathItem->tags);
             }
-            $current = $current->getParentClass();
+            if ($pathItem->security !== null) {
+                array_push($security, ...$pathItem->security);
+            }
+            if ($pathItem->responses !== null) {
+                array_push($responses, ...$pathItem->responses);
+            }
         }
 
         return [
@@ -230,20 +148,18 @@ class PathItems implements PipeInterface
         ];
     }
 
-    /**
-     * @param array<class-string, OA\PathItem> $classToPathItem
-     * @param array<class-string, string>      $prefixCache
-     */
-    protected function resolvePathItemPaths(Specification $specification, array $classToPathItem, array $prefixCache): void
+    protected function resolvePathItemPaths(Specification $specification, PathItemHierarchy $hierarchy): void
     {
+        $pathsByPathItem = $this->collectOperationPaths($specification, $hierarchy);
+
         foreach ($specification->pathItems as $pathItem) {
-            $this->mergeAncestorParameters($pathItem, $classToPathItem);
+            $this->mergeAncestorParameters($pathItem, $hierarchy);
 
             if (!$this->hasSpecProperties($pathItem)) {
                 continue;
             }
 
-            $paths = $this->findOperationPaths($pathItem, $specification, $classToPathItem);
+            $paths = $pathsByPathItem[spl_object_id($pathItem)] ?? [];
 
             if ($paths === []) {
                 continue;
@@ -262,32 +178,59 @@ class PathItems implements PipeInterface
     }
 
     /**
-     * @param array<class-string, OA\PathItem> $classToPathItem
+     * The operation paths each PathItem governs, collected in one pass over the operations.
+     *
+     * @return array<int, list<string>> keyed by `spl_object_id()` of the governing PathItem
      */
-    protected function mergeAncestorParameters(OA\PathItem $pathItem, array $classToPathItem): void
+    protected function collectOperationPaths(Specification $specification, PathItemHierarchy $hierarchy): array
+    {
+        $paths = [];
+
+        foreach ($specification->operations as $operation) {
+            if ($operation->path === null) {
+                continue;
+            }
+
+            $chain = $hierarchy->forOperation($operation);
+            if ($chain === []) {
+                continue;
+            }
+
+            $governing = spl_object_id($chain[count($chain) - 1]);
+            if (!in_array($operation->path, $paths[$governing] ?? [], true)) {
+                $paths[$governing][] = $operation->path;
+            }
+        }
+
+        return $paths;
+    }
+
+    protected function mergeAncestorParameters(OA\PathItem $pathItem, PathItemHierarchy $hierarchy): void
     {
         $reflector = $pathItem->getClassReflector();
         if (!$reflector instanceof \ReflectionClass) {
             return;
         }
 
-        $parent = $reflector->getParentClass();
-        while ($parent !== false) {
-            $ancestorPi = $classToPathItem[$parent->getName()] ?? null;
-            if ($ancestorPi !== null && $ancestorPi->parameters !== null) {
-                $existingKeys = [];
-                foreach ($pathItem->parameters ?? [] as $param) {
-                    $existingKeys[$param->name . ':' . ($param->in ?? '')] = true;
-                }
+        // the item's own parameters are what the ancestors merge into, so its own entry drops out
+        $ancestors = array_slice($hierarchy->chainFor($reflector), 0, -1);
 
-                foreach ($ancestorPi->parameters as $param) {
-                    if (!isset($existingKeys[$param->name . ':' . ($param->in ?? '')])) {
-                        $pathItem->parameters ??= [];
-                        $pathItem->parameters[] = $param;
-                    }
+        foreach (array_reverse($ancestors) as $ancestorPathItem) {
+            if ($ancestorPathItem->parameters === null) {
+                continue;
+            }
+
+            $existingKeys = [];
+            foreach ($pathItem->parameters ?? [] as $param) {
+                $existingKeys[$param->name . ':' . ($param->in ?? '')] = true;
+            }
+
+            foreach ($ancestorPathItem->parameters as $param) {
+                if (!isset($existingKeys[$param->name . ':' . ($param->in ?? '')])) {
+                    $pathItem->parameters ??= [];
+                    $pathItem->parameters[] = $param;
                 }
             }
-            $parent = $parent->getParentClass();
         }
     }
 
@@ -297,36 +240,5 @@ class PathItems implements PipeInterface
             || $pathItem->summary !== null
             || $pathItem->description !== null
             || $pathItem->servers !== null;
-    }
-
-    /**
-     * @param  array<class-string, OA\PathItem> $classToPathItem
-     * @return list<string>
-     */
-    protected function findOperationPaths(OA\PathItem $pathItem, Specification $specification, array $classToPathItem): array
-    {
-        if (!$pathItem->getClassReflector() instanceof \ReflectionClass) {
-            return [];
-        }
-
-        $paths = [];
-
-        foreach ($specification->operations as $operation) {
-            if ($operation->path === null) {
-                continue;
-            }
-
-            $opClass = $operation->getClassName();
-            if ($opClass === null) {
-                continue;
-            }
-
-            $governing = $this->findGoverningPathItem($opClass, $classToPathItem);
-            if ($governing === $pathItem && !in_array($operation->path, $paths, true)) {
-                $paths[] = $operation->path;
-            }
-        }
-
-        return $paths;
     }
 }

@@ -104,6 +104,22 @@ The resolved prefix is prepended to each operation's `path`. An operation with `
 
 An operation's "governing" PathItem is found by walking up from the operation's declaring class until a class with `#[PathItem]` is found. Operations in a class without `#[PathItem]` can still inherit from an ancestor's PathItem.
 
+### Asking for the chain
+
+The walk is `Specification\PathItemHierarchy`, reached by `Specification::buildPathItemHierarchy()`:
+
+```php
+$hierarchy = $specification->buildPathItemHierarchy();
+
+$hierarchy->chain(UserController::class);   // every governing PathItem, outermost ancestor first
+$hierarchy->governing(UserController::class); // just the nearest one
+$hierarchy->forOperation($operation);       // the chain for the class an operation is declared in
+```
+
+Anything read off a `PathItem` outside that chain applies to nothing and says nothing while it does, so an augmenter or integration reading path-level metadata asks the hierarchy rather than reflecting for itself.
+
+**Parent classes only.** Traits and interfaces are not followed, which is the opposite of [schema inheritance](#schema-inheritance) above. The difference is deliberate: a prefix chain is ordered, and a trait or interface graph offers no order to compose in. A `PathItem` on a trait or an interface is still indexed — it simply never governs the classes using it.
+
 ### Metadata cloning
 
 The augmenter clones metadata from PathItem (and its ancestors) to operations:
