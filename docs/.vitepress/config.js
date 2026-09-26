@@ -25,6 +25,7 @@ function getGuideSidebar() {
       text: '🧪 Spec Attributes',
       collapsed: false,
       items: [
+        { text: 'Why spec attributes?', link: '/guide/why-spec' },
         { text: 'Processing Modes', link: '/guide/modes' },
         { text: 'Using Spec Attributes', link: '/guide/spec-attributes' },
         { text: 'Extension points', link: '/guide/extension-points' },

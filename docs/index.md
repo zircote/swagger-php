@@ -30,9 +30,10 @@ Add `swagger-php` attributes (or legacy annotations) to your source code.
 ⚠️ The `doctrine/annotations` library used to parse annotations is going to be deprecated, so wherever
 possible attributes should be used.
 
-::: info `spec` [mode](guide/modes)
-As of version 6.5.0, a new set of attributes has been introduced - the `spec` attributes.
-When using those, the mode needs to be set to `spec` in order to generate OpenAPI documents.
+::: info `spec` [attributes](guide/why-spec)
+Since 6.5.0 there is a second set of attributes - typed objects you can also build by hand,
+with validation and version handling in the pipeline rather than in the attributes. They run
+in `spec` mode:
 ```shell
 > ./vendor/bin/openapi -m spec ...
 ```

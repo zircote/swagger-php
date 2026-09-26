@@ -20,7 +20,7 @@ attributes and annotations.
 - Extracts information from code and existing phpdoc comments.
 - Can be used programmatically or via command-line tool.
 - Error reporting (with hints, context).
-- 🧪 **Spec attributes pipeline (beta)** — a new processing mode with typed DTOs, grouped augmenters, and version-aware compilers.
+- 🧪 **Spec attributes (beta)** — attributes you can also build by hand and compile without scanning, and a pipeline that tells you when an attribute is wrong; see [Why spec attributes?](https://zircote.github.io/swagger-php/guide/why-spec).
 
 ## OpenAPI version support
 

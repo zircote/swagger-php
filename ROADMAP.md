@@ -42,8 +42,8 @@ is still beta for part of the major, and a stable API is not deprecated in favou
 ### v7
 This is where things turn:
 * default mode switches to `hybrid` - existing `classic` projects keep working, routed through
-  the new pipeline via the bridge (probably with the exception of `NelmioApiDocBundle`, as that
-  relies on a lot of actual `classic` features)
+  the new pipeline via the bridge, with the exception of integrations that build annotation
+  objects directly instead of scanning for them, which the bridge has nothing to scan for
 * all classic code - annotations, attributes and the related pipeline code - is marked
   `@deprecated`, removed in `8.0`
 * the bridge and mode selection are marked `@deprecated`, removed in `8.0` - that is

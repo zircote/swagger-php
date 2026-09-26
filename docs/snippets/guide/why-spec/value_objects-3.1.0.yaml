@@ -1,0 +1,22 @@
+openapi: 3.1.0
+info:
+  title: 'Tax API'
+  version: 1.0.0
+paths:
+  /taxes:
+    get:
+      responses:
+        200:
+          description: 'All taxes'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tax'
+components:
+  schemas:
+    Tax:
+      properties:
+        rate:
+          type: number
+        name:
+          type: string
