@@ -9,6 +9,7 @@ namespace OpenApi;
 use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification\ComponentIndex;
+use OpenApi\Specification\PathItemHierarchy;
 use OpenApi\Specification\Walker;
 
 /**
@@ -106,6 +107,11 @@ class Specification
     public function buildComponentIndex(): ComponentIndex
     {
         return new ComponentIndex($this);
+    }
+
+    public function buildPathItemHierarchy(): PathItemHierarchy
+    {
+        return new PathItemHierarchy($this);
     }
 
     protected function addComponentsChildren(OA\Components $components): void

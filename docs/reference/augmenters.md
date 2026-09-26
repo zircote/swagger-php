@@ -93,10 +93,12 @@ Handles:
 
 Resolves PathItem prefixes, clones metadata to operations, and sets path-level output.
 
-Walks the class hierarchy to compose path prefixes from ancestor PathItems,
-prepends them to operation paths, clones tags/security/responses to operations
-that don't declare their own, and marks PathItems that have spec-level output
-(parameters, summary, description, servers) with their resolved path.
+Composes path prefixes from the PathItems governing each operation's class, prepends them
+to operation paths, clones tags/security/responses to operations that don't declare their
+own, and marks PathItems that have spec-level output (parameters, summary, description,
+servers) with their resolved path.
+
+The ancestor walk itself belongs to `Specification\PathItemHierarchy`.
 
 ### [Types](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Types.php)
 

@@ -125,7 +125,8 @@ buckets get resolved after assembly, without the DTOs having to reference each o
 - **PathItem to Operation** — a PathItem sits on a class, operations on its methods; the
   `PathItems` augmenter uses `ReflectionMethod::getDeclaringClass()` to pair them
 - **Prefix composition** — `ReflectionClass::getParentClass()` walks ancestors so parent
-  PathItems can contribute path prefixes
+  PathItems can contribute path prefixes; the walk is `Specification\PathItemHierarchy`,
+  not repeated per caller
 - **OperationId generation** — class and method names come from the reflector
 - **Type inference** — `Types` reads PHP type declarations off property and parameter
   reflectors

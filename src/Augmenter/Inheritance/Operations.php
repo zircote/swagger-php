@@ -34,7 +34,7 @@ class Operations
 
     public function resolve(Specification $specification): mixed
     {
-        $pathItemClasses = $this->indexPathItemClasses($specification);
+        $pathItemClasses = $specification->buildPathItemHierarchy()->classes();
 
         if ($pathItemClasses === []) {
             return null;
@@ -48,26 +48,9 @@ class Operations
     }
 
     /**
-     * @return array<class-string, true>
-     */
-    protected function indexPathItemClasses(Specification $specification): array
-    {
-        $map = [];
-
-        foreach ($specification->pathItems as $pathItem) {
-            $className = $pathItem->getClassName();
-            if ($className !== null) {
-                $map[$className] = true;
-            }
-        }
-
-        return $map;
-    }
-
-    /**
      * Find operations whose owning class has no PathItem — these are inheritable.
      *
-     * @param  array<class-string, true>               $pathItemClasses
+     * @param  array<class-string, OA\PathItem>        $pathItemClasses
      * @return array<class-string, list<OA\Operation>> Grouped by declaring class
      */
     protected function findInheritableOperations(Specification $specification, array $pathItemClasses): array
@@ -89,7 +72,7 @@ class Operations
     /**
      * For each PathItem class, walk ancestors and clone or discover inheritable operations.
      *
-     * @param array<class-string, true>               $pathItemClasses
+     * @param array<class-string, OA\PathItem>        $pathItemClasses
      * @param array<class-string, list<OA\Operation>> $ancestorOperations Already-assembled operations
      */
     protected function cloneToChildren(Specification $specification, array $pathItemClasses, array $ancestorOperations): void
