@@ -65,6 +65,9 @@ class Builder
 
     protected ?AttributeFactory $attributeFactory = null;
 
+    /** @var list<callable(Specification): (Specification|void)> */
+    protected array $specificationHooks = [];
+
     /**
      * @param BuilderSource|iterable<BuilderSource> $source
      */
@@ -123,6 +126,9 @@ class Builder
     /**
      * Configure the resolver via callable.
      *
+     * Runs when called, against the resolver the builder holds; repeated calls configure the
+     * same instance.
+     *
      * @param callable(Resolver): (Resolver|void) $hook
      */
     public function withResolver(callable $hook): static
@@ -150,6 +156,9 @@ class Builder
     /**
      * Configure the augmenter pipeline via callable.
      *
+     * Runs when called, against the pipeline the builder holds; repeated calls configure the
+     * same pipeline.
+     *
      * @param callable(Utils\Pipeline<Specification>): (Utils\Pipeline<Specification>|void) $hook
      */
     public function withAugmenters(callable $hook): static
@@ -167,6 +176,11 @@ class Builder
     }
 
     /**
+     * Configure the attribute factory via callable. Translators are registered here.
+     *
+     * Runs when called, against the factory the builder holds; repeated calls configure the
+     * same instance.
+     *
      * @param callable(AttributeFactory): (AttributeFactory|void) $hook
      */
     public function withAttributeFactory(callable $hook): static
@@ -177,10 +191,33 @@ class Builder
     }
 
     /**
+     * Contribute to the `Specification` after assembly and before resolution.
+     *
+     * The callable receives the assembled `Specification` and adds attributes to it with
+     * `Specification::add()`. A `$ref` in a contribution resolves as one in a scanned attribute
+     * does, and every augmenter sees what was contributed. A contribution carrying a reflector
+     * is treated as the assembler's own; one without is metadata nothing else reaches.
+     *
+     * Runs during the build, once the `Specification` exists. Hooks accumulate: every one
+     * runs, in registration order. Classic mode assembles no `Specification`, so the hooks
+     * are never called there.
+     *
+     * @param callable(Specification): (Specification|void) $hook
+     */
+    public function withSpecification(callable $hook): static
+    {
+        $this->specificationHooks[] = $hook;
+
+        return $this;
+    }
+
+    /**
      * Hook to configure the underlying Generator.
      *
      * The callable receives a default Generator and may either modify it in-place
      * or return a fully configured instance.
+     *
+     * Runs during the build, once the Generator exists. A second call replaces the first.
      *
      * @param callable(Generator): (Generator|void) $hook
      */
@@ -259,6 +296,10 @@ class Builder
         }
 
         $specification = $assembler->getSpecification();
+
+        foreach ($this->specificationHooks as $hook) {
+            $hook($specification);
+        }
 
         $this->getResolver()->resolve($assembler);
 

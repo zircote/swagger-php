@@ -108,6 +108,7 @@ The modes aim for equivalent output from the same source, but differ in what the
 | Processor chain (`withGenerator()`)     | Yes                    | Scanning only (`MergeJsonContent`/`MergeXmlContent`) | No                                     |
 | Resolver (`withResolver()`)             | No                     | Yes (`Resolver\Reflection` by default)               | Yes (`Resolver\Reflection` by default) |
 | Augmenter pipeline (`withAugmenters()`) | No                     | Yes                                                  | Yes                                    |
+| Contributions (`withSpecification()`)   | No                     | Yes                                                  | Yes                                    |
 | Version-aware compilation               | No (single serializer) | Yes                                                  | Yes                                    |
 
 ## Migration path

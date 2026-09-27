@@ -161,6 +161,9 @@ explicitly set.
 
 Generates operationId for operations that don't have one explicitly set.
 
+The id is derived from method, path and the declaring method, function or class. An
+operation with no reflector is identified by method and path alone.
+
 #### Config settings
 - **operationIds.hash** : `bool` · default: `true`  
   If set to <code>true</code> generate ids (md5) instead of clear text operation ids.

@@ -14,6 +14,9 @@ use OpenApi\Utils\PipeInterface;
 /**
  * Generates operationId for operations that don't have one explicitly set.
  *
+ * The id is derived from method, path and the declaring method, function or class. An
+ * operation with no reflector is identified by method and path alone.
+ *
  * @implements PipeInterface<Specification>
  */
 class OperationIds implements PipeInterface
@@ -63,12 +66,12 @@ class OperationIds implements PipeInterface
             default => null,
         };
 
-        if ($source === null) {
-            return null;
-        }
-
         $method = strtoupper($operation->method ?? 'GET');
         $path = $operation->path ?? '';
+
+        if ($source === null) {
+            return $path === '' ? null : $method . '::' . $path;
+        }
 
         return $method . '::' . $path . '::' . $source;
     }

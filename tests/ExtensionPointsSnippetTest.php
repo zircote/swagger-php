@@ -42,6 +42,14 @@ final class ExtensionPointsSnippetTest extends TestCase
         );
     }
 
+    public function testContributionProducesTheDocumentedOutput(): void
+    {
+        $this->assertSpecEquals(
+            file_get_contents(self::SNIPPETS . '/contribution-3.1.0.yaml'),
+            Snippet\buildFromRoutes(['/pets' => Snippet\Pet::class])->toYaml()
+        );
+    }
+
     public function testSubclassedAttributeDerivesSchemaAndRequired(): void
     {
         $result = (new Builder())
