@@ -131,7 +131,9 @@ class Schemas
     protected function addAllOfRef(OA\Schema $schema, OA\Schema $referenced): void
     {
         $schema->allOf ??= [];
-        $name = $referenced->schema ?? $referenced->getShortClassName();
+        // the explicit key or the class name, as `Names` will key it — not `of()`, whose
+        // title fallback would name a class schema after its title before `Names` has run
+        $name = $referenced->component ?? $referenced->getShortClassName();
         if ($name !== null) {
             $schema->allOf[] = new OA\Schema(ref: JsonPointer::ref('components', 'schemas', $name));
         }

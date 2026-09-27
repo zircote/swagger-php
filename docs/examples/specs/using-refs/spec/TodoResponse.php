@@ -8,10 +8,7 @@ namespace OpenApi\Examples\Specs\UsingRefs\Spec;
 
 use OpenApi\Spec as OA;
 
-#[OA\Response(
-    response: 'todo',
-    description: 'This API call has no documentated response (yet)',
-)]
+#[OA\Response(description: 'This API call has no documentated response (yet)', component: 'todo')]
 class TodoResponse
 {
 }

@@ -8,19 +8,19 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'RequestBodySchema')]
+#[OA\Schema(component: 'RequestBodySchema')]
 class RequestBodySchemaSpec
 {
 }
 
 #[OA\Components]
-#[OA\RequestBody(request: 'RequestBodyRef')]
+#[OA\RequestBody(component: 'RequestBodyRef')]
 class RequestBodyRefSpec
 {
 }
 
 #[OA\Components]
-#[OA\RequestBody(request: 'foo')]
+#[OA\RequestBody(component: 'foo')]
 class RequestBodyRefFooSpec
 {
 }

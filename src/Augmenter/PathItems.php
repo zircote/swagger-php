@@ -153,6 +153,10 @@ class PathItems implements PipeInterface
         $pathsByPathItem = $this->collectOperationPaths($specification, $hierarchy);
 
         foreach ($specification->pathItems as $pathItem) {
+            if ($pathItem->component !== null) {
+                continue;
+            }
+
             $this->mergeAncestorParameters($pathItem, $hierarchy);
 
             if (!$this->hasSpecProperties($pathItem)) {

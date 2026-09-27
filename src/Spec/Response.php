@@ -21,16 +21,20 @@ class Response extends AbstractAttribute
      */
     public const STATUS_CODE_PATTERN = '/^(default|[1-5][0-9]{2}|[1-5]XX)$/';
 
+    /** The key this attribute is filed under in `components`; null for an inline one. */
+    public ?string $component = null;
+
     /** @var list<MediaType>|null */
     public ?array $content = null;
 
     /**
-     * @param string|int|null                $response    The HTTP status code or 'default'
+     * @param string|int|null                $response    The HTTP status code, a range such as '2XX', or 'default' — the key the response nests under in an operation
      * @param string|null                    $description A description of the response (CommonMark syntax)
      * @param string|Schema\Ref|null         $ref         A JSON Reference to a reusable response
      * @param list<Header>|null              $headers     Headers sent with the response
      * @param MediaType|list<MediaType>|null $content     Possible response payloads
      * @param list<Link>|null                $links       Design-time links for the response
+     * @param string|null                    $component   The key this is filed under in `components`, which makes it a reusable component
      * @param array<string,mixed>|null       $x           Vendor extensions (x-* properties)
      * @param list<Attachable>|null          $attachables Reusable custom attachable attributes
      */
@@ -41,16 +45,18 @@ class Response extends AbstractAttribute
         public ?array $headers = null,
         MediaType|array|null $content = null,
         public ?array $links = null,
+        ?string $component = null,
         ?array $x = null,
         ?array $attachables = null,
     ) {
         parent::__construct(x: $x, attachables: $attachables);
+        $this->component = $component;
         $this->content = self::wrapList($content);
     }
 
     public function isRoot(): bool
     {
-        return $this->ref === null && $this->response !== null;
+        return $this->ref === null && ($this->component !== null || $this->response !== null);
     }
 
     public function merge(): array

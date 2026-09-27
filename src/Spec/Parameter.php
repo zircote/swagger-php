@@ -42,6 +42,9 @@ use OpenApi\Undefined;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
 class Parameter extends AbstractAttribute
 {
+    /** The key this attribute is filed under in `components`; null for an inline one. */
+    public ?string $component = null;
+
     public ?string $in = null;
 
     public ?string $style = null;
@@ -50,7 +53,7 @@ class Parameter extends AbstractAttribute
     public ?array $content = null;
 
     /**
-     * @param string|null                    $parameter       Reusable parameter identifier (component key)
+     * @param string|null                    $parameter       Deprecated since 6.11, removed in 8.0 - use `component` instead
      * @param string|null                    $name            The name of the parameter
      * @param string|ParameterIn|null        $in              The location of the parameter (query, header, path, cookie)
      * @param string|null                    $description     A brief description of the parameter (CommonMark syntax)
@@ -65,6 +68,7 @@ class Parameter extends AbstractAttribute
      * @param mixed                          $example         Example of the parameter's value
      * @param list<Example>|null             $examples        Examples of the parameter's value
      * @param MediaType|list<MediaType>|null $content         Content-type based parameter serialization
+     * @param string|null                    $component       The key this is filed under in `components`, which makes it a reusable component
      * @param array<string,mixed>|null       $x               Vendor extensions (x-* properties)
      * @param list<Attachable>|null          $attachables     Reusable custom attachable attributes
      */
@@ -84,10 +88,16 @@ class Parameter extends AbstractAttribute
         public mixed $example = Undefined::UNDEFINED,
         public ?array $examples = null,
         MediaType|array|null $content = null,
+        ?string $component = null,
         ?array $x = null,
         ?array $attachables = null,
     ) {
         parent::__construct(x: $x, attachables: $attachables);
+        $this->component = $component;
+        if ($component === null && $this->parameter !== null) {
+            trigger_deprecation('zircote/swagger-php', '6.11', '`parameter` is deprecated as the component key of %s and will be removed in 8.0; use `component`', static::class);
+            $this->component = $this->parameter;
+        }
         $this->in = $in instanceof \BackedEnum ? $in->value : $in;
         $this->style = $style instanceof \BackedEnum ? $style->value : $style;
         $this->content = self::wrapList($content);
@@ -95,7 +105,7 @@ class Parameter extends AbstractAttribute
 
     public function isRoot(): bool
     {
-        return $this->ref === null && $this->parameter !== null;
+        return $this->ref === null && $this->component !== null;
     }
 
     public function merge(): array

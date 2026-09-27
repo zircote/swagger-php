@@ -29,9 +29,11 @@ class Names implements PipeInterface
 {
     /**
      * A security scheme is only ever declared inside `Components`, where the key is the whole
-     * point, so nothing is inferred for it.
+     * point, so nothing is inferred for it. A path item on a class is path-bound unless keyed
+     * by hand, and a media type is only ever a component by hand, so neither is named after
+     * the class either.
      */
-    protected const SKIP_BUCKETS = ['securitySchemes'];
+    protected const SKIP_BUCKETS = ['securitySchemes', 'pathItems', 'mediaTypes'];
 
     public function __invoke(mixed $payload): mixed
     {
@@ -52,7 +54,7 @@ class Names implements PipeInterface
     protected function inferParameterNames(Specification $specification): void
     {
         foreach ($specification->parameters as $parameter) {
-            $parameter->parameter ??= $parameter->name;
+            $parameter->component ??= $parameter->name;
         }
     }
 

@@ -14,7 +14,7 @@ class ApiSpec
 }
 
 #[OA\Schema(
-    schema: 'MyDateTime',
+    component: 'MyDateTime',
     type: 'string',
     format: 'rfc3339-timestamp',
     externalDocs: new OA\ExternalDocumentation(
@@ -27,7 +27,7 @@ class MyDateTimeSpec
 {
 }
 
-#[OA\Schema(schema: 'Nullable')]
+#[OA\Schema(component: 'Nullable')]
 class NullableSpec
 {
     #[OA\Property]

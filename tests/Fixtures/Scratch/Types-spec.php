@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'Types')]
+#[OA\Schema(component: 'Types')]
 class TypesSpec
 {
     #[OA\Property]

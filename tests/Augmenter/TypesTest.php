@@ -23,7 +23,7 @@ final class TypesTest extends TestCase
         (new Augmenter\Types())($spec);
 
         $schema = $spec->schemas[0];
-        $this->assertSame('TypeSchema', $schema->schema);
+        $this->assertSame('TypeSchema', $schema->component);
 
         $props = [];
         foreach ($schema->properties as $property) {

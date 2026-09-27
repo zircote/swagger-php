@@ -11,7 +11,7 @@ use OpenApi\Spec as OA;
 /**
  * A documented schema whose description is suppressed.
  */
-#[OA\Schema(schema: 'SuppressedSchema', description: null)]
+#[OA\Schema(component: 'SuppressedSchema', description: null)]
 class SuppressedSchema
 {
     #[OA\Property(property: 'name')]

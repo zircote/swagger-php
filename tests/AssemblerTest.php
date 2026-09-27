@@ -19,7 +19,7 @@ final class AssemblerTest extends TestCase
 
         $spec = $assembler->getSpecification();
         $this->assertCount(1, $spec->schemas);
-        $this->assertEquals('SimpleProduct', $spec->schemas[0]->schema);
+        $this->assertEquals('SimpleProduct', $spec->schemas[0]->component);
         $this->assertNotNull($spec->schemas[0]->properties);
         $this->assertCount(2, $spec->schemas[0]->properties);
     }

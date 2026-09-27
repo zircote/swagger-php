@@ -8,7 +8,7 @@ namespace OpenApi\Examples\Specs\UsingLinks\Spec;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'user')]
+#[OA\Schema(component: 'user')]
 class User
 {
     #[OA\Property]

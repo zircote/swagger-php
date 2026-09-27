@@ -13,7 +13,7 @@ class AttributeInheritanceSchemaSpec extends OA\Schema
 {
 }
 
-#[OA\Schema(schema: 'Base')]
+#[OA\Schema(component: 'Base')]
 class BaseSpec
 {
     #[OA\Property]
@@ -27,7 +27,7 @@ class Child1Spec extends BaseSpec
     public string $name;
 }
 
-#[OA\Schema(schema: 'Child2')]
+#[OA\Schema(component: 'Child2')]
 class Child2Spec extends BaseSpec
 {
     #[OA\Property]

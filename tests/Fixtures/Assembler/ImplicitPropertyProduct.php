@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Fixtures\Assembler;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'ImplicitPropertyProduct')]
+#[OA\Schema(component: 'ImplicitPropertyProduct')]
 class ImplicitPropertyProduct
 {
     #[OA\Schema(format: 'int64')]

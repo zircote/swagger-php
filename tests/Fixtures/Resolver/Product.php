@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Fixtures\Resolver;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'Product')]
+#[OA\Schema(component: 'Product')]
 class Product
 {
     #[OA\Property(property: 'name')]

@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Fixtures\Assembler;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'PromotedProduct')]
+#[OA\Schema(component: 'PromotedProduct')]
 class PromotedProduct
 {
     public function __construct(

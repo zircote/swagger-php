@@ -9,7 +9,7 @@ namespace OpenApi\Tests\Fixtures\Augmenter;
 use OpenApi\Spec as OA;
 
 #[OA\Schema(
-    schema: 'DiscriminatorSchema',
+    component: 'DiscriminatorSchema',
     oneOf: [new OA\Schema(ref: RefTarget::class)],
     discriminator: new OA\Discriminator(propertyName: 'type', mapping: ['target' => RefTarget::class]),
 )]

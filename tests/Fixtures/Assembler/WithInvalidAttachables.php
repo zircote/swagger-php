@@ -9,7 +9,7 @@ namespace OpenApi\Tests\Fixtures\Assembler;
 use OpenApi\Spec as OA;
 use OpenApi\Tests\Fixtures\Assembler\Attachable\InvalidMergePropertyAttachable;
 
-#[OA\Schema(schema: 'WithInvalidAttachables')]
+#[OA\Schema(component: 'WithInvalidAttachables')]
 class WithInvalidAttachables
 {
     #[OA\Property(attachables: [new OA\Attachable()])]

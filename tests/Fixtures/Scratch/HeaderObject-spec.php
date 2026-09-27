@@ -12,7 +12,7 @@ use OpenApi\Spec as OA;
 // explicit here, inferred from the class name otherwise (ComponentNames covers that).
 #[OA\Components]
 #[OA\Header(
-    header: 'X-Request-Id',
+    component: 'X-Request-Id',
     required: true,
     schema: new OA\Schema(type: 'string', format: 'uuid'),
 )]

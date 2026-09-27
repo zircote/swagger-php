@@ -19,7 +19,7 @@ use OpenApi\Spec as OA;
 )]
 #[OA\Response(response: 200, description: 'OK')]
 #[OA\Schema(
-    schema: 'NestedAdditionalProperties',
+    component: 'NestedAdditionalProperties',
     additionalProperties: new OA\Schema\AdditionalProperties(
         additionalProperties: new OA\Schema\AdditionalProperties(
             type: 'string',
@@ -40,7 +40,7 @@ class NestedAdditionalPropertiesWidgetSpec
     public string $name = '';
 }
 
-#[OA\Schema(schema: 'ExplicitlyClosedMap', type: 'object')]
+#[OA\Schema(component: 'ExplicitlyClosedMap', type: 'object')]
 class NestedAdditionalPropertiesClosedMapSpec
 {
     /**

@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'MultiTypeProperty')]
+#[OA\Schema(component: 'MultiTypeProperty')]
 class MultiTypePropertySpec
 {
     #[OA\Property]

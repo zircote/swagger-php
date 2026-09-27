@@ -13,7 +13,7 @@ class NestedInlinePropertyPayloadSpec
 }
 
 #[OA\Info(title: 'Nested Inline Property Scratch', version: '1.0')]
-#[OA\Schema(schema: 'NestedInlinePropertyEndpoint')]
+#[OA\Schema(component: 'NestedInlinePropertyEndpoint')]
 class NestedInlinePropertyEndpointSpec
 {
     #[OA\Operation\Post(path: '/things', operationId: 'createThing')]

@@ -115,7 +115,7 @@ trait AssertsSchemaStructure
     protected function findSchemaByName(Specification $specification, string $name): ?OA\Schema
     {
         foreach ($specification->schemas as $schema) {
-            if ($schema->schema === $name) {
+            if ($schema->component === $name) {
                 return $schema;
             }
 

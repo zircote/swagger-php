@@ -512,7 +512,7 @@ final class CompilerTest extends TestCase
         yield 'component schema without a name' => [
             new OpenApi31Compiler(),
             $specUnnamedSchema,
-            'Schema is missing key-field: "schema" in unknown',
+            'Schema is missing key-field: "component" in unknown',
         ];
 
         $specUnnamedProperty = new Specification();
@@ -534,7 +534,7 @@ final class CompilerTest extends TestCase
         yield 'component header without a name' => [
             new OpenApi31Compiler(),
             $specUnnamedHeader,
-            'Header is missing key-field: "header" in unknown',
+            'Header is missing key-field: "component" in unknown',
         ];
 
         $specNestedUnnamed = new Specification();

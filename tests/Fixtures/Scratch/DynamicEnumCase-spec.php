@@ -24,7 +24,7 @@ interface DynamicEnumCaseInterfaceSpec
     public const SOME_CONST = 'foo';
 }
 
-#[OA\Schema(schema: 'DynamicEnumCase', type: 'string')]
+#[OA\Schema(component: 'DynamicEnumCase', type: 'string')]
 enum DynamicEnumCaseSpec: string
 {
     case Foo = 'case_' . DynamicEnumCaseInterfaceSpec::SOME_CONST;

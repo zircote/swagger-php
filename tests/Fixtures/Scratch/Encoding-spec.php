@@ -8,12 +8,12 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'EncodingMetadata')]
+#[OA\Schema(component: 'EncodingMetadata')]
 class EncodingMetadataSpec
 {
 }
 
-#[OA\Schema(schema: 'MultipartFormData')]
+#[OA\Schema(component: 'MultipartFormData')]
 class MultipartFormDataSpec
 {
     #[OA\Schema(format: 'uuid')]

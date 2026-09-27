@@ -13,7 +13,7 @@ use OpenApi\Spec as OA;
 // keywords with a warning, the rest silently.
 
 #[OA\Schema(
-    schema: 'conditional',
+    component: 'conditional',
     type: 'object',
     properties: [
         new OA\Property(property: 'country', schema: new OA\Schema(type: 'string')),
@@ -29,7 +29,7 @@ class SchemaKeywordsConditionalSpec
 }
 
 #[OA\Schema(
-    schema: 'tuple',
+    component: 'tuple',
     type: 'array',
     prefixItems: [
         new OA\Schema(type: 'string'),
@@ -46,7 +46,7 @@ class SchemaKeywordsTupleSpec
 }
 
 #[OA\Schema(
-    schema: 'dependent',
+    component: 'dependent',
     type: 'object',
     dependentRequired: ['creditCard' => ['billingAddress']],
     dependentSchemas: ['creditCard' => new OA\Schema(required: ['billingAddress'])],
@@ -56,7 +56,7 @@ class SchemaKeywordsDependentSpec
 }
 
 #[OA\Schema(
-    schema: 'embedded',
+    component: 'embedded',
     type: 'string',
     contentEncoding: 'base64',
     contentMediaType: 'application/json',
@@ -66,14 +66,14 @@ class SchemaKeywordsEmbeddedSpec
 {
 }
 
-#[OA\Schema(schema: 'decoded', type: 'object')]
+#[OA\Schema(component: 'decoded', type: 'object')]
 class SchemaKeywordsDecodedSpec
 {
 }
 
 // a nested schema slot takes a ref like any other schema position
 #[OA\Schema(
-    schema: 'envelope',
+    component: 'envelope',
     type: 'string',
     contentMediaType: 'application/json',
     contentSchema: new OA\Schema\Ref(SchemaKeywordsDecodedSpec::class),

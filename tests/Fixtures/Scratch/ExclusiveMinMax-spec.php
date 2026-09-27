@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'minMaxClass')]
+#[OA\Schema(component: 'minMaxClass')]
 class MinMaxClassSpec
 {
     #[OA\Property]

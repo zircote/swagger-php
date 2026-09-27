@@ -49,7 +49,7 @@ trait HasSoftDeleteExtendedSpec
 }
 
 #[OA\Schema(
-    schema: 'ModelExtended',
+    component: 'ModelExtended',
     description: 'This model can be ignored, it is just used for inheritance.',
 )]
 /**
@@ -62,7 +62,7 @@ abstract class ModelExtendedSpec
 }
 
 #[OA\Schema(
-    schema: 'Product',
+    component: 'Product',
     description: 'Product',
     required: ['number', 'name'],
     xml: new OA\Xml(name: 'Product'),

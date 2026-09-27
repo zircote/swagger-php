@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Fixtures\Assembler;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'SimpleProduct')]
+#[OA\Schema(component: 'SimpleProduct')]
 class SimpleProduct
 {
     #[OA\Property(property: 'name')]

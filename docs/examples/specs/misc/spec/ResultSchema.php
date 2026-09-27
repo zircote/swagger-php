@@ -8,7 +8,7 @@ namespace OpenApi\Examples\Specs\Misc\Spec;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'Result', title: 'Sample schema for using references')]
+#[OA\Schema(title: 'Sample schema for using references', component: 'Result')]
 class ResultSchema
 {
     #[OA\Property]

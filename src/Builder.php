@@ -301,10 +301,15 @@ class Builder
             $hook($specification);
         }
 
+        // every producer has run and nothing has read a component key yet; the resolver's
+        // index is the first reader
+        Specification\ComponentName::normalise($specification, deprecate: true);
+
         $this->getResolver()->resolve($assembler);
 
         if ($hybrid) {
             $this->doHybridAssemble($specification);
+            Specification\ComponentName::normalise($specification, deprecate: false);
         }
 
         // share the token scanner cache ...

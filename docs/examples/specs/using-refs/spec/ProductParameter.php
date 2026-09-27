@@ -11,13 +11,6 @@ use OpenApi\Spec as OA;
 #[OA\Components]
 class ProductParameter
 {
-    #[OA\Parameter(
-        parameter: 'product_id_in_path_required',
-        name: 'product_id',
-        in: OA\ParameterIn::Path,
-        description: 'The ID of the product',
-        required: true,
-        schema: new OA\Schema(type: 'integer', format: 'int64'),
-    )]
+    #[OA\Parameter(name: 'product_id', in: OA\ParameterIn::Path, description: 'The ID of the product', required: true, schema: new OA\Schema(type: 'integer', format: 'int64'), component: 'product_id_in_path_required')]
     public int $product_id;
 }

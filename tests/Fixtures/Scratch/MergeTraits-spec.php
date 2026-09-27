@@ -32,7 +32,7 @@ abstract class ModelSpec
 }
 
 #[OA\Schema(
-    schema: 'Address',
+    component: 'Address',
     required: ['street'],
     xml: new OA\Xml(name: 'Address'),
 )]

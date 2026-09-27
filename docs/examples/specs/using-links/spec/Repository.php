@@ -8,7 +8,7 @@ namespace OpenApi\Examples\Specs\UsingLinks\Spec;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'repository')]
+#[OA\Schema(component: 'repository')]
 class Repository
 {
     #[OA\Property]
