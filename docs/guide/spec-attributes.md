@@ -386,6 +386,13 @@ Before 6.11 each type spelled its key after itself: `schema: 'Pet'`, `parameter:
 work, produce the same document, and trigger a deprecation; they are removed in 8.0. Only the
 component use is deprecated: `response: 404` on a nested response, or `header: 'X-Rate-Limit'`
 on a header inside a response, is the nesting key and stays.
+
+Classic is not affected and reports nothing. `OpenApi\Attributes` keeps `schema:`,
+`parameter:`, `request:` and `securityScheme:` as its component keys, and hybrid mode
+translates them to `component:` through the bridge. What this does change is the price of
+moving a classic codebase onto `OpenApi\Spec`: it is no longer a change of `use` line and
+nothing else, because every component key is renamed with it. See
+[Migration path](/guide/modes#migration-path).
 :::
 
 ## Inheritance

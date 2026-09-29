@@ -117,12 +117,12 @@ The recommended migration path is:
 
 1. **Classic → Hybrid** — change `setMode(Mode::HYBRID)` and verify output is unchanged. No code changes needed. This gives you access to the augmenter pipeline.
 
-2. **Hybrid → Spec** — when starting new code, use `OpenApi\Spec` attributes. Existing `OpenApi\Attributes` code continues to work via hybrid mode.
+2. **Hybrid → Spec** — when starting new code, use `OpenApi\Spec` attributes. Existing `OpenApi\Attributes` code continues to work via hybrid mode. The spec attributes are not a one-for-one rename of the classic ones: a reusable attribute takes a single `component:` key where classic spells the key after its own type (`schema:`, `parameter:`, `request:`, `securityScheme:`). See [Components](/guide/spec-attributes#components).
 
 3. **Full Spec** — once all code uses `OpenApi\Spec` attributes, switch to `setMode(Mode::SPEC)`.
 
 ::: tip Version timeline
 - **v6** — spec/hybrid ship as opt-in beta. Classic remains default.
 - **v7** — hybrid becomes the default mode. Classic still available. `setMode()` and all classic code deprecated.
-- **v8** — classic removed. `setMode()` removed. Spec becomes default. Spec attributes move to `OpenApi\Attributes`, one `use` line per file.
+- **v8** — classic removed. `setMode()` removed. Spec becomes default. Spec attributes move to `OpenApi\Attributes`. For code already written against `OpenApi\Spec` that move is one `use` line per file; coming from classic, the component keys are renamed as well.
 :::
