@@ -97,6 +97,8 @@ class OpenApi31Compiler implements CompilerInterface
 
         $this->validateNames($specification);
 
+        $this->validateVersionedComponents($specification);
+
         $this->validateNestedNames($specification);
 
         $this->validateSchemaExamples($specification);
@@ -238,7 +240,7 @@ class OpenApi31Compiler implements CompilerInterface
         }
 
         foreach ($pathItems as $pathItem) {
-            if ($pathItem->path === null) {
+            if ($pathItem->path === null || $pathItem->component !== null) {
                 continue;
             }
 
@@ -254,6 +256,7 @@ class OpenApi31Compiler implements CompilerInterface
     protected function compilePathItem(OA\PathItem $pathItem): array
     {
         return $this->filter([
+            '$ref' => $pathItem->ref,
             'summary' => $pathItem->summary,
             'description' => $pathItem->description,
             'parameters' => array_map($this->compileParameter(...), $pathItem->parameters ?? []),
@@ -671,7 +674,27 @@ class OpenApi31Compiler implements CompilerInterface
             'securitySchemes' => $this->compileSecuritySchemes($specification->securitySchemes),
             'links' => $this->compileComponentMap($specification->links, $this->compileLink(...)),
             'examples' => $this->compileComponentMap($specification->examples, $this->compileExample(...)),
+            'pathItems' => $this->compileComponentMap($specification->pathItems, $this->compilePathItem(...)),
+            ...$this->compileVersionedComponents($specification),
         ]);
+    }
+
+    /**
+     * The component buckets a later version adds. 3.1 has none past `pathItems`; 3.2 adds
+     * `mediaTypes`. Reported, not silently dropped, by `validateVersionedComponents()`.
+     *
+     * @return array<string,mixed>
+     */
+    protected function compileVersionedComponents(Specification $specification): array
+    {
+        return [];
+    }
+
+    protected function validateVersionedComponents(Specification $specification): void
+    {
+        if ($specification->mediaTypes !== []) {
+            $this->logger->warning('mediaTypes components are not supported before OpenAPI 3.2 and will be omitted');
+        }
     }
 
     /**
@@ -782,6 +805,10 @@ class OpenApi31Compiler implements CompilerInterface
                 $name = ComponentName::of($component);
 
                 if ($name === null) {
+                    if ($component instanceof OA\PathItem) {
+                        continue; // path-bound, keyed by its path under `paths`
+                    }
+
                     $this->logger->warning(sprintf(
                         '%s is missing key-field: "%s" in %s',
                         $type,
@@ -852,7 +879,7 @@ class OpenApi31Compiler implements CompilerInterface
 
                 $this->logger->warning(sprintf(
                     'Schema%s: examples takes values, not Example objects, in %s',
-                    $schema->schema !== null ? " \"{$schema->schema}\"" : '',
+                    $this->schemaLabel($schema),
                     $example->getSourceLocation(),
                 ));
             }
@@ -866,7 +893,7 @@ class OpenApi31Compiler implements CompilerInterface
         foreach ($allSchemas as $schema) {
             if ($schema->type !== null && (is_array($schema->type) ? in_array('array', $schema->type, true) : $schema->type === 'array')) {
                 if ($schema->items === null && $schema->prefixItems === null && $schema->contains === null) {
-                    $this->logger->warning('Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . ' has type "array" but no items in ' . $schema->getSourceLocation());
+                    $this->logger->warning('Schema' . $this->schemaLabel($schema) . ' has type "array" but no items in ' . $schema->getSourceLocation());
                 }
             }
 
@@ -885,7 +912,7 @@ class OpenApi31Compiler implements CompilerInterface
                 continue;
             }
 
-            $this->logger->warning('Schema' . ($schema->schema ? " \"$schema->schema\"" : '') . " has unknown type \"$type\", expecting one of " . implode(', ', static::SCHEMA_TYPES) . ' in ' . $schema->getSourceLocation());
+            $this->logger->warning('Schema' . $this->schemaLabel($schema) . " has unknown type \"$type\", expecting one of " . implode(', ', static::SCHEMA_TYPES) . ' in ' . $schema->getSourceLocation());
         }
     }
 
@@ -1019,10 +1046,18 @@ class OpenApi31Compiler implements CompilerInterface
      * Those have a meaningful fallback; a missing name does not, so it goes to
      * {@see compileKeyedMap()} instead.
      *
-     * @param  list<object>        $items
-     * @param  string|\Closure     $key   Property name or fn($item, $index): string
      * @return array<string,mixed>
      */
+    /**
+     * The schema's key, quoted, for a diagnostic — or nothing, for an inline one.
+     */
+    protected function schemaLabel(OA\Schema $schema): string
+    {
+        $name = ComponentName::of($schema);
+
+        return $name !== null ? " \"$name\"" : '';
+    }
+
     protected function compileNamedMap(array $items, string|\Closure $key, \Closure $compiler): array
     {
         $result = [];

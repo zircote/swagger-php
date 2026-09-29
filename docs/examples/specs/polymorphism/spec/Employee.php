@@ -8,7 +8,7 @@ namespace OpenApi\Examples\Specs\Polymorphism\Spec;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'EmployeeResponsible')]
+#[OA\Schema(component: 'EmployeeResponsible')]
 final class Employee extends AbstractResponsible
 {
     #[OA\Property(property: 'type')]

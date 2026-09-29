@@ -12,7 +12,7 @@ use OpenApi\Spec as OA;
  * A component name is free-form, so both characters that are structural in a JSON Pointer
  * are legal in one.
  */
-#[OA\Schema(schema: 'Odd/Name~With')]
+#[OA\Schema(component: 'Odd/Name~With')]
 class OddlyNamed
 {
     #[OA\Property]

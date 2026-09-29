@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'DocblockGenericsTarget')]
+#[OA\Schema(component: 'DocblockGenericsTarget')]
 class DocblockGenericsTargetSpec
 {
     #[OA\Property]
@@ -16,7 +16,7 @@ class DocblockGenericsTargetSpec
 }
 
 // The same PHP type three ways. Only the docblock differs, so all three resolve to one `$ref`.
-#[OA\Schema(schema: 'DocblockGenericsHolder')]
+#[OA\Schema(component: 'DocblockGenericsHolder')]
 class DocblockGenericsHolderSpec
 {
     #[OA\Property]

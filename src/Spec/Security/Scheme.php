@@ -26,12 +26,15 @@ use OpenApi\Spec\Parameter;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class Scheme extends OA\AbstractAttribute
 {
+    /** The key this attribute is filed under in `components`; null for an inline one. */
+    public ?string $component = null;
+
     public ?string $type = null;
 
     public ?string $in = null;
 
     /**
-     * @param string|null               $securityScheme   Reusable security scheme identifier (component key)
+     * @param string|null               $securityScheme   Deprecated since 6.11, removed in 8.0 - use `component` instead
      * @param string|OA\SchemeType|null $type             The type of the security scheme (apiKey, http, mutualTLS, oauth2, openIdConnect)
      * @param string|null               $description      A description of the security scheme (CommonMark syntax)
      * @param string|null               $name             The name of the header, query, or cookie parameter (apiKey)
@@ -41,6 +44,7 @@ class Scheme extends OA\AbstractAttribute
      * @param string|null               $openIdConnectUrl The OpenID Connect URL to discover configuration (openIdConnect)
      * @param list<OA\Flow>|null        $flows            The available OAuth2 flows (oauth2)
      * @param string|null               $ref              A JSON Reference to a reusable security scheme
+     * @param string|null               $component        The key this is filed under in `components`, which makes it a reusable component
      * @param array<string,mixed>|null  $x                Vendor extensions (x-* properties)
      * @param list<OA\Attachable>|null  $attachables      Reusable custom attachable attributes
      */
@@ -55,10 +59,16 @@ class Scheme extends OA\AbstractAttribute
         public ?string $openIdConnectUrl = null,
         public ?array $flows = null,
         public string|OA\Schema\Ref|null $ref = null,
+        ?string $component = null,
         ?array $x = null,
         ?array $attachables = null,
     ) {
         parent::__construct(x: $x, attachables: $attachables);
+        $this->component = $component;
+        if ($component === null && $this->securityScheme !== null) {
+            trigger_deprecation('zircote/swagger-php', '6.11', '`securityScheme` is deprecated as the component key of %s and will be removed in 8.0; use `component`', static::class);
+            $this->component = $this->securityScheme;
+        }
         $this->type = $type instanceof \BackedEnum ? $type->value : $type;
         $this->in = $in instanceof \BackedEnum ? $in->value : $in;
     }

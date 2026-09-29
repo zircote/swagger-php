@@ -16,12 +16,16 @@ use OpenApi\Undefined;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class MediaType extends AbstractAttribute
 {
+    /** The key this attribute is filed under in `components`; null for an inline one. */
+    public ?string $component = null;
+
     /**
      * @param string|null                                $mediaType   The media type identifier (e.g. 'application/json')
      * @param Schema|null                                $schema      The schema defining the content
      * @param mixed                                      $example     Example of the media type content
      * @param list<Example>|null                         $examples    Examples of the media type content
      * @param list<Encoding>|array<string,Encoding>|null $encoding    Encoding information for specific properties
+     * @param string|null                                $component   The key this is filed under in `components`, which makes it a reusable component
      * @param array<string,mixed>|null                   $x           Vendor extensions (x-* properties)
      * @param list<Attachable>|null                      $attachables Reusable custom attachable attributes
      */
@@ -31,15 +35,23 @@ class MediaType extends AbstractAttribute
         public mixed $example = Undefined::UNDEFINED,
         public ?array $examples = null,
         public ?array $encoding = null,
+        ?string $component = null,
         ?array $x = null,
         ?array $attachables = null,
     ) {
         parent::__construct(x: $x, attachables: $attachables);
+        $this->component = $component;
+    }
+
+    public function isRoot(): bool
+    {
+        return $this->component !== null;
     }
 
     public function merge(): array
     {
         return [
+            Components::class => 'mediaTypes[]',
             Response::class => 'content[]',
             RequestBody::class => 'content[]',
             Parameter::class => 'content[]',

@@ -52,6 +52,9 @@ namespace OpenApi\Spec;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class PathItem extends AbstractAttribute
 {
+    /** The key this attribute is filed under in `components`; null for an inline one. */
+    public ?string $component = null;
+
     /** Resolved path — set by augmenter or HybridBridge, not user-authored. */
     public ?string $path = null;
 
@@ -65,6 +68,7 @@ class PathItem extends AbstractAttribute
      * @param list<string>|null               $tags        Tags to clone to contained operations
      * @param list<Security\Requirement>|null $security    Security requirements to clone to contained operations
      * @param list<Response>|null             $responses   Shared responses to clone to contained operations
+     * @param string|null                     $component   The key this is filed under in `components`, which makes it a reusable component
      * @param array<string,mixed>|null        $x           Vendor extensions (x-* properties)
      * @param list<Attachable>|null           $attachables Reusable custom attachable attributes
      */
@@ -78,14 +82,23 @@ class PathItem extends AbstractAttribute
         public ?array $tags = null,
         public ?array $security = null,
         public ?array $responses = null,
+        ?string $component = null,
         ?array $x = null,
         ?array $attachables = null,
     ) {
         parent::__construct(x: $x, attachables: $attachables);
+        $this->component = $component;
     }
 
     public function isRoot(): bool
     {
         return true;
+    }
+
+    public function merge(): array
+    {
+        return [
+            Components::class => 'pathItems[]',
+        ];
     }
 }

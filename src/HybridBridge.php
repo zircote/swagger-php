@@ -421,7 +421,6 @@ class HybridBridge
     protected function convertParameter(OA\Parameter $param): Spec\Parameter
     {
         $result = new Spec\Parameter(
-            parameter: $this->val($param->parameter),
             name: $this->val($param->name),
             in: $this->val($param->in),
             description: Undefined::isDefault($param->description) ? Undefined::UNDEFINED : $param->description,
@@ -438,6 +437,7 @@ class HybridBridge
                 ? null
                 : array_values(array_map($this->convertExample(...), $param->examples)),
             content: $this->resolveContent($param),
+            component: $this->val($param->parameter),
             x: $this->extensions($param),
         );
         $this->copyReflector($param, $result);
@@ -480,11 +480,11 @@ class HybridBridge
     protected function convertRequestBody(OA\RequestBody $body): Spec\RequestBody
     {
         $result = new Spec\RequestBody(
-            request: $this->val($body->request),
             description: $this->val($body->description),
             required: $this->val($body->required),
             ref: $this->val($body->ref),
             content: $this->resolveContent($body),
+            component: $this->val($body->request),
             x: $this->extensions($body),
         );
         $this->copyReflector($body, $result);
@@ -655,7 +655,6 @@ class HybridBridge
         }
 
         $result = new Spec\Schema(
-            schema: $this->val($schema->schema),
             title: $this->val($schema->title),
             description: Undefined::isDefault($schema->description) ? Undefined::UNDEFINED : $schema->description,
             ref: $this->val($schema->ref) ?? $this->typeAsRef($schema->type),
@@ -720,6 +719,7 @@ class HybridBridge
                 ? null
                 : $this->convertExternalDocs($schema->externalDocs),
             xml: Undefined::isDefault($schema->xml) ? null : $this->convertXml($schema->xml),
+            component: $this->val($schema->schema),
             x: $this->extensions($schema),
         );
         $this->copyReflector($schema, $result);
@@ -818,7 +818,6 @@ class HybridBridge
         }
 
         $result = new Spec\Security\Scheme(
-            securityScheme: $this->val($scheme->securityScheme),
             type: $this->val($scheme->type),
             description: $this->val($scheme->description),
             name: $this->val($scheme->name),
@@ -828,6 +827,7 @@ class HybridBridge
             openIdConnectUrl: $this->val($scheme->openIdConnectUrl),
             flows: $flows,
             ref: $this->val($scheme->ref),
+            component: $this->val($scheme->securityScheme),
             x: $this->extensions($scheme),
         );
         $this->copyReflector($scheme, $result);

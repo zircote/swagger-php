@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Fixtures\Augmenter;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'TypeSchema')]
+#[OA\Schema(component: 'TypeSchema')]
 class TypeSchema
 {
     #[OA\Property]

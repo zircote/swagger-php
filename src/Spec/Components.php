@@ -13,10 +13,9 @@ namespace OpenApi\Spec;
  * of the OpenAPI document. The Components attribute itself is not emitted — its children
  * are promoted to their respective Specification buckets.
  *
- * The primary use case is for DTOs that are NOT roots and therefore cannot be declared
- * at class level on their own: Parameter, Header, Link, and Example. Other types
- * (Schema, PathItem, SecurityScheme, named Response/RequestBody) are already roots and
- * can be declared directly on a class without needing a Components wrapper.
+ * Any attribute given a `component:` key is a root on its own and needs no wrapper. The
+ * wrapper remains for the historic spellings — a Header or Example keyed by `header`/`example`
+ * — and for grouping several components on one class.
  *
  *   #[Components]
  *   class SharedComponents {
@@ -42,6 +41,8 @@ class Components extends AbstractAttribute
      * @param list<Security\Scheme>    $securitySchemes
      * @param list<Link>               $links
      * @param list<Example>            $examples
+     * @param list<PathItem>           $pathItems
+     * @param list<MediaType>          $mediaTypes      OpenAPI 3.2; earlier compilers omit them with a warning
      * @param array<string,mixed>|null $x               Vendor extensions (x-* properties)
      * @param list<Attachable>|null    $attachables     Reusable custom attachable attributes
      */
@@ -54,6 +55,8 @@ class Components extends AbstractAttribute
         public array $securitySchemes = [],
         public array $links = [],
         public array $examples = [],
+        public array $pathItems = [],
+        public array $mediaTypes = [],
         ?array $x = null,
         ?array $attachables = null,
     ) {

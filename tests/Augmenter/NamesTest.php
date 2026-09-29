@@ -23,7 +23,7 @@ final class NamesTest extends TestCase
 
         (new Augmenter\Names())($spec);
 
-        $this->assertSame('TypeSchema', $spec->schemas[0]->schema);
+        $this->assertSame('TypeSchema', $spec->schemas[0]->component);
     }
 
     public function testInfersSchemaNameFromEnum(): void
@@ -32,17 +32,17 @@ final class NamesTest extends TestCase
 
         (new Augmenter\Names())($spec);
 
-        $this->assertSame('BasicEnum', $spec->schemas[0]->schema);
+        $this->assertSame('BasicEnum', $spec->schemas[0]->component);
     }
 
     public function testPreservesExplicitSchemaName(): void
     {
         $spec = $this->assemble(Fixtures\Augmenter\TypeSchema::class);
-        $spec->schemas[0]->schema = 'CustomName';
+        $spec->schemas[0]->component = 'CustomName';
 
         (new Augmenter\Names())($spec);
 
-        $this->assertSame('CustomName', $spec->schemas[0]->schema);
+        $this->assertSame('CustomName', $spec->schemas[0]->component);
     }
 
     public function testInfersParameterKeyFromName(): void
@@ -53,7 +53,7 @@ final class NamesTest extends TestCase
 
         (new Augmenter\Names())($spec);
 
-        $this->assertSame('page', $param->parameter);
+        $this->assertSame('page', $param->component);
     }
 
     public function testPreservesExplicitParameterKey(): void
@@ -64,6 +64,6 @@ final class NamesTest extends TestCase
 
         (new Augmenter\Names())($spec);
 
-        $this->assertSame('custom', $param->parameter);
+        $this->assertSame('custom', $param->component);
     }
 }

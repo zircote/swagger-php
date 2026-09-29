@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Fixtures\Augmenter\Hierarchy\Spec;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'NameTrait')]
+#[OA\Schema(component: 'NameTrait')]
 trait TraitWithSchema
 {
     #[OA\Property(property: 'name')]

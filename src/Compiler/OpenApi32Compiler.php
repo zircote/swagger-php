@@ -39,6 +39,22 @@ class OpenApi32Compiler extends OpenApi31Compiler
         return $this->logger->entries();
     }
 
+    #[\Override]
+    protected function validateVersionedComponents(Specification $specification): void
+    {
+    }
+
+    /**
+     * @return array<string,mixed>
+     */
+    #[\Override]
+    protected function compileVersionedComponents(Specification $specification): array
+    {
+        return [
+            'mediaTypes' => $this->compileComponentMap($specification->mediaTypes, $this->compileMediaType(...)),
+        ];
+    }
+
     /**
      * @return array<string,mixed>
      */

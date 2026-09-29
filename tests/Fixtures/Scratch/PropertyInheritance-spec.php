@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'PropertyInheritance')]
+#[OA\Schema(component: 'PropertyInheritance')]
 class PropertyInheritanceSpec extends AbstractBaseClass
 {
     #[OA\Property(property: 'inheritedfilter')]

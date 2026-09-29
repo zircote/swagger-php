@@ -23,7 +23,7 @@ class CustomOpenApiPropertyControllerSpec
 {
 }
 
-#[OA\Schema(schema: 'CustomPropertyAttribute')]
+#[OA\Schema(component: 'CustomPropertyAttribute')]
 class CustomPropertyAttributeSpec
 {
     public function __construct(

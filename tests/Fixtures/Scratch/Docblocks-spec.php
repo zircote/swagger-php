@@ -9,7 +9,7 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 use OpenApi\Spec as OA;
 
 #[OA\OpenApi(version: '3.0.0')]
-#[OA\Schema(schema: 'DocblocksSchema')]
+#[OA\Schema(component: 'DocblocksSchema')]
 class DocblocksSchemaSpec
 {
     /**
@@ -75,7 +75,7 @@ class DocblocksSchemaSpec
     public $nonZeroInt;
 }
 
-#[OA\Schema(schema: 'DocblockSchemaChild')]
+#[OA\Schema(component: 'DocblockSchemaChild')]
 class DocblockSchemaChildSpec extends DocblocksSchemaSpec
 {
     /** @var int The id */

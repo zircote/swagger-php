@@ -9,7 +9,7 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 use OpenApi\Spec as OA;
 
 #[OA\Schema(
-    schema: 'ItemDto',
+    component: 'ItemDto',
     title: 'Item Dto',
     required: [
         'name',
@@ -23,7 +23,7 @@ class ItemDtoSpec
 }
 
 #[OA\Schema(
-    schema: 'PropertyItems',
+    component: 'PropertyItems',
     title: 'Property Items',
     required: [
         'list1',

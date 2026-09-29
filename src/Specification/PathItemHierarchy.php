@@ -37,6 +37,10 @@ class PathItemHierarchy
         protected Specification $specification,
     ) {
         foreach ($specification->pathItems as $pathItem) {
+            if ($pathItem->component !== null) {
+                continue; // a reusable path item, filed under components; it governs no class
+            }
+
             $className = $pathItem->getClassName();
             if ($className !== null) {
                 $this->classToPathItem[$className] = $pathItem;

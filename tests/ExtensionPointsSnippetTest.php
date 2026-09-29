@@ -61,7 +61,7 @@ final class ExtensionPointsSnippetTest extends TestCase
 
         $schema = $result->specification()->schemas[0];
 
-        $this->assertSame('Pet', $schema->schema);
+        $this->assertSame('Pet', $schema->component);
         $this->assertSame(['name', 'age'], $schema->required);
     }
 }

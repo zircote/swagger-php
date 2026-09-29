@@ -11,7 +11,7 @@ use OpenApi\Spec as OA;
 // `Schema::$examples` is the JSON Schema keyword: values, not Example objects. Classic takes
 // values here too, or an `@OA\Examples` giving up its `value`.
 #[OA\Schema(
-    schema: 'YoYo',
+    component: 'YoYo',
     examples: ['YoYo', 'Bare']
 )]
 class ExampleSchemaSpec

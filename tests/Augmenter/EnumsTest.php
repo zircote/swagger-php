@@ -24,7 +24,7 @@ final class EnumsTest extends TestCase
         (new Augmenter\Enums())($spec);
 
         $schema = $spec->schemas[0];
-        $this->assertSame('BasicEnum', $schema->schema);
+        $this->assertSame('BasicEnum', $schema->component);
         $this->assertSame('string', $schema->type);
         $this->assertSame(['GREEN', 'BLUE', 'RED'], $schema->enum);
     }
@@ -36,7 +36,7 @@ final class EnumsTest extends TestCase
         (new Augmenter\Enums())($spec);
 
         $schema = $spec->schemas[0];
-        $this->assertSame('BackedStringEnum', $schema->schema);
+        $this->assertSame('BackedStringEnum', $schema->component);
         $this->assertSame('string', $schema->type);
         $this->assertSame(['ACTIVE', 'INACTIVE'], $schema->enum);
     }
@@ -48,7 +48,7 @@ final class EnumsTest extends TestCase
         (new Augmenter\Enums())($spec);
 
         $schema = $spec->schemas[0];
-        $this->assertSame('BackedIntEnum', $schema->schema);
+        $this->assertSame('BackedIntEnum', $schema->component);
         $this->assertSame('integer', $schema->type);
         $this->assertSame([1, 2, 3], $schema->enum);
     }
@@ -118,10 +118,10 @@ final class EnumsTest extends TestCase
     public function testPreservesExplicitSchemaName(): void
     {
         $spec = $this->assemble(Fixtures\Augmenter\BasicEnum::class);
-        $spec->schemas[0]->schema = 'CustomName';
+        $spec->schemas[0]->component = 'CustomName';
 
         (new Augmenter\Enums())($spec);
 
-        $this->assertSame('CustomName', $spec->schemas[0]->schema);
+        $this->assertSame('CustomName', $spec->schemas[0]->component);
     }
 }

@@ -125,7 +125,7 @@ final class ResolverTest extends TestCase
     protected function schemaNames(Assembler $assembler): array
     {
         return array_map(
-            static fn (OA\Schema $schema): ?string => $schema->schema,
+            static fn (OA\Schema $schema): ?string => $schema->component,
             $assembler->getSpecification()->schemas
         );
     }

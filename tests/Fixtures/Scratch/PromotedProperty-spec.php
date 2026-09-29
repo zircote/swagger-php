@@ -8,13 +8,13 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'MyEnum', type: 'string')]
+#[OA\Schema(component: 'MyEnum', type: 'string')]
 enum MyEnumSpec: string
 {
     case AA = 'AA';
 }
 
-#[OA\Schema(schema: 'PromotedPropertyDescription')]
+#[OA\Schema(component: 'PromotedPropertyDescription')]
 class PromotedPropertyDescriptionSpec
 {
     /**

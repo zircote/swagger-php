@@ -28,6 +28,10 @@ it and getting people onto it:
 * a rector rule set for `OpenApi\Attributes` -> `OpenApi\Spec`
 * a seam to contribute pre-built attributes to a `Specification` before resolution, for
   framework integrations that do not scan
+* one `component:` field on every reusable `Spec` attribute, naming its key in `components`;
+  the per-type spellings it replaces (`schema`, `parameter`, `request`, `securityScheme`, and
+  `response`/`header`/`link`/`example` used as a component key) are marked `@deprecated`,
+  removed in `8.0`, and trigger a runtime deprecation when used
 * docblock annotation support marked `@deprecated`, removed in `8.0` - the README has said so
   since 4.8, the code now agrees, and parsing a docblock annotation triggers a runtime
   deprecation once per run

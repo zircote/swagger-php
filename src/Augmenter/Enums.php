@@ -72,7 +72,7 @@ class Enums implements PipeInterface, LoggerAwareInterface
             $enumName = $reflector->getName();
             $reflector = new \ReflectionEnum($enumName);
 
-            $schema->schema ??= $reflector->getShortName();
+            $schema->component ??= $reflector->getShortName();
 
             $useName = $this->shouldUseName($schema, $reflector);
 

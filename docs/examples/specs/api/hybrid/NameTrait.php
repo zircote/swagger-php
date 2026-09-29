@@ -11,7 +11,7 @@ use OpenApi\Spec as OA;
 /**
  * A Name.
  */
-#[OA\Schema(schema: 'NameTrait')]
+#[OA\Schema(component: 'NameTrait')]
 trait NameTrait
 {
     #[OA\Property(property: 'name')]

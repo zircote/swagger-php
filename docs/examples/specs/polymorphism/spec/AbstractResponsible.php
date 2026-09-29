@@ -8,7 +8,7 @@ namespace OpenApi\Examples\Specs\Polymorphism\Spec;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'Responsible', oneOf: [
+#[OA\Schema(oneOf: [
     new OA\Schema(ref: Fl::class),
     new OA\Schema(ref: Employee::class),
 ], discriminator: new OA\Discriminator(
@@ -17,7 +17,7 @@ use OpenApi\Spec as OA;
         'fl' => Fl::class,
         'employee' => Employee::class,
     ],
-))]
+), component: 'Responsible')]
 abstract class AbstractResponsible
 {
     protected const TYPE = null;

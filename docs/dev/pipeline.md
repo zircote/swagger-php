@@ -65,13 +65,19 @@ attribute is one that can stand alone — it owns a bucket and needs no parent.
 
 - **Always root**: `Schema`, `Operation`, `PathItem`, `OpenApi`, `Info`, `Tag`, `Server`,
   `ExternalDocumentation`, `Security\Scheme`, `Components`, `Attachable`
-- **Conditionally root**, when their own key is set and `ref` is not: `Response`
-  (`response`), `Parameter` (`parameter`), `Link` (`link`); `RequestBody` needs `request`
-  set but has no `ref` check
-- **Never root**: `Header`, `Example`, `MediaType`, `Property` — these must nest inside a
-  parent or sit in a `Components` container
+- **Conditionally root**, when `component` is set — the key the attribute is filed under in
+  `components` — and `ref` is not: `Response`, `Parameter`, `Link`, `RequestBody`, `Header`,
+  `Example`, `MediaType`. The request body has no `ref` check, since its key can never double
+  as a nesting key. Until 8.0 the historic spellings still count for the response and the
+  link (`response`, `link`); the other historic spellings alias onto `component` in the
+  constructor and need no clause
+- **Never root**: `Property` — it must nest inside a parent
 
-Each attribute decides for itself, in `isRoot()`.
+Each attribute decides for itself, in `isRoot()`. The one field behind the conditional rule,
+`component`, is read through `Specification\ComponentName::of()` everywhere a key is needed —
+the compiler, `ComponentIndex`, `Augmenter\Cleanup` — and filled in from the historic
+spellings once per build by `ComponentName::normalise()`, after the contribution hooks and
+before the resolver builds the first index.
 
 Root does not mean un-nested. `isRoot()` says what an attribute may be when nothing consumes
 it; `merge()` and `contained()` run first, and often do. `Schema` is always root, and is

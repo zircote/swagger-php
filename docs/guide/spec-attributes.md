@@ -339,40 +339,60 @@ class ValidationErrors {}
 
 ## Components
 
-`#[OA\Components]` is a class-level container for reusable definitions that cannot stand alone as root attributes — primarily Parameters, Headers, Links, and Examples.
+Any reusable attribute becomes a component by giving it a `component:` key — the name it is
+filed under in the document's `components` section, and the name a `$ref` points at.
+Schemas, responses, parameters, request bodies, headers, links, examples, security schemes and
+path items all take it, and a keyed attribute is a root: it can be declared on a class by
+itself, with no wrapper.
 
 ```php
 use OpenApi\Spec as OA;
 
-#[OA\Components]
-class SharedComponents
-{
-    #[OA\Parameter(parameter: 'page', name: 'page', in: 'query')]
-    #[OA\Schema(type: 'integer', default: 1)]
-    public int $page;
+#[OA\Parameter(component: 'page', name: 'page', in: 'query')]
+#[OA\Schema(type: 'integer', default: 1)]
+class PageParameter {}
 
-    #[OA\Parameter(parameter: 'per_page', name: 'per_page', in: 'query')]
-    #[OA\Schema(type: 'integer', default: 20)]
-    public int $perPage;
+#[OA\Header(component: 'RateLimit', description: 'Requests remaining')]
+#[OA\Schema(type: 'integer')]
+class RateLimitHeader {}
 
-    #[OA\Header(header: 'X-Rate-Limit', description: 'Requests remaining')]
-    #[OA\Schema(type: 'integer')]
-    public string $rateLimit;
-}
+#[OA\Response(component: 'NotFound', description: 'No such thing')]
+class NotFoundResponse {}
 ```
 
-These can then be referenced from operations via `$ref`:
+These are then referenced from operations via `$ref`:
 
 ```php
 #[OA\Operation\Get(path: '/users', parameters: [
     new OA\Parameter(ref: '#/components/parameters/page'),
-    new OA\Parameter(ref: '#/components/parameters/per_page'),
+], responses: [
+    new OA\Response(response: 404, ref: '#/components/responses/NotFound'),
 ])]
 public function list() {}
 ```
 
-::: tip When to use Components
-Schemas, PathItems, security schemes (`OA\Security\Scheme`), and named Responses/RequestBodies are root attributes — they can be declared directly on a class without a Components wrapper. Use Components only for types that can't stand alone (Parameter, Header, Link, Example).
+Note the two keys on that response: `response: 404` is where it nests in the operation, and
+`NotFound` is the component it points at. The same split holds for a header (`header:` is the
+HTTP header name, `component:` the reusable definition), a link and an example. A schema
+declared on a class needs no key at all — it is named after the class.
+
+`#[OA\Components]` remains as a class-level container for declaring several components on one
+class, and for the historic spellings below.
+
+::: warning Historic spellings, deprecated
+Before 6.11 each type spelled its key after itself: `schema: 'Pet'`, `parameter: 'page'`,
+`request: 'Body'`, `securityScheme: 'api'`, and — only when declared as a component —
+`response: 'NotFound'`, `header: 'RateLimit'`, `link: 'Self'`, `example: 'Minimal'`. They still
+work, produce the same document, and trigger a deprecation; they are removed in 8.0. Only the
+component use is deprecated: `response: 404` on a nested response, or `header: 'X-Rate-Limit'`
+on a header inside a response, is the nesting key and stays.
+
+Classic is not affected and reports nothing. `OpenApi\Attributes` keeps `schema:`,
+`parameter:`, `request:` and `securityScheme:` as its component keys, and hybrid mode
+translates them to `component:` through the bridge. What this does change is the price of
+moving a classic codebase onto `OpenApi\Spec`: it is no longer a change of `use` line and
+nothing else, because every component key is renamed with it. See
+[Migration path](/guide/modes#migration-path).
 :::
 
 ## Inheritance

@@ -237,7 +237,7 @@ final class AttributeFactoryTest extends TestCase
 
                         public function translate(array $attributes, array $created, \ReflectionClassConstant|\ReflectionParameter|\ReflectionMethod|\ReflectionClass|\ReflectionProperty $reflector): array
                         {
-                            if ($attributes[0] instanceof OA\Schema && $attributes[0]->schema === 'SimpleProduct') {
+                            if ($attributes[0] instanceof OA\Schema && $attributes[0]->component === 'SimpleProduct') {
                                 $property = new OA\Property(
                                     property: 'extra',
                                     schema: new OA\Schema(type: 'bool'),

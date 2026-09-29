@@ -8,7 +8,7 @@ namespace OpenApi\Examples\Specs\UsingLinks\Spec;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'pullrequest')]
+#[OA\Schema(component: 'pullrequest')]
 class PullRequest
 {
     #[OA\Property]

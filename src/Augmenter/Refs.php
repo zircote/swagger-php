@@ -9,6 +9,7 @@ namespace OpenApi\Augmenter;
 use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Specification\ComponentName;
 use OpenApi\Utils\JsonPointer;
 use OpenApi\Utils\PipeInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -132,8 +133,9 @@ class Refs implements PipeInterface, LoggerAwareInterface
             if ($schema->allOf !== null && $schema->properties === null) {
                 foreach ($schema->allOf as $index => $allOf) {
                     if ($allOf instanceof OA\Schema && $allOf->properties !== null) {
-                        if ($schema->schema !== null) {
-                            $candidates[$schema->schema] = $index;
+                        $name = ComponentName::of($schema);
+                        if ($name !== null) {
+                            $candidates[$name] = $index;
                         }
                     }
                 }

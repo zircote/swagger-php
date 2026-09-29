@@ -8,7 +8,7 @@ namespace OpenApi\Examples\Specs\UsingTraits\Spec;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'CustomName-Blink', title: 'Blink trait')]
+#[OA\Schema(title: 'Blink trait', component: 'CustomName-Blink')]
 trait Blink
 {
     /**

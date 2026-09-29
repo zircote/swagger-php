@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Fixtures\ComponentIndex;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'product')]
+#[OA\Schema(component: 'product')]
 class Product
 {
     #[OA\Property]

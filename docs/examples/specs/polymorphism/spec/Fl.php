@@ -8,7 +8,7 @@ namespace OpenApi\Examples\Specs\Polymorphism\Spec;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'FlResponsible')]
+#[OA\Schema(component: 'FlResponsible')]
 final class Fl extends AbstractResponsible
 {
     public const TYPE = 'fl';

@@ -57,8 +57,11 @@ class Schema extends AbstractAttribute
         'unevaluatedItems',
     ];
 
+    /** The key this attribute is filed under in `components`; null for an inline one. */
+    public ?string $component = null;
+
     /**
-     * @param string|null                                       $schema                Reusable schema identifier (component key)
+     * @param string|null                                       $schema                Deprecated since 6.11, removed in 8.0 - use `component` instead
      * @param string|null                                       $title                 A title for the schema
      * @param string|null                                       $description           A description of the schema (CommonMark syntax)
      * @param string|null                                       $ref                   A JSON Reference to a reusable schema
@@ -113,6 +116,7 @@ class Schema extends AbstractAttribute
      * @param Discriminator|null                                $discriminator         Discriminator for polymorphism
      * @param ExternalDocumentation|null                        $externalDocs          Additional external documentation
      * @param Xml|null                                          $xml                   XML representation metadata
+     * @param string|null                                       $component             The key this is filed under in `components`, which makes it a reusable component
      * @param array<string,mixed>|null                          $x                     Vendor extensions (x-* properties)
      * @param list<Attachable>|null                             $attachables           Reusable custom attachable attributes
      */
@@ -197,10 +201,16 @@ class Schema extends AbstractAttribute
         public ?Discriminator $discriminator = null,
         public ?ExternalDocumentation $externalDocs = null,
         public ?Xml $xml = null,
+        ?string $component = null,
         ?array $x = null,
         ?array $attachables = null,
     ) {
         parent::__construct(x: $x, attachables: $attachables);
+        $this->component = $component;
+        if ($component === null && $this->schema !== null) {
+            trigger_deprecation('zircote/swagger-php', '6.11', '`schema` is deprecated as the component key of %s and will be removed in 8.0; use `component`', static::class);
+            $this->component = $this->schema;
+        }
     }
 
     public function isRoot(): bool

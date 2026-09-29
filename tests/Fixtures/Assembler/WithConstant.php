@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Fixtures\Assembler;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'WithConstant')]
+#[OA\Schema(component: 'WithConstant')]
 class WithConstant
 {
     #[OA\Property(property: 'kind')]

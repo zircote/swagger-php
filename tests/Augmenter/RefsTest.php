@@ -130,7 +130,7 @@ final class RefsTest extends TestCase
 
         $discriminatorSchema = null;
         foreach ($spec->schemas as $schema) {
-            if ($schema->schema === 'DiscriminatorSchema') {
+            if ($schema->component === 'DiscriminatorSchema') {
                 $discriminatorSchema = $schema;
                 break;
             }

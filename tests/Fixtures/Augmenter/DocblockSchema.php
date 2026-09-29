@@ -13,7 +13,7 @@ use OpenApi\Spec as OA;
  *
  * @deprecated
  */
-#[OA\Schema(schema: 'DocblockSchema')]
+#[OA\Schema(component: 'DocblockSchema')]
 class DocblockSchema
 {
     #[OA\Property(property: 'name')]

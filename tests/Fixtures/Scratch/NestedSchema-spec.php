@@ -8,17 +8,17 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Spec as OA;
 
-#[OA\Schema(schema: 'NestedSchemaOne')]
+#[OA\Schema(component: 'NestedSchemaOne')]
 class NestedSchemaOneSpec
 {
 }
 
-#[OA\Schema(schema: 'NestedSchemaTwo')]
+#[OA\Schema(component: 'NestedSchemaTwo')]
 class NestedSchemaTwoSpec
 {
 }
 
-#[OA\Schema(schema: 'MultipleOneOf')]
+#[OA\Schema(component: 'MultipleOneOf')]
 class MultipleOneOfSpec
 {
     /**
@@ -40,7 +40,7 @@ class MultipleOneOfSpec
     version: '1.0'
 )]
 #[OA\Schema(
-    schema: 'NestedSchema',
+    component: 'NestedSchema',
     required: ['errors'],
     properties: [
         new OA\Property(

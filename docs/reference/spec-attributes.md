@@ -33,10 +33,9 @@ Place on a class to declare standalone components that go into the components se
 of the OpenAPI document. The Components attribute itself is not emitted — its children
 are promoted to their respective Specification buckets.
 
-The primary use case is for DTOs that are NOT roots and therefore cannot be declared
-at class level on their own: Parameter, Header, Link, and Example. Other types
-(Schema, PathItem, SecurityScheme, named Response/RequestBody) are already roots and
-can be declared directly on a class without needing a Components wrapper.
+Any attribute given a `component:` key is a root on its own and needs no wrapper. The
+wrapper remains for the historic spellings — a Header or Example keyed by `header`/`example`
+— and for grouping several components on one class.
 
   #[Components]
   class SharedComponents {
@@ -73,6 +72,10 @@ can be declared directly on a class without needing a Components wrapper.
   <dd><p>No details available.</p></dd>
   <dt><strong>examples</strong> : <span style="font-family: monospace;">list&lt;Example&gt;</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>pathItems</strong> : <span style="font-family: monospace;">list&lt;PathItem&gt;</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>mediaTypes</strong> : <span style="font-family: monospace;">list&lt;MediaType&gt;</span></dt>
+  <dd><p>OpenAPI 3.2; earlier compilers omit them with a warning</p></dd>
 </dl>
 
 ### [Contact](https://github.com/zircote/swagger-php/tree/master/src/Spec/Contact.php)
@@ -161,7 +164,7 @@ Describes an example value for a parameter, media type, or schema.
 ---
 <dl>
   <dt><strong>example</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Reusable example identifier (component key)</p></dd>
+  <dd><p>The example name — the key the example nests under in a media type, parameter or header</p></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Short description of the example</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
@@ -172,6 +175,8 @@ Describes an example value for a parameter, media type, or schema.
   <dd><p>A URI pointing to the literal example</p></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A JSON Reference to a reusable example</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
 </dl>
 
 #### Reference
@@ -364,7 +369,7 @@ Describes a single HTTP header.
 ---
 <dl>
   <dt><strong>header</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The header name (component key)</p></dd>
+  <dd><p>The header name — the key the header nests under in a response or an encoding</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A brief description of the header (CommonMark syntax)</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
@@ -385,6 +390,8 @@ Describes a single HTTP header.
   <dd><p>Examples of the header's value</p></dd>
   <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|list&lt;MediaType&gt;|null</span></dt>
   <dd><p>Content-type based header serialization</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
 </dl>
 
 #### Reference
@@ -457,7 +464,7 @@ Describes a possible design-time link for a response.
 ---
 <dl>
   <dt><strong>link</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Reusable link identifier (component key)</p></dd>
+  <dd><p>The link name — the key the link nests under in a response</p></dd>
   <dt><strong>operationRef</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A relative or absolute URI reference to a linked operation</p></dd>
   <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
@@ -472,6 +479,8 @@ Describes a possible design-time link for a response.
   <dd><p>A JSON Reference to a reusable link</p></dd>
   <dt><strong>server</strong> : <span style="font-family: monospace;">Server|null</span></dt>
   <dd><p>A server object to be used by the target operation</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
 </dl>
 
 #### Reference
@@ -503,6 +512,8 @@ Describes the content payload for a specific media type.
   <dd><p>Examples of the media type content</p></dd>
   <dt><strong>encoding</strong> : <span style="font-family: monospace;">list&lt;Encoding&gt;|array&lt;string,Encoding&gt;|null</span></dt>
   <dd><p>Encoding information for specific properties</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
 </dl>
 
 #### Reference
@@ -1070,7 +1081,7 @@ Produces:
 ---
 <dl>
   <dt><strong>parameter</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Reusable parameter identifier (component key)</p></dd>
+  <dd><p>Deprecated since 6.11, removed in 8.0 - use `component` instead</p></dd>
   <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The name of the parameter</p></dd>
   <dt><strong>in</strong> : <span style="font-family: monospace;">string|ParameterIn|null</span></dt>
@@ -1099,6 +1110,8 @@ Produces:
   <dd><p>Examples of the parameter's value</p></dd>
   <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|list&lt;MediaType&gt;|null</span></dt>
   <dd><p>Content-type based parameter serialization</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
 </dl>
 
 #### Reference
@@ -1311,6 +1324,10 @@ responses, and parameters accumulate from the full ancestor chain. Deduplication
 is by value (tags), by scheme (security), by status code (responses), and by
 name+in (parameters).
 
+#### Allowed in
+---
+<a href="#components">Components</a>
+
 #### Nested elements
 ---
 <a href="#parameter">Parameter</a>, <a href="#parameter-cookie">Parameter\Cookie</a>, <a href="#parameter-header">Parameter\Header</a>, <a href="#parameter-path">Parameter\Path</a>, <a href="#parameter-query">Parameter\Query</a>, <a href="#response">Response</a>, <a href="#security-requirement">Security\Requirement</a>, <a href="#server">Server</a>
@@ -1336,6 +1353,8 @@ name+in (parameters).
   <dd><p>Security requirements to clone to contained operations</p></dd>
   <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;Response&gt;|null</span></dt>
   <dd><p>Shared responses to clone to contained operations</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
 </dl>
 
 #### Reference
@@ -1410,7 +1429,7 @@ Describes a single request body.
 ---
 <dl>
   <dt><strong>request</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Reusable request body identifier (component key)</p></dd>
+  <dd><p>Deprecated since 6.11, removed in 8.0 - use `component` instead</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A brief description of the request body (CommonMark syntax)</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
@@ -1419,6 +1438,8 @@ Describes a single request body.
   <dd><p>A JSON Reference to a reusable request body</p></dd>
   <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|list&lt;MediaType&gt;|null</span></dt>
   <dd><p>The content of the request body</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
 </dl>
 
 #### Reference
@@ -1441,7 +1462,7 @@ Describes a single response from an API operation.
 ---
 <dl>
   <dt><strong>response</strong> : <span style="font-family: monospace;">string|int|null</span></dt>
-  <dd><p>The HTTP status code or 'default'</p></dd>
+  <dd><p>The HTTP status code, a range such as '2XX', or 'default' — the key the response nests under in an operation</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A description of the response (CommonMark syntax)</p></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|Schema\Ref|null</span></dt>
@@ -1452,6 +1473,8 @@ Describes a single response from an API operation.
   <dd><p>Possible response payloads</p></dd>
   <dt><strong>links</strong> : <span style="font-family: monospace;">list&lt;Link&gt;|null</span></dt>
   <dd><p>Design-time links for the response</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
 </dl>
 
 #### Reference
@@ -1500,7 +1523,7 @@ without it the schema has no component key and is reported as missing one.
 ---
 <dl>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Reusable schema identifier (component key)</p></dd>
+  <dd><p>Deprecated since 6.11, removed in 8.0 - use `component` instead</p></dd>
   <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A title for the schema</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
@@ -1609,6 +1632,8 @@ without it the schema has no component key and is reported as missing one.
   <dd><p>Additional external documentation</p></dd>
   <dt><strong>xml</strong> : <span style="font-family: monospace;">Xml|null</span></dt>
   <dd><p>XML representation metadata</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
 </dl>
 
 #### Reference
@@ -1636,7 +1661,7 @@ schemas with constrained additional properties:
 ---
 <dl>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Reusable schema identifier (component key)</p></dd>
+  <dd><p>Deprecated since 6.11, removed in 8.0 - use `component` instead</p></dd>
   <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A title for the schema</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
@@ -1745,6 +1770,8 @@ schemas with constrained additional properties:
   <dd><p>Additional external documentation</p></dd>
   <dt><strong>xml</strong> : <span style="font-family: monospace;">Xml|null</span></dt>
   <dd><p>XML representation metadata</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
 </dl>
 
 ### [Schema\Items](https://github.com/zircote/swagger-php/tree/master/src/Spec/Schema/Items.php)
@@ -1780,7 +1807,7 @@ Since Items extends Schema, the implicit `OA\Property` shortcut applies — no e
 ---
 <dl>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Reusable schema identifier (component key)</p></dd>
+  <dd><p>Deprecated since 6.11, removed in 8.0 - use `component` instead</p></dd>
   <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A title for the schema</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
@@ -1889,6 +1916,8 @@ Since Items extends Schema, the implicit `OA\Property` shortcut applies — no e
   <dd><p>Additional external documentation</p></dd>
   <dt><strong>xml</strong> : <span style="font-family: monospace;">Xml|null</span></dt>
   <dd><p>XML representation metadata</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
 </dl>
 
 #### Reference
@@ -1973,7 +2002,7 @@ Typed subtypes are available for each security scheme type:
 ---
 <dl>
   <dt><strong>securityScheme</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Reusable security scheme identifier (component key)</p></dd>
+  <dd><p>Deprecated since 6.11, removed in 8.0 - use `component` instead</p></dd>
   <dt><strong>type</strong> : <span style="font-family: monospace;">string|OA\SchemeType|null</span></dt>
   <dd><p>The type of the security scheme (apiKey, http, mutualTLS, oauth2, openIdConnect)</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
@@ -1992,6 +2021,8 @@ Typed subtypes are available for each security scheme type:
   <dd><p>The available OAuth2 flows (oauth2)</p></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A JSON Reference to a reusable security scheme</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
 </dl>
 
 #### Reference
