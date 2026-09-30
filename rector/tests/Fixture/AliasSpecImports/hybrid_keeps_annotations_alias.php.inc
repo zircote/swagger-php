@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenApi\Rector\Tests\Fixture;
+namespace OpenApi\Rector\Tests\Fixture\AliasSpecImports;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAT;
@@ -18,7 +18,7 @@ class HybridKeepsAnnotationsAlias
 -----
 <?php
 
-namespace OpenApi\Rector\Tests\Fixture;
+namespace OpenApi\Rector\Tests\Fixture\AliasSpecImports;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Spec as OAS;

@@ -9,7 +9,7 @@ namespace OpenApi\Rector\Tests;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
-final class AliasSpecImportsRectorTest extends AbstractRectorTestCase
+final class MoveSchemaKeywordsRectorTest extends AbstractRectorTestCase
 {
     #[DataProvider('provideData')]
     public function testRule(string $filePath): void
@@ -22,11 +22,11 @@ final class AliasSpecImportsRectorTest extends AbstractRectorTestCase
      */
     public static function provideData(): \Iterator
     {
-        return self::yieldFilesFromDirectory(__DIR__ . '/Fixture/AliasSpecImports');
+        return self::yieldFilesFromDirectory(__DIR__ . '/Fixture/MoveSchemaKeywords');
     }
 
     public function provideConfigFilePath(): string
     {
-        return __DIR__ . '/config/alias_spec_imports.php';
+        return __DIR__ . '/config/move_schema_keywords.php';
     }
 }
