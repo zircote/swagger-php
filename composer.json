@@ -65,6 +65,7 @@
             "/tests/Fixtures"
         ],
         "psr-4": {
+            "OpenApi\\Rector\\Tests\\": "rector/tests/",
             "OpenApi\\Tools\\": "tools/src/",
             "OpenApi\\Tools\\Tests\\": "tools/tests/",
             "OpenApi\\Tests\\": "tests/",

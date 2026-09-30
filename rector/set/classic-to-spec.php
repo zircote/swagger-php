@@ -31,9 +31,10 @@
  * goes with classic at 8.0.
  */
 
+use OpenApi\Rector\AliasSpecImportsRector;
 use Rector\Config\RectorConfig;
 use Rector\Renaming\Rector\Name\RenameClassRector;
 
 return RectorConfig::configure()
-    ->withImportNames(importShortClasses: false)
-    ->withConfiguredRule(RenameClassRector::class, require __DIR__ . '/classic-to-spec-classes.php');
+    ->withConfiguredRule(RenameClassRector::class, require __DIR__ . '/classic-to-spec-classes.php')
+    ->withConfiguredRule(AliasSpecImportsRector::class, [AliasSpecImportsRector::ALIAS => 'OAS']);
