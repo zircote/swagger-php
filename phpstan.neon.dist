@@ -8,6 +8,7 @@ parameters:
         - src
         - tests
         - tools
+        - rector
         - docs/examples
     scanDirectories:
         # snippets are transcluded into the docs and exercised by tests; known, not analysed

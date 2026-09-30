@@ -56,7 +56,8 @@
     },
     "autoload": {
         "psr-4": {
-            "OpenApi\\": "src"
+            "OpenApi\\": "src",
+            "OpenApi\\Rector\\": "rector/src"
         }
     },
     "autoload-dev": {
