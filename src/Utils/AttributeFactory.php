@@ -396,7 +396,10 @@ class AttributeFactory
                 if ($candidate instanceof $targetClass) {
                     if ($matchingTarget instanceof AttributeInterface) {
                         throw OpenApiException::fromSource(
-                            sprintf('Ambiguous merge: %s matches multiple siblings on the same target', $attribute::class),
+                            sprintf(
+                                'Ambiguous merge: %s matches multiple siblings on the same target. Nest it explicitly in the one it belongs to, or give it a `component` and reference it from each.',
+                                $attribute::class
+                            ),
                             $attribute->getSourceLocation(),
                         );
                     }
