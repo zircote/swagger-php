@@ -65,12 +65,13 @@ class AugmenterGenerator extends DocGenerator
         $augmenters = [];
 
         $builder = new Builder();
+        // a pipe registered more than once — `Augmenter\Merge` runs twice — is one entry here
         $builder->getAugmenters()->walk(function ($augmenter) use (&$augmenters): void {
             $rc = new \ReflectionClass($augmenter);
-            $augmenters[] = $this->collectAugmenterData($rc);
+            $augmenters[$rc->getName()] ??= $this->collectAugmenterData($rc);
         });
 
-        return $augmenters;
+        return array_values($augmenters);
     }
 
     /**

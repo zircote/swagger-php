@@ -9,6 +9,7 @@ namespace OpenApi;
 use OpenApi\Builder\Mode;
 use OpenApi\Builder\Result;
 use OpenApi\Contracts\CompilerInterface;
+use OpenApi\Contracts\MergerInterface;
 use OpenApi\Loggers\CollectingLogger;
 use OpenApi\Utils\AttributeFactory;
 use OpenApi\Utils\ClassReflector;
@@ -57,6 +58,11 @@ class Builder
      * @var Utils\Pipeline<Specification>|null
      */
     protected ?Utils\Pipeline $augmenters = null;
+
+    /**
+     * @var Utils\TypedList<MergerInterface>|null
+     */
+    protected ?Utils\TypedList $mergers = null;
 
     /**
      * @var callable|null
@@ -168,6 +174,35 @@ class Builder
         return $this;
     }
 
+    /**
+     * @return Utils\TypedList<MergerInterface>
+     */
+    public function getMergers(): Utils\TypedList
+    {
+        $this->mergers ??= new Utils\TypedList($this->getDefaultMergers());
+
+        return $this->mergers;
+    }
+
+    /**
+     * Configure the merger chain via callable.
+     *
+     * Mergers decide what makes two attributes the same one and what the survivor is. They are
+     * tried in registration order and the first to claim a type handles it, so a merger for one
+     * type goes ahead of `Merge\LastWins`, which claims everything and ships last.
+     *
+     * Runs when called, against the list the builder holds; repeated calls configure the same
+     * list.
+     *
+     * @param callable(Utils\TypedList<MergerInterface>): (Utils\TypedList<MergerInterface>|void) $hook
+     */
+    public function withMergers(callable $hook): static
+    {
+        $hook($this->getMergers());
+
+        return $this;
+    }
+
     public function getAttributeFactory(): AttributeFactory
     {
         $this->attributeFactory ??= new AttributeFactory();
@@ -266,6 +301,8 @@ class Builder
 
     protected function doBuildSpec(bool $hybrid = false): Result
     {
+        $collecting = new CollectingLogger($this->getLogger());
+
         $attributeFactory = $this->getAttributeFactory();
         $assembler = new Assembler(attributeFactory: $attributeFactory);
 
@@ -316,6 +353,7 @@ class Builder
         $this->getAugmenters()->get(Augmenter\Inheritance::class)
             ?->setAttributeFactory($attributeFactory);
 
+        $this->getAugmenters()->setLogger($collecting);
         $this->getAugmenters()->process($specification);
 
         $version = $this->version ?? $specification->openapi->version ?? '3.1.0';
@@ -325,7 +363,12 @@ class Builder
         $diagnostics = $compiler->validate($specification);
         $output = $compiler->compile($specification);
 
-        return Result::fromSpec($sourceScanner->getFiles(), $specification, $output, $diagnostics);
+        return Result::fromSpec(
+            $sourceScanner->getFiles(),
+            $specification,
+            $output,
+            [...$collecting->entries(), ...$diagnostics],
+        );
     }
 
     /**
@@ -388,6 +431,9 @@ class Builder
      */
     protected function getDefaultAugmenters(): array
     {
+        // both runs share one registry, so `withMergers()` reaches them both
+        $mergers = $this->getMergers();
+
         return [
             new Augmenter\Inheritance(),
             new Augmenter\Names(),
@@ -396,6 +442,7 @@ class Builder
             new Augmenter\PathItems(),
             new Augmenter\Types(),
             new Augmenter\Refs(),
+            new Augmenter\Merge($mergers),
             new Augmenter\PathFilter(),
             new Augmenter\Cleanup(),
             new Augmenter\MediaTypes(),
@@ -403,6 +450,19 @@ class Builder
             new Augmenter\OperationIds(),
             new Augmenter\Tags(),
             new Augmenter\EnumDescriptions(),
+            // the same pass again, as the last pipe of all: what a late augmenter added is
+            // reduced too, so nothing downstream has to be trusted to keep keys unique
+            new Augmenter\Merge($mergers, Augmenter\Group::Augment),
+        ];
+    }
+
+    /**
+     * @return list<MergerInterface>
+     */
+    protected function getDefaultMergers(): array
+    {
+        return [
+            new Merge\LastWins(),
         ];
     }
 }

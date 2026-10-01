@@ -222,6 +222,12 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
+     * Operations are keyed by path and method, path items by path, and one path holds both.
+     *
+     * The union puts a path item's own fields beside the method entries already written for that
+     * path. Which of two path items for one path survives is `Augmenter\Merge`'s to decide, before
+     * the compiler sees either.
+     *
      * @param  list<OA\Operation>                $operations
      * @param  list<OA\PathItem>                 $pathItems
      * @return array<string,array<string,mixed>>
@@ -795,6 +801,9 @@ class OpenApi31Compiler implements CompilerInterface
      * be derived from a method or a non-constructor parameter, so an attribute declared there
      * has to carry its own name — the same requirement classic enforces. `Augmenter\Names`
      * fills the key in for anything declared on a class, so what reaches here is unnameable.
+     *
+     * A key claimed twice is `Augmenter\Merge`'s to reduce and report, and it runs first, so a
+     * repeat seen here means a `Specification` that was compiled without the pipeline.
      */
     protected function validateNames(Specification $specification): void
     {

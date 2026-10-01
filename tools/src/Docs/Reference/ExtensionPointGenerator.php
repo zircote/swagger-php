@@ -6,7 +6,9 @@
 
 namespace OpenApi\Tools\Docs\Reference;
 
+use OpenApi\Builder;
 use OpenApi\Contracts\AttributeTranslatorInterface;
+use OpenApi\Contracts\MergerInterface;
 use OpenApi\Contracts\ResolverInterface;
 use OpenApi\Resolver;
 use OpenApi\Tools\Docs\DocGenerator;
@@ -44,6 +46,12 @@ class ExtensionPointGenerator extends DocGenerator
             $content .= $this->renderSections($data);
         }
 
+        $content .= "\n" . $this->renderer->sectionHeader('Default Mergers');
+        foreach ($this->collect($this->mergers()) as $data) {
+            $content .= "\n" . $this->renderer->classHeader($data['name'], 'Merge');
+            $content .= $this->renderSections($data);
+        }
+
         return ['extension-points' => $content];
     }
 
@@ -69,6 +77,14 @@ class ExtensionPointGenerator extends DocGenerator
         );
 
         return $resolvers;
+    }
+
+    /**
+     * @return list<MergerInterface>
+     */
+    protected function mergers(): array
+    {
+        return array_values(iterator_to_array((new Builder())->getMergers()));
     }
 
     /**
