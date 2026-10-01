@@ -14,6 +14,8 @@ use OpenApi\Utils\PipeInterface;
 use OpenApi\Utils\Pipeline;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
 final class PipelineTest extends TestCase
 {
@@ -22,6 +24,31 @@ final class PipelineTest extends TestCase
         $pipeline = new Pipeline([$this->pipe('x')]);
 
         $this->assertSame('x', $pipeline->process(''));
+    }
+
+    /**
+     * The pipeline hands its logger to every pipe that asks, and the builder only has the build's
+     * logger once the pipeline has been built.
+     */
+    public function testALoggerSetAfterConstructionReachesThePipes(): void
+    {
+        $pipe = new class () implements LoggerAwareInterface {
+            use LoggerAwareTrait;
+
+            public function __invoke(mixed $payload): mixed
+            {
+                $this->logger?->warning('from the pipe');
+
+                return $payload;
+            }
+        };
+
+        $logger = new CollectingLogger();
+        $pipeline = new Pipeline([$pipe]);
+        $pipeline->setLogger($logger);
+        $pipeline->process('');
+
+        $this->assertSame([['level' => 'warning', 'message' => 'from the pipe']], $logger->entries());
     }
 
     public static function configCases(): \Iterator
