@@ -193,6 +193,35 @@ $builder->withResolver(function (Resolver $resolver) {
 
 Resolvers implement `OpenApi\Contracts\ResolverInterface` and receive the FQCN and the `Assembler` in use. The first one to return `true` claims the FQCN. See the [Resolver section](/reference/architecture#resolver) in the architecture docs for details, including how to reorder or clear the chain.
 
+### Merger configuration (spec/hybrid mode) {#mergers}
+
+Mergers decide what makes two attributes the same one and which of them the document holds.
+`Augmenter\Merge` applies them to the `Specification`'s collections, first in the **reduce**
+phase and again as the last pipe, so a key claimed twice reaches the compiler once.
+
+`Merge\LastWins` is registered by default: it claims every type, keys each collection the way
+the document does — component key, path and method, webhook and method, tag name — and on a
+collision keeps the later entry and warns with both locations. Positional lists, `servers` and
+`security`, have no key and are left alone.
+
+Use `withMergers()` to add your own. The hook runs when called; repeated calls configure the
+same list:
+
+```php
+use OpenApi\Merge;
+use OpenApi\Utils\TypedList;
+
+$builder->withMergers(fn (TypedList $mergers) => $mergers->insert(
+    new MyOperationMerger(),
+    Merge\LastWins::class,
+));
+```
+
+Mergers implement `OpenApi\Contracts\MergerInterface` and are tried in registration order; the
+first to `supports()` a type claims it, so a merger for one type goes ahead of the catch-all.
+`insert()` places it there. See the [Mergers section](/guide/extension-points#mergers) in the
+extension points guide for what a merger looks like and how it recognises its own attributes.
+
 ### Attribute factory configuration (spec mode) {#attribute-factory}
 
 Use `withAttributeFactory()` to add custom attribute translators. The hook runs when called;

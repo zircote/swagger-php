@@ -72,6 +72,11 @@ An augmenter can also `add()` attributes, but it runs after resolution, so a `$r
 what it adds stays unresolved. Use an augmenter to enrich what is there, and this to put
 something there.
 
+Once added, a contribution looks like any scanned attribute. If a later step needs to tell
+yours apart — a [merger](#mergers) deciding precedence, an augmenter that should leave them
+alone — mark them as you add them with `setMeta()` under a key you own, and read it back with
+`getMeta()` there.
+
 ## Resolvers
 
 Seeding from reflectors means the specification can name a class that was never a source: a
@@ -116,6 +121,71 @@ registration order.
 The enum is `OpenApi\Augmenter\Group`. The [Augmenters
 reference](/reference/augmenters) lists the built-in pipeline and what each phase is for.
 
+## Mergers
+
+Two attributes can claim one key. Two operations on the same path and method, two schemas named
+`Pet` — a scan finds one, a `withSpecification()` hook contributes the other, an inheritance
+clone makes a third. Something has to decide which of them the document holds, and until it
+does the compiler decides by accident: it writes each into a PHP array and keeps whichever it
+wrote last.
+
+`Augmenter\Merge` decides instead, through a chain of mergers. A merger says what makes two
+attributes the same one and what the survivor is — below, an operation the scan already
+described keeps the key against one a hook contributed and marked as its own:
+
+```php
+use OpenApi\Contracts\AttributeInterface;
+use OpenApi\Contracts\MergerInterface;
+use OpenApi\Spec as OA;
+
+final class MyOperationMerger implements MergerInterface
+{
+    public function supports(string $class): bool
+    {
+        return is_a($class, OA\Operation::class, true);
+    }
+
+    public function identity(AttributeInterface $attribute): ?string
+    {
+        return $attribute->path !== null && $attribute->method !== null
+            ? $attribute->method . ' ' . $attribute->path
+            : null;
+    }
+
+    public function merge(AttributeInterface $earlier, AttributeInterface $later): AttributeInterface
+    {
+        return $later->getMeta(self::class, false) ? $earlier : $later;
+    }
+}
+```
+
+`Builder::withMergers()` registers it. They are tried in order and the first to claim a type
+handles it, so `Merge\LastWins` — which claims everything, keeps the later entry and warns with
+both locations — ships last:
+
+```php
+use OpenApi\Merge;
+use OpenApi\Utils\TypedList;
+
+$builder->withMergers(fn (TypedList $mergers) => $mergers->insert(
+    new MyOperationMerger(),
+    Merge\LastWins::class,
+));
+```
+
+`identity()` returning `null` means the attribute never merges and passes through: that is how
+servers and security requirements stay as they are, being positional rather than keyed.
+
+`$earlier` and `$later` are in producer order, which is the only thing the pipeline guarantees —
+`return $later` is last-wins. Precedence beyond that order is a policy the core does not hold. A
+package that needs to recognise its own attributes marks them as it creates them —
+`$operation->setMeta(MyOperationMerger::class, true)` — and reads that back in `merge()`. `meta`
+is keyed by whoever writes to it; nothing in swagger-php writes or reads it.
+
+The pass runs over the `Specification`'s own collections, where the halves come from different
+places. A duplicate key *inside* one attribute — two `200` responses in one operation — is two
+entries one author wrote in one place, and the compiler is left to keep the last of them.
+
 ## Compilers
 
 `Builder::setCompiler()` replaces the compiler that turns the `Specification` into a
@@ -147,7 +217,9 @@ alternative.
 
 **Property types are not widened for downstream convenience.** The strong typing is what
 makes the DTOs worth having. Metadata that only means something to one integration belongs
-in an `Attachable`, not in a widened `$ref: string|object`.
+in an `Attachable` when it is declared in source next to the attribute it describes, and in
+`setMeta()` when code attaches it along the way — not in a widened `$ref: string|object`.
+Neither reaches the generated document.
 
 **There is no framework-specific code, and no plans for any.** Translators, contributions,
 augmenters and attachables are the contract; anything a framework needs can be built from them, outside

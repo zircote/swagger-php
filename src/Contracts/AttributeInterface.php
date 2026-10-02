@@ -79,5 +79,15 @@ interface AttributeInterface
 
     public function getShortClassName(): ?string;
 
+    /**
+     * Extra data for whoever needs to carry it on an attribute, keyed by whoever writes it.
+     *
+     * Nothing in swagger-php writes or reads it. A clone copies the entries; an object stored as a
+     * value is shared between the clone and the original.
+     */
+    public function getMeta(string $key, mixed $default = null): mixed;
+
+    public function setMeta(string $key, mixed $value): static;
+
     public function getSourceLocation(): SourceLocation;
 }
