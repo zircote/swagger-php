@@ -15,6 +15,16 @@ paths:
         -
           oauth2:
             - 'read:pets'
+  /public:
+    get:
+      operationId: getPublic
+      responses:
+        200:
+          description: 'Open to all'
+      security: []
+security:
+  -
+    apiKeyHeader: []
 components:
   securitySchemes:
     apiKeyHeader:

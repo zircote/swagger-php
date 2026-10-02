@@ -68,6 +68,7 @@ class AuthOtherSchemesSpec
 }
 
 #[OA\Info(title: 'Auth', version: '1.0')]
+#[OA\OpenApi(security: [new OA\Security\Requirement(scheme: 'apiKeyHeader')])]
 #[OA\Operation\Get(
     path: '/secured',
     operationId: 'getSecured',
@@ -78,5 +79,12 @@ class AuthOtherSchemesSpec
 )]
 #[OA\Response(response: 200, description: 'All good')]
 class AuthEndpointSpec
+{
+}
+
+// `security: []` opts this one operation out of the root requirement
+#[OA\Operation\Get(path: '/public', operationId: 'getPublic', security: [])]
+#[OA\Response(response: 200, description: 'Open to all')]
+class AuthPublicEndpointSpec
 {
 }
