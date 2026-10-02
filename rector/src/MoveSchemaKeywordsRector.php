@@ -22,8 +22,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  * Classic `Property` extends `Schema` and carries all 61 of its keywords; the spec one holds a
  * `Schema` and takes four arguments. `JsonContent` and `XmlContent` go from 60 to 11 the same
  * way. Renaming those classes alone leaves `type:`, `nullable:`, `enum:` and the rest on an
- * attribute that rejects them, which fails at generation time rather than at load -- 20 of
- * phpMyFAQ's 22 annotated files, when this was measured.
+ * attribute that rejects them, which fails at generation time rather than at load.
  *
  * The keywords move into `schema: new Schema(...)` rather than onto a sibling `#[OA\Schema]`
  * attribute. Both are valid spec, but the argument works identically in an attribute and in a
