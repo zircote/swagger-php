@@ -30,7 +30,8 @@ $input = new class extends ArgvInput
     }
 };
 $output = new ConsoleOutput();
-$logger = new ConsoleLogger($output);
+// diagnostics go to stderr: without -o the document itself is written to stdout
+$logger = new ConsoleLogger($output->getErrorOutput());
 $app = new Application();
 
 // Remove Symfony's built-in options that conflict with our command options:
