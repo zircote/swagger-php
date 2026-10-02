@@ -199,6 +199,7 @@ final class CleanupTest extends TestCase
         $spec->responses = [new OA\Response(response: 200, description: 'OK')];
 
         $this->expectLogEntry('Response "200" is a component named after a status code', 'warning');
+        $this->allowLogEntry('unreferenced component');
 
         $cleanup = new Augmenter\Cleanup();
         $cleanup->setLogger($this->trackingLogger());
@@ -217,6 +218,7 @@ final class CleanupTest extends TestCase
 
         $this->expectLogEntry('Response "2XX" is a component named after a status code', 'warning');
         $this->expectLogEntry('Response "default" is a component named after a status code', 'warning');
+        $this->allowLogEntry('unreferenced component');
 
         $cleanup = new Augmenter\Cleanup();
         $cleanup->setLogger($this->trackingLogger());
@@ -227,12 +229,16 @@ final class CleanupTest extends TestCase
 
     /**
      * An unreferenced reusable response is ordinary — a library may declare more than any
-     * one document uses — so removal is silent unless the key looks like a status code.
+     * one document uses — so it is only counted in the summary, not warned about, unless the
+     * key looks like a status code.
      */
-    public function testRemovesAnUnreferencedNamedResponseWithoutReporting(): void
+    public function testReportsAnUnreferencedNamedResponseOnlyInTheSummary(): void
     {
         $spec = new Specification();
         $spec->responses = [new OA\Response(response: 'NotFound', description: 'nope')];
+
+        $this->expectLogEntry('Removed 1 unreferenced component; set cleanup.enabled to false to keep it', 'notice');
+        $this->expectLogEntry('Removed unreferenced component #/components/responses/NotFound', 'debug');
 
         $cleanup = new Augmenter\Cleanup();
         $cleanup->setLogger($this->trackingLogger());
@@ -255,5 +261,29 @@ final class CleanupTest extends TestCase
         $cleanup($spec);
 
         $this->assertCount(1, $spec->responses);
+    }
+
+    /**
+     * Removal cascades over several passes; the summary counts every pass, once.
+     */
+    public function testReportsACascadingRemovalOnce(): void
+    {
+        $spec = new Specification();
+        $spec->schemas = [
+            new OA\Schema(schema: 'Deep'),
+            new OA\Schema(schema: 'Middle', properties: [
+                new OA\Property(property: 'deep', schema: new OA\Schema(ref: '#/components/schemas/Deep')),
+            ]),
+        ];
+
+        $this->expectLogEntry('Removed 2 unreferenced components; set cleanup.enabled to false to keep them', 'notice');
+        $this->expectLogEntry('Removed unreferenced component #/components/schemas/Middle', 'debug');
+        $this->expectLogEntry('Removed unreferenced component #/components/schemas/Deep', 'debug');
+
+        $cleanup = new Augmenter\Cleanup();
+        $cleanup->setLogger($this->trackingLogger());
+        $cleanup($spec);
+
+        $this->assertSame([], $spec->schemas);
     }
 }
