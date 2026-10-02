@@ -72,6 +72,11 @@ An augmenter can also `add()` attributes, but it runs after resolution, so a `$r
 what it adds stays unresolved. Use an augmenter to enrich what is there, and this to put
 something there.
 
+Once added, a contribution looks like any scanned attribute. If a later step needs to tell
+yours apart — a [merger](#mergers) deciding precedence, an augmenter that should leave them
+alone — mark them as you add them with `setMeta()` under a key you own, and read it back with
+`getMeta()` there.
+
 ## Resolvers
 
 Seeding from reflectors means the specification can name a class that was never a source: a
@@ -212,7 +217,9 @@ alternative.
 
 **Property types are not widened for downstream convenience.** The strong typing is what
 makes the DTOs worth having. Metadata that only means something to one integration belongs
-in an `Attachable`, not in a widened `$ref: string|object`.
+in an `Attachable` when it is declared in source next to the attribute it describes, and in
+`setMeta()` when code attaches it along the way — not in a widened `$ref: string|object`.
+Neither reaches the generated document.
 
 **There is no framework-specific code, and no plans for any.** Translators, contributions,
 augmenters and attachables are the contract; anything a framework needs can be built from them, outside
