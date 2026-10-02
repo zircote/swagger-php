@@ -126,8 +126,9 @@ final class CommandlineTest extends OpenApiTestCase
     }
 
     /**
-     * `--defaults` must report the config keys `--config` actually accepts,
-     * which differ per mode: spec configures augmenters, classic/hybrid the Generator.
+     * `--defaults` must report the config keys `--config` actually accepts, which differ
+     * per mode: classic configures the Generator, spec the augmenters, and hybrid the
+     * augmenters plus the Generator's own `generator.*` keys — it runs no classic processors.
      *
      * @return iterable<mixed>
      */
@@ -135,7 +136,8 @@ final class CommandlineTest extends OpenApiTestCase
     {
         yield 'classic (implicit)' => ['', 'generator', 'operationIds'];
         yield 'classic' => ['-m classic', 'generator', 'operationIds'];
-        yield 'hybrid' => ['-m hybrid', 'generator', 'operationIds'];
+        yield 'hybrid' => ['-m hybrid', 'generator', 'cleanUnusedComponents'];
+        yield 'hybrid augmenters' => ['-m hybrid', 'operationIds', 'cleanUnusedComponents'];
         yield 'spec' => ['-m spec', 'operationIds', 'generator'];
     }
 
@@ -150,6 +152,35 @@ final class CommandlineTest extends OpenApiTestCase
         $output = implode(PHP_EOL, $output);
         $this->assertStringContainsString($expected, $output);
         $this->assertStringNotContainsString($unexpected, $output);
+    }
+
+    /**
+     * @return iterable<mixed>
+     */
+    public static function cleanupConfigCases(): iterable
+    {
+        yield 'hybrid, default' => ['-m hybrid', false];
+        yield 'hybrid, disabled' => ['-m hybrid -c cleanup.enabled=false', true];
+    }
+
+    /**
+     * The notice `Cleanup` logs names `cleanup.enabled` as the switch, so `-c` has to reach
+     * it in every mode that prunes — hybrid included, which routes `-c` to the augmenters.
+     */
+    #[DataProvider('cleanupConfigCases')]
+    public function testCleanupIsConfigurable(string $args, bool $kept): void
+    {
+        $fixture = __DIR__ . '/Fixtures/UnreferencedSchema.php';
+        $cmd = __DIR__ . '/../bin/openapi --bootstrap ' . escapeshellarg($fixture) . " {$args} --format yaml " . escapeshellarg($fixture);
+        exec($this->getCommandToExecute($cmd, '2>'), $output, $retval);
+        $this->assertSame(0, $retval, $cmd . PHP_EOL . implode(PHP_EOL, $output));
+
+        $output = implode(PHP_EOL, $output);
+        if ($kept) {
+            $this->assertStringContainsString('UnreferencedSchemaModel', $output);
+        } else {
+            $this->assertStringNotContainsString('UnreferencedSchemaModel', $output);
+        }
     }
 
     private function getCommandToExecute(string $cmd, ?string $devNullRedir = null): string
