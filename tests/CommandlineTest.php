@@ -36,6 +36,28 @@ final class CommandlineTest extends OpenApiTestCase
         $this->assertSpecEquals(file_get_contents(self::getSpecFilename('petstore')), $yaml);
     }
 
+    /**
+     * Without `-o` the document goes to stdout, so diagnostics must not: a warning there ends
+     * up as the first line of `openapi src > openapi.yaml`.
+     */
+    public function testDiagnosticsGoToStderr(): void
+    {
+        $fixture = __DIR__ . '/Fixtures/DuplicateOperationId.php';
+        $cmd = $this->getCommandToExecute(__DIR__ . '/../bin/openapi --bootstrap ' . escapeshellarg($fixture) . ' --format yaml ' . escapeshellarg($fixture));
+
+        $process = proc_open($cmd, [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
+        $this->assertIsResource($process);
+        $stdout = (string) stream_get_contents($pipes[1]);
+        $stderr = (string) stream_get_contents($pipes[2]);
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+        $this->assertSame(0, proc_close($process), $stderr);
+
+        $this->assertStringStartsWith('openapi: ', $stdout);
+        $this->assertStringNotContainsString('operationId must be unique', $stdout);
+        $this->assertStringContainsString('operationId must be unique', $stderr);
+    }
+
     public function testAddProcessor(): void
     {
         $basePath = self::examplePath('petstore');
