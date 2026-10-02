@@ -75,6 +75,7 @@ class AuthOtherSchemes
 }
 
 #[OAT\Info(title: 'Auth', version: '1.0')]
+#[OAT\OpenApi(security: [['apiKeyHeader' => []]])]
 #[OAT\Get(
     path: '/secured',
     operationId: 'getSecured',
@@ -87,5 +88,18 @@ class AuthOtherSchemes
     ],
 )]
 class AuthEndpoint
+{
+}
+
+// `security: []` opts this one operation out of the root requirement
+#[OAT\Get(
+    path: '/public',
+    operationId: 'getPublic',
+    security: [],
+    responses: [
+        new OAT\Response(response: 200, description: 'Open to all'),
+    ],
+)]
+class AuthPublicEndpoint
 {
 }

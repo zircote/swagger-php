@@ -289,7 +289,7 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function compileOperation(OA\Operation $operation): array
     {
-        return $this->filter([
+        $result = $this->filter([
             'tags' => $operation->tags,
             'summary' => $operation->summary,
             'description' => $operation->description,
@@ -307,6 +307,14 @@ class OpenApi31Compiler implements CompilerInterface
             'security' => $this->compileSecurity($operation->security ?? []),
             'servers' => array_map($this->compileServer(...), $operation->servers ?? []),
         ], $operation);
+
+        // `security: []` opts the operation out of the root requirements, so unlike an unset
+        // `null` it is a value -- and one filter() cannot tell from unset
+        if ([] === $operation->security) {
+            $result['security'] = [];
+        }
+
+        return $result;
     }
 
     /**
