@@ -148,8 +148,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
                 return $this->filter([
                     'oneOf' => [['$ref' => $schema->ref]],
                     'nullable' => true,
-                    'description' => Undefined::isDefault($schema->description) ? null : $schema->description,
-                ], $schema);
+                ], $schema) + $this->compileRefAnnotations($schema);
             }
 
             return ['$ref' => $schema->ref];
@@ -256,6 +255,24 @@ class OpenApi30Compiler extends OpenApi31Compiler
         }
 
         return $result ?: new \stdClass();
+    }
+
+    /**
+     * 3.0 has the singular `example` only, so `examples` contributes its first value.
+     *
+     * @return array<string,mixed>
+     */
+    #[\Override]
+    protected function compileRefAnnotations(OA\Schema $schema): array
+    {
+        $result = parent::compileRefAnnotations($schema);
+        unset($result['examples']);
+
+        if (!array_key_exists('example', $result) && $schema->examples !== null && $schema->examples !== []) {
+            $result['example'] = $schema->examples[0];
+        }
+
+        return $result;
     }
 
     #[\Override]

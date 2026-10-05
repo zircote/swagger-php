@@ -329,7 +329,16 @@ abstract class AbstractAnnotation implements \JsonSerializable
                     }
                 }
             }
-            if (property_exists($this, 'nullable') && $this->nullable === true) {
+            $nullable = property_exists($this, 'nullable') && $this->nullable === true;
+            // a Schema's $ref is a JSON Schema keyword in 3.1, so its annotations stay beside it
+            if (!$nullable && $this instanceof Schema && !$this->_context->isVersion('3.0.x')) {
+                foreach (['title', 'default', 'example', 'examples', 'deprecated', 'readOnly', 'writeOnly'] as $prop) {
+                    if (property_exists($data, $prop)) {
+                        $ref[$prop] = $data->{$prop};
+                    }
+                }
+            }
+            if ($nullable) {
                 $ref = ['oneOf' => [$ref]];
                 if (!$this->_context->isVersion('3.0.x')) {
                     $ref['oneOf'][] = ['type' => 'null'];

@@ -21,6 +21,7 @@ components:
             - 'null'
         item:
           $ref: '#/components/schemas/CAItemModel'
+          title: CAItemModel
         items:
           title: CAItemModel
           type: array

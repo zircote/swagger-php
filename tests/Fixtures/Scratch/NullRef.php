@@ -55,4 +55,30 @@ class NullRef
     public function refplusy()
     {
     }
+
+    #[OAT\Get(
+        path: '/api/annotated',
+        operationId: 'annotated',
+        responses: [
+            new OAT\Response(
+                response: 200,
+                description: 'Annotated refs response',
+                content: new OAT\JsonContent(ref: NullRefAnnotated::class)
+            ),
+        ]
+    )]
+    public function annotated()
+    {
+    }
+}
+
+// a `$ref` property keeps its annotations: on the wrapper when nullable, beside `$ref` in 3.1
+#[OAT\Schema(schema: 'annotatedRefs')]
+class NullRefAnnotated
+{
+    #[OAT\Property(title: 'Nullable', description: 'A nullable reference', default: 'none', example: 'zircote/swagger-php', deprecated: true, readOnly: true)]
+    public ?Repository $nullableRepository;
+
+    #[OAT\Property(title: 'Plain', description: 'A plain reference', default: 'none', example: 'zircote/swagger-php', deprecated: true, readOnly: true)]
+    public Repository $repository;
 }

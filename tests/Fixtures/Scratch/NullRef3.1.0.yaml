@@ -28,6 +28,37 @@ paths:
                   - { $ref: '#/components/schemas/repository', description: 'The repository' }
                   - { type: 'null' }
                 description: 'The repository'
+  /api/annotated:
+    get:
+      operationId: annotated
+      responses:
+        '200':
+          description: 'Annotated refs response'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/annotatedRefs'
 components:
   schemas:
+    annotatedRefs:
+      type: object
+      properties:
+        nullableRepository:
+          oneOf:
+            - { $ref: '#/components/schemas/repository', description: 'A nullable reference' }
+            - { type: 'null' }
+          title: Nullable
+          description: 'A nullable reference'
+          default: none
+          example: zircote/swagger-php
+          deprecated: true
+          readOnly: true
+        repository:
+          $ref: '#/components/schemas/repository'
+          title: Plain
+          description: 'A plain reference'
+          default: none
+          example: zircote/swagger-php
+          deprecated: true
+          readOnly: true
     repository: {}

@@ -54,8 +54,10 @@ components:
       properties:
         targetId:
           $ref: '#/components/schemas/TargetId'
+          title: TargetId
         targetType:
           $ref: '#/components/schemas/TargetType'
+          title: TargetType
       type: object
     TargetId:
       title: TargetId
