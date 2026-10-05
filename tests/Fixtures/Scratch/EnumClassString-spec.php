@@ -30,3 +30,24 @@ enum EnumClassStringAssetTypeSpec: string
 class EnumClassStringEndpointSpec
 {
 }
+
+// a property typed with the enum keeps its explicit enum; the enum is no component to reference
+#[OA\Schema(component: 'EnumClassStringAsset')]
+class EnumClassStringAssetSpec
+{
+    #[OA\Property(schema: new OA\Schema(enum: [EnumClassStringAssetTypeSpec::class]))]
+    public EnumClassStringAssetTypeSpec $type;
+}
+
+#[OA\Operation\Get(
+    path: '/api/asset',
+    operationId: 'enumClassStringAsset',
+)]
+#[OA\Response(
+    response: 200,
+    description: 'OK',
+    content: new OA\MediaType\Json(ref: EnumClassStringAssetSpec::class)
+)]
+class EnumClassStringAssetEndpointSpec
+{
+}

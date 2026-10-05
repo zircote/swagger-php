@@ -32,3 +32,26 @@ enum EnumClassStringAssetType: string
 class EnumClassStringEndpoint
 {
 }
+
+// a property typed with the enum keeps its explicit enum; the enum is no component to reference
+#[OAT\Schema(schema: 'EnumClassStringAsset')]
+class EnumClassStringAsset
+{
+    #[OAT\Property(enum: EnumClassStringAssetType::class)]
+    public EnumClassStringAssetType $type;
+}
+
+#[OAT\Get(
+    path: '/api/asset',
+    operationId: 'enumClassStringAsset',
+    responses: [
+        new OAT\Response(
+            response: 200,
+            description: 'OK',
+            content: new OAT\JsonContent(ref: EnumClassStringAsset::class)
+        ),
+    ]
+)]
+class EnumClassStringAssetEndpoint
+{
+}

@@ -20,3 +20,22 @@ paths:
       responses:
         '200':
           description: OK
+  /api/asset:
+    get:
+      operationId: enumClassStringAsset
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnumClassStringAsset'
+components:
+  schemas:
+    EnumClassStringAsset:
+      type: object
+      properties:
+        type:
+          enum:
+            - album
+            - background
