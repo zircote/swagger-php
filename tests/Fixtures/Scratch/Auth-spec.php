@@ -88,3 +88,14 @@ class AuthEndpointSpec
 class AuthPublicEndpointSpec
 {
 }
+
+// a requirement may list scheme names alone, each standing for that scheme with no scopes
+#[OA\Operation\Get(
+    path: '/listed',
+    operationId: 'getListed',
+    security: [new OA\Security\Requirement(schemes: ['bearerAuth', 'apiKeyQuery'])],
+)]
+#[OA\Response(response: 200, description: 'Both schemes, no scopes')]
+class AuthListedEndpointSpec
+{
+}

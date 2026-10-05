@@ -22,6 +22,16 @@ paths:
         200:
           description: 'Open to all'
       security: []
+  /listed:
+    get:
+      operationId: getListed
+      responses:
+        200:
+          description: 'Both schemes, no scopes'
+      security:
+        -
+          bearerAuth: []
+          apiKeyQuery: []
 security:
   -
     apiKeyHeader: []

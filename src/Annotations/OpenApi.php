@@ -9,6 +9,7 @@ namespace OpenApi\Annotations;
 use OpenApi\Analysis;
 use OpenApi\OpenApiException;
 use OpenApi\Undefined;
+use OpenApi\Utils\SecurityRequirement;
 
 /**
  * This is the root document object for the API specification.
@@ -245,6 +246,13 @@ class OpenApi extends AbstractAnnotation
 
         if (isset($data->tags) && $data->tags === []) {
             unset($data->tags);
+        }
+
+        // ensure security elements are object
+        if (isset($data->security) && is_array($data->security)) {
+            foreach ($data->security as $key => $scheme) {
+                $data->security[$key] = (object) SecurityRequirement::normalise((array) $scheme);
+            }
         }
 
         return $data;

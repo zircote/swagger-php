@@ -7,6 +7,7 @@
 namespace OpenApi\Spec\Security;
 
 use OpenApi\Spec as OA;
+use OpenApi\Utils\SecurityRequirement;
 
 /**
  * A security requirement declaring which security schemes apply.
@@ -49,12 +50,14 @@ class Requirement extends OA\AbstractAttribute
     /**
      * Resolve to the normalised map format: ['schemeName' => [...scopes]].
      *
+     * A bare scheme name in `$schemes` stands for that scheme with no scopes.
+     *
      * @return array<string, list<string>>
      */
     public function toArray(): array
     {
         if ($this->schemes !== null) {
-            return $this->schemes;
+            return SecurityRequirement::normalise($this->schemes);
         }
 
         if ($this->scheme !== null) {

@@ -13,6 +13,7 @@ use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Specification\ComponentName;
 use OpenApi\Undefined;
+use OpenApi\Utils\SecurityRequirement;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -735,7 +736,7 @@ class OpenApi31Compiler implements CompilerInterface
                 return $item->toArray();
             }
 
-            return $item;
+            return SecurityRequirement::normalise($item);
         }, $security);
     }
 
