@@ -21,7 +21,7 @@ class RequestBody extends AbstractAttribute
     public ?array $content = null;
 
     /**
-     * @param string|null                    $request     Deprecated since 6.11, removed in 8.0 - use `component` instead
+     * @param string|null                    $request     Deprecated since 6.12, removed in 8.0 - use `component` instead
      * @param string|null                    $description A brief description of the request body (CommonMark syntax)
      * @param bool|null                      $required    Whether the request body is required
      * @param string|Schema\Ref|null         $ref         A JSON Reference to a reusable request body
@@ -43,7 +43,7 @@ class RequestBody extends AbstractAttribute
         parent::__construct(x: $x, attachables: $attachables);
         $this->component = $component;
         if ($component === null && $this->request !== null) {
-            trigger_deprecation('zircote/swagger-php', '6.11', '`request` is deprecated as the component key of %s and will be removed in 8.0; use `component`', static::class);
+            trigger_deprecation('zircote/swagger-php', '6.12', '`request` is deprecated as the component key of %s and will be removed in 8.0; use `component`', static::class);
             $this->component = $this->request;
         }
         $this->content = self::wrapList($content);

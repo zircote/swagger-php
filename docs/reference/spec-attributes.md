@@ -1081,7 +1081,7 @@ Produces:
 ---
 <dl>
   <dt><strong>parameter</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Deprecated since 6.11, removed in 8.0 - use `component` instead</p></dd>
+  <dd><p>Deprecated since 6.12, removed in 8.0 - use `component` instead</p></dd>
   <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The name of the parameter</p></dd>
   <dt><strong>in</strong> : <span style="font-family: monospace;">string|ParameterIn|null</span></dt>
@@ -1429,7 +1429,7 @@ Describes a single request body.
 ---
 <dl>
   <dt><strong>request</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Deprecated since 6.11, removed in 8.0 - use `component` instead</p></dd>
+  <dd><p>Deprecated since 6.12, removed in 8.0 - use `component` instead</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A brief description of the request body (CommonMark syntax)</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
@@ -1523,7 +1523,7 @@ without it the schema has no component key and is reported as missing one.
 ---
 <dl>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Deprecated since 6.11, removed in 8.0 - use `component` instead</p></dd>
+  <dd><p>Deprecated since 6.12, removed in 8.0 - use `component` instead</p></dd>
   <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A title for the schema</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
@@ -1661,7 +1661,7 @@ schemas with constrained additional properties:
 ---
 <dl>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Deprecated since 6.11, removed in 8.0 - use `component` instead</p></dd>
+  <dd><p>Deprecated since 6.12, removed in 8.0 - use `component` instead</p></dd>
   <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A title for the schema</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
@@ -1807,7 +1807,7 @@ Since Items extends Schema, the implicit `OA\Property` shortcut applies — no e
 ---
 <dl>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Deprecated since 6.11, removed in 8.0 - use `component` instead</p></dd>
+  <dd><p>Deprecated since 6.12, removed in 8.0 - use `component` instead</p></dd>
   <dt><strong>title</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A title for the schema</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
@@ -2002,7 +2002,7 @@ Typed subtypes are available for each security scheme type:
 ---
 <dl>
   <dt><strong>securityScheme</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>Deprecated since 6.11, removed in 8.0 - use `component` instead</p></dd>
+  <dd><p>Deprecated since 6.12, removed in 8.0 - use `component` instead</p></dd>
   <dt><strong>type</strong> : <span style="font-family: monospace;">string|OA\SchemeType|null</span></dt>
   <dd><p>The type of the security scheme (apiKey, http, mutualTLS, oauth2, openIdConnect)</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>

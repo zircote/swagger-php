@@ -61,7 +61,7 @@ class Schema extends AbstractAttribute
     public ?string $component = null;
 
     /**
-     * @param string|null                                       $schema                Deprecated since 6.11, removed in 8.0 - use `component` instead
+     * @param string|null                                       $schema                Deprecated since 6.12, removed in 8.0 - use `component` instead
      * @param string|null                                       $title                 A title for the schema
      * @param string|null                                       $description           A description of the schema (CommonMark syntax)
      * @param string|null                                       $ref                   A JSON Reference to a reusable schema
@@ -208,7 +208,7 @@ class Schema extends AbstractAttribute
         parent::__construct(x: $x, attachables: $attachables);
         $this->component = $component;
         if ($component === null && $this->schema !== null) {
-            trigger_deprecation('zircote/swagger-php', '6.11', '`schema` is deprecated as the component key of %s and will be removed in 8.0; use `component`', static::class);
+            trigger_deprecation('zircote/swagger-php', '6.12', '`schema` is deprecated as the component key of %s and will be removed in 8.0; use `component`', static::class);
             $this->component = $this->schema;
         }
     }
