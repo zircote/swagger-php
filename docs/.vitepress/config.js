@@ -28,6 +28,7 @@ function getGuideSidebar() {
         { text: 'Why spec attributes?', link: '/guide/why-spec' },
         { text: 'Processing Modes', link: '/guide/modes' },
         { text: 'Using Spec Attributes', link: '/guide/spec-attributes' },
+        { text: 'Migrating to Spec Attributes', link: '/guide/migrating-to-spec' },
         { text: 'Extension points', link: '/guide/extension-points' },
         { text: 'Spec Attributes Reference', link: '/reference/spec-attributes' },
         { text: 'Augmenters Reference', link: '/reference/augmenters' },
