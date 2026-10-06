@@ -342,6 +342,7 @@ class Builder
         // index is the first reader
         Specification\ComponentName::normalise($specification, deprecate: true);
 
+        $this->getResolver()->setLogger($this->getLogger());
         $this->getResolver()->resolve($assembler);
 
         if ($hybrid) {
