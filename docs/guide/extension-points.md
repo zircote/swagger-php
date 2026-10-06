@@ -182,6 +182,26 @@ package that needs to recognise its own attributes marks them as it creates them
 `$operation->setMeta(MyOperationMerger::class, true)` — and reads that back in `merge()`. `meta`
 is keyed by whoever writes to it; nothing in swagger-php writes or reads it.
 
+To combine two halves of one operation instead of choosing between them, register the shipped
+`Merge\Operations` the same way, ahead of `Merge\LastWins`. It is not on by default. It fills
+each field one half leaves unset from the other, so a contributed route and an attribute adding
+responses to it become one operation. What both halves set is decided by a `Merge\Mode`: fold
+into the later half (the default), into the earlier, or take only what does not overlap. A
+callable can choose the mode per pair, which is how a producer's mark decides precedence
+without a merger of its own:
+
+```php
+use OpenApi\Contracts\AttributeInterface;
+use OpenApi\Merge;
+
+new Merge\Operations(
+    fn (AttributeInterface $earlier, AttributeInterface $later): Merge\Mode
+        => $later->getMeta(MyProducer::class) ? Merge\Mode::First : Merge\Mode::Last,
+);
+```
+
+See the [extension points reference](/reference/extension-points) for how each field folds.
+
 The pass runs over the `Specification`'s own collections, where the halves come from different
 places. A duplicate key *inside* one attribute — two `200` responses in one operation — is two
 entries one author wrote in one place, and the compiler is left to keep the last of them.

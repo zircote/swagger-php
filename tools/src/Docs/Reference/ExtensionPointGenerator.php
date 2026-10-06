@@ -19,8 +19,9 @@ use OpenApi\Utils\TypedList;
  * What runs by default at each extension point.
  *
  * Discovery walks the live defaults rather than a directory, so the page lists what actually
- * ships and in the order it runs. Augmenters and compilers are documented elsewhere and are
- * linked rather than repeated.
+ * runs and in the order it runs. Opt-in mergers are the exception: they ship but are never in
+ * the defaults, so they are found under `src/Merge/` instead. Augmenters and compilers are
+ * documented elsewhere and are linked rather than repeated.
  */
 class ExtensionPointGenerator extends DocGenerator
 {
@@ -50,6 +51,15 @@ class ExtensionPointGenerator extends DocGenerator
         foreach ($this->collect($this->mergers()) as $data) {
             $content .= "\n" . $this->renderer->classHeader($data['name'], 'Merge');
             $content .= $this->renderSections($data);
+        }
+
+        $optIn = $this->optInMergers();
+        if ($optIn !== []) {
+            $content .= "\n" . $this->renderer->sectionHeader('Opt-in Mergers');
+            foreach ($this->collect($optIn) as $data) {
+                $content .= "\n" . $this->renderer->classHeader($data['name'], 'Merge');
+                $content .= $this->renderSections($data);
+            }
         }
 
         return ['extension-points' => $content];
@@ -88,6 +98,33 @@ class ExtensionPointGenerator extends DocGenerator
     }
 
     /**
+     * The mergers that ship under `src/Merge/` but are not registered by default.
+     *
+     * @return list<MergerInterface>
+     */
+    protected function optInMergers(): array
+    {
+        $defaults = array_map(static fn (MergerInterface $merger): string => $merger::class, $this->mergers());
+
+        $optIn = [];
+        foreach (glob("{$this->projectRoot}/src/Merge/*.php") ?: [] as $file) {
+            $class = 'OpenApi\\Merge\\' . pathinfo($file, PATHINFO_FILENAME);
+            if (!class_exists($class) || !is_a($class, MergerInterface::class, true) || in_array($class, $defaults, true)) {
+                continue;
+            }
+
+            $rc = new \ReflectionClass($class);
+            if (!$rc->isAbstract()) {
+                /** @var MergerInterface $merger */
+                $merger = $rc->newInstance();
+                $optIn[] = $merger;
+            }
+        }
+
+        return $optIn;
+    }
+
+    /**
      * @param  list<object>                                                                                                                                                                    $instances
      * @return list<array{name: string, description: string, configPrefix: string, options: list<array{name: string, type: string, default: string, description: string}>, see: list<string>}>
      */
@@ -103,7 +140,8 @@ class ExtensionPointGenerator extends DocGenerator
             $collected[] = [
                 'name' => $rc->getShortName(),
                 'description' => trim((string) $description),
-                'configPrefix' => lcfirst($rc->getShortName()) . '.',
+                // extension points are configured in PHP, never through `-c`, so no key prefix
+                'configPrefix' => '',
                 'options' => $this->collectOptions($rc),
                 'see' => $classDoc['see'],
             ];
