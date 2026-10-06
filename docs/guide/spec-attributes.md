@@ -380,7 +380,7 @@ declared on a class needs no key at all — it is named after the class.
 class, and for the historic spellings below.
 
 ::: warning Historic spellings, deprecated
-Before 6.11 each type spelled its key after itself: `schema: 'Pet'`, `parameter: 'page'`,
+Before 6.12 each type spelled its key after itself: `schema: 'Pet'`, `parameter: 'page'`,
 `request: 'Body'`, `securityScheme: 'api'`, and — only when declared as a component —
 `response: 'NotFound'`, `header: 'RateLimit'`, `link: 'Self'`, `example: 'Minimal'`. They still
 work, produce the same document, and trigger a deprecation; they are removed in 8.0. Only the

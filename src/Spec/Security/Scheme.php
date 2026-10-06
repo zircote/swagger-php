@@ -34,7 +34,7 @@ class Scheme extends OA\AbstractAttribute
     public ?string $in = null;
 
     /**
-     * @param string|null               $securityScheme   Deprecated since 6.11, removed in 8.0 - use `component` instead
+     * @param string|null               $securityScheme   Deprecated since 6.12, removed in 8.0 - use `component` instead
      * @param string|OA\SchemeType|null $type             The type of the security scheme (apiKey, http, mutualTLS, oauth2, openIdConnect)
      * @param string|null               $description      A description of the security scheme (CommonMark syntax)
      * @param string|null               $name             The name of the header, query, or cookie parameter (apiKey)
@@ -66,7 +66,7 @@ class Scheme extends OA\AbstractAttribute
         parent::__construct(x: $x, attachables: $attachables);
         $this->component = $component;
         if ($component === null && $this->securityScheme !== null) {
-            trigger_deprecation('zircote/swagger-php', '6.11', '`securityScheme` is deprecated as the component key of %s and will be removed in 8.0; use `component`', static::class);
+            trigger_deprecation('zircote/swagger-php', '6.12', '`securityScheme` is deprecated as the component key of %s and will be removed in 8.0; use `component`', static::class);
             $this->component = $this->securityScheme;
         }
         $this->type = $type instanceof \BackedEnum ? $type->value : $type;

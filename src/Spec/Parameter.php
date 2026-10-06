@@ -53,7 +53,7 @@ class Parameter extends AbstractAttribute
     public ?array $content = null;
 
     /**
-     * @param string|null                    $parameter       Deprecated since 6.11, removed in 8.0 - use `component` instead
+     * @param string|null                    $parameter       Deprecated since 6.12, removed in 8.0 - use `component` instead
      * @param string|null                    $name            The name of the parameter
      * @param string|ParameterIn|null        $in              The location of the parameter (query, header, path, cookie)
      * @param string|null                    $description     A brief description of the parameter (CommonMark syntax)
@@ -95,7 +95,7 @@ class Parameter extends AbstractAttribute
         parent::__construct(x: $x, attachables: $attachables);
         $this->component = $component;
         if ($component === null && $this->parameter !== null) {
-            trigger_deprecation('zircote/swagger-php', '6.11', '`parameter` is deprecated as the component key of %s and will be removed in 8.0; use `component`', static::class);
+            trigger_deprecation('zircote/swagger-php', '6.12', '`parameter` is deprecated as the component key of %s and will be removed in 8.0; use `component`', static::class);
             $this->component = $this->parameter;
         }
         $this->in = $in instanceof \BackedEnum ? $in->value : $in;

@@ -105,7 +105,7 @@ class ComponentName
                 }
 
                 if ($field !== null && $deprecate) {
-                    trigger_deprecation('zircote/swagger-php', '6.11', '`%s` is deprecated as the component key of %s and will be removed in 8.0; use `component`', $field, $item::class);
+                    trigger_deprecation('zircote/swagger-php', '6.12', '`%s` is deprecated as the component key of %s and will be removed in 8.0; use `component`', $field, $item::class);
                 }
 
                 $item->component = $value;
