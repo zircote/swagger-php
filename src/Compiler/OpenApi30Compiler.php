@@ -244,11 +244,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
         if ($schema->default !== Undefined::UNDEFINED) {
             $result['default'] = $schema->default;
         }
-        if ($schema->example !== Undefined::UNDEFINED) {
-            $result['example'] = $schema->example;
-        } elseif ($schema->examples !== null && $schema->examples !== []) {
-            $result['example'] = $schema->examples[0];
-        }
+        $result += $this->schemaExample($schema);
         // const is not supported in 3.0 — fall back to enum
         if ($schema->const !== Undefined::UNDEFINED && !isset($result['enum'])) {
             $result['enum'] = [$schema->const];
@@ -266,13 +262,23 @@ class OpenApi30Compiler extends OpenApi31Compiler
     protected function compileRefAnnotations(OA\Schema $schema): array
     {
         $result = parent::compileRefAnnotations($schema);
-        unset($result['examples']);
+        unset($result['example'], $result['examples']);
 
-        if (!array_key_exists('example', $result) && $schema->examples !== null && $schema->examples !== []) {
-            $result['example'] = $schema->examples[0];
+        return $result + $this->schemaExample($schema);
+    }
+
+    /**
+     * The singular `example`, falling back to the first of `examples`.
+     *
+     * @return array<string,mixed>
+     */
+    protected function schemaExample(OA\Schema $schema): array
+    {
+        if ($schema->example !== Undefined::UNDEFINED) {
+            return ['example' => $schema->example];
         }
 
-        return $result;
+        return $schema->examples !== null && $schema->examples !== [] ? ['example' => $schema->examples[0]] : [];
     }
 
     #[\Override]
