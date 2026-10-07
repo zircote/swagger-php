@@ -132,11 +132,12 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
             return;
         }
 
+        $count = count($this->removed);
         $this->logger?->notice(sprintf(
             'Removed %d unreferenced %s; set cleanup.enabled to false to keep %s',
-            count($this->removed),
-            count($this->removed) === 1 ? 'component' : 'components',
-            count($this->removed) === 1 ? 'it' : 'them',
+            $count,
+            $count === 1 ? 'component' : 'components',
+            $count === 1 ? 'it' : 'them',
         ));
 
         foreach ($this->removed as $ref) {
