@@ -20,7 +20,7 @@ attributes and annotations.
 - Extracts information from code and existing phpdoc comments.
 - Can be used programmatically or via command-line tool.
 - Error reporting (with hints, context).
-- 🧪 **Spec attributes (beta)** — attributes you can also build by hand and compile without scanning, and a pipeline that tells you when an attribute is wrong; see [Why spec attributes?](https://zircote.github.io/swagger-php/guide/why-spec).
+- 🧪 **Spec attributes (beta)**: attributes that can also be built by hand and compiled without scanning, and a pipeline that reports when an attribute is wrong. See [Why spec attributes?](https://zircote.github.io/swagger-php/guide/why-spec).
 
 ## OpenAPI version support
 
@@ -109,9 +109,9 @@ $result = (new \OpenApi\Builder())
     ->build();
 ```
 
-**Hybrid mode** works with your existing `OpenApi\Attributes` code — no changes needed. It runs the classic scanner
+**Hybrid mode** works with your existing `OpenApi\Attributes` code, with no changes needed. It runs the classic scanner
 but uses the new augmenter pipeline and version-aware compilers, which are easier to extend.
-If you'd like to help test the new pipeline, switching to hybrid is the easiest way:
+Switching to hybrid is also the easiest way to help test the new pipeline:
 
 ```php
 $result = (new \OpenApi\Builder())
