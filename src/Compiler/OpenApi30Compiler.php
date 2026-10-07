@@ -148,8 +148,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
                 return $this->filter([
                     'oneOf' => [['$ref' => $schema->ref]],
                     'nullable' => true,
-                    'description' => Undefined::isDefault($schema->description) ? null : $schema->description,
-                ], $schema);
+                ], $schema) + $this->compileRefAnnotations($schema);
             }
 
             return ['$ref' => $schema->ref];
@@ -245,17 +244,41 @@ class OpenApi30Compiler extends OpenApi31Compiler
         if ($schema->default !== Undefined::UNDEFINED) {
             $result['default'] = $schema->default;
         }
-        if ($schema->example !== Undefined::UNDEFINED) {
-            $result['example'] = $schema->example;
-        } elseif ($schema->examples !== null && $schema->examples !== []) {
-            $result['example'] = $schema->examples[0];
-        }
+        $result += $this->schemaExample($schema);
         // const is not supported in 3.0 — fall back to enum
         if ($schema->const !== Undefined::UNDEFINED && !isset($result['enum'])) {
             $result['enum'] = [$schema->const];
         }
 
         return $result ?: new \stdClass();
+    }
+
+    /**
+     * 3.0 has the singular `example` only, so `examples` contributes its first value.
+     *
+     * @return array<string,mixed>
+     */
+    #[\Override]
+    protected function compileRefAnnotations(OA\Schema $schema): array
+    {
+        $result = parent::compileRefAnnotations($schema);
+        unset($result['example'], $result['examples']);
+
+        return $result + $this->schemaExample($schema);
+    }
+
+    /**
+     * The singular `example`, falling back to the first of `examples`.
+     *
+     * @return array<string,mixed>
+     */
+    protected function schemaExample(OA\Schema $schema): array
+    {
+        if ($schema->example !== Undefined::UNDEFINED) {
+            return ['example' => $schema->example];
+        }
+
+        return $schema->examples !== null && $schema->examples !== [] ? ['example' => $schema->examples[0]] : [];
     }
 
     #[\Override]
@@ -297,7 +320,10 @@ class OpenApi30Compiler extends OpenApi31Compiler
             }
 
             if ($schema->examples !== null) {
-                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': examples array is not supported in OpenAPI 3.0, using first value as example');
+                // a plain 3.0 `$ref` is a Reference Object, which drops everything beside it
+                $this->logger->warning($schema->ref !== null && $schema->nullable !== true
+                    ? 'Schema' . $this->schemaLabel($schema) . ': examples beside $ref ' . $schema->ref . ' is not supported in OpenAPI 3.0 and will be omitted'
+                    : 'Schema' . $this->schemaLabel($schema) . ': examples array is not supported in OpenAPI 3.0, using first value as example');
             }
         }
     }

@@ -53,4 +53,34 @@ class NullRefSpec
     public function refplusy()
     {
     }
+
+    #[OA\Operation\Get(
+        path: '/api/annotated',
+        operationId: 'annotated',
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Annotated refs response',
+        content: new OA\MediaType\Json(ref: NullRefAnnotatedSpec::class)
+    )]
+    public function annotated()
+    {
+    }
+}
+
+// a `$ref` property keeps its annotations: on the wrapper when nullable, beside `$ref` in 3.1
+#[OA\Schema(component: 'annotatedRefs')]
+class NullRefAnnotatedSpec
+{
+    #[OA\Property(schema: new OA\Schema(title: 'Nullable', description: 'A nullable reference', default: 'none', example: 'zircote/swagger-php', deprecated: true, readOnly: true))]
+    public ?RepositorySpec $nullableRepository;
+
+    #[OA\Property(schema: new OA\Schema(title: 'Plain', description: 'A plain reference', default: 'none', example: 'zircote/swagger-php', deprecated: true, readOnly: true))]
+    public RepositorySpec $repository;
+
+    #[OA\Property(schema: new OA\Schema(examples: ['zircote/swagger-php', 'DerManoMann/openapi-extras'], writeOnly: true))]
+    public ?RepositorySpec $nullableListed;
+
+    #[OA\Property(schema: new OA\Schema(examples: ['zircote/swagger-php', 'DerManoMann/openapi-extras'], writeOnly: true))]
+    public RepositorySpec $listed;
 }

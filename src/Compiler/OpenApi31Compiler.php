@@ -530,13 +530,10 @@ class OpenApi31Compiler implements CompilerInterface
                         ]),
                         ['type' => 'null'],
                     ],
-                ], $schema);
+                ], $schema) + $this->compileRefAnnotations($schema);
             }
 
-            return $this->filter([
-                '$ref' => $schema->ref,
-                'description' => $schema->description,
-            ], $schema);
+            return $this->filter(['$ref' => $schema->ref], $schema) + $this->compileRefAnnotations($schema);
         }
 
         $type = $schema->type;
@@ -627,6 +624,31 @@ class OpenApi31Compiler implements CompilerInterface
         ]);
 
         return $result ?: new \stdClass();
+    }
+
+    /**
+     * The annotation keywords a `$ref` schema keeps: beside `$ref`, or on the wrapper of a nullable one.
+     *
+     * In 3.1 a Schema's `$ref` is an ordinary JSON Schema keyword, so its siblings are evaluated;
+     * the Reference Object's limit to `summary` and `description` does not apply to it.
+     *
+     * @return array<string,mixed>
+     */
+    protected function compileRefAnnotations(OA\Schema $schema): array
+    {
+        $result = $this->filter([
+            'title' => $schema->title,
+            'description' => $schema->description,
+            'examples' => $schema->examples,
+            'deprecated' => $schema->deprecated,
+            'readOnly' => $schema->readOnly,
+            'writeOnly' => $schema->writeOnly,
+        ]);
+
+        return $this->withDefined($result, [
+            'default' => $schema->default,
+            'example' => $schema->example,
+        ]);
     }
 
     /**

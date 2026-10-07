@@ -249,12 +249,22 @@ tests/Fixtures/Scratch/Nullable3.0.0.yaml:
     - '#/components/schemas/Nullable/properties/anotherdate/nullable'
   no-unused-components:
     - '#/components/schemas/Nullable'
+tests/Fixtures/Scratch/NullRef3.0.0-spec.yaml:
+  nullable-type-sibling:
+    - >-
+      #/paths/~1api~1refonly/get/responses/200/content/application~1json/schema/nullable
+    - >-
+      #/paths/~1api~1refplus/get/responses/200/content/application~1json/schema/nullable
+    - '#/components/schemas/annotatedRefs/properties/nullableRepository/nullable'
+    - '#/components/schemas/annotatedRefs/properties/nullableListed/nullable'
 tests/Fixtures/Scratch/NullRef3.0.0.yaml:
   nullable-type-sibling:
     - >-
       #/paths/~1api~1refonly/get/responses/200/content/application~1json/schema/nullable
     - >-
       #/paths/~1api~1refplus/get/responses/200/content/application~1json/schema/nullable
+    - '#/components/schemas/annotatedRefs/properties/nullableRepository/nullable'
+    - '#/components/schemas/annotatedRefs/properties/nullableListed/nullable'
 tests/Fixtures/Scratch/NestedSchema3.2.0.yaml:
   no-unused-components:
     - '#/components/schemas/NestedSchema'

@@ -597,6 +597,7 @@ components:
           format: int64
         category:
           $ref: '#/components/schemas/Category'
+          title: Category
         name:
           title: 'Pet name'
           description: 'Pet name'
