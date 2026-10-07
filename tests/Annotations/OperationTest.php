@@ -29,6 +29,11 @@ final class OperationTest extends OpenApiTestCase
             '/** @OA\Get(security={ {} }) */',
             '{"security":[{}]}',
         ];
+        yield 'scheme names only' => [
+            [['api_key', 'bearer']],
+            '/** @OA\Get(security={ {"api_key", "bearer"} }) */',
+            '{"security":[{"api_key":[],"bearer":[]}]}',
+        ];
         yield 'optional-oauth2' => [
             [[], ['petstore_auth' => ['write:pets', 'read:pets']]],
             '/** @OA\Get(security={ {}, {"petstore_auth":{"write:pets","read:pets"}} }) */',

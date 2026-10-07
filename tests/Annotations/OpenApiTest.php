@@ -53,6 +53,30 @@ final class OpenApiTest extends OpenApiTestCase
     /**
      * @return iterable<mixed>
      */
+    public static function securityData(): iterable
+    {
+        yield 'basic' => [[['api_key' => []]], '{"security":[{"api_key":[]}]}'];
+        yield 'optional' => [[[]], '{"security":[{}]}'];
+        yield 'scheme names only' => [[['api_key', 'bearer']], '{"security":[{"api_key":[],"bearer":[]}]}'];
+    }
+
+    /**
+     * Root security serialises each requirement as an object, as an operation's does.
+     *
+     * @param array<mixed> $security
+     */
+    #[DataProvider('securityData')]
+    public function testSecuritySerialization(array $security, string $expected): void
+    {
+        $openapi = new OA\OpenApi(['security' => $security, '_context' => $this->getContext()]);
+        $security = json_decode($openapi->toJson())->security;
+
+        $this->assertSame($expected, json_encode(['security' => $security]));
+    }
+
+    /**
+     * @return iterable<mixed>
+     */
     public static function versionMatchProvider(): iterable
     {
         yield '3.0.0-3.0.0' => ['3.0.0', '3.0.0', true];

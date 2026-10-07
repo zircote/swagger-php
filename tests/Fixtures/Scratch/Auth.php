@@ -103,3 +103,16 @@ class AuthEndpoint
 class AuthPublicEndpoint
 {
 }
+
+// a requirement may list scheme names alone, each standing for that scheme with no scopes
+#[OAT\Get(
+    path: '/listed',
+    operationId: 'getListed',
+    security: [['bearerAuth', 'apiKeyQuery']],
+    responses: [
+        new OAT\Response(response: 200, description: 'Both schemes, no scopes'),
+    ],
+)]
+class AuthListedEndpoint
+{
+}
