@@ -110,12 +110,31 @@ The modes aim for equivalent output from the same source, but differ in what the
 | Augmenter pipeline (`withAugmenters()`) | No                     | Yes                                                  | Yes                                    |
 | Contributions (`withSpecification()`)   | No                     | Yes                                                  | Yes                                    |
 | Version-aware compilation               | No (single serializer) | Yes                                                  | Yes                                    |
+| Unreferenced components                 | Kept                   | Removed, with a notice                               | Removed, with a notice                 |
+| `-c` / `-D` keys                        | Processors, `generator.*` | Augmenters, `generator.*`                         | Augmenters                             |
+
+Classic removes unreferenced components only when asked, with `-c cleanUnusedComponents.enabled=true`.
+Hybrid and spec remove them by default and log how many at notice level. `-c cleanup.enabled=false`
+keeps them, or in PHP:
+
+```php
+use OpenApi\Augmenter;
+use OpenApi\Utils\Pipeline;
+
+$builder->withAugmenters(fn (Pipeline $pipeline) => $pipeline->get(Augmenter\Cleanup::class)->setEnabled(false));
+```
+
+See [Augmenters](/reference/augmenters) for the `Cleanup` options.
 
 ## Migration path
 
 The recommended migration path is:
 
-1. **Classic → Hybrid** — change `setMode(Mode::HYBRID)` and verify output is unchanged. No code changes needed. This gives you access to the augmenter pipeline.
+1. **Classic → Hybrid** — change `setMode(Mode::HYBRID)`. No code changes needed, and this gives you access to the augmenter pipeline. Output stays the same with two exceptions:
+
+   - Components that no path references are removed, including a schema kept only for client code generation. [Behavioral differences](#behavioral-differences) has the switch that keeps them.
+
+   - `-c` takes augmenter keys rather than processor keys, apart from `generator.*`; `--mode hybrid -D src` lists them.
 
 2. **Hybrid → Spec** — when starting new code, use `OpenApi\Spec` attributes. Existing `OpenApi\Attributes` code continues to work via hybrid mode. The spec attributes are not a one-for-one rename of the classic ones: a reusable attribute takes a single `component:` key where classic spells the key after its own type (`schema:`, `parameter:`, `request:`, `securityScheme:`). See [Components](/guide/spec-attributes#components).
 

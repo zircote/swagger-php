@@ -95,16 +95,48 @@ class GenerateCommand extends Command
     /**
      * The config keys `--config` accepts; these differ per mode.
      *
-     * Mirrors the routing in {@see self::generate()}: spec mode configures the
-     * augmenter pipeline, classic and hybrid configure the Generator.
+     * Mirrors the routing in {@see self::splitConfig()}: classic configures the Generator,
+     * spec the augmenter pipeline, and hybrid both — the Generator only for its own
+     * `generator.*` keys, since hybrid runs no classic processors.
      *
      * @return array<string,mixed>
      */
     protected function getDefaultConfig(GenerateInput $input): array
     {
-        return $input->mode->isSpec()
-            ? (new Builder())->getAugmenters()->getConfig()
-            : (new Generator())->getDefaultConfig();
+        return match ($input->mode) {
+            Builder\Mode::CLASSIC => (new Generator())->getDefaultConfig(),
+            Builder\Mode::SPEC => (new Builder())->getAugmenters()->getConfig(),
+            Builder\Mode::HYBRID => ['generator' => (new Generator())->getDefaultConfig()['generator']]
+                + (new Builder())->getAugmenters()->getConfig(),
+        };
+    }
+
+    /**
+     * Split `-c` into the Generator's share and the augmenters'.
+     *
+     * Hybrid empties the Generator's processor pipeline, so processor keys would reach
+     * nothing there; everything but `generator.*` goes to the augmenters, which do run.
+     *
+     * @return array{0: array<int|string, mixed>, 1: list<string>} generator, augmenters
+     */
+    protected function splitConfig(GenerateInput $input): array
+    {
+        if ($input->mode !== Builder\Mode::HYBRID) {
+            return $input->mode === Builder\Mode::SPEC ? [[], $input->config] : [$input->config, []];
+        }
+
+        $generator = [];
+        $augmenters = [];
+        foreach ($input->config as $option) {
+            // each -c is a `key=value` string
+            if (str_starts_with($option, 'generator.')) {
+                $generator[] = $option;
+            } else {
+                $augmenters[] = $option;
+            }
+        }
+
+        return [$generator, $augmenters];
     }
 
     protected function generate(GenerateInput $input): Result
@@ -118,14 +150,14 @@ class GenerateCommand extends Command
             $builder->setVersion($input->version);
         }
 
-        if ($input->config || $input->addProcessor || $input->removeProcessor) {
-            $builder->withGenerator(function (Generator $generator) use ($input): void {
-                if ($input->config && $input->mode !== Builder\Mode::SPEC) {
-                    // -c takes `key=value` strings; Generator::setConfig() normalises them
-                    /** @var array<string, mixed> $config */
-                    $config = $input->config;
-                    $generator->setConfig($config);
-                }
+        [$generatorConfig, $augmenterConfig] = $this->splitConfig($input);
+
+        if ($generatorConfig !== [] || $input->addProcessor || $input->removeProcessor) {
+            $builder->withGenerator(function (Generator $generator) use ($input, $generatorConfig): void {
+                // -c takes `key=value` strings; Generator::setConfig() normalises them
+                /** @var array<string, mixed> $config */
+                $config = $generatorConfig;
+                $generator->setConfig($config);
 
                 foreach ($input->addProcessor as $processor) {
                     $class = '\OpenApi\Processors\\' . ucfirst((string) $processor);
@@ -152,9 +184,9 @@ class GenerateCommand extends Command
             });
         }
 
-        if ($input->config && $input->mode === Builder\Mode::SPEC) {
-            $builder->withAugmenters(function (Pipeline $augmenters) use ($input): void {
-                $augmenters->configure($input->config);
+        if ($augmenterConfig !== []) {
+            $builder->withAugmenters(function (Pipeline $augmenters) use ($augmenterConfig): void {
+                $augmenters->configure($augmenterConfig);
             });
         }
 

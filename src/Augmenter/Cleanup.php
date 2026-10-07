@@ -22,8 +22,10 @@ use Psr\Log\LoggerAwareTrait;
  * Iterates multiple times to catch nested dependencies (a schema only
  * referenced by another unused schema should also be removed).
  *
- * Removal is silent, with one exception: a response component keyed by a status code is
- * reported, because it is a response that was meant to nest into an operation.
+ * Removal is reported once per run, as a notice with the count and the switch that turns it
+ * off; the components themselves are listed at debug level. A response component keyed by a
+ * status code is also reported on its own, as a warning, because it is a response that was
+ * meant to nest into an operation.
  *
  * @implements PipeInterface<Specification>
  */
@@ -32,6 +34,9 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
     use LoggerAwareTrait;
 
     protected const MAX_ITERATIONS = 10;
+
+    /** @var list<string> references of the components removed so far, in removal order */
+    protected array $removed = [];
 
     public function __construct(
         #[Config('Enables/disables removal of unreferenced components.')]
@@ -45,12 +50,17 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
             return null;
         }
 
+        $this->removed = [];
+
         for ($i = 0; $i < self::MAX_ITERATIONS; ++$i) {
             if (!$this->cleanup($payload)) {
+                $this->reportRemoved();
+
                 return null;
             }
         }
 
+        $this->reportRemoved();
         $this->logger?->warning('CleanUnused: maximum iterations ({max}) reached, some unused components may remain', [
             'max' => self::MAX_ITERATIONS,
         ]);
@@ -101,8 +111,10 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
         $removed = false;
         foreach ($specification->{$bucket} as $index => $item) {
             $name = ComponentName::of($item);
-            if ($name !== null && !isset($usedRefs[JsonPointer::ref('components', $bucket, $name)])) {
+            $ref = $name !== null ? JsonPointer::ref('components', $bucket, $name) : null;
+            if ($ref !== null && !isset($usedRefs[$ref])) {
                 $this->reportStatusCodeKey($item, $name);
+                $this->removed[] = $ref;
                 unset($specification->{$bucket}[$index]);
                 $removed = true;
             }
@@ -112,6 +124,25 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
         }
 
         return $removed;
+    }
+
+    protected function reportRemoved(): void
+    {
+        if ($this->removed === []) {
+            return;
+        }
+
+        $count = count($this->removed);
+        $this->logger?->notice(sprintf(
+            'Removed %d unreferenced %s; set cleanup.enabled to false to keep %s',
+            $count,
+            $count === 1 ? 'component' : 'components',
+            $count === 1 ? 'it' : 'them',
+        ));
+
+        foreach ($this->removed as $ref) {
+            $this->logger?->debug(sprintf('Removed unreferenced component %s', $ref));
+        }
     }
 
     /**
