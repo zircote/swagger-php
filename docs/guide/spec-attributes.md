@@ -4,7 +4,7 @@
 Spec attributes are mostly feature-complete but still beta. The API may evolve based on feedback before being promoted to the default mode in a future major version.
 :::
 
-Spec attributes are a new way to annotate your PHP code for OpenAPI generation. They live in the `OpenApi\Spec` namespace and are typed data containers: unlike classic annotations they carry no serialization logic, and the augmenter pipeline fills in derived values before compilation.
+Spec attributes are a new way to annotate PHP code for OpenAPI generation. They live in the `OpenApi\Spec` namespace and are typed data containers. Unlike classic annotations they carry no serialization logic, and the augmenter pipeline fills in derived values before compilation.
 
 ## Namespace
 
@@ -12,7 +12,7 @@ Spec attributes are a new way to annotate your PHP code for OpenAPI generation. 
 use OpenApi\Spec as OA;
 ```
 
-This replaces the classic `use OpenApi\Attributes as OA;`. The `OA` alias keeps your code familiar.
+This replaces the classic `use OpenApi\Attributes as OA;`. The `OA` alias keeps the code familiar.
 
 ## Basic example
 
@@ -117,7 +117,7 @@ Types, formats, and nullability are inferred from PHP type declarations by the `
 
 ### Stacking Schema and Property
 
-In spec mode `OA\Property` no longer extends `OA\Schema`; both derive directly from `AbstractAttribute`. This means you can stack `#[OA\Property]` and `#[OA\Schema]` on the same target:
+In spec mode `OA\Property` no longer extends `OA\Schema`. Both derive directly from `AbstractAttribute`, so `#[OA\Property]` and `#[OA\Schema]` can be stacked on the same target:
 
 ```php
 #[OA\Property(property: 'status')]
@@ -177,7 +177,7 @@ The flat form extends to deeper nesting: a `MediaType` and `Schema` stacked alon
 public function show(int $id) {}
 ```
 
-The merge is by attribute type, so the flat form only works while it is unambiguous. Two `Response` siblings each expecting their own `MediaType`, or a `MediaType` next to both a `Response` and a `RequestBody`, fail with an `Ambiguous merge` error — nest those inline instead.
+The merge is by attribute type, so the flat form only works while it is unambiguous. Two `Response` siblings each expecting their own `MediaType`, or a `MediaType` next to both a `Response` and a `RequestBody`, fail with an `Ambiguous merge` error. Nest those inline instead.
 
 ### Parameters on method arguments
 
@@ -261,7 +261,7 @@ Still useful even when nesting `OA\Schema` as the media type is prefilled either
 ### Items
 `#[OA\Schema\Items]` is the equivalent to the classic `OA\Items` attribute. Similar to `OA\MediaType\Json` and `Xml` it is a shortcut that allows to skip the outer `OA\Schema(type: 'array')`. The `Shortcuts` augmenter wraps it into `OA\Schema(type: 'array', items: ...)` automatically.
 
-Since `OA\Schema\Items` extends `OA\Schema`, the [implicit `OA\Property`](/guide/shortcuts#oa-property-spec-only) shortcut applies — you can omit the explicit `#[OA\Property]` attribute:
+Since `OA\Schema\Items` extends `OA\Schema`, the [implicit `OA\Property`](/guide/shortcuts#oa-property-spec-only) shortcut applies, and the explicit `#[OA\Property]` attribute can be omitted:
 
 ```php
 // Verbose
@@ -282,7 +282,7 @@ public array $tags;
 Both the `MediaType` and `Items` shortcuts are resolved by the `Shortcuts` augmenter.
 
 ### Encoded
-`OA\Property\Encoded` bundles a property definition with its encoding — instead of declaring `OA\Encoding` separately on the `OA\MediaType`, you can inline it directly on the property. The `MediaTypes` augmenter promotes the encoding to the parent MediaType automatically.
+`OA\Property\Encoded` bundles a property definition with its encoding. Instead of a separate `OA\Encoding` on the `OA\MediaType`, the encoding is declared on the property itself. The `MediaTypes` augmenter promotes the encoding to the parent MediaType automatically.
 
 If no `encoding` property name is set on the nested `OA\Encoding`, it defaults to the property name.
 
@@ -316,7 +316,7 @@ If no `encoding` property name is set on the nested `OA\Encoding`, it defaults t
 The `Encoded` shortcut is resolved by the `MediaTypes` augmenter.
 
 ### AdditionalProperties
-`OA\Schema\AdditionalProperties` is a typed alias for `OA\Schema` — functionally identical but improves readability when declaring `additionalProperties` constraints:
+`OA\Schema\AdditionalProperties` is a typed alias for `OA\Schema`. It is functionally identical, and reads better when declaring `additionalProperties` constraints:
 
 ```php
 #[OA\Schema(
@@ -339,8 +339,8 @@ class ValidationErrors {}
 
 ## Components
 
-Any reusable attribute becomes a component by giving it a `component:` key — the name it is
-filed under in the document's `components` section, and the name a `$ref` points at.
+Any reusable attribute becomes a component by giving it a `component:` key. That is the name it
+is filed under in the document's `components` section, and the name a `$ref` points at.
 Schemas, responses, parameters, request bodies, headers, links, examples, security schemes and
 path items all take it, and a keyed attribute is a root: it can be declared on a class by
 itself, with no wrapper.
@@ -374,16 +374,16 @@ public function list() {}
 Note the two keys on that response: `response: 404` is where it nests in the operation, and
 `NotFound` is the component it points at. The same split holds for a header (`header:` is the
 HTTP header name, `component:` the reusable definition), a link and an example. A schema
-declared on a class needs no key at all — it is named after the class.
+declared on a class needs no key at all. It is named after the class.
 
 `#[OA\Components]` remains as a class-level container for declaring several components on one
 class, and for the historic spellings below.
 
 ::: warning Historic spellings, deprecated
 Before 6.12 each type spelled its key after itself: `schema: 'Pet'`, `parameter: 'page'`,
-`request: 'Body'`, `securityScheme: 'api'`, and — only when declared as a component —
+`request: 'Body'`, `securityScheme: 'api'`, and, only when declared as a component,
 `response: 'NotFound'`, `header: 'RateLimit'`, `link: 'Self'`, `example: 'Minimal'`. They still
-work, produce the same document, and trigger a deprecation; they are removed in 8.0. Only the
+work, produce the same document, and trigger a deprecation. They are removed in 8.0. Only the
 component use is deprecated: `response: 404` on a nested response, or `header: 'X-Rate-Limit'`
 on a header inside a response, is the nesting key and stays.
 
@@ -559,7 +559,7 @@ create-user:
         - email
 ```
 
-This is semantically stricter — the schema explicitly declares it must be an object, rather than leaving the type to be inferred from the `allOf` members.
+This is semantically stricter. The schema declares explicitly that it must be an object, instead of leaving the type to be inferred from the `allOf` members.
 
 ### Single-element `type` arrays reduced to string
 
@@ -590,7 +590,7 @@ Both forms are valid in OpenAPI 3.1+, but the scalar form is more conventional f
 
 In spec mode, the typed operation subclasses `OA\Operation\Get`, `OA\Operation\Head`, `OA\Operation\Options`, and `OA\Operation\Trace` do not accept a `requestBody` parameter. This enforces the HTTP semantics where request bodies are not defined for these methods.
 
-Classic mode accepts `requestBody` on all operations (with a comment noting it should be ignored by validators for methods that don't support it). In spec mode the parameter simply does not exist, so passing it raises `Error: Unknown named parameter $requestBody` when the attribute is instantiated.
+Classic mode accepts `requestBody` on all operations (with a comment noting it should be ignored by validators for methods that do not support it). In spec mode the parameter simply does not exist, so passing it raises `Error: Unknown named parameter $requestBody` when the attribute is instantiated.
 
 ```php
 // Works in classic mode; a PHP error in spec mode, because
@@ -630,7 +630,7 @@ oneOf:
 
 ### Nullable type inference from PHP types
 
-Spec mode consistently infers nullability from PHP type declarations (e.g. `?\DateTime`). For OpenAPI 3.0 this adds `nullable: true`; for 3.1+ it emits `type: ['string', 'null']`. Classic mode may not infer nullability in all cases where the PHP type is nullable.
+Spec mode consistently infers nullability from PHP type declarations (e.g. `?\DateTime`). For OpenAPI 3.0 this adds `nullable: true`. For 3.1+ it emits `type: ['string', 'null']`. Classic mode may not infer nullability in all cases where the PHP type is nullable.
 
 ```php
 #[OA\Property]
@@ -675,14 +675,14 @@ The FQCN is resolved to the appropriate `#/components/schemas/Pet` JSON referenc
 
 `OA\Schema\Ref` is a restricted `Schema` subclass that only accepts `ref`, `title`, and `description`. It can be used in two ways:
 
-**As a schema** — when you want a reference-only schema with optional metadata overrides (OpenAPI 3.1+):
+**As a schema**: a reference-only schema with optional metadata overrides (OpenAPI 3.1+):
 
 ```php
 #[OA\Property(schema: new OA\Schema\Ref(ref: Pet::class, description: 'The pet'))]
 public Pet $pet;
 ```
 
-**On a `ref` parameter directly** — when the `ref` property only accepts strings but you want type-safety or IDE completion for the reference target:
+**On a `ref` parameter directly**: where the `ref` property only accepts a string, this adds type-safety and IDE completion for the reference target:
 
 ```php
 #[OA\Response(ref: new OA\Schema\Ref(ref: '#/components/responses/NotFound'), response: 404)]
