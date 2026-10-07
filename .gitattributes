@@ -2,6 +2,8 @@
 /docs/ export-ignore
 /Examples/ export-ignore
 /tools/ export-ignore
+# /rector/ is deliberately NOT export-ignored: the migration rules ship to consumers.
+/rector/tests/ export-ignore
 /tests/ export-ignore
 /Changelog.md export-ignore
 /phpstan*.neon export-ignore

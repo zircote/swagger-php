@@ -219,6 +219,12 @@ classic mode, and the scanning pass in hybrid. The callable receives a default `
 and may configure it in place or return another. Spec mode has no `Generator`, so the hook
 is never called there.
 
+In hybrid, the `Generator` arrives with an empty processor pipeline, so a processor added
+here is the only one that runs, and it sees the annotations as scanned: properties are not
+yet attached to their schemas, and inheritance has not yet produced any `allOf`. The bridge
+and the augmenters do that work afterwards. A processor that only reads or changes what the
+author wrote works in hybrid; one that depends on that structure belongs in an augmenter.
+
 ## Putting it together
 
 `RouteTranslator` and `TagFromController` from above, wired onto a builder seeded from a
