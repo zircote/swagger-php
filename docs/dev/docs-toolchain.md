@@ -2,11 +2,11 @@
 
 How the documentation under `docs/` is produced, and which parts of it you may edit by hand.
 
-This covers the *documentation* toolchain only. For the general development loop — lint,
-static analysis, tests, and what to run before a pull request — see
+This covers the *documentation* toolchain only. For the general development loop (lint, static
+analysis, tests, and what to run before a pull request) see
 [CONTRIBUTING.md](https://github.com/zircote/swagger-php/blob/master/CONTRIBUTING.md).
 
-## Generated pages — do not edit
+## Generated pages: do not edit
 
 These pages are written by `composer docs:gen`. Editing them directly is wasted work: the next
 `docs:gen` overwrites your changes, and so does `composer docs:build`, which runs `docs:gen`
@@ -23,16 +23,16 @@ first.
 
 To change one of these, change its source and re-run `composer docs:gen`.
 
-Note that some prose lives *inside* the generators rather than in any markdown file — the
-`-c` and `-D` explanations in the "Configuration" sections are string literals in
+Note that some prose lives *inside* the generators rather than in any markdown file. The `-c`
+and `-D` explanations in the "Configuration" sections are string literals in
 `tools/src/Docs/Reference/{Augmenter,Processor}Generator.php`.
 
-Every generator renders through `tools/src/Docs/Sections/`; `Renderer` builds only the page
-frame — preamble, headers, and the example blocks. Parameters render as a definition list:
-a description is prose with its own paragraph breaks and a type arrives HTML-escaped, so
-both need markup that reaches the page without the markdown parser reading it again.
+Every generator renders through `tools/src/Docs/Sections/`. `Renderer` builds only the page
+frame: preamble, headers, and the example blocks. Parameters render as a definition list. A
+description is prose with its own paragraph breaks and a type arrives HTML-escaped, so both
+need markup that reaches the page without the markdown parser reading it again.
 
-Everything else under `docs/` is hand-written — including the top-level
+Everything else under `docs/` is hand-written, including the top-level
 `docs/examples/Readme.md`, since only the per-example ones feed the generated page.
 
 ## `docs:gen` is a drift check
@@ -46,9 +46,9 @@ composer docs:gen && git status --porcelain docs/
 Any output means the committed pages have drifted, and the regenerated version is the
 correct one. Worth running before opening a pull request.
 
-Run it with an otherwise-clean tree, or scope the `git status` to the generated pages —
-`docs/reference/` holds hand-written ones too, so a directory-wide check reports your own
-edits as drift.
+Run it with an otherwise-clean tree, or scope the `git status` to the generated pages.
+`docs/reference/` holds hand-written ones too, so a directory-wide check reports your own edits
+as drift.
 
 ## Commands
 
@@ -56,7 +56,7 @@ edits as drift.
 |---|---|
 | `composer docs:gen` | regenerate the pages listed above |
 | `composer docs:build` | runs `docs:gen`, then builds the static site |
-| `composer docs:dev` | local preview — **long-running**, prints its URL on startup and does not return |
+| `composer docs:dev` | local preview, **long-running**. It prints its URL on startup and does not return |
 
 ## What counts as a documented config setting
 
@@ -65,13 +65,13 @@ edits as drift.
 not object typed**:
 
 - constructor parameters are the public configuration contract, by convention
-- object typed parameters — factories, resolvers, the generator — are collaborators, not
+- object typed parameters (factories, resolvers, the generator) are collaborators, not
   settings, and cannot be expressed as a CLI value
 
 This is implemented once, in `DocGenerator::configurableParameters()`, and mirrors what
-`Utils\Pipeline::getConfig()` reports at runtime. The two are aligned by hand rather than
-by construction; if you change one, check the other. The check is that
-`./bin/openapi --mode spec -D src` lists exactly the settings the reference page documents.
+`Utils\Pipeline::getConfig()` reports at runtime. The two are aligned by hand rather than by
+construction. If you change one, check the other. The check is that `./bin/openapi --mode spec
+-D src` lists exactly the settings the reference page documents.
 
 ## CLI behavior worth knowing
 

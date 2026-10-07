@@ -38,7 +38,7 @@ Set by the analyser, inherited via the parent chain.
 
 | Key | Type | Meaning |
 |-----|------|---------|
-| `nested` | `AbstractAnnotation\|null` | The parent annotation this one is nested inside. `null` means explicitly not nested (top-level for merge purposes). Absent (not set) means the same as null but via inheritance — `is('nested')` returns `false`. |
+| `nested` | `AbstractAnnotation\|null` | The parent annotation this one is nested inside. `null` means explicitly not nested (top-level for merge purposes). Absent (not set) means the same as null but via inheritance: `is('nested')` returns `false`. |
 | `annotations` | `list<AbstractAnnotation>` | All annotations registered on this context. Shared by annotations at the same source location. |
 
 ### Processing keys
@@ -54,7 +54,7 @@ Set by the analyser, inherited via the parent chain.
 
 ### How `is('nested')` works
 
-`Context::is()` calls `property_exists()` — it checks whether the property is set directly on this context instance (not inherited from parent). This distinction drives processor behaviour:
+`Context::is()` calls `property_exists()`. It checks whether the property is set directly on this context instance (not inherited from parent). This distinction drives processor behaviour:
 
 - `is('nested') === true`: The property exists on this context. The annotation has an explicit nesting declaration.
 - `is('nested') === false`: The property is not set. MergeIntoOpenApi/MergeIntoComponents treat this as "top-level, merge into root".
@@ -65,7 +65,7 @@ Set by the analyser, inherited via the parent chain.
 |-------|----------------|---------|
 | `AbstractAnnotation` instance | `true` | This annotation is a child of that parent |
 | `null` | `true` | Explicitly marked as having no parent (e.g. parameter-level attributes that should not be merged into root) |
-| *(not set)* | `false` | Top-level — eligible for merge into OpenApi/Components |
+| *(not set)* | `false` | Top-level, eligible for merge into OpenApi/Components |
 
 ### Where `nested` is set
 
@@ -87,8 +87,8 @@ Set by the analyser, inherited via the parent chain.
 ### Registration
 
 `Analysis::addAnnotation($annotation, $context)` registers in two places:
-1. `$this->annotations` (`SplObjectStorage`) — keyed by annotation, value is context
-2. `$context->annotations[]` — array on the context object
+1. `$this->annotations` (`SplObjectStorage`): keyed by annotation, value is context
+2. `$context->annotations[]`: array on the context object
 
 ### Removal
 
@@ -108,21 +108,21 @@ $analysis->addAnnotation($annotation, $context);
 
 Key points:
 
-- **Create a new `Context` for each annotation** — never share a single context instance across multiple annotations. Each annotation needs its own context because `addAnnotation()` appends to `$context->annotations[]`. Sharing a context causes unrelated annotations to appear in each other's context, which confuses validation and cleanup. The context's parent chain provides inheritance of location keys (file, class, method), so per-annotation contexts are lightweight.
+- **Create a new `Context` for each annotation**. Never share a single context instance across multiple annotations. Each annotation needs its own context because `addAnnotation()` appends to `$context->annotations[]`. Sharing a context causes unrelated annotations to appear in each other's context, which confuses validation and cleanup. The context's parent chain provides inheritance of location keys (file, class, method), so per-annotation contexts are lightweight.
 - **Always pass `_context`** with `'generated' => true` and `'nested' => $parent` so the annotation is correctly positioned for validation.
-- **Call `addAnnotation()`** — this registers in both the `SplObjectStorage` (making it findable by type) and `$context->annotations` (linking it to its source location).
+- **Call `addAnnotation()`**. This registers in both the `SplObjectStorage` (making it findable by type) and `$context->annotations` (linking it to its source location).
 - **Use `$parent->merge([$annotation])`** if the annotation should be nested into the parent's `$_nested` mapping or end up in `_unmerged`. This is the normal path for annotations that the parent "owns".
 - **Call `addAnnotation()` directly** (without merge) when the annotation will be consumed by a later processor (e.g., creating a `JsonContent` that `MergeJsonContent` will transform). The later processor is responsible for cleanup.
 
-If you only call `addAnnotation()` without placing the annotation into the tree (i.e., it's not reachable from the root `OpenApi` object via properties or `_unmerged`), it will be findable via `getAnnotationsOfType()` but won't be validated or serialized.
+If you only call `addAnnotation()` without placing the annotation into the tree (i.e., it is not reachable from the root `OpenApi` object via properties or `_unmerged`), it will be findable via `getAnnotationsOfType()` but will not be validated or serialized.
 
 ### When processors relocate annotations
 
 When a processor transforms an annotation (e.g., JsonContent becomes a Schema inside a MediaType), it must:
 
-1. **Update `_context`** — set a new context with `nested` pointing to the new parent, so tree-walking validation sees it in the correct location.
-2. **Remove from parent's `_unmerged`** — so the old parent's validation doesn't warn about unexpected children.
-3. **Remove from analysis registry** — via `$analysis->removeAnnotation()` so it's no longer discoverable via `getAnnotationsOfType()` and the old context's annotations array is cleaned up.
+1. **Update `_context`**: set a new context with `nested` pointing to the new parent, so tree-walking validation sees it in the correct location.
+2. **Remove from parent's `_unmerged`**, so the old parent's validation does not warn about unexpected children.
+3. **Remove from analysis registry** via `$analysis->removeAnnotation()`, so it is no longer discoverable via `getAnnotationsOfType()` and the old context's annotations array is cleaned up.
 
 Example (from MergeJsonContent):
 ```php
@@ -145,7 +145,7 @@ $analysis->removeAnnotation($jsonContent);
 
 - An annotation removed from the registry but still reachable via the tree **will** be validated.
 - The `_context->nested` value determines whether validation considers the annotation correctly placed.
-- Annotations with `$_parents = []` (like `JsonContent`) have no valid parent — if still reachable during tree walking, their context must point to a valid parent or they should be transformed into a type that has valid parents.
+- Annotations with `$_parents = []` (like `JsonContent`) have no valid parent. If still reachable during tree walking, their context must point to a valid parent, or they should be transformed into a type that has valid parents.
 
 ## Decision
 
@@ -154,4 +154,4 @@ Processors that consume/transform annotations must perform full cleanup:
 2. Remove from old parent's `_unmerged`
 3. Remove from analysis registry via `removeAnnotation()`
 
-The `nested` context key should use `null` (not `false`) to indicate "explicitly no parent" — this matches the declared `@property OA\AbstractAnnotation|null` type.
+The `nested` context key should use `null` (not `false`) to indicate "explicitly no parent". This matches the declared `@property OA\AbstractAnnotation|null` type.
