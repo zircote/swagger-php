@@ -19,10 +19,9 @@ sidebar: false
 | [OpenAPI-Symfony-Routing][11] | Load routes in Symfony based on OpenAPI annotations       |
 | [Swag It PHP][12]             | Convert JSON to PHP Swagger annotations                   |
 | [Laravel Swagger][13]         | OpenApi or Swagger integration to Laravel                 |
-| [openapi-extras][14]          | Extra annotations for swagger-php                         |
-| [openapi-serialize][15]       | Serialize an object using swagger-php                     |
-| [Scalar][16]                  | An alternative webinterface for generating documentation  |
-| [openapi-introspector][17]    | Document the routes a Laravel or Slim app already has     |
+| [openapi-serialize][14]       | Serialize an object using swagger-php                     |
+| [Scalar][15]                  | An alternative webinterface for generating documentation  |
+| [openapi-introspector][16]    | Document the routes a Laravel or Slim app already has     |
 
 Is a related project missing? Create a pull request!
 
@@ -39,7 +38,6 @@ Is a related project missing? Create a pull request!
 [11]: https://github.com/Tobion/OpenAPI-Symfony-Routing
 [12]: https://kizu514.com/swagit.php
 [13]: https://github.com/DarkaOnLine/L5-Swagger
-[14]: https://github.com/DerManoMann/openapi-extras
-[15]: https://github.com/MattyRad/openapi-serialize
-[16]: https://github.com/scalar/scalar
-[17]: https://github.com/DerManoMann/openapi-introspector
+[14]: https://github.com/MattyRad/openapi-serialize
+[15]: https://github.com/scalar/scalar
+[16]: https://github.com/DerManoMann/openapi-introspector
