@@ -6,6 +6,7 @@
 
 namespace OpenApi\Tests;
 
+use OpenApi\Augmenter;
 use OpenApi\Augmenter\OperationIds;
 use OpenApi\Builder;
 use OpenApi\Builder\Mode;
@@ -13,6 +14,7 @@ use OpenApi\Examples\Specs\Webhooks\Spec as WebhooksSpec;
 use OpenApi\Generator;
 use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\Tests\Doubles\RecordingLogger;
+use OpenApi\Utils\Pipeline;
 use OpenApi\Utils\SourceFinder;
 use Psr\Log\NullLogger;
 
@@ -219,6 +221,25 @@ final class BuilderTest extends OpenApiTestCase
             ->addSource(self::fixture('PHP/UnloadableClassRepro'))
             ->setLogger($this->trackingLogger())
             ->build();
+    }
+
+    /**
+     * The same holds for a class the scan never sees, reached by resolving a reference to it.
+     */
+    public function testBuildSkipsReferencedClassThatWillNotLoadSpec(): void
+    {
+        $this->expectLogEntry('Skipping unloadable', 'warning');
+        $this->allowLogEntry('info is required', 'At least one of paths, webhooks, or components is required', 'Ref: unresolved reference');
+
+        $result = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->addSource(new \ReflectionClass(Fixtures\Resolver\Warehouse::class))
+            // nothing references the schemas from a path; keep them to assert on
+            ->withAugmenters(fn (Pipeline $augmenters) => $augmenters->get(Augmenter\Cleanup::class)?->setEnabled(false))
+            ->setLogger($this->trackingLogger())
+            ->build();
+
+        $this->assertArrayHasKey('Manufacturer', $result->toArray()['components']['schemas']);
     }
 
     public function testCompilerDiagnosticsReachTheConfiguredLogger(): void

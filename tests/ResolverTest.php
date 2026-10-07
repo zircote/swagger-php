@@ -12,6 +12,7 @@ use OpenApi\Builder\Mode;
 use OpenApi\Contracts\ResolverInterface;
 use OpenApi\Resolver;
 use OpenApi\Spec as OA;
+use OpenApi\Tests\Doubles\RecordingLogger;
 use OpenApi\Utils\TypedList;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -58,6 +59,24 @@ final class ResolverTest extends TestCase
 
         // ... while Weight, which nothing can resolve, is only offered once
         $this->assertSame([Fixtures\Resolver\Weight::class => 1], $spy->attempts);
+    }
+
+    /**
+     * A class reached by resolving a reference costs the run that class, not the whole run,
+     * when an attribute on it fails to instantiate — as it does when the scan reaches it.
+     */
+    public function testUnloadableClassIsSkippedAndTheRestResolved(): void
+    {
+        $assembler = $this->assembler(Fixtures\Resolver\Warehouse::class);
+        $received = [];
+
+        $resolver = new Resolver();
+        $resolver->setLogger(new RecordingLogger($received));
+        $resolver->resolve($assembler);
+
+        $this->assertSame(['Warehouse', 'Manufacturer'], $this->schemaNames($assembler));
+        $this->assertCount(1, $received);
+        $this->assertStringStartsWith('Skipping unloadable ' . Fixtures\Resolver\UnloadableStock::class . ': Failed to instantiate attribute', $received[0]);
     }
 
     /**

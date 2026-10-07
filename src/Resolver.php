@@ -12,6 +12,8 @@ use OpenApi\Resolver\Reflection;
 use OpenApi\Spec as OA;
 use OpenApi\Specification\ComponentIndex;
 use OpenApi\Utils\TypedList;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
 /**
  * Finds and resolves FQCNs referenced by the specification that have no corresponding schema.
@@ -20,8 +22,10 @@ use OpenApi\Utils\TypedList;
  * 1. Ref values that are raw FQCNs (not yet rewritten to `#/components/...` paths)
  * 2. Property/parameter type hints on schema class reflectors
  */
-class Resolver
+class Resolver implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     protected const MAX_ITERATIONS = 50;
 
     /**
@@ -84,7 +88,17 @@ class Resolver
                 }
 
                 foreach ($this->resolvers as $resolver) {
-                    if ($resolver->resolve($fqcn, $assembler)) {
+                    try {
+                        $claimed = $resolver->resolve($fqcn, $assembler);
+                    } catch (\Throwable $throwable) {
+                        // as the scan does for a class it cannot load: report it, and resolve the rest
+                        $this->logger?->warning("Skipping unloadable {$fqcn}: {$throwable->getMessage()}");
+                        $attempted[$fqcn] = true;
+
+                        continue 2;
+                    }
+
+                    if ($claimed) {
                         $resolved = true;
                         continue 2;
                     }
