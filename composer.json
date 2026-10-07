@@ -102,7 +102,10 @@
             "@cs --dry-run",
             "@rector --dry-run"
         ],
-        "test": "export XDEBUG_MODE=off && phpunit --display-all-issues @additional_args",
+        "test": [
+            "export XDEBUG_MODE=off && phpunit --display-all-issues --exclude-testsuite 'Rector Test Suite' @additional_args",
+            "export XDEBUG_MODE=off && phpunit --display-all-issues --testsuite 'Rector Test Suite' @additional_args"
+        ],
         "performance": "export XDEBUG_MODE=off && phpunit --group performance",
         "analyse": [
             "export XDEBUG_MODE=off && phpstan clear-result-cache -q && phpstan analyse --memory-limit=3G"
