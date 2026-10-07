@@ -56,7 +56,7 @@ The same applies to `OA\XmlContent`.
 ## `OA\Property` (spec only)
 
 When using the `OpenApi\Spec` namespace, class properties and promoted constructor parameters that have an `OA\Schema`
-attribute do not need an explicit `OA\Property` attribute — it will be added automatically.
+attribute do not need an explicit `OA\Property` attribute. It will be added automatically.
 
 **Verbose:**
 
@@ -77,7 +77,7 @@ This also applies to `OA\Schema` subclasses like `OA\Schema\Items`:
 public array $tags;
 ```
 
-The shortcut stops at methods, which supply no property name — `getTags()` is not `tags`, and the pipeline does not guess at
+The shortcut stops at methods, which supply no property name. `getTags()` is not `tags`, and the pipeline does not guess at
 accessor prefixes. A getter needs the explicit `OA\Property`, carrying the name:
 
 ```php
