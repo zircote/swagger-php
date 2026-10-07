@@ -9,7 +9,8 @@ They are described here roughly in the order the pipeline reaches them.
 ## Translators
 
 A translator runs during assembly, once per reflector. `getAttributes()` says which raw
-attributes to read off it; `translate()` returns what the assembler should treat as declared.
+attributes to read off it, and `translate()` returns what the assembler should treat as
+declared.
 
 Given a framework attribute that knows nothing about swagger-php:
 
@@ -20,7 +21,7 @@ a translator turns it into a spec attribute:
 <<< @/snippets/guide/extension-points/route_translator.php
 
 Turning a foreign attribute into a spec one is a use, not the use. The other is adding a
-native attribute nobody wrote, which is how swagger-php uses the mechanism itself — both
+native attribute nobody wrote, which is how swagger-php uses the mechanism itself. Both
 `DefaultAttributeTranslator` and `OptionalPropertyAttributeTranslator` ship by default. The
 [extension points reference](/reference/extension-points) says what each does.
 
@@ -51,8 +52,8 @@ pipeline is concerned, so merging, containment and compilation treat it the same
 
 ## Contributing to the Specification
 
-`Builder::withSpecification()` hands you the assembled `Specification` before the resolver
-runs. Add attributes to it and they go through the rest of the pipeline as scanned ones do:
+`Builder::withSpecification()` hands the assembled `Specification` to a callable before the
+resolver runs. Add attributes to it and they go through the rest of the pipeline as scanned ones do:
 
 <<< @/snippets/guide/extension-points/contribution.php
 
@@ -73,8 +74,8 @@ what it adds stays unresolved. Use an augmenter to enrich what is there, and thi
 something there.
 
 Once added, a contribution looks like any scanned attribute. If a later step needs to tell
-yours apart — a [merger](#mergers) deciding precedence, an augmenter that should leave them
-alone — mark them as you add them with `setMeta()` under a key you own, and read it back with
+yours apart, such as a [merger](#mergers) deciding precedence or an augmenter that should leave
+them alone, mark them as you add them with `setMeta()` under a key you own. Read it back with
 `getMeta()` there.
 
 ## Resolvers
@@ -83,15 +84,15 @@ Seeding from reflectors means the specification can name a class that was never 
 controller is added, one of its `$ref`s points at a DTO, and nothing ever collected the DTO.
 Each such name goes to the resolver step.
 
-`Resolver\Reflection` is registered by default and covers the ordinary case — the class
-exists and carries spec attributes, so it is collected by reflection and the reference
-resolves. It returns `false` when the class yielded no component, and an unresolved reference
-is reported rather than silently dropped.
+`Resolver\Reflection` is registered by default and covers the ordinary case. The class exists
+and carries spec attributes, so it is collected by reflection and the reference resolves. It
+returns `false` when the class yielded no component, and an unresolved reference is reported
+rather than silently dropped.
 
 `Builder::withResolver()` hands the resolver list to a callable. Resolvers are tried in
 order and the first success wins, so one added after the default is
-handed the classes the default could not resolve. What it makes of them is up to whoever
-writes it — deriving a schema from a class's public properties and PHP types is one option,
+handed the classes the default could not resolve. What it makes of them is up to whoever writes
+it. Deriving a schema from a class's public properties and PHP types is one option,
 and would let a DTO carrying no spec attributes appear in the document. `insert()` places a
 resolver ahead of the default rather than after it.
 
@@ -103,7 +104,7 @@ attributes left out:
 <<< @/snippets/guide/extension-points/tag_augmenter.php
 
 It does not have to implement anything. Any callable taking the `Specification` and returning
-it will do; `PipeInterface` exists to declare a phase, and a pipe without it lands in the
+it will do. `PipeInterface` exists to declare a phase, and a pipe without it lands in the
 pipeline's default group:
 
 ```php
@@ -112,8 +113,8 @@ $pipeline->add(fn (Specification $spec) => $spec);
 
 `Specification` carries the views an augmenter needs over the assembled tree: `getWalker()`
 for traversal, `buildComponentIndex()` to resolve a `$ref`, and `buildPathItemHierarchy()` for
-the `PathItem`s governing a class — which is what path-level metadata has to be read through,
-since a class without its own `PathItem` is governed by its ancestors'.
+the `PathItem`s governing a class. Path-level metadata has to be read through it, since a class
+without its own `PathItem` is governed by its ancestors'.
 
 `Builder::withAugmenters()` hands the pipeline to a callable, which adds, replaces or
 removes. Phases run **resolve** → **reduce** → **augment**, and within a phase in
@@ -123,14 +124,14 @@ reference](/reference/augmenters) lists the built-in pipeline and what each phas
 
 ## Mergers
 
-Two attributes can claim one key. Two operations on the same path and method, two schemas named
-`Pet` — a scan finds one, a `withSpecification()` hook contributes the other, an inheritance
-clone makes a third. Something has to decide which of them the document holds, and until it
-does the compiler decides by accident: it writes each into a PHP array and keeps whichever it
-wrote last.
+Two attributes can claim one key. Two operations on the same path and method, or two schemas
+named `Pet`: a scan finds one, a `withSpecification()` hook contributes the other, an
+inheritance clone makes a third. Something has to decide which of them the document holds.
+Until it does, the compiler decides by accident. It writes each into a PHP array and keeps
+whichever it wrote last.
 
 `Augmenter\Merge` decides instead, through a chain of mergers. A merger says what makes two
-attributes the same one and what the survivor is — below, an operation the scan already
+attributes the same one, and what the survivor is. Below, an operation the scan already
 described keeps the key against one a hook contributed and marked as its own:
 
 ```php
@@ -160,8 +161,8 @@ final class MyOperationMerger implements MergerInterface
 ```
 
 `Builder::withMergers()` registers it. They are tried in order and the first to claim a type
-handles it, so `Merge\LastWins` — which claims everything, keeps the later entry and warns with
-both locations — ships last:
+handles it. `Merge\LastWins` claims everything, keeps the later entry and warns with both
+locations, so it ships last:
 
 ```php
 use OpenApi\Merge;
@@ -176,11 +177,11 @@ $builder->withMergers(fn (TypedList $mergers) => $mergers->insert(
 `identity()` returning `null` means the attribute never merges and passes through: that is how
 servers and security requirements stay as they are, being positional rather than keyed.
 
-`$earlier` and `$later` are in producer order, which is the only thing the pipeline guarantees —
-`return $later` is last-wins. Precedence beyond that order is a policy the core does not hold. A
-package that needs to recognise its own attributes marks them as it creates them —
-`$operation->setMeta(MyOperationMerger::class, true)` — and reads that back in `merge()`. `meta`
-is keyed by whoever writes to it; nothing in swagger-php writes or reads it.
+`$earlier` and `$later` are in producer order, which is the only thing the pipeline guarantees,
+so `return $later` is last-wins. Precedence beyond that order is a policy the core does not
+hold. A package that needs to recognise its own attributes marks them as it creates them, with
+`$operation->setMeta(MyOperationMerger::class, true)`, and reads that back in `merge()`. `meta`
+is keyed by whoever writes to it. Nothing in swagger-php writes or reads it.
 
 To combine two halves of one operation instead of choosing between them, register the shipped
 `Merge\Operations` the same way, ahead of `Merge\LastWins`. It is not on by default. It fills
@@ -203,8 +204,8 @@ new Merge\Operations(
 See the [extension points reference](/reference/extension-points) for how each field folds.
 
 The pass runs over the `Specification`'s own collections, where the halves come from different
-places. A duplicate key *inside* one attribute — two `200` responses in one operation — is two
-entries one author wrote in one place, and the compiler is left to keep the last of them.
+places. A duplicate key *inside* one attribute, such as two `200` responses in one operation,
+is two entries one author wrote in one place, and the compiler is left to keep the last of them.
 
 ## Compilers
 
@@ -214,8 +215,8 @@ compiler does not produce.
 
 ## The classic escape hatch
 
-`Builder::withGenerator()` configures the classic `Generator` — the whole pipeline in
-classic mode, and the scanning pass in hybrid. The callable receives a default `Generator`
+`Builder::withGenerator()` configures the classic `Generator`, which is the whole pipeline in
+classic mode and the scanning pass in hybrid. The callable receives a default `Generator`
 and may configure it in place or return another. Spec mode has no `Generator`, so the hook
 is never called there.
 
@@ -223,7 +224,7 @@ In hybrid, the `Generator` arrives with an empty processor pipeline, so a proces
 here is the only one that runs, and it sees the annotations as scanned: properties are not
 yet attached to their schemas, and inheritance has not yet produced any `allOf`. The bridge
 and the augmenters do that work afterwards. A processor that only reads or changes what the
-author wrote works in hybrid; one that depends on that structure belongs in an augmenter.
+author wrote works in hybrid. One that depends on that structure belongs in an augmenter.
 
 ## Putting it together
 
@@ -244,12 +245,13 @@ alternative.
 **Property types are not widened for downstream convenience.** The strong typing is what
 makes the DTOs worth having. Metadata that only means something to one integration belongs
 in an `Attachable` when it is declared in source next to the attribute it describes, and in
-`setMeta()` when code attaches it along the way — not in a widened `$ref: string|object`.
+`setMeta()` when code attaches it along the way. It does not belong in a widened `$ref:
+string|object`.
 Neither reaches the generated document.
 
 **There is no framework-specific code, and no plans for any.** Translators, contributions,
-augmenters and attachables are the contract; anything a framework needs can be built from them, outside
-this repository.
+augmenters and attachables are the contract. Anything a framework needs can be built from them,
+outside this repository.
 
 **There are no events or listeners.** The pipeline is deterministic and reads top to bottom,
 which is what makes a wrong document traceable to the step that produced it. Event ordering
@@ -260,8 +262,8 @@ is free to change, and has.
 
 ## Going further
 
-- [Builder reference](/reference/builder) — every hook on its own, with signatures
-- [Augmenters reference](/reference/augmenters) — the built-in pipeline and its phases
-- [Architecture](/reference/architecture) — how the stages fit together
-- [Spec pipeline internals](/dev/pipeline) — slot maps, resolution, and the rules a new
+- [Builder reference](/reference/builder): every hook on its own, with signatures
+- [Augmenters reference](/reference/augmenters): the built-in pipeline and its phases
+- [Architecture](/reference/architecture): how the stages fit together
+- [Spec pipeline internals](/dev/pipeline): slot maps, resolution, and the rules a new
   attribute has to follow
