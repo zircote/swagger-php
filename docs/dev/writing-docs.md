@@ -13,13 +13,13 @@ so an imprecise docblock ships as published documentation.
 Three parts are about pages only and do not transfer: [Structure](#structure),
 [Spelling](#spelling), and the generated-page items in the review checklist.
 
-Pull request descriptions have one extra constraint. They describe the change, and include
+Pull request descriptions have one extra constraint. They describe **the change**, and include
 context only where the change cannot be understood without it. How the work was found, what
 else was investigated and what it might lead to are not part of the diff.
 [CONTRIBUTING](https://github.com/zircote/swagger-php/blob/master/CONTRIBUTING.md) has the
 template and the title format.
 
-Commit message bodies have the opposite constraint. They document what the diff does, not
+Commit message bodies have the opposite constraint. They document **what the diff does**, not
 why it exists. A sentence explaining a motive belongs in the pull request description.
 Routine verification is not a fact about the diff either. That the change is tested is
 assumed, so a body noting it says nothing.
@@ -28,7 +28,7 @@ assumed, so a body noting it says nothing.
 
 Do not restate something the page's own structure already establishes.
 
-The beta status of the spec pipeline, for example, is carried by the Status row in
+The beta status of the spec pipeline, for example, is carried by the **Status** row in
 `guide/modes.md`, by `(beta)` in the section headings, by the `::: warning Beta` callouts,
 by the version timeline, and by the 🧪 in the page titles. A sentence saying "this is the
 only mode not marked beta" adds nothing and rots independently of the places that do.
@@ -115,7 +115,7 @@ page talking about itself.
 
 A list someone has to remember to update is a list that will be wrong.
 
-Enumerate a set only when it is closed, meaning it is defined somewhere in code and changes
+Enumerate a set only when it is **closed**, meaning it is defined somewhere in code and changes
 only when that code changes. The generated pages are closed. `tools/docgen.php` names them,
 so a table listing them holds until someone edits the generator. "Everything else under
 `docs/`" is open. It grows whenever anyone adds a page, so it gets described rather than
@@ -167,8 +167,7 @@ three sentences.
 - No em dashes. Use a comma, parentheses, a colon or a new sentence.
 - No semicolons joining clauses. Split the sentence.
 - No contractions: "does not", "it is".
-- Bold marks at most one caveat a reader must not miss. It is not for emphasis or for a
-  lead-in phrase. A `::: warning` container is usually the better place for that caveat.
+- Understate. A feature is described by what it does, not by how good it is.
 - Explanations describe the code: "`swagger-php` will automatically register the `@OA`
   alias", "can be used to". Instructions address the reader as "you".
 - No "not X but Y" turns, and no closing recap such as "In short".
@@ -205,55 +204,54 @@ wrong docblock or generator, not a page to hand-edit.
 
 ### Checks you can run
 
-- [ ] Generated pages untouched. `composer docs:gen` leaves no diff on the pages listed in
+- [ ] **Generated pages untouched.** `composer docs:gen` leaves no diff on the pages listed in
       [the toolchain notes](/dev/docs-toolchain).
-- [ ] Every `composer <script>` mentioned exists in `composer.json`.
-- [ ] Every code reference resolves. Check class names, `Class::method()`, file paths, CLI
+- [ ] **Every `composer <script>` mentioned exists** in `composer.json`.
+- [ ] **Every code reference resolves.** Check class names, `Class::method()`, file paths, CLI
       flags and config keys against the source. This catches the most damaging class of
       error, where confident prose describes an API that was renamed or never existed.
-- [ ] Command output was captured, not composed. Any `--help` text, default config dump or
+- [ ] **Command output was captured, not composed.** Any `--help` text, default config dump or
       API listing should come from a real run.
-- [ ] No line-number citations. `Foo.php:123` rots silently. Cite `Class::method()`.
-- [ ] Links resolve. Relative links point at files that exist. The site build fails on dead
+- [ ] **No line-number citations.** `Foo.php:123` rots silently. Cite `Class::method()`.
+- [ ] **Links resolve.** Relative links point at files that exist. The site build fails on dead
       internal links, so `composer docs:build` covers the rest.
-- [ ] Section anchors verified, or dropped. A `#heading-slug` link is only safe when the
+- [ ] **Section anchors verified, or dropped.** A `#heading-slug` link is only safe when the
       heading is plain words, as punctuation and dashes make the generated slug ambiguous.
       If you have not confirmed it, link to the page.
-- [ ] No volatile values. Counts ("six pages", "around 27 test files"), ports, versions,
+- [ ] **No volatile values.** Counts ("six pages", "around 27 test files"), ports, versions,
       anything that shifts without anyone editing the doc. Derive it, describe it
       qualitatively, or, where the tool announces it, say that instead. A dev server that
       prints its own URL should be documented as printing its URL, not as a port number.
-- [ ] Version and requirement claims match `composer.json`.
-- [ ] No marketing or stock filler: "production-ready", "seamless", "powerful", "clean",
+- [ ] **Version and requirement claims match** `composer.json`.
+- [ ] **No marketing or stock filler**: "production-ready", "seamless", "powerful", "clean",
       "simply", "robust", "comprehensive", "leverage", "crucial", "genuinely".
-- [ ] No stock phrase repeated across the diff. If the same formulation appears twice, one
+- [ ] **No stock phrase repeated across the diff.** If the same formulation appears twice, one
       of them is padding.
-- [ ] No em dashes, and no semicolons joining clauses. Both show up in a search of the diff.
-- [ ] No bold for emphasis or lead-ins.
+- [ ] **No em dashes, and no semicolons joining clauses.** Both show up in a search of the diff.
 
 ### Checks that need reading
 
-- [ ] No open-ended set enumerated. A list is for a set defined in code, which changes only
+- [ ] **No open-ended set enumerated.** A list is for a set defined in code, which changes only
       when that code changes. Anything that grows when someone adds a file gets described
       instead.
-- [ ] Detail appears exactly once. Two pages may introduce the same subject. Only one may
+- [ ] **Detail appears exactly once.** Two pages may introduce the same subject. Only one may
       carry the specifics. If you are writing something a second time, link instead.
-- [ ] Claims are verified, not reasoned. Hedges such as "may", "should" or "is expected to"
+- [ ] **Claims are verified, not reasoned.** Hedges such as "may", "should" or "is expected to"
       usually mark a claim nobody tested. Run it, then state it plainly, or cut it.
-- [ ] The page does not contradict itself. A claim the reader must ignore two paragraphs
+- [ ] **The page does not contradict itself.** A claim the reader must ignore two paragraphs
       later is worse than no claim.
-- [ ] The level matches the audience. User-facing pages say what something does and link
+- [ ] **The level matches the audience.** User-facing pages say what something does and link
       onward. Contributor pages carry the mechanism. Neither should hold the other's half.
-- [ ] No commentary about the documentation itself, unless the docs are the page's subject.
+- [ ] **No commentary about the documentation itself**, unless the docs are the page's subject.
       That includes how a page is generated and why a link is trustworthy. Watch for a
       clause hanging off a link that explains the link.
-- [ ] No page announcing its own audience or purpose. "This page is for…", "these notes
+- [ ] **No page announcing its own audience or purpose.** "This page is for…", "these notes
       exist because…". Applies to contributor pages too, not just user-facing ones.
-- [ ] No clause explaining the significance of the sentence before it, such as "which is
+- [ ] **No clause explaining the significance of the sentence before it**, such as "which is
       what makes X possible" or "which matters because…". State the fact and stop.
-- [ ] Nothing restates what the page's own structure already shows. A status table, a
+- [ ] **Nothing restates what the page's own structure already shows.** A status table, a
       heading or a callout already told the reader. A sentence repeating it only rots.
-- [ ] Spelling follows the file it is in. Neither spelling is worth correcting in bulk.
-- [ ] Shared content is reused, not copied. See [above](#reuse-the-content-do-not-copy-it).
-- [ ] One idea per sentence. A sentence with three qualifications gets split.
-- [ ] Explanations describe the code. Instructions address the reader as "you".
+- [ ] **Spelling follows the file it is in.** Neither spelling is worth correcting in bulk.
+- [ ] **Shared content is reused, not copied.** See [above](#reuse-the-content-do-not-copy-it).
+- [ ] **One idea per sentence.** A sentence with three qualifications gets split.
+- [ ] **Explanations describe the code.** Instructions address the reader as "you".
