@@ -81,4 +81,10 @@ class NullRefAnnotated
 
     #[OAT\Property(title: 'Plain', description: 'A plain reference', default: 'none', example: 'zircote/swagger-php', deprecated: true, readOnly: true)]
     public Repository $repository;
+
+    #[OAT\Property(examples: ['zircote/swagger-php', 'DerManoMann/openapi-extras'], writeOnly: true)]
+    public ?Repository $nullableListed;
+
+    #[OAT\Property(examples: ['zircote/swagger-php', 'DerManoMann/openapi-extras'], writeOnly: true)]
+    public Repository $listed;
 }

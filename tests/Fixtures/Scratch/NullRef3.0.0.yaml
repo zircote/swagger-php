@@ -55,4 +55,11 @@ components:
           readOnly: true
         repository:
           $ref: '#/components/schemas/repository'
+        nullableListed:
+          oneOf:
+            - { $ref: '#/components/schemas/repository' }
+          nullable: true
+          writeOnly: true
+        listed:
+          $ref: '#/components/schemas/repository'
     repository: {}

@@ -77,4 +77,10 @@ class NullRefAnnotatedSpec
 
     #[OA\Property(schema: new OA\Schema(title: 'Plain', description: 'A plain reference', default: 'none', example: 'zircote/swagger-php', deprecated: true, readOnly: true))]
     public RepositorySpec $repository;
+
+    #[OA\Property(schema: new OA\Schema(examples: ['zircote/swagger-php', 'DerManoMann/openapi-extras'], writeOnly: true))]
+    public ?RepositorySpec $nullableListed;
+
+    #[OA\Property(schema: new OA\Schema(examples: ['zircote/swagger-php', 'DerManoMann/openapi-extras'], writeOnly: true))]
+    public RepositorySpec $listed;
 }

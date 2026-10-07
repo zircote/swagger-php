@@ -43,6 +43,18 @@ final class ScratchTest extends OpenApiTestCase
             'Examples-3.0.0-classic' => ['@OA\Schema::examples is only allowed as of 3.1.0'],
             'Examples-3.0.0-spec' => ['examples array is not supported in OpenAPI 3.0'],
             'Examples-3.0.0-hybrid' => ['examples array is not supported in OpenAPI 3.0'],
+            'NullRef-3.0.0-classic' => [
+                '@OA\Property::examples is only allowed as of 3.1.0',
+                '@OA\Property::examples is only allowed as of 3.1.0',
+            ],
+            'NullRef-3.0.0-spec' => [
+                'examples array is not supported in OpenAPI 3.0, using first value as example',
+                'examples beside $ref #/components/schemas/repository is not supported in OpenAPI 3.0 and will be omitted',
+            ],
+            'NullRef-3.0.0-hybrid' => [
+                'examples array is not supported in OpenAPI 3.0, using first value as example',
+                'examples beside $ref #/components/schemas/repository is not supported in OpenAPI 3.0 and will be omitted',
+            ],
             'Docblocks-3.0.0-spec' => ['const is not supported in OpenAPI 3.0'],
             'Docblocks-3.0.0-hybrid' => ['const is not supported in OpenAPI 3.0'],
             'ServerVariableEnumClassString-3.0.0' => ['ServerVariable(secure): enum values must be strings, dropping true', 'ServerVariable(secure): enum values must be strings, dropping false'],

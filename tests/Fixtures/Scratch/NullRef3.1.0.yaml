@@ -61,4 +61,18 @@ components:
           example: zircote/swagger-php
           deprecated: true
           readOnly: true
+        nullableListed:
+          oneOf:
+            - { $ref: '#/components/schemas/repository' }
+            - { type: 'null' }
+          examples:
+            - zircote/swagger-php
+            - DerManoMann/openapi-extras
+          writeOnly: true
+        listed:
+          $ref: '#/components/schemas/repository'
+          examples:
+            - zircote/swagger-php
+            - DerManoMann/openapi-extras
+          writeOnly: true
     repository: {}
