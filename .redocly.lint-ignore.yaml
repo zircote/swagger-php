@@ -400,6 +400,9 @@ tests/Fixtures/Scratch/Components3.0.0.yaml:
     - '#/components/schemas/first schema'
     - '#/components/schemas/second schema'
     - '#/components/requestBodies/first request body'
+tests/Fixtures/Scratch/ClassRef3.0.0.yaml:
+  nullable-type-sibling:
+    - '#/components/schemas/ClassRefHolder/properties/nullablePlain/nullable'
 tests/Fixtures/Scratch/AttributeInheritance3.2.0.yaml:
   no-unused-components:
     - '#/components/schemas/Child1'

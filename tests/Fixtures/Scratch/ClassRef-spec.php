@@ -26,3 +26,34 @@ class ClassRefSpec
 class ClassRefEndpointSpec
 {
 }
+
+// a property typed with a class infers a reference only when the class is a component
+class ClassRefPlainSpec
+{
+}
+
+#[OA\Schema(component: 'ClassRefHolder')]
+class ClassRefHolderSpec
+{
+    #[OA\Property]
+    public ClassRefSpec $component;
+
+    #[OA\Property]
+    public ClassRefPlainSpec $plain;
+
+    #[OA\Property]
+    public ?ClassRefPlainSpec $nullablePlain;
+}
+
+#[OA\Operation\Get(
+    path: '/holder',
+    operationId: 'ClassRefHolderEndpoint',
+)]
+#[OA\Response(
+    response: 200,
+    description: 'Holder',
+    content: new OA\MediaType\Json(ref: ClassRefHolderSpec::class)
+)]
+class ClassRefHolderEndpointSpec
+{
+}

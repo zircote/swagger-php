@@ -13,6 +13,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/YoYo'
+  /holder:
+    get:
+      operationId: ClassRefHolderEndpoint
+      responses:
+        '200':
+          description: Holder
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassRefHolder'
 components:
   schemas:
     YoYo: {}
+    ClassRefHolder:
+      type: object
+      properties:
+        component:
+          $ref: '#/components/schemas/YoYo'
+        plain: {}
+        nullablePlain:
+          nullable: true
