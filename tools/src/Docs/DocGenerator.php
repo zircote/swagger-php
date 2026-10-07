@@ -375,6 +375,10 @@ abstract class DocGenerator
 
             $dv = $parameter->getDefaultValue();
 
+            if ($dv instanceof \UnitEnum) {
+                return (new \ReflectionClass($dv))->getShortName() . '::' . $dv->name;
+            }
+
             return match (gettype($dv)) {
                 'NULL' => 'null',
                 'boolean' => $dv ? 'true' : 'false',

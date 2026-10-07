@@ -202,7 +202,9 @@ phase and again as the last pipe, so a key claimed twice reaches the compiler on
 `Merge\LastWins` is registered by default: it claims every type, keys each collection the way
 the document does — component key, path and method, webhook and method, tag name — and on a
 collision keeps the later entry and warns with both locations. Positional lists, `servers` and
-`security`, have no key and are left alone.
+`security`, have no key and are left alone. `Merge\Operations` ships too, but is not registered:
+it folds two halves of one operation field by field instead of keeping one, and is listed under
+[Opt-in Mergers](/reference/extension-points).
 
 Use `withMergers()` to add your own. The hook runs when called; repeated calls configure the
 same list:

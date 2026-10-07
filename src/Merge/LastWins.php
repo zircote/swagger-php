@@ -8,8 +8,7 @@ namespace OpenApi\Merge;
 
 use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Contracts\MergerInterface;
-use OpenApi\Spec as OA;
-use OpenApi\Specification\ComponentName;
+use OpenApi\Merge\Concerns\IdentityTrait;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -27,6 +26,7 @@ use Psr\Log\LoggerAwareTrait;
  */
 class LastWins implements MergerInterface, LoggerAwareInterface
 {
+    use IdentityTrait;
     use LoggerAwareTrait;
 
     public function supports(string $class): bool
@@ -34,77 +34,10 @@ class LastWins implements MergerInterface, LoggerAwareInterface
         return true;
     }
 
-    public function identity(AttributeInterface $attribute): ?string
-    {
-        if ($attribute instanceof OA\Operation) {
-            if ($attribute->method === null) {
-                return null;
-            }
-
-            return match (true) {
-                $attribute->path !== null => 'operation:' . $attribute->method . ' ' . $attribute->path,
-                $attribute->webhook !== null => 'webhook:' . $attribute->method . ' ' . $attribute->webhook,
-                default => null,
-            };
-        }
-
-        if ($attribute instanceof OA\Tag) {
-            return $attribute->name !== null ? 'tag:' . $attribute->name : null;
-        }
-
-        if (ComponentName::isComponentType($attribute)) {
-            $component = ComponentName::of($attribute);
-            if ($component !== null) {
-                return 'component:' . $component;
-            }
-
-            // a path item without a component key is path-bound, and keyed by its path
-            return $attribute instanceof OA\PathItem && $attribute->path !== null
-                ? 'path:' . $attribute->path
-                : null;
-        }
-
-        return null;
-    }
-
     public function merge(AttributeInterface $earlier, AttributeInterface $later): AttributeInterface
     {
         $this->logger?->warning($this->collision($earlier, $later));
 
         return $later;
-    }
-
-    /**
-     * Both halves are named, because either could be the one the author did not mean to write.
-     * Two contributed halves both report `unknown`, which is stated once.
-     */
-    protected function collision(AttributeInterface $earlier, AttributeInterface $later): string
-    {
-        $earlierAt = (string) $earlier->getSourceLocation();
-        $laterAt = (string) $later->getSourceLocation();
-
-        return sprintf(
-            '%s "%s" is declared more than once, keeping the last in %s',
-            (new \ReflectionClass($later))->getShortName(),
-            $this->label($later),
-            $earlierAt === $laterAt ? $laterAt : $laterAt . ' and ' . $earlierAt,
-        );
-    }
-
-    /**
-     * What the key reads as in a message. The identity string is a grouping key and carries a
-     * space prefix nobody needs to see.
-     */
-    protected function label(AttributeInterface $attribute): string
-    {
-        if ($attribute instanceof OA\Operation) {
-            return trim(($attribute->method ?? '') . ' ' . ($attribute->path ?? $attribute->webhook ?? ''));
-        }
-
-        if ($attribute instanceof OA\Tag) {
-            return (string) $attribute->name;
-        }
-
-        return (string) (ComponentName::of($attribute) ?? ($attribute instanceof OA\PathItem ? $attribute->path : null));
     }
 }
