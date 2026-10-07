@@ -43,7 +43,7 @@ final class DocsAccuracyTest extends TestCase
 
         $always = $this->captureGroup('/\*\*Always root\*\*: (.+?)(?=\n- \*\*)/s', $page, 'Could not find "Always root" list');
         $cond = $this->captureGroup('/\*\*Conditionally root\*\*[^:]*:(.+?)(?=\n- \*\*)/s', $page, 'Could not find "Conditionally root" list');
-        $never = $this->captureGroup('/\*\*Never root\*\*: (.+?)(?= —)/s', $page, 'Could not find "Never root" list');
+        $never = $this->captureGroup('/\*\*Never root\*\*: (.+?)(?=, which| —|\n)/', $page, 'Could not find "Never root" list');
 
         $parseNames = static function (string $text): array {
             preg_match_all('/`([A-Z][A-Za-z\\\\]+)`/', $text, $m);

@@ -6,9 +6,9 @@ how the pipeline fits together, see [Architecture](/reference/architecture).
 ## The DTOs are mutable
 
 Spec attributes are plain data containers, but they are **not** immutable, and neither is
-`Specification`. Augmenters assign to attribute properties throughout —
-`Refs::mergeAllOf()` nulls `$schema->properties`, `Types` fills schema fields in place —
-and `Specification` exposes public arrays that `add()` appends to.
+`Specification`. Augmenters assign to attribute properties throughout. `Refs::mergeAllOf()`
+nulls `$schema->properties`, `Types` fills schema fields in place, and `Specification` exposes
+public arrays that `add()` appends to.
 
 What *is* true is that they carry no serialization logic. Serialization is the compiler's job.
 
@@ -16,8 +16,8 @@ What *is* true is that they carry no serialization logic. Serialization is the c
 
 Nesting is declared by the child, via two methods on `AttributeInterface`:
 
-- `merge()` — how this attribute composes into a **sibling** on the same reflector
-- `contained()` — which **outer-level** attribute types can absorb it from an inner level
+- `merge()`: how this attribute composes into a **sibling** on the same reflector
+- `contained()`: which **outer-level** attribute types can absorb it from an inner level
 
 Both return `[TargetClass => 'slot']`, and in both cases the slot names a property on the
 **target**, not on the attribute declaring it:
@@ -30,30 +30,30 @@ public function contained(): array
 }
 ```
 
-A `[]` suffix appends to a collection; a bare name assigns a scalar. It is easy to read
+A `[]` suffix appends to a collection. A bare name assigns a scalar. It is easy to read
 backwards.
 
-The target's own type has to admit the class declaring the slot — `Schema` once named
-`Schema::$properties`, a `list<Property>`, which crashed the inheritance augmenter as soon
-as anything reached it. `SlotMapConsistencyTest` checks every slot against its target.
+The target's own type has to admit the class declaring the slot. `Schema` once named
+`Schema::$properties`, a `list<Property>`, which crashed the inheritance augmenter as soon as
+anything reached it. `SlotMapConsistencyTest` checks every slot against its target.
 
 Because the child declares the relationship, downstream code can extend the system: a
 custom attachable names its own nesting targets without touching any native attribute.
 
 ### How resolution runs
 
-Resolution is driven purely by these declarations — it reads nothing from PHP's own
-structural semantics:
+Resolution is driven purely by these declarations. It reads nothing from PHP's own structural
+semantics:
 
-1. **Sibling merge** — attributes on the same reflector compose via `merge()`
-2. **Hierarchical absorb** — what remains flows upward a level at a time via `contained()`,
+1. **Sibling merge**: attributes on the same reflector compose via `merge()`
+2. **Hierarchical absorb**: what remains flows upward a level at a time via `contained()`,
    first match wins
 
-Sibling merge chains resolve inner-to-outer, not in declaration order: a `MediaType`
-stacked with a `Response` and an `Operation` finds its `Response` before the `Response` is
-folded into the `Operation`, whichever way the three are declared. Only attributes whose
-types name each other as merge targets — possible with custom attachables, not among the
-native attributes — cannot be ordered that way and resolve in declaration order instead.
+Sibling merge chains resolve inner-to-outer, not in declaration order. A `MediaType` stacked
+with a `Response` and an `Operation` finds its `Response` before the `Response` is folded into
+the `Operation`, whichever way the three are declared. Only attributes whose types name each
+other as merge targets cannot be ordered that way, and resolve in declaration order instead.
+That is possible with custom attachables, not among the native attributes.
 
 If a level has containers, an unmatched non-root attribute is an error. If a level has no
 containers at all, unmatched attributes pass through to the level above.
@@ -61,39 +61,39 @@ containers at all, unmatched attributes pass through to the level above.
 ### What survives resolution
 
 Only *root* attributes should remain, and those are what enters the Specification. A root
-attribute is one that can stand alone — it owns a bucket and needs no parent.
+attribute is one that can stand alone. It owns a bucket and needs no parent.
 
 - **Always root**: `Schema`, `Operation`, `PathItem`, `OpenApi`, `Info`, `Tag`, `Server`,
   `ExternalDocumentation`, `Security\Scheme`, `Components`, `Attachable`
-- **Conditionally root**, when `component` is set — the key the attribute is filed under in
-  `components` — and `ref` is not: `Response`, `Parameter`, `Link`, `RequestBody`, `Header`,
+- **Conditionally root**, when `component` is set (the key the attribute is filed under in
+  `components`) and `ref` is not: `Response`, `Parameter`, `Link`, `RequestBody`, `Header`,
   `Example`, `MediaType`. The request body has no `ref` check, since its key can never double
-  as a nesting key. Until 8.0 the historic spellings still count for the response and the
-  link (`response`, `link`); the other historic spellings alias onto `component` in the
-  constructor and need no clause
-- **Never root**: `Property` — it must nest inside a parent
+  as a nesting key. Until 8.0 the historic spellings still count for the response and the link
+  (`response`, `link`). The other historic spellings alias onto `component` in the constructor
+  and need no clause
+- **Never root**: `Property`, which must nest inside a parent
 
 Each attribute decides for itself, in `isRoot()`. The one field behind the conditional rule,
-`component`, is read through `Specification\ComponentName::of()` everywhere a key is needed —
-the compiler, `ComponentIndex`, `Augmenter\Cleanup` — and filled in from the historic
+`component`, is read through `Specification\ComponentName::of()` everywhere a key is needed:
+the compiler, `ComponentIndex` and `Augmenter\Cleanup`. It is filled in from the historic
 spellings once per build by `ComponentName::normalise()`, after the contribution hooks and
 before the resolver builds the first index.
 
 Root does not mean un-nested. `isRoot()` says what an attribute may be when nothing consumes
-it; `merge()` and `contained()` run first, and often do. `Schema` is always root, and is
-routinely merged into a sibling — a `Property` or a `MediaType`, say — instead of reaching
-the Specification at all.
+it. `merge()` and `contained()` run first, and often do. `Schema` is always root, and is
+routinely merged into a sibling, such as a `Property` or a `MediaType`, instead of reaching the
+Specification at all.
 
-The user-facing version of this distinction is in
-[Using Spec Attributes](/guide/spec-attributes#components); this list is the full one.
+The user-facing version of this distinction is in [Using Spec
+Attributes](/guide/spec-attributes#components). This list is the full one.
 
 ## Directory layout is not the class hierarchy
 
 `src/Spec/` nests directories for readability, not inheritance. Notably:
 
-- `Property extends AbstractAttribute` — **not** `Schema`. Being siblings is what lets
+- `Property extends AbstractAttribute`, **not** `Schema`. Being siblings is what lets
   `#[OA\Property]` and `#[OA\Schema]` stack on the same target.
-- `Encoding extends AbstractAttribute` — **not** `MediaType`, despite `Property\Encoded`.
+- `Encoding extends AbstractAttribute`, **not** `MediaType`, despite `Property\Encoded`.
 - `Contact`, `License`, `ServerVariable` extend `AbstractAttribute`, not `Info`/`Server`.
 - `OA\Security` is a namespace, not a class. The classes are `Security\Requirement` and
   `Security\Scheme`.
@@ -107,51 +107,50 @@ parameters and what it can nest into.
 ### What belongs in `Utils/`
 
 A class goes in `Utils/` when it is about PHP rather than about OpenAPI, and the rest of the
-tree would use it whatever the pipeline compiled — `TypedList`, `JsonPointer`, `TokenScanner`,
+tree would use it whatever the pipeline compiled: `TypedList`, `JsonPointer`, `TokenScanner`,
 `SourceFinder`. Everything else belongs to a subsystem, and the directory named for that
-subsystem already exists: a logger in `Loggers/`, a `Specification` traversal in
+subsystem already exists. A logger goes in `Loggers/`, a `Specification` traversal in
 `Specification/`, a type concern in `Type/`.
 
-Two things this rule is not. It is not about who calls a class: `AttributeFactory` stays
-because the Assembler and the augmenters both manufacture spec objects from reflection, and
-a class two subsystems share is not owned by either. And it is not about visibility, which
-is what makes `Contracts/` narrower than "the public interfaces" — what it holds describes
+Two things this rule is not. It is not about who calls a class. `AttributeFactory` stays
+because the Assembler and the augmenters both manufacture spec objects from reflection, and a
+class two subsystems share is not owned by either. And it is not about visibility, which is
+what makes `Contracts/` narrower than "the public interfaces". What it holds describes
 OpenAPI concepts, so replacing the implementation behind one leaves the contract standing.
-`PipeInterface` is a pipe in a generic pipeline; swap `Utils\Pipeline` for a library and the
+`PipeInterface` is a pipe in a generic pipeline. Swap `Utils\Pipeline` for a library and the
 interface leaves with it, which is why it sits beside `Pipeline` rather than in `Contracts/`.
 
 Moving one is a rename plus imports, and a deprecated subclass left at the old location for
-anything documented — `OpenApi\Pipeline` and `Analysers\TokenScanner` are the pattern.
+anything documented. `OpenApi\Pipeline` and `Analysers\TokenScanner` are the pattern.
 
 ## Reflectors are the glue
 
 Every root DTO keeps the reflector it came from. This is how relationships that span
 buckets get resolved after assembly, without the DTOs having to reference each other:
 
-- **PathItem to Operation** — a PathItem sits on a class, operations on its methods; the
+- **PathItem to Operation**: a PathItem sits on a class, operations on its methods. The
   `PathItems` augmenter uses `ReflectionMethod::getDeclaringClass()` to pair them
-- **Prefix composition** — `ReflectionClass::getParentClass()` walks ancestors so parent
-  PathItems can contribute path prefixes; the walk is `Specification\PathItemHierarchy`,
-  not repeated per caller
-- **OperationId generation** — class and method names come from the reflector
-- **Type inference** — `Types` reads PHP type declarations off property and parameter
-  reflectors
-- **Naming** — a component schema takes its name from the class it sits on; a property
-  takes its name from the property, parameter or constant it sits on
+- **Prefix composition**: `ReflectionClass::getParentClass()` walks ancestors so parent
+  PathItems can contribute path prefixes. The walk is `Specification\PathItemHierarchy`, not
+  repeated per caller
+- **OperationId generation**: class and method names come from the reflector
+- **Type inference**: `Types` reads PHP type declarations off property and parameter reflectors
+- **Naming**: a component schema takes its name from the class it sits on. A property takes its
+  name from the property, parameter or constant it sits on
 
 This is what keeps the Assembler concerned only with nesting.
 
-A method reflector supplies no name — `getUnnamed()` is not the property `unnamed`, and the
+A method reflector supplies no name. `getUnnamed()` is not the property `unnamed`, and the
 pipeline does not guess at accessor prefixes. So a bare `Schema` becomes a `Property` only
-where the reflector declares a value the schema owns: a property, or a constructor
-parameter. On a method, or on a parameter of anything else, the attribute carries its own
-`schema` or `property` or the compiler reports it missing.
+where the reflector declares a value the schema owns: a property, or a constructor parameter.
+On a method, or on a parameter of anything else, the attribute carries its own `schema` or
+`property` or the compiler reports it missing.
 
 ## Normalise on input, store the simple form
 
 Where a property accepts both a rich input type and a plain serialized one, take both but
-convert immediately in the constructor. Properties always hold the simple form; enums,
-objects and convenience types are input sugar only.
+convert immediately in the constructor. Properties always hold the simple form. Enums, objects
+and convenience types are input sugar only.
 
 ```php
 // OA\Flow — FlowType accepted on input, stored as string
@@ -177,15 +176,14 @@ cannot also mean "not set". Those default to `Undefined::UNDEFINED` instead.
 public mixed $default = Undefined::UNDEFINED,
 ```
 
-`filter()` drops `null`, `Undefined::UNDEFINED` and `[]` alike, so a compiler that only
-needs "omit when unset" gets that behaviour without doing anything. Emitting an explicit
-`null` or `[]` — both legal values — takes a branch outside the `filter()` call, which is
-what `compileSchema()` does for `default`, `const` and `example`, and
-`compileExample()`/`compileLink()` for `value` and `requestBody`.
+`filter()` drops `null`, `Undefined::UNDEFINED` and `[]` alike, so a compiler that only needs
+"omit when unset" gets that behaviour without doing anything. Emitting an explicit `null` or
+`[]`, both legal values, takes a branch outside the `filter()` call. `compileSchema()` does
+that for `default`, `const` and `example`, and `compileExample()`/`compileLink()` for `value`
+and `requestBody`.
 
-Classic uses the same sentinel — `Generator::UNDEFINED` is an alias of
-`Undefined::UNDEFINED` — so `HybridBridge` passes these values straight through rather than
-translating them.
+Classic uses the same sentinel (`Generator::UNDEFINED` is an alias of `Undefined::UNDEFINED`),
+so `HybridBridge` passes these values straight through rather than translating them.
 
 ### An inferred field needs the sentinel too
 
@@ -200,18 +198,18 @@ if (!Undefined::isDefault($schema->description)) {
 }
 ```
 
-Writing `description: null` therefore means **no description**, and the docblock is left
-alone; leaving it out means "infer one". The attribute always wins. Classic behaves the same
-way. A field nothing infers keeps a plain `null` default — there is nothing to suppress.
+Writing `description: null` therefore means **no description**, and the docblock is left alone.
+Leaving it out means "infer one". The attribute always wins. Classic behaves the same way. A
+field nothing infers keeps a plain `null` default, since there is nothing to suppress.
 
-That is what separates the two sets. `summary` and `description` on the operations,
-parameters and schemas default to the sentinel because `Docblocks` and `EnumDescriptions`
-fill them; the rest of the nullable properties do not.
+That is what separates the two sets. `summary` and `description` on the operations, parameters
+and schemas default to the sentinel because `Docblocks` and `EnumDescriptions` fill them. The
+rest of the nullable properties do not.
 
 **Adding inference for a field means changing its default.** Guarding a field that still
 defaults to `null` makes the guard true for every attribute, and the inference silently never
-runs. `DocblocksTest` pins both halves — that an absent value is inferred, and that
-an explicit `null` suppresses it.
+runs. `DocblocksTest` pins both halves: that an absent value is inferred, and that an explicit
+`null` suppresses it.
 
 ## Why resolution is its own step
 
@@ -222,22 +220,22 @@ schema exists before the augmenters start their single pass.
 
 Discovery draws on two sources, both readable before any augmenter has run:
 
-- **Ref values** — raw FQCN strings in `$ref`, not yet rewritten to `#/components/...`, so
-  no dependency on `Names` or `Refs`
-- **Reflector types** — non-builtin types on properties and constructor parameters, read
+- **Ref values**: raw FQCN strings in `$ref`, not yet rewritten to `#/components/...`, so no
+  dependency on `Names` or `Refs`
+- **Reflector types**: non-builtin types on properties and constructor parameters, read
   straight off `\ReflectionProperty::getType()`, so no dependency on `Types`
 
 A `ComponentIndex` deduplicates against what the specification already holds.
 
 Resolution then runs as a convergence loop: discover, hand each FQCN to the chain until one
-claims it, re-discover. That is what handles transitive references — resolving class A can
+claims it, re-discover. That is what handles transitive references. Resolving class A can
 introduce a schema referencing class B, which the next pass picks up.
 
 ## Augmenter ordering lives in one place
 
-Registration order is `Builder::getDefaultAugmenters()`. The phase each augmenter runs in
-comes from its own `group()` — `Resolve` → `Reduce` → `Augment`. Within a phase, execution
-follows registration order.
+Registration order is `Builder::getDefaultAugmenters()`. The phase each augmenter runs in comes
+from its own `group()`: `Resolve` → `Reduce` → `Augment`. Within a phase, execution follows
+registration order.
 
 Ordering that matters: `Inheritance` must run before `PathItems`, because inherited
 operations have to exist before path prefixes are resolved.

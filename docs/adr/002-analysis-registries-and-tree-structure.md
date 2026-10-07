@@ -17,7 +17,7 @@ A flat index of all annotations keyed by object identity, with Context as the at
 **Populated by:** `Analysis::addAnnotation()`, which recursively registers the annotation and all its nested children at the time of the call.
 
 **Read by:**
-- `getAnnotationsOfType()` — query all annotations of a given class (used by most processors)
+- `getAnnotationsOfType()`: query all annotations of a given class (used by most processors)
 - Direct iteration in early-pipeline processors (`MergeIntoOpenApi`, `MergeIntoComponents`, `DocBlockDescriptions`, `CleanUnmerged`)
 - Late-pipeline processors (`AugmentRefs`, `CleanUnusedComponents`)
 - `Analysis::merged()` / `Analysis::unmerged()` / `Analysis::split()`
@@ -29,7 +29,7 @@ A per-source-location list of annotations declared at that context.
 **Populated by:** `Analysis::addAnnotation()`, which appends to the context's annotations array.
 
 **Read by:**
-- `getAnnotationForSource()` — finds the source-declared annotation for a FQDN. Critical for `ExpandClasses`, `ExpandTraits`, `ExpandInterfaces`, `AugmentSchemas`, `AugmentDiscriminators`, and type resolvers.
+- `getAnnotationForSource()`: finds the source-declared annotation for a FQDN. Critical for `ExpandClasses`, `ExpandTraits`, `ExpandInterfaces`, `AugmentSchemas`, `AugmentDiscriminators`, and type resolvers.
 
 ## The Annotation Tree
 
@@ -37,7 +37,7 @@ The annotation tree rooted at `$analysis->openapi` is the source of truth for wh
 
 ## Registry Completeness
 
-The registries are **complete** — every annotation in the tree is also in the registry. This is guaranteed by the combination of:
+The registries are **complete**: every annotation in the tree is also in the registry. This is guaranteed by the combination of:
 
 1. **Scanning phase:** The analyser calls `addAnnotation()` on all discovered annotations, which recursively registers their children.
 2. **Processing phase:** Processors use `mergeAnnotations()` (or `addAnnotation()` directly) when creating or placing annotations, ensuring new annotations are always registered.
@@ -49,8 +49,8 @@ Since `addAnnotation()` is **idempotent** (early-returns if the annotation alrea
 ### Problem
 
 Previously, processors that created new annotations needed two separate operations:
-1. `$parent->merge([$annotation])` — place the annotation in the tree
-2. `$analysis->addAnnotation($annotation, ...)` — register it in the index
+1. `$parent->merge([$annotation])`: place the annotation in the tree
+2. `$analysis->addAnnotation($annotation, ...)`: register it in the index
 
 This split was error-prone: some processors forgot step 2.
 
@@ -74,6 +74,7 @@ This split was error-prone: some processors forgot step 2.
 
 2. The registries are complete and can be relied upon for type-based queries and ref scanning. Iterating `$analysis->annotations` is sufficient to find all annotations, including those created by processors.
 
-3. Processors that need type-based queries should use `getAnnotationsOfType()` — it's correct and efficient.
+3. Processors that need type-based queries should use `getAnnotationsOfType()`. It is correct
+   and efficient.
 
 4. `AbstractAnnotation::merge()` should not be called directly by processors when `Analysis` is available. Direct `merge()` is acceptable only in contexts where annotations are already registered (e.g., trait methods operating on scan-time annotations without access to Analysis).
