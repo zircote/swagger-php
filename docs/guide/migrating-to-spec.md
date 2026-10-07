@@ -80,6 +80,38 @@ belongs to is not something the code says, so the set does not guess. Nest it in
 it belongs to, or give it a `component:` and reference it from each — see
 [Components](/guide/spec-attributes#components).
 
+### Responses beside several operations
+
+The same happens one level up. A method carrying more than one operation attribute, with
+`#[Response]`s stacked beside them, gets every response copied into every operation in
+classic:
+
+```php
+#[OA\Get(path: '/pets/{id}', operationId: 'getPet')]
+#[OA\Post(path: '/pets/{id}', operationId: 'postPet')]
+#[OA\Response(response: 200, description: 'The pet')]
+#[OA\Response(response: 404, description: 'No such pet')]
+public function pet(): void
+```
+
+Spec mode reports `Ambiguous merge` for the first `Response` and skips the class, which drops
+both operations from the document. Give each operation its own `responses:`:
+
+```php
+#[OA\Operation\Get(path: '/pets/{id}', operationId: 'getPet', responses: [
+    new OA\Response(response: 200, description: 'The pet'),
+    new OA\Response(response: 404, description: 'No such pet'),
+])]
+#[OA\Operation\Post(path: '/pets/{id}', operationId: 'postPet', responses: [
+    new OA\Response(response: 200, description: 'The pet'),
+    new OA\Response(response: 404, description: 'No such pet'),
+])]
+public function pet(): void
+```
+
+A response both operations share can be declared once with a `component:` and referenced as
+`new OA\Response(response: 404, ref: '#/components/responses/NoSuchPet')` from each.
+
 ### Constructs with no one-to-one replacement
 
 The set leaves these as they are:
