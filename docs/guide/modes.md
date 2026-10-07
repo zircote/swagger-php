@@ -1,6 +1,6 @@
 # 🧪 Processing Modes
 
-Swagger-php supports three processing modes that control how your source code is transformed into an OpenAPI document. Each uses a different internal pipeline.
+Swagger-php supports three processing modes, which control how source code is turned into an OpenAPI document. Each uses a different internal pipeline.
 
 ## Overview
 
@@ -13,7 +13,7 @@ Swagger-php supports three processing modes that control how your source code is
 
 ## Classic (default)
 
-The classic mode scans source files for `OpenApi\Attributes` (and legacy `OpenApi\Annotations`) and assembles the OpenAPI document via the Generator pipeline with its processor chain.
+Classic mode scans source files for `OpenApi\Attributes` (and legacy `OpenApi\Annotations`) and builds the OpenAPI document through the `Generator` and its processor chain.
 
 ```php
 use OpenApi\Builder;
@@ -25,16 +25,16 @@ $result = (new Builder())
 $result->toYaml();
 ```
 
-Classic mode gives you access to the full `Generator` API including custom processors, analysers, and configuration options via `withGenerator()`.
+Classic mode gives access to the full `Generator` API through `withGenerator()`, including custom processors, analysers and configuration options.
 
 ## Spec (beta) {#spec}
 
-Spec mode is a ground-up reimplementation of the pipeline using attributes from the `OpenApi\Spec` namespace. It introduces:
+Spec mode reimplements the pipeline from the ground up, using attributes from the `OpenApi\Spec` namespace. It introduces:
 
-- **Typed DTOs** — attributes are simple data containers with constructor-promoted properties
-- **Slot-map nesting** — explicit `merge()`/`contained()` maps replace reflection-based nesting
-- **Grouped augmenters** — a three-phase pipeline (resolve → reduce → augment) with explicit ordering
-- **Version-aware compilers** — separate compilers for OpenAPI 3.0, 3.1, and 3.2
+- **Typed DTOs**: attributes are simple data containers with constructor-promoted properties
+- **Slot-map nesting**: explicit `merge()`/`contained()` maps replace reflection-based nesting
+- **Grouped augmenters**: a three-phase pipeline (resolve → reduce → augment) with explicit ordering
+- **Version-aware compilers**: separate compilers for OpenAPI 3.0, 3.1 and 3.2
 
 ```php
 use OpenApi\Builder;
@@ -56,7 +56,7 @@ Spec mode is mostly feature-complete but still beta. The attribute API may evolv
 
 ## Hybrid (beta) {#hybrid}
 
-Hybrid mode uses the classic Generator for scanning (so your existing `OpenApi\Attributes` annotations work unchanged), then bridges the result into the spec pipeline's augmenters and compilers.
+Hybrid mode scans with the classic `Generator`, so existing `OpenApi\Attributes` work unchanged. It then bridges the result into the spec pipeline's augmenters and compilers.
 
 This gives you the augmenter pipeline and version-aware compilation without rewriting any attribute code.
 
@@ -72,7 +72,7 @@ $result = (new Builder())
 $result->toYaml();
 ```
 
-Hybrid mode is the recommended transition path for existing projects that want to benefit from the new pipeline incrementally.
+Hybrid mode is the recommended transition path for existing projects that move to the new pipeline step by step.
 
 ::: warning Disclaimer
 Hybrid mode will not work in heavily customized projects like `NelmioApiDocBundle`, or in projects adding custom processors.
@@ -130,18 +130,18 @@ See [Augmenters](/reference/augmenters) for the `Cleanup` options.
 
 The recommended migration path is:
 
-1. **Classic → Hybrid** — change `setMode(Mode::HYBRID)`. No code changes needed, and this gives you access to the augmenter pipeline. Output stays the same with two exceptions:
+1. **Classic → Hybrid**: change to `setMode(Mode::HYBRID)`. No code changes are needed, and the augmenter pipeline becomes available. Output stays the same, with two exceptions:
 
    - Components that no path references are removed, including a schema kept only for client code generation. [Behavioral differences](#behavioral-differences) has the switch that keeps them.
 
-   - `-c` takes augmenter keys rather than processor keys, apart from `generator.*`; `--mode hybrid -D src` lists them.
+   - `-c` takes augmenter keys rather than processor keys, apart from `generator.*`. `--mode hybrid -D src` lists them.
 
-2. **Hybrid → Spec** — when starting new code, use `OpenApi\Spec` attributes. Existing `OpenApi\Attributes` code continues to work via hybrid mode. The spec attributes are not a one-for-one rename of the classic ones: a reusable attribute takes a single `component:` key where classic spells the key after its own type (`schema:`, `parameter:`, `request:`, `securityScheme:`). See [Components](/guide/spec-attributes#components).
+2. **Hybrid → Spec**: when starting new code, use `OpenApi\Spec` attributes. Existing `OpenApi\Attributes` code keeps working through hybrid mode. The spec attributes are not a one-for-one rename of the classic ones. A reusable attribute takes a single `component:` key, where classic spells the key after its own type (`schema:`, `parameter:`, `request:`, `securityScheme:`). See [Components](/guide/spec-attributes#components).
 
-3. **Full Spec** — once all code uses `OpenApi\Spec` attributes, switch to `setMode(Mode::SPEC)`.
+3. **Full Spec**: once all code uses `OpenApi\Spec` attributes, switch to `setMode(Mode::SPEC)`.
 
 ::: tip Version timeline
-- **v6** — spec/hybrid ship as opt-in beta. Classic remains default.
-- **v7** — hybrid becomes the default mode. Classic still available. `setMode()` and all classic code deprecated.
-- **v8** — classic removed. `setMode()` removed. Spec becomes default. Spec attributes move to `OpenApi\Attributes`. For code already written against `OpenApi\Spec` that move is one `use` line per file; coming from classic, the component keys are renamed as well.
+- **v6**: spec and hybrid ship as opt-in beta. Classic remains the default.
+- **v7**: hybrid becomes the default mode. Classic is still available. `setMode()` and all classic code are deprecated.
+- **v8**: classic is removed, and so is `setMode()`. Spec becomes the default. Spec attributes move to `OpenApi\Attributes`. For code already written against `OpenApi\Spec`, that move is one `use` line per file. Coming from classic, the component keys are renamed as well.
 :::
