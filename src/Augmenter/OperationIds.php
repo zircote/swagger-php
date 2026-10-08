@@ -60,7 +60,7 @@ class OperationIds implements PipeInterface
         $reflector = $operation->getReflector();
 
         $source = match (true) {
-            $reflector instanceof \ReflectionMethod => $operation->getClassName() . '::' . $reflector->getName(),
+            $reflector instanceof \ReflectionMethod => $operation->getSourceLocation()->qualifiedMethod(),
             $reflector instanceof \ReflectionFunction => $reflector->getName(),
             $reflector instanceof \ReflectionClass => $reflector->getName(),
             default => null,

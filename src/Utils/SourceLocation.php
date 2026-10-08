@@ -57,6 +57,20 @@ final readonly class SourceLocation implements \Stringable
         return $location ?: 'unknown';
     }
 
+    /**
+     * The method this location is in as `Class::method`, or null outside a method.
+     *
+     * The class is the one declaring the method, so a method a subclass inherits names its
+     * parent. That makes the string the same wherever the method is reached from, which is what
+     * an operation id or a route pairing needs from it.
+     */
+    public function qualifiedMethod(): ?string
+    {
+        return $this->class !== null && $this->method !== null
+            ? $this->class . '::' . $this->method
+            : null;
+    }
+
     public static function fromReflector(\Reflector $reflector): self
     {
         $class = null;
