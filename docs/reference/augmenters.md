@@ -98,7 +98,7 @@ to operation paths, clones tags/security/responses to operations that don't decl
 own, and marks PathItems that have spec-level output (parameters, summary, description,
 servers) with their resolved path.
 
-The ancestor walk itself belongs to `Specification\PathItemHierarchy`.
+The ancestor walk and the prefix composition belong to `Specification\PathItemHierarchy`.
 
 ### [Types](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Types.php)
 

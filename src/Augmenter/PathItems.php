@@ -19,7 +19,7 @@ use OpenApi\Utils\PipeInterface;
  * own, and marks PathItems that have spec-level output (parameters, summary, description,
  * servers) with their resolved path.
  *
- * The ancestor walk itself belongs to `Specification\PathItemHierarchy`.
+ * The ancestor walk and the prefix composition belong to `Specification\PathItemHierarchy`.
  *
  * @implements PipeInterface<Specification>
  */
@@ -39,11 +39,7 @@ class PathItems implements PipeInterface
                 continue;
             }
 
-            $prefix = $this->resolvePrefix($chain);
-            if ($prefix !== '' && $operation->path !== null) {
-                $operationPath = ltrim($operation->path, '/');
-                $operation->path = $operationPath !== '' ? $prefix . '/' . $operationPath : $prefix;
-            }
+            $operation->path = $hierarchy->pathFor($operation);
 
             $this->cloneMetadata($chain, $operation);
         }
@@ -56,23 +52,6 @@ class PathItems implements PipeInterface
     public function group(): string|\BackedEnum
     {
         return Group::Resolve;
-    }
-
-    /**
-     * Compose the path prefix declared across a chain, outermost first.
-     *
-     * @param list<OA\PathItem> $chain
-     */
-    protected function resolvePrefix(array $chain): string
-    {
-        $parts = [];
-        foreach ($chain as $pathItem) {
-            if ($pathItem->prefix !== null && ($part = trim($pathItem->prefix, '/')) !== '') {
-                $parts[] = $part;
-            }
-        }
-
-        return $parts !== [] ? '/' . implode('/', $parts) : '';
     }
 
     /**
