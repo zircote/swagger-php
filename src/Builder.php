@@ -443,6 +443,7 @@ class Builder
             new Augmenter\PathItems(),
             new Augmenter\Types(),
             new Augmenter\Refs(),
+            new Augmenter\Parameters(),
             new Augmenter\Merge($mergers),
             new Augmenter\PathFilter(),
             new Augmenter\Cleanup(),

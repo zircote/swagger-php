@@ -101,6 +101,29 @@ class ComponentIndex
     }
 
     /**
+     * A parameter's identity, `in:name`, which is how OpenAPI tells two parameters apart. Null
+     * when either half is unknown.
+     *
+     * A parameter that is only a `ref` takes both from the component it points to. One without
+     * a `name` takes the name of the PHP parameter it was read from, the name
+     * `Augmenter\Types` gives it later, so the answer is the same before and after that augmenter
+     * runs.
+     */
+    public function parameterKey(OA\Parameter $parameter): ?string
+    {
+        $ref = $parameter->ref instanceof OA\Schema\Ref ? $parameter->ref->ref : $parameter->ref;
+        $target = is_string($ref) ? $this->findParameter($ref) : null;
+
+        $reflector = $parameter->getReflector();
+        $name = $parameter->name
+            ?? $target->name
+            ?? ($reflector instanceof \ReflectionParameter ? $reflector->getName() : null);
+        $in = $parameter->in ?? $target?->in;
+
+        return $name !== null && $in !== null ? $in . ':' . $name : null;
+    }
+
+    /**
      * @return array<string, string> FQCN → #/components/{type}/{name}
      */
     public function buildRefMap(): array

@@ -10,6 +10,7 @@ use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Tests\Concerns\AssemblesSpecification;
+use OpenApi\Tests\Fixtures\Augmenter\PathItemUserController;
 use OpenApi\Tests\Fixtures\ComponentIndex\OddlyNamed;
 use OpenApi\Tests\Fixtures\ComponentIndex\Product;
 use OpenApi\Tests\Fixtures\ComponentIndex\UnnamedTag;
@@ -90,6 +91,41 @@ final class ComponentIndexTest extends TestCase
             ->buildComponentIndex();
 
         $this->assertInstanceOf(OA\Parameter::class, $index->findParameter('#/components/parameters/page'));
+    }
+
+    /**
+     * @return iterable<string, array{OA\Parameter, string|null}>
+     */
+    public static function parameterKeys(): iterable
+    {
+        yield 'inline' => [new OA\Parameter\Path(name: 'id'), 'path:id'];
+
+        yield 'a ref takes both from its component' => [new OA\Parameter(ref: '#/components/parameters/UserId'), 'path:id'];
+
+        yield 'a ref wrapped in a Schema\Ref' => [new OA\Parameter(ref: new OA\Schema\Ref('#/components/parameters/UserId')), 'path:id'];
+
+        yield 'what the parameter sets wins over its component' => [new OA\Parameter(name: 'user', ref: '#/components/parameters/UserId'), 'path:user'];
+
+        yield 'a ref to nothing has no identity' => [new OA\Parameter(ref: '#/components/parameters/Nope'), null];
+
+        yield 'no name and no reflector' => [new OA\Parameter\Path(), null];
+
+        yield 'no location' => [new OA\Parameter(name: 'id'), null];
+
+        yield 'no name takes the PHP parameter name' => [
+            (new OA\Parameter\Path())->setReflector(new \ReflectionParameter([PathItemUserController::class, 'get'], 'id')),
+            'path:id',
+        ];
+    }
+
+    #[DataProvider('parameterKeys')]
+    public function testParameterKey(OA\Parameter $parameter, ?string $expected): void
+    {
+        $index = (new Specification())
+            ->add(new OA\Parameter\Path(parameter: 'UserId', name: 'id'))
+            ->buildComponentIndex();
+
+        $this->assertSame($expected, $index->parameterKey($parameter));
     }
 
     /**

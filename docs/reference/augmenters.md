@@ -114,6 +114,20 @@ Resolves FQCN-based $ref values to JSON Reference paths.
 Builds a map of class names to their component paths and rewrites
 any $ref that looks like a FQCN into the proper #/components/... path.
 
+### [Parameters](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Parameters.php)
+
+Gives a parameter that is only a `ref` the `name` and `in` of the component it points to.
+
+OpenAPI tells two parameters apart by name and location. A `ref` parameter has neither of its
+own, so without them it cannot be matched with an inline parameter describing the same thing,
+and `Merge\Operations` keeps both. Filled here, after `Augmenter\Types` has named a parameter
+from its PHP parameter and `Augmenter\Refs` has rewritten class name refs, every parameter
+reaching the merge carries its identity. It has to run before `Augmenter\Merge`, which the
+phases see to: this is `Resolve`, and the merge is `Reduce` and later.
+
+Only unset fields are filled, and the output does not change: a parameter with a `ref` is
+compiled to the reference alone.
+
 ### [Merge](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Merge.php)
 
 Reduces every root collection to one entry per key, through the registered mergers.
