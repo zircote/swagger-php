@@ -114,7 +114,11 @@ $hierarchy = $specification->buildPathItemHierarchy();
 $hierarchy->chain(UserController::class);   // every governing PathItem, outermost ancestor first
 $hierarchy->governing(UserController::class); // just the nearest one
 $hierarchy->forOperation($operation);       // the chain for the class an operation is declared in
+$hierarchy->prefixFor($operation);          // the prefix that chain composes to, '' for none
+$hierarchy->pathFor($operation);            // the operation's declared path with that prefix in front
 ```
+
+`pathFor()` reads the path as declared. The `PathItems` augmenter writes the composed path back to the operation, so call it before that augmenter runs, not after.
 
 Anything read off a `PathItem` outside that chain applies to nothing and says nothing while it does, so an augmenter or integration reading path-level metadata asks the hierarchy rather than reflecting for itself.
 

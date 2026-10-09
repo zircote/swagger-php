@@ -129,4 +129,46 @@ class PathItemHierarchy
 
         return $reflector instanceof \ReflectionClass ? $this->chainFor($reflector) : [];
     }
+
+    /**
+     * The path prefix the chain governing an operation's class composes to, `''` for none.
+     *
+     * Each prefix is trimmed of slashes and the rest are joined outermost first, so `/api/v1`
+     * and `/users/` compose to `/api/v1/users`.
+     */
+    public function prefixFor(OA\Operation $operation): string
+    {
+        $parts = [];
+        foreach ($this->forOperation($operation) as $pathItem) {
+            if ($pathItem->prefix !== null && ($part = trim($pathItem->prefix, '/')) !== '') {
+                $parts[] = $part;
+            }
+        }
+
+        return $parts !== [] ? '/' . implode('/', $parts) : '';
+    }
+
+    /**
+     * The path an operation compiles to, its own path with `prefixFor()` in front, or null when
+     * it has no path.
+     *
+     * It reads the path as declared. `Augmenter\PathItems` writes this value back to the
+     * operation, so after that augmenter has run the prefix is already there and asking again
+     * adds it twice.
+     */
+    public function pathFor(OA\Operation $operation): ?string
+    {
+        if ($operation->path === null) {
+            return null;
+        }
+
+        $prefix = $this->prefixFor($operation);
+        if ($prefix === '') {
+            return $operation->path;
+        }
+
+        $path = ltrim($operation->path, '/');
+
+        return $path !== '' ? $prefix . '/' . $path : $prefix;
+    }
 }

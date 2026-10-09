@@ -89,6 +89,46 @@ final class PathItemHierarchyTest extends TestCase
         $this->assertCount(1, $specification->buildPathItemHierarchy()->classes());
     }
 
+    public static function pathProvider(): \Generator
+    {
+        $threeLevel = [PathItemGrandparentController::class, PathItemMiddleController::class, PathItemLeafController::class];
+        $inherited = [PathItemBaseController::class, PathItemUserController::class, PathItemInheritedController::class];
+
+        yield 'every link composes, outermost first' => [$threeLevel, PathItemLeafController::class, '/{id}', '/api/v2/orders', '/api/v2/orders/{id}'];
+
+        yield 'an empty path is the prefix alone' => [$threeLevel, PathItemLeafController::class, '', '/api/v2/orders', '/api/v2/orders'];
+
+        yield 'a class without its own composes its ancestors' => [$inherited, PathItemInheritedController::class, '/{id}/roles', '/api/v1/users', '/api/v1/users/{id}/roles'];
+
+        yield 'a chain with no prefix leaves the path alone' => [[PathItemPlainController::class], PathItemPlainController::class, '/products/{id}', '', '/products/{id}'];
+    }
+
+    #[DataProvider('pathProvider')]
+    public function testPrefixAndPathFor(array $classes, string $className, string $declaredPath, string $expectedPrefix, string $expectedPath): void
+    {
+        $specification = $this->assemble(...$classes);
+        $hierarchy = $specification->buildPathItemHierarchy();
+
+        $operations = array_values(array_filter(
+            $specification->operations,
+            static fn (OA\Operation $operation): bool => $operation->getClassName() === $className && $operation->path === $declaredPath,
+        ));
+        $this->assertCount(1, $operations);
+
+        $this->assertSame($expectedPrefix, $hierarchy->prefixFor($operations[0]));
+        $this->assertSame($expectedPath, $hierarchy->pathFor($operations[0]));
+    }
+
+    public function testAnOperationWithoutAClassOrAPathHasNoPrefixAndNoPath(): void
+    {
+        $hierarchy = $this->assemble(PathItemBaseController::class)->buildPathItemHierarchy();
+
+        $operation = new OA\Operation\Get();
+
+        $this->assertSame('', $hierarchy->prefixFor($operation));
+        $this->assertNull($hierarchy->pathFor($operation));
+    }
+
     public function testForOperationUsesTheDeclaringClass(): void
     {
         $specification = $this->assemble(PathItemBaseController::class, PathItemUserController::class);
