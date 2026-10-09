@@ -201,6 +201,10 @@ new Merge\Operations(
 );
 ```
 
+A parameter that is only a `ref` folds with an inline one of the same name and location, since
+the `Parameters` augmenter gives it the name and location of its component first. The reference
+is what survives.
+
 See the [extension points reference](/reference/extension-points) for how each field folds.
 
 The pass runs over the `Specification`'s own collections, where the halves come from different

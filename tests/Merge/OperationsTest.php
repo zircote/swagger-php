@@ -251,6 +251,35 @@ final class OperationsTest extends TestCase
         $merger->merge(new OA\Operation\Get(path: '/users'), new OA\Operation\Get(path: '/users'));
     }
 
+    public function testARefParameterFoldsWithItsInlineTwin(): void
+    {
+        $result = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->withMergers(fn (TypedList $mergers): TypedList => $mergers->insert(new Merge\Operations(), Merge\LastWins::class))
+            ->withSpecification(function (Specification $specification): void {
+                $specification->add(
+                    new OA\Info(title: 'T', version: '1.0'),
+                    new OA\Parameter\Path(parameter: 'UserId', name: 'id', schema: new OA\Schema(type: 'integer')),
+                    new OA\Operation\Get(
+                        path: '/users/{id}',
+                        parameters: [new OA\Parameter\Path(name: 'id', schema: new OA\Schema(type: 'string', pattern: '[0-9]+'))],
+                        responses: [new OA\Response(response: 200, description: 'ok')],
+                    ),
+                    new OA\Operation\Get(
+                        path: '/users/{id}',
+                        parameters: [new OA\Parameter(ref: '#/components/parameters/UserId')],
+                    ),
+                );
+            })
+            ->build();
+
+        $this->assertSame(
+            [['$ref' => '#/components/parameters/UserId']],
+            $result->toArray()['paths']['/users/{id}']['get']['parameters'],
+            'the ref carries path:id from its component, so it folds with the inline id, and a reference carries nothing beside it',
+        );
+    }
+
     public function testNeitherHalfIsChanged(): void
     {
         $earlier = new OA\Operation\Get(path: '/users', summary: 'FIRST');

@@ -238,4 +238,8 @@ from its own `group()`: `Resolve` → `Reduce` → `Augment`. Within a phase, ex
 registration order.
 
 Ordering that matters: `Inheritance` must run before `PathItems`, because inherited
-operations have to exist before path prefixes are resolved.
+operations have to exist before path prefixes are resolved. `Parameters` must run before
+`Merge`, because a parameter that is only a `ref` has no name or location until it does, and
+`Merge\Operations` keys parameters by both. The phases keep that order: `Parameters` is in
+`Resolve`, and both `Merge` runs are later. A `ref` parameter added after the `Resolve` phase
+is not given its identity, and the second `Merge` run keeps it beside an inline twin.
