@@ -7,6 +7,7 @@
 namespace OpenApi\Tests\Specification;
 
 use OpenApi\Spec as OA;
+use OpenApi\Specification;
 use OpenApi\Tests\Concerns\AssemblesSpecification;
 use OpenApi\Tests\Fixtures\Augmenter\PathItemBaseController;
 use OpenApi\Tests\Fixtures\Augmenter\PathItemContract;
@@ -17,6 +18,7 @@ use OpenApi\Tests\Fixtures\Augmenter\PathItemLeafController;
 use OpenApi\Tests\Fixtures\Augmenter\PathItemMiddleController;
 use OpenApi\Tests\Fixtures\Augmenter\PathItemPlainController;
 use OpenApi\Tests\Fixtures\Augmenter\PathItemUserController;
+use OpenApi\Undefined;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -127,6 +129,79 @@ final class PathItemHierarchyTest extends TestCase
 
         $this->assertSame('', $hierarchy->prefixFor($operation));
         $this->assertNull($hierarchy->pathFor($operation));
+    }
+
+    public static function parametersProvider(): \Generator
+    {
+        $tenant = static fn (string $description): OA\Parameter => new OA\Parameter\Path(name: 'tenant', description: $description);
+
+        yield 'every link contributes' => [
+            [new OA\Parameter\Header(name: 'X-Trace')],
+            [$tenant('the user tenant')],
+            ['header:X-Trace' => null, 'path:tenant' => 'the user tenant'],
+        ];
+
+        yield 'the nearer link wins' => [
+            [$tenant('the base tenant')],
+            [$tenant('the user tenant')],
+            ['path:tenant' => 'the user tenant'],
+        ];
+
+        yield 'the same name in another location is another parameter' => [
+            [new OA\Parameter\Query(name: 'tenant', description: 'a filter')],
+            [$tenant('the user tenant')],
+            ['query:tenant' => 'a filter', 'path:tenant' => 'the user tenant'],
+        ];
+
+        yield 'a ref is keyed by its component' => [
+            [],
+            [new OA\Parameter(ref: '#/components/parameters/Tenant')],
+            ['path:tenant' => null],
+        ];
+
+        yield 'a parameter with no identity is left out' => [
+            [new OA\Parameter(ref: '#/components/parameters/Nope')],
+            [new OA\Parameter\Path()],
+            [],
+        ];
+    }
+
+    /**
+     * @param list<OA\Parameter>         $base     declared on the base controller's path item
+     * @param list<OA\Parameter>         $user     declared on the user controller's path item
+     * @param array<string, string|null> $expected key => description
+     */
+    #[DataProvider('parametersProvider')]
+    public function testParametersFor(array $base, array $user, array $expected): void
+    {
+        $operation = (new OA\Operation\Get(path: '/list'))->setReflector(new \ReflectionMethod(PathItemUserController::class, 'list'));
+
+        $hierarchy = (new Specification())
+            ->add(
+                (new OA\PathItem(parameters: $base))->setReflector(new \ReflectionClass(PathItemBaseController::class)),
+                (new OA\PathItem(parameters: $user))->setReflector(new \ReflectionClass(PathItemUserController::class)),
+                new OA\Parameter\Path(parameter: 'Tenant', name: 'tenant'),
+                $operation,
+            )
+            ->buildPathItemHierarchy();
+
+        $parameters = $hierarchy->parametersFor($operation);
+
+        $this->assertSame(array_keys($expected), array_keys($parameters));
+        $this->assertSame(
+            array_values($expected),
+            array_map(
+                static fn (OA\Parameter $parameter): ?string => Undefined::isDefault($parameter->description) ? null : $parameter->description,
+                array_values($parameters),
+            ),
+        );
+    }
+
+    public function testAnOperationOutsideAChainHasNoPathItemParameters(): void
+    {
+        $hierarchy = $this->assemble(PathItemUserController::class)->buildPathItemHierarchy();
+
+        $this->assertSame([], $hierarchy->parametersFor(new OA\Operation\Get(path: '/users')));
     }
 
     public function testForOperationUsesTheDeclaringClass(): void
