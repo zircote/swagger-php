@@ -116,9 +116,12 @@ $hierarchy->governing(UserController::class); // just the nearest one
 $hierarchy->forOperation($operation);       // the chain for the class an operation is declared in
 $hierarchy->prefixFor($operation);          // the prefix that chain composes to, '' for none
 $hierarchy->pathFor($operation);            // the operation's declared path with that prefix in front
+$hierarchy->parametersFor($operation);      // the parameters that chain declares, keyed `in:name`
 ```
 
 `pathFor()` reads the path as declared. The `PathItems` augmenter writes the composed path back to the operation, so call it before that augmenter runs, not after.
+
+`parametersFor()` leaves out the operation's own parameters. Where two path items in the chain declare the same parameter, the nearer one wins. A parameter that is only a `ref` is keyed by the name and location of its component.
 
 Anything read off a `PathItem` outside that chain applies to nothing and says nothing while it does, so an augmenter or integration reading path-level metadata asks the hierarchy rather than reflecting for itself.
 
