@@ -53,8 +53,8 @@ trait IdentityTrait
     }
 
     /**
-     * Both halves are named, because either could be the one the author did not mean to write.
-     * Two contributed halves both report `unknown`, which is stated once.
+     * Both are named, because either could be the one the author did not mean to write. Two
+     * contributed attributes both report `unknown`, which is stated once.
      */
     protected function collision(AttributeInterface $earlier, AttributeInterface $later, string $outcome = 'keeping the last'): string
     {

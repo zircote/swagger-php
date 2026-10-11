@@ -16,7 +16,7 @@ use Psr\Log\LoggerAwareTrait;
  * The catch-all merger: one entry per key survives, the later one, and the author is told.
  *
  * It reduces rather than folds: two entries in, one out, so the compiler never sees a collision
- * and its own accidental rules stop deciding anything. Combining fields from both halves is a
+ * and its own accidental rules stop deciding anything. Combining fields from both attributes is a
  * type-specific merger's job, registered ahead of this one.
  *
  * Identity by collection: the component key for anything in a `components` bucket, path and

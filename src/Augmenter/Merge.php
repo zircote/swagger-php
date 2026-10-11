@@ -22,7 +22,7 @@ use Psr\Log\LoggerInterface;
  * named `Pet`. The merger that claims the type says what identifies it and what the survivor is,
  * and one entry per key reaches the compiler.
  *
- * Only the root collections, because that is where the halves come from different places — a
+ * Only the root collections, because that is where the two come from different places — a
  * scan, a `withSpecification()` hook, the resolver, an inheritance clone — and something has to
  * decide between them. A collision *inside* one attribute is two entries the same author wrote
  * in one place; the compiler reports it and keeps its own last-write-wins.
@@ -31,7 +31,7 @@ use Psr\Log\LoggerInterface;
  * phase, which is the earliest point every identity exists — `Augmenter\PathItems` resolves an
  * operation's path and `Augmenter\Names` infers component keys, both in **resolve** — and it is
  * before `Cleanup` and everything downstream that should see the survivor rather than both
- * halves. The second is the last pipe of all, so what a late augmenter adds is reduced too;
+ * attributes. The second is the last pipe of all, so what a late augmenter adds is reduced too;
  * it is a grouping over lists and costs nothing when there is nothing to do. An augmenter
  * registered after it runs after it; `insert()` is how to land ahead.
  *
