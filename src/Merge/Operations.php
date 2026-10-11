@@ -16,7 +16,8 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
 /**
- * Folds two halves of one operation field by field, instead of keeping one of them whole.
+ * Folds two operations for the same path and method field by field, instead of keeping one of
+ * them whole.
  *
  * Opt-in: it is not one of the Builder's default mergers. Register it ahead of the catch-all,
  * `withMergers(fn ($mergers) => $mergers->insert(new Merge\Operations(), Merge\LastWins::class))`,
@@ -26,25 +27,25 @@ use Psr\Log\LoggerAwareTrait;
  * Identity is the catch-all's: path and method, or webhook and method. Registering the fold
  * changes how two operations combine, not which two are the same.
  *
- * What only one half sets is always taken. What both set is decided by the `Mode` it is
- * constructed with, `Mode::Last` by default: fold into the later half, fold into the earlier, or
- * take only what does not overlap. The mode can also be a callable that receives both halves and
- * returns one, so the choice can follow a mark a producer left with `setMeta()` rather than the
- * order the halves arrive in. A field both halves set differently is reported, whichever value
+ * What only one of them sets is always taken. What both set is decided by the `Mode` it is
+ * constructed with, `Mode::Last` by default: fold into the later, fold into the earlier, or
+ * take only what does not overlap. The mode can also be a callable that receives both and returns
+ * one, so the choice can follow a mark a producer left with `setMeta()` rather than the
+ * order they arrive in. A field both set differently is reported, whichever value
  * is kept; one they set the same is not.
  *
  * - Parameters are keyed by name and location, and responses by status code. Under `First` and
  *   `Last`, a parameter or response both describe is folded one level deep, a parameter's
  *   `schema` included, so a route's `pattern` survives an attribute's `type`. Under
- *   `NonOverlapping` it is the earlier half's, whole.
+ *   `NonOverlapping` it is the earlier's, whole.
  * - `requestBody`, `externalDocs`, `security`, `servers` and `callbacks` are each one decision,
- *   taken whole from whichever half the mode keeps; an explicit `security: []` is set, and opts
- *   out.
+ *   taken whole from whichever operation the mode keeps; an explicit `security: []` is set,
+ *   and opts out.
  * - `tags` and `attachables` are unions, and `x` merges key by key under the same mode.
  *
- * The survivor is a new operation, a copy of the earlier half with the later folded in, so
- * neither contribution is changed. It keeps the earlier half's reflector, source location and
- * `meta`, falling back to the later half's reflector when the earlier has none.
+ * The survivor is a new operation, a copy of the earlier with the later folded in, so
+ * neither contribution is changed. It keeps the earlier's reflector, source location and
+ * `meta`, falling back to the later's reflector when the earlier has none.
  */
 class Operations implements MergerInterface, LoggerAwareInterface
 {
@@ -134,7 +135,7 @@ class Operations implements MergerInterface, LoggerAwareInterface
     }
 
     /**
-     * One level deep: the public fields of two halves of a parameter or a response, and of a
+     * One level deep: the public fields of two parameters or two responses, and of a
      * parameter's schema, folded by the same rule. Deeper structure is taken whole.
      *
      * @param list<string> $conflicts

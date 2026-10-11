@@ -45,7 +45,7 @@ interface MergerInterface
      * `$earlier` precedes `$later` in producer order, which is the only guarantee the pipeline
      * makes and the one fact a precedence policy reads: `return $later` is last-wins. Folding
      * a group of three calls this twice, so on the second call `$earlier` is the survivor of
-     * the first two and neither half is "the first" any more; producer order still holds.
+     * the first two and neither is "the first" any more; producer order still holds.
      *
      * The survivor may be either argument or a new attribute.
      */

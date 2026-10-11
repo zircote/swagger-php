@@ -183,13 +183,13 @@ hold. A package that needs to recognise its own attributes marks them as it crea
 `$operation->setMeta(MyOperationMerger::class, true)`, and reads that back in `merge()`. `meta`
 is keyed by whoever writes to it. Nothing in swagger-php writes or reads it.
 
-To combine two halves of one operation instead of choosing between them, register the shipped
-`Merge\Operations` the same way, ahead of `Merge\LastWins`. It is not on by default. It fills
-each field one half leaves unset from the other, so a contributed route and an attribute adding
-responses to it become one operation. What both halves set is decided by a `Merge\Mode`: fold
-into the later half (the default), into the earlier, or take only what does not overlap. A
-callable can choose the mode per pair, which is how a producer's mark decides precedence
-without a merger of its own:
+To combine two operations for the same path and method instead of choosing between them,
+register the shipped `Merge\Operations` the same way, ahead of `Merge\LastWins`. It is not on
+by default. It fills each field one of them leaves unset from the other, so a contributed route
+and an attribute adding responses to it become one operation. What both set is decided by a
+`Merge\Mode`: fold into the later (the default), into the earlier, or take only what does not
+overlap. A callable can choose the mode per pair, which is how a producer's mark decides
+precedence without a merger of its own:
 
 ```php
 use OpenApi\Contracts\AttributeInterface;
@@ -207,9 +207,10 @@ is what survives.
 
 See the [extension points reference](/reference/extension-points) for how each field folds.
 
-The pass runs over the `Specification`'s own collections, where the halves come from different
-places. A duplicate key *inside* one attribute, such as two `200` responses in one operation,
-is two entries one author wrote in one place, and the compiler is left to keep the last of them.
+The pass runs over the `Specification`'s own collections, where attributes sharing a key come
+from different places. A duplicate key *inside* one attribute, such as two `200` responses in
+one operation, is two entries one author wrote in one place, and the compiler is left to keep
+the last of them.
 
 ## Compilers
 

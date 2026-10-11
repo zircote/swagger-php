@@ -10,15 +10,15 @@ use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Merge\Mode;
 
 /**
- * A merger's `Mode`, fixed or chosen per pair by a callable that receives both halves.
+ * A merger's `Mode`, fixed or chosen per pair by a callable that receives both attributes.
  */
 trait ModeTrait
 {
     protected Mode|\Closure $mode = Mode::Last;
 
     /**
-     * How two halves that overlap are treated: a `Mode`, or a callable that receives the earlier
-     * and the later half and returns one.
+     * How two attributes with the same identity are treated where they overlap: a `Mode`, or a
+     * callable that receives the earlier and the later and returns one.
      *
      * @param Mode|callable(AttributeInterface, AttributeInterface): Mode $mode
      */
