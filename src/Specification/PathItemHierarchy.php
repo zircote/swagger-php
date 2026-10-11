@@ -33,6 +33,8 @@ class PathItemHierarchy
     /** @var array<string, list<OA\PathItem>> */
     protected array $chains = [];
 
+    protected ?ComponentIndex $componentIndex = null;
+
     public function __construct(
         protected Specification $specification,
     ) {
@@ -170,5 +172,35 @@ class PathItemHierarchy
         $path = ltrim($operation->path, '/');
 
         return $path !== '' ? $prefix . '/' . $path : $prefix;
+    }
+
+    /**
+     * The parameters the chain governing an operation's class declares, keyed `in:name`.
+     *
+     * They are emitted at path level and apply to every operation under the path. Where two
+     * links of the chain declare the same parameter, the nearer one wins, as a subclass
+     * overrides its parent. The key is `ComponentIndex::parameterKey()`, so a parameter that is
+     * only a `ref` is keyed by its component's name and location. One with no identity at all is
+     * left out, since nothing could match it.
+     *
+     * The operation's own parameters are not included.
+     *
+     * @return array<string, OA\Parameter>
+     */
+    public function parametersFor(OA\Operation $operation): array
+    {
+        $index = $this->componentIndex ??= $this->specification->buildComponentIndex();
+
+        $parameters = [];
+        foreach ($this->forOperation($operation) as $pathItem) {
+            foreach ($pathItem->parameters ?? [] as $parameter) {
+                $key = $index->parameterKey($parameter);
+                if ($key !== null) {
+                    $parameters[$key] = $parameter;
+                }
+            }
+        }
+
+        return $parameters;
     }
 }
