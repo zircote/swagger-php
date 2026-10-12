@@ -550,12 +550,12 @@ The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema
 <dl>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A JSON Reference to a reusable schema</p></dd>
-  <dt><strong>type</strong> : <span style="font-family: monospace;">string|list&lt;string&gt;|null</span></dt>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">TypeInput|null</span></dt>
   <dd><p>The value type(s) (string, number, integer, boolean, array, object, null)</p></dd>
   <dt><strong>items</strong> : <span style="font-family: monospace;">Schema|string|null</span></dt>
   <dd><p>Schema for array items</p></dd>
-  <dt><strong>properties</strong> : <span style="font-family: monospace;">list&lt;Property&gt;|null</span></dt>
-  <dd><p>Object property definitions</p></dd>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">PropertiesInput|null</span></dt>
+  <dd><p>Object property definitions, as a list of `Property` or keyed by property name</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
   <dd><p>List of required property names</p></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
@@ -602,12 +602,12 @@ The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema
 <dl>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A JSON Reference to a reusable schema</p></dd>
-  <dt><strong>type</strong> : <span style="font-family: monospace;">string|list&lt;string&gt;|null</span></dt>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">TypeInput|null</span></dt>
   <dd><p>The value type(s) (string, number, integer, boolean, array, object, null)</p></dd>
   <dt><strong>items</strong> : <span style="font-family: monospace;">Schema|string|null</span></dt>
   <dd><p>Schema for array items</p></dd>
-  <dt><strong>properties</strong> : <span style="font-family: monospace;">list&lt;Property&gt;|null</span></dt>
-  <dd><p>Object property definitions</p></dd>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">PropertiesInput|null</span></dt>
+  <dd><p>Object property definitions, as a list of `Property` or keyed by property name</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
   <dd><p>List of required property names</p></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
@@ -1530,7 +1530,7 @@ without it the schema has no component key and is reported as missing one.
   <dd><p>A description of the schema (CommonMark syntax)</p></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A JSON Reference to a reusable schema</p></dd>
-  <dt><strong>type</strong> : <span style="font-family: monospace;">string|list&lt;string&gt;|null</span></dt>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">string|Type|list&lt;string|Type&gt;|null</span></dt>
   <dd><p>The value type(s) (string, number, integer, boolean, array, object, null)</p></dd>
   <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Further refines the type (e.g. int32, int64, float, double, date-time, email)</p></dd>
@@ -1576,8 +1576,8 @@ without it the schema has no component key and is reported as missing one.
   <dd><p>Maximum number of items matching contains</p></dd>
   <dt><strong>unevaluatedItems</strong> : <span style="font-family: monospace;">Schema|bool|null</span></dt>
   <dd><p>Schema for items not covered by other keywords</p></dd>
-  <dt><strong>properties</strong> : <span style="font-family: monospace;">list&lt;Property&gt;|null</span></dt>
-  <dd><p>Object property definitions</p></dd>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">array&lt;array-key,Property|Schema|Type&gt;|null</span></dt>
+  <dd><p>Object property definitions, as a list of `Property` or keyed by property name</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
   <dd><p>List of required property names</p></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">Schema|Schema\AdditionalProperties|bool|null</span></dt>
@@ -1668,7 +1668,7 @@ schemas with constrained additional properties:
   <dd><p>A description of the schema (CommonMark syntax)</p></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A JSON Reference to a reusable schema</p></dd>
-  <dt><strong>type</strong> : <span style="font-family: monospace;">string|list&lt;string&gt;|null</span></dt>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">string|Type|list&lt;string|Type&gt;|null</span></dt>
   <dd><p>The value type(s) (string, number, integer, boolean, array, object, null)</p></dd>
   <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Further refines the type (e.g. int32, int64, float, double, date-time, email)</p></dd>
@@ -1714,8 +1714,8 @@ schemas with constrained additional properties:
   <dd><p>Maximum number of items matching contains</p></dd>
   <dt><strong>unevaluatedItems</strong> : <span style="font-family: monospace;">Schema|bool|null</span></dt>
   <dd><p>Schema for items not covered by other keywords</p></dd>
-  <dt><strong>properties</strong> : <span style="font-family: monospace;">list&lt;Property&gt;|null</span></dt>
-  <dd><p>Object property definitions</p></dd>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">array&lt;array-key,Property|Schema|Type&gt;|null</span></dt>
+  <dd><p>Object property definitions, as a list of `Property` or keyed by property name</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
   <dd><p>List of required property names</p></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">Schema|Schema\AdditionalProperties|bool|null</span></dt>
@@ -1814,7 +1814,7 @@ Since Items extends Schema, the implicit `OA\Property` shortcut applies — no e
   <dd><p>A description of the schema (CommonMark syntax)</p></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A JSON Reference to a reusable schema</p></dd>
-  <dt><strong>type</strong> : <span style="font-family: monospace;">string|list&lt;string&gt;|null</span></dt>
+  <dt><strong>type</strong> : <span style="font-family: monospace;">string|Type|list&lt;string|Type&gt;|null</span></dt>
   <dd><p>The value type(s) (string, number, integer, boolean, array, object, null)</p></dd>
   <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Further refines the type (e.g. int32, int64, float, double, date-time, email)</p></dd>
@@ -1860,8 +1860,8 @@ Since Items extends Schema, the implicit `OA\Property` shortcut applies — no e
   <dd><p>Maximum number of items matching contains</p></dd>
   <dt><strong>unevaluatedItems</strong> : <span style="font-family: monospace;">Schema|bool|null</span></dt>
   <dd><p>Schema for items not covered by other keywords</p></dd>
-  <dt><strong>properties</strong> : <span style="font-family: monospace;">list&lt;Property&gt;|null</span></dt>
-  <dd><p>Object property definitions</p></dd>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">array&lt;array-key,Property|Schema|Type&gt;|null</span></dt>
+  <dd><p>Object property definitions, as a list of `Property` or keyed by property name</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
   <dd><p>List of required property names</p></dd>
   <dt><strong>additionalProperties</strong> : <span style="font-family: monospace;">Schema|Schema\AdditionalProperties|bool|null</span></dt>
