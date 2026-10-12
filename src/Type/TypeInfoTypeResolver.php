@@ -71,7 +71,8 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
      */
     protected function applyToAnnotation(OA\Schema $schema, SchemaType $schemaType, Analysis $analysis, string $sourceClass = OA\Schema::class): void
     {
-        if ($schemaType->type !== null) {
+        // a class is referenced only when there is no explicit enum it would replace
+        if ($schemaType->type !== null && (!$schemaType->isRef() || Undefined::isDefault($schema->enum))) {
             /** @var non-empty-array<string>|string $type every SchemaType array type is built non-empty */
             $type = $schemaType->type;
             $schema->type = $type;
@@ -81,15 +82,15 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
             $schema->format = $schemaType->format;
         }
 
-        if ($schemaType->minimum !== null) {
+        if ($schemaType->minimum !== null && Undefined::isDefault($schema->minimum)) {
             $schema->minimum = $schemaType->minimum;
         }
 
-        if ($schemaType->maximum !== null) {
+        if ($schemaType->maximum !== null && Undefined::isDefault($schema->maximum)) {
             $schema->maximum = $schemaType->maximum;
         }
 
-        if ($schemaType->not !== null) {
+        if ($schemaType->not !== null && Undefined::isDefault($schema->not)) {
             $schema->not = $schemaType->not;
         }
 

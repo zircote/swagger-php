@@ -107,12 +107,8 @@ The docblock tag read depends on the element:
 * a method: `@return`
 
 ::: info 🧪 Mode difference
-Three cases resolve differently in `classic`:
-
-* An explicit `type` also stops `nullable` being read from a nullable type-hint
-  (see [Nullable type inference](/guide/spec-attributes#nullable-type-inference-from-php-types)).
-* A docblock range such as `int<1, 10>` replaces an explicit `minimum` or `maximum`.
-* A property with an explicit `enum` and a class type that is a schema component becomes a `$ref`, and the `enum` is dropped.
+In `classic`, an explicit `type` also stops `nullable` being read from a nullable type-hint
+(see [Nullable type inference](/guide/spec-attributes#nullable-type-inference-from-php-types)).
 :::
 
 ## Summary and description
