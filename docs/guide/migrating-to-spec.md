@@ -5,7 +5,9 @@ names and, in places, the shape of the attributes. The [differences from classic
 attributes](/guide/spec-attributes#differences-from-classic-attributes) list them. swagger-php
 ships a [Rector](https://getrector.com) set that makes those changes.
 
-Annotations in docblocks are out of scope: the set reads PHP attributes only.
+Annotations in docblocks are out of scope: the set reads PHP attributes only. Rector rules for
+moving annotations to classic attributes first are collected in
+[#1047](https://github.com/zircote/swagger-php/issues/1047).
 
 ## Before you start
 

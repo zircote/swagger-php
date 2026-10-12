@@ -22,8 +22,7 @@ class Controller
                             property: 'content',
                             schema: new OA\Schema(
                                 description: 'Binary content of file',
-                                type: 'string',
-                                format: 'binary',
+                                contentMediaType: 'application/octet-stream',
                             ),
                         ),
                     ],

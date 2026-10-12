@@ -45,6 +45,7 @@ final class DocSnippetsTest extends OpenApiTestCase
                     }
 
                     $candidates = [
+                        "{$basePath}/{$key}_{$implementation}-3.1.0.yaml",
                         "{$basePath}/{$key}-{$mode->value}-3.1.0.yaml",
                     ];
                     if ($mode === Mode::HYBRID) {

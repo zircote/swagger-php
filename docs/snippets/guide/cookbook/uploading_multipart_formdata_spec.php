@@ -22,8 +22,7 @@ class OpenApiSpec
                             property: 'avatar',
                             schema: new OA\Schema(
                                 description: 'file to upload',
-                                type: 'string',
-                                format: 'binary',
+                                contentMediaType: 'application/octet-stream',
                             ),
                         ),
                     ],

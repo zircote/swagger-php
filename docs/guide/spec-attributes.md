@@ -102,7 +102,7 @@ use OpenApi\Spec as OA;
 class User
 {
     #[OA\Property]
-    #[OA\Schema(format: 'int64')]
+    #[OA\Schema(format: OA\Format::Int64)]
     public int $id;
 
     #[OA\Property]
@@ -114,6 +114,9 @@ class User
 ```
 
 Types, formats, and nullability are inferred from PHP type declarations by the `Types` augmenter. You only need to specify `#[OA\Schema(...)]` on a property when you want to override the inferred values (e.g. format, description, example).
+
+`type` and `format` take a string, or a case of the `OA\Type` and `OA\Format` enums (see [Shortcuts](/guide/shortcuts)).
+Where the attribute, the docblock and the type declaration disagree, [Augmentation](/guide/augmentation#which-source-wins) lists which one wins.
 
 ### Stacking Schema and Property
 
@@ -630,7 +633,7 @@ oneOf:
 
 ### Nullable type inference from PHP types
 
-Spec mode consistently infers nullability from PHP type declarations (e.g. `?\DateTime`). For OpenAPI 3.0 this adds `nullable: true`. For 3.1+ it emits `type: ['string', 'null']`. Classic mode may not infer nullability in all cases where the PHP type is nullable.
+Spec mode consistently infers nullability from PHP type declarations (e.g. `?\DateTime`). For OpenAPI 3.0 this adds `nullable: true`. For 3.1+ it emits `type: ['string', 'null']`. Classic mode does not infer it when the attribute sets `type`.
 
 ```php
 #[OA\Property]

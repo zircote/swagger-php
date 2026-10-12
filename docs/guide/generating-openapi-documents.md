@@ -118,6 +118,8 @@ $result = (new \OpenApi\Builder())
     ->build();
 ```
 
+The keys `setConfig()` takes are listed per processor in the [Processor reference](/reference/processors).
+
 ### Using spec mode
 
 To use the new spec attributes pipeline (beta), set the mode to `spec`:

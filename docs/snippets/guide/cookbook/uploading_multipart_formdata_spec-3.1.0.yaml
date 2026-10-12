@@ -1,0 +1,19 @@
+openapi: 3.1.0
+paths:
+  /v1/user/update:
+    post:
+      summary: 'Form post'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: 'the file name'
+                avatar:
+                  contentMediaType: application/octet-stream
+                  description: 'file to upload'
+      responses:
+        200:
+          description: Success
