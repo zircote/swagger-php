@@ -165,6 +165,20 @@ public function __construct(
 
 Augmenters, compilers and serialization then never need to branch on type.
 
+## The model speaks OpenAPI 3.1, the compilers translate
+
+Attributes, their enums and the stored fields follow OpenAPI 3.1. Where another version writes
+the same thing differently, the compiler for that version translates it. The model has no
+per-version fields, and no enum case that exists for one version only. Version differences
+then live in one place.
+
+`OpenApi30Compiler` does most of the translating. `const` becomes a one-value `enum`, a type
+list containing `null` becomes `nullable: true`, and `contentEncoding: base64` becomes
+`format: byte`. Its class docblock lists every difference it handles.
+
+`Format` follows the same rule. It has no `Byte` or `Binary` case, because 3.1 writes those as
+`contentEncoding` and `contentMediaType`.
+
 ## `null` means unset, except where `null` is a value
 
 A nullable property defaults to `null`, and `filter()` in the compilers drops it. That

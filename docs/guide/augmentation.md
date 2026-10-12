@@ -86,6 +86,35 @@ Data types that are not recognized and cannot be resolved to a class-like name (
 Most of these schema elements will be resolved in isolation. For example, `nullable` may be enforced by the OpenApi annotation
 while the actual data type may be resolved from the docblock (or type-hint).
 
+### Which source wins
+
+For each element, the first source that sets it wins:
+
+| Element                                   | Sources, in order                                                                                |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `type`                                    | the attribute (`type`, `oneOf`, `allOf` or `anyOf`), the docblock, the type-hint                 |
+| `format`, `minimum`, `maximum`, `items`   | the attribute, then the type the docblock or type-hint gives, unless the attribute sets `type`   |
+| `nullable`                                | the attribute, then `true` if either the docblock or the type-hint is nullable                   |
+| `ref`                                     | the attribute, then a class type, if that class is a schema component                           |
+
+The docblock replaces the type-hint. It does not refine it: `@var string` on `public int $id` documents a `string`.
+A docblock type that cannot be parsed is ignored, and the type-hint is used.
+
+The docblock tag read depends on the element:
+
+* a property: `@var`
+* a promoted constructor property: the constructor's `@param`
+* a method: `@return`
+
+::: info 🧪 Mode difference
+Three cases resolve differently in `classic`:
+
+* An explicit `type` also stops `nullable` being read from a nullable type-hint
+  (see [Nullable type inference](/guide/spec-attributes#nullable-type-inference-from-php-types)).
+* A docblock range such as `int<1, 10>` replaces an explicit `minimum` or `maximum`.
+* A property with an explicit `enum` and a class type that is a schema component becomes a `$ref`, and the `enum` is dropped.
+:::
+
 ## Summary and description
 
 `summary` and `description` of certain annotation types (`OA\Operation`, `OA\Property`, `OA\Parameter` and `OA\Schema`) may be augmented

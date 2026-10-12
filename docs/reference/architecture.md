@@ -170,6 +170,8 @@ Each OpenAPI version has its own compiler that handles version-specific output d
 
 The compiler transforms a Specification into a plain PHP array representing the OpenAPI document. Version selection is automatic based on `Builder::setVersion()` or the `#[OA\OpenApi(version: '...')]` attribute.
 
+The Specification itself follows OpenAPI 3.1. The 3.0 compiler translates what 3.0 can express and omits the rest, see [Spec pipeline internals](/dev/pipeline).
+
 ## Classic processor mapping
 
 How each classic processor maps to the new pipeline:
