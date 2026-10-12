@@ -9,7 +9,7 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 use OpenApi\Spec as OA;
 
 /*
- * `properties` keyed by property name, with a `Schema` or a `Type` as the value, written
+ * `properties` keyed by property name, with a `Schema`, `Type` or `Format` as the value, written
  * out as a list of `Property` in KeyedProperties.php. Both produce the same document.
  */
 
@@ -45,6 +45,20 @@ class KeyedPropertiesMixedSpec
     ],
 )]
 class KeyedPropertiesTypeListSpec
+{
+}
+
+#[OA\Schema(
+    component: 'KeyedPropertiesFormat',
+    description: 'A Format brings the type it implies',
+    properties: [
+        'id' => OA\Format::Uuid,
+        'count' => OA\Format::Int64,
+        'ratio' => OA\Format::Double,
+        'checkedAt' => new OA\Schema(type: OA\Type::String, format: OA\Format::DateTime, description: 'Format on a Schema'),
+    ],
+)]
+class KeyedPropertiesFormatSpec
 {
 }
 

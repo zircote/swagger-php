@@ -30,6 +30,7 @@ components:
       type: object
     embedded:
       type: string
+    rawBinary: {}
     decoded:
       type: object
     envelope:

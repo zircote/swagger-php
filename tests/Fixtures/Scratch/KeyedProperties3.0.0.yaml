@@ -47,3 +47,20 @@ components:
         count:
           type: integer
           nullable: true
+    KeyedPropertiesFormat:
+      type: object
+      description: 'A Format brings the type it implies'
+      properties:
+        id:
+          type: string
+          format: uuid
+        count:
+          type: integer
+          format: int64
+        ratio:
+          type: number
+          format: double
+        checkedAt:
+          type: string
+          format: date-time
+          description: 'Format on a Schema'

@@ -66,6 +66,12 @@ class SchemaKeywordsEmbedded
 {
 }
 
+// raw binary: a media type and no `type`, which 3.0 writes as `format: binary`
+#[OAT\Schema(schema: 'rawBinary', contentMediaType: 'image/png')]
+class SchemaKeywordsRawBinary
+{
+}
+
 #[OAT\Schema(schema: 'decoded', type: 'object')]
 class SchemaKeywordsDecoded
 {

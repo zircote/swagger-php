@@ -1532,7 +1532,7 @@ without it the schema has no component key and is reported as missing one.
   <dd><p>A JSON Reference to a reusable schema</p></dd>
   <dt><strong>type</strong> : <span style="font-family: monospace;">string|Type|list&lt;string|Type&gt;|null</span></dt>
   <dd><p>The value type(s) (string, number, integer, boolean, array, object, null)</p></dd>
-  <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>format</strong> : <span style="font-family: monospace;">string|Format|null</span></dt>
   <dd><p>Further refines the type (e.g. int32, int64, float, double, date-time, email)</p></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Whether the value can be null (OAS 3.0 only; use type array in 3.1+)</p></dd>
@@ -1576,7 +1576,7 @@ without it the schema has no component key and is reported as missing one.
   <dd><p>Maximum number of items matching contains</p></dd>
   <dt><strong>unevaluatedItems</strong> : <span style="font-family: monospace;">Schema|bool|null</span></dt>
   <dd><p>Schema for items not covered by other keywords</p></dd>
-  <dt><strong>properties</strong> : <span style="font-family: monospace;">array&lt;array-key,Property|Schema|Type&gt;|null</span></dt>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">array&lt;array-key,Property|Schema|Type|Format&gt;|null</span></dt>
   <dd><p>Object property definitions, as a list of `Property` or keyed by property name</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
   <dd><p>List of required property names</p></dd>
@@ -1670,7 +1670,7 @@ schemas with constrained additional properties:
   <dd><p>A JSON Reference to a reusable schema</p></dd>
   <dt><strong>type</strong> : <span style="font-family: monospace;">string|Type|list&lt;string|Type&gt;|null</span></dt>
   <dd><p>The value type(s) (string, number, integer, boolean, array, object, null)</p></dd>
-  <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>format</strong> : <span style="font-family: monospace;">string|Format|null</span></dt>
   <dd><p>Further refines the type (e.g. int32, int64, float, double, date-time, email)</p></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Whether the value can be null (OAS 3.0 only; use type array in 3.1+)</p></dd>
@@ -1714,7 +1714,7 @@ schemas with constrained additional properties:
   <dd><p>Maximum number of items matching contains</p></dd>
   <dt><strong>unevaluatedItems</strong> : <span style="font-family: monospace;">Schema|bool|null</span></dt>
   <dd><p>Schema for items not covered by other keywords</p></dd>
-  <dt><strong>properties</strong> : <span style="font-family: monospace;">array&lt;array-key,Property|Schema|Type&gt;|null</span></dt>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">array&lt;array-key,Property|Schema|Type|Format&gt;|null</span></dt>
   <dd><p>Object property definitions, as a list of `Property` or keyed by property name</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
   <dd><p>List of required property names</p></dd>
@@ -1816,7 +1816,7 @@ Since Items extends Schema, the implicit `OA\Property` shortcut applies — no e
   <dd><p>A JSON Reference to a reusable schema</p></dd>
   <dt><strong>type</strong> : <span style="font-family: monospace;">string|Type|list&lt;string|Type&gt;|null</span></dt>
   <dd><p>The value type(s) (string, number, integer, boolean, array, object, null)</p></dd>
-  <dt><strong>format</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dt><strong>format</strong> : <span style="font-family: monospace;">string|Format|null</span></dt>
   <dd><p>Further refines the type (e.g. int32, int64, float, double, date-time, email)</p></dd>
   <dt><strong>nullable</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Whether the value can be null (OAS 3.0 only; use type array in 3.1+)</p></dd>
@@ -1860,7 +1860,7 @@ Since Items extends Schema, the implicit `OA\Property` shortcut applies — no e
   <dd><p>Maximum number of items matching contains</p></dd>
   <dt><strong>unevaluatedItems</strong> : <span style="font-family: monospace;">Schema|bool|null</span></dt>
   <dd><p>Schema for items not covered by other keywords</p></dd>
-  <dt><strong>properties</strong> : <span style="font-family: monospace;">array&lt;array-key,Property|Schema|Type&gt;|null</span></dt>
+  <dt><strong>properties</strong> : <span style="font-family: monospace;">array&lt;array-key,Property|Schema|Type|Format&gt;|null</span></dt>
   <dd><p>Object property definitions, as a list of `Property` or keyed by property name</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
   <dd><p>List of required property names</p></dd>

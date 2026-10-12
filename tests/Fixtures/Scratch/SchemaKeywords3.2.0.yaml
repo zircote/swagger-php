@@ -62,6 +62,8 @@ components:
       contentEncoding: base64
       contentSchema:
         type: object
+    rawBinary:
+      contentMediaType: image/png
     decoded:
       type: object
     envelope:

@@ -43,7 +43,7 @@ final class TypeMapperTest extends OpenApiTestCase
         yield 'datetimeinterface' => ['datetimeinterface', ['type' => 'string', 'format' => 'date-time']];
         yield '\\datetimeinterface' => ['\\datetimeinterface', ['type' => 'string', 'format' => 'date-time']];
         yield 'mixed' => ['mixed', ['type' => 'mixed', 'format' => null]];
-        yield 'long' => ['long', ['type' => 'integer', 'format' => 'long']];
+        yield 'long' => ['long', ['type' => 'integer', 'format' => 'int64']];
         yield 'case insensitive' => ['String', ['type' => 'string', 'format' => null]];
         yield 'unknown' => ['callable', null];
         yield 'resource' => ['resource', null];

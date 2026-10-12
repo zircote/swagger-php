@@ -48,6 +48,20 @@ class KeyedPropertiesTypeList
 {
 }
 
+#[OAT\Schema(
+    schema: 'KeyedPropertiesFormat',
+    description: 'A Format brings the type it implies',
+    properties: [
+        new OAT\Property(property: 'id', type: 'string', format: 'uuid'),
+        new OAT\Property(property: 'count', type: 'integer', format: 'int64'),
+        new OAT\Property(property: 'ratio', type: 'number', format: 'double'),
+        new OAT\Property(property: 'checkedAt', description: 'Format on a Schema', type: 'string', format: 'date-time'),
+    ],
+)]
+class KeyedPropertiesFormat
+{
+}
+
 #[OAT\Info(title: 'Keyed Properties Scratch', version: '1.0')]
 class KeyedPropertiesEndpoint
 {

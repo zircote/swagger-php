@@ -6,6 +6,7 @@
 
 namespace OpenApi\Spec\Concerns;
 
+use OpenApi\Spec\Format;
 use OpenApi\Spec\Property;
 use OpenApi\Spec\Schema;
 use OpenApi\Spec\Type;
@@ -39,8 +40,8 @@ trait SchemaInputTrait
     /**
      * Turns keyed `properties` into the list of `Property` the model stores.
      *
-     * A key names the property only where its value is a `Schema` or a `Type`, so a list of
-     * `Property` passes through as it always has.
+     * A key names the property only where its value is a `Schema`, a `Type` or a `Format`, so a
+     * list of `Property` passes through as it always has. A `Format` brings the type it implies.
      *
      * @param PropertiesInput|null $properties
      *
@@ -56,6 +57,10 @@ trait SchemaInputTrait
         foreach ($properties as $key => $value) {
             if (is_string($key) && $value instanceof Type) {
                 $value = new Schema(type: $value);
+            }
+
+            if (is_string($key) && $value instanceof Format) {
+                $value = new Schema(type: $value->type(), format: $value);
             }
 
             $list[] = is_string($key) && $value instanceof Schema
