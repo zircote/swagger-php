@@ -66,6 +66,12 @@ class SchemaKeywordsEmbeddedSpec
 {
 }
 
+// raw binary: a media type and no `type`, which 3.0 writes as `format: binary`
+#[OA\Schema(component: 'rawBinary', contentMediaType: 'image/png')]
+class SchemaKeywordsRawBinarySpec
+{
+}
+
 #[OA\Schema(component: 'decoded', type: 'object')]
 class SchemaKeywordsDecodedSpec
 {

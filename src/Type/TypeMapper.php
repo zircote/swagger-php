@@ -17,7 +17,7 @@ class TypeMapper
         'bool' => 'boolean',
         'int' => 'integer',
         'integer' => 'integer',
-        'long' => ['integer', 'long'],
+        'long' => ['integer', 'int64'],
         'float' => ['number', 'float'],
         'double' => ['number', 'double'],
         'date' => ['string', 'date'],

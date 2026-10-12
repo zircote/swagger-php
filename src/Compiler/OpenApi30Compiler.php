@@ -23,7 +23,7 @@ use OpenApi\Undefined;
  * - No const, no examples array on Schema (only singular example)
  * - No prefixItems, unevaluatedItems, unevaluatedProperties
  * - No if/then/else
- * - No contentMediaType/contentEncoding on Schema
+ * - No contentMediaType/contentEncoding on Schema: base64 becomes format byte, raw binary format binary
  * - No dependentRequired/dependentSchemas
  * - No propertyNames, contains, minContains, maxContains
  * - License: no identifier field (only url)
@@ -160,6 +160,11 @@ class OpenApi30Compiler extends OpenApi31Compiler
             $type = count($type) === 1 ? $type[0] : null;
         }
 
+        $format = $schema->format ?? $this->contentFormat($schema);
+        if ($type === null && $schema->format === null && $format !== null) {
+            $type = 'string';
+        }
+
         $nullable = $schema->nullable;
         if ($nullable === null && $schema->type !== null) {
             $typeArray = (array) $schema->type;
@@ -193,7 +198,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
 
         $result = $this->filter([
             'type' => $type,
-            'format' => $schema->format,
+            'format' => $format,
             'title' => $schema->title,
             'description' => $schema->description,
             'nullable' => $nullable,
@@ -268,6 +273,21 @@ class OpenApi30Compiler extends OpenApi31Compiler
     }
 
     /**
+     * The 3.0 format for what 3.1 says with `contentEncoding` and `contentMediaType`.
+     *
+     * `base64` is 3.0's `byte`, and a `contentMediaType` on a schema with no `type` is raw
+     * binary, 3.0's `binary`. A string holding other content has no 3.0 form.
+     */
+    protected function contentFormat(OA\Schema $schema): ?string
+    {
+        if ($schema->contentEncoding !== null) {
+            return $schema->contentEncoding === 'base64' ? 'byte' : null;
+        }
+
+        return $schema->contentMediaType !== null && $schema->type === null ? 'binary' : null;
+    }
+
+    /**
      * The singular `example`, falling back to the first of `examples`.
      *
      * @return array<string,mixed>
@@ -313,6 +333,13 @@ class OpenApi30Compiler extends OpenApi31Compiler
 
             if ($schema->if instanceof OA\Schema || $schema->then instanceof OA\Schema || $schema->else instanceof OA\Schema) {
                 $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': if/then/else is not supported in OpenAPI 3.0');
+            }
+
+            if ($schema->contentEncoding !== null || $schema->contentMediaType !== null) {
+                $format = $this->contentFormat($schema);
+                if ($format === null || ($schema->format !== null && $schema->format !== $format)) {
+                    $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': contentEncoding/contentMediaType is not supported in OpenAPI 3.0 and will be omitted');
+                }
             }
 
             if ($schema->const !== Undefined::UNDEFINED) {

@@ -13,7 +13,7 @@ class ProductController
             properties: [
                 'id' => OA\Type::Integer,
                 'name' => OA\Type::String,
-                'createdAt' => new OA\Schema(type: OA\Type::String, format: 'date-time'),
+                'createdAt' => OA\Format::DateTime,
             ],
         ),
     ])]

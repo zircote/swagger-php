@@ -40,7 +40,7 @@ use OpenApi\Undefined;
  *
  * @phpstan-type EnumValue string|int|float|bool|\UnitEnum
  * @phpstan-type TypeInput string|Type|list<string|Type>
- * @phpstan-type PropertiesInput array<array-key,Property|Schema|Type>
+ * @phpstan-type PropertiesInput array<array-key,Property|Schema|Type|Format>
  *
  * @see [Schema Object](https://spec.openapis.org/oas/v3.1.1.html#schema-object)
  * @see [JSON Schema](https://json-schema.org/draft/2020-12/json-schema-validation)
@@ -68,6 +68,8 @@ class Schema extends AbstractAttribute
     /** @var string|list<string>|null */
     public string|array|null $type = null;
 
+    public ?string $format = null;
+
     /** @var list<Property>|null */
     public ?array $properties = null;
 
@@ -77,7 +79,7 @@ class Schema extends AbstractAttribute
      * @param string|null                                       $description           A description of the schema (CommonMark syntax)
      * @param string|null                                       $ref                   A JSON Reference to a reusable schema
      * @param TypeInput|null                                    $type                  The value type(s) (string, number, integer, boolean, array, object, null)
-     * @param string|null                                       $format                Further refines the type (e.g. int32, int64, float, double, date-time, email)
+     * @param string|Format|null                                $format                Further refines the type (e.g. int32, int64, float, double, date-time, email)
      * @param bool|null                                         $nullable              Whether the value can be null (OAS 3.0 only; use type array in 3.1+)
      * @param int|null                                          $minLength             Minimum string length
      * @param int|null                                          $maxLength             Maximum string length
@@ -142,7 +144,7 @@ class Schema extends AbstractAttribute
 
         // Core type
         string|Type|array|null $type = null,
-        public ?string $format = null,
+        string|Format|null $format = null,
         public ?bool $nullable = null,
 
         // String constraints
@@ -218,6 +220,7 @@ class Schema extends AbstractAttribute
     ) {
         parent::__construct(x: $x, attachables: $attachables);
         $this->type = self::typeValue($type);
+        $this->format = $format instanceof Format ? $format->value : $format;
         $this->properties = self::propertyList($properties);
         $this->component = $component;
         if ($component === null && $this->schema !== null) {

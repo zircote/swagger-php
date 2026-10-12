@@ -91,7 +91,8 @@ Without it the property is reported as missing its name and left out of the sche
 ## Keyed `properties` (spec only)
 
 Where there is no PHP class to declare the properties on, such as an array returned from a controller, `properties` can be
-keyed by property name. The value is an `OA\Schema`, or an `OA\Type` for a schema that sets nothing but the type.
+keyed by property name. The value is an `OA\Schema`, an `OA\Type` for a schema that sets nothing but the type, or an
+`OA\Format` for a schema with that format and the type it implies (`OA\Format::DateTime` is a `string`).
 
 **Verbose:**
 
@@ -107,7 +108,8 @@ An `OA\Property` keeps its own `property`, so the two forms can be mixed in one 
 list of `OA\Property`.
 
 `OA\Type` can be used for the `type` of any schema, including a list such as `[OA\Type::Integer, OA\Type::Null]`. The attribute stores its
-string value, so `OA\Type::String` and `'string'` produce the same document.
+string value, so `OA\Type::String` and `'string'` produce the same document. The same goes for `OA\Format` and `format`. A
+format that is not a case can still be passed as a string.
 
 ## `OA\Parameter`
 
