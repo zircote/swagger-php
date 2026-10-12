@@ -88,6 +88,27 @@ public function getTags(): array
 
 Without it the property is reported as missing its name and left out of the schema.
 
+## Keyed `properties` (spec only)
+
+Where there is no PHP class to declare the properties on, such as an array returned from a controller, `properties` can be
+keyed by property name. The value is an `OA\Schema`, or an `OA\Type` for a schema that sets nothing but the type.
+
+**Verbose:**
+
+<<< @/snippets/guide/shortcuts/keyed_properties_verbose_spec.php
+
+**Shortcut:**
+
+<<< @/snippets/guide/shortcuts/keyed_properties_short_spec.php
+
+Both produce the same output. This works on `OA\Schema`, `OA\MediaType\Json` and `OA\MediaType\Xml`.
+
+An `OA\Property` keeps its own `property`, so the two forms can be mixed in one array. Either way, the attribute stores a
+list of `OA\Property`.
+
+`OA\Type` can be used for the `type` of any schema, including a list such as `[OA\Type::Integer, OA\Type::Null]`. The attribute stores its
+string value, so `OA\Type::String` and `'string'` produce the same document.
+
 ## `OA\Parameter`
 
 The `OA\Parameter` annotation requires specifying the `in` property to indicate where in the request the parameter is located.

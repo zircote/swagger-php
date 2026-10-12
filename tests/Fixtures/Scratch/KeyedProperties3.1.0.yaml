@@ -1,0 +1,50 @@
+openapi: 3.1.0
+info:
+  title: 'Keyed Properties Scratch'
+  version: '1.0'
+paths:
+  /things:
+    post:
+      operationId: createThing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                tags:
+                  type: array
+                  items: { type: string }
+        required: true
+      responses:
+        200:
+          description: OK
+components:
+  schemas:
+    KeyedPropertiesTerse:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    KeyedPropertiesMixed:
+      type: object
+      description: 'A keyed entry and a Property in one array keep the order they are written in'
+      properties:
+        first:
+          type: string
+        second:
+          type: boolean
+    KeyedPropertiesTypeList:
+      type: object
+      properties:
+        count:
+          type:
+            - integer
+            - 'null'
