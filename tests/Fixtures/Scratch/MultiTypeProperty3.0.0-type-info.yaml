@@ -25,7 +25,6 @@ components:
                 type: string
         value:
           example: true
-          nullable: true
         mixedUnion:
           example: 'My value'
           oneOf:

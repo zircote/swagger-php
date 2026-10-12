@@ -14,7 +14,7 @@ paths:
               schema:
                 oneOf:
                   - { $ref: '#/components/schemas/repository' }
-                nullable: true
+                  - { type: object, nullable: true, enum: [null] }
   /api/refplus:
     get:
       operationId: refplus
@@ -26,7 +26,7 @@ paths:
               schema:
                 oneOf:
                   - { $ref: '#/components/schemas/repository' }
-                nullable: true
+                  - { type: object, nullable: true, enum: [null] }
                 description: 'The repository'
   /api/annotated:
     get:
@@ -46,7 +46,7 @@ components:
         nullableRepository:
           oneOf:
             - { $ref: '#/components/schemas/repository' }
-          nullable: true
+            - { type: object, nullable: true, enum: [null] }
           title: Nullable
           description: 'A nullable reference'
           default: none
@@ -58,7 +58,7 @@ components:
         nullableListed:
           oneOf:
             - { $ref: '#/components/schemas/repository' }
-          nullable: true
+            - { type: object, nullable: true, enum: [null] }
           writeOnly: true
         listed:
           $ref: '#/components/schemas/repository'

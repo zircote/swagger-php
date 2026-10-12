@@ -243,28 +243,8 @@ tests/Fixtures/Scratch/Nullable3.1.0.yaml:
   no-unused-components:
     - '#/components/schemas/Nullable'
 tests/Fixtures/Scratch/Nullable3.0.0.yaml:
-  nullable-type-sibling:
-    - '#/components/schemas/Nullable/properties/birthdate/nullable'
-    - '#/components/schemas/Nullable/properties/otherdate/nullable'
-    - '#/components/schemas/Nullable/properties/anotherdate/nullable'
   no-unused-components:
     - '#/components/schemas/Nullable'
-tests/Fixtures/Scratch/NullRef3.0.0-spec.yaml:
-  nullable-type-sibling:
-    - >-
-      #/paths/~1api~1refonly/get/responses/200/content/application~1json/schema/nullable
-    - >-
-      #/paths/~1api~1refplus/get/responses/200/content/application~1json/schema/nullable
-    - '#/components/schemas/annotatedRefs/properties/nullableRepository/nullable'
-    - '#/components/schemas/annotatedRefs/properties/nullableListed/nullable'
-tests/Fixtures/Scratch/NullRef3.0.0.yaml:
-  nullable-type-sibling:
-    - >-
-      #/paths/~1api~1refonly/get/responses/200/content/application~1json/schema/nullable
-    - >-
-      #/paths/~1api~1refplus/get/responses/200/content/application~1json/schema/nullable
-    - '#/components/schemas/annotatedRefs/properties/nullableRepository/nullable'
-    - '#/components/schemas/annotatedRefs/properties/nullableListed/nullable'
 tests/Fixtures/Scratch/NestedSchema3.2.0.yaml:
   no-unused-components:
     - '#/components/schemas/NestedSchema'
@@ -296,13 +276,9 @@ tests/Fixtures/Scratch/MultiTypeProperty3.1.0-legacy.yaml:
   no-unused-components:
     - '#/components/schemas/MultiTypeProperty'
 tests/Fixtures/Scratch/MultiTypeProperty3.0.0-type-info.yaml:
-  nullable-type-sibling:
-    - '#/components/schemas/MultiTypeProperty/properties/value/nullable'
   no-unused-components:
     - '#/components/schemas/MultiTypeProperty'
 tests/Fixtures/Scratch/MultiTypeProperty3.0.0-legacy.yaml:
-  nullable-type-sibling:
-    - '#/components/schemas/MultiTypeProperty/properties/value/nullable'
   no-unused-components:
     - '#/components/schemas/MultiTypeProperty'
 tests/Fixtures/Scratch/ExclusiveMinMax3.2.0.yaml:
@@ -410,9 +386,6 @@ tests/Fixtures/Scratch/Components3.0.0.yaml:
     - '#/components/schemas/first schema'
     - '#/components/schemas/second schema'
     - '#/components/requestBodies/first request body'
-tests/Fixtures/Scratch/ClassRef3.0.0.yaml:
-  nullable-type-sibling:
-    - '#/components/schemas/ClassRefHolder/properties/nullablePlain/nullable'
 tests/Fixtures/Scratch/AttributeInheritance3.2.0.yaml:
   no-unused-components:
     - '#/components/schemas/Child1'

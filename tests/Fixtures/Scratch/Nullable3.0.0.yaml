@@ -37,17 +37,29 @@ components:
           oneOf:
             -
               $ref: '#/components/schemas/MyDateTime'
-          nullable: true
+            -
+              type: object
+              nullable: true
+              enum:
+                - null
         otherdate:
           oneOf:
             -
               $ref: '#/components/schemas/MyDateTime'
-          nullable: true
+            -
+              type: object
+              nullable: true
+              enum:
+                - null
         anotherdate:
           oneOf:
             -
               $ref: '#/components/schemas/MyDateTime'
-          nullable: true
+            -
+              type: object
+              nullable: true
+              enum:
+                - null
         description:
           type: string
           nullable: true

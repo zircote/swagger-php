@@ -65,6 +65,36 @@ final class CompilerTest extends TestCase
             ['type' => 'string'],
         ];
 
+        yield '3.0 nullable $ref → null branch, no nullable beside oneOf' => [
+            new OpenApi30Compiler(),
+            new OA\Schema(schema: 'N', ref: '#/components/schemas/Pet', nullable: true),
+            ['oneOf' => [['$ref' => '#/components/schemas/Pet'], ['type' => 'object', 'nullable' => true, 'enum' => [null]]]],
+        ];
+
+        yield '3.0 nullable oneOf → null branch' => [
+            new OpenApi30Compiler(),
+            new OA\Schema(schema: 'N', nullable: true, oneOf: [new OA\Schema(type: 'string'), new OA\Schema(type: 'integer')]),
+            ['oneOf' => [['type' => 'string'], ['type' => 'integer'], ['type' => 'object', 'nullable' => true, 'enum' => [null]]]],
+        ];
+
+        yield '3.0 nullable anyOf → null branch' => [
+            new OpenApi30Compiler(),
+            new OA\Schema(schema: 'N', nullable: true, anyOf: [new OA\Schema(type: 'string'), new OA\Schema(type: 'integer')]),
+            ['anyOf' => [['type' => 'string'], ['type' => 'integer'], ['type' => 'object', 'nullable' => true, 'enum' => [null]]]],
+        ];
+
+        yield '3.0 nullable without a type is dropped' => [
+            new OpenApi30Compiler(),
+            new OA\Schema(schema: 'N', description: 'anything', nullable: true),
+            ['description' => 'anything'],
+        ];
+
+        yield '3.0 nullable allOf is left as it is' => [
+            new OpenApi30Compiler(),
+            new OA\Schema(schema: 'N', nullable: true, allOf: [new OA\Schema(ref: '#/components/schemas/Pet')]),
+            ['allOf' => [['$ref' => '#/components/schemas/Pet']], 'nullable' => true],
+        ];
+
         yield '3.1 nullable flag → type array' => [
             new OpenApi31Compiler(),
             new OA\Schema(schema: 'N', type: 'string', nullable: true),
