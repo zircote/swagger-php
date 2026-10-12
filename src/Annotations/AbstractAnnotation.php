@@ -20,6 +20,11 @@ use Symfony\Component\Yaml\Yaml;
 abstract class AbstractAnnotation implements \JsonSerializable
 {
     /**
+     * A 3.0 schema that matches only `null`: 3.0 has no `null` type, and `nullable` only takes effect beside a `type`.
+     */
+    protected const NULL_SCHEMA_30 = ['type' => 'object', 'nullable' => true, 'enum' => [null]];
+
+    /**
      * While the OpenAPI Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.
      * For further details see https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#specificationExtensions
      * The keys inside the array will be prefixed with <code>x-</code>.
@@ -340,16 +345,16 @@ abstract class AbstractAnnotation implements \JsonSerializable
             }
             if ($nullable) {
                 $ref = ['oneOf' => [$ref]];
-                if (!$this->_context->isVersion('3.0.x')) {
-                    $ref['oneOf'][] = ['type' => 'null'];
-                } else {
-                    $ref['nullable'] = $data->nullable;
-                }
+                $ref['oneOf'][] = $this->_context->isVersion('3.0.x') ? self::NULL_SCHEMA_30 : ['type' => 'null'];
                 unset($data->ref, $data->nullable);
 
                 // preserve other properties
                 foreach (get_object_vars($data) as $property => $value) {
                     $ref[$property] = $value;
+                }
+                // an explicit type on the wrapper has to let null through too
+                if (isset($ref['type']) && $this->_context->isVersion('3.0.x')) {
+                    $ref['nullable'] = true;
                 }
             }
             $data = (object) $ref;
@@ -384,6 +389,19 @@ abstract class AbstractAnnotation implements \JsonSerializable
             }
 
             unset($data->unevaluatedProperties);
+
+            // without a type beside it, nullable has no effect; null gets a branch of its own where there is a choice
+            if (isset($data->nullable) && true === $data->nullable && !isset($data->type)) {
+                if (isset($data->oneOf)) {
+                    $data->oneOf[] = self::NULL_SCHEMA_30;
+                    unset($data->nullable);
+                } elseif (isset($data->anyOf)) {
+                    $data->anyOf[] = self::NULL_SCHEMA_30;
+                    unset($data->nullable);
+                } elseif (!isset($data->allOf)) {
+                    unset($data->nullable);
+                }
+            }
         }
 
         if (!$this->_context->isVersion('3.0.x')) {

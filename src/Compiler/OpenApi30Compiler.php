@@ -15,7 +15,8 @@ use OpenApi\Undefined;
  *
  * Extends the 3.1 compiler and overrides version-specific methods:
  * - JSON Schema draft-04 subset: type is always a string (not array)
- * - nullable is a separate boolean keyword
+ * - nullable is a separate boolean keyword, which needs a type beside it (3.0.3); a nullable
+ *   $ref, oneOf or anyOf gets a branch that matches only null instead, as 3.1 adds {type: 'null'}
  * - exclusiveMinimum/Maximum are booleans (used alongside minimum/maximum)
  * - No $ref siblings (summary/description stripped from $ref objects)
  * - No webhooks
@@ -31,6 +32,11 @@ use OpenApi\Undefined;
 class OpenApi30Compiler extends OpenApi31Compiler
 {
     protected const VERSIONS = ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.0.4'];
+
+    /**
+     * A schema that matches only `null`: 3.0 has no `null` type, and `nullable` only takes effect beside a `type`.
+     */
+    protected const NULL_SCHEMA = ['type' => 'object', 'nullable' => true, 'enum' => [null]];
 
     #[\Override]
     public function getVersion(): string
@@ -146,8 +152,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
         if ($schema->ref !== null) {
             if ($schema->nullable === true) {
                 return $this->filter([
-                    'oneOf' => [['$ref' => $schema->ref]],
-                    'nullable' => true,
+                    'oneOf' => [['$ref' => $schema->ref], self::NULL_SCHEMA],
                 ], $schema) + $this->compileRefAnnotations($schema);
             }
 
@@ -245,6 +250,19 @@ class OpenApi30Compiler extends OpenApi31Compiler
             'externalDocs' => $schema->externalDocs instanceof OA\ExternalDocumentation ? $this->compileExternalDocs($schema->externalDocs) : null,
             'xml' => $schema->xml instanceof OA\Xml ? $this->compileXml($schema->xml) : null,
         ], $schema);
+
+        // without a type beside it, nullable has no effect; null gets a branch of its own where there is a choice
+        if (($result['nullable'] ?? false) === true && !isset($result['type'])) {
+            if (isset($result['oneOf'])) {
+                $result['oneOf'][] = self::NULL_SCHEMA;
+                unset($result['nullable']);
+            } elseif (isset($result['anyOf'])) {
+                $result['anyOf'][] = self::NULL_SCHEMA;
+                unset($result['nullable']);
+            } elseif (!isset($result['allOf'])) {
+                unset($result['nullable']);
+            }
+        }
 
         if ($schema->default !== Undefined::UNDEFINED) {
             $result['default'] = $schema->default;

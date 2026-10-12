@@ -32,5 +32,4 @@ components:
         component:
           $ref: '#/components/schemas/YoYo'
         plain: {}
-        nullablePlain:
-          nullable: true
+        nullablePlain: {}
