@@ -5,6 +5,18 @@ updates:
     schedule:
       interval: "weekly"
 
+  # the dev tools are pinned exactly, since their output changes within a minor;
+  # one pull request per tool keeps each change of output to itself
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    allow:
+      - dependency-name: "friendsofphp/php-cs-fixer"
+      - dependency-name: "phpstan/phpstan"
+      - dependency-name: "rector/rector"
+    versioning-strategy: "increase"
+
   - package-ecosystem: "npm"
     directories:
       - "/"
