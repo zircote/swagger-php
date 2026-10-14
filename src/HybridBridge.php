@@ -35,6 +35,8 @@ class HybridBridge
                 $annotation instanceof OA\Components => $this->convertComponents($annotation, $specification),
                 $annotation instanceof OA\Operation && !$annotation->_context->is('nested') => $specification->operations[] = $this->convertOperation($annotation, $this->val($annotation->path), $this->methodFromAnnotation($annotation)),
                 $annotation instanceof OA\Schema && !$this->isNestedSchemaType($annotation) && $annotation->_context->reflector instanceof \ReflectionClass && !$annotation->_context->is('nested') => $classSchemas[$annotation->_context->reflector->getName()][] = $annotation,
+                // on a method, a schema is a component only where it names itself, as in classic
+                $annotation instanceof OA\Schema && !$this->isNestedSchemaType($annotation) && $annotation->_context->reflector instanceof \ReflectionMethod && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->schema) => $specification->schemas[] = $this->convertSchema($annotation),
                 $annotation instanceof OA\Property && $this->isClassMember($annotation) => $memberProperties[] = $annotation,
                 $annotation instanceof OA\Response && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->response) => $specification->responses[] = $this->convertResponse($annotation),
                 $annotation instanceof OA\RequestBody && !$annotation->_context->is('nested') && ($annotation->_context->reflector instanceof \ReflectionClass || !Undefined::isDefault($annotation->request)) => $specification->requestBodies[] = $this->convertRequestBody($annotation),
