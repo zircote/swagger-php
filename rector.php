@@ -22,7 +22,6 @@ return RectorConfig::configure()
         NewlineAfterStatementRector::class,
         StringClassNameToClassConstantRector::class => [
             __DIR__ . '/src/Analysers/DocBlockParser.php',
-            __DIR__ . '/tests/Analysers/ComposerAutoloaderScannerTest.php',
             __DIR__ . '/tests/AnalysisTest.php',
             __DIR__ . '/tests/ContextTest.php',
             // provider keys are names the scanner reads out of a file, not classes this

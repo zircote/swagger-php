@@ -24,6 +24,6 @@ trait UsesFixtures
      */
     public static function fixtures(array $files): array
     {
-        return array_map(fn (string $file): string => dirname(__DIR__) . '/Fixtures/' . $file, $files);
+        return array_map(fn (string $file): string => __DIR__ . '/../Fixtures/' . $file, $files);
     }
 }

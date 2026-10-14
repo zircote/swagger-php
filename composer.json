@@ -74,10 +74,10 @@
     },
     "require-dev": {
         "doctrine/annotations": "^2.0",
-        "friendsofphp/php-cs-fixer": "3.95.23",
-        "phpstan/phpstan": "2.2.12",
+        "friendsofphp/php-cs-fixer": "3.95.27",
+        "phpstan/phpstan": "2.3.1",
         "phpunit/phpunit": "^11.5 || >=12.5.22",
-        "rector/rector": "2.6.5"
+        "rector/rector": "2.7.0"
     },
     "conflict": {
         "symfony/process": ">=6, <6.4.14"
