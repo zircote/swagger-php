@@ -589,6 +589,24 @@ name:
 
 Both forms are valid in OpenAPI 3.1+, but the scalar form is more conventional for single types.
 
+### Nothing is read from a constructor
+
+Spec mode reads a constructor's parameters, as promoted properties, and nothing else on it.
+Classic reads attributes on the constructor as on any other method. Spec leaves them out of the
+document and logs a warning naming them. Declare them on the class, which takes any number of
+operations:
+
+```php
+// classic reads this; spec ignores it, with a warning
+#[OA\Post(path: '/organizations', operationId: 'createOrganization')]
+public function __construct(OrganizationService $service)
+
+// spec
+#[OA\Operation\Post(path: '/organizations', operationId: 'createOrganization')]
+#[OA\Operation\Get(path: '/organizations', operationId: 'getAllOrganizations')]
+class OrganizationsController
+```
+
 ### No `requestBody` on `Get`, `Head`, `Options`, `Trace`
 
 In spec mode, the typed operation subclasses `OA\Operation\Get`, `OA\Operation\Head`, `OA\Operation\Options`, and `OA\Operation\Trace` do not accept a `requestBody` parameter. This enforces the HTTP semantics where request bodies are not defined for these methods.

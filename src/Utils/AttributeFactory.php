@@ -11,6 +11,8 @@ use OpenApi\Assembler\OptionalPropertyAttributeTranslator;
 use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Contracts\AttributeTranslatorInterface;
 use OpenApi\OpenApiException;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
 /**
  * Creates spec attribute instances from PHP reflectors.
@@ -20,8 +22,10 @@ use OpenApi\OpenApiException;
  * collection) and augmenter pipes that need to manufacture spec objects
  * from reflection (e.g. Augmenter\Inheritance for non-schema ancestor members).
  */
-class AttributeFactory
+class AttributeFactory implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var TypedList<AttributeTranslatorInterface>
      */
@@ -151,6 +155,8 @@ class AttributeFactory
             foreach ($constructor->getParameters() as $parameter) {
                 array_push($inner, ...$this->resolveNesting($this->readAttributes($parameter)));
             }
+
+            $this->reportConstructorAttributes($class, $constructor);
         }
 
         foreach ($class->getReflectionConstants() as $constant) {
@@ -292,6 +298,36 @@ class AttributeFactory
         }
 
         return $outer;
+    }
+
+    /**
+     * The constructor is not a place to declare anything: only its parameters, as promoted
+     * properties, are read. What sits on it is ignored, and said so; the class takes the same
+     * attributes.
+     *
+     * @param \ReflectionClass<object> $class
+     */
+    protected function reportConstructorAttributes(\ReflectionClass $class, \ReflectionMethod $constructor): void
+    {
+        // inherited or brought in by a trait, it is reported where it is declared
+        $scannerDetails = $this->tokenScanner->detailsFor($class);
+        if ($constructor->getDeclaringClass()->getName() !== $class->getName()
+            || ($scannerDetails && !in_array($constructor->getName(), $scannerDetails['methods'], true))
+        ) {
+            return;
+        }
+
+        $attributes = $constructor->getAttributes(AttributeInterface::class, \ReflectionAttribute::IS_INSTANCEOF);
+        if ($attributes === []) {
+            return;
+        }
+
+        $this->logger?->warning(sprintf(
+            '%s ignored on a constructor, declare %s on the class in %s',
+            implode(', ', array_map(static fn (\ReflectionAttribute $attribute): string => $attribute->getName(), $attributes)),
+            count($attributes) === 1 ? 'it' : 'them',
+            SourceLocation::fromReflector($constructor),
+        ));
     }
 
     /**

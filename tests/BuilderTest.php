@@ -177,6 +177,34 @@ final class BuilderTest extends OpenApiTestCase
     }
 
     /**
+     * Spec reads only a constructor's parameters, as promoted properties. Anything else on it is
+     * left out of the document, with a warning naming the attributes and where to put them.
+     */
+    public function testBuildReportsConstructorAttributes(): void
+    {
+        require_once self::fixture('PHP/ConstructorAttributes.php');
+
+        $result = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->addSource(self::fixture('PHP/ConstructorAttributes.php'))
+            ->build();
+
+        $this->assertArrayNotHasKey('/constructor', $result->toArray()['paths']);
+        $this->assertArrayHasKey('/method', $result->toArray()['paths']);
+
+        $reported = array_values(array_filter(
+            $result->warnings(),
+            static fn (string $warning): bool => str_contains($warning, 'ignored on a constructor'),
+        ));
+        $this->assertCount(1, $reported);
+        $this->assertStringStartsWith(
+            'OpenApi\Spec\Operation\Post, OpenApi\Spec\Response ignored on a constructor, declare them on the class in ',
+            $reported[0],
+        );
+        $this->assertStringContainsString('ConstructorAttributesController::__construct()', $reported[0]);
+    }
+
+    /**
      * A class that exists by name but will not load — its parent is missing — must cost
      * the scan one class, not the whole run: https://github.com/zircote/swagger-php/issues/1600.
      */
