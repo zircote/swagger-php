@@ -436,6 +436,7 @@ class Builder
         $mergers = $this->getMergers();
 
         return [
+            new Augmenter\TypeAliases(),
             new Augmenter\Inheritance(),
             new Augmenter\Names(),
             new Augmenter\Enums(),

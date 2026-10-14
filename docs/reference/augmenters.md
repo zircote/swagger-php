@@ -40,6 +40,25 @@ and configure individual augmenters via `Pipeline::get()`.
 
 ## Default Augmenters
 
+### [TypeAliases](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/TypeAliases.php)
+
+Translates the type names classic accepts in an explicit `type` into OpenAPI types.
+
+Classic maps `int`, `bool`, `long`, `float`, `double`, `date` and the date-time class names
+through {@see TypeMapper::NATIVE_TYPE_MAP}, so `type: 'long'` becomes `integer` with format
+`int64`. The format is set only where none is given, and in a type list each name gets its
+type alone, as in classic. Each translation logs a deprecation. `mixed` and `byte` are left
+as they are, and the compiler reports them as unknown types.
+
+Runs first, so every augmenter after it sees valid types, and a schema that `Inheritance`
+copies is translated, and reported, once.
+
+@deprecated since 6.15, removed in 8.0 - write the OpenAPI type; {@see TypeAliasesRector} rewrites it
+
+#### Config settings
+- **typeAliases.enabled** : `bool` · default: `true`  
+  No details available.
+
 ### [Inheritance](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Inheritance.php)
 
 Handle all scenarios related to PHP inheritance.

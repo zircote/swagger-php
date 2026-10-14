@@ -29,11 +29,12 @@ between.
 
 `type: 'date'` is not an OpenAPI type. `type: 'string'` with `format: 'date'` is. The
 classic pipeline rewrites the first into the second without saying anything, so the
-attribute stays wrong and the next reader copies it. The spec pipeline reports it:
+attribute stays wrong and the next reader copies it. The spec pipeline rewrites it the same
+way until 8.0, and reports it:
 
 ```
-Schema has unknown type "date", expecting one of string, number, integer, boolean, array,
-object, null in App\Model\Invoice::$issued
+Schema type "date" is a classic alias, use "string" with format "date" (translation removed
+in 8.0; rector rule OpenApi\Rector\TypeAliasesRector rewrites it) in App\Model\Invoice::$issued
 ```
 
 Running a real codebase through `hybrid` found three of them, all years old.
