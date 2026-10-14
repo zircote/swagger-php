@@ -101,6 +101,7 @@ CODE_SAMPLE
 
         $keep = [];
         $move = [];
+        $ref = null;
         foreach ($node->args as $arg) {
             // a positional argument cannot be matched to a parameter name here; leave the whole
             // attribute alone rather than guess at its meaning
@@ -110,9 +111,17 @@ CODE_SAMPLE
 
             $name = $arg->name->toString();
 
-            // an existing schema is the author's own nesting; merging into it is a judgement
-            // this rule should not make
             if ('schema' === $name) {
+                // classic takes any string here, and authors wrote a reference: a pointer or a
+                // class name. The spec argument holds a schema, so it becomes that schema's `ref`
+                if ($this->isReference($arg->value)) {
+                    $ref = new Arg($arg->value, name: new Identifier('ref'));
+
+                    continue;
+                }
+
+                // an existing schema is the author's own nesting; merging into it is a judgement
+                // this rule should not make
                 return null;
             }
 
@@ -121,6 +130,17 @@ CODE_SAMPLE
             } else {
                 $move[] = $arg;
             }
+        }
+
+        if ($ref instanceof Arg) {
+            // a `ref:` of its own beside the reference leaves two to choose from
+            foreach ($move as $arg) {
+                if ($this->isName($arg, 'ref')) {
+                    return null;
+                }
+            }
+
+            array_unshift($move, $ref);
         }
 
         if (!$move) {
@@ -135,6 +155,15 @@ CODE_SAMPLE
         $node->args = $keep;
 
         return $node;
+    }
+
+    /**
+     * A JSON pointer or a `::class` constant: the two forms a reference takes in a `schema:`.
+     */
+    private function isReference(Node\Expr $value): bool
+    {
+        return ($value instanceof Node\Scalar\String_ && str_starts_with($value->value, '#/'))
+            || ($value instanceof Node\Expr\ClassConstFetch && $this->isName($value->name, 'class'));
     }
 
     /**
