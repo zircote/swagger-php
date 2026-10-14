@@ -146,7 +146,8 @@ class Result
     public function toYaml(int $inline = 10, int $indent = 2): string
     {
         if ($this->specOutput !== null) {
-            return Yaml::dump($this->specOutput, $inline, $indent, Yaml::DUMP_OBJECT_AS_MAP | Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE);
+            // Dumped from JSON, so keys like `'200'` stay strings and maps stay objects
+            return Yaml::dump(json_decode($this->toJson()), $inline, $indent, Yaml::DUMP_OBJECT_AS_MAP | Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE);
         }
 
         if (!$this->openApi instanceof OpenApi) {

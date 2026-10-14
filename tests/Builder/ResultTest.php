@@ -55,4 +55,33 @@ final class ResultTest extends TestCase
     {
         $this->assertFalse(Result::fromClassic(['a.php'], null)->isValid());
     }
+
+    public function testToYamlQuotesResponseCodes(): void
+    {
+        $output = [
+            'openapi' => '3.1.0',
+            'paths' => [
+                '/products' => [
+                    'get' => [
+                        'tags' => [],
+                        'responses' => ['200' => ['description' => 'OK']],
+                    ],
+                ],
+            ],
+        ];
+        $result = Result::fromSpec(['a.php'], new Specification(), $output);
+
+        $expected = <<<YAML
+            openapi: 3.1.0
+            paths:
+              /products:
+                get:
+                  tags: []
+                  responses:
+                    '200':
+                      description: OK
+
+            YAML;
+        $this->assertSame($expected, $result->toYaml());
+    }
 }
