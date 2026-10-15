@@ -120,6 +120,7 @@ class Parameter extends AbstractAttribute
     public function contained(): array
     {
         return [
+            Components::class => 'parameters[]',
             Operation::class => 'parameters[]',
             PathItem::class => 'parameters[]',
         ];

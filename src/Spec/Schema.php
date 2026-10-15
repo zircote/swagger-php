@@ -244,4 +244,11 @@ class Schema extends AbstractAttribute
             MediaType::class => 'schema',
         ];
     }
+
+    public function contained(): array
+    {
+        return [
+            Components::class => 'schemas[]',
+        ];
+    }
 }

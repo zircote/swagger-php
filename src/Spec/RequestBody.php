@@ -65,6 +65,7 @@ class RequestBody extends AbstractAttribute
     public function contained(): array
     {
         return [
+            Components::class => 'requestBodies[]',
             Operation::class => 'requestBody',
         ];
     }

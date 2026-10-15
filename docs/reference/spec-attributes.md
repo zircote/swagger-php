@@ -37,6 +37,9 @@ Any attribute given a `component:` key is a root on its own and needs no wrapper
 wrapper remains for the historic spellings — a Header or Example keyed by `header`/`example`
 — and for grouping several components on one class.
 
+On a class it also makes a holder: each member declares a component of its own, and one
+without a key is named after the member, the way a class names its own.
+
   #[Components]
   class SharedComponents {
       #[Parameter(component: 'tenant_id', name: 'tenant_id', in: 'path', schema: new Schema(type: 'string'))]
@@ -51,7 +54,7 @@ wrapper remains for the historic spellings — a Header or Example keyed by `hea
 
 #### Nested elements
 ---
-<a href="#security-scheme">Security\Scheme</a>, <a href="#security-scheme-apikey">Security\Scheme\ApiKey</a>, <a href="#security-scheme-http">Security\Scheme\Http</a>, <a href="#security-scheme-mutualtls">Security\Scheme\MutualTls</a>, <a href="#security-scheme-oauth2">Security\Scheme\OAuth2</a>, <a href="#security-scheme-openidconnect">Security\Scheme\OpenIdConnect</a>
+<a href="#example">Example</a>, <a href="#header">Header</a>, <a href="#link">Link</a>, <a href="#parameter">Parameter</a>, <a href="#parameter-cookie">Parameter\Cookie</a>, <a href="#parameter-header">Parameter\Header</a>, <a href="#parameter-path">Parameter\Path</a>, <a href="#parameter-query">Parameter\Query</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>, <a href="#schema">Schema</a>, <a href="#schema-additionalproperties">Schema\AdditionalProperties</a>, <a href="#schema-items">Schema\Items</a>, <a href="#schema-ref">Schema\Ref</a>, <a href="#security-scheme">Security\Scheme</a>, <a href="#security-scheme-apikey">Security\Scheme\ApiKey</a>, <a href="#security-scheme-http">Security\Scheme\Http</a>, <a href="#security-scheme-mutualtls">Security\Scheme\MutualTls</a>, <a href="#security-scheme-oauth2">Security\Scheme\OAuth2</a>, <a href="#security-scheme-openidconnect">Security\Scheme\OpenIdConnect</a>
 
 #### Parameters
 ---
@@ -158,7 +161,7 @@ Describes an example value for a parameter, media type, or schema.
 
 #### Allowed in
 ---
-<a href="#mediatype">MediaType</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>
+<a href="#components">Components</a>, <a href="#mediatype">MediaType</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>
 
 #### Parameters
 ---
@@ -359,7 +362,7 @@ Describes a single HTTP header.
 
 #### Allowed in
 ---
-<a href="#response">Response</a>
+<a href="#components">Components</a>, <a href="#response">Response</a>
 
 #### Nested elements
 ---
@@ -458,7 +461,7 @@ Describes a possible design-time link for a response.
 
 #### Allowed in
 ---
-<a href="#response">Response</a>
+<a href="#components">Components</a>, <a href="#response">Response</a>
 
 #### Parameters
 ---
@@ -1075,7 +1078,7 @@ Produces:
 
 #### Allowed in
 ---
-<a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
+<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
 
 #### Nested elements
 ---
@@ -1128,7 +1131,7 @@ A parameter passed via an HTTP cookie.
 
 #### Allowed in
 ---
-<a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
+<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
 
 #### Parameters
 ---
@@ -1169,7 +1172,7 @@ A parameter passed via an HTTP header.
 
 #### Allowed in
 ---
-<a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
+<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
 
 #### Parameters
 ---
@@ -1210,7 +1213,7 @@ A parameter passed via the URL path (always required).
 
 #### Allowed in
 ---
-<a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
+<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
 
 #### Parameters
 ---
@@ -1253,7 +1256,7 @@ A parameter passed via the URL query string.
 
 #### Allowed in
 ---
-<a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
+<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
 
 #### Parameters
 ---
@@ -1431,7 +1434,7 @@ Describes a single request body.
 
 #### Allowed in
 ---
-<a href="#operation">Operation</a>
+<a href="#components">Components</a>, <a href="#operation">Operation</a>
 
 #### Nested elements
 ---
@@ -1464,7 +1467,7 @@ Describes a single response from an API operation.
 
 #### Allowed in
 ---
-<a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
+<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
 
 #### Nested elements
 ---
@@ -1525,7 +1528,7 @@ without it the schema has no component key and is reported as missing one.
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#property">Property</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>
+<a href="#components">Components</a>
 
 #### Nested elements
 ---
@@ -1667,7 +1670,7 @@ schemas with constrained additional properties:
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#property">Property</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>
+<a href="#components">Components</a>
 
 #### Parameters
 ---
@@ -1813,7 +1816,7 @@ Since Items extends Schema, the implicit `OA\Property` shortcut applies — no e
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#property">Property</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>
+<a href="#components">Components</a>
 
 #### Parameters
 ---
@@ -1952,7 +1955,7 @@ If used on a `$ref` directly, only the ref value is used.
 
 #### Allowed in
 ---
-<a href="#components">Components</a>, <a href="#property">Property</a>, <a href="#parameter">Parameter</a>, <a href="#header">Header</a>, <a href="#mediatype">MediaType</a>
+<a href="#components">Components</a>
 
 #### Parameters
 ---

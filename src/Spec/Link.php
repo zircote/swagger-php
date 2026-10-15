@@ -65,6 +65,7 @@ class Link extends AbstractAttribute
     public function contained(): array
     {
         return [
+            Components::class => 'links[]',
             Response::class => 'links[]',
         ];
     }
