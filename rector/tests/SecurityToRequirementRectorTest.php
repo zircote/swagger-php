@@ -9,7 +9,7 @@ namespace OpenApi\Rector\Tests;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
-final class SecurityStringToRequirementRectorTest extends AbstractRectorTestCase
+final class SecurityToRequirementRectorTest extends AbstractRectorTestCase
 {
     #[DataProvider('provideData')]
     public function testRule(string $filePath): void
@@ -22,11 +22,11 @@ final class SecurityStringToRequirementRectorTest extends AbstractRectorTestCase
      */
     public static function provideData(): \Iterator
     {
-        return self::yieldFilesFromDirectory(__DIR__ . '/Fixture/SecurityStringToRequirement');
+        return self::yieldFilesFromDirectory(__DIR__ . '/Fixture/SecurityToRequirement');
     }
 
     public function provideConfigFilePath(): string
     {
-        return __DIR__ . '/config/security_string_to_requirement.php';
+        return __DIR__ . '/config/security_to_requirement.php';
     }
 }

@@ -16,7 +16,7 @@
 use OpenApi\Rector\AliasSpecImportsRector;
 use OpenApi\Rector\MoveSchemaKeywordsRector;
 use OpenApi\Rector\NamePositionalArgumentsRector;
-use OpenApi\Rector\SecurityStringToRequirementRector;
+use OpenApi\Rector\SecurityToRequirementRector;
 use OpenApi\Rector\TypeAliasesRector;
 use OpenApi\Rector\TypeClassStringToRefRector;
 use OpenApi\Rector\UnnestOpenApiRector;
@@ -33,7 +33,7 @@ return RectorConfig::configure()
         WrapEnumClassStringRector::class,
         TypeClassStringToRefRector::class,
         TypeAliasesRector::class,
-        SecurityStringToRequirementRector::class,
+        SecurityToRequirementRector::class,
     ])
     ->withConfiguredRule(RenameClassRector::class, require __DIR__ . '/classic-to-spec-classes.php')
     ->withRules([MoveSchemaKeywordsRector::class])

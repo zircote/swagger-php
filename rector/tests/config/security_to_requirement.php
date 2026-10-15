@@ -4,8 +4,8 @@
  * @license Apache 2.0
  */
 
-use OpenApi\Rector\SecurityStringToRequirementRector;
+use OpenApi\Rector\SecurityToRequirementRector;
 use Rector\Config\RectorConfig;
 
 return RectorConfig::configure()
-    ->withRules([SecurityStringToRequirementRector::class]);
+    ->withRules([SecurityToRequirementRector::class]);
