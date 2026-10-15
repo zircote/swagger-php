@@ -509,6 +509,10 @@ public function list() {}
 
 Or apply globally via the OpenApi attribute or via PathItem (cloned to all operations).
 
+Each entry is a `Security\Requirement`. Classic also reads a bare scheme name,
+`security: ['bearerAuth']`, as that scheme with no scopes. Spec drops it with a warning, and the
+operation falls back to the requirements declared above it.
+
 ## Differences from classic attributes
 
 | Classic (`OpenApi\Attributes`)           | Spec (`OpenApi\Spec`)                                                              |

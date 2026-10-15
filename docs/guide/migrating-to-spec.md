@@ -43,6 +43,9 @@ The set:
 - turns a class-string `type: Pet::class` into `ref: Pet::class`
 - rewrites the type names classic maps, such as `type: 'long'`, to the OpenAPI type and format
   they stand for, `type: 'integer', format: 'int64'`
+- turns a bare scheme name, `security: ['bearerAuth']`, into
+  `security: [new Security\Requirement(scheme: 'bearerAuth')]`. Spec drops a string there, with a
+  warning
 - renames the classes, `OpenApi\Attributes\Get` to `OpenApi\Spec\Operation\Get` and so on
 - moves schema keywords off `Property`, `JsonContent` and `XmlContent` into a nested
   `schema: new Schema(...)`, since the spec classes no longer accept them. A `schema:` written

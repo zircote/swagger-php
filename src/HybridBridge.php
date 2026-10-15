@@ -184,7 +184,7 @@ class HybridBridge
         );
 
         if (!Undefined::isDefault($openApi->security)) {
-            $spec->openapi->security = $this->convertSecurityRequirements($openApi->security);
+            $spec->openapi->security = $this->convertSecurityRequirements($openApi->security, $openApi);
         }
 
         if (!Undefined::isDefault($openApi->externalDocs)) {
@@ -391,7 +391,7 @@ class HybridBridge
 
         $security = null;
         if (!Undefined::isDefault($op->security)) {
-            $security = $this->convertSecurityRequirements($op->security);
+            $security = $this->convertSecurityRequirements($op->security, $op);
         }
 
         $result = new Spec\Operation(
@@ -868,16 +868,21 @@ class HybridBridge
     }
 
     /**
-     * @param array<mixed> $security classic security blocks: each entry is a scheme => scopes map
+     * @param array<mixed> $security classic security blocks: each entry is a scheme => scopes map,
+     *                               or a bare scheme name, which classic reads as that scheme with no scopes
      *
      * @return list<Spec\Security\Requirement>
      */
-    protected function convertSecurityRequirements(array $security): array
+    protected function convertSecurityRequirements(array $security, OA\AbstractAnnotation $owner): array
     {
         $requirements = [];
         foreach ($security as $item) {
             if (is_array($item)) {
                 $requirements[] = new Spec\Security\Requirement(schemes: $item);
+            } elseif (is_string($item)) {
+                // kept, as in classic, and reported, since spec drops it
+                $owner->_context->logger?->warning(sprintf('Security requirement "%s" is a bare scheme name, use [\'%s\' => []] in %s', $item, $item, $owner->_context));
+                $requirements[] = new Spec\Security\Requirement(scheme: $item);
             }
         }
 
