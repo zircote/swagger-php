@@ -71,6 +71,7 @@ class Response extends AbstractAttribute
     public function contained(): array
     {
         return [
+            Components::class => 'responses[]',
             Operation::class => 'responses[]',
             PathItem::class => 'responses[]',
         ];

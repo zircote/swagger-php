@@ -76,8 +76,11 @@ class name. Declared anywhere else — a method, a parameter — the class refle
 to the *declaring* class, whose name is already taken by that class's own component, so
 nothing is inferred and the component stays inline.
 
-A parameter is the one exception: its `name` is its identity in OpenAPI, so a parameter
-component is keyed by it wherever it was declared, and falls back to the class name only
+A class carrying `#[OA\Components]` is the exception: it is a holder, so each of its members
+declares a component of its own, named after the member.
+
+A parameter is keyed differently: its `name` is its identity in OpenAPI, so a parameter
+component is keyed by it wherever it was declared, holder or not, and falls back to the class name only
 when it has no name either.
 
 ### [Enums](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Enums.php)

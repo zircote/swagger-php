@@ -79,6 +79,7 @@ class Header extends AbstractAttribute
     public function contained(): array
     {
         return [
+            Components::class => 'headers[]',
             Response::class => 'headers[]',
         ];
     }

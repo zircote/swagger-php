@@ -1,0 +1,44 @@
+openapi: 3.1.0
+info:
+  title: 'Components holder'
+  version: '1.0'
+paths:
+  /things:
+    post:
+      operationId: postThing
+      parameters:
+        -
+          $ref: '#/components/parameters/dryRun'
+      requestBody:
+        $ref: '#/components/requestBodies/newThing'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/thing'
+        '404':
+          $ref: '#/components/responses/notFound'
+components:
+  schemas:
+    thing:
+      properties:
+        id:
+          type: integer
+      type: object
+  responses:
+    notFound:
+      description: 'Not found'
+  parameters:
+    dryRun:
+      name: dryRun
+      in: query
+      schema:
+        type: boolean
+  requestBodies:
+    newThing:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/thing'
