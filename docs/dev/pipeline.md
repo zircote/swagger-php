@@ -251,7 +251,9 @@ Registration order is `Builder::getDefaultAugmenters()`. The phase each augmente
 from its own `group()`: `Resolve` → `Reduce` → `Augment`. Within a phase, execution follows
 registration order.
 
-Ordering that matters: `Inheritance` must run before `PathItems`, because inherited
+Ordering that matters: `TypeAliases` runs first of all, so every augmenter after it sees
+valid types and a schema `Inheritance` copies is translated, and reported, once.
+`Inheritance` must run before `PathItems`, because inherited
 operations have to exist before path prefixes are resolved. `Parameters` must run before
 `Merge`, because a parameter that is only a `ref` has no name or location until it does, and
 `Merge\Operations` keys parameters by both. The phases keep that order: `Parameters` is in

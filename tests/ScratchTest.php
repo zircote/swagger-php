@@ -27,6 +27,12 @@ final class ScratchTest extends OpenApiTestCase
         $basePath = self::fixture('Scratch');
         $phpVersion = self::phpVersion();
 
+        // one per alias; classic maps them without a word
+        $typeAliases = array_map(
+            static fn (string $alias): string => "Schema type \"{$alias}\" is a classic alias",
+            ['long', 'int', 'bool', 'float', 'double', 'date', 'DateTime'],
+        );
+
         // Keyed `{fixture}-{version}`, applying to every mode, or `{fixture}-{version}-{mode}`
         // for a diagnostic only one mode raises. Both keys contribute when both are present.
         $expectedLogs = [
@@ -61,6 +67,12 @@ final class ScratchTest extends OpenApiTestCase
             'ServerVariableEnumClassString-3.1.0' => ['ServerVariable(secure): enum values must be strings, dropping true', 'ServerVariable(secure): enum values must be strings, dropping false'],
             'ServerVariableEnumClassString-3.2.0' => ['ServerVariable(secure): enum values must be strings, dropping true', 'ServerVariable(secure): enum values must be strings, dropping false'],
             'Tags-3.2.0-spec' => ['references non-existent parent'],
+            'TypeAliases-3.0.0-spec' => $typeAliases,
+            'TypeAliases-3.0.0-hybrid' => $typeAliases,
+            'TypeAliases-3.1.0-spec' => $typeAliases,
+            'TypeAliases-3.1.0-hybrid' => $typeAliases,
+            'TypeAliases-3.2.0-spec' => $typeAliases,
+            'TypeAliases-3.2.0-hybrid' => $typeAliases,
             'Tags-3.2.0-hybrid' => ['references non-existent parent'],
         ];
 
