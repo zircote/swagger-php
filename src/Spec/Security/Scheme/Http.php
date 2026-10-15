@@ -25,6 +25,7 @@ class Http extends OA\Security\Scheme
         ?string $description = null,
         ?string $scheme = null,
         ?string $bearerFormat = null,
+        ?string $component = null,
         ?array $x = null,
         ?array $attachables = null,
     ) {
@@ -34,6 +35,7 @@ class Http extends OA\Security\Scheme
             description: $description,
             scheme: $scheme,
             bearerFormat: $bearerFormat,
+            component: $component,
             x: $x,
             attachables: $attachables,
         );

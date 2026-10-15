@@ -35,7 +35,7 @@ class MethodComponentsHolderSpec
     {
     }
 
-    #[OA\Parameter(component: 'page', name: 'page', in: 'query', schema: new OA\Schema(type: OA\Type::Integer))]
+    #[OA\Parameter\Query(component: 'page', name: 'page', schema: new OA\Schema(type: OA\Type::Integer))]
     #[OA\Response(component: 'notFound', description: 'Not found')]
     #[OA\RequestBody(component: 'newThing', content: new OA\MediaType\Json(schema: new OA\Schema(ref: '#/components/schemas/Other')))]
     public function reusable(): void

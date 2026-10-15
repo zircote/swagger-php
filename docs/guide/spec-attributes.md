@@ -486,9 +486,9 @@ Security schemes use typed subclasses:
 ```php
 use OpenApi\Spec as OA;
 
-#[OA\Security\Scheme\Http(securityScheme: 'bearerAuth', scheme: 'bearer')]
-#[OA\Security\Scheme\ApiKey(securityScheme: 'apiKey', name: 'X-API-Key', in: 'header')]
-#[OA\Security\Scheme\OAuth2(securityScheme: 'oauth2', flows: [
+#[OA\Security\Scheme\Http(component: 'bearerAuth', scheme: 'bearer')]
+#[OA\Security\Scheme\ApiKey(component: 'apiKey', name: 'X-API-Key', in: 'header')]
+#[OA\Security\Scheme\OAuth2(component: 'oauth2', flows: [
     new OA\Flow\AuthorizationCode(
         authorizationUrl: 'https://auth.example.com/authorize',
         tokenUrl: 'https://auth.example.com/token',

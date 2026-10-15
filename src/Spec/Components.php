@@ -19,7 +19,7 @@ namespace OpenApi\Spec;
  *
  *   #[Components]
  *   class SharedComponents {
- *       #[Parameter(parameter: 'tenant_id', name: 'tenant_id', in: 'path', schema: new Schema(type: 'string'))]
+ *       #[Parameter(component: 'tenant_id', name: 'tenant_id', in: 'path', schema: new Schema(type: 'string'))]
  *       public string $tenantId;
  *
  *       #[Header(header: 'X-Rate-Limit', schema: new Schema(type: 'integer'))]

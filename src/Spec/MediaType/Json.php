@@ -59,6 +59,7 @@ class Json extends OA\MediaType
      * @param mixed                                            $example     Example of the media type content
      * @param list<OA\Example>|null                            $examples    Examples of the media type content
      * @param list<OA\Encoding>|array<string,OA\Encoding>|null $encoding    Encoding information for specific properties
+     * @param string|null                                      $component   The key this is filed under in `components`, which makes it a reusable component
      * @param array<string,mixed>|null                         $x           Vendor extensions (x-* properties)
      * @param list<OA\Attachable>|null                         $attachables Reusable custom attachable attributes
      */
@@ -74,6 +75,7 @@ class Json extends OA\MediaType
         mixed $example = Undefined::UNDEFINED,
         ?array $examples = null,
         ?array $encoding = null,
+        ?string $component = null,
         ?array $x = null,
         ?array $attachables = null,
     ) {
@@ -83,6 +85,7 @@ class Json extends OA\MediaType
             example: $example,
             examples: $examples,
             encoding: $encoding,
+            component: $component,
             x: $x,
             attachables: $attachables
         );

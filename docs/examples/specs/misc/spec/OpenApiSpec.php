@@ -24,7 +24,7 @@ use OpenApi\Spec as OA;
     description: 'OpenApi parameters',
     variables: [new OA\ServerVariable(serverVariable: 'schema', default: 'https', enum: ['https', 'http'])],
 )]
-#[OA\Security\Scheme\Http(securityScheme: 'bearerAuth', scheme: 'bearer')]
+#[OA\Security\Scheme\Http(scheme: 'bearer', component: 'bearerAuth')]
 class OpenApiSpec
 {
 }

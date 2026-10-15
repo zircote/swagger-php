@@ -11,27 +11,27 @@ use OpenApi\Spec as OA;
 /**
  * Every security scheme type, and every OAuth2 flow.
  */
-#[OA\Security\Scheme\ApiKey(securityScheme: 'apiKeyHeader', name: 'X-API-Key', in: 'header')]
-#[OA\Security\Scheme\ApiKey(securityScheme: 'apiKeyQuery', name: 'api_key', in: 'query')]
-#[OA\Security\Scheme\ApiKey(securityScheme: 'apiKeyCookie', name: 'SESSION', in: 'cookie')]
+#[OA\Security\Scheme\ApiKey(component: 'apiKeyHeader', name: 'X-API-Key', in: 'header')]
+#[OA\Security\Scheme\ApiKey(component: 'apiKeyQuery', name: 'api_key', in: 'query')]
+#[OA\Security\Scheme\ApiKey(component: 'apiKeyCookie', name: 'SESSION', in: 'cookie')]
 class AuthApiKeySchemesSpec
 {
 }
 
-#[OA\Security\Scheme\Http(securityScheme: 'basicAuth', scheme: 'basic')]
-#[OA\Security\Scheme\Http(securityScheme: 'bearerAuth', scheme: 'bearer', bearerFormat: 'JWT')]
+#[OA\Security\Scheme\Http(component: 'basicAuth', scheme: 'basic')]
+#[OA\Security\Scheme\Http(component: 'bearerAuth', scheme: 'bearer', bearerFormat: 'JWT')]
 class AuthHttpSchemesSpec
 {
 }
 
 // mutualTLS exists as of 3.1; the 3.0 document omits it with a warning
-#[OA\Security\Scheme\MutualTls(securityScheme: 'mutualTls', description: 'Client certificate authentication')]
+#[OA\Security\Scheme\MutualTls(component: 'mutualTls', description: 'Client certificate authentication')]
 class AuthMutualTlsSchemeSpec
 {
 }
 
 #[OA\Security\Scheme\OAuth2(
-    securityScheme: 'oauth2',
+    component: 'oauth2',
     description: 'All four flows on a single scheme.',
     flows: [
         new OA\Flow\Implicit(
@@ -60,7 +60,7 @@ class AuthOAuth2SchemeSpec
 }
 
 #[OA\Security\Scheme\OpenIdConnect(
-    securityScheme: 'openIdConnect',
+    component: 'openIdConnect',
     openIdConnectUrl: 'https://example.com/.well-known/openid-configuration',
 )]
 class AuthOtherSchemesSpec
