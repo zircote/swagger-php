@@ -304,6 +304,7 @@ class Builder
         $collecting = new CollectingLogger($this->getLogger());
 
         $attributeFactory = $this->getAttributeFactory();
+        $attributeFactory->setLogger($collecting);
         $assembler = new Assembler(attributeFactory: $attributeFactory);
 
         $sourceScanner = new SourceScanner($this->getLogger());

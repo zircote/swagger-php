@@ -127,6 +127,8 @@ The set leaves these as they are:
   takes different arguments.
 - A root `OpenApi` carrying `paths:`, `components:` or `webhooks:`, or children that are not
   written inline as `new` expressions, is not un-nested.
+- Attributes on a constructor stay where they are, and spec ignores them with a warning. Move
+  them to the class. See [Nothing is read from a constructor](/guide/spec-attributes#nothing-is-read-from-a-constructor).
 - A `Property`, `JsonContent` or `XmlContent` that already has its own `schema:` beside other
   schema keywords is left whole, and fails at generation time with `Unknown named parameter`.
   Move the keywords into the nested schema by hand.

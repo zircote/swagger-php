@@ -1,0 +1,18 @@
+openapi: 3.2.0
+info:
+  title: 'Constructor operation'
+  version: '1.0'
+paths:
+  /constructor:
+    post:
+      operationId: onConstructor
+      responses:
+        '201':
+          description: Created
+  /method:
+    get:
+      operationId: onMethod
+      responses:
+        '200':
+          description: OK
+
