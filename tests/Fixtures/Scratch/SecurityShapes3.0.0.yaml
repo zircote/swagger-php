@@ -1,0 +1,50 @@
+openapi: 3.0.0
+info:
+  title: 'Security shapes'
+  version: '1.0'
+paths:
+  /string:
+    get:
+      operationId: string
+      responses:
+        '200':
+          description: ok
+      security:
+        -
+          bearer: []
+  /list:
+    get:
+      operationId: list
+      responses:
+        '200':
+          description: ok
+      security:
+        -
+          bearer: []
+          api_key: []
+  /map:
+    get:
+      operationId: map
+      responses:
+        '200':
+          description: ok
+      security:
+        -
+          bearer: []
+  /public:
+    get:
+      operationId: public
+      responses:
+        '200':
+          description: ok
+      security: []
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
+

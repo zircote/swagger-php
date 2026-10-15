@@ -259,3 +259,5 @@ operations have to exist before path prefixes are resolved. `Parameters` must ru
 `Merge\Operations` keys parameters by both. The phases keep that order: `Parameters` is in
 `Resolve`, and both `Merge` runs are later. A `ref` parameter added after the `Resolve` phase
 is not given its identity, and the second `Merge` run keeps it beside an inline twin.
+`SecurityRequirements` must run before `PathItems` too, because `PathItems` clones a path
+item's requirements onto its operations, and reads each one as a `Security\Requirement`.

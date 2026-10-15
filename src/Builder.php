@@ -442,6 +442,7 @@ class Builder
             new Augmenter\Names(),
             new Augmenter\Enums(),
             new Augmenter\Shortcuts(),
+            new Augmenter\SecurityRequirements(),
             new Augmenter\PathItems(),
             new Augmenter\Types(),
             new Augmenter\Refs(),
