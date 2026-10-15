@@ -45,7 +45,8 @@ The set:
   they stand for, `type: 'integer', format: 'int64'`
 - renames the classes, `OpenApi\Attributes\Get` to `OpenApi\Spec\Operation\Get` and so on
 - moves schema keywords off `Property`, `JsonContent` and `XmlContent` into a nested
-  `schema: new Schema(...)`, since the spec classes no longer accept them
+  `schema: new Schema(...)`, since the spec classes no longer accept them. A `schema:` written
+  as a reference, `'#/components/schemas/Pet'` or `Pet::class`, becomes that schema's `ref:`
 - imports the spec namespace as `use OpenApi\Spec as OAS;`
 
 Formatting is left to your code style tooling.
@@ -131,7 +132,8 @@ The set leaves these as they are:
   them to the class. See [Nothing is read from a constructor](/guide/spec-attributes#nothing-is-read-from-a-constructor).
 - A `Property`, `JsonContent` or `XmlContent` that already has its own `schema:` beside other
   schema keywords is left whole, and fails at generation time with `Unknown named parameter`.
-  Move the keywords into the nested schema by hand.
+  Move the keywords into the nested schema by hand. The same holds for a `schema:` string that
+  is neither a pointer nor a `::class`, and for one with a `ref:` beside it.
 
 ### The component keys
 
