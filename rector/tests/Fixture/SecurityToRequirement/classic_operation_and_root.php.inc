@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenApi\Rector\Tests\Fixture\SecurityStringToRequirement;
+namespace OpenApi\Rector\Tests\Fixture\SecurityToRequirement;
 
 use OpenApi\Attributes as OA;
 
@@ -17,14 +17,14 @@ class Api
 -----
 <?php
 
-namespace OpenApi\Rector\Tests\Fixture\SecurityStringToRequirement;
+namespace OpenApi\Rector\Tests\Fixture\SecurityToRequirement;
 
 use OpenApi\Attributes as OA;
 
 #[OA\OpenApi(security: [new \OpenApi\Spec\Security\Requirement(scheme: 'apiKey')])]
 class Api
 {
-    #[OA\Get(path: '/users', security: [new \OpenApi\Spec\Security\Requirement(scheme: 'bearerAuth'), ['apiKey' => []]])]
+    #[OA\Get(path: '/users', security: [new \OpenApi\Spec\Security\Requirement(scheme: 'bearerAuth'), new \OpenApi\Spec\Security\Requirement(scheme: 'apiKey')])]
     public function users(): void
     {
     }

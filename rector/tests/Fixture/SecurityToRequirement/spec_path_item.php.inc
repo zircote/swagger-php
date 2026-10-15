@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenApi\Rector\Tests\Fixture\SecurityStringToRequirement;
+namespace OpenApi\Rector\Tests\Fixture\SecurityToRequirement;
 
 use OpenApi\Spec as OA;
 
@@ -13,7 +13,7 @@ class Admin
 -----
 <?php
 
-namespace OpenApi\Rector\Tests\Fixture\SecurityStringToRequirement;
+namespace OpenApi\Rector\Tests\Fixture\SecurityToRequirement;
 
 use OpenApi\Spec as OA;
 
