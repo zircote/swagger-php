@@ -1,0 +1,59 @@
+openapi: 3.0.0
+info:
+  title: 'Method components'
+  version: '1.0'
+paths:
+  /things:
+    get:
+      operationId: getThings
+      parameters:
+        -
+          $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Thing'
+        '404':
+          $ref: '#/components/responses/notFound'
+    post:
+      operationId: postThing
+      requestBody:
+        $ref: '#/components/requestBodies/newThing'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Other'
+components:
+  schemas:
+    Thing:
+      properties:
+        id:
+          type: integer
+      type: object
+    Other:
+      properties:
+        name:
+          type: string
+      type: object
+  responses:
+    notFound:
+      description: 'Not found'
+  parameters:
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+  requestBodies:
+    newThing:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Other'
+
