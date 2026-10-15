@@ -39,7 +39,7 @@ wrapper remains for the historic spellings — a Header or Example keyed by `hea
 
   #[Components]
   class SharedComponents {
-      #[Parameter(parameter: 'tenant_id', name: 'tenant_id', in: 'path', schema: new Schema(type: 'string'))]
+      #[Parameter(component: 'tenant_id', name: 'tenant_id', in: 'path', schema: new Schema(type: 'string'))]
       public string $tenantId;
 
       #[Header(header: 'X-Rate-Limit', schema: new Schema(type: 'integer'))]
@@ -214,7 +214,7 @@ Typed subtypes pre-fill the flow type:
 - `OA\Flow\ClientCredentials` - client credentials grant (tokenUrl required)
 - `OA\Flow\AuthorizationCode` - authorization code grant (authorizationUrl + tokenUrl required)
 
-  #[OA\Security\Scheme\OAuth2(securityScheme: 'oauth2', flows: [
+  #[OA\Security\Scheme\OAuth2(component: 'oauth2', flows: [
       new OA\Flow\AuthorizationCode(
           authorizationUrl: 'https://example.com/oauth/authorize',
           tokenUrl: 'https://example.com/oauth/token',
@@ -566,6 +566,8 @@ The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema
   <dd><p>Examples of the media type content</p></dd>
   <dt><strong>encoding</strong> : <span style="font-family: monospace;">list&lt;OA\Encoding&gt;|array&lt;string,OA\Encoding&gt;|null</span></dt>
   <dd><p>Encoding information for specific properties</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
 </dl>
 
 #### Reference
@@ -618,6 +620,8 @@ The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema
   <dd><p>Examples of the media type content</p></dd>
   <dt><strong>encoding</strong> : <span style="font-family: monospace;">list&lt;OA\Encoding&gt;|array&lt;string,OA\Encoding&gt;|null</span></dt>
   <dd><p>Encoding information for specific properties</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
 </dl>
 
 #### Reference
@@ -1055,9 +1059,9 @@ Inline on an operation:
       new OA\Parameter\Query(name: 'status', schema: new OA\Schema(type: 'string', enum: ['active', 'sold'])),
   ])]
 
-Or as a reusable component (set `parameter` for the component key):
+Or as a reusable component (set `component` for the component key):
 
-  #[OA\Parameter\Path(parameter: 'petId', name: 'id', schema: new OA\Schema(type: 'integer'))]
+  #[OA\Parameter\Path(component: 'petId', name: 'id', schema: new OA\Schema(type: 'integer'))]
 
 Produces:
   components:
@@ -1151,6 +1155,8 @@ A parameter passed via an HTTP cookie.
   <dd><p>No details available.</p></dd>
   <dt><strong>content</strong> : <span style="font-family: monospace;">OA\MediaType|list&lt;OA\MediaType&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
 </dl>
 
 #### Reference
@@ -1189,6 +1195,8 @@ A parameter passed via an HTTP header.
   <dt><strong>examples</strong> : <span style="font-family: monospace;">list&lt;OA\Example&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>content</strong> : <span style="font-family: monospace;">OA\MediaType|list&lt;OA\MediaType&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -1230,6 +1238,8 @@ A parameter passed via the URL path (always required).
   <dt><strong>examples</strong> : <span style="font-family: monospace;">list&lt;OA\Example&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>content</strong> : <span style="font-family: monospace;">OA\MediaType|list&lt;OA\MediaType&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -1275,6 +1285,8 @@ A parameter passed via the URL query string.
   <dt><strong>examples</strong> : <span style="font-family: monospace;">list&lt;OA\Example&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>content</strong> : <span style="font-family: monospace;">OA\MediaType|list&lt;OA\MediaType&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -2048,6 +2060,8 @@ An API key security scheme (header, query, or cookie).
   <dd><p>No details available.</p></dd>
   <dt><strong>in</strong> : <span style="font-family: monospace;">OpenApi\Spec\SchemeIn|string|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
 </dl>
 
 #### Reference
@@ -2073,6 +2087,8 @@ An HTTP authentication security scheme (Basic, Bearer, etc.).
   <dd><p>No details available.</p></dd>
   <dt><strong>bearerFormat</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
 </dl>
 
 #### Reference
@@ -2093,6 +2109,8 @@ A Mutual TLS security scheme.
   <dt><strong>securityScheme</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -2117,6 +2135,8 @@ An OAuth2 security scheme with one or more flows.
   <dd><p>No details available.</p></dd>
   <dt><strong>flows</strong> : <span style="font-family: monospace;">list&lt;OA\Flow&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
 </dl>
 
 #### Reference
@@ -2139,6 +2159,8 @@ An OpenID Connect Discovery security scheme.
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>openIdConnectUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 

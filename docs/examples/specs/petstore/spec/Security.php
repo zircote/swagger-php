@@ -8,7 +8,7 @@ namespace OpenApi\Examples\Specs\Petstore\Spec;
 
 use OpenApi\Spec as OA;
 
-#[OA\Security\Scheme\OAuth2(securityScheme: 'petstore_auth', flows: [
+#[OA\Security\Scheme\OAuth2(flows: [
     new OA\Flow\Implicit(
         authorizationUrl: 'http://petstore.swagger.io/oauth/dialog',
         scopes: [
@@ -16,8 +16,8 @@ use OpenApi\Spec as OA;
             'read:pets' => 'read your pets',
         ],
     ),
-])]
-#[OA\Security\Scheme\ApiKey(securityScheme: 'api_key', name: 'api_key', in: OA\SchemeIn::Header)]
+], component: 'petstore_auth')]
+#[OA\Security\Scheme\ApiKey(name: 'api_key', in: OA\SchemeIn::Header, component: 'api_key')]
 class Security
 {
 }

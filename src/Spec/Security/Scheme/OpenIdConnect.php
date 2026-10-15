@@ -24,6 +24,7 @@ class OpenIdConnect extends OA\Security\Scheme
         ?string $securityScheme = null,
         ?string $description = null,
         ?string $openIdConnectUrl = null,
+        ?string $component = null,
         ?array $x = null,
         ?array $attachables = null,
     ) {
@@ -32,6 +33,7 @@ class OpenIdConnect extends OA\Security\Scheme
             type: OA\SchemeType::OpenIdConnect,
             description: $description,
             openIdConnectUrl: $openIdConnectUrl,
+            component: $component,
             x: $x,
             attachables: $attachables,
         );

@@ -6,11 +6,11 @@ use OpenApi\Spec as OA;
 
 #[OA\Security\Scheme\ApiKey(
     name: 'api_key',
-    securityScheme: 'api_key',
+    component: 'api_key',
     in: 'header',
 )]
 #[OA\Security\Scheme\OAuth2(
-    securityScheme: 'petstore_auth',
+    component: 'petstore_auth',
     flows: [
         new OA\Flow(
             flow: 'implicit',

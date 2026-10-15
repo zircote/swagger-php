@@ -19,7 +19,7 @@ use OpenApi\Spec as OA;
     license: new OA\License(name: 'MIT', identifier: 'MIT'),
 )]
 #[OA\Server(url: 'https://localhost/api', description: 'API server')]
-#[OA\Security\Scheme\Http(securityScheme: 'bearerAuth', description: 'Basic Auth', scheme: 'bearer')]
+#[OA\Security\Scheme\Http(description: 'Basic Auth', scheme: 'bearer', component: 'bearerAuth')]
 #[OA\Tag(name: 'products', description: 'All about products')]
 #[OA\Tag(name: 'catalog', description: 'Catalog API')]
 class OpenApiSpec

@@ -9,8 +9,8 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 use OpenApi\Spec as OA;
 
 #[OA\Info(title: 'Security shapes', version: '1.0')]
-#[OA\Security\Scheme\Http(securityScheme: 'bearer', scheme: 'bearer')]
-#[OA\Security\Scheme\ApiKey(securityScheme: 'api_key', name: 'api_key', in: 'header')]
+#[OA\Security\Scheme\Http(component: 'bearer', scheme: 'bearer')]
+#[OA\Security\Scheme\ApiKey(component: 'api_key', name: 'api_key', in: 'header')]
 class SecurityShapesSpec
 {
     // a bare scheme name in classic, as the rector set rewrites it

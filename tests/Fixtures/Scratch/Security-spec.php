@@ -11,10 +11,10 @@ use OpenApi\Spec as OA;
 #[OA\Security\Scheme\ApiKey(
     name: 'api_key',
     in: 'header',
-    securityScheme: 'api_key',
+    component: 'api_key',
 )]
 #[OA\Security\Scheme\OAuth2(
-    securityScheme: 'store_auth',
+    component: 'store_auth',
     flows: [
         new OA\Flow(
             authorizationUrl: 'http://store.local/oauth/dialog',

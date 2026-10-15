@@ -15,7 +15,7 @@ namespace OpenApi\Spec;
  * - `OA\Flow\ClientCredentials` - client credentials grant (tokenUrl required)
  * - `OA\Flow\AuthorizationCode` - authorization code grant (authorizationUrl + tokenUrl required)
  *
- *   #[OA\Security\Scheme\OAuth2(securityScheme: 'oauth2', flows: [
+ *   #[OA\Security\Scheme\OAuth2(component: 'oauth2', flows: [
  *       new OA\Flow\AuthorizationCode(
  *           authorizationUrl: 'https://example.com/oauth/authorize',
  *           tokenUrl: 'https://example.com/oauth/token',
