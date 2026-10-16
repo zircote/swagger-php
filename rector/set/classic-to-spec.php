@@ -14,6 +14,7 @@
  */
 
 use OpenApi\Rector\AliasSpecImportsRector;
+use OpenApi\Rector\ComponentsHolderRector;
 use OpenApi\Rector\MoveSchemaKeywordsRector;
 use OpenApi\Rector\NamePositionalArgumentsRector;
 use OpenApi\Rector\SecurityToRequirementRector;
@@ -34,6 +35,7 @@ return RectorConfig::configure()
         TypeClassStringToRefRector::class,
         TypeAliasesRector::class,
         SecurityToRequirementRector::class,
+        ComponentsHolderRector::class,
     ])
     ->withConfiguredRule(RenameClassRector::class, require __DIR__ . '/classic-to-spec-classes.php')
     ->withRules([MoveSchemaKeywordsRector::class])

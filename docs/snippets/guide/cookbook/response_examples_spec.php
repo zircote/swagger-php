@@ -15,6 +15,7 @@ class ResultModel
 {
 }
 
+#[OA\Components]
 class Controller
 {
     #[OA\Response(

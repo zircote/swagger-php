@@ -84,7 +84,7 @@ class Assembler
             return [];
         }
 
-        $resolved = $this->attributeFactory->resolveHierarchy($outer, $inner);
+        $resolved = $this->attributeFactory->withoutStrayComponents($outer, $this->attributeFactory->resolveHierarchy($outer, $inner));
 
         $roots = [];
         foreach ($resolved as $attribute) {

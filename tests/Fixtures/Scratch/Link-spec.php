@@ -9,6 +9,7 @@ namespace Fixtures\Scratch;
 use OpenApi\Spec as OA;
 
 #[OA\Info(title: 'Link', version: '1.0')]
+#[OA\Components]
 class LinkControllerSpec
 {
     // Responses stay nested in these operations rather than stacked as siblings: the

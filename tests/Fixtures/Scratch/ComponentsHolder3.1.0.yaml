@@ -22,10 +22,14 @@ paths:
           $ref: '#/components/responses/notFound'
 components:
   schemas:
+    owner:
+      type: string
     thing:
       properties:
         id:
           type: integer
+        owner:
+          $ref: '#/components/schemas/owner'
       type: object
   responses:
     notFound:

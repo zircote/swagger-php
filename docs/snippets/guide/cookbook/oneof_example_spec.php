@@ -4,6 +4,7 @@ namespace Openapi\Snippets\Cookbook\OneOf;
 
 use OpenApi\Spec as OA;
 
+#[OA\Components]
 class Controller
 {
     #[OA\Response(

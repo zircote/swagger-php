@@ -11,6 +11,8 @@ use OpenApi\Assembler\OptionalPropertyAttributeTranslator;
 use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Contracts\AttributeTranslatorInterface;
 use OpenApi\OpenApiException;
+use OpenApi\Spec as OA;
+use OpenApi\Specification\ComponentName;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -298,6 +300,53 @@ class AttributeFactory implements LoggerAwareInterface
         }
 
         return $outer;
+    }
+
+    /**
+     * A component declared on a member is one only in a class carrying `OA\Components`. Without
+     * it, the key alone does not say which is meant: on a property the same schema is the
+     * property's own, and on a method it would be a component. So a keyed component left over
+     * from a member is dropped, and said so.
+     *
+     * A schema on a property arrives inside the `OA\Property` the shortcut adds, so its key is
+     * looked for there. Unkeyed attributes are left alone: a parent class without a schema leaves
+     * its properties unabsorbed on purpose, for `Augmenter\Inheritance` to read again.
+     *
+     * @param list<AttributeInterface> $outer    the class's own attributes
+     * @param list<AttributeInterface> $resolved the class's attributes after absorbing its members
+     *
+     * @return list<AttributeInterface>
+     */
+    public function withoutStrayComponents(array $outer, array $resolved): array
+    {
+        foreach ($outer as $attribute) {
+            if ($attribute instanceof OA\Components) {
+                return $resolved;
+            }
+        }
+
+        $kept = [];
+        foreach ($resolved as $attribute) {
+            $component = $attribute instanceof OA\Property ? $attribute->schema : $attribute;
+            $key = $component instanceof AttributeInterface && ($component->isRoot() || $attribute instanceof OA\Property)
+                ? ComponentName::of($component)
+                : null;
+
+            if ($key === null || in_array($attribute, $outer, true)) {
+                $kept[] = $attribute;
+                continue;
+            }
+
+            $this->logger?->warning(sprintf(
+                '%s "%s" ignored, a component declared on a member needs %s on its class, in %s',
+                $component::class,
+                $key,
+                OA\Components::class,
+                $attribute->getSourceLocation(),
+            ));
+        }
+
+        return $kept;
     }
 
     /**
