@@ -690,6 +690,53 @@ final class CompilerTest extends TestCase
         $this->assertCount(1, array_filter($messages, fn (string $m): bool => str_contains($m, 'has type "array" but no items')));
     }
 
+    /**
+     * @return iterable<string, array{CompilerInterface, string, bool}>
+     */
+    public static function operationMethodProvider(): iterable
+    {
+        foreach (['3.0' => new OpenApi30Compiler(), '3.1' => new OpenApi31Compiler(), '3.2' => new OpenApi32Compiler()] as $version => $compiler) {
+            yield "{$version} trace" => [$compiler, 'trace', true];
+            yield "{$version} query" => [$compiler, 'query', $version === '3.2'];
+            yield "{$version} unknown" => [$compiler, 'frobnicate', false];
+        }
+    }
+
+    #[DataProvider('operationMethodProvider')]
+    public function testOperationMethodsPerVersion(CompilerInterface $compiler, string $method, bool $supported): void
+    {
+        $spec = $this->createSpecification($compiler->getVersion());
+        $spec->operations[] = new OA\Operation(path: '/p', method: $method, responses: [new OA\Response(response: 200, description: 'ok')]);
+        $spec->operations[] = new OA\Operation(webhook: 'hook', method: $method, responses: [new OA\Response(response: 200, description: 'ok')]);
+
+        $messages = array_column($compiler->validate($spec), 'message');
+        $document = $compiler->compile($spec);
+        $warning = "Method {$method} is not supported in OpenAPI " . substr($compiler->getVersion(), 0, 3) . ' and will be omitted';
+
+        $this->assertSame($supported, isset($document['paths']['/p'][$method]));
+        if (!$compiler instanceof OpenApi30Compiler) {
+            $this->assertSame($supported, isset($document['webhooks']['hook'][$method]));
+        }
+        $this->assertCount($supported ? 0 : 2, array_filter($messages, fn (string $m): bool => str_starts_with($m, $warning)));
+    }
+
+    public function test32KeepsTheRequestBodyOfAQueryOperation(): void
+    {
+        $spec = $this->createSpecification('3.2.0');
+        $spec->operations[] = new OA\Operation(
+            path: '/search',
+            method: OA\HttpMethod::Query,
+            requestBody: new OA\RequestBody(content: [new OA\MediaType\Json(schema: new OA\Schema(type: 'object'))]),
+            responses: [new OA\Response(response: 200, description: 'ok')],
+        );
+
+        $compiler = new OpenApi32Compiler();
+        $messages = array_column($compiler->validate($spec), 'message');
+
+        $this->assertArrayHasKey('requestBody', $compiler->compile($spec)['paths']['/search']['query']);
+        $this->assertSame([], array_filter($messages, fn (string $m): bool => str_starts_with($m, 'Request body not supported')));
+    }
+
     #[DataProvider('validationProvider')]
     public function testValidation(CompilerInterface $compiler, Specification $specification, string $expectedMessage): void
     {

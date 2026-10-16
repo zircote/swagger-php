@@ -16,4 +16,5 @@ enum HttpMethod: string
     case Head = 'head';
     case Patch = 'patch';
     case Trace = 'trace';
+    case Query = 'query';
 }
