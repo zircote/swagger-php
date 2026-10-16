@@ -62,7 +62,12 @@ class Context implements \Stringable
 
     public function __serialize(): array
     {
-        return array_filter(get_object_vars($this), static function ($value): bool {
+        $properties = get_object_vars($this);
+        // foreign attributes are for processors during analysis, and nothing reads them from a
+        // finished document; one holding a closure would make the whole document unserializable
+        unset($properties['other']);
+
+        return array_filter($properties, static function ($value): bool {
             $rc = is_object($value) ? new \ReflectionClass($value) : null;
 
             return (!$rc instanceof \ReflectionClass || !$rc->isAnonymous())

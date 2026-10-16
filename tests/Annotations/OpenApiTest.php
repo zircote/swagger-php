@@ -50,6 +50,18 @@ final class OpenApiTest extends OpenApiTestCase
         $this->assertSpecEquals($openapi?->toYaml(), $unserialized?->toYaml());
     }
 
+    public function testSerializeWithClosureInForeignAttribute(): void
+    {
+        // the analyser instantiates foreign attributes only when their class is loaded
+        require_once self::fixture('ClosureInForeignAttribute.php');
+
+        // processed, so the operation and the context holding the attribute are part of it
+        $openapi = $this->analysisFromFixtures(['ClosureInForeignAttribute.php'], $this->processorPipeline())->openapi;
+        $unserialized = unserialize(serialize($openapi));
+
+        $this->assertSpecEquals($openapi?->toYaml(), $unserialized?->toYaml());
+    }
+
     /**
      * @return iterable<mixed>
      */
