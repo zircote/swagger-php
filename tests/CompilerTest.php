@@ -112,6 +112,26 @@ final class CompilerTest extends TestCase
             new OA\Schema(schema: 'N', type: 'string'),
             ['type' => 'string'],
         ];
+
+        foreach (['3.1' => new OpenApi31Compiler(), '3.2' => new OpenApi32Compiler()] as $version => $compiler) {
+            yield "{$version} nullable oneOf → null branch" => [
+                $compiler,
+                new OA\Schema(schema: 'N', nullable: true, oneOf: [new OA\Schema(ref: '#/components/schemas/Pet')]),
+                ['oneOf' => [['$ref' => '#/components/schemas/Pet'], ['type' => 'null']]],
+            ];
+
+            yield "{$version} nullable anyOf → null branch" => [
+                $compiler,
+                new OA\Schema(schema: 'N', nullable: true, anyOf: [new OA\Schema(type: 'string'), new OA\Schema(type: 'integer')]),
+                ['anyOf' => [['type' => 'string'], ['type' => 'integer'], ['type' => 'null']]],
+            ];
+
+            yield "{$version} nullable oneOf with a null branch already" => [
+                $compiler,
+                new OA\Schema(schema: 'N', nullable: true, oneOf: [new OA\Schema(type: 'string'), new OA\Schema(type: 'null')]),
+                ['oneOf' => [['type' => 'string'], ['type' => 'null']]],
+            ];
+        }
     }
 
     /**
