@@ -89,15 +89,14 @@ echo $result->toYaml();
 ```
 
 The result object provides access to the generated spec in multiple formats, the list of scanned
-files, and any validation warnings or errors collected during generation.
+files, and whether the build reported errors. The messages themselves go to the logger set with
+[`setLogger()`](/reference/builder#logger).
 
 ```php
 $result->toYaml();        // YAML string
 $result->toJson();        // JSON string
 $result->toArray();       // PHP array
 $result->files();         // list of scanned files
-$result->warnings();      // validation warnings
-$result->errors();        // validation errors
 $result->isValid();       // true if spec was generated and no errors were reported
 $result->specification(); // the final `Specification` instance
 ```

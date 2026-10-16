@@ -12,6 +12,7 @@ use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Merge;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Tests\Concerns\ExpectsLogEntries;
 use OpenApi\Undefined;
 use OpenApi\Utils\TypedList;
 use PHPUnit\Framework\TestCase;
@@ -23,6 +24,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class OperationsTest extends TestCase
 {
+    use ExpectsLogEntries;
+
     public function testIsNotADefaultMerger(): void
     {
         $mergers = array_map(static fn (object $merger): string => $merger::class, iterator_to_array((new Builder())->getMergers(), false));
@@ -52,6 +55,7 @@ final class OperationsTest extends TestCase
 
     public function testEachHalfKeepsWhatTheOtherLeavesUnset(): void
     {
+        // filling a gap is the point of the fold, not a collision, so nothing is logged
         $result = $this->build(
             new OA\Operation\Get(
                 path: '/users/{id}',
@@ -68,7 +72,6 @@ final class OperationsTest extends TestCase
         $this->assertSame('Show one user', $operation['summary']);
         $this->assertSame('[0-9]+', $operation['parameters'][0]['schema']['pattern']);
         $this->assertSame('The user', $operation['responses'][200]['description']);
-        $this->assertSame([], $result->warnings(), 'filling a gap is the point of the fold, not a collision');
     }
 
     public function testAParameterBothDescribeFoldsSchemaFieldByField(): void
@@ -90,7 +93,7 @@ final class OperationsTest extends TestCase
         $this->assertSame('The user id', $parameters[0]['description']);
         $this->assertSame('integer', $parameters[0]['schema']['type'], 'the later half wins a field both set');
         $this->assertSame('[0-9]+', $parameters[0]['schema']['pattern'], 'and keeps one only the earlier set');
-        $this->assertMatchesWarning('folding into the last in unknown; parameter path:id.schema.type set differently', $result);
+        $this->expectLogEntry('folding into the last in unknown; parameter path:id.schema.type set differently', 'warning');
     }
 
     public function testParametersInDifferentLocationsStayApart(): void
@@ -124,7 +127,7 @@ final class OperationsTest extends TestCase
         $responses = $result->toArray()['paths']['/users']['get']['responses'];
         $this->assertSame('SECOND', $responses[200]['description']);
         $this->assertSame('Not found', $responses[404]['description']);
-        $this->assertMatchesWarning('response 200.description', $result);
+        $this->expectLogEntry('response 200.description', 'warning');
     }
 
     public function testAConflictKeepsTheLaterAndNamesTheField(): void
@@ -135,8 +138,7 @@ final class OperationsTest extends TestCase
         );
 
         $this->assertSame('SECOND', $result->toArray()['paths']['/users']['get']['summary']);
-        $this->assertMatchesWarning('Get "get /users" is declared more than once', $result);
-        $this->assertMatchesWarning('folding into the last in unknown; summary set differently', $result);
+        $this->expectLogEntry('Get "get /users" is declared more than once, folding into the last in unknown; summary set differently', 'warning');
     }
 
     public function testAnExplicitEmptySecurityFromTheLaterHalfOptsOut(): void
@@ -147,6 +149,7 @@ final class OperationsTest extends TestCase
         );
 
         $this->assertSame([], $result->toArray()['paths']['/status']['get']['security']);
+        $this->expectLogEntry('Get "get /status" is declared more than once, folding into the last in unknown; security set differently', 'warning');
     }
 
     public function testTagsAreAUnionAndExtensionsMerge(): void
@@ -160,6 +163,7 @@ final class OperationsTest extends TestCase
         $this->assertSame(['users', 'admin'], $operation['tags']);
         $this->assertSame(1, $operation['x-first']);
         $this->assertSame('second', $operation['x-both']);
+        $this->expectLogEntry('Get "get /users" is declared more than once, folding into the last in unknown; x.both set differently', 'warning');
     }
 
     public function testFirstKeepsTheEarlierValueOfAConflict(): void
@@ -183,7 +187,7 @@ final class OperationsTest extends TestCase
         $this->assertSame('FIRST', $operation['summary']);
         $this->assertSame('string', $operation['parameters'][0]['schema']['type']);
         $this->assertSame('The user id', $operation['parameters'][0]['description'], 'a gap in a shared parameter is still filled');
-        $this->assertMatchesWarning('folding into the first in unknown; summary, parameter path:id.schema.type set differently', $result);
+        $this->expectLogEntry('folding into the first in unknown; summary, parameter path:id.schema.type set differently', 'warning');
     }
 
     public function testNonOverlappingTakesOnlyWhatOneHalfHasAlone(): void
@@ -213,18 +217,17 @@ final class OperationsTest extends TestCase
         $this->assertSame(['id', 'expand'], array_column($operation['parameters'], 'name'));
         $this->assertArrayNotHasKey('description', $operation['parameters'][0], "a parameter both describe is the earlier half's, whole");
         $this->assertSame('string', $operation['parameters'][0]['schema']['type']);
-        $this->assertMatchesWarning('taking only what does not overlap in unknown; summary, parameter path:id.schema.type set differently', $result);
+        $this->expectLogEntry('taking only what does not overlap in unknown; summary, parameter path:id.schema.type set differently', 'warning');
     }
 
     public function testAnOverlapThatAgreesIsNotReported(): void
     {
-        $result = $this->build(
+        // the strict log check is the assertion: an overlap that agrees logs nothing
+        $this->build(
             new OA\Operation\Get(path: '/users', summary: 'SAME', responses: [new OA\Response(response: 200, description: 'ok')]),
             new OA\Operation\Get(path: '/users', summary: 'SAME', responses: [new OA\Response(response: 200, description: 'ok')]),
             mode: Merge\Mode::NonOverlapping,
         );
-
-        $this->assertSame([], $result->warnings());
     }
 
     public function testACallableChoosesTheModePerPair(): void
@@ -240,6 +243,7 @@ final class OperationsTest extends TestCase
         );
 
         $this->assertSame('From the attribute', $result->toArray()['paths']['/users']['get']['summary']);
+        $this->expectLogEntry('Get "get /users" is declared more than once, folding into the first in unknown; summary set differently', 'warning');
     }
 
     public function testACallableMustReturnAMode(): void
@@ -255,6 +259,7 @@ final class OperationsTest extends TestCase
     {
         $result = (new Builder())
             ->setMode(Mode::SPEC)
+            ->setLogger($this->trackingLogger())
             ->withMergers(fn (TypedList $mergers): TypedList => $mergers->insert(new Merge\Operations(), Merge\LastWins::class))
             ->withSpecification(function (Specification $specification): void {
                 $specification->add(
@@ -299,17 +304,11 @@ final class OperationsTest extends TestCase
 
         return (new Builder())
             ->setMode(Mode::SPEC)
+            ->setLogger($this->trackingLogger())
             ->withMergers(fn (TypedList $mergers): TypedList => $mergers->insert(new Merge\Operations($mode), Merge\LastWins::class))
             ->withSpecification(function (Specification $specification) use ($operations): void {
                 $specification->add(new OA\Info(title: 'T', version: '1.0'), ...$operations);
             })
             ->build();
-    }
-
-    protected function assertMatchesWarning(string $expected, Builder\Result $result): void
-    {
-        $matching = array_filter($result->warnings(), fn (string $warning): bool => str_contains($warning, $expected));
-
-        $this->assertCount(1, $matching, "expected exactly one warning containing '{$expected}', got: " . implode(' | ', $result->warnings()));
     }
 }

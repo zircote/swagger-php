@@ -387,8 +387,7 @@ class Builder
 
     protected function doHybridAssemble(Specification $specification): void
     {
-        $collectingLogger = new CollectingLogger($this->getLogger());
-        $generator = new Generator($collectingLogger);
+        $generator = new Generator($this->getLogger());
 
         if ($this->version !== null) {
             $generator->setVersion($this->version);
@@ -402,7 +401,7 @@ class Builder
 
         $analysis = new Analysis([], new Context([
             'version' => $generator->getVersion(),
-            'logger' => $collectingLogger,
+            'logger' => $this->getLogger(),
         ]));
         $generator->generate($this->sources, $analysis, validate: false);
 

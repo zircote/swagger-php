@@ -110,6 +110,8 @@ $builder->setLogger($psrLogger);
 
 Accepts any PSR-3 logger. Defaults to `NullLogger` (silent). The CLI command sets its own console logger.
 
+The logger receives every message of a build: scan problems, skipped classes, assembly warnings and the validation diagnostics. A class that fails to load or assemble is left out of the document with a warning.
+
 ### Generator configuration (classic mode)
 
 For advanced Generator configuration (custom analysers, processors, aliases, type resolvers), use `withGenerator()`:
@@ -252,10 +254,14 @@ $result->toJson();        // string — JSON output
 $result->toYaml();        // string — YAML output
 $result->saveAs($file);   // void — write to disk, format from the extension
 $result->files();         // string[] — scanned source files
-$result->log();           // array — all log entries [{level, message}, ...]
-$result->warnings();      // string[] — warning messages
-$result->errors();        // string[] — error messages
 $result->specification(); // ?Specification — spec/hybrid only, null in classic
 $result->openApi();       // ?OA\OpenApi — classic only, null in spec/hybrid
+$result->log();           // deprecated — array of log entries [{level, message}, ...]
+$result->warnings();      // deprecated — string[] — warning messages
+$result->errors();        // deprecated — string[] — error messages
 ```
+
+::: warning Deprecated
+`log()`, `warnings()` and `errors()` are deprecated since 6.16 and will be removed in 8.0. In spec and hybrid mode they hold only part of what the logger receives. Use a logger set with [`setLogger()`](#logger) instead.
+:::
 

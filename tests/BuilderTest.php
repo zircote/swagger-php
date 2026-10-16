@@ -16,7 +16,6 @@ use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\Tests\Doubles\RecordingLogger;
 use OpenApi\Utils\Pipeline;
 use OpenApi\Utils\SourceFinder;
-use Psr\Log\NullLogger;
 
 final class BuilderTest extends OpenApiTestCase
 {
@@ -44,14 +43,15 @@ final class BuilderTest extends OpenApiTestCase
     public function testIsValidReportsCompilerErrors(): void
     {
         // no OA\Info anywhere -> the compiler reports "info is required"
+        $this->expectLogEntry('info is required', 'error');
+
         $result = (new Builder())
             ->setMode(Mode::SPEC)
             ->addSource((string) self::fixture('Assembler/SimpleController.php'))
-            ->setLogger(new NullLogger())
+            ->setLogger($this->trackingLogger())
             ->build();
 
         $this->assertNotEmpty($result->toArray(), 'a document is still produced');
-        $this->assertContains('info is required', $result->errors());
         $this->assertFalse($result->isValid(), 'errors must make the result invalid');
     }
 
@@ -163,17 +163,16 @@ final class BuilderTest extends OpenApiTestCase
         $this->assertEmpty($result->files());
     }
 
-    public function testBuildCollectsWarnings(): void
+    public function testBuildLogsClassicWarnings(): void
     {
-        $result = (new Builder())
+        $this->expectLogEntry('Required @OA\Info() not found', 'warning');
+        $this->expectLogEntry('Required @OA\PathItem() not found', 'warning');
+
+        (new Builder())
             ->setMode(Mode::CLASSIC)
             ->setSources([])
-            ->setLogger(new NullLogger())
+            ->setLogger($this->trackingLogger())
             ->build();
-
-        $this->assertNotEmpty($result->warnings());
-        $this->assertContains('Required @OA\Info() not found', $result->warnings());
-        $this->assertContains('Required @OA\PathItem() not found', $result->warnings());
     }
 
     /**
@@ -187,16 +186,15 @@ final class BuilderTest extends OpenApiTestCase
         $result = (new Builder())
             ->setMode(Mode::SPEC)
             ->addSource(self::fixture('PHP/ConstructorAttributes.php'))
+            ->setLogger($this->trackingLogger())
             ->build();
 
         $this->assertArrayNotHasKey('/constructor', $result->toArray()['paths']);
         $this->assertArrayHasKey('/method', $result->toArray()['paths']);
 
-        $reported = array_values(array_filter(
-            $result->warnings(),
-            static fn (string $warning): bool => str_contains($warning, 'ignored on a constructor'),
-        ));
-        $this->assertCount(1, $reported);
+        $this->expectLogEntry('ignored on a constructor', 'warning');
+
+        $reported = array_column($this->recordedLogEntries(), 'message');
         $this->assertStringStartsWith(
             'OpenApi\Spec\Operation\Post, OpenApi\Spec\Response ignored on a constructor, declare them on the class in ',
             $reported[0],
@@ -215,19 +213,13 @@ final class BuilderTest extends OpenApiTestCase
         $result = (new Builder())
             ->setMode(Mode::SPEC)
             ->addSource(self::fixture('PHP/StrayComponents.php'))
+            ->setLogger($this->trackingLogger())
             ->build();
 
         $this->assertArrayNotHasKey('components', $result->toArray());
 
-        $reported = array_values(array_filter(
-            $result->warnings(),
-            static fn (string $warning): bool => str_contains($warning, 'a component declared on a member needs'),
-        ));
-        $this->assertCount(2, $reported);
-        $this->assertStringStartsWith('OpenApi\Spec\Schema "onProperty" ignored, a component declared on a member needs OpenApi\Spec\Components on its class, in ', $reported[0]);
-        $this->assertStringContainsString('StrayComponents::$property', $reported[0]);
-        $this->assertStringStartsWith('OpenApi\Spec\Schema "onMethod" ignored', $reported[1]);
-        $this->assertStringContainsString('StrayComponents::method()', $reported[1]);
+        $this->expectLogEntry('OpenApi\Spec\Schema "onProperty" ignored, a component declared on a member needs OpenApi\Spec\Components on its class, in ' . Fixtures\PHP\StrayComponents::class . '::$property in ', 'warning');
+        $this->expectLogEntry('OpenApi\Spec\Schema "onMethod" ignored, a component declared on a member needs OpenApi\Spec\Components on its class, in ' . Fixtures\PHP\StrayComponents::class . '::method() in ', 'warning');
     }
 
     /**
@@ -236,16 +228,18 @@ final class BuilderTest extends OpenApiTestCase
      */
     public function testBuildSkipsClassThatWillNotLoadClassic(): void
     {
+        $this->expectLogEntry(
+            'Skipping unloadable OpenApi\Tests\Fixtures\PHP\UnloadableClassRepro\BrokenStub: Class "OpenApi\Tests\Fixtures\PHP\UnloadableClassRepro\DeliberatelyAbsentParent" not found',
+            'warning',
+        );
+
         $result = (new Builder())
             ->setMode(Mode::CLASSIC)
             ->addSource(self::fixture('PHP/UnloadableClassRepro'))
+            ->setLogger($this->trackingLogger())
             ->build();
 
         $this->assertStringContainsString('getEndpoint', $result->toYaml());
-        $this->assertContains(
-            'Skipping unloadable OpenApi\Tests\Fixtures\PHP\UnloadableClassRepro\BrokenStub: Class "OpenApi\Tests\Fixtures\PHP\UnloadableClassRepro\DeliberatelyAbsentParent" not found',
-            $result->warnings(),
-        );
     }
 
     public function testBuildSkipsClassThatWillNotLoadHybrid(): void
@@ -294,6 +288,26 @@ final class BuilderTest extends OpenApiTestCase
             ->build();
 
         $this->assertArrayHasKey('Manufacturer', $result->toArray()['components']['schemas']);
+    }
+
+    /**
+     * A skipped class is reported to the attached logger, and the document left behind is
+     * still valid. Both skips: the scan's, for a class that will not load, and assembly's, for
+     * one whose attributes fail.
+     */
+    public function testBuildLogsSkippedClassesAndStaysValidSpec(): void
+    {
+        $this->expectLogEntry('Skipping unloadable ' . Fixtures\PHP\SkippedClasses\WillNotReflect::class . ': ', 'warning');
+        $this->expectLogEntry('Skipping unloadable ' . Fixtures\PHP\SkippedClasses\WillNotCollect::class . ': ', 'warning');
+
+        $result = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->addSource(self::fixture('PHP/SkippedClasses'))
+            ->setLogger($this->trackingLogger())
+            ->build();
+
+        $this->assertSame(['/endpoint'], array_keys($result->toArray()['paths']));
+        $this->assertTrue($result->isValid(), 'a skip is a build message, not a validation error');
     }
 
     public function testCompilerDiagnosticsReachTheConfiguredLogger(): void
