@@ -330,6 +330,16 @@ class Builder
         foreach ($sourceScanner->getReflectors() as $reflector) {
             if ($reflector instanceof \ReflectionClass) {
                 $this->collectSafely($assembler, $reflector);
+            } else {
+                $this->getLogger()->warning(sprintf(
+                    'Skipping %s source %s: only ReflectionClass sources are read',
+                    $reflector::class,
+                    match (true) {
+                        $reflector instanceof \ReflectionMethod, $reflector instanceof \ReflectionProperty => $reflector->class . '::' . $reflector->getName(),
+                        method_exists($reflector, 'getName') => $reflector->getName(),
+                        default => '',
+                    },
+                ));
             }
         }
 
@@ -405,6 +415,22 @@ class Builder
             'logger' => $collectingLogger,
         ]));
         $generator->generate($this->sources, $analysis, validate: false);
+
+        // the generator scans files only, so a class passed as a reflector is analysed on its own
+        $analyser = $generator->getAnalyser();
+        $sourceScanner = new SourceScanner(new NullLogger());
+        $sourceScanner->scan($this->sources);
+        foreach ($sourceScanner->getReflectors() as $reflector) {
+            if (!$reflector instanceof \ReflectionClass) {
+                continue;
+            }
+
+            if ($analyser instanceof Analysers\ReflectionAnalyser) {
+                $analyser->fromFqdn($reflector->getName(), $analysis);
+            } else {
+                $this->getLogger()->warning(sprintf('Skipping %s for classic attributes: %s reads files only', $reflector->getName(), $analyser::class));
+            }
+        }
 
         $bridge = new HybridBridge();
         $bridge->fromAnalysis($analysis, $specification);

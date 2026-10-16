@@ -10,6 +10,7 @@ use OpenApi\Augmenter;
 use OpenApi\Augmenter\OperationIds;
 use OpenApi\Builder;
 use OpenApi\Builder\Mode;
+use OpenApi\Examples\Specs\Webhooks\Attributes as WebhooksAttributes;
 use OpenApi\Examples\Specs\Webhooks\Spec as WebhooksSpec;
 use OpenApi\Generator;
 use OpenApi\Tests\Concerns\UsesExamples;
@@ -147,6 +148,44 @@ final class BuilderTest extends OpenApiTestCase
             ->build();
 
         $this->assertSpecEquals($fileResult->toArray(), $reflectorResult->toArray());
+    }
+
+    public function testBuildReflectorsHybrid(): void
+    {
+        $this->registerExampleClassloader('webhooks', 'attributes');
+
+        $reflectorResult = (new Builder())
+            ->setMode(Mode::HYBRID)
+            ->addSource([
+                new \ReflectionClass(WebhooksAttributes\OpenApiSpec::class),
+                new \ReflectionClass(WebhooksAttributes\Pet::class),
+            ])
+            ->build();
+
+        $fileResult = (new Builder())
+            ->setMode(Mode::HYBRID)
+            ->addSource(new SourceFinder(self::examplePath('webhooks/attributes')))
+            ->build();
+
+        // the info lives on a classic attribute, so only the classic half can have read it
+        $this->assertSame('Webhook Example', $reflectorResult->toArray()['info']['title'] ?? null);
+        $this->assertSpecEquals($fileResult->toArray(), $reflectorResult->toArray());
+    }
+
+    public function testBuildReportsANonClassReflectorSpec(): void
+    {
+        $this->expectLogEntry('Skipping ReflectionMethod source ' . Fixtures\Assembler\SimpleController::class . '::', 'warning');
+        $this->allowLogEntry('info is required', 'At least one of paths, webhooks, or components is required');
+
+        $method = (new \ReflectionClass(Fixtures\Assembler\SimpleController::class))->getMethods()[0];
+
+        $result = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->addSource($method)
+            ->setLogger($this->trackingLogger())
+            ->build();
+
+        $this->assertArrayNotHasKey('paths', $result->toArray());
     }
 
     public function testBuildEmptySources(): void
