@@ -553,44 +553,6 @@ operation falls back to the requirements declared above it.
 
 Beyond the API changes listed above, spec mode produces slightly different output in some cases:
 
-### Explicit `type: object` on `allOf` schemas
-
-When a class-based schema uses `allOf`, spec mode emits an explicit `type: object` on the schema itself. Classic mode omits it.
-
-```php
-#[OA\Schema(
-    schema: 'create-user',
-    allOf: [
-        new OA\Schema(ref: '#/components/schemas/abstract-user'),
-        new OA\Schema(required: ['name', 'email']),
-    ]
-)]
-class CreateUser extends AbstractUser {}
-```
-
-Classic output:
-```yaml
-create-user:
-  allOf:
-    - $ref: '#/components/schemas/abstract-user'
-    - required:
-        - name
-        - email
-```
-
-Spec output:
-```yaml
-create-user:
-  type: object
-  allOf:
-    - $ref: '#/components/schemas/abstract-user'
-    - required:
-        - name
-        - email
-```
-
-This is semantically stricter. The schema declares explicitly that it must be an object, instead of leaving the type to be inferred from the `allOf` members.
-
 ### Single-element `type` arrays reduced to string
 
 When a schema's `type` is an array with a single element (e.g. `['string']`), spec mode compiles it as a plain string (`type: 'string'`). Classic mode may emit the array form.

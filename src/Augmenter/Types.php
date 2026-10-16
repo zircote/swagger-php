@@ -87,7 +87,7 @@ class Types implements PipeInterface
 
         if ($schema->items instanceof OA\Schema) {
             $schema->type = 'array';
-        } elseif ($schema->properties || $schema->allOf || $schema->patternProperties) {
+        } elseif ($schema->properties || $schema->patternProperties) {
             $schema->type = 'object';
         }
     }

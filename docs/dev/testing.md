@@ -171,8 +171,7 @@ things `@deprecated` cannot reach, so the removal is a grep rather than an untan
   suffix stops meaning anything.
 - **`[classic/hybrid]` the mode axis in `ScratchTest::scratchTestCases()`**: `Mode::CLASSIC`
   and `Mode::HYBRID`, the rule that hybrid is held to the spec expectation where a pair exists,
-  and the `-classic` / `-hybrid` suffixes on both expected-log keys and yaml overrides
-  (`ThirdPartyAnnotation3.1.0-hybrid.yaml` and its siblings).
+  and the `-classic` / `-hybrid` suffixes on both expected-log keys and yaml overrides.
 - **`[classic]` the `legacy` type resolver and its `*-legacy.yaml` expectations.** The matrix
   already excludes `LegacyTypeResolver` from every non-classic mode, so those files are
   classic-only by construction.

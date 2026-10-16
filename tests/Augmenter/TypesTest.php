@@ -8,8 +8,10 @@ namespace OpenApi\Tests\Augmenter;
 
 use OpenApi\Augmenter;
 use OpenApi\Spec as OA;
+use OpenApi\Specification;
 use OpenApi\Tests\Concerns\AssemblesSpecification;
 use OpenApi\Tests\Fixtures;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class TypesTest extends TestCase
@@ -85,5 +87,28 @@ final class TypesTest extends TestCase
 
         $schema = $spec->operations[0]->responses[0]->content[0]->schema;
         $this->assertSame(Fixtures\Augmenter\RefTarget::class, $schema->ref);
+    }
+
+    /**
+     * @return iterable<string, array{OA\Schema, string|null}>
+     */
+    public static function untypedSchemaProvider(): iterable
+    {
+        yield 'items' => [new OA\Schema(items: new OA\Schema(type: 'string')), 'array'];
+        yield 'properties' => [new OA\Schema(properties: [new OA\Property(property: 'name')]), 'object'];
+        yield 'patternProperties' => [new OA\Schema(patternProperties: ['^x-' => new OA\Schema(type: 'string')]), 'object'];
+        // what is composed decides the type, and it may not be an object
+        yield 'allOf' => [new OA\Schema(allOf: [new OA\Schema(ref: '#/components/schemas/Code'), new OA\Schema(maxLength: 3)]), null];
+    }
+
+    #[DataProvider('untypedSchemaProvider')]
+    public function testInfersSchemaType(OA\Schema $schema, ?string $expected): void
+    {
+        $spec = new Specification();
+        $spec->schemas[] = $schema;
+
+        (new Augmenter\Types())($spec);
+
+        $this->assertSame($expected, $schema->type);
     }
 }
