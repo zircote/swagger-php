@@ -26,11 +26,8 @@ class ComponentsHolderEndpoint
 // classic names nothing after a method, so the keys the spec holder infers are spelled out
 class ComponentsHolder
 {
-    // classic declares it on a method: hybrid does not keep a keyed schema on a property yet
     #[OAT\Schema(schema: 'owner', type: 'string')]
-    public function owner(): void
-    {
-    }
+    public $owner;
 
     #[OAT\Schema(schema: 'thing', type: 'object', properties: [new OAT\Property(property: 'id', type: 'integer'), new OAT\Property(property: 'owner', ref: '#/components/schemas/owner')])]
     public function thing(): void
