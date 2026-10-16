@@ -796,6 +796,23 @@ final class CompilerTest extends TestCase
         $this->assertContains($expectedMessage, $messages);
     }
 
+    public function testOperationWithoutAMethodIsReportedAndOmitted(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->operations[] = new OA\Operation(path: '/p', requestBody: new OA\RequestBody(description: 'body'), responses: [new OA\Response(response: 200, description: 'ok')]);
+        $spec->operations[] = new OA\Operation(webhook: 'hook', responses: [new OA\Response(response: 200, description: 'ok')]);
+
+        $compiler = new OpenApi31Compiler();
+        $messages = array_column($compiler->validate($spec), 'message');
+        $document = $compiler->compile($spec);
+
+        $this->assertNull($spec->operations[0]->method);
+        $this->assertArrayNotHasKey('paths', $document);
+        $this->assertArrayNotHasKey('webhooks', $document);
+        $this->assertCount(2, array_filter($messages, fn (string $m): bool => str_starts_with($m, 'Operation without a method will be omitted in ')));
+        $this->assertSame([], array_filter($messages, fn (string $m): bool => str_starts_with($m, 'Request body not supported')));
+    }
+
     // --- x- extensions ---
 
     public function testExtensionsEmitted(): void

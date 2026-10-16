@@ -695,7 +695,7 @@ For webhooks, use `webhook` instead of `path`:
   <dt><strong>webhook</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The webhook name (mutually exclusive with path)</p></dd>
   <dt><strong>method</strong> : <span style="font-family: monospace;">string|HttpMethod|null</span></dt>
-  <dd><p>The HTTP method (get, post, put, delete, etc.)</p></dd>
+  <dd><p>The HTTP method (get, post, put, delete, etc.). An operation still without one at compile time is left out, with a warning</p></dd>
   <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>Unique identifier for the operation</p></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>

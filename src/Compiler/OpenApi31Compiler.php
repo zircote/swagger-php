@@ -983,7 +983,15 @@ class OpenApi31Compiler implements CompilerInterface
     protected function validateOperations(Specification $specification): void
     {
         $specification->getWalker()->visit(OA\Operation::class, function (OA\Operation $operation): void {
-            if ($operation->method !== null && !in_array($operation->method, static::OPERATION_METHODS, true)) {
+            if ($operation->method === null) {
+                if ($operation->path !== null || $operation->webhook !== null) {
+                    $this->logger->warning('Operation without a method will be omitted in ' . $operation->getSourceLocation());
+                }
+
+                return;
+            }
+
+            if (!in_array($operation->method, static::OPERATION_METHODS, true)) {
                 $this->logger->warning("Method {$operation->method} is not supported in OpenAPI " . substr($this->getVersion(), 0, 3) . ' and will be omitted in ' . $operation->getSourceLocation());
 
                 return;
