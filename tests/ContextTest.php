@@ -91,4 +91,15 @@ final class ContextTest extends OpenApiTestCase
         $this->assertNotSame($unserialized, $unserialized->root());
         $this->assertEquals(__FILE__, $unserialized->filename);
     }
+
+    public function testSerializeLeavesOutOther(): void
+    {
+        // a foreign attribute holding a closure, as Symfony's `#[IsGranted]` can since PHP 8.5
+        $foreign = new \ArrayObject(['check' => static fn (): bool => true]);
+        $context = new Context(['other' => [$foreign]], $this->getContext());
+
+        $unserialized = unserialize(serialize($context));
+
+        $this->assertNull($unserialized->other);
+    }
 }
