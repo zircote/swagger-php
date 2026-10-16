@@ -18,7 +18,7 @@ use OpenApi\Undefined;
  * - nullable is a separate boolean keyword, which needs a type beside it (3.0.3); a nullable
  *   $ref, oneOf or anyOf gets a branch that matches only null instead, as 3.1 adds {type: 'null'}
  * - exclusiveMinimum/Maximum are booleans (used alongside minimum/maximum)
- * - No $ref siblings (summary/description stripped from $ref objects)
+ * - No $ref siblings (summary/description stripped from $ref objects, with a warning)
  * - No webhooks
  * - No mutualTLS security scheme (added in 3.1)
  * - No const, no examples array on Schema (only singular example)
@@ -79,7 +79,44 @@ class OpenApi30Compiler extends OpenApi31Compiler
             }
         }
 
+        $this->validateReferenceSiblings($specification);
+
         return $this->logger->entries();
+    }
+
+    /**
+     * 3.0's Reference Object is the `$ref` alone.
+     */
+    #[\Override]
+    protected function compileReference(OA\Parameter|OA\RequestBody|OA\Response|OA\Header|OA\Link|OA\Example|OA\Security\Scheme $attribute): array
+    {
+        return ['$ref' => $attribute->ref];
+    }
+
+    protected function validateReferenceSiblings(Specification $specification): void
+    {
+        $specification->getWalker()->eachRef(function (object $attribute): void {
+            if (!$attribute instanceof OA\Parameter && !$attribute instanceof OA\RequestBody && !$attribute instanceof OA\Response
+                && !$attribute instanceof OA\Header && !$attribute instanceof OA\Link && !$attribute instanceof OA\Example
+                && !$attribute instanceof OA\Security\Scheme) {
+                return;
+            }
+
+            $siblings = array_keys($this->filter([
+                'summary' => $attribute instanceof OA\Example ? $attribute->summary : null,
+                'description' => $attribute->description,
+            ]));
+
+            if ($siblings !== []) {
+                $this->logger->warning(sprintf(
+                    '%s %s beside $ref %s is not supported in OpenAPI 3.0 and will be omitted in %s',
+                    (new \ReflectionClass($attribute))->getShortName(),
+                    implode(' and ', $siblings),
+                    $attribute->ref instanceof OA\Schema\Ref ? $attribute->ref->ref : $attribute->ref,
+                    $attribute->getSourceLocation(),
+                ));
+            }
+        });
     }
 
     #[\Override]
