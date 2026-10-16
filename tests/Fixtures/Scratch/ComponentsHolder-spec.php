@@ -26,7 +26,10 @@ class ComponentsHolderEndpointSpec
 #[OA\Components]
 class ComponentsHolderSpec
 {
-    #[OA\Schema(type: OA\Type::Object, properties: ['id' => OA\Type::Integer])]
+    #[OA\Schema(type: OA\Type::String)]
+    public $owner;
+
+    #[OA\Schema(type: OA\Type::Object, properties: ['id' => OA\Type::Integer, 'owner' => new OA\Schema(ref: '#/components/schemas/owner')])]
     public function thing(): void
     {
     }

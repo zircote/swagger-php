@@ -8,6 +8,7 @@ namespace OpenApi\Examples\Specs\UsingLinks\Spec;
 
 use OpenApi\Spec as OA;
 
+#[OA\Components]
 class RepositoriesController
 {
     // Responses stay nested in these operations: the `OA\Link` attributes beside them

@@ -4,6 +4,7 @@ namespace Openapi\Snippets\Shortcuts\MediaType;
 
 use OpenApi\Spec as OA;
 
+#[OA\Components]
 class Controller
 {
     #[OA\Response(

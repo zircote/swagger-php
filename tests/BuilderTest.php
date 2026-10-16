@@ -205,6 +205,32 @@ final class BuilderTest extends OpenApiTestCase
     }
 
     /**
+     * A component declared on a member is one only in a class carrying `#[OA\Components]`.
+     * Without it, a keyed one is left out of the document, with a warning naming the member.
+     */
+    public function testBuildReportsStrayComponents(): void
+    {
+        require_once self::fixture('PHP/StrayComponents.php');
+
+        $result = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->addSource(self::fixture('PHP/StrayComponents.php'))
+            ->build();
+
+        $this->assertArrayNotHasKey('components', $result->toArray());
+
+        $reported = array_values(array_filter(
+            $result->warnings(),
+            static fn (string $warning): bool => str_contains($warning, 'a component declared on a member needs'),
+        ));
+        $this->assertCount(2, $reported);
+        $this->assertStringStartsWith('OpenApi\Spec\Schema "onProperty" ignored, a component declared on a member needs OpenApi\Spec\Components on its class, in ', $reported[0]);
+        $this->assertStringContainsString('StrayComponents::$property', $reported[0]);
+        $this->assertStringStartsWith('OpenApi\Spec\Schema "onMethod" ignored', $reported[1]);
+        $this->assertStringContainsString('StrayComponents::method()', $reported[1]);
+    }
+
+    /**
      * A class that exists by name but will not load — its parent is missing — must cost
      * the scan one class, not the whole run: https://github.com/zircote/swagger-php/issues/1600.
      */

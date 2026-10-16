@@ -49,6 +49,9 @@ The set:
   schemes in one array become `schemes:`. Spec drops a string there, with a warning, and
   compiles an array only as a deprecated form. Items that are not literals, such as a constant,
   are left for you
+- adds `#[Components]` to a class whose members declare keyed components, since spec takes a
+  component on a member only in a holder. A class with a `Schema` of its own is left alone, and
+  so is a keyed attribute that something beside it nests, such as a response beside an operation
 - renames the classes, `OpenApi\Attributes\Get` to `OpenApi\Spec\Operation\Get` and so on
 - moves schema keywords off `Property`, `JsonContent` and `XmlContent` into a nested
   `schema: new Schema(...)`, since the spec classes no longer accept them. A `schema:` written

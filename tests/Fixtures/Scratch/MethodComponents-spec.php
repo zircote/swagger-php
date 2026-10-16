@@ -22,7 +22,9 @@ class MethodComponentsPostSpec
 {
 }
 
-// components declared on methods that exist only to carry them, rather than on the class
+// components declared on methods that exist only to carry them, rather than on the class, which
+// needs the wrapper to hold them
+#[OA\Components]
 class MethodComponentsHolderSpec
 {
     #[OA\Schema(component: 'Thing', type: OA\Type::Object, properties: ['id' => OA\Type::Integer])]

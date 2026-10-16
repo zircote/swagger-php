@@ -380,10 +380,10 @@ HTTP header name, `component:` the reusable definition), a link and an example. 
 declared on a class needs no key at all. It is named after the class.
 
 `#[OA\Components]` remains as a class-level container for declaring several components on one
-class, and for the historic spellings below. On a class it also makes a holder. Each method
-declares a component of its own, and one without a key is named after the method, the way a
-class names its own. That saves an empty class per schema, and the method's docblock becomes
-the description:
+class, and for the historic spellings below. On a class it also makes a holder. Each method or
+property declares a component of its own, and one without a key is named after the member, the
+way a class names its own. That saves an empty class per schema, and the member's docblock
+becomes the description:
 
 ```php
 #[OA\Components]
@@ -400,6 +400,10 @@ class Models
 
 That gives `#/components/schemas/thing` and `#/components/responses/notFound`. A parameter is
 still keyed by its `name`, as anywhere else.
+
+A component declared on a member needs the holder, keyed or not. Without it, a schema on a
+property is that property's own, and a keyed component on a method or property is left out of
+the document with a warning.
 
 ::: warning Historic spellings, deprecated
 Before 6.12 each type spelled its key after itself: `schema: 'Pet'`, `parameter: 'page'`,

@@ -26,6 +26,9 @@ Add the required `OA\Property` on schema properties that only have:
 This is what implements the implicit `OA\Property` shortcut. The `OA\MediaType` shortcuts
 are the `Augmenter\Shortcuts` augmenter; the `OA\Parameter` ones are plain subclasses.
 
+Not in a class carrying `OA\Components`: there a schema on a property is a component of its
+own, named after the property, so it is left for the holder to absorb.
+
 ## Default Resolvers
 
 ### [Reflection](https://github.com/zircote/swagger-php/tree/master/src/Resolver/Reflection.php)
