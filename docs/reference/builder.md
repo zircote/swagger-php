@@ -72,7 +72,7 @@ Sources can be directory paths, file paths, `\SplFileInfo`, `\Symfony\Component\
 
 #### Reflector sources (spec/hybrid mode)
 
-In spec and hybrid mode, you can pass `\Reflector` instances (e.g. `\ReflectionClass`) directly instead of file paths. This is useful when you already have reflection objects available or want to build a spec from a specific set of classes without file scanning:
+In spec and hybrid mode, you can pass `\ReflectionClass` instances directly instead of file paths. Each one contributes that class alone, and any other `\Reflector` is skipped with a warning. This is useful when you already have reflection objects available or want to build a spec from a specific set of classes without file scanning:
 
 ```php
 use OpenApi\Builder;

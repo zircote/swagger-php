@@ -90,7 +90,13 @@ class ReflectionAnalyser implements AnalyserInterface
         $scanner = new TokenScanner();
         $fileDetails = $scanner->scanFile($filename);
 
-        $this->analyzeFqdn($fqdn, $analysis, $fileDetails[$fqdn]);
+        // the scanner keys a class in the global namespace with its leading backslash
+        $details = $fileDetails[$fqdn] ?? $fileDetails['\\' . $fqdn] ?? null;
+        if ($details === null) {
+            return $analysis;
+        }
+
+        $this->analyzeFqdn($fqdn, $analysis, $details);
 
         return $analysis;
     }

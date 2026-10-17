@@ -34,6 +34,16 @@ final class ReflectionAnalyserTest extends OpenApiTestCase
         $this->assertSame($expected, array_keys($annotationFactory->reflectors));
     }
 
+    public function testClassInTheGlobalNamespace(): void
+    {
+        require_once self::fixture('PHP/GlobalNamespaceTypes.php');
+
+        $analysis = (new ReflectionAnalyser([$this->collectingAnnotationFactory()]))
+            ->fromFqdn(\GlobalNamespaceTarget::class, new Analysis([], $this->getContext()));
+
+        $this->assertSame(['\\GlobalNamespaceTarget'], array_keys($analysis->classes));
+    }
+
     public function testTraitInheritance(): void
     {
         $analyser = new ReflectionAnalyser([$annotationFactory = $this->collectingAnnotationFactory()]);
