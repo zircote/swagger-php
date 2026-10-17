@@ -241,6 +241,33 @@ This produces paths `/api/v1/users/` and `/api/v1/users/{id}`, both tagged with 
 | `summary` / `description` | Emitted at path level                                  |
 | `servers`                 | Emitted at path level                                  |
 
+## Tags
+
+`#[OA\Tag]` declares a tag at the document level. On a method it also tags that method's
+operations, and on a class every operation of the class:
+
+```php
+use OpenApi\Spec as OA;
+
+#[OA\Tag(name: 'users', description: 'Everything about users')]
+class UserController
+{
+    #[OA\Tag(name: 'admin')]
+    #[OA\Operation\Delete(path: '/users/{id}')]
+    public function delete(int $id) {}
+
+    #[OA\Operation\Get(path: '/users')]
+    public function list() {}
+}
+```
+
+`DELETE /users/{id}` is tagged `admin` and `users`, and `GET /users` is tagged `users`. An
+operation's own `tags` come first, then its method's, then its class's. On a class with no
+operations, such as one holding only `Info`, the tag is a declaration and nothing more.
+
+The same tag can be declared in several places. They fold into one: a tag that is only a name
+adds nothing, and a field two of them set differently is reported, keeping the later value.
+
 ## Shortcuts
 ### MediaType
 

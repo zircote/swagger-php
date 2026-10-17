@@ -201,7 +201,10 @@ Mergers decide what makes two attributes the same one and which of them the docu
 `Augmenter\Merge` applies them to the `Specification`'s collections, first in the **reduce**
 phase and again as the last pipe, so a key claimed twice reaches the compiler once.
 
-`Merge\LastWins` is registered by default: it claims every type, keys each collection the way
+Two are registered by default. `Merge\Tags` folds two tags with the same name field by field,
+so a tag declared once with its description and named again wherever it is used stays one tag;
+only a field the two set differently is reported. `Merge\LastWins` claims every other type, keys
+each collection the way
 the document does — component key, path and method, webhook and method, tag name — and on a
 collision keeps the later entry and warns with both locations. Positional lists, `servers` and
 `security`, have no key and are left alone. `Merge\Operations` ships too, but is not registered:

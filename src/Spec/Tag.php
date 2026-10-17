@@ -9,9 +9,12 @@ namespace OpenApi\Spec;
 /**
  * Adds metadata to a single tag used by the Operation Object.
  *
+ * On a method or a class, the tag is also added to the operations declared there: a method's
+ * own, or every operation of the class. On a class with no operations it only declares the tag.
+ *
  * @see [Tag Object](https://spec.openapis.org/oas/v3.1.1.html#tag-object)
  */
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Tag extends AbstractAttribute
 {
     /**

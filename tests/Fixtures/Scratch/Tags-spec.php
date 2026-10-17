@@ -19,6 +19,10 @@ use OpenApi\Spec as OA;
     contact: new OA\Contact(name: 'contact', email: 'contact@example.com')
 )
 ]
+class TagsSpec
+{
+}
+
 #[OA\Operation\Get(
     path: '/endpoint',
     description: 'Sandbox endpoint',

@@ -30,7 +30,7 @@ final class OperationsTest extends TestCase
     {
         $mergers = array_map(static fn (object $merger): string => $merger::class, iterator_to_array((new Builder())->getMergers(), false));
 
-        $this->assertSame([Merge\LastWins::class], $mergers);
+        $this->assertNotContains(Merge\Operations::class, $mergers);
     }
 
     /**
@@ -40,7 +40,7 @@ final class OperationsTest extends TestCase
     public function testTheCatchAllsNameDoesNotReachTheFold(): void
     {
         $operations = new Merge\Operations();
-        $mergers = (new Builder())->getMergers()->insert($operations, Merge\LastWins::class);
+        $mergers = (new Builder())->getMergers()->remove(Merge\Tags::class)->insert($operations, Merge\LastWins::class);
 
         $this->assertInstanceOf(Merge\LastWins::class, $mergers->get(Merge\LastWins::class));
         $this->assertNotSame($operations, $mergers->get(Merge\LastWins::class));
