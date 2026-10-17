@@ -198,7 +198,7 @@ list.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td styl
   <dd><p>@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>patternProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">array|bool|null</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>unevaluatedItems</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -1267,7 +1267,7 @@ list.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td styl
   <dd><p>@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>patternProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">array|bool|null</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>unevaluatedItems</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -1505,7 +1505,7 @@ list.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td styl
   <dd><p>@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>patternProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">array|bool|null</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>unevaluatedItems</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -2450,7 +2450,7 @@ list.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td styl
   <dd><p>@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>patternProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">array|bool|null</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>unevaluatedItems</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -3049,7 +3049,7 @@ list.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td styl
   <dd><p>@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>patternProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">array|bool|null</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>unevaluatedItems</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
@@ -3623,7 +3623,7 @@ list.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td styl
   <dd><p>@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>patternProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">array|null</span></dt>
+  <dt><strong>unevaluatedProperties</strong> : <span style="font-family: monospace;">array|bool|null</span></dt>
   <dd><p>No details available.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
   <dt><strong>unevaluatedItems</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
   <dd><p>@since OpenAPI 3.1.0</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
