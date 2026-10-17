@@ -30,6 +30,7 @@ class Ref extends OA\Schema
         ?string $description = null,
         ?array $x = null,
         ?array $attachables = null,
+        ?OA\Fan $fan = null,
     ) {
         parent::__construct(
             title: $title,
@@ -37,6 +38,7 @@ class Ref extends OA\Schema
             ref: $ref,
             x: $x,
             attachables: $attachables,
+            fan: $fan,
         );
     }
 }

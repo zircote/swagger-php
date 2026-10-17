@@ -20,14 +20,16 @@ class Discriminator extends AbstractAttribute
      * @param array<string,string>|null $mapping      Maps payload values to schema names or references
      * @param array<string,mixed>|null  $x            Vendor extensions (x-* properties)
      * @param list<Attachable>|null     $attachables  Reusable custom attachable attributes
+     * @param Fan|null                  $fan          Where this attribute goes when more than one attribute could hold it
      */
     public function __construct(
         public ?string $propertyName = null,
         public ?array $mapping = null,
         ?array $x = null,
         ?array $attachables = null,
+        ?Fan $fan = null,
     ) {
-        parent::__construct(x: $x, attachables: $attachables);
+        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
     }
 
     public function merge(): array

@@ -38,6 +38,7 @@ class Cookie extends OA\Parameter
         ?string $component = null,
         ?array $x = null,
         ?array $attachables = null,
+        ?OA\Fan $fan = null,
     ) {
         parent::__construct(
             parameter: $parameter,
@@ -55,6 +56,7 @@ class Cookie extends OA\Parameter
             component: $component,
             x: $x,
             attachables: $attachables,
+            fan: $fan,
         );
     }
 }

@@ -20,14 +20,19 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     protected array $meta = [];
 
+    protected ?Fan $fan = null;
+
     /**
      * @param array<string,mixed>|null $x
      * @param list<Attachable>|null    $attachables Reusable custom attachable attributes
+     * @param Fan|null                 $fan         Where this attribute goes when more than one attribute could hold it
      */
     public function __construct(
         public ?array $x = null,
         public ?array $attachables = null,
+        ?Fan $fan = null,
     ) {
+        $this->fan = $fan;
     }
 
     public function isRoot(): bool
@@ -95,6 +100,29 @@ abstract class AbstractAttribute implements AttributeInterface
         return $this;
     }
 
+    public function getFan(): ?Fan
+    {
+        return $this->fan;
+    }
+
+    public function setFan(?Fan $fan): static
+    {
+        $this->fan = $fan;
+
+        return $this;
+    }
+
+    public function copy(): static
+    {
+        $copy = clone $this;
+
+        foreach (get_object_vars($copy) as $property => $value) {
+            $copy->{$property} = self::copyValue($value);
+        }
+
+        return $copy;
+    }
+
     public function getMeta(string $key, mixed $default = null): mixed
     {
         return array_key_exists($key, $this->meta) ? $this->meta[$key] : $default;
@@ -139,5 +167,14 @@ abstract class AbstractAttribute implements AttributeInterface
         $list = array_values($value);
 
         return $list;
+    }
+
+    private static function copyValue(mixed $value): mixed
+    {
+        if ($value instanceof AttributeInterface) {
+            return $value->copy();
+        }
+
+        return is_array($value) ? array_map(self::copyValue(...), $value) : $value;
     }
 }

@@ -62,6 +62,7 @@ class Xml extends OA\MediaType
      * @param string|null                                      $component   The key this is filed under in `components`, which makes it a reusable component
      * @param array<string,mixed>|null                         $x           Vendor extensions (x-* properties)
      * @param list<OA\Attachable>|null                         $attachables Reusable custom attachable attributes
+     * @param OA\Fan|null                                      $fan         Where this attribute goes when more than one attribute could hold it
      */
     public function __construct(
         // schema shortcuts
@@ -78,6 +79,7 @@ class Xml extends OA\MediaType
         ?string $component = null,
         ?array $x = null,
         ?array $attachables = null,
+        ?OA\Fan $fan = null,
     ) {
         parent::__construct(
             mediaType: 'application/xml',
@@ -87,7 +89,8 @@ class Xml extends OA\MediaType
             encoding: $encoding,
             component: $component,
             x: $x,
-            attachables: $attachables
+            attachables: $attachables,
+            fan: $fan,
         );
         $this->type = self::typeValue($type);
         $this->properties = self::propertyList($properties);

@@ -27,6 +27,7 @@ class Encoded extends OA\Property
      * @param OA\Schema|null           $schema      The schema defining the property type and constraints
      * @param array<string,mixed>|null $x           Vendor extensions (x-* properties)
      * @param list<OA\Attachable>|null $attachables Reusable custom attachable attributes
+     * @param OA\Fan|null              $fan         Where this attribute goes when more than one attribute could hold it
      */
     public function __construct(
         ?string $property = null,
@@ -34,8 +35,9 @@ class Encoded extends OA\Property
         ?OA\Encoding $encoding = null,
         ?array $x = null,
         ?array $attachables = null,
+        ?OA\Fan $fan = null,
     ) {
-        parent::__construct(property: $property, schema: $schema, x: $x, attachables: $attachables);
+        parent::__construct(property: $property, schema: $schema, x: $x, attachables: $attachables, fan: $fan);
 
         $this->encoding = $encoding;
     }

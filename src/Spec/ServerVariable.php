@@ -22,6 +22,7 @@ class ServerVariable extends AbstractAttribute
      * @param list<EnumValue|class-string<\UnitEnum>|null>|null $enum           Allowed values for substitution; all cast to string in the specification
      * @param array<string,mixed>|null                          $x              Vendor extensions (x-* properties)
      * @param list<Attachable>|null                             $attachables    Reusable custom attachable attributes
+     * @param Fan|null                                          $fan            Where this attribute goes when more than one attribute could hold it
      */
     public function __construct(
         public ?string $serverVariable = null,
@@ -30,8 +31,9 @@ class ServerVariable extends AbstractAttribute
         public ?array $enum = null,
         ?array $x = null,
         ?array $attachables = null,
+        ?Fan $fan = null,
     ) {
-        parent::__construct(x: $x, attachables: $attachables);
+        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
     }
 
     public function merge(): array

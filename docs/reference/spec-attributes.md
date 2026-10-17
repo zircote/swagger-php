@@ -25,6 +25,13 @@ Base class for custom attributes.
 By default not allowed to contain other attributes, but can be inline nested into any other attribute
 (including itself).
 
+#### Parameters
+---
+<dl>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+</dl>
+
 ### [Components](https://github.com/zircote/swagger-php/tree/master/src/Spec/Components.php)
 
 Container for reusable component definitions.
@@ -80,6 +87,8 @@ on a member needs the holder; without it, a keyed one is left out with a warning
   <dd><p>No details available.</p></dd>
   <dt><strong>mediaTypes</strong> : <span style="font-family: monospace;">list&lt;MediaType&gt;</span></dt>
   <dd><p>OpenAPI 3.2; earlier compilers omit them with a warning</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 ### [Contact](https://github.com/zircote/swagger-php/tree/master/src/Spec/Contact.php)
@@ -99,6 +108,8 @@ Contact information for the exposed API.
   <dd><p>A URL pointing to the contact information</p></dd>
   <dt><strong>email</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The email address of the contact person/organization</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -121,6 +132,8 @@ can be one of several schemas (used with oneOf, anyOf, allOf).
   <dd><p>The name of the property in the payload that distinguishes types</p></dd>
   <dt><strong>mapping</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
   <dd><p>Maps payload values to schema names or references</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -150,6 +163,8 @@ Describes the encoding for a single property in a media type.
   <dd><p>Whether arrays/objects generate separate parameters</p></dd>
   <dt><strong>allowReserved</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Whether reserved characters are allowed without encoding</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -181,6 +196,8 @@ Describes an example value for a parameter, media type, or schema.
   <dd><p>A JSON Reference to a reusable example</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -202,6 +219,8 @@ Allows referencing an external resource for extended documentation.
   <dd><p>The URL for the target documentation</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A description of the target documentation (CommonMark syntax)</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -256,6 +275,8 @@ Produces:
   <dd><p>The URL for obtaining refresh tokens</p></dd>
   <dt><strong>scopes</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
   <dd><p>The available scopes for the OAuth2 security scheme</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -282,6 +303,8 @@ Configuration for the OAuth2 Authorization Code flow.
   <dd><p>No details available.</p></dd>
   <dt><strong>scopes</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
+  <dd><p>No details available.</p></dd>
 </dl>
 
 #### Reference
@@ -304,6 +327,8 @@ Configuration for the OAuth2 Client Credentials flow.
   <dt><strong>refreshUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>scopes</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -328,6 +353,8 @@ Configuration for the OAuth2 Implicit flow.
   <dd><p>No details available.</p></dd>
   <dt><strong>scopes</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
+  <dd><p>No details available.</p></dd>
 </dl>
 
 #### Reference
@@ -350,6 +377,8 @@ Configuration for the OAuth2 Resource Owner Password flow.
   <dt><strong>refreshUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>scopes</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -396,6 +425,8 @@ Describes a single HTTP header.
   <dd><p>Content-type based header serialization</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -427,6 +458,8 @@ Metadata about the API.
   <dd><p>License information for the API</p></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A short summary of the API</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -450,6 +483,8 @@ License information for the exposed API.
   <dd><p>An SPDX license expression for the API</p></dd>
   <dt><strong>url</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A URL to the license used for the API</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -485,6 +520,8 @@ Describes a possible design-time link for a response.
   <dd><p>A server object to be used by the target operation</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -518,6 +555,8 @@ Describes the content payload for a specific media type.
   <dd><p>Encoding information for specific properties</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -572,6 +611,8 @@ The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema
   <dd><p>Encoding information for specific properties</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OA\Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -626,6 +667,8 @@ The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema
   <dd><p>Encoding information for specific properties</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OA\Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -647,6 +690,8 @@ The root element of an OpenAPI definition.
   <dd><p>The OpenAPI specification version (e.g. '3.1.0')</p></dd>
   <dt><strong>security</strong> : <span style="font-family: monospace;">list&lt;Security\Requirement&gt;|null</span></dt>
   <dd><p>Default security requirements for the API</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -720,6 +765,8 @@ For webhooks, use `webhook` instead of `path`:
   <dd><p>Alternative servers for this operation</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">ExternalDocumentation|null</span></dt>
   <dd><p>Additional external documentation</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -762,6 +809,8 @@ Shorthand for an HTTP DELETE operation.
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Spec\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
+  <dd><p>No details available.</p></dd>
 </dl>
 
 #### Reference
@@ -800,6 +849,8 @@ Shorthand for an HTTP GET operation.
   <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;Server&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Spec\ExternalDocumentation|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -840,6 +891,8 @@ Shorthand for an HTTP HEAD operation.
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Spec\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
+  <dd><p>No details available.</p></dd>
 </dl>
 
 #### Reference
@@ -878,6 +931,8 @@ Shorthand for an HTTP OPTIONS operation.
   <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;OA\Server&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Spec\ExternalDocumentation|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -920,6 +975,8 @@ Shorthand for an HTTP PATCH operation.
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Spec\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
+  <dd><p>No details available.</p></dd>
 </dl>
 
 #### Reference
@@ -960,6 +1017,8 @@ Shorthand for an HTTP POST operation.
   <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;OA\Server&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Spec\ExternalDocumentation|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -1002,6 +1061,8 @@ Shorthand for an HTTP PUT operation.
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Spec\ExternalDocumentation|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
+  <dd><p>No details available.</p></dd>
 </dl>
 
 #### Reference
@@ -1040,6 +1101,8 @@ Shorthand for an HTTP TRACE operation.
   <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;OA\Server&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Spec\ExternalDocumentation|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -1120,6 +1183,8 @@ Produces:
   <dd><p>Content-type based parameter serialization</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -1161,6 +1226,8 @@ A parameter passed via an HTTP cookie.
   <dd><p>No details available.</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
+  <dd><p>No details available.</p></dd>
 </dl>
 
 #### Reference
@@ -1201,6 +1268,8 @@ A parameter passed via an HTTP header.
   <dt><strong>content</strong> : <span style="font-family: monospace;">OA\MediaType|list&lt;OA\MediaType&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -1244,6 +1313,8 @@ A parameter passed via the URL path (always required).
   <dt><strong>content</strong> : <span style="font-family: monospace;">OA\MediaType|list&lt;OA\MediaType&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -1291,6 +1362,8 @@ A parameter passed via the URL query string.
   <dt><strong>content</strong> : <span style="font-family: monospace;">OA\MediaType|list&lt;OA\MediaType&gt;|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -1371,6 +1444,8 @@ name+in (parameters).
   <dd><p>Shared responses to clone to contained operations</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -1396,6 +1471,8 @@ reported as missing one and omitted.
   <dd><p>The property name</p></dd>
   <dt><strong>schema</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
   <dd><p>The schema defining the property type and constraints</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -1423,6 +1500,8 @@ encoding to the parent MediaType automatically.
   <dd><p>The schema defining the property type and constraints</p></dd>
   <dt><strong>encoding</strong> : <span style="font-family: monospace;">OpenApi\Spec\Encoding|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OA\Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -1456,6 +1535,8 @@ Describes a single request body.
   <dd><p>The content of the request body</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -1491,6 +1572,8 @@ Describes a single response from an API operation.
   <dd><p>Design-time links for the response</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -1650,6 +1733,8 @@ without it the schema has no component key and is reported as missing one.
   <dd><p>XML representation metadata</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -1788,6 +1873,8 @@ schemas with constrained additional properties:
   <dd><p>XML representation metadata</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 ### [Schema\Items](https://github.com/zircote/swagger-php/tree/master/src/Spec/Schema/Items.php)
@@ -1934,6 +2021,8 @@ Since Items extends Schema, the implicit `OA\Property` shortcut applies — no e
   <dd><p>XML representation metadata</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -1967,6 +2056,8 @@ If used on a `$ref` directly, only the ref value is used.
   <dd><p>No details available.</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
+  <dd><p>No details available.</p></dd>
 </dl>
 
 ### [Security\Requirement](https://github.com/zircote/swagger-php/tree/master/src/Spec/Security/Requirement.php)
@@ -1989,6 +2080,8 @@ Multiple schemes within a single requirement represent AND logic.
   <dd><p>Scopes for the single scheme (OAuth2/OpenIdConnect)</p></dd>
   <dt><strong>schemes</strong> : <span style="font-family: monospace;">array&lt;string,list&lt;string&gt;&gt;|null</span></dt>
   <dd><p>Map of scheme names to scopes (for AND logic with multiple schemes)</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OA\Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -2039,6 +2132,8 @@ Typed subtypes are available for each security scheme type:
   <dd><p>A JSON Reference to a reusable security scheme</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OA\Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -2065,6 +2160,8 @@ An API key security scheme (header, query, or cookie).
   <dt><strong>in</strong> : <span style="font-family: monospace;">OpenApi\Spec\SchemeIn|string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -2093,6 +2190,8 @@ An HTTP authentication security scheme (Basic, Bearer, etc.).
   <dd><p>No details available.</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
+  <dd><p>No details available.</p></dd>
 </dl>
 
 #### Reference
@@ -2115,6 +2214,8 @@ A Mutual TLS security scheme.
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -2141,6 +2242,8 @@ An OAuth2 security scheme with one or more flows.
   <dd><p>No details available.</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
+  <dd><p>No details available.</p></dd>
 </dl>
 
 #### Reference
@@ -2165,6 +2268,8 @@ An OpenID Connect Discovery security scheme.
   <dt><strong>openIdConnectUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -2193,6 +2298,8 @@ A host the API is available on, optionally templated with `ServerVariable` subst
   <dd><p>A description of the host (CommonMark syntax)</p></dd>
   <dt><strong>variables</strong> : <span style="font-family: monospace;">list&lt;ServerVariable&gt;|null</span></dt>
   <dd><p>Variables for server URL template substitution</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -2218,6 +2325,8 @@ The allowed and default substitutions for one template variable in a `Server` UR
   <dd><p>A description of the server variable (CommonMark syntax)</p></dd>
   <dt><strong>enum</strong> : <span style="font-family: monospace;">list&lt;string|int|float|bool|\UnitEnum|class-string&lt;\UnitEnum&gt;|null&gt;|null</span></dt>
   <dd><p>Allowed values for substitution; all cast to string in the specification</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -2250,6 +2359,8 @@ own, or every operation of the class. On a class with no operations it only decl
   <dd><p>The name of a tag that this tag is nested under</p></dd>
   <dt><strong>kind</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A machine-readable string to categorize the tag</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
@@ -2277,6 +2388,8 @@ Metadata for XML representation of a schema property.
   <dd><p>Whether the property translates to an XML attribute</p></dd>
   <dt><strong>wrapped</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Whether array items are wrapped in an additional element</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
 #### Reference
