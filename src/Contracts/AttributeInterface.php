@@ -6,6 +6,7 @@
 
 namespace OpenApi\Contracts;
 
+use OpenApi\Spec as OA;
 use OpenApi\Utils\SourceLocation;
 
 /**
@@ -90,4 +91,19 @@ interface AttributeInterface
     public function setMeta(string $key, mixed $value): static;
 
     public function getSourceLocation(): SourceLocation;
+
+    /**
+     * Where this attribute goes when more than one attribute could hold it. `null` is the
+     * default and behaves as `Fan::Single`.
+     */
+    public function getFan(): ?OA\Fan;
+
+    public function setFan(?OA\Fan $fan): static;
+
+    /**
+     * A deep copy: every attribute nested in its public properties, in lists and maps too, is
+     * copied as well, so changing the copy's children leaves the original's alone. The reflector
+     * and source location are shared; `meta` is copied as `clone` copies it.
+     */
+    public function copy(): static;
 }

@@ -37,6 +37,7 @@ class Response extends AbstractAttribute
      * @param string|null                    $component   The key this is filed under in `components`, which makes it a reusable component
      * @param array<string,mixed>|null       $x           Vendor extensions (x-* properties)
      * @param list<Attachable>|null          $attachables Reusable custom attachable attributes
+     * @param Fan|null                       $fan         Where this attribute goes when more than one attribute could hold it
      */
     public function __construct(
         public string|int|null $response = null,
@@ -48,8 +49,9 @@ class Response extends AbstractAttribute
         ?string $component = null,
         ?array $x = null,
         ?array $attachables = null,
+        ?Fan $fan = null,
     ) {
-        parent::__construct(x: $x, attachables: $attachables);
+        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
         $this->component = $component;
         $this->content = self::wrapList($content);
     }

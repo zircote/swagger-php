@@ -24,6 +24,7 @@ class Info extends AbstractAttribute
      * @param string|null              $summary        A short summary of the API
      * @param array<string,mixed>|null $x              Vendor extensions (x-* properties)
      * @param list<Attachable>|null    $attachables    Reusable custom attachable attributes
+     * @param Fan|null                 $fan            Where this attribute goes when more than one attribute could hold it
      */
     public function __construct(
         public ?string $title = null,
@@ -35,8 +36,9 @@ class Info extends AbstractAttribute
         public ?string $summary = null,
         ?array $x = null,
         ?array $attachables = null,
+        ?Fan $fan = null,
     ) {
-        parent::__construct(x: $x, attachables: $attachables);
+        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
     }
 
     public function isRoot(): bool

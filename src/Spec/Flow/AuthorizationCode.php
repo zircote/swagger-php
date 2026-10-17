@@ -28,6 +28,7 @@ class AuthorizationCode extends OA\Flow
         ?array $scopes = null,
         ?array $x = null,
         ?array $attachables = null,
+        ?OA\Fan $fan = null,
     ) {
         parent::__construct(
             flow: OA\FlowType::AuthorizationCode,
@@ -37,6 +38,7 @@ class AuthorizationCode extends OA\Flow
             scopes: $scopes,
             x: $x,
             attachables: $attachables,
+            fan: $fan,
         );
     }
 }

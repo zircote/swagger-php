@@ -47,6 +47,7 @@ class Scheme extends OA\AbstractAttribute
      * @param string|null               $component        The key this is filed under in `components`, which makes it a reusable component
      * @param array<string,mixed>|null  $x                Vendor extensions (x-* properties)
      * @param list<OA\Attachable>|null  $attachables      Reusable custom attachable attributes
+     * @param OA\Fan|null               $fan              Where this attribute goes when more than one attribute could hold it
      */
     public function __construct(
         public ?string $securityScheme = null,
@@ -62,8 +63,9 @@ class Scheme extends OA\AbstractAttribute
         ?string $component = null,
         ?array $x = null,
         ?array $attachables = null,
+        ?OA\Fan $fan = null,
     ) {
-        parent::__construct(x: $x, attachables: $attachables);
+        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
         $this->component = $component;
         if ($component === null && $this->securityScheme !== null) {
             trigger_deprecation('zircote/swagger-php', '6.12', '`securityScheme` is deprecated as the component key of %s and will be removed in 8.0; use `component`', static::class);

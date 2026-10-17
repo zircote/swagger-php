@@ -116,12 +116,16 @@ Rules for name vs. value:
 
 ### [Shortcuts](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Shortcuts.php)
 
-Resolves shortcut attributes.
+Resolves shortcut attributes into the plain attributes they stand for.
+
+A shortcut carries schema keywords on an attribute that holds a schema, so the common case
+needs no nested `OA\Schema`. This augmenter moves those keywords to where the document has
+them.
 
 Handles:
-* `OA\MediaType\Json`
-* `OA\MediaType\Xml`
-* `OA\Schema\Items`
+* `OA\MediaType\Json` and `OA\MediaType\Xml`: their schema keywords move into the media
+  type's `schema`;
+* `OA\Schema\Items`: an array schema, whose item keywords move into a new `items` schema.
 
 ### [SecurityRequirements](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/SecurityRequirements.php)
 

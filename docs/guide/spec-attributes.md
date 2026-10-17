@@ -180,7 +180,7 @@ The flat form extends to deeper nesting: a `MediaType` and `Schema` stacked alon
 public function show(int $id) {}
 ```
 
-The merge is by attribute type, so the flat form only works while it is unambiguous. Two `Response` siblings each expecting their own `MediaType`, or a `MediaType` next to both a `Response` and a `RequestBody`, fail with an `Ambiguous merge` error. Nest those inline instead.
+The merge is by attribute type, so the flat form only works while it is unambiguous. Two `Response` siblings each expecting their own `MediaType`, or a `MediaType` next to both a `Response` and a `RequestBody`, fail with an `Ambiguous merge` error. Nest those inline instead, or see [One attribute for several targets](#one-attribute-for-several-targets).
 
 ### Parameters on method arguments
 
@@ -205,6 +205,24 @@ public function show(
 ```
 
 Available subclasses: `OA\Parameter\Path`, `OA\Parameter\Query`, `OA\Parameter\Header`, `OA\Parameter\Cookie`.
+
+### One attribute for several targets
+
+An attribute that more than one attribute could hold is an error: a `Response` next to two operations, or a parameter on an argument shared by two operations. `fan: OA\Fan::All` puts it in each of them instead:
+
+```php
+#[OA\Operation\Put(path: '/pets/{id}')]
+#[OA\Operation\Delete(path: '/pets/{id}')]
+#[OA\Response(response: 404, description: 'Not found', fan: OA\Fan::All)]
+public function change(
+    #[OA\Parameter\Path(name: 'id', fan: OA\Fan::All)]
+    int $id
+) {}
+```
+
+Both operations get the `404` response and the `id` parameter. The same works one level down, for a `Header` next to several responses. Each target gets its own copy.
+
+The targets have to be of one type. A `MediaType` next to both a `Response` and a `RequestBody` stays an error with `fan: OA\Fan::All`, since which one it belongs to is still a choice.
 
 ## PathItem
 

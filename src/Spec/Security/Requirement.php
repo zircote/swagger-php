@@ -26,6 +26,7 @@ class Requirement extends OA\AbstractAttribute
      * @param array<string,list<string>>|null $schemes     Map of scheme names to scopes (for AND logic with multiple schemes)
      * @param array<string,mixed>|null        $x           Vendor extensions (x-* properties)
      * @param list<OA\Attachable>|null        $attachables Reusable custom attachable attributes
+     * @param OA\Fan|null                     $fan         Where this attribute goes when more than one attribute could hold it
      */
     public function __construct(
         public ?string $scheme = null,
@@ -33,8 +34,9 @@ class Requirement extends OA\AbstractAttribute
         public ?array $schemes = null,
         ?array $x = null,
         ?array $attachables = null,
+        ?OA\Fan $fan = null,
     ) {
-        parent::__construct(x: $x, attachables: $attachables);
+        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
     }
 
     public function merge(): array
