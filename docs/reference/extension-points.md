@@ -43,6 +43,27 @@ spec attributes are left to the next resolver in the chain.
 
 ## Default Mergers
 
+### [Tags](https://github.com/zircote/swagger-php/tree/master/src/Merge/Tags.php)
+
+Folds two tags with the same name field by field, instead of keeping one of them whole.
+
+One of the Builder's default mergers, registered ahead of the catch-all: a tag is declared
+once with its description and then named on every method or class that uses it, and each of
+those is a declaration too.
+
+What only one of them sets is always taken, so a tag that is only a name adds nothing and is
+not reported. What both set differently is decided by the `Mode` it is constructed with,
+`Mode::Last` by default, and reported; `NonOverlapping` keeps the earlier's value, as `First`
+does. `attachables` is a union, and `x` merges key by key under the same mode.
+
+The survivor is a new tag, a copy of the earlier with the later folded in. It keeps the
+earlier's reflector, source location and `meta`.
+
+#### Config settings
+- **mode** : `OpenApi\Merge\Mode|callable` · default: `Mode::Last`  
+  How two attributes with the same identity are treated where they overlap: a `Mode`, or a
+  callable that receives the earlier and the later and returns one.
+
 ### [LastWins](https://github.com/zircote/swagger-php/tree/master/src/Merge/LastWins.php)
 
 The catch-all merger: one entry per key survives, the later one, and the author is told.

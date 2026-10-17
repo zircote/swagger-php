@@ -2228,6 +2228,9 @@ The allowed and default substitutions for one template variable in a `Server` UR
 
 Adds metadata to a single tag used by the Operation Object.
 
+On a method or a class, the tag is also added to the operations declared there: a method's
+own, or every operation of the class. On a class with no operations it only declares the tag.
+
 #### Nested elements
 ---
 <a href="#externaldocumentation">ExternalDocumentation</a>

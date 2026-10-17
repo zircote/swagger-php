@@ -464,6 +464,7 @@ class Builder
         return [
             new Augmenter\TypeAliases(),
             new Augmenter\Inheritance(),
+            new Augmenter\OperationTags(),
             new Augmenter\Names(),
             new Augmenter\Enums(),
             new Augmenter\Shortcuts(),
@@ -492,6 +493,7 @@ class Builder
     protected function getDefaultMergers(): array
     {
         return [
+            new Merge\Tags(),
             new Merge\LastWins(),
         ];
     }
