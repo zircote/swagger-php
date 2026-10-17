@@ -637,6 +637,18 @@ class OpenApi31Compiler implements CompilerInterface
             'xml' => $schema->xml instanceof OA\Xml ? $this->compileXml($schema->xml) : null,
         ], $schema);
 
+        // without a type to add `null` to, null gets a branch of its own where there is a choice
+        if ($schema->nullable === true && $type === null) {
+            foreach (['oneOf', 'anyOf'] as $keyword) {
+                if (isset($result[$keyword])) {
+                    if (!in_array(['type' => 'null'], $result[$keyword], true)) {
+                        $result[$keyword][] = ['type' => 'null'];
+                    }
+                    break;
+                }
+            }
+        }
+
         $result = $this->withDefined($result, [
             'default' => $schema->default,
             'const' => $schema->const,
