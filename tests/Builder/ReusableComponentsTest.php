@@ -11,6 +11,7 @@ use OpenApi\Builder;
 use OpenApi\Builder\Mode;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Tests\Concerns\ExpectsLogEntries;
 use OpenApi\Tests\Concerns\UsesFixtures;
 use OpenApi\Utils\Pipeline;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -23,6 +24,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class ReusableComponentsTest extends TestCase
 {
+    use ExpectsLogEntries;
     use UsesFixtures;
 
     /** @var list<string> */
@@ -94,7 +96,6 @@ final class ReusableComponentsTest extends TestCase
         $this->assertSame('A paged listing', $document['components']['pathItems']['Paged']['summary']);
         $this->assertSame('page', $document['components']['pathItems']['Paged']['parameters'][0]['name']);
         $this->assertArrayNotHasKey('parameters', $document['paths']['/api/things']['get'], 'the component lends its parameters to no operation');
-        $this->assertSame([], $result->warnings());
     }
 
     public function testAReferencedPathItemKeepsItsComponentThroughCleanup(): void
@@ -119,7 +120,7 @@ final class ReusableComponentsTest extends TestCase
         $result = $this->build(['SharedPathItem'], '3.0.0', fn (Builder $b): Builder => $b->withAugmenters(fn (Pipeline $p) => $p->get(Augmenter\Cleanup::class)?->setEnabled(false)));
 
         $this->assertArrayNotHasKey('components', $result->toArray());
-        $this->assertContains('pathItems components are not supported in OpenAPI 3.0 and will be omitted', $result->warnings());
+        $this->expectLogEntry('pathItems components are not supported in OpenAPI 3.0 and will be omitted', 'warning');
     }
 
     /**
@@ -135,8 +136,11 @@ final class ReusableComponentsTest extends TestCase
     #[DataProvider('mediaTypeVersions')]
     public function testAKeyedMediaTypeIsAComponentFrom32(string $version, bool $supported): void
     {
+        $this->allowLogEntry('Schema has type "array" but no items');
+
         $result = (new Builder())
             ->setMode(Mode::SPEC)
+            ->setLogger($this->trackingLogger())
             ->setVersion($version)
             ->withAugmenters(fn (Pipeline $p) => $p->get(Augmenter\Cleanup::class)?->setEnabled(false))
             ->withSpecification(function (Specification $specification): void {
@@ -151,10 +155,9 @@ final class ReusableComponentsTest extends TestCase
 
         if ($supported) {
             $this->assertSame('array', $document['components']['mediaTypes']['Patch']['schema']['type']);
-            $this->assertNotContains('mediaTypes components are not supported before OpenAPI 3.2 and will be omitted', $result->warnings());
         } else {
             $this->assertArrayNotHasKey('components', $document);
-            $this->assertContains('mediaTypes components are not supported before OpenAPI 3.2 and will be omitted', $result->warnings());
+            $this->expectLogEntry('mediaTypes components are not supported before OpenAPI 3.2 and will be omitted', 'warning');
         }
     }
 
@@ -166,7 +169,7 @@ final class ReusableComponentsTest extends TestCase
      */
     private function build(array $files, string $version = '3.1.0', ?callable $configure = null): Builder\Result
     {
-        $builder = (new Builder())->setMode(Mode::SPEC)->setVersion($version);
+        $builder = (new Builder())->setMode(Mode::SPEC)->setVersion($version)->setLogger($this->trackingLogger());
         foreach ($files as $file) {
             $path = self::fixture("ComponentKey/{$file}.php");
             require_once $path; // fixtures are excluded from the classmap, as ScratchTest's are

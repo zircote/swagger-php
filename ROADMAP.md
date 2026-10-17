@@ -39,6 +39,8 @@ it and getting people onto it:
   `Utils\TypeMapper`, `LegacyTypeResolver`) are removed in `7.0`
 * `Generator::UNDEFINED` and `Generator::isDefault()` stay until `8.0` - every classic custom
   processor uses them, so they go with classic and not before
+* `Result::log()`, `warnings()` and `errors()` marked `@deprecated`, removed in `8.0` - the logger
+  set with `Builder::setLogger()` already receives everything they return, and `isValid()` stays
 
 Classic attributes, the `Generator` and the processors are **not** marked in v6. The replacement
 is still beta for part of the major, and a stable API is not deprecated in favour of a beta one.

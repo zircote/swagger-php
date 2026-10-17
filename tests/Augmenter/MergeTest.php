@@ -14,6 +14,7 @@ use OpenApi\Contracts\MergerInterface;
 use OpenApi\Merge;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Tests\Concerns\ExpectsLogEntries;
 use OpenApi\Utils\TypedList;
 use PHPUnit\Framework\TestCase;
 
@@ -27,6 +28,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class MergeTest extends TestCase
 {
+    use ExpectsLogEntries;
+
     public function testDuplicateOperationsKeepTheLast(): void
     {
         $result = $this->build(function (Specification $specification): void {
@@ -38,7 +41,7 @@ final class MergeTest extends TestCase
 
         $this->assertSame('SECOND', $result->toArray()['paths']['/pets']['get']['summary']);
         $this->assertCount(1, $result->specification()->operations);
-        $this->assertMatchesWarning('Get "get /pets" is declared more than once', $result);
+        $this->expectLogEntry('Get "get /pets" is declared more than once', 'warning');
     }
 
     /**
@@ -61,7 +64,7 @@ final class MergeTest extends TestCase
 
         $this->assertSame('SECOND', $path['summary']);
         $this->assertArrayHasKey('get', $path, 'the path item is folded into the operations already written for the path');
-        $this->assertMatchesWarning('PathItem "/pets" is declared more than once', $result);
+        $this->expectLogEntry('PathItem "/pets" is declared more than once', 'warning');
     }
 
     public function testDuplicateWebhookOperationsAreReported(): void
@@ -74,7 +77,7 @@ final class MergeTest extends TestCase
         });
 
         $this->assertSame('SECOND', $result->toArray()['webhooks']['petCreated']['post']['summary']);
-        $this->assertMatchesWarning('Post "post petCreated" is declared more than once', $result);
+        $this->expectLogEntry('Post "post petCreated" is declared more than once', 'warning');
     }
 
     public function testDuplicateTagsKeepTheLast(): void
@@ -91,7 +94,7 @@ final class MergeTest extends TestCase
 
         $this->assertCount(1, $tags, 'the specification requires each tag name in the list to be unique');
         $this->assertSame('SECOND', $tags[0]['description']);
-        $this->assertMatchesWarning('Tag "pets" is declared more than once', $result);
+        $this->expectLogEntry('Tag "pets" is declared more than once', 'warning');
     }
 
     public function testDuplicateComponentsKeepTheLast(): void
@@ -112,7 +115,7 @@ final class MergeTest extends TestCase
 
         $this->assertCount(1, $schemas);
         $this->assertSame('SECOND', $schemas['Pet']['description']);
-        $this->assertMatchesWarning('Schema "Pet" is declared more than once', $result);
+        $this->expectLogEntry('Schema "Pet" is declared more than once', 'warning');
     }
 
     /**
@@ -130,7 +133,6 @@ final class MergeTest extends TestCase
         });
 
         $this->assertCount(2, $result->toArray()['servers']);
-        $this->assertSame([], $result->warnings());
     }
 
     /**
@@ -141,6 +143,7 @@ final class MergeTest extends TestCase
     {
         $result = (new Builder())
             ->setMode(Mode::SPEC)
+            ->setLogger($this->trackingLogger())
             ->withMergers(fn (TypedList $mergers): TypedList => $mergers->insert(new ContributionsYield(), Merge\LastWins::class))
             ->withSpecification(function (Specification $specification): void {
                 $specification->add(
@@ -153,13 +156,13 @@ final class MergeTest extends TestCase
             ->build();
 
         $this->assertSame('DESCRIBED', $result->toArray()['paths']['/pets']['get']['summary']);
-        $this->assertSame([], $result->warnings());
     }
 
     public function testTheMergerThatClaimsTheTypeFirstDecides(): void
     {
         $result = (new Builder())
             ->setMode(Mode::SPEC)
+            ->setLogger($this->trackingLogger())
             ->withMergers(fn (TypedList $mergers): TypedList => $mergers->insert(new FirstWinsForOperations(), Merge\LastWins::class))
             ->withSpecification(function (Specification $specification): void {
                 $specification->add(
@@ -174,7 +177,8 @@ final class MergeTest extends TestCase
 
         $this->assertSame('FIRST', $result->toArray()['paths']['/pets']['get']['summary'], 'the registered merger claims operations');
         $this->assertSame('SECOND', $result->toArray()['tags'][0]['description'], 'everything else still falls to the catch-all');
-        $this->assertCount(1, $result->warnings(), 'a merger that folds silently reports nothing');
+        // a merger that folds silently reports nothing, so only the catch-all's tag is reported
+        $this->expectLogEntry('Tag "pets" is declared more than once', 'warning');
     }
 
     /**
@@ -185,6 +189,7 @@ final class MergeTest extends TestCase
     {
         $result = (new Builder())
             ->setMode(Mode::SPEC)
+            ->setLogger($this->trackingLogger())
             ->withAugmenters(fn ($pipeline) => $pipeline->insert(
                 function (Specification $specification): void {
                     $specification->add(new OA\Operation\Get(path: '/pets', summary: 'LATE', responses: [new OA\Response(response: 200, description: 'ok')]));
@@ -200,13 +205,14 @@ final class MergeTest extends TestCase
             ->build();
 
         $this->assertSame('LATE', $result->toArray()['paths']['/pets']['get']['summary']);
-        $this->assertMatchesWarning('Get "get /pets" is declared more than once', $result);
+        $this->expectLogEntry('Get "get /pets" is declared more than once', 'warning');
     }
 
     public function testRemovingThePassRestoresTheUndiagnosedLastWins(): void
     {
         $result = (new Builder())
             ->setMode(Mode::SPEC)
+            ->setLogger($this->trackingLogger())
             ->withAugmenters(fn ($pipeline) => $pipeline->remove(Augmenter\Merge::class))
             ->withSpecification(function (Specification $specification): void {
                 $specification->add(
@@ -219,30 +225,20 @@ final class MergeTest extends TestCase
 
         $this->assertCount(2, $result->specification()->operations, 'both runs go, so nothing is reduced');
         $this->assertSame('SECOND', $result->toArray()['paths']['/pets']['get']['summary']);
-        $this->assertStringStartsWith(
-            'operationId must be unique',
-            $result->warnings()[0],
-            'the only signal left is the accidental one, and it guards a different key',
-        );
-        $this->assertCount(1, $result->warnings());
+        // the only signal left is the accidental one, and it guards a different key
+        $this->expectLogEntry('operationId must be unique', 'warning');
     }
 
     protected function build(callable $contribution): Builder\Result
     {
         return (new Builder())
             ->setMode(Mode::SPEC)
+            ->setLogger($this->trackingLogger())
             ->withSpecification(function (Specification $specification) use ($contribution): void {
                 $specification->add(new OA\Info(title: 'T', version: '1.0'));
                 $contribution($specification);
             })
             ->build();
-    }
-
-    protected function assertMatchesWarning(string $expected, Builder\Result $result): void
-    {
-        $matching = array_filter($result->warnings(), fn (string $warning): bool => str_contains($warning, $expected));
-
-        $this->assertCount(1, $matching, "expected exactly one warning containing '{$expected}', got: " . implode(' | ', $result->warnings()));
     }
 }
 
