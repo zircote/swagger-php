@@ -362,7 +362,7 @@ class OpenApi31Compiler implements CompilerInterface
     protected function compileParameter(OA\Parameter $parameter): array
     {
         if ($parameter->ref !== null) {
-            return ['$ref' => $parameter->ref];
+            return $this->compileReference($parameter);
         }
 
         $result = $this->filter([
@@ -393,7 +393,7 @@ class OpenApi31Compiler implements CompilerInterface
         }
 
         if ($body->ref !== null) {
-            return ['$ref' => $body->ref];
+            return $this->compileReference($body);
         }
 
         $result = $this->filter([
@@ -420,7 +420,7 @@ class OpenApi31Compiler implements CompilerInterface
     protected function compileResponse(OA\Response $response): array
     {
         if ($response->ref !== null) {
-            return ['$ref' => $response->ref];
+            return $this->compileReference($response);
         }
 
         return $this->filter([
@@ -437,7 +437,7 @@ class OpenApi31Compiler implements CompilerInterface
     protected function compileHeader(OA\Header $header): array
     {
         if ($header->ref !== null) {
-            return ['$ref' => $header->ref];
+            return $this->compileReference($header);
         }
 
         $result = $this->filter([
@@ -497,7 +497,7 @@ class OpenApi31Compiler implements CompilerInterface
     protected function compileLink(OA\Link $link): array
     {
         if ($link->ref !== null) {
-            return ['$ref' => $link->ref];
+            return $this->compileReference($link);
         }
 
         $result = $this->filter([
@@ -509,6 +509,21 @@ class OpenApi31Compiler implements CompilerInterface
         ], $link);
 
         return $this->withDefined($result, ['requestBody' => $link->requestBody]);
+    }
+
+    /**
+     * A Reference Object: the `$ref`, with the `summary` and `description` declared beside it.
+     *
+     * @return array<string,mixed>
+     */
+    protected function compileReference(OA\Parameter|OA\RequestBody|OA\Response|OA\Header|OA\Link|OA\Example|OA\Security\Scheme $attribute): array
+    {
+        // no attribute, so no extensions: a Reference Object takes none
+        return $this->filter([
+            '$ref' => $attribute->ref,
+            'summary' => $attribute instanceof OA\Example ? $attribute->summary : null,
+            'description' => $attribute->description,
+        ]);
     }
 
     /**
@@ -767,6 +782,10 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function compileSecurityScheme(OA\Security\Scheme $scheme): array
     {
+        if ($scheme->ref !== null) {
+            return $this->compileReference($scheme);
+        }
+
         return $this->filter([
             'type' => $scheme->type,
             'description' => $scheme->description,
@@ -815,7 +834,7 @@ class OpenApi31Compiler implements CompilerInterface
     protected function compileExample(OA\Example $example): array
     {
         if ($example->ref !== null) {
-            return ['$ref' => $example->ref];
+            return $this->compileReference($example);
         }
 
         $result = $this->filter([

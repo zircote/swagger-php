@@ -222,6 +222,56 @@ final class CompilerTest extends TestCase
         $this->assertEquals('Kept', $result['description']);
     }
 
+    /**
+     * @return iterable<string, array{CompilerInterface, bool}>
+     */
+    public static function referenceSiblingsProvider(): iterable
+    {
+        yield '3.0' => [new OpenApi30Compiler(), false];
+        yield '3.1' => [new OpenApi31Compiler(), true];
+        yield '3.2' => [new OpenApi32Compiler(), true];
+    }
+
+    #[DataProvider('referenceSiblingsProvider')]
+    public function testReferenceObjectSiblings(CompilerInterface $compiler, bool $kept): void
+    {
+        $document = $compiler->compile($this->referencingSpecification($compiler->getVersion()));
+        $operation = $document['paths']['/a']['post'];
+        $created = $operation['responses'][201];
+
+        $references = [
+            'parameter' => [$operation['parameters'][0], ['description' => 'parameter']],
+            'request body' => [$operation['requestBody'], ['description' => 'request body']],
+            'response' => [$operation['responses'][200], ['description' => 'response']],
+            'header' => [$created['headers']['X-H'], ['description' => 'header']],
+            'example' => [$created['content']['application/json']['examples']['e'], ['summary' => 'summary', 'description' => 'example']],
+            'link' => [$created['links']['l'], ['description' => 'link']],
+            'security scheme' => [$document['components']['securitySchemes']['shared'], ['description' => 'security scheme']],
+        ];
+
+        foreach ($references as $position => [$compiled, $siblings]) {
+            $expected = ['$ref' => $compiled['$ref']] + ($kept ? $siblings : []);
+            $this->assertSame($expected, $compiled, $position);
+        }
+    }
+
+    public function test30ReportsReferenceSiblings(): void
+    {
+        $messages = array_column((new OpenApi30Compiler())->validate($this->referencingSpecification('3.0.0')), 'message');
+        $reported = array_values(array_filter($messages, fn (string $message): bool => str_contains($message, 'beside $ref')));
+
+        $this->assertCount(7, $reported);
+        $this->assertStringStartsWith('Parameter description beside $ref #/components/parameters/P is not supported in OpenAPI 3.0 and will be omitted in ', $reported[0]);
+        $this->assertNotEmpty(array_filter($reported, fn (string $message): bool => str_starts_with($message, 'Example summary and description beside $ref #/components/examples/E ')));
+    }
+
+    public function test31ReportsNoReferenceSiblings(): void
+    {
+        $messages = array_column((new OpenApi31Compiler())->validate($this->referencingSpecification('3.1.0')), 'message');
+
+        $this->assertSame([], array_filter($messages, fn (string $message): bool => str_contains($message, 'beside $ref')));
+    }
+
     // --- Schema features: 3.0 omits, 3.1 includes ---
 
     /**
@@ -1010,6 +1060,34 @@ final class CompilerTest extends TestCase
         $spec = new Specification();
         $spec->openapi = new OA\OpenApi(version: $version);
         $spec->info = new OA\Info(title: 'Test API', version: '1.0.0');
+
+        return $spec;
+    }
+
+    /**
+     * One Reference Object, with siblings, in each position that takes one.
+     */
+    protected function referencingSpecification(string $version): Specification
+    {
+        $spec = $this->createSpecification($version);
+        $spec->operations[] = new OA\Operation(
+            path: '/a',
+            method: 'post',
+            parameters: [new OA\Parameter(description: 'parameter', ref: '#/components/parameters/P')],
+            requestBody: new OA\RequestBody(description: 'request body', ref: '#/components/requestBodies/B'),
+            responses: [
+                new OA\Response(response: 200, description: 'response', ref: '#/components/responses/R'),
+                new OA\Response(
+                    response: 201,
+                    description: 'Created',
+                    headers: [new OA\Header(header: 'X-H', description: 'header', ref: '#/components/headers/H')],
+                    content: [new OA\MediaType\Json(examples: [new OA\Example(example: 'e', summary: 'summary', description: 'example', ref: '#/components/examples/E')])],
+                    links: [new OA\Link(link: 'l', description: 'link', ref: '#/components/links/L')],
+                ),
+            ],
+        );
+
+        $spec->securitySchemes[] = new OA\Security\Scheme(description: 'security scheme', ref: 'https://example.com/schemes.yaml#/components/securitySchemes/api', component: 'shared');
 
         return $spec;
     }
