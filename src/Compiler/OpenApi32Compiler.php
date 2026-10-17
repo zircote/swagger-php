@@ -12,11 +12,15 @@ use OpenApi\Specification;
 /**
  * Compiles a Specification into an OpenAPI 3.2.x document array.
  *
- * 3.2 is a superset of 3.1 — adds Tag summary/parent/kind and PathItem query.
+ * 3.2 is a superset of 3.1 — adds Tag summary/parent/kind and the QUERY operation, which takes a request body.
  */
 class OpenApi32Compiler extends OpenApi31Compiler
 {
     protected const VERSIONS = ['3.2.0'];
+
+    protected const OPERATION_METHODS = [...parent::OPERATION_METHODS, 'query'];
+
+    protected const OPERATION_REQUEST_BODY_METHODS = [...parent::OPERATION_REQUEST_BODY_METHODS, 'query'];
 
     public function getVersion(): string
     {

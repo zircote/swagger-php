@@ -23,6 +23,11 @@ class OpenApi31Compiler implements CompilerInterface
 {
     protected const VERSIONS = ['3.1.0', '3.1.1', '3.1.2'];
 
+    /**
+     * The methods a path item has an operation field for.
+     */
+    protected const OPERATION_METHODS = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
+
     protected const OPERATION_REQUEST_BODY_METHODS = ['put', 'post', 'delete', 'patch'];
 
     /**
@@ -238,7 +243,7 @@ class OpenApi31Compiler implements CompilerInterface
         $paths = [];
 
         foreach ($operations as $operation) {
-            if ($operation->path === null || $operation->method === null) {
+            if ($operation->path === null || !in_array($operation->method, static::OPERATION_METHODS, true)) {
                 continue;
             }
 
@@ -280,7 +285,7 @@ class OpenApi31Compiler implements CompilerInterface
         $webhooks = [];
 
         foreach ($operations as $operation) {
-            if ($operation->webhook === null || $operation->method === null) {
+            if ($operation->webhook === null || !in_array($operation->method, static::OPERATION_METHODS, true)) {
                 continue;
             }
 
@@ -978,6 +983,12 @@ class OpenApi31Compiler implements CompilerInterface
     protected function validateOperations(Specification $specification): void
     {
         $specification->getWalker()->visit(OA\Operation::class, function (OA\Operation $operation): void {
+            if ($operation->method !== null && !in_array($operation->method, static::OPERATION_METHODS, true)) {
+                $this->logger->warning("Method {$operation->method} is not supported in OpenAPI " . substr($this->getVersion(), 0, 3) . ' and will be omitted in ' . $operation->getSourceLocation());
+
+                return;
+            }
+
             if ($operation->requestBody instanceof OA\RequestBody && !in_array($operation->method, static::OPERATION_REQUEST_BODY_METHODS)) {
                 $this->logger->warning("Request body not supported for method {$operation->method} in " . $operation->getSourceLocation());
             }
