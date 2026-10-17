@@ -172,6 +172,39 @@ final class BuilderTest extends OpenApiTestCase
         $this->assertSpecEquals($fileResult->toArray(), $reflectorResult->toArray());
     }
 
+    /**
+     * A class from `eval()` has no file to scan. Spec reads its attributes through reflection
+     * alone, and the classic half of a hybrid build, which needs the file, skips it.
+     */
+    public function testBuildReadsAClassFromEval(): void
+    {
+        static $instance = null;
+        $instance ??= eval('namespace OpenApi\Tests;
+            use OpenApi\Attributes as OAT;
+            use OpenApi\Spec as OA;
+            class EvaluatedController {
+                #[OAT\Get(path: "/classic", responses: [new OAT\Response(response: 200, description: "ok")])]
+                public function classic() {}
+                #[OA\Operation\Get(path: "/spec", responses: [new OA\Response(response: 200, description: "ok")])]
+                public function spec() {}
+            }
+            return new EvaluatedController();');
+        $class = $instance::class;
+
+        $this->expectLogEntry("Skipping {$class}: its source file ", 'warning');
+        $this->allowLogEntry('info is required');
+
+        foreach ([Mode::SPEC, Mode::HYBRID] as $mode) {
+            $result = (new Builder())
+                ->setMode($mode)
+                ->addSource(new \ReflectionClass($instance))
+                ->setLogger($this->trackingLogger())
+                ->build();
+
+            $this->assertSame(['/spec'], array_keys($result->toArray()['paths']), $mode->value);
+        }
+    }
+
     public function testBuildReportsANonClassReflectorSpec(): void
     {
         $this->expectLogEntry('Skipping ReflectionMethod source ' . Fixtures\Assembler\SimpleController::class . '::', 'warning');
