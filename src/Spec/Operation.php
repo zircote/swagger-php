@@ -48,7 +48,7 @@ class Operation extends AbstractAttribute
     /**
      * @param string|null                     $path         The URL path for the operation
      * @param string|null                     $webhook      The webhook name (mutually exclusive with path)
-     * @param string|HttpMethod|null          $method       The HTTP method (get, post, put, delete, etc.)
+     * @param string|HttpMethod|null          $method       The HTTP method (get, post, put, delete, etc.). An operation still without one at compile time is left out, with a warning
      * @param string|null                     $operationId  Unique identifier for the operation
      * @param string|null                     $summary      A short summary of what the operation does
      * @param string|null                     $description  A verbose explanation of the operation (CommonMark syntax)
@@ -84,7 +84,7 @@ class Operation extends AbstractAttribute
         ?array $attachables = null,
     ) {
         parent::__construct(x: $x, attachables: $attachables);
-        $this->method = $method instanceof \BackedEnum ? $method->value : strtolower($method);
+        $this->method = $method instanceof \BackedEnum ? $method->value : ($method === null ? null : strtolower($method));
     }
 
     public function isRoot(): bool
