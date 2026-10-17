@@ -448,6 +448,14 @@ final class TokenScannerTest extends OpenApiTestCase
         $this->assertNull($scanner->detailsFor($rc));
     }
 
+    public function testDetailsForReturnsNullForAClassFromEval(): void
+    {
+        static $instance = null;
+        $instance ??= eval('namespace OpenApi\Tests\Utils; class EvaluatedForDetails {} return new EvaluatedForDetails();');
+
+        $this->assertNull((new TokenScanner())->detailsFor(new \ReflectionClass($instance)));
+    }
+
     /**
      * @param  array<string, mixed> $overrides
      * @return array<string, mixed>

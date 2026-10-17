@@ -50,7 +50,7 @@ class TokenScanner
             return $this->cache[$filename];
         }
 
-        $code = file_get_contents($filename);
+        $code = is_file($filename) && is_readable($filename) ? file_get_contents($filename) : false;
         if (false === $code) {
             throw new \RuntimeException("Unable to read {$filename}");
         }
@@ -89,7 +89,8 @@ class TokenScanner
     public function detailsFor(\ReflectionClass $class): ?array
     {
         $filename = $class->getFileName();
-        if ($filename === false) {
+        // internal classes have no file, and a class from `eval()` names one that does not exist
+        if ($filename === false || !is_file($filename)) {
             return null;
         }
 

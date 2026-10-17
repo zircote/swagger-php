@@ -87,6 +87,12 @@ class ReflectionAnalyser implements AnalyserInterface
             return $analysis;
         }
 
+        if (!is_file($filename)) {
+            $analysis->context?->logger?->warning("Skipping {$fqdn}: its source file {$filename} cannot be read");
+
+            return $analysis;
+        }
+
         $scanner = new TokenScanner();
         $fileDetails = $scanner->scanFile($filename);
 
