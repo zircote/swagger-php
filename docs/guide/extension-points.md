@@ -96,6 +96,9 @@ it. Deriving a schema from a class's public properties and PHP types is one opti
 and would let a DTO carrying no spec attributes appear in the document. `insert()` places a
 resolver ahead of the default rather than after it.
 
+A resolver implementing `LoggerAwareInterface` is given the logger set with
+[`Builder::setLogger()`](/reference/builder#logger).
+
 ## Augmenters
 
 An augmenter runs after assembly, over the whole `Specification`, and fills in what the

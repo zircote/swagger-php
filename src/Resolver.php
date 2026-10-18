@@ -14,6 +14,7 @@ use OpenApi\Specification\ComponentIndex;
 use OpenApi\Utils\TypedList;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 
 /**
  * Finds and resolves FQCNs referenced by the specification that have no corresponding schema.
@@ -61,12 +62,19 @@ class Resolver implements LoggerAwareInterface
     /**
      * Resolve all found unresolved FQCN in the specification assembled so far.
      *
-     * The first resolver to claim success will resolve the FQCN.
+     * The first resolver to claim success will resolve the FQCN. A resolver implementing
+     * `LoggerAwareInterface` is given this resolver's logger first.
      */
     public function resolve(Assembler $assembler): void
     {
         if ($this->resolvers->count() === 0) {
             return;
+        }
+
+        foreach ($this->resolvers as $resolver) {
+            if ($resolver instanceof LoggerAwareInterface && $this->logger instanceof LoggerInterface) {
+                $resolver->setLogger($this->logger);
+            }
         }
 
         $specification = $assembler->getSpecification();

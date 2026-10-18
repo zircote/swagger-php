@@ -79,6 +79,37 @@ final class ResolverTest extends TestCase
         $this->assertStringStartsWith('Skipping unloadable ' . Fixtures\Resolver\UnloadableStock::class . ': Failed to instantiate attribute', $received[0]);
     }
 
+    public function testALoggerAwareResolverGetsTheResolversLogger(): void
+    {
+        $assembler = $this->assembler(Fixtures\Resolver\Product::class);
+        $received = [];
+
+        $resolver = $this->resolver(new Fixtures\Resolver\LoggingResolver());
+        $resolver->setLogger(new RecordingLogger($received));
+        $resolver->resolve($assembler);
+
+        $this->assertSame([
+            'Declined ' . Fixtures\Resolver\Manufacturer::class,
+            'Declined ' . Fixtures\Resolver\Weight::class,
+        ], $received);
+    }
+
+    public function testALoggerAwareResolverLogsToTheBuildersLogger(): void
+    {
+        $received = [];
+
+        (new Builder())
+            ->setMode(Mode::SPEC)
+            ->setLogger(new RecordingLogger($received))
+            ->withResolver(fn (Resolver $resolver): Resolver => $resolver->withResolvers(
+                fn (TypedList $resolvers): TypedList => $resolvers->add(new Fixtures\Resolver\LoggingResolver()),
+            ))
+            ->addSource(new \ReflectionClass(Fixtures\Resolver\ProductController::class))
+            ->build();
+
+        $this->assertContains('Declined ' . Fixtures\Resolver\Weight::class, $received);
+    }
+
     /**
      * @return iterable<mixed>
      */
