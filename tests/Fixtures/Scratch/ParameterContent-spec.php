@@ -34,7 +34,7 @@ use OpenApi\Spec as OA;
             name: 'coords',
             content: new OA\MediaType(
                 mediaType: 'application/json',
-                schema: new OA\Schema(type: 'object')
+                schema: new OA\Schema(type: OA\Type::Object)
             )
         ),
     ],

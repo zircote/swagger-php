@@ -17,7 +17,7 @@ use OpenApi\Spec as OA;
         ],
     ),
 ], component: 'petstore_auth')]
-#[OA\Security\Scheme\ApiKey(name: 'api_key', in: OA\SchemeIn::Header, component: 'api_key')]
+#[OA\Security\Scheme(type: OA\SchemeType::ApiKey, name: 'api_key', in: 'header', component: 'api_key')]
 class Security
 {
 }

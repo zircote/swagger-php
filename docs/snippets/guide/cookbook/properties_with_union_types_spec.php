@@ -32,7 +32,7 @@ use OpenApi\Spec as OA;
     properties: [
         new OA\Property(
             property: 'value',
-            schema: new OA\Schema(type: 'object'),
+            schema: new OA\Schema(type: OA\Type::Object),
         ),
 ],
 )]

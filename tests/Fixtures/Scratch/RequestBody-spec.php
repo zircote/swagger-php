@@ -65,8 +65,9 @@ class RequestBodyControllerSpec
     {
     }
 
-    #[OA\Operation\Post(
+    #[OA\Operation(
         path: '/endpoint/ref',
+        method: 'post',
         operationId: 'postRef',
         requestBody: new OA\RequestBody(ref: RequestBodyRefSpec::class),
         responses: [
@@ -80,8 +81,9 @@ class RequestBodyControllerSpec
     {
     }
 
-    #[OA\Operation\Post(
+    #[OA\Operation(
         path: '/endpoint/ref-foo',
+        method: OA\HttpMethod::Post,
         operationId: 'postRefFoo',
         responses: [
             new OA\Response(

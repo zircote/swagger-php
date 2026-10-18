@@ -22,7 +22,7 @@ class Controller
     #[OA\Response(
         response: 200,
         description: 'Polymorphism',
-        content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: Request::class))],
+        content: [new OA\MediaType\Json(ref: Request::class)],
     )]
     public function getProduct($id)
     {

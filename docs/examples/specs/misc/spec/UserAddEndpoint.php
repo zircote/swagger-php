@@ -25,7 +25,7 @@ class UserAddEndpoint
                         new OA\Property(property: 'name', schema: new OA\Schema(type: 'string')),
                         new OA\Property(property: 'phone', schema: new OA\Schema(oneOf: [
                             new OA\Schema(type: 'string'),
-                            new OA\Schema(type: 'integer'),
+                            new OA\Schema(type: OA\Type::Integer),
                         ])),
                     ],
                     example: ['id' => 'a3fb6', 'name' => 'Jessica Smith', 'phone' => 12345678],

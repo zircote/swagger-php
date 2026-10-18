@@ -13,13 +13,13 @@ use OpenApi\Spec as OA;
  */
 #[OA\Security\Scheme\ApiKey(component: 'apiKeyHeader', name: 'X-API-Key', in: 'header')]
 #[OA\Security\Scheme\ApiKey(component: 'apiKeyQuery', name: 'api_key', in: 'query')]
-#[OA\Security\Scheme\ApiKey(component: 'apiKeyCookie', name: 'SESSION', in: 'cookie')]
+#[OA\Security\Scheme(component: 'apiKeyCookie', type: OA\SchemeType::ApiKey, name: 'SESSION', in: OA\SchemeIn::Cookie)]
 class AuthApiKeySchemesSpec
 {
 }
 
 #[OA\Security\Scheme\Http(component: 'basicAuth', scheme: 'basic')]
-#[OA\Security\Scheme\Http(component: 'bearerAuth', scheme: 'bearer', bearerFormat: 'JWT')]
+#[OA\Security\Scheme(component: 'bearerAuth', type: 'http', scheme: 'bearer', bearerFormat: 'JWT')]
 class AuthHttpSchemesSpec
 {
 }
@@ -69,8 +69,9 @@ class AuthOtherSchemesSpec
 
 #[OA\Info(title: 'Auth', version: '1.0')]
 #[OA\OpenApi(security: [new OA\Security\Requirement(scheme: 'apiKeyHeader')])]
-#[OA\Operation\Get(
+#[OA\Operation(
     path: '/secured',
+    method: OA\HttpMethod::Get,
     operationId: 'getSecured',
     security: [
         new OA\Security\Requirement(scheme: 'bearerAuth'),

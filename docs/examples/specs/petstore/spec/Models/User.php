@@ -15,23 +15,20 @@ use OpenApi\Spec as OA;
 class User
 {
     #[OA\Property]
-    #[OA\Schema(title: 'ID', description: 'ID', format: 'int64')]
+    #[OA\Schema(title: 'ID', description: 'ID', format: OA\Format::Int64)]
     private int $id;
 
     #[OA\Property]
     #[OA\Schema(title: 'Username', description: 'Username')]
     private string $username;
 
-    #[OA\Property]
     #[OA\Schema(title: 'First name', description: 'First name')]
     private string $firstName;
 
-    #[OA\Property]
     #[OA\Schema(title: 'Last name', description: 'Last name')]
     private string $lastName;
 
-    #[OA\Property]
-    #[OA\Schema(title: 'Email', description: 'Email', format: 'email')]
+    #[OA\Schema(title: 'Email', description: 'Email', format: OA\Format::Email)]
     private string $email;
 
     #[OA\Property]
@@ -43,6 +40,6 @@ class User
     private string $phone;
 
     #[OA\Property]
-    #[OA\Schema(title: 'User status', description: 'User status', format: 'int32')]
+    #[OA\Schema(title: 'User status', description: 'User status', format: OA\Format::Int32)]
     private int $userStatus;
 }

@@ -22,12 +22,11 @@ class Controller
         response: 200,
         description: 'OK',
         content: [
-            new OA\MediaType(
-                mediaType: 'application/json',
+            new OA\MediaType\Json(
                 schema: new OA\Schema(
                     oneOf: [
                         new OA\Schema(ref: '#/components/schemas/Result'),
-                        new OA\Schema(type: 'boolean'),
+                        new OA\Schema(type: OA\Type::Boolean),
                     ]
                 ),
                 examples: [

@@ -16,7 +16,7 @@ class EncodingMetadataSpec
 #[OA\Schema(component: 'MultipartFormData')]
 class MultipartFormDataSpec
 {
-    #[OA\Schema(format: 'uuid')]
+    #[OA\Schema(format: OA\Format::Uuid)]
     public string $name;
 
     #[OA\Property]

@@ -12,7 +12,7 @@ use OpenApi\Spec as OA;
 final class Pet
 {
     #[OA\Property]
-    #[OA\Schema(format: 'int64')]
+    #[OA\Schema(format: OA\Format::Int64)]
     public int $id;
 
     #[OA\Property]

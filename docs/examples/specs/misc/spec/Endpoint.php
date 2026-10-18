@@ -22,16 +22,12 @@ class Endpoint
         description: 'An endpoint',
         tags: ['endpoints'],
         parameters: [
-            new OA\Parameter(
+            new OA\Parameter\Query(
                 name: 'filter',
-                in: 'query',
-                content: [new OA\MediaType(
-                    mediaType: 'application/json',
-                    schema: new OA\Schema(properties: [
-                        new OA\Property(property: 'type', schema: new OA\Schema(type: 'string')),
-                        new OA\Property(property: 'color', schema: new OA\Schema(type: 'string')),
-                    ]),
-                )],
+                content: [new OA\MediaType\Json(properties: [
+                    new OA\Property(property: 'type', schema: new OA\Schema(type: 'string')),
+                    new OA\Property(property: 'color', schema: new OA\Schema(type: OA\Type::String)),
+                ])],
             ),
         ],
         security: [new OA\Security\Requirement(scheme: 'bearerAuth', scopes: [])],

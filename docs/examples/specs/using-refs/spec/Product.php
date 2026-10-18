@@ -18,7 +18,7 @@ class Product extends Model
     #[OA\Schema(format: 'int64', example: 1)]
     public int $id;
 
-    #[OA\Property(schema: new OA\Schema(ref: '#/components/schemas/product_status'))]
+    #[OA\Property(schema: new OA\Schema\Ref('#/components/schemas/product_status'))]
     public string $status;
 
     #[OA\Property]

@@ -7,10 +7,7 @@ use OpenApi\Spec as OA;
 #[OA\Response(
     response: 'product',
     description: 'All information about a product',
-    content: [new OA\MediaType(
-        mediaType: 'application/json',
-        schema: new OA\Schema(ref: '#/components/schemas/Product'),
-    )],
+    content: [new OA\MediaType\Json(ref: '#/components/schemas/Product')],
 )]
 class ProductResponse
 {

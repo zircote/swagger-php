@@ -21,8 +21,9 @@ use OpenApi\Spec as OA;
     operationId: 'getMultiple',
     responses: [new OA\Response(response: 200, description: 'OK')]
 )]
-#[OA\Operation\Get(
+#[OA\Operation(
     path: '/api/class/endpoint2',
+    method: 'get',
     description: 'Another class endpoint',
     operationId: 'getMultipleAnother',
     responses: [new OA\Response(response: 200, description: 'OK')]
@@ -39,8 +40,9 @@ class MultiplePathsForMethodEndpointSpec
         operationId: 'methodEndpoint',
         responses: [new OA\Response(response: 200, description: 'OK')]
     )]
-    #[OA\Operation\Get(
+    #[OA\Operation(
         path: '/api/method/endpoint2',
+        method: OA\HttpMethod::Get,
         description: 'Another method endpoint',
         operationId: 'anotherMethodEndpoint',
         responses: [new OA\Response(response: 200, description: 'OK')]

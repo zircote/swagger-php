@@ -12,15 +12,11 @@ class Controller
         operationId: 'endpoint',
         tags: ['endpoints'],
         parameters: [
-            new OA\Parameter(
+            new OA\Parameter\Query(
                 name: 'things[]',
-                in: 'query',
                 description: 'A list of things.',
                 required: false,
-                schema: new OA\Schema(
-                    type: 'array',
-                    items: new OA\Schema(type: 'integer')
-                )
+                schema: new OA\Schema\Items(type: OA\Type::Integer),
             ),
         ],
     )]

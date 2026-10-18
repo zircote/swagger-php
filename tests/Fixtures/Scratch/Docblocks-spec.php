@@ -106,7 +106,7 @@ class DocblocksEndpointSpec
         /** @var string|null $filter An optional filter */
         #[OA\Parameter\Query(description: null)] ?string $filter,
         /** @var string|null $limit An optional limit */
-        #[OA\Parameter\Query] ?int $limit,
+        #[OA\Parameter(in: OA\ParameterIn::Query)] ?int $limit,
     ) {
 
     }

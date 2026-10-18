@@ -41,7 +41,7 @@ class LinkControllerSpec
             new OA\Response(response: 200, description: 'The owner'),
         ],
     )]
-    #[OA\Parameter\Path(name: 'id', schema: new OA\Schema(type: 'string'))]
+    #[OA\Parameter(name: 'id', in: OA\ParameterIn::Path, required: true, schema: new OA\Schema(type: OA\Type::String))]
     #[OA\Link(link: 'WidgetOwner', operationId: 'getOwner', parameters: ['id' => '$response.body#/ownerId'])]
     public function getOwner()
     {

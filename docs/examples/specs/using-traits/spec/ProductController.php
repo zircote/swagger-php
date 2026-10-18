@@ -17,12 +17,10 @@ class ProductController
         operationId: 'getProduct',
         tags: ['Products'],
         parameters: [
-            new OA\Parameter(
+            new OA\Parameter\Path(
                 name: 'product_id',
-                in: 'path',
                 description: 'ID of product to return',
-                required: true,
-                schema: new OA\Schema(type: 'string'),
+                schema: new OA\Schema(type: OA\Type::String),
             ),
         ],
     )]

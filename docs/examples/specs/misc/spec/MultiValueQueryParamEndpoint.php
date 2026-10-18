@@ -27,7 +27,7 @@ class MultiValueQueryParamEndpoint
                 in: OA\ParameterIn::Query,
                 description: 'A list of things.',
                 required: false,
-                schema: new OA\Schema(type: 'array', items: new OA\Schema(type: 'integer')),
+                schema: new OA\Schema\Items(type: 'integer'),
             ),
         ],
         security: [new OA\Security\Requirement(scheme: 'bearerAuth', scopes: [])],

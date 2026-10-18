@@ -43,22 +43,17 @@ class ProductController
         description: 'Get green products',
         tags: ['api'],
         parameters: [
-            new OA\Parameter(
+            new OA\Parameter\Path(
                 name: 'id',
-                in: 'path',
                 description: 'ID of product to return',
-                required: true,
-                schema: new OA\Schema(type: 'string'),
+                schema: new OA\Schema(type: OA\Type::String),
             ),
         ],
     )]
     #[OA\Response(
         response: 200,
         description: 'successful operation',
-        content: [new OA\MediaType(
-            mediaType: 'application/json',
-            schema: new OA\Schema(ref: '#/components/schemas/GreenProduct'),
-        )],
+        content: [new OA\MediaType\Json(ref: '#/components/schemas/GreenProduct')],
     )]
     public function getGreenProduct($id)
     {

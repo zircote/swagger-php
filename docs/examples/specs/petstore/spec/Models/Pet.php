@@ -17,8 +17,7 @@ use OpenApi\Spec as OA;
 ], xml: new OA\Xml(name: 'Pet'))]
 class Pet
 {
-    #[OA\Property]
-    #[OA\Schema(title: 'ID', description: 'ID', format: 'int64')]
+    #[OA\Schema(title: 'ID', description: 'ID', format: OA\Format::Int64)]
     private int $id;
 
     #[OA\Property]
@@ -44,11 +43,10 @@ class Pet
     /**
      * @var array<Tag>
      */
-    #[OA\Property]
-    #[OA\Schema(
+    #[OA\Schema\Items(
         title: 'Pet tags',
         description: 'Pet tags',
-        items: new OA\Schema(ref: Tag::class),
+        ref: Tag::class,
         xml: new OA\Xml(name: 'tag', wrapped: true),
     )]
     private array $tags;
