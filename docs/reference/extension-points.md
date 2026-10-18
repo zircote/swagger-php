@@ -29,6 +29,23 @@ are the `Augmenter\Shortcuts` augmenter; the `OA\Parameter` ones are plain subcl
 Not in a class carrying `OA\Components`: there a schema on a property is a component of its
 own, named after the property, so it is left for the holder to absorb.
 
+### [OperationMethodsTranslator](https://github.com/zircote/swagger-php/tree/master/src/Assembler/OperationMethodsTranslator.php)
+
+Split an `OA\Operation` declaring `methods:` into one operation per method.
+
+The first method keeps the declared operation, every other one gets a `copy()` of it. When
+the split operation is the only operation on its method, what would nest into it is set to
+`Fan::All` where it leaves `fan` unset: its siblings, and the attributes on the method's PHP
+parameters. So each method gets the whole description. Next to other operations nothing is
+fanned, and an attribute that could go into more than one of them is the usual ambiguity.
+
+An explicit `operationId` on several methods has to tell them apart with `{method}`, which
+`Augmenter\OperationIds` expands. Without it, it is dropped with a warning and each method
+gets a generated one.
+
+A translator creating `methods:` operations itself has to run before this one: `insert()` it
+into the translators ahead of this class rather than `add()` it.
+
 ## Default Resolvers
 
 ### [Reflection](https://github.com/zircote/swagger-php/tree/master/src/Resolver/Reflection.php)

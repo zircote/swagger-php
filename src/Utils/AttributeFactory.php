@@ -7,6 +7,7 @@
 namespace OpenApi\Utils;
 
 use OpenApi\Assembler\DefaultAttributeTranslator;
+use OpenApi\Assembler\OperationMethodsTranslator;
 use OpenApi\Assembler\OptionalPropertyAttributeTranslator;
 use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Contracts\AttributeTranslatorInterface;
@@ -15,6 +16,7 @@ use OpenApi\Spec as OA;
 use OpenApi\Specification\ComponentName;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 
 /**
  * Creates spec attribute instances from PHP reflectors.
@@ -39,6 +41,7 @@ class AttributeFactory implements LoggerAwareInterface
         $translators = [
             new DefaultAttributeTranslator(),
             new OptionalPropertyAttributeTranslator(),
+            new OperationMethodsTranslator(),
         ];
 
         $this->translators = new TypedList($translators);
@@ -78,13 +81,17 @@ class AttributeFactory implements LoggerAwareInterface
     }
 
     /**
-     * Reset all translators.
+     * Reset all translators, and give those that log this factory's logger.
      *
      * Called at the start of each top-level collection unit.
      */
     public function resetTranslators(): void
     {
         foreach ($this->translators as $translator) {
+            if ($translator instanceof LoggerAwareInterface && $this->logger instanceof LoggerInterface) {
+                $translator->setLogger($this->logger);
+            }
+
             $translator->reset();
         }
     }

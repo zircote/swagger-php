@@ -767,6 +767,8 @@ For webhooks, use `webhook` instead of `path`:
   <dd><p>Additional external documentation</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+  <dt><strong>methods</strong> : <span style="font-family: monospace;">list&lt;string|HttpMethod&gt;|null</span></dt>
+  <dd><p>Several HTTP methods for one declaration, instead of `method`. Split into one operation per method during assembly</p></dd>
 </dl>
 
 #### Reference
