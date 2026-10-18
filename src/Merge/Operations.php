@@ -43,9 +43,11 @@ use Psr\Log\LoggerAwareTrait;
  *   and opts out.
  * - `tags` and `attachables` are unions, and `x` merges key by key under the same mode.
  *
- * The survivor is a new operation, a copy of the earlier with the later folded in, so
- * neither contribution is changed. It keeps the earlier's reflector, source location and
- * `meta`, falling back to the later's reflector when the earlier has none.
+ * The survivor is a new operation, a shallow copy of the earlier with the later folded in, so
+ * neither operation is changed. What it takes whole, such as a response or a request body, is
+ * the contribution's own object, and the augmenters that run later change it in place, as they
+ * would without the merge. It keeps the earlier's reflector, source location and `meta`,
+ * falling back to the later's reflector when the earlier has none.
  */
 class Operations implements MergerInterface, LoggerAwareInterface
 {
@@ -78,6 +80,7 @@ class Operations implements MergerInterface, LoggerAwareInterface
 
         $mode = $this->modeFor($earlier, $later);
 
+        // shallow: the survivor replaces both, so no child it shares ends up with two holders
         $survivor = clone $earlier;
         if (!$survivor->getReflector() instanceof \Reflector && $later->getReflector() instanceof \Reflector) {
             $survivor->setReflector($later->getReflector());

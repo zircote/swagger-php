@@ -61,6 +61,7 @@ class Tags implements MergerInterface, LoggerAwareInterface
 
         $mode = $this->modeFor($earlier, $later);
 
+        // a shallow copy is enough: both tags give way to the survivor, so what it shares has one holder
         $survivor = clone $earlier;
         $conflicts = [];
 

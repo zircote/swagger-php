@@ -19,7 +19,8 @@ use OpenApi\Utils\AttributeFactory;
  * composition can apply.
  *
  * Walks each PathItem class's ancestors: if an ancestor has no PathItem
- * of its own, its operations are cloned and re-associated with the child class. The
+ * of its own, each child class gets a deep copy of its operations, re-associated with the child.
+ * A deep copy, so a change to one child's responses or parameters stays with that child. The
  * original operations (associated with the abstract parent) are removed since they
  * have no PathItem context of their own.
  *
@@ -92,9 +93,9 @@ class Operations
 
                 if (isset($ancestorOperations[$parentName])) {
                     foreach ($ancestorOperations[$parentName] as $operation) {
-                        $clone = clone $operation;
-                        $clone->setReflector($reflector);
-                        $specification->add($clone);
+                        $copy = $operation->copy();
+                        $copy->setReflector($reflector);
+                        $specification->add($copy);
                         $toRemove[spl_object_id($operation)] = true;
                     }
                 } else {

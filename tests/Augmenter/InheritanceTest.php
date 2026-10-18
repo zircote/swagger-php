@@ -69,6 +69,25 @@ final class InheritanceTest extends TestCase
         );
     }
 
+    /**
+     * Augmenters change responses in place, so each child needs its own.
+     */
+    public function testEachChildGetsItsOwnCopyOfAnInheritedOperation(): void
+    {
+        $spec = $this->assemble(
+            OperationalFixtures\Augmenter\AbstractDocumentController::class,
+            OperationalFixtures\Augmenter\InvoiceDocumentController::class,
+            OperationalFixtures\Augmenter\TaggedArchiveController::class,
+        );
+
+        (new Augmenter\Inheritance())($spec);
+
+        $this->assertCount(2, $spec->operations);
+        [$invoices, $archive] = $spec->operations;
+        $this->assertEquals($invoices->responses, $archive->responses);
+        $this->assertNotSame($invoices->responses[0] ?? null, $archive->responses[0] ?? null);
+    }
+
     public function testPathItemPrefixAppliedToInheritedOperation(): void
     {
         $spec = $this->assemble(
