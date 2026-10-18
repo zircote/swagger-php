@@ -29,7 +29,7 @@ use OpenApi\Utils\PipeInterface;
 class Shortcuts implements PipeInterface
 {
     /** What stays on the array schema an `OA\Schema\Items` becomes, besides the array keywords. */
-    private const ITEMS_KEEP_PROPERTIES = ['schema', 'title', 'description', 'deprecated', 'readOnly', 'writeOnly', 'xml', 'externalDocs', 'x', 'attachables'];
+    private const ITEMS_KEEP_PROPERTIES = ['schema', 'component', 'title', 'description', 'deprecated', 'readOnly', 'writeOnly', 'xml', 'externalDocs', 'x', 'attachables'];
 
     public function __invoke(mixed $payload): mixed
     {
@@ -114,13 +114,28 @@ class Shortcuts implements PipeInterface
     }
 
     /**
-     * Every `OA\Schema\Items` held in a `schema` slot, wherever its holder is nested.
+     * Every `OA\Schema\Items` in the specification, wherever it is nested, except one held directly
+     * in the `items` of a schema that is not an `Items` itself.
+     *
+     * There it is the item schema, not an array of them: `new OA\Schema(type: 'array', items: new
+     * OA\Schema\Items(type: 'string'))` is an array of strings. In the `items` of another `Items`
+     * it is an array, so an array of arrays.
      */
     protected function processSchemaItems(Specification $specification): void
     {
-        $specification->getWalker()->visit(AttributeInterface::class, function (AttributeInterface $attribute): void {
-            if (property_exists($attribute, 'schema') && $attribute->schema instanceof OA\Schema\Items) {
-                $this->processSchemaItem($attribute->schema);
+        $walker = $specification->getWalker();
+
+        $itemSchemas = new \SplObjectStorage();
+        $walker->eachSchema(static function (OA\Schema $schema) use ($itemSchemas): void {
+            if (!$schema instanceof OA\Schema\Items && $schema->items instanceof OA\Schema\Items) {
+                $itemSchemas->offsetSet($schema->items);
+            }
+        });
+
+        // the walker visits children before their parent, so a nested `Items` is resolved first
+        $walker->visit(OA\Schema\Items::class, function (OA\Schema\Items $items) use ($itemSchemas): void {
+            if (!$itemSchemas->offsetExists($items)) {
+                $this->processSchemaItem($items);
             }
         });
     }
@@ -130,16 +145,12 @@ class Shortcuts implements PipeInterface
      *
      * `#[OA\Schema\Items(ref: Tag::class, minItems: 1)]` describes an array of `Tag`. The array
      * keywords and the metadata in `ITEMS_KEEP_PROPERTIES` stay on the attribute, which becomes
-     * `type: array`. Every other `OA\Schema` keyword it sets moves into a new `items` schema. A
-     * nested `Items` in `items` is resolved first, so an array of arrays resolves innermost first.
-     * With nothing to move and no `items`, the items schema is empty: an array of anything.
+     * `type: array`. Every other `OA\Schema` keyword it sets moves into a new `items` schema.
+     * With nothing to move and no `items`, the items schema is empty: an array of anything. It
+     * does not recurse: an `Items` in `items` is resolved by the caller, before this one.
      */
     protected function processSchemaItem(OA\Schema\Items $items): void
     {
-        if ($items->items instanceof OA\Schema\Items) {
-            $this->processSchemaItem($items->items);
-        }
-
         $itemKeep = [...OA\Schema::ARRAY_PROPERTIES, ...self::ITEMS_KEEP_PROPERTIES];
 
         // the keywords to move are read off `OA\Schema`'s constructor, so a keyword added there

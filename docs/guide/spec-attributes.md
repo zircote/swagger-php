@@ -329,6 +329,11 @@ public array $tags;
 
 Both the `MediaType` and `Items` shortcuts are resolved by the `Shortcuts` augmenter.
 
+An `OA\Schema\Items` is an array wherever it is nested, such as in `oneOf` or in the `items` of
+another `Items`. The one exception is the `items` of a plain `OA\Schema` or of a media type
+shortcut: there it is the item schema itself, as the classic `OA\Items` is, so
+`new OA\Schema(type: 'array', items: new OA\Schema\Items(type: 'string'))` is an array of strings.
+
 ### Encoded
 `OA\Property\Encoded` bundles a property definition with its encoding. Instead of a separate `OA\Encoding` on the `OA\MediaType`, the encoding is declared on the property itself. The `MediaTypes` augmenter promotes the encoding to the parent MediaType automatically.
 
