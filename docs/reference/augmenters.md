@@ -140,12 +140,16 @@ Runs before `PathItems`, which clones path item requirements onto their operatio
 
 ### [PathItems](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/PathItems.php)
 
-Resolves PathItem prefixes, clones metadata to operations, and sets path-level output.
+Resolves PathItem prefixes, copies metadata to operations, and sets path-level output.
 
 Composes path prefixes from the PathItems governing each operation's class, prepends them
-to operation paths, clones tags/security/responses to operations that don't declare their
+to operation paths, copies tags/security/responses to operations that don't declare their
 own, and marks PathItems that have spec-level output (parameters, summary, description,
-servers) with their resolved path.
+servers) with their resolved path. A PathItem governing several paths is written once per
+path.
+
+Security requirements, responses and the per-path PathItems are deep copies, so a change
+made through one operation or path stays there.
 
 The ancestor walk and the prefix composition belong to `Specification\PathItemHierarchy`.
 

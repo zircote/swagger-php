@@ -176,6 +176,35 @@ final class PathItemsTest extends TestCase
         }
     }
 
+    /**
+     * Augmenters change responses and requirements in place, so each operation needs its own.
+     */
+    public function testSharedResponsesAndSecurityAreCopiedPerOperation(): void
+    {
+        $spec = $this->resolve($this->assemble(Fixtures\Augmenter\PathItemSharedResponseController::class));
+
+        $getOp = $this->findOperationByMethod($spec, 'get');
+        $postOp = $this->findOperationByMethod($spec, 'post');
+        $this->assertInstanceOf(OA\Operation::class, $getOp);
+        $this->assertInstanceOf(OA\Operation::class, $postOp);
+
+        $getServerError = $this->findResponse($getOp, '500');
+        $postServerError = $this->findResponse($postOp, '500');
+        $this->assertEquals($getServerError, $postServerError);
+        $this->assertNotSame($getServerError, $postServerError);
+        $this->assertNotSame($getOp->security[0] ?? null, $postOp->security[0] ?? null);
+    }
+
+    public function testPathItemWrittenPerPathHasItsOwnParameters(): void
+    {
+        $spec = $this->resolve($this->assemble(Fixtures\Augmenter\PathItemSharedParameterController::class));
+
+        $pathItems = array_values(array_filter($spec->pathItems, fn (OA\PathItem $pi): bool => $pi->path !== null));
+        $this->assertCount(2, $pathItems);
+        $this->assertNotSame($pathItems[0]->parameters[0] ?? null, $pathItems[1]->parameters[0] ?? null);
+        $this->assertNotSame($pathItems[0]->parameters[0]->schema ?? null, $pathItems[1]->parameters[0]->schema ?? null);
+    }
+
     public function testSharedResponseNotOverriddenWhenCodeExists(): void
     {
         $spec = $this->resolve($this->assemble(Fixtures\Augmenter\PathItemSharedResponseController::class));
@@ -250,6 +279,17 @@ final class PathItemsTest extends TestCase
         foreach ($spec->operations as $operation) {
             if ($operation->method === $method) {
                 return $operation;
+            }
+        }
+
+        return null;
+    }
+
+    private function findResponse(OA\Operation $operation, string $code): ?OA\Response
+    {
+        foreach ($operation->responses ?? [] as $response) {
+            if ((string) $response->response === $code) {
+                return $response;
             }
         }
 

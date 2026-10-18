@@ -12,12 +12,16 @@ use OpenApi\Specification\PathItemHierarchy;
 use OpenApi\Utils\PipeInterface;
 
 /**
- * Resolves PathItem prefixes, clones metadata to operations, and sets path-level output.
+ * Resolves PathItem prefixes, copies metadata to operations, and sets path-level output.
  *
  * Composes path prefixes from the PathItems governing each operation's class, prepends them
- * to operation paths, clones tags/security/responses to operations that don't declare their
+ * to operation paths, copies tags/security/responses to operations that don't declare their
  * own, and marks PathItems that have spec-level output (parameters, summary, description,
- * servers) with their resolved path.
+ * servers) with their resolved path. A PathItem governing several paths is written once per
+ * path.
+ *
+ * Security requirements, responses and the per-path PathItems are deep copies, so a change
+ * made through one operation or path stays there.
  *
  * The ancestor walk and the prefix composition belong to `Specification\PathItemHierarchy`.
  *
@@ -73,7 +77,7 @@ class PathItems implements PipeInterface
             foreach ($merged['security'] as $req) {
                 if (!isset($existingSchemes[$req->scheme])) {
                     $operation->security ??= [];
-                    $operation->security[] = $req;
+                    $operation->security[] = $req->copy();
                 }
             }
         }
@@ -89,7 +93,7 @@ class PathItems implements PipeInterface
             foreach ($merged['responses'] as $response) {
                 if ($response->response !== null && !isset($existingCodes[(string) $response->response])) {
                     $operation->responses ??= [];
-                    $operation->responses[] = $response;
+                    $operation->responses[] = $response->copy();
                 }
             }
         }
@@ -152,9 +156,9 @@ class PathItems implements PipeInterface
                 if ($pathItem->path === null) {
                     $pathItem->path = $path;
                 } elseif ($pathItem->path !== $path) {
-                    $clone = clone $pathItem;
-                    $clone->path = $path;
-                    $specification->pathItems[] = $clone;
+                    $copy = $pathItem->copy();
+                    $copy->path = $path;
+                    $specification->pathItems[] = $copy;
                 }
             }
         }
