@@ -7,7 +7,7 @@ use OpenApi\Spec as OA;
 #[OA\Security\Scheme\ApiKey(
     name: 'api_key',
     component: 'api_key',
-    in: 'header',
+    in: OA\SchemeIn::Header,
 )]
 #[OA\Security\Scheme\OAuth2(
     component: 'petstore_auth',

@@ -24,7 +24,7 @@ class RepositoriesController
             new OA\Response(
                 response: 200,
                 description: 'Repositories owned by the supplied user',
-                content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: '#/components/schemas/repository')))],
+                content: [new OA\MediaType\Json(type: 'array', items: new OA\Schema(ref: '#/components/schemas/repository'))],
                 links: [new OA\Link(link: 'userRepository', ref: '#/components/links/UserRepository')],
             ),
         ],
@@ -38,7 +38,7 @@ class RepositoriesController
         path: '/2.0/repositories/{username}/{slug}',
         operationId: 'getRepository',
         parameters: [
-            new OA\Parameter(name: 'username', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
+            new OA\Parameter\Path(name: 'username', schema: new OA\Schema(type: OA\Type::String)),
             new OA\Parameter(name: 'slug', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
         ],
         responses: [
@@ -91,7 +91,7 @@ class RepositoriesController
             new OA\Response(
                 response: 200,
                 description: 'A pull request object',
-                content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: '#/components/schemas/pullrequest'))],
+                content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema\Ref('#/components/schemas/pullrequest'))],
                 links: [new OA\Link(link: 'pullRequestMerge', ref: '#/components/links/PullRequestMerge')],
             ),
         ],

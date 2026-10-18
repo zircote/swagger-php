@@ -30,7 +30,7 @@ class PetController
     /**
      * Update an existing pet.
      */
-    #[OA\Operation\Put(path: '/pet', operationId: 'updatePet', tags: ['pet'], requestBody: new OA\RequestBody(ref: PetRequestBody::class), security: [
+    #[OA\Operation(path: '/pet', method: 'put', operationId: 'updatePet', tags: ['pet'], requestBody: new OA\RequestBody(ref: PetRequestBody::class), security: [
         new OA\Security\Requirement(scheme: 'petstore_auth', scopes: ['write:pets', 'read:pets']),
     ])]
     #[OA\Response(response: 400, description: 'Invalid ID supplied')]
@@ -47,7 +47,7 @@ class PetController
             description: 'Status values that needed to be considered for filter',
             required: true,
             explode: true,
-            schema: new OA\Schema(type: 'string', enum: ['available', 'pending', 'sold'], default: 'available'),
+            schema: new OA\Schema(type: OA\Type::String, enum: ['available', 'pending', 'sold'], default: 'available'),
         ),
     ], deprecated: true, security: [
         new OA\Security\Requirement(scheme: 'petstore_auth', scopes: ['write:pets', 'read:pets']),
@@ -66,9 +66,8 @@ class PetController
     }
 
     #[OA\Operation\Get(path: '/pet/findByTags', operationId: 'findByTags', summary: 'Finds Pets by tags', description: 'Muliple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.', tags: ['pet'], parameters: [
-        new OA\Parameter(
+        new OA\Parameter\Query(
             name: 'tags',
-            in: 'query',
             description: 'Tags to filter by',
             required: true,
             explode: true,
@@ -81,7 +80,7 @@ class PetController
         response: 200,
         description: 'successful operation',
         content: [
-            new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
+            new OA\MediaType\Json(type: OA\Type::Array, items: new OA\Schema(ref: Pet::class)),
             new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
         ],
     )]
@@ -96,7 +95,7 @@ class PetController
             in: OA\ParameterIn::Path,
             description: 'ID of pet to return',
             required: true,
-            schema: new OA\Schema(type: 'integer', format: 'int64'),
+            schema: new OA\Schema(type: OA\Type::Integer, format: OA\Format::Int64),
         ),
     ], security: [
         new OA\Security\Requirement(scheme: 'api_key', scopes: []),
@@ -105,7 +104,7 @@ class PetController
         response: 200,
         description: 'successful operation',
         content: [
-            new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: Pet::class)),
+            new OA\MediaType\Json(ref: Pet::class),
             new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(ref: Pet::class)),
         ],
     )]
@@ -116,11 +115,9 @@ class PetController
     }
 
     #[OA\Operation\Post(path: '/pet/{petId}', operationId: 'updatePetWithForm', summary: 'Updates a pet in the store with form data', tags: ['pet'], parameters: [
-        new OA\Parameter(
+        new OA\Parameter\Path(
             name: 'petId',
-            in: 'path',
             description: 'ID of pet that needs to be updated',
-            required: true,
             schema: new OA\Schema(type: 'integer', format: 'int64'),
         ),
     ], requestBody: new OA\RequestBody(
@@ -146,7 +143,7 @@ class PetController
     }
 
     #[OA\Operation\Delete(path: '/pet/{petId}', operationId: 'deletePet', summary: 'Deletes a pet', tags: ['pet'], parameters: [
-        new OA\Parameter(name: 'api_key', in: 'header', required: false, schema: new OA\Schema(type: 'string')),
+        new OA\Parameter\Header(name: 'api_key', required: false, schema: new OA\Schema(type: OA\Type::String)),
         new OA\Parameter(name: 'petId', in: 'path', description: 'Pet id to delete', required: true, schema: new OA\Schema(type: 'integer', format: 'int64')),
     ], security: [
         new OA\Security\Requirement(scheme: 'petstore_auth', scopes: ['write:pets', 'read:pets']),
@@ -157,7 +154,7 @@ class PetController
     {
     }
 
-    #[OA\Operation\Post(path: '/pet/{petId}/uploadImage', operationId: 'uploadFile', summary: 'uploads an image', tags: ['pet'], parameters: [
+    #[OA\Operation(path: '/pet/{petId}/uploadImage', method: OA\HttpMethod::Post, operationId: 'uploadFile', summary: 'uploads an image', tags: ['pet'], parameters: [
         new OA\Parameter(
             name: 'petId',
             in: 'path',
@@ -179,7 +176,7 @@ class PetController
     #[OA\Response(
         response: 200,
         description: 'successful operation',
-        content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: ApiResponse::class))],
+        content: [new OA\MediaType\Json(ref: ApiResponse::class)],
     )]
     public function uploadFile()
     {

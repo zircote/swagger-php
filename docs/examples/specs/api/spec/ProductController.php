@@ -18,16 +18,16 @@ class ProductController
      *
      * @param ?int $product_id the product id
      */
-    #[OA\Operation(path: '/products/{product_id}', method: 'get', operationId: 'getProducts', tags: ['products'])]
+    #[OA\Operation\Get(path: '/products/{product_id}', operationId: 'getProducts', tags: ['products'])]
     #[OA\Response(
         response: 200,
         description: 'successful operation',
-        headers: [new OA\Header(header: 'X-Rate-Limit', description: 'calls per hour allowed by the user', schema: new OA\Schema(type: 'integer', format: 'int32'))],
+        headers: [new OA\Header(header: 'X-Rate-Limit', description: 'calls per hour allowed by the user', schema: new OA\Schema(type: OA\Type::Integer, format: OA\Format::Int32))],
         content: [new OA\MediaType\Json(ref: Product::class)],
     )]
     #[OA\Response(response: 401, description: 'oops')]
     public function getProduct(
-        #[OA\Parameter(name: 'product_id', in: 'path', required: true)]
+        #[OA\Parameter\Path(name: 'product_id')]
         ?int $product_id
     ) {
     }
@@ -53,7 +53,8 @@ class ProductController
     /**
      * Get all.
      */
-    #[OA\Operation(path: '/products', method: 'get', operationId: 'getAll', tags: ['products', 'catalog'])]
+    #[OA\Operation(path: '/products', method: OA\HttpMethod::Get, operationId: 'getAll', tags: ['products'])]
+    #[OA\Tag(name: 'catalog')]
     #[OA\Response(
         response: 200,
         description: 'successful operation',
@@ -95,7 +96,7 @@ class ProductController
                                         properties: [
                                             new OA\Property(
                                                 property: 'timestamp',
-                                                schema: new OA\Schema(description: 'time of change', type: 'string', format: 'date-time'),
+                                                schema: new OA\Schema(description: 'time of change', type: 'string', format: OA\Format::DateTime),
                                             ),
                                         ],
                                     ),
@@ -112,7 +113,7 @@ class ProductController
             ],
         ],
     )]
-    #[OA\Parameter(name: 'callbackUrl', in: 'query')]
+    #[OA\Parameter(name: 'callbackUrl', in: OA\ParameterIn::Query)]
     #[OA\Response(response: 200, description: 'callbackUrl registered')]
     public function subscribe()
     {

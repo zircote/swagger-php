@@ -21,14 +21,6 @@ class ApiController
         operationId: 'getEntity',
         description: 'Get the entity',
         tags: ['api'],
-        parameters: [
-            new OA\Parameter(
-                name: 'id',
-                in: 'path',
-                required: true,
-                schema: new OA\Schema(type: 'integer', format: 'int64'),
-            ),
-        ],
     )]
     #[OA\Response(
         response: 200,
@@ -38,7 +30,9 @@ class ApiController
             schema: new OA\Schema(ref: '#/components/schemas/ActualModel'),
         )],
     )]
-    public function get($id)
-    {
+    public function get(
+        #[OA\Parameter\Path(schema: new OA\Schema(format: OA\Format::Int64))]
+        int $id,
+    ) {
     }
 }

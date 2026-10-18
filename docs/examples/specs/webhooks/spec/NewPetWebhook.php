@@ -12,12 +12,12 @@ class NewPetWebhook
 {
     #[OA\Operation(
         webhook: 'newPet',
-        method: 'post',
+        method: OA\HttpMethod::Post,
         operationId: 'new-pet',
-        requestBody: new OA\RequestBody(
-            description: 'Information about a new pet in the system',
-            content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: Pet::class))],
-        ),
+    )]
+    #[OA\RequestBody(
+        description: 'Information about a new pet in the system',
+        content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: Pet::class))],
     )]
     #[OA\Response(response: 200, description: 'Return a 200 status to indicate that the data was received successfully')]
     public function newPet()

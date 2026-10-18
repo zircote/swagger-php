@@ -27,7 +27,7 @@ class PathParameterSpec
         summary: 'Get admin item',
         operationId: 'getAdminItem',
     )]
-    #[OA\Parameter\Path(name: 'item_name')]
+    #[OA\Parameter(name: 'item_name', in: OA\ParameterIn::Path, required: true)]
     #[OA\Response(response: 'default', description: 'OK')]
     public function getAdminItem()
     {

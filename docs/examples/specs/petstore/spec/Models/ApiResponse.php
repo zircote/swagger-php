@@ -22,7 +22,6 @@ class ApiResponse
     #[OA\Schema(title: 'Type', description: 'Type')]
     private string $type;
 
-    #[OA\Property]
     #[OA\Schema(title: 'Message', description: 'Message')]
     private string $message;
 }

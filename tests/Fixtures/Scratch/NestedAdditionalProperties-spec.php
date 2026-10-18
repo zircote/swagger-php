@@ -20,7 +20,7 @@ use OpenApi\Spec as OA;
 #[OA\Response(response: 200, description: 'OK')]
 #[OA\Schema(
     component: 'NestedAdditionalProperties',
-    additionalProperties: new OA\Schema\AdditionalProperties(
+    additionalProperties: new OA\Schema(
         additionalProperties: new OA\Schema\AdditionalProperties(
             type: 'string',
             additionalProperties: false,

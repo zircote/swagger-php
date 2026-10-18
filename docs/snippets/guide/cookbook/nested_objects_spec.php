@@ -18,13 +18,13 @@ use OpenApi\Spec as OA;
         new OA\Property(
             property: 'Group',
             schema: new OA\Schema(
-                type: 'object',
+                type: OA\Type::Object,
                 properties: [
                 new OA\Property(
                     property: 'ID',
                     schema: new OA\Schema(
                         description: 'ID de grupo',
-                        type: 'number',
+                        type: OA\Type::Number,
                         example: -1,
                     ),
                 ),

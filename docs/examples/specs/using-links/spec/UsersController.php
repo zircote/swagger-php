@@ -16,9 +16,6 @@ class UsersController
         operationId: 'getUserByName',
         summary: 'Get user details by username',
         tags: ['Users'],
-        parameters: [
-            new OA\Parameter(name: 'username', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
-        ],
     )]
     #[OA\Response(
         response: 200,
@@ -26,7 +23,9 @@ class UsersController
         content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: '#/components/schemas/user'))],
         links: [new OA\Link(link: 'userRepositories', ref: '#/components/links/UserRepositories')],
     )]
-    public function getUserByName(string $username)
-    {
+    public function getUserByName(
+        #[OA\Parameter\Path]
+        string $username,
+    ) {
     }
 }

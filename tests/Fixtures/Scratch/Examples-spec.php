@@ -29,8 +29,9 @@ class ExampleSchemaSpec
             schema: new OA\Schema(type: 'string'),
             example: 'Fritz'
         ),
-        new OA\Parameter\Path(
+        new OA\Parameter(
             name: 'other',
+            in: 'path',
             required: true,
             schema: new OA\Schema(type: 'string'),
             examples: [

@@ -35,8 +35,9 @@ class NullRefSpec
     {
     }
 
-    #[OA\Operation\Get(
+    #[OA\Operation(
         path: '/api/refplus',
+        method: OA\HttpMethod::Get,
         operationId: 'refplus',
     )]
     #[OA\Response(
