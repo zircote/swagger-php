@@ -27,6 +27,7 @@ class ClientCredentials extends OA\Flow
         ?array $scopes = null,
         ?array $x = null,
         ?array $attachables = null,
+        ?OA\Fan $fan = null,
     ) {
         parent::__construct(
             flow: OA\FlowType::ClientCredentials,
@@ -35,6 +36,7 @@ class ClientCredentials extends OA\Flow
             scopes: $scopes,
             x: $x,
             attachables: $attachables,
+            fan: $fan,
         );
     }
 }

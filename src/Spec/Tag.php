@@ -26,6 +26,7 @@ class Tag extends AbstractAttribute
      * @param string|null                $kind         A machine-readable string to categorize the tag
      * @param array<string,mixed>|null   $x            Vendor extensions (x-* properties)
      * @param list<Attachable>|null      $attachables  Reusable custom attachable attributes
+     * @param Fan|null                   $fan          Where this attribute goes when more than one attribute could hold it
      */
     public function __construct(
         public ?string $name = null,
@@ -36,8 +37,9 @@ class Tag extends AbstractAttribute
         public ?string $kind = null,
         ?array $x = null,
         ?array $attachables = null,
+        ?Fan $fan = null,
     ) {
-        parent::__construct(x: $x, attachables: $attachables);
+        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
     }
 
     public function isRoot(): bool

@@ -62,4 +62,25 @@ final class ShortcutsTest extends TestCase
         $this->assertInstanceOf(OA\Schema::class, $property->schema->items->items);
         $this->assertSame('string', $property->schema->items->items->type);
     }
+
+    /**
+     * `fan` is a constructor argument of `Schema\Items` without a field of its own, and stays with
+     * the array rather than moving into its items.
+     */
+    public function testItemsKeepTheirFan(): void
+    {
+        $spec = $this->assemble(Fixtures\Fan\DeepController::class);
+
+        (new Augmenter\Shortcuts())($spec);
+
+        foreach ($spec->operations as $operation) {
+            $schema = $operation->responses[0]->content[0]->schema;
+            $this->assertInstanceOf(OA\Schema\Items::class, $schema);
+            $this->assertSame('array', $schema->type);
+            $this->assertSame(1, $schema->minItems);
+            $this->assertSame(OA\Fan::Single, $schema->getFan());
+            $this->assertSame('string', $schema->items?->type);
+            $this->assertNull($schema->items->getFan());
+        }
+    }
 }

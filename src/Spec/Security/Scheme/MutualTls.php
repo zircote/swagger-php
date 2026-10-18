@@ -26,6 +26,7 @@ class MutualTls extends OA\Security\Scheme
         ?string $component = null,
         ?array $x = null,
         ?array $attachables = null,
+        ?OA\Fan $fan = null,
     ) {
         parent::__construct(
             securityScheme: $securityScheme,
@@ -34,6 +35,7 @@ class MutualTls extends OA\Security\Scheme
             component: $component,
             x: $x,
             attachables: $attachables,
+            fan: $fan,
         );
     }
 }

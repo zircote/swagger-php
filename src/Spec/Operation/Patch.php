@@ -44,6 +44,7 @@ class Patch extends OA\Operation
         ?OA\ExternalDocumentation $externalDocs = null,
         ?array $x = null,
         ?array $attachables = null,
+        ?OA\Fan $fan = null,
     ) {
         parent::__construct(
             path: $path,
@@ -63,6 +64,7 @@ class Patch extends OA\Operation
             externalDocs: $externalDocs,
             x: $x,
             attachables: $attachables,
+            fan: $fan,
         );
     }
 }
