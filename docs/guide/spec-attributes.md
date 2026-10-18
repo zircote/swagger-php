@@ -224,6 +224,23 @@ Both operations get the `404` response and the `id` parameter. The same works on
 
 The targets have to be of one type. A `MediaType` next to both a `Response` and a `RequestBody` stays an error with `fan: OA\Fan::All`, since which one it belongs to is still a choice.
 
+### One operation for several methods
+
+`methods:` on `OA\Operation` declares one operation for several HTTP methods:
+
+```php
+#[OA\Operation(path: '/pets/{id}', operationId: '{method}Pet', methods: [OA\HttpMethod::Put, OA\HttpMethod::Patch])]
+#[OA\Response(response: 204, description: 'Updated')]
+public function update(
+    #[OA\Parameter\Path(name: 'id')]
+    int $id
+) {}
+```
+
+The document gets a `put` and a `patch` operation, each with the `204` response and the `id` parameter. No `fan` is needed while it is the only operation on the method. Next to another operation, the attributes it shares need `fan: OA\Fan::All` as above.
+
+`{method}` in an `operationId` is replaced by each operation's method, here `putPet` and `patchPet`. An `operationId` without it is dropped on several methods, with a warning, and each operation gets a generated one.
+
 ## PathItem
 
 `#[OA\PathItem]` on a class groups operations with shared configuration. It enables prefix composition via class inheritance and pushes shared metadata down to operations.

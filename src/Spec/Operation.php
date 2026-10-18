@@ -46,6 +46,11 @@ class Operation extends AbstractAttribute
     public ?string $method = null;
 
     /**
+     * @var list<string>|null
+     */
+    public ?array $methods = null;
+
+    /**
      * @param string|null                     $path         The URL path for the operation
      * @param string|null                     $webhook      The webhook name (mutually exclusive with path)
      * @param string|HttpMethod|null          $method       The HTTP method (get, post, put, delete, etc.). An operation still without one at compile time is left out, with a warning
@@ -64,6 +69,7 @@ class Operation extends AbstractAttribute
      * @param array<string,mixed>|null        $x            Vendor extensions (x-* properties)
      * @param list<Attachable>|null           $attachables  Reusable custom attachable attributes
      * @param Fan|null                        $fan          Where this attribute goes when more than one attribute could hold it
+     * @param list<string|HttpMethod>|null    $methods      Several HTTP methods for one declaration, instead of `method`. Split into one operation per method during assembly
      */
     public function __construct(
         public ?string $path = null,
@@ -84,13 +90,20 @@ class Operation extends AbstractAttribute
         ?array $x = null,
         ?array $attachables = null,
         ?Fan $fan = null,
+        ?array $methods = null,
     ) {
         parent::__construct(x: $x, attachables: $attachables, fan: $fan);
-        $this->method = $method instanceof \BackedEnum ? $method->value : ($method === null ? null : strtolower($method));
+        $this->method = $method === null ? null : self::normaliseMethod($method);
+        $this->methods = $methods === null ? null : array_values(array_unique(array_map(self::normaliseMethod(...), $methods)));
     }
 
     public function isRoot(): bool
     {
         return true;
+    }
+
+    protected static function normaliseMethod(string|HttpMethod $method): string
+    {
+        return $method instanceof HttpMethod ? $method->value : strtolower($method);
     }
 }
