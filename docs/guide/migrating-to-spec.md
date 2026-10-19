@@ -51,7 +51,9 @@ The set:
   are left for you
 - adds `#[Components]` to a class whose members declare keyed components, since spec takes a
   component on a member only in a holder. A class with a `Schema` of its own is left alone, and
-  so is a keyed attribute that something beside it nests, such as a response beside an operation
+  so is a keyed attribute that something beside it nests, such as a response beside an operation.
+  A method carrying a framework's route attribute can be left out too, see
+  [Routes from a framework](#routes-from-a-framework)
 - renames the classes, `OpenApi\Attributes\Get` to `OpenApi\Spec\Operation\Get` and so on
 - moves schema keywords off `Property`, `JsonContent` and `XmlContent` into a nested
   `schema: new Schema(...)`, since the spec classes no longer accept them. A `schema:` written
@@ -59,6 +61,36 @@ The set:
 - imports the spec namespace as `use OpenApi\Spec as OAS;`
 
 Formatting is left to your code style tooling.
+
+### Routes from a framework
+
+Where a framework derives the operation from a route attribute, a keyed attribute beside the
+route decorates that operation:
+
+```php
+#[Route('/pets', methods: ['GET'])]
+#[OA\Response(response: 200, description: 'The pets')]
+public function list() {}
+```
+
+The set cannot tell that from a component, and would make the class a holder. Name the route
+attributes in your own `rector.php`, and a method carrying one of them does not count:
+
+```php
+use OpenApi\Rector\ComponentsHolderRector;
+use Rector\Config\RectorConfig;
+
+return RectorConfig::configure()
+    ->withSets([__DIR__ . '/vendor/zircote/swagger-php/rector/set/classic-to-spec.php'])
+    ->withConfiguredRule(ComponentsHolderRector::class, [
+        ComponentsHolderRector::ROUTE_ATTRIBUTES => [
+            Symfony\Component\Routing\Attribute\Route::class,
+            Symfony\Component\Routing\Annotation\Route::class,
+        ],
+    ]);
+```
+
+Then run `./vendor/bin/rector process src --dry-run` without `--config`.
 
 ## What it leaves for you
 

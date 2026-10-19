@@ -15,8 +15,10 @@ use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassConst;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Property;
+use Rector\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
+use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
@@ -29,9 +31,15 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  * response beside an operation, or a link beside a response, is nested, not a component. A class
  * with a `Schema` of its own is left alone. It is a model, and in a holder its property schemas
  * would turn into components.
+ *
+ * A member carrying one of the configured route attributes is left out: where a framework derives
+ * the operation from the route, a keyed response beside it decorates that operation. None are
+ * configured by default.
  */
-final class ComponentsHolderRector extends AbstractRector
+final class ComponentsHolderRector extends AbstractRector implements ConfigurableRectorInterface
 {
+    public const ROUTE_ATTRIBUTES = 'routeAttributes';
+
     private const NAMESPACES = ['OpenApi\\Attributes\\', 'OpenApi\\Spec\\'];
 
     /** Each component kind with its classic key, and the kinds that take it in beside it. */
@@ -47,6 +55,22 @@ final class ComponentsHolderRector extends AbstractRector
     ];
 
     private const OPERATIONS = ['Get', 'Post', 'Put', 'Patch', 'Delete', 'Head', 'Options', 'Trace', 'Webhook', 'PathItem'];
+
+    /**
+     * @var list<string>
+     */
+    private array $routeAttributes = [];
+
+    /**
+     * @param array{routeAttributes?: list<class-string>} $configuration
+     */
+    public function configure(array $configuration): void
+    {
+        $this->routeAttributes = array_map(
+            static fn (string $class): string => ltrim($class, '\\'),
+            array_values($configuration[self::ROUTE_ATTRIBUTES] ?? []),
+        );
+    }
 
     public function getRuleDefinition(): RuleDefinition
     {
@@ -70,6 +94,28 @@ class Models
     }
 }
 CODE_SAMPLE
+        ), new ConfiguredCodeSample(
+            <<<'CODE_SAMPLE'
+class PetController
+{
+    #[\Symfony\Component\Routing\Attribute\Route('/pets', methods: ['GET'])]
+    #[\OpenApi\Attributes\Response(response: 200, description: 'The pets')]
+    public function list(): void
+    {
+    }
+}
+CODE_SAMPLE,
+            <<<'CODE_SAMPLE'
+class PetController
+{
+    #[\Symfony\Component\Routing\Attribute\Route('/pets', methods: ['GET'])]
+    #[\OpenApi\Attributes\Response(response: 200, description: 'The pets')]
+    public function list(): void
+    {
+    }
+}
+CODE_SAMPLE,
+            [self::ROUTE_ATTRIBUTES => ['Symfony\Component\Routing\Attribute\Route']]
         )]);
     }
 
@@ -92,6 +138,10 @@ CODE_SAMPLE
 
         $namespace = null;
         foreach ($this->memberAttributeGroups($node) as $groups) {
+            if ($this->isRoute($groups)) {
+                continue;
+            }
+
             $attributes = $this->attributes($groups);
             $kinds = array_map(fn (array $attribute): ?string => $this->kind($attribute[1]), $attributes);
 
@@ -190,6 +240,24 @@ CODE_SAMPLE
             $local === 'MediaType', str_starts_with($local, 'MediaType\\'), $local === 'JsonContent', $local === 'XmlContent' => 'mediaType',
             default => null,
         };
+    }
+
+    /**
+     * Whether a member carries one of the configured route attributes.
+     *
+     * @param list<AttributeGroup> $groups
+     */
+    private function isRoute(array $groups): bool
+    {
+        foreach ($groups as $group) {
+            foreach ($group->attrs as $attribute) {
+                if (in_array($this->getName($attribute->name), $this->routeAttributes, true)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private function isKeyed(Attribute $attribute, string $key): bool
