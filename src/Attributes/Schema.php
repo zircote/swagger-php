@@ -78,7 +78,7 @@ class Schema extends OA\Schema
         int|null $maxContains = null,
         array|null $prefixItems = null,
         array|null $patternProperties = null,
-        array|null $unevaluatedProperties = null,
+        bool|array|null $unevaluatedProperties = null,
         mixed $unevaluatedItems = Undefined::UNDEFINED,
         mixed $dependencies = Undefined::UNDEFINED,
         array|null $dependentRequired = null,
