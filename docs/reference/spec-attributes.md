@@ -1533,8 +1533,8 @@ Describes a single request body.
   <dd><p>Whether the request body is required</p></dd>
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|Schema\Ref|null</span></dt>
   <dd><p>A JSON Reference to a reusable request body</p></dd>
-  <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|list&lt;MediaType&gt;|null</span></dt>
-  <dd><p>The content of the request body</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|list&lt;MediaType&gt;|Schema|null</span></dt>
+  <dd><p>The content of the request body; a bare `Schema` is the payload of one media type, which `Augmenter\DefaultMediaType` fills in</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
@@ -1568,8 +1568,8 @@ Describes a single response from an API operation.
   <dd><p>A JSON Reference to a reusable response</p></dd>
   <dt><strong>headers</strong> : <span style="font-family: monospace;">list&lt;Header&gt;|null</span></dt>
   <dd><p>Headers sent with the response</p></dd>
-  <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|list&lt;MediaType&gt;|null</span></dt>
-  <dd><p>Possible response payloads</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|list&lt;MediaType&gt;|Schema|null</span></dt>
+  <dd><p>Possible response payloads; a bare `Schema` is the payload of one media type, which `Augmenter\DefaultMediaType` fills in</p></dd>
   <dt><strong>links</strong> : <span style="font-family: monospace;">list&lt;Link&gt;|null</span></dt>
   <dd><p>Design-time links for the response</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>

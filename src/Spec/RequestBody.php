@@ -21,22 +21,22 @@ class RequestBody extends AbstractAttribute
     public ?array $content = null;
 
     /**
-     * @param string|null                    $request     Deprecated since 6.12, removed in 8.0 - use `component` instead
-     * @param string|null                    $description A brief description of the request body (CommonMark syntax)
-     * @param bool|null                      $required    Whether the request body is required
-     * @param string|Schema\Ref|null         $ref         A JSON Reference to a reusable request body
-     * @param MediaType|list<MediaType>|null $content     The content of the request body
-     * @param string|null                    $component   The key this is filed under in `components`, which makes it a reusable component
-     * @param array<string,mixed>|null       $x           Vendor extensions (x-* properties)
-     * @param list<Attachable>|null          $attachables Reusable custom attachable attributes
-     * @param Fan|null                       $fan         Where this attribute goes when more than one attribute could hold it
+     * @param string|null                           $request     Deprecated since 6.12, removed in 8.0 - use `component` instead
+     * @param string|null                           $description A brief description of the request body (CommonMark syntax)
+     * @param bool|null                             $required    Whether the request body is required
+     * @param string|Schema\Ref|null                $ref         A JSON Reference to a reusable request body
+     * @param MediaType|list<MediaType>|Schema|null $content     The content of the request body; a bare `Schema` is the payload of one media type, which `Augmenter\DefaultMediaType` fills in
+     * @param string|null                           $component   The key this is filed under in `components`, which makes it a reusable component
+     * @param array<string,mixed>|null              $x           Vendor extensions (x-* properties)
+     * @param list<Attachable>|null                 $attachables Reusable custom attachable attributes
+     * @param Fan|null                              $fan         Where this attribute goes when more than one attribute could hold it
      */
     public function __construct(
         public ?string $request = null,
         public ?string $description = null,
         public ?bool $required = null,
         public string|Schema\Ref|null $ref = null,
-        MediaType|array|null $content = null,
+        MediaType|Schema|array|null $content = null,
         ?string $component = null,
         ?array $x = null,
         ?array $attachables = null,
@@ -48,7 +48,7 @@ class RequestBody extends AbstractAttribute
             trigger_deprecation('zircote/swagger-php', '6.12', '`request` is deprecated as the component key of %s and will be removed in 8.0; use `component`', static::class);
             $this->component = $this->request;
         }
-        $this->content = self::wrapList($content);
+        $this->content = self::wrapContent($content);
     }
 
     public function isRoot(): bool

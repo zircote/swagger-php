@@ -28,23 +28,23 @@ class Response extends AbstractAttribute
     public ?array $content = null;
 
     /**
-     * @param string|int|null                $response    The HTTP status code, a range such as '2XX', or 'default' — the key the response nests under in an operation
-     * @param string|null                    $description A description of the response (CommonMark syntax)
-     * @param string|Schema\Ref|null         $ref         A JSON Reference to a reusable response
-     * @param list<Header>|null              $headers     Headers sent with the response
-     * @param MediaType|list<MediaType>|null $content     Possible response payloads
-     * @param list<Link>|null                $links       Design-time links for the response
-     * @param string|null                    $component   The key this is filed under in `components`, which makes it a reusable component
-     * @param array<string,mixed>|null       $x           Vendor extensions (x-* properties)
-     * @param list<Attachable>|null          $attachables Reusable custom attachable attributes
-     * @param Fan|null                       $fan         Where this attribute goes when more than one attribute could hold it
+     * @param string|int|null                       $response    The HTTP status code, a range such as '2XX', or 'default' — the key the response nests under in an operation
+     * @param string|null                           $description A description of the response (CommonMark syntax)
+     * @param string|Schema\Ref|null                $ref         A JSON Reference to a reusable response
+     * @param list<Header>|null                     $headers     Headers sent with the response
+     * @param MediaType|list<MediaType>|Schema|null $content     Possible response payloads; a bare `Schema` is the payload of one media type, which `Augmenter\DefaultMediaType` fills in
+     * @param list<Link>|null                       $links       Design-time links for the response
+     * @param string|null                           $component   The key this is filed under in `components`, which makes it a reusable component
+     * @param array<string,mixed>|null              $x           Vendor extensions (x-* properties)
+     * @param list<Attachable>|null                 $attachables Reusable custom attachable attributes
+     * @param Fan|null                              $fan         Where this attribute goes when more than one attribute could hold it
      */
     public function __construct(
         public string|int|null $response = null,
         public ?string $description = null,
         public string|Schema\Ref|null $ref = null,
         public ?array $headers = null,
-        MediaType|array|null $content = null,
+        MediaType|Schema|array|null $content = null,
         public ?array $links = null,
         ?string $component = null,
         ?array $x = null,
@@ -53,7 +53,7 @@ class Response extends AbstractAttribute
     ) {
         parent::__construct(x: $x, attachables: $attachables, fan: $fan);
         $this->component = $component;
-        $this->content = self::wrapList($content);
+        $this->content = self::wrapContent($content);
     }
 
     public function isRoot(): bool

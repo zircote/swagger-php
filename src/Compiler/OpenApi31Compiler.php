@@ -101,6 +101,8 @@ class OpenApi31Compiler implements CompilerInterface
 
         $this->validateResponses($specification);
 
+        $this->validateMediaTypes($specification);
+
         $this->validateNames($specification);
 
         $this->validateVersionedComponents($specification);
@@ -465,7 +467,10 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function compileMediaTypes(array $mediaTypes): array
     {
-        return $this->compileNamedMap($mediaTypes, fn (OA\MediaType $mediaType): string => $mediaType->mediaType ?? 'application/json', $this->compileMediaType(...));
+        // one without a type is left out, and reported by validateMediaTypes()
+        $typed = array_filter($mediaTypes, static fn (OA\MediaType $mediaType): bool => $mediaType->mediaType !== null);
+
+        return $this->compileNamedMap($typed, 'mediaType', $this->compileMediaType(...));
     }
 
     /**
@@ -1062,6 +1067,42 @@ class OpenApi31Compiler implements CompilerInterface
                 }
             }
         });
+    }
+
+    /**
+     * A media type in a `content` list needs its type, which is its key in the document, and
+     * that key once per list: of two with one type, the later one is kept.
+     */
+    protected function validateMediaTypes(Specification $specification): void
+    {
+        $check = function (OA\Response|OA\RequestBody|OA\Parameter|OA\Header $holder): void {
+            $seen = [];
+            foreach ($holder->content ?? [] as $mediaType) {
+                if ($mediaType->mediaType === null) {
+                    $this->logger->warning(sprintf(
+                        '%s is missing key-field: "mediaType" in %s; left out',
+                        (new \ReflectionClass($mediaType))->getShortName(),
+                        $holder->getSourceLocation(),
+                    ));
+                    continue;
+                }
+
+                if (isset($seen[$mediaType->mediaType])) {
+                    $this->logger->warning(sprintf(
+                        'Media type "%s" is declared more than once in one content, the last one is kept, in %s',
+                        $mediaType->mediaType,
+                        $holder->getSourceLocation(),
+                    ));
+                }
+                $seen[$mediaType->mediaType] = true;
+            }
+        };
+
+        $walker = $specification->getWalker();
+        $walker->visit(OA\Response::class, $check);
+        $walker->visit(OA\RequestBody::class, $check);
+        $walker->visit(OA\Parameter::class, $check);
+        $walker->visit(OA\Header::class, $check);
     }
 
     /**
