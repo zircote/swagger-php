@@ -19,6 +19,7 @@ final class ContextTest extends OpenApiTestCase
     public function testFullyQualifiedName(): void
     {
         $this->expectLogEntry('Required @OA\PathItem() not found');
+        $this->expectLogEntry('Unsupported docblock type "(unknown | null)" on ' . Customer::class . '::$fourthname');
         $result = (new Builder())
             ->setMode(Mode::CLASSIC)
             ->addSource($this->fixture('Customer.php'))
@@ -60,6 +61,7 @@ final class ContextTest extends OpenApiTestCase
     public function testDebugLocation(): void
     {
         $this->expectLogEntry('Required @OA\PathItem() not found');
+        $this->expectLogEntry('Unsupported docblock type "(unknown | null)" on ' . Customer::class . '::$fourthname');
         $result = (new Builder())
             ->setMode(Mode::CLASSIC)
             ->addSource($this->fixture('Customer.php'))

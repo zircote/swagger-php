@@ -6,15 +6,22 @@
 
 namespace OpenApi\Type;
 
+use PHPStan\PhpDocParser\Ast\AbstractNodeVisitor;
+use PHPStan\PhpDocParser\Ast\Node;
+use PHPStan\PhpDocParser\Ast\NodeTraverser;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
+use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
+use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\PhpDocParser\Lexer\Lexer;
 use PHPStan\PhpDocParser\Parser\ConstExprParser;
 use PHPStan\PhpDocParser\Parser\PhpDocParser;
 use PHPStan\PhpDocParser\Parser\TokenIterator;
 use PHPStan\PhpDocParser\Parser\TypeParser;
 use PHPStan\PhpDocParser\ParserConfig;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Radebatz\TypeInfoExtras\Type\ExplicitType;
 use Radebatz\TypeInfoExtras\Type\IntRangeType;
 use Radebatz\TypeInfoExtras\TypeResolver\StringTypeResolver;
@@ -29,6 +36,7 @@ use Symfony\Component\TypeInfo\Type\IntersectionType;
 use Symfony\Component\TypeInfo\Type\NullableType;
 use Symfony\Component\TypeInfo\Type\ObjectType;
 use Symfony\Component\TypeInfo\Type\UnionType;
+use Symfony\Component\TypeInfo\TypeContext\TypeContext;
 use Symfony\Component\TypeInfo\TypeContext\TypeContextFactory;
 use Symfony\Component\TypeInfo\TypeIdentifier;
 use Symfony\Component\TypeInfo\TypeResolver\ReflectionTypeResolver;
@@ -39,8 +47,25 @@ use Symfony\Component\TypeInfo\TypeResolver\ReflectionTypeResolver;
  * Shared core between the spec-attributes augmenter and the classic annotation resolver.
  * Uses Symfony TypeInfo + phpstan/phpdoc-parser for reflective type resolution.
  */
-class TypeResolver
+class TypeResolver implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
+    /**
+     * Docblock keywords PHP reserves. No class can have one of these names, in any letter case.
+     */
+    protected const RESERVED_KEYWORDS = [
+        'array', 'bool', 'callable', 'false', 'float', 'int', 'iterable', 'mixed', 'never', 'null',
+        'object', 'parent', 'self', 'static', 'string', 'true', 'void',
+    ];
+
+    /**
+     * Docblock keywords that are also valid class names. Each is a keyword only where no class of that name exists.
+     */
+    protected const ALIAS_KEYWORDS = [
+        'boolean', 'double', 'integer', 'list', 'number', 'numeric', 'resource', 'scalar',
+    ];
+
     protected TypeMapper $typeMapper;
 
     public function __construct()
@@ -134,15 +159,60 @@ class TypeResolver
                 || ($tagValue instanceof ParamTagValueNode && '$' . $reflector->getName() === $tagValue->parameterName)
                 || $tagValue instanceof ReturnTagValueNode
             ) {
+                $this->lowercaseKeywords($tagValue->type, $typeContext);
+
                 try {
                     return (new StringTypeResolver())->resolve((string) $tagValue, $typeContext);
                 } catch (UnsupportedException) {
-                    // ignore
+                    $this->logger?->warning(sprintf('Unsupported docblock type "%s" on %s', $tagValue->type, $this->describe($reflector)));
                 }
             }
         }
 
         return null;
+    }
+
+    /**
+     * PHPDoc does not enforce case on keywords, so `@var String` means `string`.
+     */
+    protected function lowercaseKeywords(TypeNode $type, TypeContext $typeContext): void
+    {
+        $keyword = static function (string $name) use ($typeContext): ?string {
+            $lowercase = strtolower($name);
+
+            return in_array($lowercase, self::RESERVED_KEYWORDS, true)
+                || (in_array($lowercase, self::ALIAS_KEYWORDS, true) && !class_exists($typeContext->normalize($name)))
+                ? $lowercase
+                : null;
+        };
+
+        $visitor = new class ($keyword) extends AbstractNodeVisitor {
+            public function __construct(protected \Closure $keyword)
+            {
+            }
+
+            public function enterNode(Node $node): ?Node
+            {
+                if ($node instanceof IdentifierTypeNode) {
+                    $node->name = ($this->keyword)($node->name) ?? $node->name;
+                }
+
+                return null;
+            }
+        };
+
+        (new NodeTraverser([$visitor]))->traverse([$type]);
+    }
+
+    protected function describe(\Reflector $reflector): string
+    {
+        return match (true) {
+            $reflector instanceof \ReflectionProperty => $reflector->class . '::$' . $reflector->name,
+            $reflector instanceof \ReflectionParameter => '$' . $reflector->name . ' of ' . $this->describe($reflector->getDeclaringFunction()),
+            $reflector instanceof \ReflectionMethod => $reflector->class . '::' . $reflector->name . '()',
+            $reflector instanceof \ReflectionFunctionAbstract => $reflector->name . '()',
+            default => $reflector::class,
+        };
     }
 
     protected function mapType(Type $type): SchemaType

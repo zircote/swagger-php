@@ -27,6 +27,8 @@ $finder = PhpCsFixer\Finder::create()
             && !strpos($file->getPathname(), 'tests/Fixtures/PHP/GlobalNamespaceTypes.php')
             && !strpos($file->getPathname(), 'tests/Fixtures/Scratch/DocblockGenerics.php')
             && !strpos($file->getPathname(), 'tests/Fixtures/Scratch/DocblockGenerics-spec.php')
+            // the capitalised keywords are the subject of the test, and phpdoc_types lowercases them
+            && !strpos($file->getPathname(), 'tests/Fixtures/Type/KeywordCase.php')
         ;
     })
     ->in(__DIR__);
