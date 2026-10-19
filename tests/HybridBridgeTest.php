@@ -9,11 +9,11 @@ namespace OpenApi\Tests;
 use OpenApi\Augmenter\Cleanup;
 use OpenApi\Builder;
 use OpenApi\Builder\Mode;
+use OpenApi\Loggers\CollectingLogger;
 use OpenApi\Tests\Concerns\AssertsSpecEquals;
 use OpenApi\Utils\Pipeline;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -63,20 +63,14 @@ final class HybridBridgeTest extends TestCase
 
         $unexpected = [];
         foreach ([Mode::CLASSIC, Mode::HYBRID] as $mode) {
-            $logger = new class () extends AbstractLogger {
-                /** @var list<string> */
-                public array $messages = [];
-
-                public function log($level, \Stringable|string $message, array $context = []): void
-                {
-                    if (str_starts_with((string) $message, 'Unexpected ')) {
-                        $this->messages[] = (string) $message;
-                    }
-                }
-            };
+            $logger = new CollectingLogger();
             $this->build('MisplacedAttributes', $mode, $logger);
-            sort($logger->messages);
-            $unexpected[$mode->name] = $logger->messages;
+            $messages = array_values(array_filter(
+                array_column($logger->entries(), 'message'),
+                fn (string $message): bool => str_starts_with($message, 'Unexpected ')
+            ));
+            sort($messages);
+            $unexpected[$mode->name] = $messages;
         }
 
         $this->assertCount(2, $unexpected['CLASSIC']);
