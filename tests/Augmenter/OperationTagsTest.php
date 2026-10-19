@@ -9,6 +9,7 @@ namespace OpenApi\Tests\Augmenter;
 use OpenApi\Augmenter;
 use OpenApi\Builder;
 use OpenApi\Builder\Mode;
+use OpenApi\Specification;
 use OpenApi\Tests\Concerns\ExpectsLogEntries;
 use OpenApi\Tests\Fixtures;
 use OpenApi\Utils\Pipeline;
@@ -104,8 +105,8 @@ final class OperationTagsTest extends TestCase
     }
 
     /**
-     * @param  list<class-string>                  $classes
-     * @param  (callable(Pipeline): Pipeline)|null $augmenters
+     * @param  list<class-string>                                                $classes
+     * @param  (callable(Pipeline<Specification>): Pipeline<Specification>)|null $augmenters
      * @return array<string, mixed>
      */
     protected function build(array $classes, ?callable $augmenters = null): array

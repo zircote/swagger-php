@@ -185,7 +185,8 @@ class Operations implements MergerInterface, LoggerAwareInterface
             }
         }
 
-        return $result;
+        // replacing a slot keeps the list in order; the analyser only loses track that it is one
+        return array_values($result);
     }
 
     protected function parameterKey(OA\AbstractAttribute $parameter): ?string

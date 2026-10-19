@@ -142,7 +142,13 @@ CODE_SAMPLE
                     return null;
                 }
 
-                $lifted[] = new Attribute($value->class, $value->args);
+                // an attribute takes plain arguments only, so a placeholder leaves the call as written
+                $args = array_values(array_filter($value->args, static fn (Node $arg): bool => $arg instanceof Arg));
+                if (count($args) !== count($value->args)) {
+                    return null;
+                }
+
+                $lifted[] = new Attribute($value->class, $args);
             }
         }
 

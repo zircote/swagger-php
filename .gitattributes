@@ -6,7 +6,7 @@
 /rector/tests/ export-ignore
 /tests/ export-ignore
 /Changelog.md export-ignore
-/phpstan*.neon export-ignore
+/phpstan*.neon* export-ignore
 /phpunit.xml.dist export-ignore
 /psalm*.xml export-ignore
 

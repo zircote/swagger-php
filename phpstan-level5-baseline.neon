@@ -1,0 +1,25 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Call to function property_exists\(\) with OpenApi\\Annotations\\AbstractAnnotation and ''_context'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Annotations/AbstractAnnotation.php
+
+		-
+			message: '#^Variable \$name might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: src/Annotations/Components.php
+
+		-
+			message: '#^Variable \$type might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: src/Annotations/Components.php
+
+		-
+			message: '#^Property OpenApi\\Annotations\\Flow\:\:\$scopes \(array\) does not accept stdClass\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Annotations/Flow.php

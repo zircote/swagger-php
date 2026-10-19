@@ -162,7 +162,7 @@ CODE_SAMPLE
      * Names every positional argument, or none: a call that cannot be read in full is left as
      * the author wrote it rather than half-converted.
      *
-     * @param array<Arg|Node\VariadicPlaceholder> $args
+     * @param array<Node> $args
      */
     private function nameArguments(array $args, string $class): bool
     {

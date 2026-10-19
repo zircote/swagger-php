@@ -171,7 +171,7 @@ CODE_SAMPLE,
      * The attribute groups of each member: a property, a constant, a method, or a promoted
      * constructor parameter.
      *
-     * @return list<list<AttributeGroup>>
+     * @return list<array<AttributeGroup>>
      */
     private function memberAttributeGroups(Class_ $class): array
     {
@@ -199,7 +199,7 @@ CODE_SAMPLE,
     /**
      * Each OpenApi attribute with its class name below the namespace, and the namespace.
      *
-     * @param list<AttributeGroup> $groups
+     * @param array<AttributeGroup> $groups
      *
      * @return list<array{Attribute, string, string}>
      */
@@ -245,7 +245,7 @@ CODE_SAMPLE,
     /**
      * Whether a member carries one of the configured route attributes.
      *
-     * @param list<AttributeGroup> $groups
+     * @param array<AttributeGroup> $groups
      */
     private function isRoute(array $groups): bool
     {

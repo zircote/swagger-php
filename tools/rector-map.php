@@ -32,6 +32,9 @@ const RESTRUCTURE = [
     'Webhook' => 'a webhook: argument on an operation attribute - no longer an attribute of its own',
 ];
 
+/**
+ * @return array<string, class-string>
+ */
 function classesIn(string $dir, string $ns): array
 {
     $out = [];
@@ -55,13 +58,23 @@ function classesIn(string $dir, string $ns): array
     return $out;
 }
 
+/**
+ * The class name without its namespace.
+ */
+function shortName(string $rel): string
+{
+    $separator = strrpos($rel, '\\');
+
+    return $separator === false ? $rel : substr($rel, $separator + 1);
+}
+
 $root = dirname(__DIR__);
 $classic = classesIn($root . '/src/Attributes', 'OpenApi\Attributes');
 $spec = classesIn($root . '/src/Spec', 'OpenApi\Spec');
 
 $byShort = [];
 foreach ($spec as $rel => $class) {
-    $byShort[substr(strrchr('\\' . $rel, '\\'), 1)][$rel] = $class;
+    $byShort[shortName($rel)][$rel] = $class;
 }
 
 $map = [];
@@ -72,7 +85,7 @@ foreach ($classic as $rel => $class) {
     }
     $target = EXPLICIT[$rel] ?? null;
     if (null === $target) {
-        $candidates = $byShort[substr(strrchr('\\' . $rel, '\\'), 1)] ?? [];
+        $candidates = $byShort[shortName($rel)] ?? [];
         if (!$candidates) {
             $unresolved[] = $rel;
             continue;

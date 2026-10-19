@@ -41,6 +41,9 @@ final class ComponentArgumentTest extends TestCase
         $this->assertEmpty($failures, implode("\n", $failures));
     }
 
+    /**
+     * @param class-string $class
+     */
     private function takesComponent(string $class): bool
     {
         $constructor = (new \ReflectionClass($class))->getConstructor();

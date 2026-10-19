@@ -90,7 +90,8 @@ final class ShortcutsTest extends TestCase
         $items = $nested($property->schema);
         $this->assertInstanceOf(OA\Schema\Items::class, $items);
         $this->assertSame('array', $items->type);
-        $this->assertSame('string', $items->items?->type);
+        $this->assertInstanceOf(OA\Schema::class, $items->items);
+        $this->assertSame('string', $items->items->type);
     }
 
     /**
@@ -119,7 +120,8 @@ final class ShortcutsTest extends TestCase
         $schema = $spec->schemas[0];
         $this->assertSame('TagList', $schema->component);
         $this->assertSame('array', $schema->type);
-        $this->assertSame('string', $schema->items?->type);
+        $this->assertInstanceOf(OA\Schema::class, $schema->items);
+        $this->assertSame('string', $schema->items->type);
         $this->assertNull($schema->items->component);
     }
 
@@ -139,7 +141,8 @@ final class ShortcutsTest extends TestCase
             $this->assertSame('array', $schema->type);
             $this->assertSame(1, $schema->minItems);
             $this->assertSame(OA\Fan::Single, $schema->getFan());
-            $this->assertSame('string', $schema->items?->type);
+            $this->assertInstanceOf(OA\Schema::class, $schema->items);
+            $this->assertSame('string', $schema->items->type);
             $this->assertNull($schema->items->getFan());
         }
     }
