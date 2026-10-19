@@ -13,6 +13,9 @@ use OpenApi\Tests\Concerns\AssertsSpecEquals;
 use OpenApi\Utils\Pipeline;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\AbstractLogger;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 /**
  * Hybrid bridges classic annotations into the spec pipeline, so its document should be the
@@ -49,11 +52,47 @@ final class HybridBridgeTest extends TestCase
         $this->assertSame('newPet', $specification->operations[0]->webhook);
     }
 
-    protected function build(string $fixture, Mode $mode): Builder\Result
+    /**
+     * Hybrid runs neither classic's merge processors nor its `validate()`, so it reports what it
+     * cannot place itself: at least what classic does.
+     */
+    public function testHybridReportsMisplacedAnnotationsAsClassicDoes(): void
+    {
+        // several classes in one file, so none of them autoloads
+        require_once __DIR__ . '/Fixtures/HybridBridge/MisplacedAttributes.php';
+
+        $unexpected = [];
+        foreach ([Mode::CLASSIC, Mode::HYBRID] as $mode) {
+            $logger = new class () extends AbstractLogger {
+                /** @var list<string> */
+                public array $messages = [];
+
+                public function log($level, \Stringable|string $message, array $context = []): void
+                {
+                    if (str_starts_with((string) $message, 'Unexpected ')) {
+                        $this->messages[] = (string) $message;
+                    }
+                }
+            };
+            $this->build('MisplacedAttributes', $mode, $logger);
+            sort($logger->messages);
+            $unexpected[$mode->name] = $logger->messages;
+        }
+
+        $this->assertCount(2, $unexpected['CLASSIC']);
+        $this->assertSame([], array_diff($unexpected['CLASSIC'], $unexpected['HYBRID']));
+
+        // classic drops a misnested docblock annotation without a word (#1151); hybrid does not
+        $this->assertCount(3, $unexpected['HYBRID']);
+        $this->assertStringContainsString('on line 53', $unexpected['HYBRID'][1]);
+    }
+
+    protected function build(string $fixture, Mode $mode, ?LoggerInterface $logger = null): Builder\Result
     {
         // classic scans files, so hybrid does too — a reflector source yields nothing here
         return (new Builder())
             ->setMode($mode)
+            ->setLogger($logger ?? new NullLogger())
             ->addSource(__DIR__ . "/Fixtures/HybridBridge/{$fixture}.php")
             ->setVersion('3.1.0')
             // an unreferenced component would be dropped before the comparison
