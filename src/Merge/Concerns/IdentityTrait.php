@@ -19,6 +19,17 @@ use OpenApi\Specification\ComponentName;
  */
 trait IdentityTrait
 {
+    /**
+     * What makes two attributes the same one depends on the collection they are in:
+     *
+     * - anything in a `components` bucket: its component key
+     * - an operation: its path and method, or its webhook and method
+     * - a path item outside `components`: its path
+     * - a tag: its name
+     *
+     * Anything else has no identity and passes through. Servers and external documentation are
+     * positional, so duplicates there are legal and stay.
+     */
     public function identity(AttributeInterface $attribute): ?string
     {
         if ($attribute instanceof OA\Operation) {

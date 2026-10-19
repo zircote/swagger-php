@@ -210,6 +210,34 @@ abstract class DocGenerator
     }
 
     /**
+     * Description, config settings and references of each instance, for `renderSections()`.
+     *
+     * @param  list<object>                                                                                                                                                                    $instances
+     * @return list<array{name: string, description: string, configPrefix: string, options: list<array{name: string, type: string, default: string, description: string}>, see: list<string>}>
+     */
+    protected function collect(array $instances): array
+    {
+        $collected = [];
+
+        foreach ($instances as $instance) {
+            $rc = new \ReflectionClass($instance);
+            $classDoc = $this->parseDocblock($rc->getDocComment());
+            $description = $classDoc['content'];
+
+            $collected[] = [
+                'name' => $rc->getShortName(),
+                'description' => trim((string) $description),
+                // extension points are configured in PHP, never through `-c`, so no key prefix
+                'configPrefix' => '',
+                'options' => $this->collectOptions($rc),
+                'see' => $classDoc['see'],
+            ];
+        }
+
+        return $collected;
+    }
+
+    /**
      * @return list<SectionInterface>
      */
     protected function defaultSections(): array

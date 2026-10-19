@@ -197,22 +197,13 @@ Resolvers implement `OpenApi\Contracts\ResolverInterface` and receive the FQCN a
 
 ### Merger configuration (spec/hybrid mode) {#mergers}
 
-Mergers decide what makes two attributes the same one and which of them the document holds.
-`Augmenter\Merge` applies them to the `Specification`'s collections, first in the **reduce**
-phase and again as the last pipe, so a key claimed twice reaches the compiler once.
+Mergers decide when two attributes in one collection are the same one, and what the one that
+survives looks like. `Merge\Tags` and `Merge\LastWins` are registered by default, and
+`Merge\Operations` ships for you to register. The [Mergers reference](/reference/mergers) says
+what each one does, and in which order they are tried.
 
-Two are registered by default. `Merge\Tags` folds two tags with the same name field by field,
-so a tag declared once with its description and named again wherever it is used stays one tag;
-only a field the two set differently is reported. `Merge\LastWins` claims every other type, keys
-each collection the way
-the document does — component key, path and method, webhook and method, tag name — and on a
-collision keeps the later entry and warns with both locations. Positional lists, `servers` and
-`security`, have no key and are left alone. `Merge\Operations` ships too, but is not registered:
-it folds two operations for the same path and method field by field instead of keeping one,
-and is listed under [Opt-in Mergers](/reference/extension-points).
-
-Use `withMergers()` to add your own. The hook runs when called; repeated calls configure the
-same list:
+Use `withMergers()` to add your own. The hook runs when called, and repeated calls configure
+the same list:
 
 ```php
 use OpenApi\Merge;
@@ -224,10 +215,9 @@ $builder->withMergers(fn (TypedList $mergers) => $mergers->insert(
 ));
 ```
 
-Mergers implement `OpenApi\Contracts\MergerInterface` and are tried in registration order; the
-first to `supports()` a type claims it, so a merger for one type goes ahead of the catch-all.
-`insert()` places it there. See the [Mergers section](/guide/extension-points#mergers) in the
-extension points guide for what a merger looks like and how it recognises its own attributes.
+`insert()` places a merger ahead of `Merge\LastWins`, which claims every type. See the
+[Mergers section](/guide/extension-points#mergers) in the extension points guide for what a
+merger looks like and how it recognises its own attributes.
 
 ### Attribute factory configuration (spec mode) {#attribute-factory}
 

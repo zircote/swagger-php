@@ -19,6 +19,8 @@ first.
 | `reference/spec-attributes.md` | `src/Spec/` docblocks + `snippets/preamble_spec-attributes.md` |
 | `reference/processors.md` | `src/Processors/` docblocks + `snippets/preamble_processors.md` + prose in `ProcessorGenerator` |
 | `reference/augmenters.md` | `src/Augmenter/` docblocks + `snippets/preamble_augmenters.md` + prose in `AugmenterGenerator` |
+| `reference/extension-points.md` | docblocks of the default translators and resolvers + `snippets/preamble_extension-points.md` |
+| `reference/mergers.md` | `src/Merge/` docblocks + `snippets/preamble_mergers.md` |
 | `guide/examples.md` | example sources + the per-example `docs/examples/specs/*/Readme.md` |
 
 To change one of these, change its source and re-run `composer docs:gen`.

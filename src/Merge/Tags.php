@@ -24,7 +24,7 @@ use Psr\Log\LoggerAwareTrait;
  *
  * What only one of them sets is always taken, so a tag that is only a name adds nothing and is
  * not reported. What both set differently is decided by the `Mode` it is constructed with,
- * `Mode::Last` by default, and reported; `NonOverlapping` keeps the earlier's value, as `First`
+ * `Mode::Last` by default, and reported. `NonOverlapping` keeps the earlier's value, as `First`
  * does. `attachables` is a union, and `x` merges key by key under the same mode.
  *
  * The survivor is a new tag, a copy of the earlier with the later folded in. It keeps the

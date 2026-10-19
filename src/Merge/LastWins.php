@@ -19,10 +19,7 @@ use Psr\Log\LoggerAwareTrait;
  * and its own accidental rules stop deciding anything. Combining fields from both attributes is a
  * type-specific merger's job, registered ahead of this one.
  *
- * Identity by collection: the component key for anything in a `components` bucket, path and
- * method for an operation, webhook and method for a webhook operation, path for a path-bound
- * path item, name for a tag. Servers, security requirements and external documentation are
- * positional — their entries have no identity, duplicates are legal, and they pass through.
+ * It claims every type, and keys each by the identity all shipped mergers share.
  */
 class LastWins implements MergerInterface, LoggerAwareInterface
 {

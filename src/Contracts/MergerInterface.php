@@ -7,7 +7,8 @@
 namespace OpenApi\Contracts;
 
 /**
- * What makes two attributes the same one, and what one of them becomes.
+ * When two attributes in one collection, such as two schemas or two operations, are the same
+ * one, and what the one that survives looks like.
  *
  * Mergers are a chain, first match wins, the shape {@see ResolverInterface} already has:
  * `supports()` is asked in registration order, so a merger claiming a specific type goes

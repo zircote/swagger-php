@@ -31,6 +31,14 @@ However, `swagger-php` offers more.
   Augmenters enrich the spec-attributes pipeline with inferred data (types, refs, docblocks)
   before compilation. They run in three groups: resolve, reduce, and augment.
 
+* [Extension points](extension-points.md)
+
+  The translators and resolvers the spec pipeline runs by default.
+
+* [Mergers](mergers.md)
+
+  How the spec pipeline decides between two attributes that claim the same key.
+
 * [Inheritance](inheritance.md)
 
   How PHP class hierarchy maps to OpenAPI `allOf` composition (schemas) and path prefix
