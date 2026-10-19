@@ -11,6 +11,8 @@ use OpenApi\Processors\AugmentProperties;
 use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\MergeIntoComponents;
 use OpenApi\Processors\MergeIntoOpenApi;
+use OpenApi\Tests\Fixtures\ComplexVarTypes;
+use OpenApi\Tests\Fixtures\Customer;
 use OpenApi\Tests\OpenApiTestCase;
 use OpenApi\Undefined;
 use PHPUnit\Framework\Attributes\Group;
@@ -20,6 +22,7 @@ final class AugmentPropertiesTest extends OpenApiTestCase
 {
     public function testAugmentProperties(): void
     {
+        $this->expectLogEntry('Unsupported docblock type "(unknown | null)" on ' . Customer::class . '::$fourthname');
         $analysis = $this->analysisFromFixtures([
             'Customer.php',
         ], $this->processorPipeline([
@@ -418,6 +421,8 @@ final class AugmentPropertiesTest extends OpenApiTestCase
 
     public function testComplexVarTypeDescription(): void
     {
+        $this->expectLogEntry('Unsupported docblock type "array<int, User>" on ' . ComplexVarTypes::class . '::$userMap');
+        $this->expectLogEntry('Unsupported docblock type "(array<int, User> | User[])" on ' . ComplexVarTypes::class . '::$mixedUserList');
         $analysis = $this->analysisFromFixtures([
             'ComplexVarTypes.php',
         ], $this->processorPipeline([

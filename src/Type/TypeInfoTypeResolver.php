@@ -10,6 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Undefined;
+use Psr\Log\LoggerInterface;
 
 class TypeInfoTypeResolver extends AbstractTypeResolver
 {
@@ -28,6 +29,9 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
      */
     protected function doAugment(Analysis $analysis, OA\Schema $schema, \Reflector $reflector, string $sourceClass = OA\Schema::class): void
     {
+        if ($analysis->context?->logger instanceof LoggerInterface) {
+            $this->resolver->setLogger($analysis->context->logger);
+        }
         $schemaType = $this->resolver->resolve($reflector);
 
         if (!$schemaType instanceof SchemaType) {

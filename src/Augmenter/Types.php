@@ -12,6 +12,8 @@ use OpenApi\Type\SchemaType;
 use OpenApi\Type\TypeResolver;
 use OpenApi\Undefined;
 use OpenApi\Utils\PipeInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Infers schema type, format, nullable, items, etc. from PHP type declarations and docblocks.
@@ -21,8 +23,10 @@ use OpenApi\Utils\PipeInterface;
  *
  * @implements PipeInterface<Specification>
  */
-class Types implements PipeInterface
+class Types implements PipeInterface, LoggerAwareInterface
 {
+    protected ?LoggerInterface $logger = null;
+
     /** @var array<string, string> class name => component pointer, for the components that exist */
     protected array $refMap = [];
 
@@ -70,8 +74,20 @@ class Types implements PipeInterface
     public function setTypeResolver(TypeResolver $typeResolver): static
     {
         $this->typeResolver = $typeResolver;
+        if ($this->logger instanceof LoggerInterface) {
+            $this->typeResolver->setLogger($this->logger);
+        }
 
         return $this;
+    }
+
+    /**
+     * Passes the logger to the type resolver, including one set later.
+     */
+    public function setLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
+        $this->typeResolver->setLogger($logger);
     }
 
     public function group(): string|\BackedEnum
