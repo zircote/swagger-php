@@ -161,7 +161,8 @@ final class DocsAccuracyTest extends TestCase
             static fn (string $file): string => basename($file, '.php'),
             glob(__DIR__ . '/Concerns/*.php') ?: []
         );
-        $traits = array_values(array_filter($traits, static fn (string $name): bool => !str_ends_with($name, 'Test')));
+        // only traits are documented; tests and helpers such as ForwardingLogger sit beside them
+        $traits = array_values(array_filter($traits, static fn (string $name): bool => trait_exists('OpenApi\\Tests\\Concerns\\' . $name)));
         sort($traits);
 
         $this->assertSame($traits, $documented, 'The tests/Concerns table in docs/dev/testing.md has drifted');

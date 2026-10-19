@@ -10,9 +10,9 @@ use OpenApi\Assembler;
 use OpenApi\Builder;
 use OpenApi\Builder\Mode;
 use OpenApi\Contracts\ResolverInterface;
+use OpenApi\Loggers\CollectingLogger;
 use OpenApi\Resolver;
 use OpenApi\Spec as OA;
-use OpenApi\Tests\Doubles\RecordingLogger;
 use OpenApi\Utils\TypedList;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -68,46 +68,46 @@ final class ResolverTest extends TestCase
     public function testUnloadableClassIsSkippedAndTheRestResolved(): void
     {
         $assembler = $this->assembler(Fixtures\Resolver\Warehouse::class);
-        $received = [];
+        $logger = new CollectingLogger();
 
         $resolver = new Resolver();
-        $resolver->setLogger(new RecordingLogger($received));
+        $resolver->setLogger($logger);
         $resolver->resolve($assembler);
 
         $this->assertSame(['Warehouse', 'Manufacturer'], $this->schemaNames($assembler));
-        $this->assertCount(1, $received);
-        $this->assertStringStartsWith('Skipping unloadable ' . Fixtures\Resolver\UnloadableStock::class . ': Failed to instantiate attribute', $received[0]);
+        $this->assertCount(1, $logger->entries());
+        $this->assertStringStartsWith('Skipping unloadable ' . Fixtures\Resolver\UnloadableStock::class . ': Failed to instantiate attribute', $logger->entries()[0]['message']);
     }
 
     public function testALoggerAwareResolverGetsTheResolversLogger(): void
     {
         $assembler = $this->assembler(Fixtures\Resolver\Product::class);
-        $received = [];
+        $logger = new CollectingLogger();
 
         $resolver = $this->resolver(new Fixtures\Resolver\LoggingResolver());
-        $resolver->setLogger(new RecordingLogger($received));
+        $resolver->setLogger($logger);
         $resolver->resolve($assembler);
 
         $this->assertSame([
             'Declined ' . Fixtures\Resolver\Manufacturer::class,
             'Declined ' . Fixtures\Resolver\Weight::class,
-        ], $received);
+        ], array_column($logger->entries(), 'message'));
     }
 
     public function testALoggerAwareResolverLogsToTheBuildersLogger(): void
     {
-        $received = [];
+        $logger = new CollectingLogger();
 
         (new Builder())
             ->setMode(Mode::SPEC)
-            ->setLogger(new RecordingLogger($received))
+            ->setLogger($logger)
             ->withResolver(fn (Resolver $resolver): Resolver => $resolver->withResolvers(
                 fn (TypedList $resolvers): TypedList => $resolvers->add(new Fixtures\Resolver\LoggingResolver()),
             ))
             ->addSource(new \ReflectionClass(Fixtures\Resolver\ProductController::class))
             ->build();
 
-        $this->assertContains('Declined ' . Fixtures\Resolver\Weight::class, $received);
+        $this->assertContains('Declined ' . Fixtures\Resolver\Weight::class, array_column($logger->entries(), 'message'));
     }
 
     /**

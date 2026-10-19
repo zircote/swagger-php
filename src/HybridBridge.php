@@ -19,11 +19,14 @@ class HybridBridge
     {
         $classSchemas = [];
         $memberProperties = [];
+        $held = $this->heldAnnotations($analysis);
 
         foreach ($analysis->annotations as $annotation) {
             if (!$annotation->_context->reflector instanceof \Reflector) {
                 continue;
             }
+
+            $this->reportUnmerged($annotation);
 
             match (true) {
                 $annotation instanceof OA\OpenApi => $this->convertOpenApiMeta($annotation, $specification),
@@ -44,7 +47,7 @@ class HybridBridge
                 $annotation instanceof OA\Header && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->header) => $specification->headers[] = $this->convertHeader($annotation),
                 $annotation instanceof OA\Link && !$annotation->_context->is('nested') => $specification->links[] = $this->convertLink($annotation),
                 $annotation instanceof OA\ExternalDocumentation && !$annotation->_context->is('nested') => $specification->externalDocs[] = $this->convertExternalDocs($annotation),
-                default => null,
+                default => isset($held[spl_object_id($annotation)]) ? null : $this->reportStray($annotation),
             };
         }
 
@@ -54,6 +57,8 @@ class HybridBridge
                 $specification->schemas[] = $converted;
             }
         }
+
+        $this->reportUnadopted($memberProperties, $classSchemas);
 
         $specification->openapi ??= new Spec\OpenApi();
 
@@ -109,6 +114,30 @@ class HybridBridge
         }
 
         return $converted;
+    }
+
+    /**
+     * A member property is converted only as part of a class schema that takes it in, so one that
+     * none takes in is dropped. Say so, in classic's words.
+     *
+     * @param list<OA\Property>              $memberProperties
+     * @param array<string, list<OA\Schema>> $classSchemas
+     */
+    protected function reportUnadopted(array $memberProperties, array $classSchemas): void
+    {
+        $adopting = [];
+        foreach (array_keys($classSchemas) as $className) {
+            foreach ($this->getOwnClasses($className, $classSchemas) as $ownClass) {
+                $adopting[$ownClass] = true;
+            }
+        }
+
+        foreach ($memberProperties as $property) {
+            $declarer = $this->getDeclaringClass($property);
+            if ($declarer === null || !isset($adopting[$declarer])) {
+                $this->reportUnexpected($property, $property);
+            }
+        }
     }
 
     /**
@@ -514,6 +543,83 @@ class HybridBridge
             encoding: $encoding,
             x: $this->extensions($mediaType),
         );
+    }
+
+    /**
+     * The annotations another one holds in a property, which convert with their holder. A stacked
+     * attribute merged into its sibling is held without being marked nested.
+     *
+     * @return array<int, true> keyed by `spl_object_id()`
+     */
+    protected function heldAnnotations(Analysis $analysis): array
+    {
+        $held = [];
+        foreach ($analysis->annotations as $annotation) {
+            foreach (get_object_vars($annotation) as $property => $value) {
+                if ($property === '_unmerged') {
+                    continue;
+                }
+                foreach (is_array($value) ? $value : [$value] as $item) {
+                    if ($item instanceof OA\AbstractAnnotation) {
+                        $held[spl_object_id($item)] = true;
+                    }
+                }
+            }
+        }
+
+        return $held;
+    }
+
+    /**
+     * A top-level annotation none of the arms converts and nothing holds is dropped, so say so, in classic's words.
+     */
+    protected function reportStray(OA\AbstractAnnotation $annotation): void
+    {
+        if ($annotation->_context->is('nested') || !$annotation::$_parents) {
+            return;
+        }
+
+        $this->reportUnexpected($annotation, $annotation);
+    }
+
+    protected function reportUnexpected(OA\AbstractAnnotation $reporter, OA\AbstractAnnotation $annotation): void
+    {
+        $message = 'Unexpected ' . $annotation->identity();
+        if ($annotation::$_parents) {
+            $message .= ', expected to be inside ' . implode(', ', array_map(
+                static fn (string $class): string => '@' . str_replace(['OpenApi\\Annotations\\', 'OpenApi\\Attributes\\'], 'OA\\', $class),
+                $annotation::$_parents,
+            ));
+        }
+        $reporter->_context->logger?->warning($message . ' in ' . $annotation->_context);
+    }
+
+    /**
+     * An annotation left unmerged where it was declared is not converted, so say so, in classic's words.
+     *
+     * Classic reports these from `validate()`, which hybrid does not run. JSON and XML content on a
+     * parent that takes content is the exception: {@see self::resolveContent()} converts it.
+     */
+    protected function reportUnmerged(OA\AbstractAnnotation $parent): void
+    {
+        foreach ($parent->_unmerged as $annotation) {
+            if (!$annotation instanceof OA\AbstractAnnotation) {
+                continue;
+            }
+
+            if (($annotation instanceof OA\JsonContent || $annotation instanceof OA\XmlContent)
+                && ($parent instanceof OA\Response || $parent instanceof OA\RequestBody || $parent instanceof OA\Parameter || $parent instanceof OA\Header)) {
+                continue;
+            }
+
+            if ($parent->matchNested($annotation) !== null) {
+                $parent->_context->logger?->warning('Only one ' . $annotation->identity([]) . ' allowed for ' . $parent->identity() . ' multiple found, skipped: ' . $annotation->_context);
+
+                continue;
+            }
+
+            $this->reportUnexpected($parent, $annotation);
+        }
     }
 
     /**

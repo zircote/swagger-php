@@ -7,9 +7,9 @@
 namespace OpenApi\Tests\Augmenter;
 
 use OpenApi\Augmenter;
+use OpenApi\Loggers\CollectingLogger;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
-use OpenApi\Tests\Doubles\RecordingLogger;
 use PHPUnit\Framework\TestCase;
 
 final class SecurityRequirementsTest extends TestCase
@@ -27,9 +27,9 @@ final class SecurityRequirementsTest extends TestCase
         /* @phpstan-ignore argument.type (intentionally a bare scheme name) */
         $spec->operations[] = $only = new OA\Operation\Get(path: '/only', security: ['bearer']);
 
-        $received = [];
+        $logger = new CollectingLogger();
         $augmenter = new Augmenter\SecurityRequirements();
-        $augmenter->setLogger(new RecordingLogger($received));
+        $augmenter->setLogger($logger);
         $augmenter($spec);
 
         $this->assertNull($spec->openapi->security);
@@ -38,10 +38,10 @@ final class SecurityRequirementsTest extends TestCase
         // not `[]`, which would declare the operation public
         $this->assertNull($only->security);
 
-        $this->assertCount(4, $received);
+        $this->assertCount(4, $logger->entries());
         $this->assertStringStartsWith(
             'Security requirement "api_key" is a bare scheme name and was dropped, use new Security\Requirement(scheme: \'api_key\') in ',
-            $received[2],
+            $logger->entries()[2]['message'],
         );
     }
 

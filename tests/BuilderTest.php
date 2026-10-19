@@ -13,8 +13,8 @@ use OpenApi\Builder\Mode;
 use OpenApi\Examples\Specs\Webhooks\Attributes as WebhooksAttributes;
 use OpenApi\Examples\Specs\Webhooks\Spec as WebhooksSpec;
 use OpenApi\Generator;
+use OpenApi\Loggers\CollectingLogger;
 use OpenApi\Tests\Concerns\UsesExamples;
-use OpenApi\Tests\Doubles\RecordingLogger;
 use OpenApi\Utils\Pipeline;
 use OpenApi\Utils\SourceFinder;
 
@@ -389,8 +389,7 @@ final class BuilderTest extends OpenApiTestCase
 
     public function testCompilerDiagnosticsReachTheConfiguredLogger(): void
     {
-        $received = [];
-        $logger = new RecordingLogger($received);
+        $logger = new CollectingLogger();
 
         // spec mode: an empty source set leaves the compiler with nothing to validate
         (new Builder())
@@ -400,7 +399,7 @@ final class BuilderTest extends OpenApiTestCase
             ->setLogger($logger)
             ->build();
 
-        $this->assertContains('info is required', $received);
+        $this->assertContains('info is required', array_column($logger->entries(), 'message'));
     }
 
     public function testGetAugmentersReturnsDefaultPipeline(): void
