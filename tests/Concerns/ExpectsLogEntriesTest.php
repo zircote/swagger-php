@@ -8,7 +8,7 @@ namespace OpenApi\Tests\Concerns;
 
 use OpenApi\Builder;
 use OpenApi\Builder\Mode;
-use OpenApi\Tests\Doubles\RecordingLogger;
+use OpenApi\Loggers\CollectingLogger;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
@@ -59,13 +59,12 @@ final class ExpectsLogEntriesTest extends TestCase
 
     public function testDelegateReceivesEntries(): void
     {
-        $received = [];
-        $delegate = new RecordingLogger($received);
+        $delegate = new CollectingLogger();
 
         $this->allowLogEntry('forwarded');
         $this->trackingLogger($delegate)->warning('forwarded message');
 
-        $this->assertSame(['forwarded message'], $received);
+        $this->assertSame(['forwarded message'], array_column($delegate->entries(), 'message'));
     }
 
     public function testUnmetExpectationFails(): void

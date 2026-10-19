@@ -6,7 +6,6 @@
 
 namespace OpenApi\Tests\Concerns;
 
-use OpenApi\Tests\Doubles\ForwardingLogger;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Before;
 use Psr\Log\LoggerInterface;

@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests\Doubles;
+namespace OpenApi\Tests\Concerns;
 
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
