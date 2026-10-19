@@ -9,6 +9,7 @@ namespace OpenApi\Augmenter;
 use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Specification\ComponentIndex;
 use OpenApi\Specification\ComponentName;
 use OpenApi\Utils\JsonPointer;
 use OpenApi\Utils\PipeInterface;
@@ -20,6 +21,7 @@ use Psr\Log\LoggerAwareTrait;
  *
  * Builds a map of class names to their component paths and rewrites
  * any $ref that looks like a FQCN into the proper #/components/... path.
+ * A ref that is neither a known class nor a pointer to an existing component is reported.
  *
  * @implements PipeInterface<Specification>
  */
@@ -39,10 +41,8 @@ class Refs implements PipeInterface, LoggerAwareInterface
         $index = $payload->buildComponentIndex();
         $refMap = $index->buildRefMap();
 
-        if ($refMap !== []) {
-            $this->resolveRefRefs($payload);
-            $this->resolveFQCNRefs($payload, $refMap);
-        }
+        $this->resolveRefRefs($payload);
+        $this->resolveFQCNRefs($payload, $refMap, $index);
 
         // deduplicate once every ref carries its final value: a FQCN and the component
         // pointer added by Augmenter\Inheritance name the same schema but differ as strings
@@ -80,16 +80,21 @@ class Refs implements PipeInterface, LoggerAwareInterface
     /**
      * @param array<string,string> $refMap
      */
-    protected function resolveFQCNRefs(Specification $specification, array $refMap): void
+    protected function resolveFQCNRefs(Specification $specification, array $refMap, ComponentIndex $index): void
     {
         $unresolved = [];
+        $dangling = [];
 
-        $specification->getWalker()->eachRef(function (AttributeInterface $attribute) use ($refMap, &$unresolved): void {
-            if (!property_exists($attribute, 'ref') || $attribute->ref === null || str_starts_with($attribute->ref, '#/')) {
+        $specification->getWalker()->eachRef(function (AttributeInterface $attribute) use ($refMap, $index, &$unresolved, &$dangling): void {
+            if (!property_exists($attribute, 'ref') || !is_string($attribute->ref)) {
                 return;
             }
 
-            if (isset($refMap[$attribute->ref])) {
+            if (str_starts_with($attribute->ref, '#/')) {
+                if ($this->isDangling($attribute->ref, $index)) {
+                    $dangling[$attribute->ref] = true;
+                }
+            } elseif (isset($refMap[$attribute->ref])) {
                 $attribute->ref = $refMap[$attribute->ref];
             } else {
                 $unresolved[$attribute->ref] = true;
@@ -97,8 +102,45 @@ class Refs implements PipeInterface, LoggerAwareInterface
         });
 
         foreach (array_keys($unresolved) as $ref) {
-            $this->logger?->warning("Ref: unresolved reference '{$ref}' — no matching component found");
+            $pointer = $this->pointerFor((string) $ref, $index);
+            $this->logger?->warning($pointer !== null
+                ? "Ref: unresolved reference '{$ref}' — a component of that name exists, use '{$pointer}'"
+                : "Ref: unresolved reference '{$ref}' — no matching component found");
         }
+
+        foreach (array_keys($dangling) as $ref) {
+            $this->logger?->warning("Ref: dangling reference '{$ref}' — no such component");
+        }
+    }
+
+    /**
+     * A pointer into a component bucket whose component does not exist. Pointers anywhere else are not checked,
+     * and neither are security schemes: the walker makes a pointer for each scheme a requirement names.
+     */
+    protected function isDangling(string $ref, ComponentIndex $index): bool
+    {
+        $segments = explode('/', $ref);
+        if (count($segments) < 4 || $segments[1] !== 'components' || $segments[2] === 'securitySchemes'
+            || !in_array($segments[2], ComponentName::BUCKETS, true)) {
+            return false;
+        }
+
+        return !$index->find(JsonPointer::ref('components', $segments[2], JsonPointer::decode($segments[3]))) instanceof AttributeInterface;
+    }
+
+    /**
+     * The pointer to the component a bare name matches, if there is one.
+     */
+    protected function pointerFor(string $name, ComponentIndex $index): ?string
+    {
+        foreach (ComponentName::BUCKETS as $bucket) {
+            $pointer = JsonPointer::ref('components', $bucket, $name);
+            if ($index->find($pointer) instanceof AttributeInterface) {
+                return $pointer;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -186,8 +228,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
 
         $unique = [];
         foreach ($schema->allOf as $ii => $allOf) {
-            // resolveRefRefs() has collapsed every Schema\Ref into its string by now, but only
-            // runs when the ref map is non-empty; key on the string form defensively
+            // resolveRefRefs() has collapsed every Schema\Ref into its string by now
             $ref = $allOf->ref instanceof OA\Schema\Ref ? $allOf->ref->ref : $allOf->ref;
             if (is_string($ref)) {
                 if (isset($unique[$ref])) {

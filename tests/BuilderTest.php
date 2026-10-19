@@ -292,6 +292,9 @@ final class BuilderTest extends OpenApiTestCase
 
         $this->expectLogEntry('OpenApi\Spec\Schema "onProperty" ignored, a component declared on a member needs OpenApi\Spec\Components on its class, in ' . Fixtures\PHP\StrayComponents::class . '::$property in ', 'warning');
         $this->expectLogEntry('OpenApi\Spec\Schema "onMethod" ignored, a component declared on a member needs OpenApi\Spec\Components on its class, in ' . Fixtures\PHP\StrayComponents::class . '::method() in ', 'warning');
+        // what referred to them is left pointing nowhere
+        $this->expectLogEntry("Ref: dangling reference '#/components/schemas/onProperty' — no such component", 'warning');
+        $this->expectLogEntry("Ref: dangling reference '#/components/schemas/onMethod' — no such component", 'warning');
     }
 
     /**
