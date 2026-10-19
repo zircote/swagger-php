@@ -93,7 +93,8 @@ adding *all* of:
 - `foo-3.1.0.yaml`: the expected output
 
 Missing implementations are skipped rather than failing, but a missing or stale
-`-3.1.0.yaml` is a failure. The mode/implementation pairing is deliberate: spec mode runs
+`-3.1.0.yaml` is a failure. A spec-only snippet is a `foo_spec.php` with no `foo_an.php`
+beside it, and runs in spec and hybrid mode against its `foo-3.1.0.yaml`. The mode/implementation pairing is deliberate: spec mode runs
 only spec snippets and classic mode never runs them, but hybrid runs all three.
 
 **`ExamplesTest`** does the same for `docs/examples/specs/*`, against the per-version

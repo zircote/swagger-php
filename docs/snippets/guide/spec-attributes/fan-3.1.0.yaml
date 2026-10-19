@@ -1,0 +1,25 @@
+openapi: 3.1.0
+paths:
+  '/pets/{id}':
+    put:
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '404':
+          description: 'Not found'
+    delete:
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '404':
+          description: 'Not found'

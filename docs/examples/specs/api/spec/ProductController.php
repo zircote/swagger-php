@@ -73,6 +73,7 @@ class ProductController
         )],
     )]
     #[OA\Response(response: 401, description: 'oops')]
+    #[OA\Header(header: 'X-Rate-Limit', description: 'calls per hour allowed by the user', schema: new OA\Schema(type: OA\Type::Integer, format: OA\Format::Int32), fan: OA\Fan::All)]
     public function getAll()
     {
     }

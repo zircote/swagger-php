@@ -28,14 +28,19 @@ final class DocSnippetsTest extends OpenApiTestCase
     {
         $finder = (new Finder())
             ->in(__DIR__ . '/../docs/snippets/')
-            ->name('*_an.php');
+            ->name(['*_an.php', '*_spec.php']);
 
         foreach ($finder as $file) {
-            $key = str_replace('_an', '', $file->getBasename('.php'));
+            // a set is found by its `_an` file; a `_spec` file stands alone only without one
+            $basename = $file->getBasename('.php');
+            $key = (string) preg_replace('/_(an|spec)$/', '', $basename);
             $basePath = dirname($file->getPathname());
+            if (str_ends_with($basename, '_spec') && file_exists("{$basePath}/{$key}_an.php")) {
+                continue;
+            }
 
             foreach (['an', 'at', 'spec'] as $implementation) {
-                $snippet = str_replace('_an.php', "_{$implementation}.php", $file->getPathname());
+                $snippet = "{$basePath}/{$key}_{$implementation}.php";
                 foreach ([Mode::CLASSIC, Mode::HYBRID, Mode::SPEC] as $mode) {
                     if ($mode === Mode::SPEC && $implementation !== 'spec'
                         || $mode === Mode::CLASSIC && $implementation === 'spec'
