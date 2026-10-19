@@ -127,6 +127,18 @@ Handles:
   type's `schema`;
 * `OA\Schema\Items`: an array schema, whose item keywords move into a new `items` schema.
 
+### [DefaultMediaType](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/DefaultMediaType.php)
+
+Sets the media type of every `MediaType` that has none.
+
+That is a bare `Schema` given as `content`, or a `MediaType` written without `mediaType`.
+A media type that is set is left alone, so an explicit one is how a single response or
+request body departs from the default.
+
+#### Config settings
+- **defaultMediaType.mediaType** : `string` · default: `application/json`  
+  The media type given to content that names none.
+
 ### [SecurityRequirements](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/SecurityRequirements.php)
 
 Drops security requirements written as a bare scheme name.

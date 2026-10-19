@@ -468,6 +468,7 @@ class Builder
             new Augmenter\Names(),
             new Augmenter\Enums(),
             new Augmenter\Shortcuts(),
+            new Augmenter\DefaultMediaType(),
             new Augmenter\SecurityRequirements(),
             new Augmenter\PathItems(),
             new Augmenter\Types(),

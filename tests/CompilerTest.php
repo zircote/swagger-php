@@ -816,6 +816,39 @@ final class CompilerTest extends TestCase
         $this->assertContains($expectedMessage, $messages);
     }
 
+    /**
+     * The augmenter sets it; a `Specification` that skips the augmenter has nothing to key it by.
+     */
+    public function testAMediaTypeWithoutATypeIsReportedAndOmitted(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->operations[] = new OA\Operation(path: '/p', method: 'get', responses: [new OA\Response(response: 200, description: 'ok', content: [
+            new OA\MediaType(schema: new OA\Schema(type: 'string')),
+            new OA\MediaType\Xml(schema: new OA\Schema(type: 'string')),
+        ])]);
+
+        $compiler = new OpenApi31Compiler();
+        $messages = array_column($compiler->validate($spec), 'message');
+
+        $this->assertCount(1, array_filter($messages, static fn (string $message): bool => str_starts_with($message, 'MediaType is missing key-field: "mediaType"')));
+        $this->assertSame(['application/xml'], array_keys($compiler->compile($spec)['paths']['/p']['get']['responses'][200]['content']));
+    }
+
+    public function testARepeatedMediaTypeKeepsTheLastWithAWarning(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->operations[] = new OA\Operation(path: '/p', method: 'post', requestBody: new OA\RequestBody(content: [
+            new OA\MediaType\Json(schema: new OA\Schema(type: 'string')),
+            new OA\MediaType\Json(schema: new OA\Schema(type: 'integer')),
+        ]), responses: [new OA\Response(response: 204, description: 'done')]);
+
+        $compiler = new OpenApi31Compiler();
+        $messages = array_column($compiler->validate($spec), 'message');
+
+        $this->assertCount(1, array_filter($messages, static fn (string $message): bool => str_starts_with($message, 'Media type "application/json" is declared more than once in one content, the last one is kept')));
+        $this->assertSame('integer', $compiler->compile($spec)['paths']['/p']['post']['requestBody']['content']['application/json']['schema']['type']);
+    }
+
     public function testOperationWithoutAMethodIsReportedAndOmitted(): void
     {
         $spec = $this->createSpecification('3.1.0');

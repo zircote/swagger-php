@@ -169,6 +169,18 @@ abstract class AbstractAttribute implements AttributeInterface
         return $list;
     }
 
+    /**
+     * A bare schema stands for one media type with that payload and no `mediaType` yet.
+     *
+     * @param MediaType|list<MediaType>|Schema|null $content
+     *
+     * @return list<MediaType>|null
+     */
+    protected static function wrapContent(MediaType|Schema|array|null $content): ?array
+    {
+        return $content instanceof Schema ? [new MediaType(schema: $content)] : self::wrapList($content);
+    }
+
     private static function copyValue(mixed $value): mixed
     {
         if ($value instanceof AttributeInterface) {

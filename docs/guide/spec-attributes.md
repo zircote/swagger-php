@@ -308,6 +308,18 @@ Still useful even when nesting `OA\Schema` as the media type is prefilled either
 #[OA\Response(response: 200, content: [new OA\MediaType\Json(type: 'array', items: new OA\Schema(ref: Pet::class))])]
 ```
 
+### A schema as content
+
+On `OA\Response` and `OA\RequestBody`, `content:` also takes a bare schema. It becomes the payload of one media type:
+
+```php
+#[OA\Response(response: 200, description: 'The pet', content: new OA\Schema\Ref(Pet::class))]
+```
+
+The media type is filled in by the `DefaultMediaType` augmenter, `application/json` unless configured otherwise with `defaultMediaType.mediaType`. It fills in every media type written without `mediaType`, and leaves an explicit one alone, so a single response can still name its own.
+
+`OA\Parameter` and `OA\Header` have a `schema:` of their own, which is not the same as `content:`, so there `content:` takes media types only.
+
 ### Items
 `#[OA\Schema\Items]` is the equivalent to the classic `OA\Items` attribute. Similar to `OA\MediaType\Json` and `Xml` it is a shortcut that allows to skip the outer `OA\Schema(type: 'array')`. The `Shortcuts` augmenter wraps it into `OA\Schema(type: 'array', items: ...)` automatically.
 
