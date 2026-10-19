@@ -178,6 +178,7 @@ Resolves FQCN-based $ref values to JSON Reference paths.
 
 Builds a map of class names to their component paths and rewrites
 any $ref that looks like a FQCN into the proper #/components/... path.
+A ref that is neither a known class nor a pointer to an existing component is reported.
 
 ### [Parameters](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Parameters.php)
 

@@ -10,12 +10,14 @@ use OpenApi\Augmenter;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Tests\Concerns\AssemblesSpecification;
+use OpenApi\Tests\Concerns\ExpectsLogEntries;
 use OpenApi\Tests\Fixtures;
 use PHPUnit\Framework\TestCase;
 
 final class RefsTest extends TestCase
 {
     use AssemblesSpecification;
+    use ExpectsLogEntries;
 
     public function testResolvesFqcnToComponentPath(): void
     {
@@ -141,5 +143,34 @@ final class RefsTest extends TestCase
             ['target' => '#/components/schemas/RefTarget'],
             $discriminatorSchema->discriminator->mapping,
         );
+    }
+
+    /**
+     * No component has a class here, so there is no class map at all; the refs are checked anyway.
+     */
+    public function testReportsRefsThatPointNowhereWithoutAClassMap(): void
+    {
+        $spec = new Specification();
+        $spec->responses[] = new OA\Response(response: 404, description: 'gone', component: 'NoSuchPet');
+        $spec->schemas[] = new OA\Schema(type: OA\Type::Object, properties: ['name' => OA\Type::String], component: 'Pet');
+        $spec->schemas[] = new OA\Schema(
+            oneOf: [
+            new OA\Schema(ref: 'NoSuchPet'),
+            new OA\Schema(ref: 'Unknown'),
+            new OA\Schema(ref: '#/components/schemas/Missing'),
+            new OA\Schema(ref: '#/components/schemas/Pet'),
+            new OA\Schema(ref: '#/components/schemas/Pet/properties/name'),
+            new OA\Schema(ref: '#/paths/~1pets'),
+        ],
+            component: 'Refs'
+        );
+
+        $refs = new Augmenter\Refs();
+        $refs->setLogger($this->trackingLogger());
+        $refs($spec);
+
+        $this->expectLogEntry("Ref: unresolved reference 'NoSuchPet' — a component of that name exists, use '#/components/responses/NoSuchPet'", 'warning');
+        $this->expectLogEntry("Ref: unresolved reference 'Unknown' — no matching component found", 'warning');
+        $this->expectLogEntry("Ref: dangling reference '#/components/schemas/Missing' — no such component", 'warning');
     }
 }
