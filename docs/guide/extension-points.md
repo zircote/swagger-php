@@ -208,7 +208,7 @@ A parameter that is only a `ref` folds with an inline one of the same name and l
 the `Parameters` augmenter gives it the name and location of its component first. The reference
 is what survives.
 
-See the [extension points reference](/reference/extension-points) for how each field folds.
+See the [Mergers reference](/reference/mergers) for how each field folds.
 
 The pass runs over the `Specification`'s own collections, where attributes sharing a key come
 from different places. A duplicate key *inside* one attribute, such as two `200` responses in

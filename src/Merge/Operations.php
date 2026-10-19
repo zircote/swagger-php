@@ -24,7 +24,7 @@ use Psr\Log\LoggerAwareTrait;
  * when one operation is described in more than one place, such as a route table contributed
  * through `withSpecification()` and an attribute adding responses to it.
  *
- * Identity is the catch-all's: path and method, or webhook and method. Registering the fold
+ * Identity is the shared one: path and method, or webhook and method. Registering the fold
  * changes how two operations combine, not which two are the same.
  *
  * What only one of them sets is always taken. What both set is decided by the `Mode` it is
@@ -32,14 +32,14 @@ use Psr\Log\LoggerAwareTrait;
  * take only what does not overlap. The mode can also be a callable that receives both and returns
  * one, so the choice can follow a mark a producer left with `setMeta()` rather than the
  * order they arrive in. A field both set differently is reported, whichever value
- * is kept; one they set the same is not.
+ * is kept. One they set the same is not.
  *
  * - Parameters are keyed by name and location, and responses by status code. Under `First` and
  *   `Last`, a parameter or response both describe is folded one level deep, a parameter's
  *   `schema` included, so a route's `pattern` survives an attribute's `type`. Under
  *   `NonOverlapping` it is the earlier's, whole.
  * - `requestBody`, `externalDocs`, `security`, `servers` and `callbacks` are each one decision,
- *   taken whole from whichever operation the mode keeps; an explicit `security: []` is set,
+ *   taken whole from whichever operation the mode keeps. An explicit `security: []` is set,
  *   and opts out.
  * - `tags` and `attachables` are unions, and `x` merges key by key under the same mode.
  *

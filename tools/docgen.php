@@ -6,6 +6,7 @@ use OpenApi\Tools\Docs\Reference\AttributeGenerator;
 use OpenApi\Tools\Docs\Reference\AugmenterGenerator;
 use OpenApi\Tools\Docs\Reference\ExampleGenerator;
 use OpenApi\Tools\Docs\Reference\ExtensionPointGenerator;
+use OpenApi\Tools\Docs\Reference\MergerGenerator;
 use OpenApi\Tools\Docs\Reference\ProcessorGenerator;
 use OpenApi\Tools\Docs\Reference\SpecAttributeGenerator;
 
@@ -18,6 +19,7 @@ $generators = [
     'aug' => new AugmenterGenerator($projectRoot),
     'example' => new ExampleGenerator($projectRoot),
     'ext' => new ExtensionPointGenerator($projectRoot),
+    'merge' => new MergerGenerator($projectRoot),
 ];
 
 $requested = array_slice($argv ?? [], 1);
@@ -32,6 +34,7 @@ $outputMap = [
     'processors' => 'reference/processors.md',
     'augmenters' => 'reference/augmenters.md',
     'extension-points' => 'reference/extension-points.md',
+    'mergers' => 'reference/mergers.md',
     'examples' => 'guide/examples.md',
 ];
 
