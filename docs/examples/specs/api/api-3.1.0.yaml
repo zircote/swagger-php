@@ -55,6 +55,12 @@ paths:
       responses:
         '200':
           description: 'successful operation'
+          headers:
+            X-Rate-Limit:
+              description: 'calls per hour allowed by the user'
+              schema:
+                type: integer
+                format: int32
           content:
             application/json:
               schema:
@@ -65,6 +71,12 @@ paths:
                 type: object
         '401':
           description: oops
+          headers:
+            X-Rate-Limit:
+              description: 'calls per hour allowed by the user'
+              schema:
+                type: integer
+                format: int32
     post:
       tags:
         - products

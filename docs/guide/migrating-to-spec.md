@@ -65,7 +65,7 @@ Formatting is left to your code style tooling.
 ### A header beside several responses
 
 Classic resolves a `#[Header]` stacked beside more than one `#[Response]` by copying it into
-every one of them:
+every one of them, and also lists it under `components/headers`:
 
 ```php
 #[OA\Get(path: '/pets/{id}', operationId: 'getPet')]
@@ -90,9 +90,11 @@ responses:
 ```
 
 Spec mode reports `Ambiguous merge` instead and skips the class. Which response the header
-belongs to is not something the code says, so the set does not guess. Nest it in the response
-it belongs to, or give it a `component:` and reference it from each. See
-[Components](/guide/spec-attributes#components).
+belongs to is not something the code says, so the set does not guess. Set
+`fan: OA\Fan::All` on the header to put it in every response, nest it in the response it
+belongs to, or give it a `component:` and reference it from each. See
+[One attribute for several targets](/guide/spec-attributes#one-attribute-for-several-targets)
+and [Components](/guide/spec-attributes#components).
 
 ### Responses beside several operations
 
@@ -109,19 +111,18 @@ public function pet(): void
 ```
 
 Spec mode reports `Ambiguous merge` for the first `Response` and skips the class, which drops
-both operations from the document. Give each operation its own `responses:`:
+both operations from the document. Where the operations differ only in their method, declare
+one operation with `methods:`, and `{method}` in its `operationId`:
 
 ```php
-#[OA\Operation\Get(path: '/pets/{id}', operationId: 'getPet', responses: [
-    new OA\Response(response: 200, description: 'The pet'),
-    new OA\Response(response: 404, description: 'No such pet'),
-])]
-#[OA\Operation\Post(path: '/pets/{id}', operationId: 'postPet', responses: [
-    new OA\Response(response: 200, description: 'The pet'),
-    new OA\Response(response: 404, description: 'No such pet'),
-])]
+#[OA\Operation(path: '/pets/{id}', operationId: '{method}Pet', methods: [OA\HttpMethod::Get, OA\HttpMethod::Post])]
+#[OA\Response(response: 200, description: 'The pet')]
+#[OA\Response(response: 404, description: 'No such pet')]
 public function pet(): void
 ```
+
+Otherwise set `fan: OA\Fan::All` on each shared `Response`, or give each operation its own
+`responses:`. See [One operation for several methods](/guide/spec-attributes#one-operation-for-several-methods).
 
 A response both operations share can be declared once with a `component:` and referenced as
 `new OA\Response(response: 404, ref: '#/components/responses/NoSuchPet')` from each.

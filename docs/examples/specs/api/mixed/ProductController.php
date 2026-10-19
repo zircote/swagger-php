@@ -68,6 +68,9 @@ class ProductController
     #[OAT\Response(
         response: 200,
         description: 'successful operation',
+        headers: [
+            new OAT\Header(header: 'X-Rate-Limit', description: 'calls per hour allowed by the user', schema: new OAT\Schema(type: 'integer', format: 'int32')),
+        ],
         content: new OAT\JsonContent(
             required: ['data'],
             properties: [
@@ -80,7 +83,9 @@ class ProductController
             type: 'object'
         )
     )]
-    #[OAT\Response(response: 401, description: 'oops')]
+    #[OAT\Response(response: 401, description: 'oops', headers: [
+        new OAT\Header(header: 'X-Rate-Limit', description: 'calls per hour allowed by the user', schema: new OAT\Schema(type: 'integer', format: 'int32')),
+    ])]
     public function getAll()
     {
     }

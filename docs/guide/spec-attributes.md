@@ -210,15 +210,7 @@ Available subclasses: `OA\Parameter\Path`, `OA\Parameter\Query`, `OA\Parameter\H
 
 An attribute that more than one attribute could hold is an error: a `Response` next to two operations, or a parameter on an argument shared by two operations. `fan: OA\Fan::All` puts it in each of them instead:
 
-```php
-#[OA\Operation\Put(path: '/pets/{id}')]
-#[OA\Operation\Delete(path: '/pets/{id}')]
-#[OA\Response(response: 404, description: 'Not found', fan: OA\Fan::All)]
-public function change(
-    #[OA\Parameter\Path(name: 'id', fan: OA\Fan::All)]
-    int $id
-) {}
-```
+<<< @/snippets/guide/spec-attributes/fan_spec.php
 
 Both operations get the `404` response and the `id` parameter. The same works one level down, for a `Header` next to several responses. Each target gets its own copy.
 
@@ -228,18 +220,11 @@ The targets have to be of one type. A `MediaType` next to both a `Response` and 
 
 `methods:` on `OA\Operation` declares one operation for several HTTP methods:
 
-```php
-#[OA\Operation(path: '/pets/{id}', operationId: '{method}Pet', methods: [OA\HttpMethod::Put, OA\HttpMethod::Patch])]
-#[OA\Response(response: 204, description: 'Updated')]
-public function update(
-    #[OA\Parameter\Path(name: 'id')]
-    int $id
-) {}
-```
+<<< @/snippets/guide/spec-attributes/methods_spec.php
 
 The document gets a `put` and a `patch` operation, each with the `204` response and the `id` parameter. No `fan` is needed while it is the only operation on the method. Next to another operation, the attributes it shares need `fan: OA\Fan::All` as above.
 
-`{method}` in an `operationId` is replaced by each operation's method, here `putPet` and `patchPet`. An `operationId` without it is dropped on several methods, with a warning, and each operation gets a generated one.
+`{method}` in an `operationId` is replaced by each operation's method, so `operationId: '{method}Pet'` gives `putPet` and `patchPet`. An `operationId` without it is dropped on several methods, with a warning, and each operation gets a generated one.
 
 ## PathItem
 

@@ -88,6 +88,14 @@ class ProductController
      *     @OA\Response(
      *         response=200,
      *         description="successful operation",
+     *         @OA\Header(
+     *             header="X-Rate-Limit",
+     *             description="calls per hour allowed by the user",
+     *             @OA\Schema(
+     *                 type="integer",
+     *                 format="int32"
+     *             )
+     *         ),
      *         @OA\JsonContent(
      *             type="object",
      *             required={"data"},
@@ -100,7 +108,15 @@ class ProductController
      *     ),
      *     @OA\Response(
      *         response=401,
-     *         description="oops"
+     *         description="oops",
+     *         @OA\Header(
+     *             header="X-Rate-Limit",
+     *             description="calls per hour allowed by the user",
+     *             @OA\Schema(
+     *                 type="integer",
+     *                 format="int32"
+     *             )
+     *         )
      *     )
      * )
      */
