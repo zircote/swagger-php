@@ -1189,6 +1189,19 @@ class OpenApi31Compiler implements CompilerInterface
         return $name !== null ? " \"$name\"" : '';
     }
 
+    /**
+     * The reference a `$ref` holds, whether it is the string or a `Schema\Ref` around it.
+     */
+    protected function refString(string|OA\Schema\Ref|null $ref): ?string
+    {
+        return $ref instanceof OA\Schema\Ref ? $this->refString($ref->ref) : $ref;
+    }
+
+    /**
+     * @param array<array-key, object> $items
+     *
+     * @return array<string, mixed>
+     */
     protected function compileNamedMap(array $items, string|\Closure $key, \Closure $compiler): array
     {
         $result = [];

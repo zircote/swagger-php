@@ -105,6 +105,9 @@ final class PathItemHierarchyTest extends TestCase
         yield 'a chain with no prefix leaves the path alone' => [[PathItemPlainController::class], PathItemPlainController::class, '/products/{id}', '', '/products/{id}'];
     }
 
+    /**
+     * @param list<class-string> $classes
+     */
     #[DataProvider('pathProvider')]
     public function testPrefixAndPathFor(array $classes, string $className, string $declaredPath, string $expectedPrefix, string $expectedPath): void
     {

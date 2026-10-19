@@ -89,7 +89,9 @@ final class ReusableComponentsTest extends TestCase
 
     public function testAKeyedPathItemIsAComponentAndGovernsNothing(): void
     {
-        $result = $this->build(['SharedPathItem'], configure: fn (Builder $b): Builder => $b->withAugmenters(fn (Pipeline $p) => $p->get(Augmenter\Cleanup::class)?->setEnabled(false)));
+        $result = $this->build(['SharedPathItem'], configure: fn (Builder $b): Builder => $b->withAugmenters(static function (Pipeline $p): void {
+            $p->get(Augmenter\Cleanup::class)?->setEnabled(false);
+        }));
         $document = $result->toArray();
 
         $this->assertSame(['/api/things'], array_keys($document['paths']), 'the prefixed path, and no path for the component');
@@ -117,7 +119,9 @@ final class ReusableComponentsTest extends TestCase
 
     public function testAPathItemComponentIsReportedAndOmittedIn30(): void
     {
-        $result = $this->build(['SharedPathItem'], '3.0.0', fn (Builder $b): Builder => $b->withAugmenters(fn (Pipeline $p) => $p->get(Augmenter\Cleanup::class)?->setEnabled(false)));
+        $result = $this->build(['SharedPathItem'], '3.0.0', fn (Builder $b): Builder => $b->withAugmenters(static function (Pipeline $p): void {
+            $p->get(Augmenter\Cleanup::class)?->setEnabled(false);
+        }));
 
         $this->assertArrayNotHasKey('components', $result->toArray());
         $this->expectLogEntry('pathItems components are not supported in OpenAPI 3.0 and will be omitted', 'warning');
@@ -142,7 +146,9 @@ final class ReusableComponentsTest extends TestCase
             ->setMode(Mode::SPEC)
             ->setLogger($this->trackingLogger())
             ->setVersion($version)
-            ->withAugmenters(fn (Pipeline $p) => $p->get(Augmenter\Cleanup::class)?->setEnabled(false))
+            ->withAugmenters(static function (Pipeline $p): void {
+                $p->get(Augmenter\Cleanup::class)?->setEnabled(false);
+            })
             ->withSpecification(function (Specification $specification): void {
                 $specification->add(
                     new OA\Info(title: 'Patch', version: '1.0'),

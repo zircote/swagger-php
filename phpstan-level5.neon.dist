@@ -1,0 +1,31 @@
+includes:
+	- phpstan-level5-baseline.neon
+
+# Classic and docs/examples, at the level the rest of the tree was at before it moved to 7.
+# Classic leaves at v8 and takes no new capabilities; the examples are written to read well.
+# Neither is worth typing to level 7, and neither should lose the checks it has.
+parameters:
+    phpVersion: 80200
+    level: 5
+    paths:
+        - src/Annotations
+        - src/Attributes
+        - docs/examples
+    scanDirectories:
+        - docs/snippets
+    parallel:
+        processTimeout: 300.0
+    treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        -
+            # ignore Generator::UNDEFINED default value
+            message: '#OpenApi\\Annotations#'
+            identifier: property.defaultValue
+        -
+            # ignore unused example fixtures
+            message: '#OpenApi\\Examples#'
+            identifier: property.unused
+        -
+            # ignore assigning Generator::UNDEFINED as property value
+        	message: '#Property OpenApi\\Annotations.*::\$.* does not accept string.#'
+        	identifier: assign.propertyType

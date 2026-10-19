@@ -46,10 +46,12 @@ trait FoldTrait
     }
 
     /**
-     * @param array<mixed>|null $earlier
-     * @param array<mixed>|null $later
+     * @template T
      *
-     * @return array<mixed>|null
+     * @param list<T>|null $earlier
+     * @param list<T>|null $later
+     *
+     * @return list<T>|null
      */
     protected function union(?array $earlier, ?array $later): ?array
     {

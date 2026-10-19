@@ -110,7 +110,8 @@ class Merge implements PipeInterface, LoggerAwareInterface
             $reduced[$slots[$key]] = $merger->merge($reduced[$slots[$key]], $attribute);
         }
 
-        return $reduced;
+        // replacing a slot keeps the list in order; the analyser only loses track that it is one
+        return array_values($reduced);
     }
 
     protected function mergerFor(AttributeInterface $attribute): ?MergerInterface

@@ -112,7 +112,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
                     '%s %s beside $ref %s is not supported in OpenAPI 3.0 and will be omitted in %s',
                     (new \ReflectionClass($attribute))->getShortName(),
                     implode(' and ', $siblings),
-                    $attribute->ref instanceof OA\Schema\Ref ? $attribute->ref->ref : $attribute->ref,
+                    $this->refString($attribute->ref),
                     $attribute->getSourceLocation(),
                 ));
             }
@@ -404,7 +404,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
             if ($schema->examples !== null) {
                 // a plain 3.0 `$ref` is a Reference Object, which drops everything beside it
                 $this->logger->warning($schema->ref !== null && $schema->nullable !== true
-                    ? 'Schema' . $this->schemaLabel($schema) . ': examples beside $ref ' . $schema->ref . ' is not supported in OpenAPI 3.0 and will be omitted'
+                    ? 'Schema' . $this->schemaLabel($schema) . ': examples beside $ref ' . $this->refString($schema->ref) . ' is not supported in OpenAPI 3.0 and will be omitted'
                     : 'Schema' . $this->schemaLabel($schema) . ': examples array is not supported in OpenAPI 3.0, using first value as example');
             }
         }

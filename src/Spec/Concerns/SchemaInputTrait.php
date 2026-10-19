@@ -6,6 +6,7 @@
 
 namespace OpenApi\Spec\Concerns;
 
+use OpenApi\OpenApiException;
 use OpenApi\Spec\Format;
 use OpenApi\Spec\Property;
 use OpenApi\Spec\Schema;
@@ -42,10 +43,13 @@ trait SchemaInputTrait
      *
      * A key names the property only where its value is a `Schema`, a `Type` or a `Format`, so a
      * list of `Property` passes through as it always has. A `Format` brings the type it implies.
+     * A `Schema`, `Type` or `Format` without a string key has no name, and is an error.
      *
      * @param PropertiesInput|null $properties
      *
      * @return list<Property>|null
+     *
+     * @throws OpenApiException for a `Schema`, `Type` or `Format` without a string key
      */
     protected static function propertyList(?array $properties): ?array
     {
@@ -55,17 +59,25 @@ trait SchemaInputTrait
 
         $list = [];
         foreach ($properties as $key => $value) {
-            if (is_string($key) && $value instanceof Type) {
-                $value = new Schema(type: $value);
+            if ($value instanceof Property) {
+                $list[] = $value;
+                continue;
             }
 
-            if (is_string($key) && $value instanceof Format) {
-                $value = new Schema(type: $value->type(), format: $value);
+            if (!is_string($key)) {
+                throw new OpenApiException(sprintf(
+                    'properties: %s needs a string key that names the property',
+                    $value instanceof Schema ? $value::class : $value::class . '::' . $value->name,
+                ));
             }
 
-            $list[] = is_string($key) && $value instanceof Schema
-                ? new Property(property: $key, schema: $value)
-                : $value;
+            $schema = match (true) {
+                $value instanceof Type => new Schema(type: $value),
+                $value instanceof Format => new Schema(type: $value->type(), format: $value),
+                default => $value,
+            };
+
+            $list[] = new Property(property: $key, schema: $schema);
         }
 
         return $list;

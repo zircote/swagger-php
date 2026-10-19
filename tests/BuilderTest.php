@@ -355,7 +355,9 @@ final class BuilderTest extends OpenApiTestCase
             ->setMode(Mode::SPEC)
             ->addSource(new \ReflectionClass(Fixtures\Resolver\Warehouse::class))
             // nothing references the schemas from a path; keep them to assert on
-            ->withAugmenters(fn (Pipeline $augmenters) => $augmenters->get(Augmenter\Cleanup::class)?->setEnabled(false))
+            ->withAugmenters(static function (Pipeline $augmenters): void {
+                $augmenters->get(Augmenter\Cleanup::class)?->setEnabled(false);
+            })
             ->setLogger($this->trackingLogger())
             ->build();
 

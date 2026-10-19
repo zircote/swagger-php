@@ -108,7 +108,8 @@
         ],
         "performance": "export XDEBUG_MODE=off && phpunit --group performance",
         "analyse": [
-            "export XDEBUG_MODE=off && phpstan clear-result-cache -q && phpstan analyse --memory-limit=3G"
+            "export XDEBUG_MODE=off && phpstan clear-result-cache -q && phpstan analyse --memory-limit=3G",
+            "export XDEBUG_MODE=off && phpstan analyse -c phpstan-level5.neon.dist --memory-limit=3G"
         ],
         "redocly": "npm run redocly -- lint 'docs/examples/specs/**/*.yaml' 'docs/snippets/guide/extension-points/*.yaml' 'tests/Fixtures/Scratch/*.yaml'",
         "docs:check": "export XDEBUG_MODE=off && phpunit --filter DocsAccuracyTest",
