@@ -642,6 +642,40 @@ name:
 
 Both forms are valid in OpenAPI 3.1+, but the scalar form is more conventional for single types.
 
+### `required` and `default` from the PHP declaration
+
+Spec mode fills an object schema's `required` list and its properties' `default` from the PHP
+declarations, where the attributes do not set them. Classic mode adds neither. The rule is in
+[Required properties and defaults](/guide/augmentation#required-properties-and-defaults).
+
+```php
+#[OA\Schema]
+class Pet
+{
+    #[OA\Property] public int $id;
+    #[OA\Property] public string $status = 'new';
+}
+```
+
+Classic output:
+```yaml
+Pet:
+  properties:
+    id: { type: integer }
+    status: { type: string }
+  type: object
+```
+
+Spec output:
+```yaml
+Pet:
+  required: [id]
+  properties:
+    id: { type: integer }
+    status: { type: string, default: new }
+  type: object
+```
+
 ### Nothing is read from a constructor
 
 Spec mode reads a constructor's parameters, as promoted properties, and nothing else on it.

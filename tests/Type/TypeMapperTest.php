@@ -6,6 +6,8 @@
 
 namespace OpenApi\Tests\Type;
 
+use OpenApi\Tests\Fixtures\Augmenter\BackedIntEnum;
+use OpenApi\Tests\Fixtures\Augmenter\BasicEnum;
 use OpenApi\Tests\OpenApiTestCase;
 use OpenApi\Type\TypeMapper;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -106,5 +108,33 @@ final class TypeMapperTest extends OpenApiTestCase
     public function testHasOpenApiType(string $type, bool $expected): void
     {
         $this->assertSame($expected, $this->mapper->hasOpenApiType($type));
+    }
+
+    /**
+     * @return iterable<string, array{mixed, string|null}>
+     */
+    public static function values(): iterable
+    {
+        yield 'string' => ['a', 'string'];
+        yield 'integer' => [1, 'integer'];
+        yield 'float' => [1.5, 'number'];
+        yield 'boolean' => [false, 'boolean'];
+        yield 'list' => [[1, 2], 'array'];
+        yield 'empty array' => [[], 'array'];
+        yield 'map' => [['a' => 1], 'object'];
+        yield 'null' => [null, null];
+        yield 'object' => [new \stdClass(), null];
+    }
+
+    #[DataProvider('values')]
+    public function testValueType(mixed $value, ?string $expected): void
+    {
+        $this->assertSame($expected, TypeMapper::valueType($value));
+    }
+
+    public function testCaseValue(): void
+    {
+        $this->assertSame(1, TypeMapper::caseValue(BackedIntEnum::GREEN));
+        $this->assertSame('GREEN', TypeMapper::caseValue(BasicEnum::GREEN));
     }
 }

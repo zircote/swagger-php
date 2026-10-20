@@ -1,0 +1,82 @@
+openapi: 3.2.0
+info:
+  title: Encoding
+  version: '1.0'
+paths:
+  /endpoint/multipart-form-data-ref:
+    post:
+      operationId: multipartFormDataRef
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MultipartFormData'
+            encoding:
+              metadata:
+                contentType: 'application/xml; charset=utf-8'
+              avatar:
+                contentType: 'image/png, image/jpeg'
+                headers:
+                  X-Rate-Limit-Limit: { description: 'The number of allowed requests in the current period', schema: { type: integer } }
+      responses:
+        '200':
+          description: 'All good'
+  /endpoint/multipart-form-data-ref-json-content:
+    post:
+      operationId: multipartFormDataRefJsonContent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MultipartFormData'
+            encoding:
+              metadata:
+                contentType: 'application/xml; charset=utf-8'
+              avatar:
+                contentType: 'image/png, image/jpeg'
+                headers:
+                  X-Rate-Limit-Limit: { description: 'The number of allowed requests in the current period', schema: { type: integer } }
+      responses:
+        '200':
+          description: 'All good'
+  /endpoint/multipart-form-data-json-content:
+    post:
+      operationId: multipartFormDataJsonContent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  format: uuid
+                metadata:
+                  $ref: '#/components/schemas/EncodingMetadata'
+                avatar:
+                  type: object
+              type: object
+            encoding:
+              metadata:
+                contentType: 'application/xml; charset=utf-8'
+              avatar:
+                contentType: 'image/png, image/jpeg'
+      responses:
+        '200':
+          description: 'All good'
+components:
+  schemas:
+    EncodingMetadata: {}
+    MultipartFormData:
+      properties:
+        name:
+          type: string
+          format: uuid
+        metadata:
+          $ref: '#/components/schemas/EncodingMetadata'
+        avatar:
+          type: object
+      type: object
+      required:
+        - name
+        - metadata
+        - avatar

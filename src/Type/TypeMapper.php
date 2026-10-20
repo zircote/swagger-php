@@ -32,6 +32,31 @@ class TypeMapper
     ];
 
     /**
+     * The OpenAPI type of a PHP value, or `null` where the value has none.
+     *
+     * An array is an `array` where it is a list, an empty one included, and an `object` otherwise.
+     */
+    public static function valueType(mixed $value): ?string
+    {
+        return match (true) {
+            is_string($value) => 'string',
+            is_int($value) => 'integer',
+            is_float($value) => 'number',
+            is_bool($value) => 'boolean',
+            is_array($value) => array_is_list($value) ? 'array' : 'object',
+            default => null,
+        };
+    }
+
+    /**
+     * The value an enum case stands for in a document: a backed case's value, a unit case's name.
+     */
+    public static function caseValue(\UnitEnum $case): int|string
+    {
+        return $case instanceof \BackedEnum ? $case->value : $case->name;
+    }
+
+    /**
      * Map a native PHP type to its OpenAPI type and optional format.
      *
      * @return array{type: string, format: string|null}|null null if the type has no OpenAPI representation

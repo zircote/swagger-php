@@ -20,8 +20,10 @@ components:
       properties:
         name:
           type: string
+          default: ''
         age:
           type: integer
+          default: 0
       required:
         - name
         - age

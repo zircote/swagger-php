@@ -134,7 +134,8 @@ buckets get resolved after assembly, without the DTOs having to reference each o
   PathItems can contribute path prefixes. The walk is `Specification\PathItemHierarchy`, not
   repeated per caller
 - **OperationId generation**: class and method names come from the reflector
-- **Type inference**: `Types` reads PHP type declarations off property and parameter reflectors
+- **Type inference**: `Types` reads PHP type declarations off property and parameter reflectors.
+  `Properties` reads nullability and defaults off the same reflectors
 - **Naming**: a component schema takes its name from the class it sits on. A property takes its
   name from the property, parameter or constant it sits on
 
@@ -259,5 +260,7 @@ operations have to exist before path prefixes are resolved. `Parameters` must ru
 `Merge\Operations` keys parameters by both. The phases keep that order: `Parameters` is in
 `Resolve`, and both `Merge` runs are later. A `ref` parameter added after the `Resolve` phase
 is not given its identity, and the second `Merge` run keeps it beside an inline twin.
+`Properties` must run after `Types`, because it checks a default against the type `Types` gives
+a property, and names a required property by the name `Types` fills in.
 `SecurityRequirements` must run before `PathItems` too, because `PathItems` clones a path
 item's requirements onto its operations, and reads each one as a `Security\Requirement`.

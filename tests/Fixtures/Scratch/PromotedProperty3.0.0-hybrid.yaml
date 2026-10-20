@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  title: 'Promoted Property Description Scratch'
+  version: '1.0'
+paths:
+  /api/endpoint:
+    get:
+      description: 'An endpoint'
+      operationId: 'getPromotedPropertyDescription'
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    MyEnum:
+      type: string
+      enum:
+        - AA
+    PromotedPropertyDescription:
+      properties:
+        thevalue:
+          description: 'Property value.'
+          type: string
+        other:
+          description: 'Other value.'
+          type: string
+        themeta:
+          description: 'Property meta.'
+          type: string
+        different:
+          description: 'Property different.'
+          type: string
+        myEnum:
+          $ref: '#/components/schemas/MyEnum'
+        thename:
+          description: 'Property name.'
+          type: string
+      type: object
