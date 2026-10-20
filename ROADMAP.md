@@ -24,7 +24,8 @@ here: the marker is the promise.
 `6.5.0` introduced the `Spec` system as opt-in beta. The remainder of **v6** is about completing
 it and getting people onto it:
 
-* `Spec` attributes declared frozen, and the **beta** label dropped in that minor
+* `Spec` attributes declared frozen, and `Builder` declared the stable entry point for every mode.
+  The **beta** label stays until **v7**
 * a rector rule set for `OpenApi\Attributes` -> `OpenApi\Spec`
 * a seam to contribute pre-built attributes to a `Specification` before resolution, for
   framework integrations that do not scan
@@ -47,6 +48,7 @@ is still beta for part of the major, and a stable API is not deprecated in favou
 
 ### v7
 This is where things turn:
+* the **beta** label comes off the `Spec` attributes and the `hybrid` and `spec` modes
 * default mode switches to `hybrid` - existing `classic` projects keep working, routed through
   the new pipeline via the bridge, with the exception of integrations that build annotation
   objects directly instead of scanning for them, which the bridge has nothing to scan for

@@ -1,11 +1,12 @@
 <?php
 
+use OpenApi\Builder;
 use OpenApi\Generator;
 use OpenApi\Processors\BuildPaths;
 use OpenApi\Utils\Pipeline;
 use SchemaQueryParameterProcessor\SchemaQueryParameter;
 
-$classLoader = require __DIR__ . '/../../../vendor/autoload.php';
+$classLoader = require __DIR__ . '/../../../../vendor/autoload.php';
 
 // register our app namespace...
 $classLoader->addPsr4('App\\', __DIR__ . '/app');
@@ -22,8 +23,10 @@ $insertMatch = function (array $pipes): int|string|null {
     return null;
 };
 
-$openapi = (new Generator())
-    ->withProcessorPipeline(fn (Pipeline $pipeline): Pipeline => $pipeline->insert(new SchemaQueryParameter(), $insertMatch))
-    ->generate([__DIR__ . '/app']);
-// file_put_contents(__DIR__ . '/schema-query-parameter.yaml', $openapi->toYaml());
-echo $openapi->toYaml();
+$result = (new Builder())
+    ->addSource(__DIR__ . '/app')
+    ->withGenerator(fn (Generator $generator): Generator => $generator
+        ->withProcessorPipeline(fn (Pipeline $pipeline): Pipeline => $pipeline->insert(new SchemaQueryParameter(), $insertMatch)))
+    ->build();
+// file_put_contents(__DIR__ . '/schema-query-parameter.yaml', $result->toYaml());
+echo $result->toYaml();

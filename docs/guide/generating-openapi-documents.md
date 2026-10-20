@@ -155,19 +155,10 @@ $result = (new \OpenApi\Builder())
 echo $result->toYaml();
 ```
 
-### Using the Generator directly
+### Configuring the Generator
 
-The `Generator` class can also be used directly (classic mode only):
-
-```php
-<?php
-require('vendor/autoload.php');
-
-$openapi = (new \OpenApi\Generator())->generate(['/path/to/project']);
-
-header('Content-Type: application/x-yaml');
-echo $openapi->toYaml();
-```
+In classic mode, the `Builder` runs the `Generator`. Custom analysers, processors and aliases are
+set on it with [`withGenerator()`](/reference/builder#generator-configuration-classic-mode).
 
 ::: tip Programming API
 Details about the `swagger-php` API can be found in the [reference](../reference/index.md).

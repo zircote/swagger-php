@@ -51,7 +51,7 @@ $result->toYaml();
 Spec mode uses the `OpenApi\Spec` namespace (`use OpenApi\Spec as OA;`). See [Using Spec Attributes](/guide/spec-attributes) for a full guide.
 
 ::: warning Beta
-Spec mode is mostly feature-complete but still beta. The attribute API may evolve based on feedback before being promoted to default in a future major version.
+Spec mode is beta until v7: the document it generates may still change, for example where an inference is fixed. The attribute API is frozen. Existing attributes keep their shape, and new fields and attributes may still be added.
 :::
 
 ## Hybrid (beta) {#hybrid}
@@ -141,7 +141,7 @@ The recommended migration path is:
 3. **Full Spec**: once all code uses `OpenApi\Spec` attributes, switch to `setMode(Mode::SPEC)`.
 
 ::: tip Version timeline
-- **v6**: spec and hybrid ship as opt-in beta. Classic remains the default.
-- **v7**: hybrid becomes the default mode. Classic is still available. `setMode()` and all classic code are deprecated.
+- **v6**: spec and hybrid ship as opt-in beta. The spec attribute API is frozen within v6, and `Builder` is the stable entry point for every mode. Classic remains the default.
+- **v7**: hybrid becomes the default mode, and spec and hybrid are no longer beta. Classic is still available. `setMode()` and all classic code are deprecated.
 - **v8**: classic is removed, and so is `setMode()`. Spec becomes the default. Spec attributes move to `OpenApi\Attributes`. For code already written against `OpenApi\Spec`, that move is one `use` line per file. Coming from classic, the component keys are renamed as well.
 :::
