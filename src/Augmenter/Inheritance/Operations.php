@@ -126,7 +126,7 @@ class Operations
         $operations = [];
 
         foreach ($this->attributeFactory->getDirectMethods($ancestor) as $method) {
-            foreach ($this->attributeFactory->fromReflector($method) as $root) {
+            foreach ($this->attributeFactory->fromMember($method) as $root) {
                 if ($root instanceof OA\Operation) {
                     $root->setReflector($childReflector);
                     $operations[] = $root;

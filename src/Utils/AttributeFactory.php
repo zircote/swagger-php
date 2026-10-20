@@ -156,13 +156,13 @@ class AttributeFactory implements LoggerAwareInterface
                 continue;
             }
 
-            array_push($inner, ...$this->resolveNesting($this->readAttributes($property)));
+            array_push($inner, ...$this->fromMember($property));
         }
 
         $constructor = $class->getConstructor();
         if ($constructor) {
             foreach ($constructor->getParameters() as $parameter) {
-                array_push($inner, ...$this->resolveNesting($this->readAttributes($parameter)));
+                array_push($inner, ...$this->fromMember($parameter));
             }
 
             $this->reportConstructorAttributes($class, $constructor);
@@ -175,14 +175,38 @@ class AttributeFactory implements LoggerAwareInterface
                 continue;
             }
 
-            array_push($inner, ...$this->resolveNesting($this->readAttributes($constant)));
+            array_push($inner, ...$this->fromMember($constant));
         }
 
         foreach ($this->getDirectMethods($class) as $method) {
-            array_push($inner, ...$this->fromReflector($method));
+            array_push($inner, ...$this->fromMember($method));
         }
 
         return $inner;
+    }
+
+    /**
+     * Read and resolve the attributes of one class member, as {@see self::fromReflector()} does.
+     *
+     * A member that fails assembly, such as an attribute several attributes could hold, is left
+     * out with a warning, so the rest of its class is kept. Without a logger there is nobody to
+     * tell, so the error is thrown as {@see self::fromReflector()} throws it.
+     *
+     * @return list<AttributeInterface>
+     */
+    public function fromMember(\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $member): array
+    {
+        try {
+            return $this->fromReflector($member);
+        } catch (OpenApiException $openApiException) {
+            if (!$this->logger instanceof LoggerInterface) {
+                throw $openApiException;
+            }
+
+            $this->logger->warning(sprintf('Skipping %s: %s', $this->memberLabel($member), $openApiException->getMessage()));
+
+            return [];
+        }
     }
 
     /**
@@ -351,6 +375,16 @@ class AttributeFactory implements LoggerAwareInterface
         }
 
         return $kept;
+    }
+
+    protected function memberLabel(\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $member): string
+    {
+        return match (true) {
+            $member instanceof \ReflectionMethod => $member->class . '::' . $member->name . '()',
+            $member instanceof \ReflectionProperty => $member->class . '::$' . $member->name,
+            $member instanceof \ReflectionClassConstant => $member->class . '::' . $member->name,
+            default => '$' . $member->name . ' of ' . $member->getDeclaringClass()?->getName() . '::' . $member->getDeclaringFunction()->name . '()',
+        };
     }
 
     /**

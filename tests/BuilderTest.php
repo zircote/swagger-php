@@ -349,9 +349,12 @@ final class BuilderTest extends OpenApiTestCase
     /**
      * The same holds for a class the scan never sees, reached by resolving a reference to it.
      */
-    public function testBuildSkipsReferencedClassThatWillNotLoadSpec(): void
+    /**
+     * The attribute that fails costs its member: the class keeps its schema, without `unit`.
+     */
+    public function testBuildSkipsTheMemberOfAReferencedClassThatWillNotLoadSpec(): void
     {
-        $this->expectLogEntry('Skipping unloadable', 'warning');
+        $this->expectLogEntry('Skipping $unit of ' . Fixtures\Resolver\UnloadableStock::class . '::__construct(): Failed to instantiate attribute', 'warning');
         $this->allowLogEntry('info is required', 'At least one of paths, webhooks, or components is required', 'Ref: unresolved reference');
 
         $result = (new Builder())
@@ -364,7 +367,9 @@ final class BuilderTest extends OpenApiTestCase
             ->setLogger($this->trackingLogger())
             ->build();
 
-        $this->assertArrayHasKey('Manufacturer', $result->toArray()['components']['schemas']);
+        $schemas = $result->toArray()['components']['schemas'];
+        $this->assertArrayHasKey('Manufacturer', $schemas);
+        $this->assertEquals(new \stdClass(), $schemas['UnloadableStock']);
     }
 
     /**
