@@ -30,6 +30,9 @@ class Types implements PipeInterface, LoggerAwareInterface
     /** @var array<string, string> class name => component pointer, for the components that exist */
     protected array $refMap = [];
 
+    /** the member whose type is being applied, for the warning when a class in it has no schema */
+    protected ?\Reflector $subject = null;
+
     public function __construct(
         protected TypeResolver $typeResolver = new TypeResolver(),
     ) {
@@ -222,6 +225,8 @@ class Types implements PipeInterface, LoggerAwareInterface
             return;
         }
 
+        $this->subject = $reflector;
+
         if (!$property->schema instanceof OA\Schema) {
             $property->schema = $this->schemaTypeToSchema($resolved);
         } else {
@@ -258,6 +263,8 @@ class Types implements PipeInterface, LoggerAwareInterface
         if (!$resolved instanceof SchemaType) {
             return;
         }
+
+        $this->subject = $method;
 
         if (!$property->schema instanceof OA\Schema) {
             $property->schema = $this->schemaTypeToSchema($resolved);
@@ -304,6 +311,8 @@ class Types implements PipeInterface, LoggerAwareInterface
             $resolved->nullable = null;
         }
 
+        $this->subject = $reflector;
+
         if (!$parameter->schema instanceof OA\Schema) {
             $parameter->schema = $this->schemaTypeToSchema($resolved);
         } else {
@@ -344,8 +353,13 @@ class Types implements PipeInterface, LoggerAwareInterface
         if ($schemaType->type !== null) {
             if ($schemaType->isRef()) {
                 // a class is referenced only when it is a component, and never in place of an explicit enum
-                if ($schema->enum === null && $this->isComponent($schemaType->type)) {
-                    $schema->ref = $schemaType->type;
+                if ($schema->enum === null) {
+                    if ($this->isComponent($schemaType->type)) {
+                        $schema->ref = $schemaType->type;
+                    } else {
+                        $subject = $this->subject instanceof \Reflector ? $this->typeResolver->describe($this->subject) : 'a schema';
+                        $this->logger?->warning("No schema for {$schemaType->type} in {$subject}, so its type is left out");
+                    }
                 }
             } else {
                 $schema->type = $schemaType->type;

@@ -33,6 +33,12 @@ final class ScratchTest extends OpenApiTestCase
             ['long', 'int', 'bool', 'float', 'double', 'date', 'DateTime'],
         );
 
+        // a property typed with a class that is no component is left untyped, with a word
+        $classRef = static fn (string $suffix): array => array_map(
+            static fn (string $property): string => "No schema for OpenApi\\Tests\\Fixtures\\Scratch\\ClassRefPlain{$suffix} in OpenApi\\Tests\\Fixtures\\Scratch\\ClassRefHolder{$suffix}::\${$property}",
+            ['plain', 'nullablePlain'],
+        );
+
         // Keyed `{fixture}-{version}`, applying to every mode, or `{fixture}-{version}-{mode}`
         // for a diagnostic only one mode raises. Both keys contribute when both are present.
         $expectedLogs = [
@@ -77,6 +83,12 @@ final class ScratchTest extends OpenApiTestCase
             'TypeAliases-3.2.0-spec' => $typeAliases,
             'TypeAliases-3.2.0-hybrid' => $typeAliases,
             'Tags-3.2.0-hybrid' => ['references non-existent parent'],
+            'ClassRef-3.0.0-spec' => $classRef('Spec'),
+            'ClassRef-3.0.0-hybrid' => $classRef(''),
+            'ClassRef-3.1.0-spec' => $classRef('Spec'),
+            'ClassRef-3.1.0-hybrid' => $classRef(''),
+            'ClassRef-3.2.0-spec' => $classRef('Spec'),
+            'ClassRef-3.2.0-hybrid' => $classRef(''),
         ];
 
         foreach (self::discoverFixtures("{$basePath}/*.php") as $scratchName => $scratch) {
