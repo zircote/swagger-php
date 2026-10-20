@@ -63,4 +63,7 @@ components:
           example: zircote/swagger-php
         listed:
           $ref: '#/components/schemas/repository'
+      required:
+        - repository
+        - listed
     repository: {}

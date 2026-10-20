@@ -12,7 +12,8 @@ moving annotations to classic attributes first are collected in
 ## Before you start
 
 Generate your document in classic mode and keep it: the migration is done when spec mode
-generates the same document from the migrated code.
+generates the same document from the migrated code, apart from the
+[differences spec mode is expected to show](/guide/spec-attributes#other-differences).
 
 Spec mode defaults to OpenAPI 3.1.0 and classic to 3.0.0, so pass the version explicitly to
 both: `--version` on the command line, `Builder::setVersion()` in code.

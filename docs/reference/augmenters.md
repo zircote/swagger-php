@@ -172,6 +172,26 @@ Infers schema type, format, nullable, items, etc. from PHP type declarations and
 Walks all properties and parameters in the specification and fills their schema
 fields from the attached reflector's type information.
 
+### [Properties](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Properties.php)
+
+Infers an object schema's `required` list and its properties' `default` from the PHP declarations.
+
+A property is required when its PHP type is not nullable and it has no default, the rule a
+parameter follows, with the default counted too: a value exists when the field is left out. A
+promoted constructor property counts by its parameter's default. A property with no PHP type
+adds nothing to `required`.
+
+A default is taken where it is a value the document can hold: a scalar, an enum case or an array
+of them. An enum case gives the value its schema lists: a backed case's value, a unit case's
+name. `null` is not taken, since the nullable type already says it, and neither is a value the
+schema's type does not admit.
+
+What the attribute sets wins: an explicit `required` list is kept as written, and so is an
+explicit `default`, `null` included. Schemas converted from classic annotations are left alone.
+
+Runs after `Augmenter\Types`, which names each property and gives it the type its default is
+checked against.
+
 ### [Refs](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Refs.php)
 
 Resolves FQCN-based $ref values to JSON Reference paths.

@@ -8,6 +8,7 @@ namespace OpenApi\Augmenter;
 
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Type\TypeMapper;
 use OpenApi\Utils\Config;
 use OpenApi\Utils\PipeInterface;
 use OpenApi\Utils\ServerVariableEnum;
@@ -148,10 +149,10 @@ class Enums implements PipeInterface, LoggerAwareInterface
         $resolved = [];
         foreach ($enum as $value) {
             if ($value instanceof \UnitEnum) {
-                $resolved[] = $value instanceof \BackedEnum ? $value->value : $value->name;
+                $resolved[] = TypeMapper::caseValue($value);
             } elseif (is_string($value) && function_exists('enum_exists') && enum_exists($value)) {
                 foreach ($value::cases() as $case) {
-                    $resolved[] = $case instanceof \BackedEnum ? $case->value : $case->name;
+                    $resolved[] = TypeMapper::caseValue($case);
                 }
             } else {
                 $resolved[] = $value;

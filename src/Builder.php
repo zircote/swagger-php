@@ -472,6 +472,7 @@ class Builder
             new Augmenter\SecurityRequirements(),
             new Augmenter\PathItems(),
             new Augmenter\Types(),
+            new Augmenter\Properties(),
             new Augmenter\Refs(),
             new Augmenter\Parameters(),
             new Augmenter\Merge($mergers),

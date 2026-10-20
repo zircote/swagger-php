@@ -831,6 +831,8 @@ class HybridBridge
             x: $this->extensions($schema),
         );
         $this->copyReflector($schema, $result);
+        // classic infers nothing from the declarations, so spec's inference leaves this schema alone
+        $result->setMeta(self::class, true);
 
         return $result;
     }

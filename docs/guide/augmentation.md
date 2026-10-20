@@ -80,6 +80,8 @@ In particular, the following schema elements may be augmented:
 * `minimum` / `maximum`
 * `const`
 * `enum`
+* `required`
+* `default`
 
 Data types that are not recognized and cannot be resolved to a class-like name (`class`, `interface`, `enum`, etc.) will be ignored.
 
@@ -112,6 +114,35 @@ The docblock tag read depends on the element:
 ::: info 🧪 Mode difference
 In `classic`, an explicit `type` also stops `nullable` being read from a nullable type-hint
 (see [Nullable type inference](/guide/spec-attributes#nullable-type-inference-from-php-types)).
+:::
+
+### Required properties and defaults
+
+An object schema's `required` list and its properties' `default` come from the PHP declarations:
+
+* a property is required when its PHP type is not nullable and it has no default. A property with
+  no PHP type is never added.
+* a property with a default gives that default, where it is a scalar, an enum case or an array of
+  them. An enum case gives a backed case's value or a unit case's name, as the enum's schema lists
+  them. `null` is not taken, and neither is a value the schema's `type` does not admit.
+
+A promoted constructor property counts by its parameter's default. An explicit `required` list on
+the schema is kept as written, and so is an explicit `default` on the property, `default: null`
+included.
+
+```php
+#[OA\Schema]
+class Pet
+{
+    #[OA\Property] public int $id;                 // required
+    #[OA\Property] public ?string $nickname;       // not required: nullable
+    #[OA\Property] public string $status = 'new';  // not required, default: new
+}
+```
+
+::: info 🧪 Mode difference
+Only spec attributes are read. Classic annotations and attributes add neither, in `classic` or in
+`hybrid`.
 :::
 
 ## Summary and description

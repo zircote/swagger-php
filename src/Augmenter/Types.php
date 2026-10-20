@@ -9,6 +9,7 @@ namespace OpenApi\Augmenter;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Type\SchemaType;
+use OpenApi\Type\TypeMapper;
 use OpenApi\Type\TypeResolver;
 use OpenApi\Undefined;
 use OpenApi\Utils\PipeInterface;
@@ -243,13 +244,8 @@ class Types implements PipeInterface, LoggerAwareInterface
         if (Undefined::isDefault($schema->const)) {
             $schema->const = $value;
         }
-        $schema->type ??= match (true) {
-            is_string($value) => 'string',
-            is_int($value) => 'integer',
-            is_float($value) => 'number',
-            is_bool($value) => 'boolean',
-            default => null,
-        };
+        // an array constant stays untyped, as it always has
+        $schema->type ??= is_array($value) ? null : TypeMapper::valueType($value);
         $property->schema = $schema;
     }
 

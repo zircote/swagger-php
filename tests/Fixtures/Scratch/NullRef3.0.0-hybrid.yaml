@@ -1,0 +1,66 @@
+openapi: 3.0.0
+info:
+  title: 'Null Ref'
+  version: '1.0'
+paths:
+  /api/refonly:
+    get:
+      operationId: refonly
+      responses:
+        '200':
+          description: 'Ref response'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - { $ref: '#/components/schemas/repository' }
+                  - { type: object, nullable: true, enum: [null] }
+  /api/refplus:
+    get:
+      operationId: refplus
+      responses:
+        '200':
+          description: 'Ref plus response'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - { $ref: '#/components/schemas/repository' }
+                  - { type: object, nullable: true, enum: [null] }
+                description: 'The repository'
+  /api/annotated:
+    get:
+      operationId: annotated
+      responses:
+        '200':
+          description: 'Annotated refs response'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/annotatedRefs'
+components:
+  schemas:
+    annotatedRefs:
+      type: object
+      properties:
+        nullableRepository:
+          oneOf:
+            - { $ref: '#/components/schemas/repository' }
+            - { type: object, nullable: true, enum: [null] }
+          title: Nullable
+          description: 'A nullable reference'
+          default: none
+          example: zircote/swagger-php
+          deprecated: true
+          readOnly: true
+        repository:
+          $ref: '#/components/schemas/repository'
+        nullableListed:
+          oneOf:
+            - { $ref: '#/components/schemas/repository' }
+            - { type: object, nullable: true, enum: [null] }
+          writeOnly: true
+          example: zircote/swagger-php
+        listed:
+          $ref: '#/components/schemas/repository'
+    repository: {}

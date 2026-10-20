@@ -31,6 +31,10 @@ components:
           type: string
           format: date-time
           readOnly: true
+      required:
+        - id
+        - created_at
+        - updated_at
     Product:
       type: object
       description: Product

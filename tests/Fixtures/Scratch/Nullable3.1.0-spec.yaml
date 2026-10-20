@@ -1,0 +1,69 @@
+openapi: 3.1.0
+info:
+  title: Nullable
+  version: '1.0'
+paths:
+  /api/endpoint:
+    get:
+      description: 'An endpoint'
+      operationId: 'nullableEndpoint'
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    MyDateTime:
+      type: string
+      format: rfc3339-timestamp
+      externalDocs:
+        description: '**RFC3339** IETF'
+        url: 'https://tools.ietf.org/html/rfc3339'
+      example: '2023-08-02T07:06:46+03:30'
+    Nullable:
+      properties:
+        title:
+          type: string
+        firstname:
+          type:
+            - string
+            - 'null'
+        middlename:
+          type: string
+        lastname:
+          type:
+            - string
+            - 'null'
+        birthdate:
+          oneOf:
+            -
+              $ref: '#/components/schemas/MyDateTime'
+            -
+              type: 'null'
+        otherdate:
+          oneOf:
+            -
+              $ref: '#/components/schemas/MyDateTime'
+            -
+              type: 'null'
+        anotherdate:
+          oneOf:
+            -
+              $ref: '#/components/schemas/MyDateTime'
+            -
+              type: 'null'
+        description:
+          type:
+            - string
+            - 'null'
+        choice:
+          type:
+            - string
+            - 'null'
+          example: Choice1
+          enum:
+            - Choice1
+            - Choice2
+            - null
+      type: object
+      required:
+        - otherdate

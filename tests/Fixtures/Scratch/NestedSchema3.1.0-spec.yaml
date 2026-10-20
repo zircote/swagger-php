@@ -1,0 +1,105 @@
+openapi: 3.1.0
+info:
+  title: 'Parameter Content Scratch'
+  version: '1.0'
+paths:
+  /api/post:
+    post:
+      operationId: post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - note
+              properties:
+                note:
+                  example: 'My note'
+                other:
+                  description: other
+                  oneOf: [{ $ref: '#/components/schemas/NestedSchemaOne' }, { $ref: '#/components/schemas/NestedSchemaTwo' }]
+              type: object
+      responses:
+        '200':
+          description: OK
+  /api/get:
+    get:
+      operationId: get
+      parameters:
+        -
+          name: tags
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: 'successful operation'
+  /api/put:
+    put:
+      operationId: put
+      parameters:
+        -
+          name: tags
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: 'successful operation'
+  /api/delete:
+    delete:
+      operationId: delete
+      parameters:
+        -
+          name: tags
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: 'successful operation'
+components:
+  schemas:
+    NestedSchemaOne: {}
+    NestedSchemaTwo: {}
+    MultipleOneOf:
+      properties:
+        values:
+          type: array
+          items:
+            oneOf:
+              -
+                $ref: '#/components/schemas/MultipleOneOf'
+                description: 'Recursive nested item'
+              -
+                $ref: '#/components/schemas/NestedSchemaTwo'
+                description: 'Another item'
+      type: object
+      required:
+        - values
+    NestedSchema:
+      required:
+        - errors
+      properties:
+        errors:
+          description: 'Validation errors'
+          type: object
+          minItems: 1
+          uniqueItems: true
+          additionalProperties:
+            description: 'Array of error messages for property'
+            type: array
+            items:
+              type: string
+            minItems: 1
+            uniqueItems: true
+      type: object
