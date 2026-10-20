@@ -90,6 +90,29 @@ final class TypesTest extends TestCase
         $this->assertSame('#/components/schemas/BackedStringEnum', $properties['status']['$ref']);
     }
 
+    public function testAnExplicitTypeDropsThePhpTypesNull(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\ExplicitTypeNullability::class);
+
+        (new Augmenter\Shortcuts())($spec);
+        (new Augmenter\Types())($spec);
+
+        $nullable = [];
+        foreach ($spec->schemas[0]->properties as $property) {
+            $nullable[$property->property] = $property->schema->nullable;
+        }
+
+        $this->assertSame([
+            'explicit' => null,
+            'explicitWithNull' => null,
+            'explicitNullable' => true,
+            'inferred' => true,
+            'impliedByItems' => true,
+            'itemsShortcut' => true,
+        ], $nullable);
+        $this->assertSame(['object', 'null'], $spec->schemas[0]->properties[1]->schema->type);
+    }
+
     public function testInfersParameterSchema(): void
     {
         $spec = $this->assemble(Fixtures\Augmenter\TypeController::class);

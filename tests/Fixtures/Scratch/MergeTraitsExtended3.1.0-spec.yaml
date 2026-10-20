@@ -47,9 +47,7 @@ components:
           type: object
           properties:
             deleted_at:
-              type:
-                - string
-                - 'null'
+              type: string
               format: date-time
               readOnly: true
             number:

@@ -736,33 +736,6 @@ oneOf:
   - { type: 'null' }
 ```
 
-### Nullable type inference from PHP types
-
-Spec mode consistently infers nullability from PHP type declarations (e.g. `?\DateTime`). For OpenAPI 3.0 this adds `nullable: true`. For 3.1+ it emits `type: ['string', 'null']`. Classic mode does not infer it when the attribute sets `type`.
-
-```php
-#[OA\Property]
-#[OA\Schema(format: 'date-time', type: 'string', readOnly: true)]
-public ?\DateTime $deleted_at;
-```
-
-Classic output (3.0):
-```yaml
-deleted_at:
-  type: string
-  format: date-time
-  readOnly: true
-```
-
-Spec output (3.0):
-```yaml
-deleted_at:
-  type: string
-  format: date-time
-  nullable: true
-  readOnly: true
-```
-
 ## References
 
 `$ref` values can use PHP class references (resolved by the `Refs` augmenter):
