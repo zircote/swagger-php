@@ -2,7 +2,9 @@
 
 ## Introduction
 
-The `Builder` class is the recommended entry point for generating OpenAPI documents from PHP code. Its setters are chainable, and `build()` returns a `Result` giving access to the generated document, the files that were scanned, and the warnings and errors collected along the way.
+The `Builder` class is the entry point for generating OpenAPI documents from PHP code, in every mode. Its API is stable. Its setters are chainable, and `build()` returns a `Result` giving access to the generated document, the files that were scanned, and the warnings and errors collected along the way.
+
+A `Builder` builds one document. To build another, configure a new `Builder`.
 
 ## Basic usage
 

@@ -263,6 +263,12 @@ class Builder
         return $this;
     }
 
+    /**
+     * Build the document.
+     *
+     * A `Builder` builds one document. To build another, configure a new `Builder`: a second
+     * call is not prevented, but what it reuses from the first is not part of the contract.
+     */
     public function build(): Result
     {
         return match ($this->mode) {

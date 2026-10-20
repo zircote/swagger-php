@@ -87,6 +87,9 @@ the [examples directory](docs/examples) for more examples.
 
 *Available since 6.5.0*
 
+The attribute API is frozen. The beta label stays until v7, because the documents spec mode
+generates may still change until then.
+
 A new processing mode using typed attributes from the `OpenApi\Spec` namespace:
 
 ```php
@@ -138,6 +141,9 @@ $result = (new \OpenApi\Builder())
 header('Content-Type: application/x-yaml');
 echo $result->toYaml();
 ```
+
+`Builder` is the stable entry point for every mode, and one instance builds one document.
+See the [Builder reference](https://zircote.github.io/swagger-php/reference/builder) for its API.
 
 Details on how to generate OpenApi specifications can be found
 in the [generate reference](https://zircote.github.io/swagger-php/guide/generating-openapi-documents).

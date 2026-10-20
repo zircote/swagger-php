@@ -1,7 +1,9 @@
 # Using the `Generator`
 
 ## Introduction
-The `Generator` class is the main entry point into `swagger-php`.
+The `Generator` class is classic mode's engine. The entry point for every mode is the
+[`Builder`](builder.md), which runs the `Generator` in classic mode and hands it to
+[`withGenerator()`](builder.md#generator-configuration-classic-mode) for configuration.
 
 ## The `\OpenApi\Generator` class
 
