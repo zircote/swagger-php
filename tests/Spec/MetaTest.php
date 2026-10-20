@@ -45,8 +45,9 @@ final class MetaTest extends TestCase
      * processors branch on, one read at a time. `meta` is for code outside swagger-php, so a
      * reader or writer appearing in `src/` is a decision this test makes someone take on purpose.
      *
-     * Taken once: `HybridBridge` marks the schemas it converts from classic annotations, and
-     * `Augmenter\Properties` leaves those alone, so classic output does not change in hybrid.
+     * Taken once: `HybridBridge` marks the schemas and parameters it converts from classic
+     * annotations. `Augmenter\Properties` leaves those schemas alone, and `Augmenter\Types` keeps
+     * classic's `required` rule for those parameters, so classic output does not change in hybrid.
      */
     public function testNothingInTheCoreUsesMeta(): void
     {
@@ -65,6 +66,6 @@ final class MetaTest extends TestCase
 
         sort($users);
 
-        $this->assertSame(['AbstractAttribute.php', 'HybridBridge.php', 'Properties.php'], $users, 'meta belongs to whoever extends swagger-php; core code using it is new behaviour');
+        $this->assertSame(['AbstractAttribute.php', 'HybridBridge.php', 'Properties.php', 'Types.php'], $users, 'meta belongs to whoever extends swagger-php; core code using it is new behaviour');
     }
 }
