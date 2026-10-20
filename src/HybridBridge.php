@@ -472,6 +472,8 @@ class HybridBridge
             x: $this->extensions($param),
         );
         $this->copyReflector($param, $result);
+        // classic requires a parameter by its type alone, so spec's default rule leaves this one alone
+        $result->setMeta(self::class, true);
 
         return $result;
     }

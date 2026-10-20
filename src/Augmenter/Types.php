@@ -6,6 +6,7 @@
 
 namespace OpenApi\Augmenter;
 
+use OpenApi\HybridBridge;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Type\SchemaType;
@@ -315,7 +316,13 @@ class Types implements PipeInterface, LoggerAwareInterface
             $this->mergeIntoSchema($parameter->schema, $resolved);
         }
 
-        $parameter->required ??= !$isNullable;
+        // a default means a value exists when the parameter is left out. A path parameter is required
+        // whatever its default, and one converted from classic keeps classic's rule
+        $hasDefault = $reflector->isDefaultValueAvailable()
+            && $parameter->in !== 'path'
+            && $parameter->getMeta(HybridBridge::class) !== true;
+
+        $parameter->required ??= !$isNullable && !$hasDefault;
     }
 
     protected function isComponent(string $class): bool

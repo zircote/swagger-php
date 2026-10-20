@@ -8,6 +8,7 @@ namespace OpenApi\Tests\Augmenter;
 
 use OpenApi\Augmenter;
 use OpenApi\Builder;
+use OpenApi\HybridBridge;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Tests\Concerns\AssemblesSpecification;
@@ -102,6 +103,32 @@ final class TypesTest extends TestCase
         $this->assertSame('string', $params[1]->schema->type);
         $this->assertNull($params[1]->schema->nullable);
         $this->assertFalse($params[1]->required);
+    }
+
+    public function testAParameterWithADefaultIsNotRequired(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\ParameterDefaults::class);
+
+        (new Augmenter\Types())($spec);
+
+        $required = [];
+        foreach ($spec->operations[0]->parameters as $parameter) {
+            $required[$parameter->name] = $parameter->required;
+        }
+
+        $this->assertSame(['limit' => true, 'id' => true, 'page' => false, 'sort' => true], $required);
+    }
+
+    public function testABridgedParameterKeepsClassicsRule(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\ParameterDefaults::class);
+        foreach ($spec->operations[0]->parameters as $parameter) {
+            $parameter->setMeta(HybridBridge::class, true);
+        }
+
+        (new Augmenter\Types())($spec);
+
+        $this->assertTrue($spec->operations[0]->parameters[2]->required);
     }
 
     public function testInfersParameterName(): void

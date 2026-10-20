@@ -126,6 +126,7 @@ An object schema's `required` list and its properties' `default` come from the P
   them. An enum case gives a backed case's value or a unit case's name, as the enum's schema lists
   them. `null` is not taken, and neither is a value the schema's `type` does not admit.
 
+A parameter follows the same `required` rule, except that a path parameter is always required.
 A promoted constructor property counts by its parameter's default. An explicit `required` list on
 the schema is kept as written, and so is an explicit `default` on the property, `default: null`
 included.
@@ -142,7 +143,7 @@ class Pet
 
 ::: info 🧪 Mode difference
 Only spec attributes are read. Classic annotations and attributes add neither, in `classic` or in
-`hybrid`.
+`hybrid`, and a classic parameter stays required by its type alone, whatever its default.
 :::
 
 ## Summary and description
