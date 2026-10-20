@@ -7,9 +7,11 @@
 namespace OpenApi\Tests\Augmenter;
 
 use OpenApi\Augmenter;
+use OpenApi\Builder;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Tests\Concerns\AssemblesSpecification;
+use OpenApi\Tests\Concerns\ExpectsLogEntries;
 use OpenApi\Tests\Fixtures;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -17,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 final class TypesTest extends TestCase
 {
     use AssemblesSpecification;
+    use ExpectsLogEntries;
 
     public function testInfersPropertyTypes(): void
     {
@@ -63,6 +66,27 @@ final class TypesTest extends TestCase
         $this->assertInstanceOf(OA\Schema::class, $items);
         $this->assertSame('string', $items->type);
         $this->assertSame('date-time', $items->format);
+    }
+
+    public function testWarnsForAClassWithNoSchema(): void
+    {
+        $holder = Fixtures\Augmenter\UndescribedClasses::class;
+        $this->expectLogEntry('No schema for ' . Fixtures\Augmenter\Money::class . " in {$holder}::\$price", 'warning');
+        $this->expectLogEntry('No schema for ' . Fixtures\Augmenter\Labelled::class . " in {$holder}::\$label", 'warning');
+        $this->expectLogEntry('No schema for ' . Fixtures\Augmenter\Money::class . " in {$holder}::\$history", 'warning');
+        $this->allowLogEntry('info is required');
+
+        $properties = (new Builder())
+            ->setMode(Builder\Mode::SPEC)
+            ->setLogger($this->trackingLogger())
+            ->withAugmenters(static fn ($augmenters) => $augmenters->configure(['cleanup.enabled=false']))
+            ->addSource([new \ReflectionClass($holder), new \ReflectionClass(Fixtures\Augmenter\RefTarget::class)])
+            ->build()
+            ->toArray()['components']['schemas']['UndescribedClasses']['properties'];
+
+        // a component and an enum are referenced, and say nothing
+        $this->assertSame('#/components/schemas/RefTarget', $properties['target']['$ref']);
+        $this->assertSame('#/components/schemas/BackedStringEnum', $properties['status']['$ref']);
     }
 
     public function testInfersParameterSchema(): void

@@ -173,6 +173,20 @@ class TypeResolver implements LoggerAwareInterface
     }
 
     /**
+     * Name a member for a log message: `Pet::$name`, `Pet::name()`, `$id of Pet::get()`.
+     */
+    public function describe(\Reflector $reflector): string
+    {
+        return match (true) {
+            $reflector instanceof \ReflectionProperty => $reflector->class . '::$' . $reflector->name,
+            $reflector instanceof \ReflectionParameter => '$' . $reflector->name . ' of ' . $this->describe($reflector->getDeclaringFunction()),
+            $reflector instanceof \ReflectionMethod => $reflector->class . '::' . $reflector->name . '()',
+            $reflector instanceof \ReflectionFunctionAbstract => $reflector->name . '()',
+            default => $reflector::class,
+        };
+    }
+
+    /**
      * PHPDoc does not enforce case on keywords, so `@var String` means `string`.
      */
     protected function lowercaseKeywords(TypeNode $type, TypeContext $typeContext): void
@@ -202,17 +216,6 @@ class TypeResolver implements LoggerAwareInterface
         };
 
         (new NodeTraverser([$visitor]))->traverse([$type]);
-    }
-
-    protected function describe(\Reflector $reflector): string
-    {
-        return match (true) {
-            $reflector instanceof \ReflectionProperty => $reflector->class . '::$' . $reflector->name,
-            $reflector instanceof \ReflectionParameter => '$' . $reflector->name . ' of ' . $this->describe($reflector->getDeclaringFunction()),
-            $reflector instanceof \ReflectionMethod => $reflector->class . '::' . $reflector->name . '()',
-            $reflector instanceof \ReflectionFunctionAbstract => $reflector->name . '()',
-            default => $reflector::class,
-        };
     }
 
     protected function mapType(Type $type): SchemaType
