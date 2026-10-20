@@ -34,6 +34,9 @@ class Types implements PipeInterface, LoggerAwareInterface
     /** the member whose type is being applied, for the warning when a class in it has no schema */
     protected ?\Reflector $subject = null;
 
+    /** @var \SplObjectStorage<OA\Schema, null> schemas whose `type` this augmenter inferred, not the author */
+    protected \SplObjectStorage $inferredTypes;
+
     public function __construct(
         protected TypeResolver $typeResolver = new TypeResolver(),
     ) {
@@ -42,6 +45,7 @@ class Types implements PipeInterface, LoggerAwareInterface
     public function __invoke(mixed $payload): mixed
     {
         $this->refMap = $payload->buildComponentIndex()->buildRefMap();
+        $this->inferredTypes = new \SplObjectStorage();
 
         $payload->getWalker()->eachSchema(function (OA\Schema $schema): void {
             $this->inferSchemaType($schema);
@@ -107,8 +111,10 @@ class Types implements PipeInterface, LoggerAwareInterface
 
         if ($schema->items instanceof OA\Schema) {
             $schema->type = 'array';
+            $this->inferredTypes->offsetSet($schema);
         } elseif ($schema->properties || $schema->patternProperties) {
             $schema->type = 'object';
+            $this->inferredTypes->offsetSet($schema);
         }
     }
 
@@ -337,7 +343,27 @@ class Types implements PipeInterface, LoggerAwareInterface
             $this->applySchemaType($schema, $schemaType);
         }
 
-        $schema->nullable ??= $schemaType->nullable;
+        // a type the author wrote out is the whole type, so the PHP type's `null` is not added to it
+        if (!$this->hasExplicitType($schema)) {
+            $schema->nullable ??= $schemaType->nullable;
+        }
+    }
+
+    /**
+     * Whether the author gave the schema its type, rather than a shortcut or this augmenter.
+     *
+     * `Schema\Items` is always an array, whatever its arguments say, and `inferSchemaType()` types
+     * a schema from its `items` or `properties`.
+     */
+    protected function hasExplicitType(OA\Schema $schema): bool
+    {
+        if ($schema->oneOf !== null || $schema->allOf !== null || $schema->anyOf !== null) {
+            return true;
+        }
+
+        return $schema->type !== null
+            && !$schema instanceof OA\Schema\Items
+            && !$this->inferredTypes->offsetExists($schema);
     }
 
     protected function applySchemaType(OA\Schema $schema, SchemaType $schemaType): void

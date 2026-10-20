@@ -99,7 +99,7 @@ For each element, the first source that sets it wins:
 | ----------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | `type`                                    | the attribute (`type`, `oneOf`, `allOf` or `anyOf`), the docblock, the type-hint                 |
 | `format`, `minimum`, `maximum`, `items`   | the attribute, then the type the docblock or type-hint gives, unless the attribute sets `type`   |
-| `nullable`                                | the attribute, then `true` if either the docblock or the type-hint is nullable                   |
+| `nullable`                                | the attribute, then `true` if either the docblock or the type-hint is nullable, unless the attribute sets `type` |
 | `ref`                                     | the attribute, then a class type, if that class is a schema component                           |
 
 The docblock replaces the type-hint. It does not refine it: `@var string` on `public int $id` documents a `string`.
@@ -110,11 +110,6 @@ The docblock tag read depends on the element:
 * a property: `@var`
 * a promoted constructor property: the constructor's `@param`
 * a method: `@return`
-
-::: info 🧪 Mode difference
-In `classic`, an explicit `type` also stops `nullable` being read from a nullable type-hint
-(see [Nullable type inference](/guide/spec-attributes#nullable-type-inference-from-php-types)).
-:::
 
 ### Required properties and defaults
 
