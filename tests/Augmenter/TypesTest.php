@@ -42,6 +42,29 @@ final class TypesTest extends TestCase
         $this->assertSame('string', $props['tags']->items->type);
     }
 
+    public function testInfersDateTimeForASubclass(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\DateTimeSubclass::class);
+
+        (new Augmenter\Types())($spec);
+
+        $props = [];
+        foreach ($spec->schemas[0]->properties as $property) {
+            $props[$property->property] = $property->schema;
+        }
+
+        foreach (['created', 'deleted', 'updated'] as $name) {
+            $this->assertSame('string', $props[$name]->type, $name);
+            $this->assertSame('date-time', $props[$name]->format, $name);
+        }
+        $this->assertTrue($props['deleted']->nullable);
+        $this->assertSame('array', $props['history']->type);
+        $items = $props['history']->items;
+        $this->assertInstanceOf(OA\Schema::class, $items);
+        $this->assertSame('string', $items->type);
+        $this->assertSame('date-time', $items->format);
+    }
+
     public function testInfersParameterSchema(): void
     {
         $spec = $this->assemble(Fixtures\Augmenter\TypeController::class);

@@ -235,6 +235,11 @@ class TypeResolver implements LoggerAwareInterface
                 return new SchemaType(type: 'object');
             }
 
+            // the date classes themselves are mapped by name, a subclass of them by what it is
+            if (is_a($className, \DateTimeInterface::class, true)) {
+                return new SchemaType(type: 'string', format: 'date-time');
+            }
+
             return new SchemaType(type: $className);
         }
 
