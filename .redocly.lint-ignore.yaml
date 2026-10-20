@@ -16,6 +16,13 @@ docs/examples/specs/using-refs/using-refs-3.2.0.yaml:
     - '#/components/schemas/Product/allOf/1/properties/id/format'
   path-parameters-defined:
     - '#/paths/~1products~1{product_id}~1do-other-stuff/get/parameters'
+docs/examples/specs/using-refs/using-refs-spec-spec-3.2.0.yaml:
+  struct:
+    - '#/components/schemas/Product/allOf/1/properties/id'
+    - '#/components/schemas/Product/allOf/1/properties/id/type'
+    - '#/components/schemas/Product/allOf/1/properties/id/format'
+  path-parameters-defined:
+    - '#/paths/~1products~1{product_id}~1do-other-stuff/get/parameters'
 docs/examples/specs/using-refs/using-refs-3.1.0.yaml:
   struct:
     - '#/components/schemas/Product/allOf/1/properties/id'
@@ -23,7 +30,21 @@ docs/examples/specs/using-refs/using-refs-3.1.0.yaml:
     - '#/components/schemas/Product/allOf/1/properties/id/format'
   path-parameters-defined:
     - '#/paths/~1products~1{product_id}~1do-other-stuff/get/parameters'
+docs/examples/specs/using-refs/using-refs-spec-spec-3.1.0.yaml:
+  struct:
+    - '#/components/schemas/Product/allOf/1/properties/id'
+    - '#/components/schemas/Product/allOf/1/properties/id/type'
+    - '#/components/schemas/Product/allOf/1/properties/id/format'
+  path-parameters-defined:
+    - '#/paths/~1products~1{product_id}~1do-other-stuff/get/parameters'
 docs/examples/specs/using-refs/using-refs-3.0.0.yaml:
+  struct:
+    - '#/components/schemas/Product/allOf/1/properties/id'
+    - '#/components/schemas/Product/allOf/1/properties/id/type'
+    - '#/components/schemas/Product/allOf/1/properties/id/format'
+  path-parameters-defined:
+    - '#/paths/~1products~1{product_id}~1do-other-stuff/get/parameters'
+docs/examples/specs/using-refs/using-refs-spec-spec-3.0.0.yaml:
   struct:
     - '#/components/schemas/Product/allOf/1/properties/id'
     - '#/components/schemas/Product/allOf/1/properties/id/type'
@@ -99,6 +120,24 @@ docs/examples/specs/api/api-3.2.0.yaml:
     - '#/paths/~1subscribe/post/parameters/0'
     - >-
       #/paths/~1subscribe/post/callbacks/onChange/{$request.query.callbackUrl}/responses
+docs/examples/specs/api/api-hybrid-spec-3.2.0.yaml:
+  no-server-example.com:
+    - '#/servers/0/url'
+    - '#/servers/1/url'
+    - '#/servers/2/url'
+  struct:
+    - '#/paths/~1subscribe/post/parameters/0'
+    - >-
+      #/paths/~1subscribe/post/callbacks/onChange/{$request.query.callbackUrl}/responses
+docs/examples/specs/api/api-spec-spec-3.2.0.yaml:
+  no-server-example.com:
+    - '#/servers/0/url'
+    - '#/servers/1/url'
+    - '#/servers/2/url'
+  struct:
+    - '#/paths/~1subscribe/post/parameters/0'
+    - >-
+      #/paths/~1subscribe/post/callbacks/onChange/{$request.query.callbackUrl}/responses
 docs/examples/specs/api/api-3.1.0.yaml:
   no-server-example.com:
     - '#/servers/0/url'
@@ -108,7 +147,47 @@ docs/examples/specs/api/api-3.1.0.yaml:
     - '#/paths/~1subscribe/post/parameters/0'
     - >-
       #/paths/~1subscribe/post/callbacks/onChange/{$request.query.callbackUrl}/responses
+docs/examples/specs/api/api-hybrid-spec-3.1.0.yaml:
+  no-server-example.com:
+    - '#/servers/0/url'
+    - '#/servers/1/url'
+    - '#/servers/2/url'
+  struct:
+    - '#/paths/~1subscribe/post/parameters/0'
+    - >-
+      #/paths/~1subscribe/post/callbacks/onChange/{$request.query.callbackUrl}/responses
+docs/examples/specs/api/api-spec-spec-3.1.0.yaml:
+  no-server-example.com:
+    - '#/servers/0/url'
+    - '#/servers/1/url'
+    - '#/servers/2/url'
+  struct:
+    - '#/paths/~1subscribe/post/parameters/0'
+    - >-
+      #/paths/~1subscribe/post/callbacks/onChange/{$request.query.callbackUrl}/responses
 docs/examples/specs/api/api-3.0.0.yaml:
+  no-server-example.com:
+    - '#/servers/0/url'
+    - '#/servers/1/url'
+    - '#/servers/2/url'
+  struct:
+    - '#/paths/~1subscribe/post/parameters/0'
+    - >-
+      #/paths/~1subscribe/post/callbacks/onChange/{$request.query.callbackUrl}/responses
+    - >-
+      #/paths/~1subscribe/post/callbacks/onChange/{$request.query.callbackUrl}/post
+docs/examples/specs/api/api-hybrid-spec-3.0.0.yaml:
+  no-server-example.com:
+    - '#/servers/0/url'
+    - '#/servers/1/url'
+    - '#/servers/2/url'
+  struct:
+    - '#/paths/~1subscribe/post/parameters/0'
+    - >-
+      #/paths/~1subscribe/post/callbacks/onChange/{$request.query.callbackUrl}/responses
+    - >-
+      #/paths/~1subscribe/post/callbacks/onChange/{$request.query.callbackUrl}/post
+docs/examples/specs/api/api-spec-spec-3.0.0.yaml:
   no-server-example.com:
     - '#/servers/0/url'
     - '#/servers/1/url'

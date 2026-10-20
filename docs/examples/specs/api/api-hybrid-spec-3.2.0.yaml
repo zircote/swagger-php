@@ -152,7 +152,7 @@ components:
             id:
               description: 'The id.'
               format: int64
-              example: 1
+              example: '1'
             releasedAt:
               type: string
             brand:

@@ -120,12 +120,15 @@ final class ScratchTest extends OpenApiTestCase
                 // Hybrid bridges the classic annotations into the spec compilers, so it is held
                 // to the spec expectation where the fixture has a spec pair, and to classic's
                 // otherwise. A `-hybrid` file overrides both, for the few documents the two
-                // pipelines render differently.
+                // pipelines render differently. A PHP version narrows a mode's file as it does
+                // the shared one.
                 $spec = self::mostSpecific([
                     "{$basePath}/{$scratchName}{$combo['version']}-{$combo['resolverName']}-{$combo['mode']->value}.yaml",
+                    "{$basePath}/{$scratchName}{$combo['version']}-{$phpVersion}-{$combo['mode']->value}.yaml",
                     "{$basePath}/{$scratchName}{$combo['version']}-{$combo['mode']->value}.yaml",
                     ...$combo['mode'] === Builder\Mode::HYBRID ? [
                         "{$basePath}/{$scratchName}{$combo['version']}-{$combo['resolverName']}-spec.yaml",
+                        "{$basePath}/{$scratchName}{$combo['version']}-{$phpVersion}-spec.yaml",
                         "{$basePath}/{$scratchName}{$combo['version']}-spec.yaml",
                     ] : [],
                     "{$basePath}/{$scratchName}{$combo['version']}-{$combo['resolverName']}.yaml",
