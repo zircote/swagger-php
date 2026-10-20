@@ -479,6 +479,7 @@ class Builder
             new Augmenter\Cleanup(),
             new Augmenter\MediaTypes(),
             new Augmenter\Docblocks(),
+            new Augmenter\OperationIdTemplates(),
             new Augmenter\OperationIds(),
             new Augmenter\Tags(),
             new Augmenter\EnumDescriptions(),

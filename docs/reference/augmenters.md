@@ -260,15 +260,19 @@ Walks all attributes in the specification that have summary/description
 properties and populates them from the reflector's docblock when not
 explicitly set.
 
+### [OperationIdTemplates](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/OperationIdTemplates.php)
+
+Expands the placeholders in an explicit operationId.
+
+`{method}` is replaced by the operation's method, as stored, in lowercase. Any other `{...}` is
+left as written.
+
 ### [OperationIds](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/OperationIds.php)
 
 Generates operationId for operations that don't have one explicitly set.
 
 The id is derived from method, path and the declaring method, function or class. An
 operation with no reflector is identified by method and path alone.
-
-An explicit operationId is a template: `{method}` is replaced by the operation's method, as
-stored, in lowercase. Any other `{...}` is left as written.
 
 #### Config settings
 - **operationIds.hash** : `bool` · default: `true`  
