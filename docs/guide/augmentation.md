@@ -83,6 +83,9 @@ In particular, the following schema elements may be augmented:
 
 Data types that are not recognized and cannot be resolved to a class-like name (`class`, `interface`, `enum`, etc.) will be ignored.
 
+A class implementing `DateTimeInterface`, such as `DateTimeImmutable` or a subclass of it, is a
+`string` with format `date-time`.
+
 Most of these schema elements will be resolved in isolation. For example, `nullable` may be enforced by the OpenApi annotation
 while the actual data type may be resolved from the docblock (or type-hint).
 
