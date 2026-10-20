@@ -117,6 +117,21 @@ final class OperationMethodsTranslatorTest extends TestCase
         }
     }
 
+    public function testAnInvokableClassFansOutItsHandlersParameters(): void
+    {
+        $path = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->setLogger($this->trackingLogger())
+            ->addSource(new \ReflectionClass(OperationMethods\InvokableController::class))
+            ->build()
+            ->toArray()['paths']['/pets/{id}'];
+
+        foreach (['put', 'patch'] as $method) {
+            $this->assertSame('Updated', $path[$method]['responses'][204]['description'], $method);
+            $this->assertSame('id', $path[$method]['parameters'][0]['name'], $method);
+        }
+    }
+
     protected function build(): Builder\Result
     {
         return (new Builder())

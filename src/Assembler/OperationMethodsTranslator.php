@@ -19,7 +19,7 @@ use Psr\Log\LoggerAwareTrait;
  * The first method keeps the declared operation, every other one gets a `copy()` of it. When
  * the split operation is the only operation on its method, what would nest into it is set to
  * `Fan::All` where it leaves `fan` unset: its siblings, and the attributes on the method's PHP
- * parameters. So each method gets the whole description. Next to other operations nothing is
+ * parameters, or on `__invoke`'s for an operation declared on an invokable class. So each method gets the whole description. Next to other operations nothing is
  * fanned, and an attribute that could go into more than one of them is the usual ambiguity.
  *
  * An explicit `operationId` on several methods has to tell them apart with `{method}`, which
@@ -91,8 +91,12 @@ class OperationMethodsTranslator extends AbstractAttributeTranslator implements 
             // siblings nest through merge(), after every translator has run
             $this->fanOut($result, 'merge');
 
-            if ($reflector instanceof \ReflectionMethod) {
-                $this->split[$this->key($reflector)] = true;
+            // an invokable class declares its handler's operation on the class
+            $handler = $reflector instanceof \ReflectionClass && $reflector->hasMethod('__invoke')
+                ? $reflector->getMethod('__invoke')
+                : $reflector;
+            if ($handler instanceof \ReflectionMethod) {
+                $this->split[$this->key($handler)] = true;
             }
         }
 
