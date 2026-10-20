@@ -224,7 +224,7 @@ The targets have to be of one type. A `MediaType` next to both a `Response` and 
 
 The document gets a `put` and a `patch` operation, each with the `204` response and the `id` parameter. No `fan` is needed while it is the only operation on the method. Next to another operation, the attributes it shares need `fan: OA\Fan::All` as above.
 
-`{method}` in an `operationId` is replaced by each operation's method, so `operationId: '{method}Pet'` gives `putPet` and `patchPet`. An `operationId` without it is dropped on several methods, with a warning, and each operation gets a generated one.
+`{method}` in an `operationId` is replaced by each operation's method, here `putPet` and `patchPet`. An `operationId` without it is dropped on several methods, with a warning, and each operation gets a generated one.
 
 ## PathItem
 

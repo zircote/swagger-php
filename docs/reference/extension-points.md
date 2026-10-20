@@ -40,8 +40,8 @@ parameters. So each method gets the whole description. Next to other operations 
 fanned, and an attribute that could go into more than one of them is the usual ambiguity.
 
 An explicit `operationId` on several methods has to tell them apart with `{method}`, which
-`Augmenter\OperationIds` expands. Without it, it is dropped with a warning and each method
-gets a generated one.
+`Augmenter\OperationIdTemplates` expands. Without it, it is dropped with a warning and each
+method gets a generated one.
 
 A translator creating `methods:` operations itself has to run before this one: `insert()` it
 into the translators ahead of this class rather than `add()` it.
