@@ -110,7 +110,7 @@ $builder->setLogger($psrLogger);
 
 Accepts any PSR-3 logger. Defaults to `NullLogger` (silent). The CLI command sets its own console logger.
 
-The logger receives every message of a build: scan problems, skipped classes, assembly warnings and the validation diagnostics. A class that fails to load or assemble is left out of the document with a warning.
+The logger receives every message of a build: scan problems, skipped classes, assembly warnings and the validation diagnostics. A class that fails to load, or whose own attributes fail to assemble, is left out of the document with a warning. A method, property or constant that fails to assemble is left out with a warning of its own, and the rest of its class is kept.
 
 ### Generator configuration (classic mode)
 

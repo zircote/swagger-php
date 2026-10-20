@@ -121,7 +121,7 @@ responses:
         description: 'Correlates the request'
 ```
 
-Spec mode reports `Ambiguous merge` instead and skips the class. Which response the header
+Spec mode reports `Ambiguous merge` instead and leaves the method out. Which response the header
 belongs to is not something the code says, so the set does not guess. Set
 `fan: OA\Fan::All` on the header to put it in every response, nest it in the response it
 belongs to, or give it a `component:` and reference it from each. See
@@ -142,8 +142,8 @@ classic:
 public function pet(): void
 ```
 
-Spec mode reports `Ambiguous merge` for the first `Response` and skips the class, which drops
-both operations from the document. Where the operations differ only in their method, declare
+Spec mode reports `Ambiguous merge` for the first `Response` and leaves the method out, which
+drops both operations from the document. Where the operations differ only in their method, declare
 one operation with `methods:`, and `{method}` in its `operationId`:
 
 ```php
