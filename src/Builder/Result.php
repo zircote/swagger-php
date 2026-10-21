@@ -62,6 +62,9 @@ class Result
         return $this->files;
     }
 
+    /**
+     * @deprecated since 7.0, removed in 8.0 - use {@see Result::specification()} instead
+     */
     public function openApi(): ?OpenApi
     {
         return $this->openApi;

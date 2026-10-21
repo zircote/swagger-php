@@ -33,10 +33,18 @@ class GenerateInput
     /** @var list<string> */
     public array $bootstrap = [];
 
-    /** @var list<string> */
+    /**
+     * @deprecated since 7.0, removed in 8.0
+     *
+     * @var list<string>
+     */
     public array $addProcessor = [];
 
-    /** @var list<string> */
+    /**
+     * @deprecated since 7.0, removed in 8.0
+     *
+     * @var list<string>
+     */
     public array $removeProcessor = [];
 
     public ?string $version = null;
