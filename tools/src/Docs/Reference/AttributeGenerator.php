@@ -37,6 +37,7 @@ class AttributeGenerator extends DocGenerator
             $content = $this->renderer->preamble(
                 rtrim((string) $type, 's'),
                 $this->snippetContent($type),
+                deprecated: true,
             );
             $content .= "\n" . $this->renderer->sectionHeader($type);
 

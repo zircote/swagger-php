@@ -71,7 +71,7 @@ A nested `@OA\Examples` is accepted here and contributes its `value`. The rest o
 Object (the key, `summary`, `description`, `externalValue`) has nowhere to go in a list and is
 dropped. A media type, parameter or header can carry those instead.
 
-::: info 🧪 Mode difference
+::: info Mode difference
 The keyword arrived in OpenAPI 3.1. Generating 3.0 from the same source drops the list in
 `classic` and carries the first value across as `example` in `spec`. Both warn.
 :::

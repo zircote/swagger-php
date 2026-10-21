@@ -1,4 +1,4 @@
-# 🧪 Using Spec Attributes
+# Using Spec Attributes
 
 Spec attributes are a new way to annotate PHP code for OpenAPI generation. They live in the `OpenApi\Spec` namespace and are typed data containers. Unlike classic annotations they carry no serialization logic, and the augmenter pipeline fills in derived values before compilation.
 

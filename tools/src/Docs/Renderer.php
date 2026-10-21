@@ -8,9 +8,10 @@ namespace OpenApi\Tools\Docs;
 
 class Renderer
 {
-    public function preamble(string $title, ?string $snippetContent = null): string
+    public function preamble(string $title, ?string $snippetContent = null, bool $deprecated = false): string
     {
-        $out = "# {$title} Reference\n";
+        $badge = $deprecated ? ' <Badge type="warning" text="deprecated" />' : '';
+        $out = "# {$title} Reference{$badge}\n";
         $out .= "\n";
         $out .= "This page is generated automatically from the `swagger-php` sources.\n";
         $out .= "\n";

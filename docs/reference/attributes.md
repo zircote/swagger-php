@@ -1,4 +1,4 @@
-# Attribute Reference
+# Attribute Reference <Badge type="warning" text="deprecated" />
 
 This page is generated automatically from the `swagger-php` sources.
 

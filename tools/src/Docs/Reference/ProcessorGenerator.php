@@ -20,6 +20,7 @@ class ProcessorGenerator extends DocGenerator
         $content = $this->renderer->preamble(
             'Processor',
             $this->snippetContent('processors'),
+            deprecated: true,
         );
 
         $content .= $this->renderConfigSection();

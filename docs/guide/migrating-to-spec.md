@@ -1,4 +1,4 @@
-# Migrating to spec attributes 🧪
+# Migrating to spec attributes
 
 Moving a codebase from `OpenApi\Attributes` to `OpenApi\Spec` changes class names, argument
 names and, in places, the shape of the attributes. The [differences from classic
