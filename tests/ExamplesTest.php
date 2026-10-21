@@ -12,7 +12,6 @@ use OpenApi\Generator;
 use OpenApi\Serializer;
 use OpenApi\Tests\Concerns\GeneratesTestMatrix;
 use OpenApi\Tests\Concerns\UsesExamples;
-use OpenApi\Type\LegacyTypeResolver;
 use OpenApi\TypeResolverInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -65,7 +64,6 @@ final class ExamplesTest extends OpenApiTestCase
                             fn (array $c): bool => $implementation === 'spec' && $c['mode'] === Mode::CLASSIC,
                             fn (array $c): bool => $implementation !== 'spec' && $c['mode'] === Mode::SPEC,
                             fn (array $c): bool => $implementation === 'hybrid' && $c['mode'] !== Mode::HYBRID,
-                            fn (array $c): bool => $typeResolver instanceof LegacyTypeResolver && $c['mode'] !== Mode::CLASSIC,
                         ],
                     ) as $combo) {
                         $specFilename = self::getSpecFilename($example, $implementation, $combo['version'], $combo['mode']);
