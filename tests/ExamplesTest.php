@@ -12,7 +12,6 @@ use OpenApi\Generator;
 use OpenApi\Serializer;
 use OpenApi\Tests\Concerns\GeneratesTestMatrix;
 use OpenApi\Tests\Concerns\UsesExamples;
-use OpenApi\TypeResolverInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class ExamplesTest extends OpenApiTestCase
@@ -46,48 +45,43 @@ final class ExamplesTest extends OpenApiTestCase
      */
     public static function exampleSpecs(): iterable
     {
-        $resolvers = self::getTypeResolvers();
+        foreach (self::EXAMPLES as $example) {
+            foreach (self::IMPLEMENTATIONS as $implementation) {
+                if (!file_exists(self::examplePath($example) . '/' . $implementation)) {
+                    continue;
+                }
 
-        foreach ($resolvers as $resolverName => $typeResolver) {
-            foreach (self::EXAMPLES as $example) {
-                foreach (self::IMPLEMENTATIONS as $implementation) {
-                    if (!file_exists(self::examplePath($example) . '/' . $implementation)) {
+                foreach (self::matrixCombinations(
+                    [
+                        'version' => self::versions(),
+                        'mode' => self::modes(),
+                    ],
+                    [
+                        fn (array $c): bool => $implementation === 'spec' && $c['mode'] === Mode::CLASSIC,
+                        fn (array $c): bool => $implementation !== 'spec' && $c['mode'] === Mode::SPEC,
+                        fn (array $c): bool => $implementation === 'hybrid' && $c['mode'] !== Mode::HYBRID,
+                    ],
+                ) as $combo) {
+                    $specFilename = self::getSpecFilename($example, $implementation, $combo['version'], $combo['mode']);
+                    if (!file_exists($specFilename)) {
                         continue;
                     }
 
-                    foreach (self::matrixCombinations(
-                        [
-                            'version' => self::versions(),
-                            'mode' => self::modes(),
-                        ],
-                        [
-                            fn (array $c): bool => $implementation === 'spec' && $c['mode'] === Mode::CLASSIC,
-                            fn (array $c): bool => $implementation !== 'spec' && $c['mode'] === Mode::SPEC,
-                            fn (array $c): bool => $implementation === 'hybrid' && $c['mode'] !== Mode::HYBRID,
-                        ],
-                    ) as $combo) {
-                        $specFilename = self::getSpecFilename($example, $implementation, $combo['version'], $combo['mode']);
-                        if (!file_exists($specFilename)) {
-                            continue;
-                        }
+                    $key = self::matrixKey([$example, $implementation, $combo['mode']->value, $combo['version']]);
 
-                        $key = self::matrixKey([$example, $resolverName, $implementation, $combo['mode']->value, $combo['version']]);
-
-                        yield $key => [
-                            $typeResolver,
-                            $example,
-                            $implementation,
-                            $combo['version'],
-                            $combo['mode'],
-                        ];
-                    }
+                    yield $key => [
+                        $example,
+                        $implementation,
+                        $combo['version'],
+                        $combo['mode'],
+                    ];
                 }
             }
         }
     }
 
     #[DataProvider('exampleSpecs')]
-    public function testExample(TypeResolverInterface $typeResolver, string $name, string $implementation, string $version, Mode $mode): void
+    public function testExample(string $name, string $implementation, string $version, Mode $mode): void
     {
         $this->registerExampleClassloader($name, $implementation);
 
@@ -104,7 +98,7 @@ final class ExamplesTest extends OpenApiTestCase
             ->addSource($path)
             ->setVersion($version)
             ->setLogger($this->trackingLogger())
-            ->withGenerator(fn (Generator $generator): Generator => $generator->setTypeResolver($typeResolver))
+            ->withGenerator(fn (Generator $generator): Generator => $generator->setTypeResolver($this->getTypeResolver()))
             ->build();
         // file_put_contents($specFilename, $result->toYaml());
         $this->assertTrue($result->isValid());
@@ -116,7 +110,7 @@ final class ExamplesTest extends OpenApiTestCase
     }
 
     #[DataProvider('exampleSpecs')]
-    public function testSerializer(TypeResolverInterface $typeResolver, string $name, string $implementation, string $version, Mode $mode): void
+    public function testSerializer(string $name, string $implementation, string $version, Mode $mode): void
     {
         if ($mode !== Mode::HYBRID) {
             return;

@@ -10,7 +10,6 @@ use OpenApi\Augmenter\Cleanup;
 use OpenApi\Builder;
 use OpenApi\Generator;
 use OpenApi\Tests\Concerns\GeneratesTestMatrix;
-use OpenApi\TypeResolverInterface;
 use OpenApi\Utils\Pipeline;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -95,12 +94,9 @@ final class ScratchTest extends OpenApiTestCase
                 continue;
             }
 
-            $resolvers = self::getTypeResolvers();
-
             foreach (self::matrixCombinations(
                 [
                     'version' => self::versions(),
-                    'resolverName' => array_keys($resolvers),
                     'mode' => [Builder\Mode::CLASSIC, Builder\Mode::HYBRID, Builder\Mode::SPEC],
                 ],
             ) as $combo) {
@@ -118,15 +114,12 @@ final class ScratchTest extends OpenApiTestCase
                 // pipelines render differently. A PHP version narrows a mode's file as it does
                 // the shared one.
                 $spec = self::mostSpecific([
-                    "{$basePath}/{$scratchName}{$combo['version']}-{$combo['resolverName']}-{$combo['mode']->value}.yaml",
                     "{$basePath}/{$scratchName}{$combo['version']}-{$phpVersion}-{$combo['mode']->value}.yaml",
                     "{$basePath}/{$scratchName}{$combo['version']}-{$combo['mode']->value}.yaml",
                     ...$combo['mode'] === Builder\Mode::HYBRID ? [
-                        "{$basePath}/{$scratchName}{$combo['version']}-{$combo['resolverName']}-spec.yaml",
                         "{$basePath}/{$scratchName}{$combo['version']}-{$phpVersion}-spec.yaml",
                         "{$basePath}/{$scratchName}{$combo['version']}-spec.yaml",
                     ] : [],
-                    "{$basePath}/{$scratchName}{$combo['version']}-{$combo['resolverName']}.yaml",
                     "{$basePath}/{$scratchName}{$combo['version']}-{$phpVersion}.yaml",
                     "{$basePath}/{$scratchName}{$combo['version']}.yaml",
                 ]);
@@ -135,11 +128,10 @@ final class ScratchTest extends OpenApiTestCase
                     continue;
                 }
 
-                $key = self::matrixKey([$combo['resolverName'], $scratchName, $combo['version'], $phpVersion, $combo['mode']->value]);
+                $key = self::matrixKey([$scratchName, $combo['version'], $phpVersion, $combo['mode']->value]);
                 $logKey = "{$scratchName}-{$combo['version']}";
 
                 yield $key => [
-                    $resolvers[$combo['resolverName']],
                     $source,
                     $combo['mode'],
                     $spec,
@@ -154,7 +146,7 @@ final class ScratchTest extends OpenApiTestCase
      * @param array<mixed> $expectedLogs
      */
     #[DataProvider('scratchTestCases')]
-    public function testScratch(TypeResolverInterface $typeResolver, string $scratch, Builder\Mode $mode, string $spec, string $version, array $expectedLogs): void
+    public function testScratch(string $scratch, Builder\Mode $mode, string $spec, string $version, array $expectedLogs): void
     {
         foreach ($expectedLogs as $logLine) {
             $this->expectLogEntry($logLine);
@@ -171,7 +163,7 @@ final class ScratchTest extends OpenApiTestCase
                 $pipeline->get(Cleanup::class)->setEnabled(false);
             })
             ->withGenerator(fn (Generator $generator): Generator => $generator
-                ->setTypeResolver($typeResolver)
+                ->setTypeResolver($this->getTypeResolver())
                 ->setConfig(['mergeIntoOpenApi' => ['mergeComponents' => true]]))
             ->build();
 

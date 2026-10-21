@@ -15,7 +15,6 @@ use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\MergeIntoOpenApi;
 use OpenApi\Tests\Fixtures\PHP\DocblockAndTypehintTypes;
 use OpenApi\Tests\OpenApiTestCase;
-use OpenApi\TypeResolverInterface;
 use OpenApi\Utils\Pipeline;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -48,22 +47,22 @@ final class TypeResolverTest extends OpenApiTestCase
                 'intrange' => '{ "type": "integer", "maximum": 10, "property": "intRange" }',
                 'positiveint' => '{ "type": "integer", "minimum": 1, "property": "positiveInt" }',
                 'nonzeroint' => '{ "type": "integer", "not": { "enum": [ 0 ] }, "property": "nonZeroInt" }',
-                'type-info:arrayshape' => '{ "type": "object", "properties": { "foo": { "type": "boolean" } }, "required": [ "foo" ], "property": "arrayShape" }',
-                'type-info:optionalarrayshape' => '{ "type": "object", "properties": { "bar": { "type": "integer" }, "foo": { "type": "boolean" } }, "required": [ "foo" ], "property": "optionalArrayShape" }',
-                'type-info:openarrayshape' => '{ "type": "object", "properties": { "foo": { "type": "boolean" } }, "required": [ "foo" ], "additionalProperties": {}, "property": "openArrayShape" }',
-                'type-info:positionalarrayshape' => '{ "type": "array", "items": { "type": "integer" }, "property": "positionalArrayShape" }',
-                'type-info:positionalarrayshapeexplicit' => '{ "type": "array", "items": { "type": "integer", "example": 42 }, "property": "positionalArrayShapeExplicit" }',
-                'type-info:emptyarrayshape' => '{ "type": "array", "items": {}, "property": "emptyArrayShape" }',
-                'type-info:objectarrayshape' => '{ "type": "object", "properties": { "nested": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, "tags": { "type": "array", "items": { "type": "string" } } }, "required": [ "nested", "tags" ], "property": "objectArrayShape" }',
-                'type-info:nestedarrayshape' => '{ "type": "object", "properties": { "a": { "type": "object", "properties": { "b": { "type": "integer" } }, "required": [ "b" ] } }, "required": [ "a" ], "property": "nestedArrayShape" }',
-                'type-info:nullablememberarrayshape' => '{ "type": "object", "properties": { "foo": { "type": "string", "nullable": true } }, "required": [ "foo" ], "property": "nullableMemberArrayShape" }',
-                'type-info:stringmap' => '{ "type": "object", "additionalProperties": { "type": "string" }, "property": "stringMap" }',
-                'type-info:intkeyedmap' => '{ "type": "object", "additionalProperties": { "type": "string" }, "property": "intKeyedMap" }',
-                'type-info:unmappablelist' => '{ "type": "array", "items": {}, "property": "unmappableList" }',
-                'type-info:unmappablemap' => '{ "type": "object", "additionalProperties": {}, "property": "unmappableMap" }',
+                'arrayshape' => '{ "type": "object", "properties": { "foo": { "type": "boolean" } }, "required": [ "foo" ], "property": "arrayShape" }',
+                'optionalarrayshape' => '{ "type": "object", "properties": { "bar": { "type": "integer" }, "foo": { "type": "boolean" } }, "required": [ "foo" ], "property": "optionalArrayShape" }',
+                'openarrayshape' => '{ "type": "object", "properties": { "foo": { "type": "boolean" } }, "required": [ "foo" ], "additionalProperties": {}, "property": "openArrayShape" }',
+                'positionalarrayshape' => '{ "type": "array", "items": { "type": "integer" }, "property": "positionalArrayShape" }',
+                'positionalarrayshapeexplicit' => '{ "type": "array", "items": { "type": "integer", "example": 42 }, "property": "positionalArrayShapeExplicit" }',
+                'emptyarrayshape' => '{ "type": "array", "items": {}, "property": "emptyArrayShape" }',
+                'objectarrayshape' => '{ "type": "object", "properties": { "nested": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, "tags": { "type": "array", "items": { "type": "string" } } }, "required": [ "nested", "tags" ], "property": "objectArrayShape" }',
+                'nestedarrayshape' => '{ "type": "object", "properties": { "a": { "type": "object", "properties": { "b": { "type": "integer" } }, "required": [ "b" ] } }, "required": [ "a" ], "property": "nestedArrayShape" }',
+                'nullablememberarrayshape' => '{ "type": "object", "properties": { "foo": { "type": "string", "nullable": true } }, "required": [ "foo" ], "property": "nullableMemberArrayShape" }',
+                'stringmap' => '{ "type": "object", "additionalProperties": { "type": "string" }, "property": "stringMap" }',
+                'intkeyedmap' => '{ "type": "object", "additionalProperties": { "type": "string" }, "property": "intKeyedMap" }',
+                'unmappablelist' => '{ "type": "array", "items": {}, "property": "unmappableList" }',
+                'unmappablemap' => '{ "type": "object", "additionalProperties": {}, "property": "unmappableMap" }',
                 'uniontype' => '{ "property": "unionType" }',
                 'promotedstring' => '{ "type": "string", "property": "promotedString" }',
-                'type-info:mixedunion' => '{ "example": "My value", "oneOf": [ { "type": "string" }, { "type": "array", "items": {} } ], "property": "mixedUnion" }',
+                'mixedunion' => '{ "example": "My value", "oneOf": [ { "type": "string" }, { "type": "array", "items": {} } ], "property": "mixedUnion" }',
                 'getstring' => '{ "type": "string", "property": "getString" }',
                 'paramdatetimelist' => '{ "type": "array", "items": { "type": "string", "format": "date-time" }, "property": "paramDateTimeList" }',
                 'paramstringlist' => '{ "type": "array", "items": { "type": "string" }, "property": "paramStringList" }',
@@ -71,12 +70,12 @@ final class TypeResolverTest extends OpenApiTestCase
                 'blah_values' => '{ "type": "array", "items": { "type": "string", "example": "hello" }, "nullable": true, "property": "blah_values" }',
                 'oneofvar' => '{ "oneOf": [ { "type": "string" }, { "type": "bool" } ], "property": "oneOfVar" }',
                 'oneoflist' => '{ "type": "array", "items": { "oneOf": [ { "type": "string" }, { "type": "bool" } ] }, "property": "oneOfList" }',
-                'type-info:nullabletypedlistunion' => '{ "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "array", "items": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } }, { "type": "object", "nullable": true, "enum": [null] } ], "property": "nullableTypedListUnion" }',
-                'type-info:nullablenestedtypedlistunion' => '{ "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "array", "items": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } }, { "type": "array", "items": { "type": "object", "additionalProperties": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } } }, { "type": "object", "nullable": true, "enum": [null] } ], "property": "nullableNestedTypedListUnion" }',
+                'nullabletypedlistunion' => '{ "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "array", "items": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } }, { "type": "object", "nullable": true, "enum": [null] } ], "property": "nullableTypedListUnion" }',
+                'nullablenestedtypedlistunion' => '{ "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "array", "items": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } }, { "type": "array", "items": { "type": "object", "additionalProperties": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } } }, { "type": "object", "nullable": true, "enum": [null] } ], "property": "nullableNestedTypedListUnion" }',
                 'reflectionvalue' => '{ "example": true, "property": "reflectionValue" }',
-                'type-info:intersectionvar' => '{ "allOf": [ { "$ref": "#/components/schemas/FirstInterface" }, { "$ref": "#/components/schemas/SecondInterface" } ], "property": "intersectionVar" }',
-                'type-info:nestedoneof' => '{ "oneOf": [ { "type": "array", "items": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } }, { "type": "array", "items": { "type": "string" } } ], "property": "nestedOneOf" }',
-                'type-info:nestedoneofwithitems' => '{ "type": "array", "items": { "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "string" } ] }, "property": "nestedOneOfWithItems" }',
+                'intersectionvar' => '{ "allOf": [ { "$ref": "#/components/schemas/FirstInterface" }, { "$ref": "#/components/schemas/SecondInterface" } ], "property": "intersectionVar" }',
+                'nestedoneof' => '{ "oneOf": [ { "type": "array", "items": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } }, { "type": "array", "items": { "type": "string" } } ], "property": "nestedOneOf" }',
+                'nestedoneofwithitems' => '{ "type": "array", "items": { "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "string" } ] }, "property": "nestedOneOfWithItems" }',
                 'stdclass' => '{ "type": "object", "property": "stdClass" }',
                 'nullablestdclass' => '{ "type": "object", "nullable": true, "property": "nullableStdClass" }',
             ],
@@ -101,22 +100,22 @@ final class TypeResolverTest extends OpenApiTestCase
                 'intrange' => '{ "type": "integer", "maximum": 10, "property": "intRange" }',
                 'positiveint' => '{ "type": "integer", "minimum": 1, "property": "positiveInt" }',
                 'nonzeroint' => '{ "type": "integer", "not": { "const": 0 }, "property": "nonZeroInt" } ',
-                'type-info:arrayshape' => '{ "type": "object", "properties": { "foo": { "type": "boolean" } }, "required": [ "foo" ], "property": "arrayShape" }',
-                'type-info:optionalarrayshape' => '{ "type": "object", "properties": { "bar": { "type": "integer" }, "foo": { "type": "boolean" } }, "required": [ "foo" ], "property": "optionalArrayShape" }',
-                'type-info:openarrayshape' => '{ "type": "object", "properties": { "foo": { "type": "boolean" } }, "required": [ "foo" ], "additionalProperties": {}, "property": "openArrayShape" }',
-                'type-info:positionalarrayshape' => '{ "type": "array", "items": { "type": "integer" }, "property": "positionalArrayShape" }',
-                'type-info:positionalarrayshapeexplicit' => '{ "type": "array", "items": { "type": "integer", "example": 42 }, "property": "positionalArrayShapeExplicit" }',
-                'type-info:emptyarrayshape' => '{ "type": "array", "items": {}, "property": "emptyArrayShape" }',
-                'type-info:objectarrayshape' => '{ "type": "object", "properties": { "nested": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, "tags": { "type": "array", "items": { "type": "string" } } }, "required": [ "nested", "tags" ], "property": "objectArrayShape" }',
-                'type-info:nestedarrayshape' => '{ "type": "object", "properties": { "a": { "type": "object", "properties": { "b": { "type": "integer" } }, "required": [ "b" ] } }, "required": [ "a" ], "property": "nestedArrayShape" }',
-                'type-info:nullablememberarrayshape' => '{ "type": "object", "properties": { "foo": { "type": [ "null", "string" ] } }, "required": [ "foo" ], "property": "nullableMemberArrayShape" }',
-                'type-info:stringmap' => '{ "type": "object", "additionalProperties": { "type": "string" }, "property": "stringMap" }',
-                'type-info:intkeyedmap' => '{ "type": "object", "additionalProperties": { "type": "string" }, "property": "intKeyedMap" }',
-                'type-info:unmappablelist' => '{ "type": "array", "items": {}, "property": "unmappableList" }',
-                'type-info:unmappablemap' => '{ "type": "object", "additionalProperties": {}, "property": "unmappableMap" }',
-                'type-info:uniontype' => '{ "type": [ "integer", "string" ], "property": "unionType" }',
+                'arrayshape' => '{ "type": "object", "properties": { "foo": { "type": "boolean" } }, "required": [ "foo" ], "property": "arrayShape" }',
+                'optionalarrayshape' => '{ "type": "object", "properties": { "bar": { "type": "integer" }, "foo": { "type": "boolean" } }, "required": [ "foo" ], "property": "optionalArrayShape" }',
+                'openarrayshape' => '{ "type": "object", "properties": { "foo": { "type": "boolean" } }, "required": [ "foo" ], "additionalProperties": {}, "property": "openArrayShape" }',
+                'positionalarrayshape' => '{ "type": "array", "items": { "type": "integer" }, "property": "positionalArrayShape" }',
+                'positionalarrayshapeexplicit' => '{ "type": "array", "items": { "type": "integer", "example": 42 }, "property": "positionalArrayShapeExplicit" }',
+                'emptyarrayshape' => '{ "type": "array", "items": {}, "property": "emptyArrayShape" }',
+                'objectarrayshape' => '{ "type": "object", "properties": { "nested": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, "tags": { "type": "array", "items": { "type": "string" } } }, "required": [ "nested", "tags" ], "property": "objectArrayShape" }',
+                'nestedarrayshape' => '{ "type": "object", "properties": { "a": { "type": "object", "properties": { "b": { "type": "integer" } }, "required": [ "b" ] } }, "required": [ "a" ], "property": "nestedArrayShape" }',
+                'nullablememberarrayshape' => '{ "type": "object", "properties": { "foo": { "type": [ "null", "string" ] } }, "required": [ "foo" ], "property": "nullableMemberArrayShape" }',
+                'stringmap' => '{ "type": "object", "additionalProperties": { "type": "string" }, "property": "stringMap" }',
+                'intkeyedmap' => '{ "type": "object", "additionalProperties": { "type": "string" }, "property": "intKeyedMap" }',
+                'unmappablelist' => '{ "type": "array", "items": {}, "property": "unmappableList" }',
+                'unmappablemap' => '{ "type": "object", "additionalProperties": {}, "property": "unmappableMap" }',
+                'uniontype' => '{ "type": [ "integer", "string" ], "property": "unionType" }',
                 'promotedstring' => '{ "type": "string", "property": "promotedString" }',
-                'type-info:mixedunion' => '{ "example": "My value", "oneOf": [ { "type": [ "string" ] }, { "type": "array", "items": {} } ], "property": "mixedUnion" }',
+                'mixedunion' => '{ "example": "My value", "oneOf": [ { "type": [ "string" ] }, { "type": "array", "items": {} } ], "property": "mixedUnion" }',
                 'getstring' => '{ "type": "string", "property": "getString" }',
                 'paramdatetimelist' => '{ "type": "array", "items": { "type": "string", "format": "date-time" }, "property": "paramDateTimeList" }',
                 'paramstringlist' => '{ "type": "array", "items": { "type": "string" }, "property": "paramStringList" }',
@@ -124,12 +123,12 @@ final class TypeResolverTest extends OpenApiTestCase
                 'blah_values' => '{ "type": [ "array", "null" ], "items": { "type": "string", "example": "hello" }, "property": "blah_values" }',
                 'oneofvar' => '{ "oneOf": [ { "type": "string" }, { "type": "bool" } ], "property": "oneOfVar" }',
                 'oneoflist' => '{ "type": "array", "items": { "oneOf": [ { "type": "string" }, { "type": "bool" } ] }, "property": "oneOfList" }',
-                'type-info:nullabletypedlistunion' => '{ "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "array", "items": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } }, { "type": "null" } ], "property": "nullableTypedListUnion" }',
-                'type-info:nullablenestedtypedlistunion' => '{ "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "array", "items": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } }, { "type": "array", "items": { "type": "object", "additionalProperties": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } } }, { "type": "null" } ], "property": "nullableNestedTypedListUnion" }',
-                'type-info:reflectionvalue' => '{ "type": [ "boolean", "integer", "null" ], "example": true, "property": "reflectionValue" }',
-                'type-info:intersectionvar' => '{ "allOf": [ { "$ref": "#/components/schemas/FirstInterface" }, { "$ref": "#/components/schemas/SecondInterface" } ], "property": "intersectionVar" }',
-                'type-info:nestedoneof' => '{ "oneOf": [ { "type": "array", "items": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } }, { "type": "array", "items": { "type": "string" } } ], "property": "nestedOneOf" }',
-                'type-info:nestedoneofwithitems' => '{ "type": "array", "items": { "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "string" } ] }, "property": "nestedOneOfWithItems" }',
+                'nullabletypedlistunion' => '{ "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "array", "items": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } }, { "type": "null" } ], "property": "nullableTypedListUnion" }',
+                'nullablenestedtypedlistunion' => '{ "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "array", "items": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } }, { "type": "array", "items": { "type": "object", "additionalProperties": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } } }, { "type": "null" } ], "property": "nullableNestedTypedListUnion" }',
+                'reflectionvalue' => '{ "type": [ "boolean", "integer", "null" ], "example": true, "property": "reflectionValue" }',
+                'intersectionvar' => '{ "allOf": [ { "$ref": "#/components/schemas/FirstInterface" }, { "$ref": "#/components/schemas/SecondInterface" } ], "property": "intersectionVar" }',
+                'nestedoneof' => '{ "oneOf": [ { "type": "array", "items": { "$ref": "#/components/schemas/DocblockAndTypehintTypes" } }, { "type": "array", "items": { "type": "string" } } ], "property": "nestedOneOf" }',
+                'nestedoneofwithitems' => '{ "type": "array", "items": { "oneOf": [ { "$ref": "#/components/schemas/DocblockAndTypehintTypes" }, { "type": "string" } ] }, "property": "nestedOneOfWithItems" }',
                 'stdclass' => '{ "type": "object", "property": "stdClass" }',
                 'nullablestdclass' => '{ "type": [ "object", "null" ], "property": "nullableStdClass" }',
             ],
@@ -146,59 +145,45 @@ final class TypeResolverTest extends OpenApiTestCase
             "{$fixtureFolder}/SecondInterface.php",
         ];
 
-        foreach (self::getTypeResolvers() as $key => $typeResolver) {
-            foreach ([OA\OpenApi::VERSION_3_0_0, OA\OpenApi::VERSION_3_1_0, OA\OpenApi::VERSION_3_2_0] as $version) {
-                $analysis = (new Generator())
-                    ->setVersion($version)
-                    ->setProcessorPipeline(new Pipeline([new MergeIntoOpenApi(), new AugmentSchemas()]))
-                    ->withContext(function (Generator $generator, Analysis $analysis, Context $context) use ($sources): Analysis {
-                        $generator->generate($sources, $analysis, false);
+        foreach ([OA\OpenApi::VERSION_3_0_0, OA\OpenApi::VERSION_3_1_0, OA\OpenApi::VERSION_3_2_0] as $version) {
+            $analysis = (new Generator())
+                ->setVersion($version)
+                ->setProcessorPipeline(new Pipeline([new MergeIntoOpenApi(), new AugmentSchemas()]))
+                ->withContext(function (Generator $generator, Analysis $analysis, Context $context) use ($sources): Analysis {
+                    $generator->generate($sources, $analysis, false);
 
-                        return $analysis;
-                    });
+                    return $analysis;
+                });
 
-                $schema = $analysis->getAnnotationForSource(DocblockAndTypehintTypes::class);
+            $schema = $analysis->getAnnotationForSource(DocblockAndTypehintTypes::class);
 
-                foreach ($schema->properties as $ii => $property) {
-                    $property->property = $property->_context->property
-                        // promoted properties might not have a name!
-                        ?? $property->_context->method;
+            foreach ($schema->properties as $ii => $property) {
+                $property->property = $property->_context->property
+                    // promoted properties might not have a name!
+                    ?? $property->_context->method;
 
-                    $caseName = strtolower((string) $property->property);
-                    $resolverCaseName = "{$key}:{$caseName}";
-                    $fullCase = "{$key}:{$version}[{$ii}]-{$caseName}";
+                $caseName = strtolower((string) $property->property);
+                $fullCase = "{$version}[{$ii}]-{$caseName}";
 
-                    $json = $expectations[$version][$caseName] ?? $expectations[$version][$resolverCaseName] ?? null;
+                $json = $expectations[$version][$caseName] ?? null;
 
-                    if ($json) {
-                        yield $fullCase => [
-                            $typeResolver,
-                            $analysis,
-                            $property,
-                            json_decode($json),
-                        ];
-                    }
+                if ($json) {
+                    yield $fullCase => [
+                        $analysis,
+                        $property,
+                        json_decode($json),
+                    ];
                 }
             }
         }
     }
 
     #[DataProvider('resolverAugmentCases')]
-    public function testAugmentSchemaType(TypeResolverInterface $typeResolver, Analysis $analysis, OA\Schema $schema, \stdClass $expected): void
+    public function testAugmentSchemaType(Analysis $analysis, OA\Schema $schema, \stdClass $expected): void
     {
-        $typeResolver->augmentSchemaType($analysis, $schema);
+        $this->getTypeResolver()->augmentSchemaType($analysis, $schema);
 
         $this->assertSpecEquals($schema->toJson(), $expected, $schema->toJson());
-    }
-
-    /**
-     * @return iterable<string, array{TypeResolverInterface}>
-     */
-    public static function typeResolvers(): iterable
-    {
-        foreach (self::getTypeResolvers() as $name => $typeResolver) {
-            yield $name => [$typeResolver];
-        }
     }
 
     /**
@@ -206,8 +191,7 @@ final class TypeResolverTest extends OpenApiTestCase
      * global namespace can that come back with a leading slash. Every `Scratch` fixture is
      * namespaced, so the case has nowhere else to run.
      */
-    #[DataProvider('typeResolvers')]
-    public function testGlobalNamespaceClassResolvesWithoutLeadingSlash(TypeResolverInterface $typeResolver): void
+    public function testGlobalNamespaceClassResolvesWithoutLeadingSlash(): void
     {
         $fixture = self::fixture('PHP/GlobalNamespaceTypes.php');
         require_once $fixture;
@@ -215,7 +199,7 @@ final class TypeResolverTest extends OpenApiTestCase
         $compiled = (new Builder())
             ->setMode(Builder\Mode::CLASSIC)
             ->addSource($fixture)
-            ->withGenerator(fn (Generator $generator): Generator => $generator->setTypeResolver($typeResolver))
+            ->withGenerator(fn (Generator $generator): Generator => $generator->setTypeResolver($this->getTypeResolver()))
             ->build()
             ->toArray();
 
