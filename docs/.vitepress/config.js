@@ -11,8 +11,8 @@ function getGuideSidebar() {
     {
       text: 'Annotating your code',
       items: [
-        { text: 'Using Attributes', link: '/guide/using-attributes' },
-        { text: 'Using Annotations', link: '/guide/using-annotations' },
+        { text: 'Using Attributes <span class="VPBadge warning">deprecated</span>', link: '/guide/using-attributes' },
+        { text: 'Using Annotations <span class="VPBadge warning">deprecated</span>', link: '/guide/using-annotations' },
         { text: 'Minimum requirements', link: '/guide/minimum-requirements' },
         { text: 'Augmentation', link: '/guide/augmentation' },
         { text: 'References', link: '/guide/references' },
@@ -22,7 +22,7 @@ function getGuideSidebar() {
       ]
     },
     {
-      text: '🧪 Spec Attributes',
+      text: 'Spec Attributes',
       collapsed: false,
       items: [
         { text: 'Why spec attributes?', link: '/guide/why-spec' },
@@ -74,22 +74,22 @@ function getReferenceSidebar() {
     {
       text: 'Reference',
       items: [
-        { text: '🧪 Spec Attributes', link: '/reference/spec-attributes' },
-        { text: 'Attributes', link: '/reference/attributes' },
-        { text: 'Annotations', link: '/reference/annotations' },
+        { text: 'Spec Attributes', link: '/reference/spec-attributes' },
+        { text: 'Attributes <span class="VPBadge warning">deprecated</span>', link: '/reference/attributes' },
+        { text: 'Annotations <span class="VPBadge warning">deprecated</span>', link: '/reference/annotations' },
       ]
     },
     {
       text: 'Api',
       items: [
         { text: 'Builder', link: '/reference/builder' },
-        { text: 'Generator', link: '/reference/generator' },
-        { text: 'Processors', link: '/reference/processors' },
-        { text: '🧪 Augmenters', link: '/reference/augmenters' },
-        { text: '🧪 Extension Points', link: '/reference/extension-points' },
-        { text: '🧪 Mergers', link: '/reference/mergers' },
-        { text: '🧪 Inheritance', link: '/reference/inheritance' },
-        { text: '🧪 Architecture', link: '/reference/architecture' },
+        { text: 'Generator <span class="VPBadge warning">deprecated</span>', link: '/reference/generator' },
+        { text: 'Processors <span class="VPBadge warning">deprecated</span>', link: '/reference/processors' },
+        { text: 'Augmenters', link: '/reference/augmenters' },
+        { text: 'Extension Points', link: '/reference/extension-points' },
+        { text: 'Mergers', link: '/reference/mergers' },
+        { text: 'Inheritance', link: '/reference/inheritance' },
+        { text: 'Architecture', link: '/reference/architecture' },
       ]
     },
   ]

@@ -136,7 +136,7 @@ class Pet
 }
 ```
 
-::: info 🧪 Mode difference
+::: info Mode difference
 Only spec attributes are read. Classic annotations and attributes add neither, in `classic` or in
 `hybrid`, and a classic parameter stays required by its type alone, whatever its default.
 :::

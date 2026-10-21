@@ -1,4 +1,4 @@
-# 🧪 Why spec attributes?
+# Why spec attributes?
 
 The `spec` attributes are a second way to describe an API to swagger-php, alongside the
 classic `OpenApi\Attributes`. There are four reasons to switch, in the order they tend to

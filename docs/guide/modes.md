@@ -1,4 +1,4 @@
-# 🧪 Processing Modes
+# Processing Modes
 
 Swagger-php supports three processing modes, which control how source code is turned into an OpenAPI document. Each uses a different internal pipeline.
 

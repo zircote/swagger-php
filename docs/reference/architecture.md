@@ -1,4 +1,4 @@
-# 🧪 Spec Pipeline Architecture
+# Spec Pipeline Architecture
 
 An overview of how the spec attributes pipeline turns your source code into an OpenAPI
 document.

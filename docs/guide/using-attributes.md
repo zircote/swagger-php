@@ -1,4 +1,4 @@
-# Attributes
+# Attributes <Badge type="warning" text="deprecated" />
 
 PHP Attributes are the preferred way to annotate your code.
 

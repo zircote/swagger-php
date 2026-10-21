@@ -1,4 +1,4 @@
-# Using the `Generator`
+# Using the `Generator` <Badge type="warning" text="deprecated" />
 
 ## Introduction
 The `Generator` class is classic mode's engine. The entry point for every mode is the

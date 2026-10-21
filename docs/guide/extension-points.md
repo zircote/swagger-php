@@ -1,4 +1,4 @@
-# Extension points 🧪
+# Extension points
 
 The spec pipeline is assembled from parts that can be replaced or added to. Between them
 they cover feeding it from somewhere other than a directory scan, accepting attributes it

@@ -20,7 +20,7 @@ attributes and annotations.
 - Extracts information from code and existing phpdoc comments.
 - Can be used programmatically or via command-line tool.
 - Error reporting (with hints, context).
-- 🧪 **Spec attributes**: attributes that can also be built by hand and compiled without scanning, and a pipeline that reports when an attribute is wrong. See [Why spec attributes?](https://zircote.github.io/swagger-php/guide/why-spec).
+- **Spec attributes**: attributes that can also be built by hand and compiled without scanning, and a pipeline that reports when an attribute is wrong. See [Why spec attributes?](https://zircote.github.io/swagger-php/guide/why-spec).
 
 ## OpenAPI version support
 
@@ -83,7 +83,7 @@ Visit the [Documentation website](https://zircote.github.io/swagger-php/) for
 the [Getting started guide](https://zircote.github.io/swagger-php/guide) or look at
 the [examples directory](docs/examples) for more examples.
 
-### 🧪 Spec Attributes
+### Spec Attributes
 
 *Available since 6.5.0*
 
