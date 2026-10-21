@@ -13,6 +13,8 @@ use OpenApi\Undefined;
  *
  * @see [JSON schema validation](http://json-schema.org/latest/json-schema-validation.html)
  * @phpstan-import-type EnumValue from \OpenApi\Spec\Schema
+ *
+ * @deprecated since 7.0, removed in 8.0
  */
 trait JsonSchemaTrait
 {

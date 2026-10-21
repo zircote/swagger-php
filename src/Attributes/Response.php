@@ -9,6 +9,9 @@ namespace OpenApi\Attributes;
 use OpenApi\Annotations as OA;
 use OpenApi\Undefined;
 
+/**
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Response` instead
+ */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Response extends OA\Response
 {

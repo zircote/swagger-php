@@ -21,6 +21,8 @@ use OpenApi\Undefined;
  * @see [JSON Schema](http://json-schema.org/)
  *
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Schema` instead
  */
 class Schema extends AbstractAnnotation
 {

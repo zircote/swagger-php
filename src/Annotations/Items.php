@@ -10,6 +10,8 @@ namespace OpenApi\Annotations;
  * The description of an item in a Schema with type <code>array</code>.
  *
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Schema\Items` instead
  */
 class Items extends Schema
 {

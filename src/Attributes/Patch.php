@@ -8,6 +8,9 @@ namespace OpenApi\Attributes;
 
 use OpenApi\Annotations as OA;
 
+/**
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Patch` instead
+ */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Patch extends OA\Patch
 {

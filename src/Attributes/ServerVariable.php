@@ -11,6 +11,8 @@ use OpenApi\Undefined;
 
 /**
  * @phpstan-import-type EnumValue from \OpenApi\Spec\Schema
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\ServerVariable` instead
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class ServerVariable extends OA\ServerVariable

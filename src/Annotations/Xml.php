@@ -12,6 +12,8 @@ use OpenApi\Undefined;
  * @see [XML Object](https://spec.openapis.org/oas/v3.1.1.html#xml-object)
  *
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Xml` instead
  */
 class Xml extends AbstractAnnotation
 {

@@ -29,6 +29,8 @@ use OpenApi\Undefined;
  * ```
  *
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\MediaType\Json` instead
  */
 class JsonContent extends Schema
 {

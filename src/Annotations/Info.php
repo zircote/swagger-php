@@ -16,6 +16,8 @@ use OpenApi\Undefined;
  * @see [Info Object](https://spec.openapis.org/oas/v3.1.1.html#info-object)
  *
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Info` instead
  */
 class Info extends AbstractAnnotation
 {

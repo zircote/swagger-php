@@ -14,6 +14,8 @@ use OpenApi\Undefined;
  * @see [External Documentation Object](https://spec.openapis.org/oas/v3.1.1.html#external-documentation-object)
  *
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\ExternalDocumentation` instead
  */
 class ExternalDocumentation extends AbstractAnnotation
 {

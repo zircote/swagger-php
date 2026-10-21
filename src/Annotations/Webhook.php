@@ -14,6 +14,8 @@ use OpenApi\Undefined;
  * @since OpenAPI 3.1.0
  *
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use the `webhook:` argument of an operation attribute instead
  */
 class Webhook extends PathItem
 {

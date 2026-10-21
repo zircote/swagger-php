@@ -11,6 +11,8 @@ use OpenApi\Undefined;
 
 /**
  * @phpstan-import-type EnumValue from \OpenApi\Spec\Schema
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Schema\Items` instead
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 class Items extends OA\Items

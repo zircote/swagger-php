@@ -9,6 +9,9 @@ namespace OpenApi\Attributes;
 use OpenApi\Annotations as OA;
 use OpenApi\Undefined;
 
+/**
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\RequestBody` instead
+ */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
 class RequestBody extends OA\RequestBody
 {

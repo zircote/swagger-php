@@ -17,6 +17,8 @@ use OpenApi\Undefined;
  * @see [Path Item Object](https://spec.openapis.org/oas/v3.1.1.html#path-item-object)
  *
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\PathItem` instead
  */
 class PathItem extends AbstractAnnotation
 {
