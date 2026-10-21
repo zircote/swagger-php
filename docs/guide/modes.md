@@ -7,18 +7,20 @@ Swagger-php supports three processing modes, which control how source code is tu
 |                 | Classic                | Hybrid                                                       | Spec                                         |
 | --------------- | ---------------------- | ------------------------------------------------------------ | -------------------------------------------- |
 | **Status**      | Deprecated             | Default, deprecated                                          | Stable                                       |
-| **Attributes**  | `OpenApi\Attributes`   | `OpenApi\Attributes`                                         | `OpenApi\Spec`                               |
+| **Attributes**  | `OpenApi\Attributes`   | `OpenApi\Attributes`, `OpenApi\Spec`                         | `OpenApi\Spec`                               |
 | **Annotations** | Yes                    | Yes                                                          | No                                           |
 | **Pipeline**    | Generator → Processors | Assembler → Resolver → HybridBridge → Augmenters → Compiler  | Assembler → Resolver → Augmenters → Compiler |
 
-## Classic (default)
+## Classic
 
 Classic mode scans source files for `OpenApi\Attributes` (and legacy `OpenApi\Annotations`) and builds the OpenAPI document through the `Generator` and its processor chain.
 
 ```php
 use OpenApi\Builder;
+use OpenApi\Builder\Mode;
 
 $result = (new Builder())
+    ->setMode(Mode::CLASSIC)
     ->addSource('src/')
     ->build();
 
@@ -52,23 +54,19 @@ Spec mode uses the `OpenApi\Spec` namespace (`use OpenApi\Spec as OA;`). See [Us
 
 ## Hybrid {#hybrid}
 
-Hybrid mode scans with the classic `Generator`, so existing `OpenApi\Attributes` work unchanged. It then bridges the result into the spec pipeline's augmenters and compilers.
+Hybrid mode scans with the classic `Generator`, so existing `OpenApi\Attributes` work unchanged. It then bridges the result into the spec pipeline's augmenters and compilers. `OpenApi\Spec` attributes are built as in spec mode, so both can be mixed.
 
 This gives you the augmenter pipeline and version-aware compilation without rewriting any attribute code.
 
 ```php
 use OpenApi\Builder;
-use OpenApi\Builder\Mode;
 
 $result = (new Builder())
-    ->setMode(Mode::HYBRID)
     ->addSource('src/')
     ->build();
 
 $result->toYaml();
 ```
-
-Hybrid mode is the recommended transition path for existing projects that move to the new pipeline step by step.
 
 ::: warning Disclaimer
 Hybrid mode will not work in heavily customized projects like `NelmioApiDocBundle`, or in projects adding custom processors.
@@ -79,8 +77,8 @@ Hybrid mode will not work in heavily customized projects like `NelmioApiDocBundl
 ### CLI
 
 ```shell
+./vendor/bin/openapi src/ --mode classic -o openapi.yaml
 ./vendor/bin/openapi src/ --mode spec -o openapi.yaml
-./vendor/bin/openapi src/ --mode hybrid -o openapi.yaml
 ```
 
 ### PHP
@@ -89,8 +87,8 @@ Hybrid mode will not work in heavily customized projects like `NelmioApiDocBundl
 use OpenApi\Builder;
 use OpenApi\Builder\Mode;
 
-$builder->setMode(Mode::SPEC);
-// or: $builder->setMode('spec');
+$builder->setMode(Mode::CLASSIC);
+// or: $builder->setMode('classic');
 ```
 
 ## Behavioral differences
@@ -126,15 +124,15 @@ See [Augmenters](/reference/augmenters) for the `Cleanup` options.
 
 The recommended migration path is:
 
-1. **Classic → Hybrid**: change to `setMode(Mode::HYBRID)`. No code changes are needed, and the augmenter pipeline becomes available. Output stays the same, with two exceptions:
+1. **Classic → Hybrid**: hybrid is the default, so this needs no code changes, and the augmenter pipeline becomes available. Output stays the same, with two exceptions:
 
    - Components that no path references are removed, including a schema kept only for client code generation. [Behavioral differences](#behavioral-differences) has the switch that keeps them.
 
-   - `-c` takes augmenter keys rather than processor keys, apart from `generator.*`. `--mode hybrid -D src` lists them.
+   - `-c` takes augmenter keys rather than processor keys, apart from `generator.*`. `-D src` lists them.
 
 2. **Hybrid → Spec**: when starting new code, use `OpenApi\Spec` attributes. Existing `OpenApi\Attributes` code keeps working through hybrid mode. The spec attributes are not a one-for-one rename of the classic ones. A reusable attribute takes a single `component:` key, where classic spells the key after its own type (`schema:`, `parameter:`, `request:`, `securityScheme:`). See [Components](/guide/spec-attributes#components).
 
-3. **Full Spec**: once all code uses `OpenApi\Spec` attributes, switch to `setMode(Mode::SPEC)`.
+3. **Full Spec**: once all code uses `OpenApi\Spec` attributes, the migration is done. Hybrid builds them as spec mode does, so no mode switch is needed.
 
 ::: tip Version timeline
 - **v6**: spec and hybrid ship as opt-in beta. The spec attribute API is frozen within v6, and `Builder` is the stable entry point for every mode. Classic remains the default.

@@ -38,7 +38,7 @@ class ProcessorGenerator extends DocGenerator
     {
         return parent::renderConfiguration(
             'processor',
-            '',
+            '--mode classic',
             [
                 '-c operationId.hash=true src',
                 '-c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ src',

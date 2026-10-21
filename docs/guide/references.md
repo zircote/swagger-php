@@ -47,7 +47,7 @@ To keep things DRY (Don't Repeat Yourself) the specification allows reusing comp
 **Results in:**
 
 ```yaml
-openapi: 3.0.0
+openapi: 3.1.0
 components:
   schemas:
     product_id:

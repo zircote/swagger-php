@@ -11,12 +11,12 @@ moving annotations to classic attributes first are collected in
 
 ## Before you start
 
-Generate your document in classic mode and keep it: the migration is done when spec mode
-generates the same document from the migrated code, apart from the
+Generate your document before migrating and keep it: the migration is done when the migrated
+code generates the same document, apart from the
 [differences spec mode is expected to show](/guide/spec-attributes#other-differences).
 
-Spec mode defaults to OpenAPI 3.1.0 and classic to 3.0.0, so pass the version explicitly to
-both: `--version` on the command line, `Builder::setVersion()` in code.
+Classic mode defaults to OpenAPI 3.0.0 and the other modes to 3.1.0, so pass the version
+explicitly to both: `--version` on the command line, `Builder::setVersion()` in code.
 
 ## Running the Rector set
 
@@ -231,7 +231,8 @@ deprecation, which appears wherever your application reports deprecations.
 
 The set rewrites attributes. Code that drives the generator is yours to move:
 
-- **The mode.** `Builder::setMode(Mode::SPEC)`, or `--mode spec` on the command line.
+- **The mode.** The default, hybrid, builds spec attributes. A `Builder::setMode()` call or
+  `--mode` option can go.
 - **Custom processors.** Spec mode has no processor pipeline. A processor becomes an
   [augmenter](/guide/extension-points#augmenters), registered with `Builder::withAugmenters()`.
   It works on the `Specification` and spec attributes rather than on an `Analysis` of
@@ -240,7 +241,7 @@ The set rewrites attributes. Code that drives the generator is yours to move:
   [only over the annotations as scanned](/guide/extension-points#the-classic-escape-hatch).
 - **Configuration keys.** Keys are named after the processor or augmenter they configure, so
   they change with the pipeline: classic's `expandEnums.enumNames` is spec's
-  `enums.enumNames`. `openapi --mode <mode> -D <path>` prints every key a mode accepts.
+  `enums.enumNames`. `openapi -D <path>` prints every key the default accepts.
 - **Unreferenced components.** Spec mode removes components nothing references. Classic's
   equivalent, `cleanUnusedComponents.enabled`, is off by default. A component declared for use
   outside any path, such as a schema your client code is generated from, needs
@@ -248,7 +249,7 @@ The set rewrites attributes. Code that drives the generator is yours to move:
 
 ## Comparing the documents
 
-Generate in spec mode at the version you pinned and compare with the classic document. Some
+Generate from the migrated code at the version you pinned and compare with the classic document. Some
 differences are expected and harmless. [Other differences](/guide/spec-attributes#other-differences)
 lists them. Anything else is either a construct from the list above, or worth an
 [issue](https://github.com/zircote/swagger-php/issues).

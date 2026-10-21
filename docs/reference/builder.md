@@ -19,9 +19,9 @@ echo $result->toYaml();
 
 ## Processing modes
 
-The Builder supports three processing modes via `setMode(string|Mode $mode)`:
+The Builder supports three processing modes via `setMode(string|Mode $mode)`. Hybrid is the default.
 
-### Classic (default)
+### Classic
 
 Scans source files for annotations/attributes and assembles the OpenAPI document via the Generator pipeline.
 
@@ -41,9 +41,9 @@ $builder->setMode(Mode::SPEC);
 // or: $builder->setMode('spec');
 ```
 
-### Hybrid {#mode-hybrid}
+### Hybrid (default) {#mode-hybrid}
 
-Uses the classic Generator for scanning, then bridges the result into the spec pipeline's augmenters and compilers. A transition path for existing projects that want access to the new augmenter pipeline without rewriting all annotations.
+Uses the classic Generator for scanning, then bridges the result into the spec pipeline's augmenters and compilers. `OpenApi\Spec` attributes are built as in spec mode.
 
 ```php
 $builder->setMode(Mode::HYBRID);
@@ -78,10 +78,8 @@ In spec and hybrid mode, you can pass `\ReflectionClass` instances directly inst
 
 ```php
 use OpenApi\Builder;
-use OpenApi\Builder\Mode;
 
 $result = (new Builder())
-    ->setMode(Mode::SPEC)
     ->addSource([
         new \ReflectionClass(App\Controllers\PetController::class),
         new \ReflectionClass(App\Models\Pet::class),

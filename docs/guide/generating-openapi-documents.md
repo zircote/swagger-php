@@ -15,12 +15,6 @@ the tool will use the file extension to determine the format.
 The `--format` option can be used to force a specific format.
 :::
 
-To use spec mode from the CLI, pass `--mode spec`:
-
-```shell
-> ./vendor/bin/openapi app --mode spec -o openapi.yaml
-```
-
 ::: tip Bootstrap
 The bootstrap option `-b` is useful when trying to use `swagger-php` without proper autoloading.
 
@@ -101,51 +95,26 @@ $result->isValid();       // true if spec was generated and no errors were repor
 $result->specification(); // the final `Specification` instance
 ```
 
-For advanced Generator configuration (custom analysers, processors, aliases, etc.), use the
-`withGenerator()` hook:
+Augmenters are configured with the `withAugmenters()` hook:
 
 ```php
 $result = (new \OpenApi\Builder())
     ->addSource('/path/to/project')
-    ->setVersion('3.1.0')
-    ->withGenerator(function (\OpenApi\Generator $generator) {
-        $generator->setConfig(['operationId.hash' => false]);
-        $generator->withProcessorPipeline(function ($pipeline) {
-            $pipeline->add(new MyCustomProcessor());
-        });
+    ->withAugmenters(function ($pipeline) {
+        $pipeline->get(\OpenApi\Augmenter\OperationIds::class)->setHash(false);
     })
     ->build();
 ```
 
-The keys `setConfig()` takes are listed per processor in the [Processor reference](/reference/processors).
+The settings each augmenter takes are listed in the [Augmenter reference](/reference/augmenters).
 
-### Using spec mode
-
-To use the spec attributes pipeline, set the mode to `spec`:
+Instead of file paths, `\ReflectionClass` instances can also be passed directly:
 
 ```php
 <?php
 require('vendor/autoload.php');
 
 $result = (new \OpenApi\Builder())
-    ->setMode(\OpenApi\Builder\Mode::SPEC)
-    ->addSource('/path/to/project')
-    ->build();
-
-header('Content-Type: application/x-yaml');
-echo $result->toYaml();
-```
-
-Spec mode uses attributes from the `OpenApi\Spec` namespace. See [Using Spec Attributes](/guide/spec-attributes) for details on the attribute API and [Processing Modes](/guide/modes) for a comparison of all modes.
-
-In spec and hybrid mode, you can also pass `\ReflectionClass` instances directly instead of file paths:
-
-```php
-<?php
-require('vendor/autoload.php');
-
-$result = (new \OpenApi\Builder())
-    ->setMode(\OpenApi\Builder\Mode::SPEC)
     ->addSource([
         new \ReflectionClass(App\Controllers\PetController::class),
         new \ReflectionClass(App\Models\Pet::class),
@@ -155,10 +124,10 @@ $result = (new \OpenApi\Builder())
 echo $result->toYaml();
 ```
 
-### Configuring the Generator
+### Configuring the Generator <Badge type="warning" text="deprecated" />
 
-In classic mode, the `Builder` runs the `Generator`. Custom analysers, processors and aliases are
-set on it with [`withGenerator()`](/reference/builder#generator-configuration-classic-mode).
+In classic mode (`setMode(Mode::CLASSIC)`), the `Builder` runs the `Generator`. Custom analysers,
+processors and aliases are set on it with [`withGenerator()`](/reference/builder#generator-configuration-classic-mode).
 
 ::: tip Programming API
 Details about the `swagger-php` API can be found in the [reference](../reference/index.md).
