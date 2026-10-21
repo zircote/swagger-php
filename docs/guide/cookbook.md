@@ -389,8 +389,8 @@ Global responses are found under `/components/responses` and can be referenced/s
 Even if referencing a shared response definition, the `response` parameter is still required.
 :::
 
-## mediaType="*/*"
-Using `*/*` as `mediaType` is not possible using annotations.
+## mediaType="*/*" <Badge type="warning" text="deprecated" />
+Using `*/*` as `mediaType` is not possible using annotations. Attributes do not have this problem.
 
 **Example:**
 ```php
@@ -406,18 +406,50 @@ The doctrine annotations library used for parsing annotations does not handle th
 
 Using just `*` or `application/octet-stream` might be usable workarounds.
 
-## Warning about `Multiple response with same response="200"`
-There are two scenarios where this can happen
-1. A single endpoint contains two responses with the same `response` value.
-2. There are multiple global responses declared, again more than one with the same `response` value.
-
 ## Callbacks
 The API does include basic support for callbacks. However, this needs to be set up mostly manually.
 
 **Example**
 
-<tabs options="{ useUrlFragment: false }">
-  <tab id="at" name="Attributes">
+<codeblock id="callbacks">
+  <template v-slot:spec>
+
+```php
+#[OA\Operation\Get(
+    // ...
+    callbacks: [
+        'onChange' => [
+            '{$request.query.callbackUrl}' => [
+                'post' => [
+                    'requestBody' => new OA\RequestBody(
+                        description: 'subscription payload',
+                        content: [
+                            new OA\MediaType\Json(
+                                schema: new OA\Schema(
+                                    properties: [
+                                        new OA\Property(
+                                            property: 'timestamp',
+                                            schema: new OA\Schema(
+                                                type: 'string',
+                                                format: 'date-time',
+                                                description: 'time of change',
+                                            ),
+                                        ),
+                                    ],
+                                ),
+                            ),
+                        ],
+                    ),
+                ],
+            ],
+        ],
+    ],
+    // ...
+)]
+```
+
+  </template>
+  <template v-slot:at>
 
 ```php
 #[OA\Get(
@@ -452,8 +484,8 @@ The API does include basic support for callbacks. However, this needs to be set 
 )]
 ```
 
-  </tab>
-  <tab id="an" name="Annotations">
+  </template>
+  <template v-slot:an>
 
 ```php
 /**
@@ -483,8 +515,8 @@ The API does include basic support for callbacks. However, this needs to be set 
  */
 ```
 
-  </tab>
-</tabs>
+  </template>
+</codeblock>
 
 ## (Mostly) virtual models
 Typically, a model is annotated by adding a `@OA\Schema` annotation to the class and then individual `@OA\Property` annotations
@@ -542,12 +574,37 @@ class name.
 
 With the same `User` schema as before, the `Book::author` property could be written in a few different ways
 
-<tabs options="{ useUrlFragment: false }">
-  <tab id="at" name="Attributes">
+<codeblock id="class-name-as-type">
+  <template v-slot:spec>
+
+```php
+    #[OA\Property]
+    public User $author;
+```
+
+**or**
+
+```php
+    /**
+     * @var User
+     */
+    #[OA\Property]
+    public $author;
+```
+
+**or**
+
+```php
+    #[OA\Schema(ref: User::class)]
+    public $author;
+```
+
+  </template>
+  <template v-slot:at>
 
 ```php
     #[OAT\Property()]
-    public User author;
+    public User $author;
 ```
 
 **or**
@@ -557,23 +614,22 @@ With the same `User` schema as before, the `Book::author` property could be writ
      * @var User
      */
     #[OAT\Property()]
-    public author;
+    public $author;
 ```
 
 **or**
 
 ```php
-    #[OA\Property(type: User::class)]
-    public author;
+    #[OAT\Property(type: User::class)]
+    public $author;
 ```
 
-  </tab>
-
-  <tab id="an" name="Annotations">
+  </template>
+  <template v-slot:an>
 
 ```php
     /** @OA\Property() */
-    public User author;
+    public User $author;
 ```
 
 **or**
@@ -583,11 +639,11 @@ With the same `User` schema as before, the `Book::author` property could be writ
      * @var User
      * @OA\Property()
      */
-    public author;
+    public $author;
 ```
 
-  </tab>
-</tabs>
+  </template>
+</codeblock>
 
 ## Enums
 As of PHP 8.1 there is native support for `enum`'s.
@@ -682,9 +738,36 @@ Even with using refs, there is a bit of overhead in sharing responses. One way a
 your own response classes.
 The beauty is that in your custom `__construct()` method you can prefill as much as you need.
 
-Best of all, this works for both annotations and attributes.
-
 Example:
+
+```php
+use OpenApi\Spec as OA;
+
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+class BadRequest extends OA\Response
+{
+    public function __construct()
+    {
+        parent::__construct(response: 400, description: 'Bad request');
+    }
+}
+
+class Controller
+{
+    #[OA\Operation\Get(path: '/foo', responses: [new BadRequest()])]
+    public function get()
+    {
+    }
+
+    #[OA\Operation\Post(path: '/foo')]
+    #[BadRequest]
+    public function post()
+    {
+    }
+}
+```
+
+### Classic attributes and annotations <Badge type="warning" text="deprecated" />
 
 ```php
 use OpenApi\Attributes as OA;
