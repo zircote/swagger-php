@@ -22,9 +22,9 @@ use Psr\Log\NullLogger;
  * Unified entry point for generating OpenAPI documents.
  *
  * Mode:
- *   setMode(Builder\Mode::CLASSIC) — annotation/attribute pipeline via Generator (default)
+ *   setMode(Builder\Mode::CLASSIC) — annotation/attribute pipeline via Generator
  *   setMode(Builder\Mode::SPEC)    — spec attribute pipeline via Assembler + Compiler
- *   setMode(Builder\Mode::HYBRID)  — reduced classic pipeline → HybridBridge → spec Compiler
+ *   setMode(Builder\Mode::HYBRID)  — reduced classic pipeline → HybridBridge → spec Compiler (default)
  *
  * Set/add sources to process:
  *   addSource() > can be file based (string, \SplFileInfo) or reflection (\ReflectionClass)
@@ -44,7 +44,7 @@ class Builder
      */
     protected array $sources = [];
 
-    protected Mode $mode = Mode::CLASSIC;
+    protected Mode $mode = Mode::HYBRID;
 
     protected ?string $version = null;
 

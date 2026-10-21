@@ -7,6 +7,7 @@
 namespace OpenApi\Tests\Processors;
 
 use OpenApi\Builder;
+use OpenApi\Builder\Mode;
 use OpenApi\Builder\Result;
 use OpenApi\Generator;
 use OpenApi\Tests\OpenApiTestCase;
@@ -71,6 +72,7 @@ final class CleanUnusedComponentsPerformanceTest extends OpenApiTestCase
             $usedCount = (int) round(self::SCHEMA_COUNT * (1 - self::UNUSED_RATIO));
 
             $result = (new Builder())
+                ->setMode(Mode::CLASSIC)
                 ->addSource($sourceDir)
                 ->withGenerator(fn (Generator $generator): Generator => $generator
                     ->setConfig(['cleanUnusedComponents' => ['enabled' => true]]))
@@ -90,6 +92,7 @@ final class CleanUnusedComponentsPerformanceTest extends OpenApiTestCase
     private function measureGeneration(string $sourceDir, bool $cleanup): float
     {
         $build = fn (): Result => (new Builder())
+            ->setMode(Mode::CLASSIC)
             ->addSource($sourceDir)
             ->withGenerator(fn (Generator $generator): Generator => $generator
                 ->setConfig(['cleanUnusedComponents' => ['enabled' => $cleanup]]))

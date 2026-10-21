@@ -27,6 +27,7 @@ final class BuilderTest extends OpenApiTestCase
         $this->registerExampleClassloader('petstore');
 
         $result = (new Builder())
+            ->setMode(Mode::CLASSIC)
             ->addSource(self::examplePath('petstore/annotations'))
             ->setLogger($this->trackingLogger())
             ->withGenerator(function (Generator $generator): void {
@@ -83,6 +84,7 @@ final class BuilderTest extends OpenApiTestCase
         $this->registerExampleClassloader('petstore');
 
         $result = (new Builder())
+            ->setMode(Mode::CLASSIC)
             ->addSource(self::examplePath('petstore/annotations'))
             ->setVersion('3.1.0')
             ->withGenerator(function (Generator $generator): void {
@@ -101,6 +103,7 @@ final class BuilderTest extends OpenApiTestCase
         $this->registerExampleClassloader('petstore');
 
         $result = (new Builder())
+            ->setMode(Mode::CLASSIC)
             ->addSource(new SourceFinder(self::examplePath('petstore/annotations')))
             ->withGenerator(function (Generator $generator): void {
                 $generator->setAnalyser($this->getAnalyzer());
@@ -116,6 +119,7 @@ final class BuilderTest extends OpenApiTestCase
         $this->registerExampleClassloader('petstore');
 
         $result = (new Builder())
+            ->setMode(Mode::CLASSIC)
             ->addSource(self::examplePath('petstore/annotations'))
             ->withGenerator(function (Generator $generator): void {
                 $generator->setAnalyser($this->getAnalyzer());

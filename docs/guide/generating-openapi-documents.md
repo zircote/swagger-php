@@ -59,7 +59,7 @@ Options:
   -a, --add-processor=ADD-PROCESSOR        Register an additional processor (deprecated, removed in 8.0) (multiple values allowed)
   -r, --remove-processor=REMOVE-PROCESSOR  Remove an existing processor (deprecated, removed in 8.0) (multiple values allowed)
       --version=VERSION                    The OpenAPI version
-  -m, --mode=MODE                          Set mode classic, hybrid or spec (deprecated, removed in 8.0 - leave it out for hybrid) [default: "classic"]
+  -m, --mode=MODE                          Set mode classic, hybrid or spec (deprecated, removed in 8.0 - leave it out for hybrid) [default: "hybrid"]
   -d, --debug                              Show additional error information
   -h, --help                               Display help for the given command. When no command is given display help for the list command
       --silent                             Do not output any message
