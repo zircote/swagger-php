@@ -12,6 +12,9 @@ use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\GeneratorAwareTrait;
 
+/**
+ * @deprecated since 7.0, removed in 8.0
+ */
 class AttributeAnnotationFactory implements AnnotationFactoryInterface
 {
     use GeneratorAwareTrait;

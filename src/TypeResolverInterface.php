@@ -8,6 +8,9 @@ namespace OpenApi;
 
 use OpenApi\Annotations as OA;
 
+/**
+ * @deprecated since 7.0, removed in 8.0
+ */
 interface TypeResolverInterface
 {
     /**

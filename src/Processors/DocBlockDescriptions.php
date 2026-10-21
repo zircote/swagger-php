@@ -16,6 +16,8 @@ use OpenApi\Undefined;
  *
  * Use <code>null</code>, for example <code>@Annotation(description=null)</code>,
  * if you don't want the annotation to have a description.
+ *
+ * @deprecated since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
  */
 class DocBlockDescriptions
 {

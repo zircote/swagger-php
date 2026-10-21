@@ -14,6 +14,8 @@ use OpenApi\Context;
  * Use the Schema context to extract useful information and inject that into the annotation.
  *
  * Merges properties.
+ *
+ * @deprecated since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
  */
 class AugmentItems
 {

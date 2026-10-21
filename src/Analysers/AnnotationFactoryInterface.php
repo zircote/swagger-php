@@ -10,6 +10,9 @@ use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\GeneratorAwareInterface;
 
+/**
+ * @deprecated since 7.0, removed in 8.0
+ */
 interface AnnotationFactoryInterface extends GeneratorAwareInterface
 {
     /**

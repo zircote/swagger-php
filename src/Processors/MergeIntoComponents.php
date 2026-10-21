@@ -13,6 +13,8 @@ use OpenApi\Undefined;
 
 /**
  * Merge reusable annotation into <code>@OA\Schemas</code>.
+ *
+ * @deprecated since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
  */
 class MergeIntoComponents
 {

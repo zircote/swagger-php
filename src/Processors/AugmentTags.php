@@ -12,6 +12,8 @@ use OpenApi\Undefined;
 
 /**
  * Ensures that all tags used on operations also exist in the global <code>tags</code> list.
+ *
+ * @deprecated since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
  */
 class AugmentTags
 {

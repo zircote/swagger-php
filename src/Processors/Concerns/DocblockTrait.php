@@ -10,6 +10,9 @@ use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAT;
 use OpenApi\Utils\DocBlockParser;
 
+/**
+ * @deprecated since 7.0, removed in 8.0
+ */
 trait DocblockTrait
 {
     private ?DocBlockParser $docBlockParser = null;

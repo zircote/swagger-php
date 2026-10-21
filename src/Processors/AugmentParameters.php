@@ -16,6 +16,8 @@ use OpenApi\Undefined;
 
 /**
  * Augments shared and operations parameters from docblock comments.
+ *
+ * @deprecated since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
  */
 class AugmentParameters implements GeneratorAwareInterface
 {

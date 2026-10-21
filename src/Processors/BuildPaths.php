@@ -13,6 +13,8 @@ use OpenApi\Undefined;
 
 /**
  * Build the openapi->paths using the detected <code>@OA\PathItem</code> and <code>@OA\Operation</code> (<code>@OA\Get</code>, etc).
+ *
+ * @deprecated since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
  */
 class BuildPaths
 {

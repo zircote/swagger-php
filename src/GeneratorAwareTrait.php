@@ -6,6 +6,9 @@
 
 namespace OpenApi;
 
+/**
+ * @deprecated since 7.0, removed in 8.0
+ */
 trait GeneratorAwareTrait
 {
     protected ?Generator $generator = null;

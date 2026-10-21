@@ -13,6 +13,8 @@ use OpenApi\Undefined;
 
 /**
  * Split JsonContent into Schema and MediaType.
+ *
+ * @deprecated since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
  */
 class MergeJsonContent
 {

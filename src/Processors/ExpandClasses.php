@@ -16,6 +16,8 @@ use OpenApi\Undefined;
  *   => inherit from the ancestor if it has a schema (allOf) and stop.
  * - else
  *   => merge ancestor properties into the schema.
+ *
+ * @deprecated since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
  */
 class ExpandClasses
 {

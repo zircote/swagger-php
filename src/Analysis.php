@@ -17,6 +17,8 @@ use OpenApi\Annotations as OA;
  * single parent for a class, a list of parents for an interface — which is why they are spelled
  * out separately rather than as one shape with optional keys.
  *
+ * @deprecated since 7.0, removed in 8.0
+ *
  * @phpstan-type ClassDefinition array{
  *     class: string,
  *     extends: string|null,

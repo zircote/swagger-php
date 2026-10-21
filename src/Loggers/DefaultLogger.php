@@ -10,6 +10,9 @@ use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
+/**
+ * @deprecated since 7.0, removed in 8.0
+ */
 class DefaultLogger extends AbstractLogger implements LoggerInterface
 {
     /**

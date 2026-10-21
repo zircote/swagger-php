@@ -15,6 +15,8 @@ use OpenApi\Undefined;
  * If no <code>tags</code> or <code>paths</code> filters are set, no filtering is performed.
  *
  * All filter (regular) expressions must be enclosed within delimiter characters as they are used as-is.
+ *
+ * @deprecated since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
  */
 class PathFilter
 {

@@ -11,6 +11,8 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Allows to serialize/de-serialize annotations from/to JSON.
+ *
+ * @deprecated since 7.0, removed in 8.0
  */
 class Serializer
 {

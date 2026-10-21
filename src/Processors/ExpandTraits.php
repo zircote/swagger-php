@@ -14,6 +14,8 @@ use OpenApi\Undefined;
  * Look at all (direct) traits for a schema and:
  * - merge trait annotations/methods/properties into the schema if the trait does not have a schema itself
  * - inherit from the trait if it has a schema (allOf).
+ *
+ * @deprecated since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
  */
 class ExpandTraits
 {
