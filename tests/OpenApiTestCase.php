@@ -54,16 +54,6 @@ class OpenApiTestCase extends TestCase
     }
 
     /**
-     * @return array<string, TypeResolverInterface>
-     */
-    public static function getTypeResolvers(): array
-    {
-        return [
-            'type-info' => new TypeInfoTypeResolver(),
-        ];
-    }
-
-    /**
      * @param list<callable&object>|null $processors
      * @param list<class-string>         $strip
      *
