@@ -121,7 +121,7 @@ OpenAPI concepts, so replacing the implementation behind one leaves the contract
 interface leaves with it, which is why it sits beside `Pipeline` rather than in `Contracts/`.
 
 Moving one is a rename plus imports, and a deprecated subclass left at the old location for
-anything documented. `OpenApi\Pipeline` and `Analysers\TokenScanner` are the pattern.
+anything documented, until the next major removes it.
 
 ## Reflectors are the glue
 
