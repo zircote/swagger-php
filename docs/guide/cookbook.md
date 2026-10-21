@@ -23,7 +23,7 @@ For `application/json` content, `OA\MediaType\Json` takes the schema directly, w
   </template>
 </codeblock>
 
-See [`OA\MediaType`](/guide/shortcuts#oa-mediatype).
+See [`OA\MediaType`](/guide/shortcuts#oa-mediatype-json-and-xml).
 
 ## Document a list of objects
 
@@ -47,7 +47,7 @@ A property holding a list takes `OA\Schema\Items`, with the schema of one item a
   </template>
 </codeblock>
 
-See [`OA\Property`](/guide/shortcuts#oa-property-spec-only).
+See [`OA\Schema` subclasses](/guide/shortcuts#oa-schema-subclasses).
 
 ## Describe an object without a PHP class
 
@@ -72,7 +72,7 @@ Classic has no short form for this.
   </template>
 </codeblock>
 
-See [Keyed `properties`](/guide/shortcuts#keyed-properties-spec-only).
+See [Keyed `properties`](/guide/shortcuts#keyed-properties).
 
 ## Add constraints to a class property
 
@@ -98,7 +98,7 @@ Spec also lists a typed property without a default as `required`.
 </codeblock>
 
 An explicit `OA\Property` is needed only where the document uses a different name, such as `full_name` for `$name`, or
-on a getter. See [`OA\Property`](/guide/shortcuts#oa-property-spec-only).
+on a getter. See [`OA\Property`](/guide/shortcuts#implied-oa-property).
 
 ## Document path, query and header parameters
 
@@ -146,7 +146,7 @@ Each controller method gets the attribute for its HTTP method, `OA\Operation\Get
   </template>
 </codeblock>
 
-See the [Spec Attribute Reference](/reference/spec-attributes).
+See [`OA\Operation\*`](/guide/shortcuts#oa-operation).
 
 ## `x-tagGroups`
 OpenApi has the concept of grouping endpoints using tags. On top of that, some tools
@@ -383,6 +383,9 @@ added to the operation, for example:
 </codeblock>
 :::
 
+See [`OA\Security\Requirement`](/guide/shortcuts#oa-security-requirement) and
+[`OA\Security\Scheme\*`](/guide/shortcuts#oa-security-scheme-and-oa-flow).
+
 ## File upload with headers
 
 <codeblock id="file-upload-with-headers">
@@ -469,6 +472,8 @@ This is done on the `@OA\OpenApi` annotation:
 
   </template>
 </codeblock>
+
+See [`OA\Security\Requirement`](/guide/shortcuts#oa-security-requirement).
 
 ## Nested objects
 Complex, nested data structures are defined by nesting `@OA\Property` annotations inside others (with `type="object"`).
@@ -879,6 +884,8 @@ The corresponding bit of the spec will look like this:
 
 `swagger-ui` will show a form that allows to add/remove items (`integer`  values in this case) to/from a list
 and post those values as something like ```?things[]=1&things[]=2&things[]=0```
+
+See [`OA\Parameter\*`](/guide/shortcuts#oa-parameter) and [`OA\Schema` subclasses](/guide/shortcuts#oa-schema-subclasses).
 
 ## Custom response classes
 

@@ -317,7 +317,7 @@ The media type is filled in by the `DefaultMediaType` augmenter, `application/js
 ### Items
 `#[OA\Schema\Items]` is the equivalent to the classic `OA\Items` attribute. Similar to `OA\MediaType\Json` and `Xml` it is a shortcut that allows to skip the outer `OA\Schema(type: 'array')`. The `Shortcuts` augmenter wraps it into `OA\Schema(type: 'array', items: ...)` automatically.
 
-Since `OA\Schema\Items` extends `OA\Schema`, the [implicit `OA\Property`](/guide/shortcuts#oa-property-spec-only) shortcut applies, and the explicit `#[OA\Property]` attribute can be omitted:
+Since `OA\Schema\Items` extends `OA\Schema`, the [implicit `OA\Property`](/guide/shortcuts#implied-oa-property) shortcut applies, and the explicit `#[OA\Property]` attribute can be omitted:
 
 ```php
 // Verbose

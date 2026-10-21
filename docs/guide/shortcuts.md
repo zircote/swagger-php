@@ -1,11 +1,25 @@
 # Shortcuts
 
-To help keeping your annotations simple, there are a few shortcut annotations available in `swagger-php`.
-Typically, these save you from creating boilerplate nested `OA\Schema` annotations.
+Shortcuts save boilerplate: a typed subclass fills in the arguments that are always the same, such as `in: 'path'` or
+`mediaType: 'application/json'`, and some forms save a nested `OA\Schema`.
 
-## `OA\MediaType`
+| Shortcut | Replaces | Classic <Badge type="warning" text="deprecated" /> |
+|---|---|---|
+| [`OA\MediaType\Json`, `OA\MediaType\Xml`](#oa-mediatype-json-and-xml) | `OA\MediaType` with the media type set and a nested `OA\Schema` | `OA\JsonContent`, `OA\XmlContent` |
+| [Implied `OA\Property`](#implied-oa-property) | `OA\Property` beside an `OA\Schema` on a class property | — |
+| [Keyed `properties`](#keyed-properties) | a list of `OA\Property` | — |
+| [`OA\Schema` subclasses](#oa-schema-subclasses) | `OA\Schema` for an array, a reference or additional properties | — |
+| [`OA\Parameter\*`](#oa-parameter) | `OA\Parameter` with `in` | `OA\PathParameter`, `OA\QueryParameter`, `OA\HeaderParameter`, `OA\CookieParameter` |
+| [`OA\Operation\*`](#oa-operation) | `OA\Operation` with `method` | `OA\Get`, `OA\Post` and so on |
+| [`OA\Security\Requirement`](#oa-security-requirement) | a raw security array | — |
+| [`OA\Security\Scheme\*`, `OA\Flow\*`](#oa-security-scheme-and-oa-flow) | `OA\Security\Scheme` with `type`, `OA\Flow` with `flow` | — |
+| [`OA\Property\Encoded`](#oa-property-encoded) | an `OA\Encoding` listed apart from its property | — |
 
-`OA\MediaType` is used to describe the content of a response.
+Each class in the [Spec Attribute Reference](/reference/spec-attributes) shows its shortcut next to the form it replaces.
+
+## `OA\MediaType\Json` and `Xml` {#oa-mediatype-json-and-xml}
+
+`OA\MediaType` describes the content of a response or request body.
 
 <codeblock id="response-media-type">
   <template v-slot:at>
@@ -25,10 +39,8 @@ Typically, these save you from creating boilerplate nested `OA\Schema` annotatio
   </template>
 </codeblock>
 
-For `JSON` and `Xml` content, `swagger-php` provides shortcut
-annotations to avoid having to specify the `mediaType` over and over again.
-
-**Example using `OA\JsonContent`**
+`OA\MediaType\Json` sets `mediaType` to `application/json` and takes the schema keywords (`ref`, `type`, `items`,
+`properties`, `required`) directly, so the `OA\Schema` is not needed:
 
 <codeblock id="response-json-content">
   <template v-slot:at>
@@ -48,15 +60,12 @@ annotations to avoid having to specify the `mediaType` over and over again.
   </template>
 </codeblock>
 
-During processing the `OA\JsonContent` unwraps to `OA\MediaType(mediaType="application/json", schema: OA\Schema(...))`
-and will generate the same output.
+Both generate the same output. `OA\MediaType\Xml` is the same for `application/xml`.
 
-The same applies to `OA\XmlContent`.
+## Implied `OA\Property` {#implied-oa-property}
 
-## `OA\Property` (spec only)
-
-When using the `OpenApi\Spec` namespace, class properties and promoted constructor parameters that have an `OA\Schema`
-attribute do not need an explicit `OA\Property` attribute. It will be added automatically.
+Class properties and promoted constructor parameters that have an `OA\Schema` attribute do not need an explicit
+`OA\Property` attribute. It is added automatically.
 
 **Verbose:**
 
@@ -66,7 +75,7 @@ attribute do not need an explicit `OA\Property` attribute. It will be added auto
 
 <<< @/snippets/guide/shortcuts/optional_property_short_spec.php
 
-Both produce the same output. The implicit `OA\Property` is inferred from the context (class property or promoted
+Both produce the same output. The implied `OA\Property` is inferred from the context (class property or promoted
 constructor parameter with an `OA\Schema`).
 
 This also applies to `OA\Schema` subclasses like `OA\Schema\Items`:
@@ -88,7 +97,7 @@ public function getTags(): array
 
 Without it the property is reported as missing its name and left out of the schema.
 
-## Keyed `properties` (spec only)
+## Keyed `properties` {#keyed-properties}
 
 Where there is no PHP class to declare the properties on, such as an array returned from a controller, `properties` can be
 keyed by property name. The value is an `OA\Schema`, an `OA\Type` for a schema that sets nothing but the type, or an
@@ -111,8 +120,89 @@ list of `OA\Property`.
 string value, so `OA\Type::String` and `'string'` produce the same document. The same goes for `OA\Format` and `format`. A
 format that is not a case can still be passed as a string.
 
-## `OA\Parameter`
+## `OA\Schema` subclasses {#oa-schema-subclasses}
 
-The `OA\Parameter` annotation requires specifying the `in` property to indicate where in the request the parameter is located.
+- `OA\Schema\Items` is an array of the schema it describes: `new OA\Schema\Items(ref: Tag::class)` is
+  `new OA\Schema(type: 'array', items: new OA\Schema(ref: Tag::class))`.
+- `OA\Schema\Ref` is a reference, with an optional `title` and `description` that override the referenced schema's:
+  `new OA\Schema\Ref(ref: Pet::class, description: 'The owner')`.
+- `OA\Schema\AdditionalProperties` is an `OA\Schema` for the `additionalProperties` keyword, named for readability.
 
-Shortcut annotations are available for `OA\PathParameter`, `OA\QueryParameter`, `OA\CookieParameter` and `OA\HeaderParameter`.
+## `OA\Parameter\*` {#oa-parameter}
+
+`OA\Parameter\Path`, `Query`, `Header` and `Cookie` set `in`. A path parameter is always required.
+
+```php
+// instead of
+#[OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer'))]
+
+// write
+#[OA\Parameter\Path(name: 'id', schema: new OA\Schema(type: 'integer'))]
+```
+
+## `OA\Operation\*` {#oa-operation}
+
+`OA\Operation\Get`, `Post`, `Put`, `Patch`, `Delete`, `Head`, `Options` and `Trace` set `method`.
+
+```php
+// instead of
+#[OA\Operation(method: 'get', path: '/pets')]
+
+// write
+#[OA\Operation\Get(path: '/pets')]
+```
+
+## `OA\Security\Requirement` {#oa-security-requirement}
+
+A security requirement names the schemes an operation needs. One `OA\Security\Requirement` is one entry in the
+`security` list: the list means any of them, and `schemes` inside one means all of them.
+
+```php
+// instead of
+#[OA\Operation\Get(path: '/pets', security: [['apiKey' => []]])]
+
+// write
+#[OA\Operation\Get(path: '/pets', security: [new OA\Security\Requirement(scheme: 'apiKey')])]
+
+// both schemes at once
+new OA\Security\Requirement(schemes: ['apiKey' => [], 'oauth' => ['read:pets']])
+```
+
+## `OA\Security\Scheme\*` and `OA\Flow\*` {#oa-security-scheme-and-oa-flow}
+
+`OA\Security\Scheme\ApiKey`, `Http`, `OAuth2`, `OpenIdConnect` and `MutualTls` set `type`.
+`OA\Flow\AuthorizationCode`, `ClientCredentials`, `Implicit` and `Password` set `flow`.
+
+```php
+// instead of
+#[OA\Security\Scheme(component: 'bearerAuth', type: 'http', scheme: 'bearer')]
+
+// write
+#[OA\Security\Scheme\Http(component: 'bearerAuth', scheme: 'bearer')]
+
+#[OA\Security\Scheme\OAuth2(component: 'oauth', flows: [
+    new OA\Flow\ClientCredentials(tokenUrl: 'https://example.com/oauth/token', scopes: []),
+])]
+```
+
+## `OA\Property\Encoded` {#oa-property-encoded}
+
+A property that carries its own `OA\Encoding`, where the encoding would otherwise be listed on the media type, apart
+from the property it belongs to.
+
+```php
+// instead of
+new OA\MediaType\Json(
+    properties: [new OA\Property(property: 'avatar', schema: new OA\Schema(type: 'object'))],
+    encoding: [new OA\Encoding(encoding: 'avatar', contentType: 'image/png')],
+)
+
+// write
+new OA\MediaType\Json(properties: [
+    new OA\Property\Encoded(
+        property: 'avatar',
+        schema: new OA\Schema(type: 'object'),
+        encoding: new OA\Encoding(contentType: 'image/png'),
+    ),
+])
+```
