@@ -11,7 +11,9 @@ In addition to this page, there are also a number of [examples](https://github.c
 
 ### [AdditionalProperties](https://github.com/zircote/swagger-php/tree/master/src/Annotations/AdditionalProperties.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Schema\AdditionalProperties` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Schema\AdditionalProperties` instead
+:::
 
 #### Allowed in
 ---
@@ -23,12 +25,13 @@ In addition to this page, there are also a number of [examples](https://github.c
 
 ### [Attachable](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Attachable.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Attachable` instead
+:::
+
 A container for custom data to be attached to an annotation.
 
 These will be ignored by `swagger-php` but can be used for custom processing.
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Attachable` instead
 
 #### Allowed in
 ---
@@ -36,14 +39,14 @@ These will be ignored by `swagger-php` but can be used for custom processing.
 
 ### [Components](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Components.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Components` instead
+:::
+
 Holds a set of reusable objects for different aspects of the OA.
 
 All objects defined within the components object will have no effect on the API unless they are explicitly
 referenced from properties outside the components object.
-
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Components` instead
 
 #### Allowed in
 ---
@@ -66,11 +69,11 @@ referenced from properties outside the components object.
 
 ### [Contact](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Contact.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Contact` instead
+:::
+
 Contact information for the exposed API.
-
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Contact` instead
 
 #### Allowed in
 ---
@@ -97,10 +100,11 @@ Contact information for the exposed API.
 
 ### [CookieParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/CookieParameter.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Cookie` instead
+:::
+
 A <code>@OA\Request</code> cookie parameter.
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Cookie` instead
 
 #### Allowed in
 ---
@@ -119,7 +123,9 @@ A <code>@OA\Request</code> cookie parameter.
 
 ### [Delete](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Delete.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Delete` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Delete` instead
+:::
 
 #### Allowed in
 ---
@@ -138,15 +144,15 @@ A <code>@OA\Request</code> cookie parameter.
 
 ### [Discriminator](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Discriminator.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Discriminator` instead
+:::
+
 The discriminator is a specific object in a schema which is used to inform the consumer of
 the specification of an alternative schema based on the value associated with it.
 
 This object is based on the [JSON Schema Specification](http://json-schema.org) and uses a predefined subset of it.
 On top of this subset, there are extensions provided by this specification to allow for more complete documentation.
-
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Discriminator` instead
 
 #### Allowed in
 ---
@@ -172,11 +178,11 @@ On top of this subset, there are extensions provided by this specification to al
 
 ### [Encoding](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Encoding.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Encoding` instead
+:::
+
 A single encoding definition applied to a single schema property.
-
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Encoding` instead
 
 #### Allowed in
 ---
@@ -207,7 +213,9 @@ A single encoding definition applied to a single schema property.
 
 ### [Examples](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Examples.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Example` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Example` instead
+:::
 
 #### Allowed in
 ---
@@ -251,11 +259,11 @@ The value field and externalValue field are mutually exclusive.</p><table class=
 
 ### [ExternalDocumentation](https://github.com/zircote/swagger-php/tree/master/src/Annotations/ExternalDocumentation.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\ExternalDocumentation` instead
+:::
+
 Allows referencing an external resource for extended documentation.
-
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\ExternalDocumentation` instead
 
 #### Allowed in
 ---
@@ -280,11 +288,11 @@ Allows referencing an external resource for extended documentation.
 
 ### [Flow](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Flow.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Flow` instead
+:::
+
 Configuration details for a supported OAuth flow.
-
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Flow` instead
 
 #### Allowed in
 ---
@@ -325,7 +333,9 @@ A map between the scope name and a short description for it.</p><table class="ta
 
 ### [Get](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Get.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Get` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Get` instead
+:::
 
 #### Allowed in
 ---
@@ -344,7 +354,9 @@ A map between the scope name and a short description for it.</p><table class="ta
 
 ### [Head](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Head.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Head` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Head` instead
+:::
 
 #### Allowed in
 ---
@@ -363,7 +375,9 @@ A map between the scope name and a short description for it.</p><table class="ta
 
 ### [Header](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Header.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Header` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Header` instead
+:::
 
 #### Allowed in
 ---
@@ -420,10 +434,11 @@ If style is used, and if behavior is n/a (cannot be serialized), the value of al
 
 ### [HeaderParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/HeaderParameter.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Header` instead
+:::
+
 A <code>@OA\Request</code> header parameter.
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Header` instead
 
 #### Allowed in
 ---
@@ -442,13 +457,13 @@ A <code>@OA\Request</code> header parameter.
 
 ### [Info](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Info.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Info` instead
+:::
+
 The object provides metadata about the API.
 
 The metadata may be used by the clients if needed and may be presented in editing or documentation generation tools for convenience.
-
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Info` instead
 
 #### Allowed in
 ---
@@ -485,10 +500,11 @@ Must be in the format of an url.</p><table class="table-plain"><tbody><tr><td><i
 
 ### [Items](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Items.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Schema\Items` instead
+:::
+
 The description of an item in a Schema with type <code>array</code>.
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Schema\Items` instead
 
 #### Allowed in
 ---
@@ -499,6 +515,10 @@ The description of an item in a Schema with type <code>array</code>.
 <a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#examples">Examples</a>, <a href="#xml">Xml</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#attachable">Attachable</a>
 
 ### [JsonContent](https://github.com/zircote/swagger-php/tree/master/src/Annotations/JsonContent.php)
+
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\MediaType\Json` instead
+:::
 
 Shorthand for a json response.
 
@@ -518,20 +538,17 @@ vs.
 )
 ```
 
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\MediaType\Json` instead
-
 #### Nested elements
 ---
 <a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#encoding">Encoding</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
 
 ### [License](https://github.com/zircote/swagger-php/tree/master/src/Annotations/License.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\License` instead
+:::
+
 License information for the exposed API.
-
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\License` instead
 
 #### Allowed in
 ---
@@ -562,6 +579,10 @@ The <code>url</code> field is mutually exclusive of the <code>identifier</code> 
 
 ### [Link](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Link.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Link` instead
+:::
+
 The Link object represents a possible design-time link for a response.
 
 The presence of a link does not guarantee the caller's ability to successfully invoke it, rather it provides a known
@@ -572,10 +593,6 @@ link information in the runtime response.
 
 For computing links, and providing instructions to execute them, a runtime expression is used for
 accessing values in an operation and using them as parameters while invoking the linked operation.
-
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Link` instead
 
 #### Allowed in
 ---
@@ -624,13 +641,13 @@ CommonMark syntax may be used for rich text representation.</p><table class="tab
 
 ### [MediaType](https://github.com/zircote/swagger-php/tree/master/src/Annotations/MediaType.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\MediaType` instead
+:::
+
 Each Media Type object provides schema and examples for the media type identified by its key.
 
 Parameter encodings can be set either here, or on nested `Property` annotations directly.
-
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\MediaType` instead
 
 #### Allowed in
 ---
@@ -661,11 +678,11 @@ the example value shall override the example provided by the schema.</p><table c
 
 ### [OpenApi](https://github.com/zircote/swagger-php/tree/master/src/Annotations/OpenApi.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\OpenApi` instead
+:::
+
 This is the root document object for the API specification.
-
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\OpenApi` instead
 
 #### Nested elements
 ---
@@ -697,7 +714,9 @@ To make security optional, an empty security requirement (<code>{}</code>) can b
 
 ### [Options](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Options.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Options` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Options` instead
+:::
 
 #### Allowed in
 ---
@@ -716,13 +735,13 @@ To make security optional, an empty security requirement (<code>{}</code>) can b
 
 ### [Parameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Parameter.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter` instead
+:::
+
 Describes a single operation parameter.
 
 A unique parameter is defined by a combination of a name and location.
-
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter` instead
 
 #### Allowed in
 ---
@@ -825,7 +844,9 @@ This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table
 
 ### [Patch](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Patch.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Patch` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Patch` instead
+:::
 
 #### Allowed in
 ---
@@ -844,14 +865,14 @@ This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table
 
 ### [PathItem](https://github.com/zircote/swagger-php/tree/master/src/Annotations/PathItem.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\PathItem` instead
+:::
+
 Describes the operations available on a single path.
 
 A Path Item may be empty, due to ACL constraints.
 The path itself is still exposed to the documentation viewer, but they will not know which operations and parameters are available.
-
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\PathItem` instead
 
 #### Allowed in
 ---
@@ -880,10 +901,11 @@ The path itself is still exposed to the documentation viewer, but they will not 
 
 ### [PathParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/PathParameter.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Path` instead
+:::
+
 A <code>@OA\Request</code> path parameter.
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Path` instead
 
 #### Allowed in
 ---
@@ -904,7 +926,9 @@ A <code>@OA\Request</code> path parameter.
 
 ### [Post](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Post.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Post` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Post` instead
+:::
 
 #### Allowed in
 ---
@@ -923,7 +947,9 @@ A <code>@OA\Request</code> path parameter.
 
 ### [Property](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Property.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Property` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Property` instead
+:::
 
 #### Allowed in
 ---
@@ -942,7 +968,9 @@ A <code>@OA\Request</code> path parameter.
 
 ### [Put](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Put.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Put` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Put` instead
+:::
 
 #### Allowed in
 ---
@@ -961,10 +989,11 @@ A <code>@OA\Request</code> path parameter.
 
 ### [Query](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Query.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation` with `method: 'query'` instead
+:::
+
 @since OpenAPI 3.2.0
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation` with `method: 'query'` instead
 
 #### Allowed in
 ---
@@ -983,10 +1012,11 @@ A <code>@OA\Request</code> path parameter.
 
 ### [QueryParameter](https://github.com/zircote/swagger-php/tree/master/src/Annotations/QueryParameter.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Query` instead
+:::
+
 A <code>@OA\Request</code> query parameter.
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Query` instead
 
 #### Allowed in
 ---
@@ -1005,11 +1035,11 @@ A <code>@OA\Request</code> query parameter.
 
 ### [RequestBody](https://github.com/zircote/swagger-php/tree/master/src/Annotations/RequestBody.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\RequestBody` instead
+:::
+
 Describes a single request body.
-
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\RequestBody` instead
 
 #### Allowed in
 ---
@@ -1045,12 +1075,12 @@ Otherwise, the property may be included and its default value is false.</p><tabl
 
 ### [Response](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Response.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Response` instead
+:::
+
 Describes a single response from an API Operation, including design-time,
 static links to operations based on the response.
-
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Response` instead
 
 #### Allowed in
 ---
@@ -1081,16 +1111,16 @@ CommonMark syntax may be used for rich text representation.</p><table class="tab
 
 ### [Schema](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Schema.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Schema` instead
+:::
+
 The definition of input and output data types.
 
 These types can be objects, but also primitives and arrays.
 
 This object is based on the [JSON Schema Specification](http://json-schema.org) and uses a predefined subset of it.
 On top of this subset, there are extensions provided by this specification to allow for more complete documentation.
-
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Schema` instead
 
 #### Allowed in
 ---
@@ -1203,7 +1233,9 @@ https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rf
 
 ### [SecurityScheme](https://github.com/zircote/swagger-php/tree/master/src/Annotations/SecurityScheme.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Security\Scheme` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Security\Scheme` instead
+:::
 
 #### Allowed in
 ---
@@ -1244,11 +1276,11 @@ Bearer tokens are usually generated by an authorization server, so this informat
 
 ### [Server](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Server.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Server` instead
+:::
+
 An object representing a server.
-
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Server` instead
 
 #### Allowed in
 ---
@@ -1279,11 +1311,11 @@ CommonMark syntax may be used for rich text representation.</p><table class="tab
 
 ### [ServerVariable](https://github.com/zircote/swagger-php/tree/master/src/Annotations/ServerVariable.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\ServerVariable` instead
+:::
+
 An object representing a server variable for server URL template substitution.
-
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\ServerVariable` instead
 
 #### Allowed in
 ---
@@ -1322,7 +1354,9 @@ CommonMark syntax MAY be used for rich text representation.</p><table class="tab
 
 ### [Tag](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Tag.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Tag` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Tag` instead
+:::
 
 #### Allowed in
 ---
@@ -1359,7 +1393,9 @@ CommonMark syntax MAY be used for rich text representation.</p><table class="tab
 
 ### [Trace](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Trace.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Trace` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Trace` instead
+:::
 
 #### Allowed in
 ---
@@ -1378,12 +1414,13 @@ CommonMark syntax MAY be used for rich text representation.</p><table class="tab
 
 ### [Webhook](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Webhook.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use the `webhook:` argument of an operation attribute instead
+:::
+
 Acts like a <code>PathItem</code> with the main difference being that it requires <code>webhook</code> instead of <code>path</code>.
 
 @since OpenAPI 3.1.0
-
-
-@deprecated since 7.0, removed in 8.0 - use the `webhook:` argument of an operation attribute instead
 
 #### Allowed in
 ---
@@ -1402,7 +1439,9 @@ Acts like a <code>PathItem</code> with the main difference being that it require
 
 ### [Xml](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Xml.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Xml` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Xml` instead
+:::
 
 #### Allowed in
 ---
@@ -1446,12 +1485,13 @@ Default value is false. The definition takes effect only when defined alongside 
 
 ### [XmlContent](https://github.com/zircote/swagger-php/tree/master/src/Annotations/XmlContent.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\MediaType\Xml` instead
+:::
+
 Shorthand for a xml response.
 
 Use as <code>@OA\Schema</code> inside a <code>Response</code> and <code>MediaType</code>-><code>'application/xml'</code> will be generated.
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\MediaType\Xml` instead
 
 #### Nested elements
 ---
