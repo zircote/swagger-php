@@ -1,14 +1,11 @@
 # FAQ
 
-## Warning: Required `@OA\Info()` not found
+## Error: `info is required`
 
-With adding support for [PHP attributes](https://www.php.net/manual/en/language.attributes.php) in version 4, some
-architectural changes had to be made.
+Classic mode reports this as *Required `@OA\Info()` not found*.
 
-One of those changes is that placing annotations in your source files is now subject to the same limitations as attributes.
-These limits are dictated by the PHP reflection API, specifically where it provides access to attributes and doc comments.
-
-This means stand-alone annotations are no longer supported and ignored as `swagger-php` cannot _"see"_ them anymore.
+`swagger-php` reads attributes and annotations through the PHP reflection API, so it only finds them where reflection
+gives access to attributes and doc comments. A stand-alone docblock annotation is ignored.
 
 Supported locations:
 * class
@@ -18,11 +15,11 @@ Supported locations:
 * property
 * class/interface const
 
-Most commonly this manifests with a warning about the required `@OA\Info` not being found. While most annotations have specific
-related code, the info annotation (and a few more) is kind of global.
+Most attributes belong to a specific piece of code. `OA\Info` (and a few more) is global, so there is no obvious place for
+it, and it ends up nowhere.
 
-The simplest solution to avoid this issue is to add a 'dummy' class to the docblock and add
-all 'global' annotations (e.g. `OA\Tag`, `OA\Server`, `OA\SecurityScheme`, etc.) **in a single docblock** to that class.
+The simplest solution is a 'dummy' class that holds all global attributes (e.g. `OA\Info`, `OA\Tag`, `OA\Server`).
+With annotations they go **in a single docblock** on that class.
 
 <codeblock id="dummy-class">
   <template v-slot:at>
@@ -42,14 +39,13 @@ all 'global' annotations (e.g. `OA\Tag`, `OA\Server`, `OA\SecurityScheme`, etc.)
   </template>
 </codeblock>
 
-**As of version 4.8 the `doctrine/annotations` library is optional and might cause the same message.**
-
-If this is the case, `doctrine annotations` must be installed separately:
+**Docblock annotations need the `doctrine/annotations` library**, which is not installed with `swagger-php`. Without it,
+annotations are not read, and the same message appears:
 ```shell
 composer require doctrine/annotations
 ```
 
-## Annotations missing
+## Annotations missing <Badge type="warning" text="deprecated" />
 
 Another side effect of using reflection is that `swagger-php` _"can't see"_ multiple consecutive docblocks anymore as the PHP reflection API only provides access to the docblock closest to a given structural element.
 
@@ -117,7 +113,7 @@ openapi: 3.1.0
 paths:
   '/api/v0.0.2/notifications/{id}':
     delete:
-      summary: 'XDelete notification by ID.'
+      summary: 'Delete notification by ID.'
       operationId: deleteNotificationById
       parameters:
         -
@@ -142,7 +138,7 @@ that class. Effectively, this means that `class_exists("\SomeClass")` returns `f
 
 There are a number of reasons why this could happen. If you are using the `openapi` command line tool from a global
 installation typically the application classloader (composer) is not active.
-With you application root being `myapp` you could try:
+With your application root being `myapp` you could try:
 
 ```shell
 openapi -b myapp/vendor/autoload.php myapp/src
@@ -152,7 +148,7 @@ The `-b` allows to execute some extra PHP code to load whatever is needed to reg
 
 ::: warning
 One common case for this type of error is when trying out annotations in a standalone single file.
-Typically, this means it will not use namespaces or confirm to any other autoloading standards.
+Typically, this means it will not use namespaces or conform to any other autoloading standards.
 
 In this case the `-b` option can also be used to autoload the actual file.
 
@@ -171,11 +167,13 @@ Another reason for this error could be that your class actually has the wrong na
 Depending on your framework, this might still work in the context of your app, but the composer autoloader
 alone might not be able to load your class (assuming you are using composer).
 
-## No output from `openapi` command line tool
+## Where the `openapi` output goes
 
-Depending on your PHP configuration, running the `openapi` command line tool might result in no output at all.
+Without `-o`, the `openapi` command line tool writes the document to stdout and all messages to stderr. Redirecting stdout
+keeps the messages out of the file:
 
-The reason for this is that `openapi` currently uses the [`error_log`](https://www.php.net/manual/en/function.error-log.php)
-function for all output.
+```shell
+openapi src > openapi.yaml
+```
 
-So if this is configured to write to a file, then it will seem like the command is broken.
+A run that reports an error still writes the document, and exits with `1`. Warnings do not change the exit code.
