@@ -15,6 +15,33 @@ use OpenApi\Spec as OA;
  * bundles property and encoding together. The `MediaTypes` augmenter promotes the nested
  * encoding to the parent MediaType automatically.
  *
+ * Allows to shorten this:
+ *
+ * ```php
+ * new OA\MediaType\Json(
+ *     properties: [
+ *         new OA\Property(property: 'avatar', schema: new OA\Schema(type: 'object')),
+ *     ],
+ *     encoding: [
+ *         new OA\Encoding(encoding: 'avatar', contentType: 'image/png'),
+ *     ],
+ * )
+ * ```
+ *
+ * to this:
+ *
+ * ```php
+ * new OA\MediaType\Json(
+ *     properties: [
+ *         new OA\Property\Encoded(
+ *             property: 'avatar',
+ *             schema: new OA\Schema(type: 'object'),
+ *             encoding: new OA\Encoding(contentType: 'image/png'),
+ *         ),
+ *     ],
+ * )
+ * ```
+ *
  * @see [Encoding Object](https://spec.openapis.org/oas/v3.1.1.html#encoding-object)
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::TARGET_PARAMETER | \Attribute::TARGET_CLASS_CONSTANT | \Attribute::IS_REPEATABLE)]

@@ -11,6 +11,25 @@ use OpenApi\Spec as OA;
 /**
  * An OAuth2 security scheme with one or more flows.
  *
+ * Allows to shorten this:
+ *
+ * ```php
+ * #[OA\Security\Scheme(
+ *     component: 'oauth',
+ *     type: 'oauth2',
+ *     flows: [new OA\Flow\ClientCredentials(tokenUrl: 'https://example.com/oauth/token', scopes: [])],
+ * )]
+ * ```
+ *
+ * to this:
+ *
+ * ```php
+ * #[OA\Security\Scheme\OAuth2(
+ *     component: 'oauth',
+ *     flows: [new OA\Flow\ClientCredentials(tokenUrl: 'https://example.com/oauth/token', scopes: [])],
+ * )]
+ * ```
+ *
  * @see [Security Scheme Object](https://spec.openapis.org/oas/v3.1.1.html#security-scheme-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]

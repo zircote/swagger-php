@@ -11,6 +11,27 @@ use OpenApi\Spec as OA;
 /**
  * Configuration for the OAuth2 Authorization Code flow.
  *
+ * Allows to shorten this:
+ *
+ * ```php
+ * new OA\Flow(
+ *     flow: 'authorizationCode',
+ *     authorizationUrl: 'https://example.com/oauth/authorize',
+ *     tokenUrl: 'https://example.com/oauth/token',
+ *     scopes: ['read:pets' => 'Read your pets'],
+ * )
+ * ```
+ *
+ * to this:
+ *
+ * ```php
+ * new OA\Flow\AuthorizationCode(
+ *     authorizationUrl: 'https://example.com/oauth/authorize',
+ *     tokenUrl: 'https://example.com/oauth/token',
+ *     scopes: ['read:pets' => 'Read your pets'],
+ * )
+ * ```
+ *
  * @see [OAuth Flow Object](https://spec.openapis.org/oas/v3.1.1.html#oauth-flow-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]

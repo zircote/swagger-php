@@ -23,13 +23,17 @@ use OpenApi\Undefined;
  *
  * Allows to shorten this:
  *
- *   #[OA\Response(response: 200, content: [
- *       new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
- *   ])]
+ * ```php
+ * #[OA\Response(response: 200, content: [
+ *     new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
+ * ])]
+ * ```
  *
  * to this:
  *
- *   #[OA\Response(response: 200, content: [new OA\MediaType\Xml(type: 'array', items: new OA\Schema(ref: Pet::class))])]
+ * ```php
+ * #[OA\Response(response: 200, content: [new OA\MediaType\Xml(type: 'array', items: new OA\Schema(ref: Pet::class))])]
+ * ```
  *
  * The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema` automatically.
  *

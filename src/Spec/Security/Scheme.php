@@ -21,6 +21,12 @@ use OpenApi\Spec\Parameter;
  * - `OA\Security\Scheme\OpenIdConnect` - OpenID Connect discovery
  * - `OA\Security\Scheme\MutualTls` - Mutual TLS authentication
  *
+ * Example:
+ *
+ * ```php
+ * #[OA\Security\Scheme(component: 'bearerAuth', type: 'http', scheme: 'bearer')]
+ * ```
+ *
  * @see [Security Scheme Object](https://spec.openapis.org/oas/v3.1.1.html#security-scheme-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]

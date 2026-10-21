@@ -15,6 +15,21 @@ use OpenApi\Utils\SecurityRequirement;
  * Each requirement instance represents one entry in the security array (OR logic).
  * Multiple schemes within a single requirement represent AND logic.
  *
+ * Replaces the raw array form:
+ *
+ * ```php
+ * #[OA\Operation\Get(path: '/pets', security: [['apiKey' => []]])]
+ * ```
+ *
+ * with:
+ *
+ * ```php
+ * #[OA\Operation\Get(path: '/pets', security: [new OA\Security\Requirement(scheme: 'apiKey')])]
+ *
+ * // both schemes at once
+ * new OA\Security\Requirement(schemes: ['apiKey' => [], 'oauth' => ['read:pets']])
+ * ```
+ *
  * @see [Security Requirement Object](https://spec.openapis.org/oas/v3.1.1.html#security-requirement-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]

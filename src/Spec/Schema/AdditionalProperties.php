@@ -14,10 +14,12 @@ use OpenApi\Spec as OA;
  * Identical to OA\Schema in functionality — exists for readability when declaring
  * schemas with constrained additional properties:
  *
- *     new OA\Schema(
- *         type: 'object',
- *         additionalProperties: new OA\Schema\AdditionalProperties(type: 'string'),
- *     )
+ * ```php
+ * new OA\Schema(
+ *     type: 'object',
+ *     additionalProperties: new OA\Schema\AdditionalProperties(type: 'string'),
+ * )
+ * ```
  */
 final class AdditionalProperties extends OA\Schema
 {

@@ -12,6 +12,18 @@ use OpenApi\Undefined;
 /**
  * A parameter passed via the URL query string.
  *
+ * Allows to shorten this:
+ *
+ * ```php
+ * #[OA\Parameter(name: 'limit', in: 'query', schema: new OA\Schema(type: 'integer'))]
+ * ```
+ *
+ * to this:
+ *
+ * ```php
+ * #[OA\Parameter\Query(name: 'limit', schema: new OA\Schema(type: 'integer'))]
+ * ```
+ *
  * @see [Parameter Object](https://spec.openapis.org/oas/v3.1.1.html#parameter-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]

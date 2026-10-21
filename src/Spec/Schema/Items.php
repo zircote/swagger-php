@@ -13,20 +13,24 @@ use OpenApi\Spec as OA;
  *
  * Allows to shorten this:
  *
- *   #[OA\Schema]
- *   class Pet {
- *       #[OA\Property]
- *       #[OA\Schema(type: 'array', items: new OA\Schema(ref: MyModel::class))]
- *       public array $names;
- *   }
+ * ```php
+ * #[OA\Schema]
+ * class Pet {
+ *     #[OA\Property]
+ *     #[OA\Schema(type: 'array', items: new OA\Schema(ref: MyModel::class))]
+ *     public array $names;
+ * }
+ * ```
  *
  * to this:
  *
- *   #[OA\Schema]
- *   class Pet {
- *       #[OA\Schema\Items(ref: MyModel::class)]
- *       public array $names;
- *   }
+ * ```php
+ * #[OA\Schema]
+ * class Pet {
+ *     #[OA\Schema\Items(ref: MyModel::class)]
+ *     public array $names;
+ * }
+ * ```
  *
  * Since Items extends Schema, the implicit `OA\Property` shortcut applies — no explicit
  * `#[OA\Property]` is needed. The `Shortcuts` augmenter wraps this into

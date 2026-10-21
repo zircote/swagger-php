@@ -15,6 +15,18 @@ use OpenApi\Undefined;
 /**
  * Shorthand for an HTTP GET operation.
  *
+ * Allows to shorten this:
+ *
+ * ```php
+ * #[OA\Operation(method: 'get', path: '/pets')]
+ * ```
+ *
+ * to this:
+ *
+ * ```php
+ * #[OA\Operation\Get(path: '/pets')]
+ * ```
+ *
  * @see [Operation Object](https://spec.openapis.org/oas/v3.1.1.html#operation-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]

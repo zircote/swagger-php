@@ -288,6 +288,27 @@ Produces:
 
 Configuration for the OAuth2 Authorization Code flow.
 
+Allows to shorten this:
+
+```php
+new OA\Flow(
+    flow: 'authorizationCode',
+    authorizationUrl: 'https://example.com/oauth/authorize',
+    tokenUrl: 'https://example.com/oauth/token',
+    scopes: ['read:pets' => 'Read your pets'],
+)
+```
+
+to this:
+
+```php
+new OA\Flow\AuthorizationCode(
+    authorizationUrl: 'https://example.com/oauth/authorize',
+    tokenUrl: 'https://example.com/oauth/token',
+    scopes: ['read:pets' => 'Read your pets'],
+)
+```
+
 #### Allowed in
 ---
 <a href="#security-scheme">Security\Scheme</a>
@@ -315,6 +336,25 @@ Configuration for the OAuth2 Authorization Code flow.
 
 Configuration for the OAuth2 Client Credentials flow.
 
+Allows to shorten this:
+
+```php
+new OA\Flow(
+    flow: 'clientCredentials',
+    tokenUrl: 'https://example.com/oauth/token',
+    scopes: ['read:pets' => 'Read your pets'],
+)
+```
+
+to this:
+
+```php
+new OA\Flow\ClientCredentials(
+    tokenUrl: 'https://example.com/oauth/token',
+    scopes: ['read:pets' => 'Read your pets'],
+)
+```
+
 #### Allowed in
 ---
 <a href="#security-scheme">Security\Scheme</a>
@@ -340,6 +380,25 @@ Configuration for the OAuth2 Client Credentials flow.
 
 Configuration for the OAuth2 Implicit flow.
 
+Allows to shorten this:
+
+```php
+new OA\Flow(
+    flow: 'implicit',
+    authorizationUrl: 'https://example.com/oauth/authorize',
+    scopes: ['read:pets' => 'Read your pets'],
+)
+```
+
+to this:
+
+```php
+new OA\Flow\Implicit(
+    authorizationUrl: 'https://example.com/oauth/authorize',
+    scopes: ['read:pets' => 'Read your pets'],
+)
+```
+
 #### Allowed in
 ---
 <a href="#security-scheme">Security\Scheme</a>
@@ -364,6 +423,25 @@ Configuration for the OAuth2 Implicit flow.
 ### [Flow\Password](https://github.com/zircote/swagger-php/tree/master/src/Spec/Flow/Password.php)
 
 Configuration for the OAuth2 Resource Owner Password flow.
+
+Allows to shorten this:
+
+```php
+new OA\Flow(
+    flow: 'password',
+    tokenUrl: 'https://example.com/oauth/token',
+    scopes: ['read:pets' => 'Read your pets'],
+)
+```
+
+to this:
+
+```php
+new OA\Flow\Password(
+    tokenUrl: 'https://example.com/oauth/token',
+    scopes: ['read:pets' => 'Read your pets'],
+)
+```
 
 #### Allowed in
 ---
@@ -574,13 +652,17 @@ A shortcut version of `OA\MediaType` with some of the more common `OA\Schema` pr
 
 Allows to shorten this:
 
-  #[OA\Response(response: 200, content: [
-      new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
-  ])]
+```php
+#[OA\Response(response: 200, content: [
+    new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
+])]
+```
 
 to this:
 
-  #[OA\Response(response: 200, content: [new OA\MediaType\Json(type: 'array', items: new OA\Schema(ref: Pet::class))])]
+```php
+#[OA\Response(response: 200, content: [new OA\MediaType\Json(type: 'array', items: new OA\Schema(ref: Pet::class))])]
+```
 
 The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema` automatically.
 
@@ -630,13 +712,17 @@ A shortcut version of `OA\MediaType` with some of the more common `OA\Schema` pr
 
 Allows to shorten this:
 
-  #[OA\Response(response: 200, content: [
-      new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
-  ])]
+```php
+#[OA\Response(response: 200, content: [
+    new OA\MediaType(mediaType: 'application/xml', schema: new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))),
+])]
+```
 
 to this:
 
-  #[OA\Response(response: 200, content: [new OA\MediaType\Xml(type: 'array', items: new OA\Schema(ref: Pet::class))])]
+```php
+#[OA\Response(response: 200, content: [new OA\MediaType\Xml(type: 'array', items: new OA\Schema(ref: Pet::class))])]
+```
 
 The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema` automatically.
 
@@ -780,6 +866,18 @@ For webhooks, use `webhook` instead of `path`:
 
 Shorthand for an HTTP DELETE operation.
 
+Allows to shorten this:
+
+```php
+#[OA\Operation(method: 'delete', path: '/pets/{id}')]
+```
+
+to this:
+
+```php
+#[OA\Operation\Delete(path: '/pets/{id}')]
+```
+
 #### Parameters
 ---
 <dl>
@@ -823,6 +921,18 @@ Shorthand for an HTTP DELETE operation.
 
 Shorthand for an HTTP GET operation.
 
+Allows to shorten this:
+
+```php
+#[OA\Operation(method: 'get', path: '/pets')]
+```
+
+to this:
+
+```php
+#[OA\Operation\Get(path: '/pets')]
+```
+
 #### Parameters
 ---
 <dl>
@@ -863,6 +973,18 @@ Shorthand for an HTTP GET operation.
 ### [Operation\Head](https://github.com/zircote/swagger-php/tree/master/src/Spec/Operation/Head.php)
 
 Shorthand for an HTTP HEAD operation.
+
+Allows to shorten this:
+
+```php
+#[OA\Operation(method: 'head', path: '/pets')]
+```
+
+to this:
+
+```php
+#[OA\Operation\Head(path: '/pets')]
+```
 
 #### Parameters
 ---
@@ -905,6 +1027,18 @@ Shorthand for an HTTP HEAD operation.
 
 Shorthand for an HTTP OPTIONS operation.
 
+Allows to shorten this:
+
+```php
+#[OA\Operation(method: 'options', path: '/pets')]
+```
+
+to this:
+
+```php
+#[OA\Operation\Options(path: '/pets')]
+```
+
 #### Parameters
 ---
 <dl>
@@ -945,6 +1079,18 @@ Shorthand for an HTTP OPTIONS operation.
 ### [Operation\Patch](https://github.com/zircote/swagger-php/tree/master/src/Spec/Operation/Patch.php)
 
 Shorthand for an HTTP PATCH operation.
+
+Allows to shorten this:
+
+```php
+#[OA\Operation(method: 'patch', path: '/pets/{id}')]
+```
+
+to this:
+
+```php
+#[OA\Operation\Patch(path: '/pets/{id}')]
+```
 
 #### Parameters
 ---
@@ -989,6 +1135,18 @@ Shorthand for an HTTP PATCH operation.
 
 Shorthand for an HTTP POST operation.
 
+Allows to shorten this:
+
+```php
+#[OA\Operation(method: 'post', path: '/pets')]
+```
+
+to this:
+
+```php
+#[OA\Operation\Post(path: '/pets')]
+```
+
 #### Parameters
 ---
 <dl>
@@ -1032,6 +1190,18 @@ Shorthand for an HTTP POST operation.
 
 Shorthand for an HTTP PUT operation.
 
+Allows to shorten this:
+
+```php
+#[OA\Operation(method: 'put', path: '/pets/{id}')]
+```
+
+to this:
+
+```php
+#[OA\Operation\Put(path: '/pets/{id}')]
+```
+
 #### Parameters
 ---
 <dl>
@@ -1074,6 +1244,18 @@ Shorthand for an HTTP PUT operation.
 ### [Operation\Trace](https://github.com/zircote/swagger-php/tree/master/src/Spec/Operation/Trace.php)
 
 Shorthand for an HTTP TRACE operation.
+
+Allows to shorten this:
+
+```php
+#[OA\Operation(method: 'trace', path: '/pets')]
+```
+
+to this:
+
+```php
+#[OA\Operation\Trace(path: '/pets')]
+```
 
 #### Parameters
 ---
@@ -1197,6 +1379,18 @@ Produces:
 
 A parameter passed via an HTTP cookie.
 
+Allows to shorten this:
+
+```php
+#[OA\Parameter(name: 'session', in: 'cookie', schema: new OA\Schema(type: 'string'))]
+```
+
+to this:
+
+```php
+#[OA\Parameter\Cookie(name: 'session', schema: new OA\Schema(type: 'string'))]
+```
+
 #### Allowed in
 ---
 <a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
@@ -1240,6 +1434,18 @@ A parameter passed via an HTTP cookie.
 
 A parameter passed via an HTTP header.
 
+Allows to shorten this:
+
+```php
+#[OA\Parameter(name: 'X-Request-Id', in: 'header', schema: new OA\Schema(type: 'string'))]
+```
+
+to this:
+
+```php
+#[OA\Parameter\Header(name: 'X-Request-Id', schema: new OA\Schema(type: 'string'))]
+```
+
 #### Allowed in
 ---
 <a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
@@ -1282,6 +1488,18 @@ A parameter passed via an HTTP header.
 ### [Parameter\Path](https://github.com/zircote/swagger-php/tree/master/src/Spec/Parameter/Path.php)
 
 A parameter passed via the URL path (always required).
+
+Allows to shorten this:
+
+```php
+#[OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer'))]
+```
+
+to this:
+
+```php
+#[OA\Parameter\Path(name: 'id', schema: new OA\Schema(type: 'integer'))]
+```
 
 #### Allowed in
 ---
@@ -1327,6 +1545,18 @@ A parameter passed via the URL path (always required).
 ### [Parameter\Query](https://github.com/zircote/swagger-php/tree/master/src/Spec/Parameter/Query.php)
 
 A parameter passed via the URL query string.
+
+Allows to shorten this:
+
+```php
+#[OA\Parameter(name: 'limit', in: 'query', schema: new OA\Schema(type: 'integer'))]
+```
+
+to this:
+
+```php
+#[OA\Parameter\Query(name: 'limit', schema: new OA\Schema(type: 'integer'))]
+```
 
 #### Allowed in
 ---
@@ -1488,6 +1718,33 @@ Shortcut for a property that carries its own encoding definition.
 Instead of declaring `OA\Encoding` separately on the `OA\MediaType`, this attribute
 bundles property and encoding together. The `MediaTypes` augmenter promotes the nested
 encoding to the parent MediaType automatically.
+
+Allows to shorten this:
+
+```php
+new OA\MediaType\Json(
+    properties: [
+        new OA\Property(property: 'avatar', schema: new OA\Schema(type: 'object')),
+    ],
+    encoding: [
+        new OA\Encoding(encoding: 'avatar', contentType: 'image/png'),
+    ],
+)
+```
+
+to this:
+
+```php
+new OA\MediaType\Json(
+    properties: [
+        new OA\Property\Encoded(
+            property: 'avatar',
+            schema: new OA\Schema(type: 'object'),
+            encoding: new OA\Encoding(contentType: 'image/png'),
+        ),
+    ],
+)
+```
 
 #### Allowed in
 ---
@@ -1751,10 +2008,12 @@ Typed alias for Schema used as the `additionalProperties` value.
 Identical to OA\Schema in functionality — exists for readability when declaring
 schemas with constrained additional properties:
 
-    new OA\Schema(
-        type: 'object',
-        additionalProperties: new OA\Schema\AdditionalProperties(type: 'string'),
-    )
+```php
+new OA\Schema(
+    type: 'object',
+    additionalProperties: new OA\Schema\AdditionalProperties(type: 'string'),
+)
+```
 
 #### Allowed in
 ---
@@ -1885,20 +2144,24 @@ Shortcut for `OA\Schema` with type `array` and `items`.
 
 Allows to shorten this:
 
-  #[OA\Schema]
-  class Pet {
-      #[OA\Property]
-      #[OA\Schema(type: 'array', items: new OA\Schema(ref: MyModel::class))]
-      public array $names;
-  }
+```php
+#[OA\Schema]
+class Pet {
+    #[OA\Property]
+    #[OA\Schema(type: 'array', items: new OA\Schema(ref: MyModel::class))]
+    public array $names;
+}
+```
 
 to this:
 
-  #[OA\Schema]
-  class Pet {
-      #[OA\Schema\Items(ref: MyModel::class)]
-      public array $names;
-  }
+```php
+#[OA\Schema]
+class Pet {
+    #[OA\Schema\Items(ref: MyModel::class)]
+    public array $names;
+}
+```
 
 Since Items extends Schema, the implicit `OA\Property` shortcut applies — no explicit
 `#[OA\Property]` is needed. The `Shortcuts` augmenter wraps this into
@@ -2039,9 +2302,11 @@ In OpenAPI 3.1+, $ref can be combined with title and description to override
 the referenced schema's metadata without duplicating the definition.
 
 Usage:
-  #[OA\Property(schema: new OA\Schema\Ref(ref: Pet::class))]
-  #[OA\Property(schema: new OA\Schema\Ref(ref: '#/components/schemas/Pet', title: 'The pet'))]
-  #[OA\Property(schema: new OA\Schema\Ref(ref: Pet::class, description: 'Override desc'))]
+```php
+#[OA\Property(schema: new OA\Schema\Ref(ref: Pet::class))]
+#[OA\Property(schema: new OA\Schema\Ref(ref: '#/components/schemas/Pet', title: 'The pet'))]
+#[OA\Property(schema: new OA\Schema\Ref(ref: Pet::class, description: 'Override desc'))]
+```
 
 If used on a `$ref` directly, only the ref value is used.
 
@@ -2068,6 +2333,21 @@ A security requirement declaring which security schemes apply.
 
 Each requirement instance represents one entry in the security array (OR logic).
 Multiple schemes within a single requirement represent AND logic.
+
+Replaces the raw array form:
+
+```php
+#[OA\Operation\Get(path: '/pets', security: [['apiKey' => []]])]
+```
+
+with:
+
+```php
+#[OA\Operation\Get(path: '/pets', security: [new OA\Security\Requirement(scheme: 'apiKey')])]
+
+// both schemes at once
+new OA\Security\Requirement(schemes: ['apiKey' => [], 'oauth' => ['read:pets']])
+```
 
 #### Allowed in
 ---
@@ -2100,6 +2380,12 @@ Typed subtypes are available for each security scheme type:
 - `OA\Security\Scheme\OAuth2` - OAuth2 with one or more flows
 - `OA\Security\Scheme\OpenIdConnect` - OpenID Connect discovery
 - `OA\Security\Scheme\MutualTls` - Mutual TLS authentication
+
+Example:
+
+```php
+#[OA\Security\Scheme(component: 'bearerAuth', type: 'http', scheme: 'bearer')]
+```
 
 #### Allowed in
 ---
@@ -2146,6 +2432,27 @@ Typed subtypes are available for each security scheme type:
 
 An API key security scheme (header, query, or cookie).
 
+Allows to shorten this:
+
+```php
+#[OA\Security\Scheme(
+    component: 'apiKey',
+    type: 'apiKey',
+    name: 'X-API-Key',
+    in: 'header',
+)]
+```
+
+to this:
+
+```php
+#[OA\Security\Scheme\ApiKey(
+    component: 'apiKey',
+    name: 'X-API-Key',
+    in: 'header',
+)]
+```
+
 #### Allowed in
 ---
 <a href="#components">Components</a>
@@ -2174,6 +2481,27 @@ An API key security scheme (header, query, or cookie).
 ### [Security\Scheme\Http](https://github.com/zircote/swagger-php/tree/master/src/Spec/Security/Scheme/Http.php)
 
 An HTTP authentication security scheme (Basic, Bearer, etc.).
+
+Allows to shorten this:
+
+```php
+#[OA\Security\Scheme(
+    component: 'bearerAuth',
+    type: 'http',
+    scheme: 'bearer',
+    bearerFormat: 'JWT',
+)]
+```
+
+to this:
+
+```php
+#[OA\Security\Scheme\Http(
+    component: 'bearerAuth',
+    scheme: 'bearer',
+    bearerFormat: 'JWT',
+)]
+```
 
 #### Allowed in
 ---
@@ -2204,6 +2532,23 @@ An HTTP authentication security scheme (Basic, Bearer, etc.).
 
 A Mutual TLS security scheme.
 
+Allows to shorten this:
+
+```php
+#[OA\Security\Scheme(
+    component: 'mtls',
+    type: 'mutualTLS',
+)]
+```
+
+to this:
+
+```php
+#[OA\Security\Scheme\MutualTls(
+    component: 'mtls',
+)]
+```
+
 #### Allowed in
 ---
 <a href="#components">Components</a>
@@ -2228,6 +2573,25 @@ A Mutual TLS security scheme.
 ### [Security\Scheme\OAuth2](https://github.com/zircote/swagger-php/tree/master/src/Spec/Security/Scheme/OAuth2.php)
 
 An OAuth2 security scheme with one or more flows.
+
+Allows to shorten this:
+
+```php
+#[OA\Security\Scheme(
+    component: 'oauth',
+    type: 'oauth2',
+    flows: [new OA\Flow\ClientCredentials(tokenUrl: 'https://example.com/oauth/token', scopes: [])],
+)]
+```
+
+to this:
+
+```php
+#[OA\Security\Scheme\OAuth2(
+    component: 'oauth',
+    flows: [new OA\Flow\ClientCredentials(tokenUrl: 'https://example.com/oauth/token', scopes: [])],
+)]
+```
 
 #### Allowed in
 ---
@@ -2255,6 +2619,25 @@ An OAuth2 security scheme with one or more flows.
 ### [Security\Scheme\OpenIdConnect](https://github.com/zircote/swagger-php/tree/master/src/Spec/Security/Scheme/OpenIdConnect.php)
 
 An OpenID Connect Discovery security scheme.
+
+Allows to shorten this:
+
+```php
+#[OA\Security\Scheme(
+    component: 'oidc',
+    type: 'openIdConnect',
+    openIdConnectUrl: 'https://example.com/.well-known/openid-configuration',
+)]
+```
+
+to this:
+
+```php
+#[OA\Security\Scheme\OpenIdConnect(
+    component: 'oidc',
+    openIdConnectUrl: 'https://example.com/.well-known/openid-configuration',
+)]
+```
 
 #### Allowed in
 ---
