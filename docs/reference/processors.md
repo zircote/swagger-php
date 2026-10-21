@@ -43,6 +43,10 @@ as on the command line or be broken down into nested arrays.
 
 ### [DocBlockDescriptions](https://github.com/zircote/swagger-php/tree/master/src/Processors/DocBlockDescriptions.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
+
 Checks if the annotation has a summary and/or description property
 and uses the text in the comment block (above the annotations) as summary and/or description.
 
@@ -50,6 +54,10 @@ Use <code>null</code>, for example <code>@Annotation(description=null)</code>,
 if you don't want the annotation to have a description.
 
 ### [MergeIntoOpenApi](https://github.com/zircote/swagger-php/tree/master/src/Processors/MergeIntoOpenApi.php)
+
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
 
 Merge all <code>@OA\OpenApi</code> annotations into one.
 
@@ -59,9 +67,17 @@ Merge all <code>@OA\OpenApi</code> annotations into one.
 
 ### [MergeIntoComponents](https://github.com/zircote/swagger-php/tree/master/src/Processors/MergeIntoComponents.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
+
 Merge reusable annotation into <code>@OA\Schemas</code>.
 
 ### [ExpandClasses](https://github.com/zircote/swagger-php/tree/master/src/Processors/ExpandClasses.php)
+
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
 
 Iterate over the chain of ancestors of a schema and:
 - if the ancestor has a schema
@@ -71,17 +87,29 @@ Iterate over the chain of ancestors of a schema and:
 
 ### [ExpandInterfaces](https://github.com/zircote/swagger-php/tree/master/src/Processors/ExpandInterfaces.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
+
 Look at all (direct) interfaces for a schema and:
 - merge interfaces annotations/methods into the schema if the interface does not have a schema itself
 - inherit from the interface if it has a schema (allOf).
 
 ### [ExpandTraits](https://github.com/zircote/swagger-php/tree/master/src/Processors/ExpandTraits.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
+
 Look at all (direct) traits for a schema and:
 - merge trait annotations/methods/properties into the schema if the trait does not have a schema itself
 - inherit from the trait if it has a schema (allOf).
 
 ### [ExpandEnums](https://github.com/zircote/swagger-php/tree/master/src/Processors/ExpandEnums.php)
+
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
 
 Expands PHP enums.
 
@@ -102,27 +130,51 @@ Determines <code>schema</code>, <code>enum</code> and <code>type</code>.
 
 ### [AugmentSchemas](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentSchemas.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
+
 Use the Schema context to extract useful information and inject that into the annotation.
 
 Merges properties.
 
 ### [AugmentRequestBody](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentRequestBody.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
+
 Use the RequestBody context to extract useful information and inject that into the annotation.
 
 ### [AugmentProperties](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentProperties.php)
+
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
 
 Use the property context to extract useful information and inject that into the annotation.
 
 ### [AugmentDiscriminators](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentDiscriminators.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
+
 Use the property context to extract useful information and inject that into the annotation.
 
 ### [BuildPaths](https://github.com/zircote/swagger-php/tree/master/src/Processors/BuildPaths.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
+
 Build the openapi->paths using the detected <code>@OA\PathItem</code> and <code>@OA\Operation</code> (<code>@OA\Get</code>, etc).
 
 ### [AugmentParameters](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentParameters.php)
+
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
 
 Augments shared and operations parameters from docblock comments.
 
@@ -132,7 +184,15 @@ Augments shared and operations parameters from docblock comments.
 
 ### [AugmentRefs](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentRefs.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
+
 ### [AugmentItems](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentItems.php)
+
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
 
 Use the Schema context to extract useful information and inject that into the annotation.
 
@@ -140,17 +200,33 @@ Merges properties.
 
 ### [MergeJsonContent](https://github.com/zircote/swagger-php/tree/master/src/Processors/MergeJsonContent.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
+
 Split JsonContent into Schema and MediaType.
 
 ### [MergeXmlContent](https://github.com/zircote/swagger-php/tree/master/src/Processors/MergeXmlContent.php)
+
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
 
 Split XmlContent into Schema and MediaType.
 
 ### [AugmentMediaType](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentMediaType.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
+
 Augment media type encodings.
 
 ### [OperationId](https://github.com/zircote/swagger-php/tree/master/src/Processors/OperationId.php)
+
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
 
 Generate the OperationId based on the context of the OpenApi annotation.
 
@@ -160,7 +236,15 @@ Generate the OperationId based on the context of the OpenApi annotation.
 
 ### [CleanUnmerged](https://github.com/zircote/swagger-php/tree/master/src/Processors/CleanUnmerged.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
+
 ### [PathFilter](https://github.com/zircote/swagger-php/tree/master/src/Processors/PathFilter.php)
+
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
 
 Allows to filter endpoints based on tags and/or path.
 
@@ -176,6 +260,10 @@ All filter (regular) expressions must be enclosed within delimiter characters as
 
 ### [CleanUnusedComponents](https://github.com/zircote/swagger-php/tree/master/src/Processors/CleanUnusedComponents.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
+
 Tracks the use of all <code>Components</code> and removed unused schemas.
 
 #### Config settings
@@ -183,6 +271,10 @@ Tracks the use of all <code>Components</code> and removed unused schemas.
   Enables/disables the <code>CleanUnusedComponents</code> processor.
 
 ### [AugmentTags](https://github.com/zircote/swagger-php/tree/master/src/Processors/AugmentTags.php)
+
+::: warning Deprecated
+Since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+:::
 
 Ensures that all tags used on operations also exist in the global <code>tags</code> list.
 

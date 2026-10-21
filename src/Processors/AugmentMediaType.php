@@ -13,6 +13,8 @@ use OpenApi\Undefined;
 
 /**
  * Augment media type encodings.
+ *
+ * @deprecated since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
  */
 class AugmentMediaType
 {

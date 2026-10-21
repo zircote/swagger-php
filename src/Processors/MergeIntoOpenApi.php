@@ -14,6 +14,8 @@ use OpenApi\Undefined;
 
 /**
  * Merge all <code>@OA\OpenApi</code> annotations into one.
+ *
+ * @deprecated since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
  */
 class MergeIntoOpenApi
 {

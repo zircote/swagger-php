@@ -14,6 +14,8 @@ use OpenApi\Undefined;
  * Look at all (direct) interfaces for a schema and:
  * - merge interfaces annotations/methods into the schema if the interface does not have a schema itself
  * - inherit from the interface if it has a schema (allOf).
+ *
+ * @deprecated since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
  */
 class ExpandInterfaces
 {

@@ -13,6 +13,8 @@ use Composer\Autoload\ClassLoader;
  *
  * Relies on a <code>composer --optimized</code> run in order to utilize
  * the generated class map.
+ *
+ * @deprecated since 7.0, removed in 8.0
  */
 class ComposerAutoloaderScanner
 {

@@ -15,6 +15,8 @@ use OpenApi\Undefined;
 
 /**
  * Use the RequestBody context to extract useful information and inject that into the annotation.
+ *
+ * @deprecated since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
  */
 class AugmentRequestBody implements GeneratorAwareInterface
 {

@@ -12,6 +12,9 @@ use OpenApi\Context;
 use OpenApi\Undefined;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @deprecated since 7.0, removed in 8.0
+ */
 class TypeInfoTypeResolver extends AbstractTypeResolver
 {
     protected TypeResolver $resolver;

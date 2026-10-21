@@ -22,6 +22,8 @@ use Psr\Log\LoggerInterface;
  *
  * Scans PHP source code and generates OpenApi specifications from the found OpenApi annotations.
  *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Builder` instead
+ *
  * @phpstan-import-type BuilderSource from Builder
  */
 class Generator

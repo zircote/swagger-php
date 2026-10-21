@@ -20,6 +20,8 @@ use OpenApi\Undefined;
  *      - merge from all without schema
  *        => update all $ref that might reference a property merged.
  *
+ * @deprecated since 7.0, removed in 8.0
+ *
  * @phpstan-import-type ClassDefinition from Analysis
  * @phpstan-import-type InterfaceDefinition from Analysis
  * @phpstan-import-type TraitDefinition from Analysis

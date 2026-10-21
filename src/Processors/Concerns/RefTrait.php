@@ -8,6 +8,9 @@ namespace OpenApi\Processors\Concerns;
 
 use OpenApi\Context;
 
+/**
+ * @deprecated since 7.0, removed in 8.0
+ */
 trait RefTrait
 {
     protected function toRefKey(Context $context, ?string $name): string

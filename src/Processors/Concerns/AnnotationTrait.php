@@ -9,6 +9,9 @@ namespace OpenApi\Processors\Concerns;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 
+/**
+ * @deprecated since 7.0, removed in 8.0
+ */
 trait AnnotationTrait
 {
     protected function removeAnnotationRecursive(Analysis $analysis, OA\AbstractAnnotation $annotation): void

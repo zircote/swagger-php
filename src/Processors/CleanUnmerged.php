@@ -9,6 +9,9 @@ namespace OpenApi\Processors;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 
+/**
+ * @deprecated since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+ */
 class CleanUnmerged
 {
     public function __invoke(Analysis $analysis): void

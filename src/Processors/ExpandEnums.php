@@ -18,6 +18,8 @@ use OpenApi\Utils\ServerVariableEnum;
  * Expands PHP enums.
  *
  * Determines <code>schema</code>, <code>enum</code> and <code>type</code>.
+ *
+ * @deprecated since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
  */
 class ExpandEnums implements GeneratorAwareInterface
 {

@@ -16,6 +16,8 @@ use Psr\Log\LoggerInterface;
  * Contexts are nested to reflect the code/parsing hierarchy. They include useful metadata
  * which the processors can use to augment the annotations.
  *
+ * @deprecated since 7.0, removed in 8.0
+ *
  * @property string|null                      $comment     The PHP DocComment
  * @property string|null                      $filename
  * @property int|null                         $line

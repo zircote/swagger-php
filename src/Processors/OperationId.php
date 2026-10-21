@@ -12,6 +12,8 @@ use OpenApi\Undefined;
 
 /**
  * Generate the OperationId based on the context of the OpenApi annotation.
+ *
+ * @deprecated since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
  */
 class OperationId
 {

@@ -11,6 +11,9 @@ use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations as OA;
 use OpenApi\Undefined;
 
+/**
+ * @deprecated since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
+ */
 class AugmentRefs
 {
     use Concerns\RefTrait;

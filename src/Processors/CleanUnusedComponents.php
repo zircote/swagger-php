@@ -12,6 +12,8 @@ use OpenApi\Undefined;
 
 /**
  * Tracks the use of all <code>Components</code> and removed unused schemas.
+ *
+ * @deprecated since 7.0, removed in 8.0 - write an augmenter instead, see `OpenApi\Builder::withAugmenters()`
  */
 class CleanUnusedComponents
 {
