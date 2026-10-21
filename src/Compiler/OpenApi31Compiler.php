@@ -783,7 +783,7 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * Passing raw arrays is deprecated; use OA\Security\Requirement instances instead.
+     * Raw arrays are deprecated since 7.0 and removed in 8.0; use OA\Security\Requirement instances instead.
      *
      * @param  list<OA\Security\Requirement|array<string,list<string>>> $security
      * @return list<array<string,mixed>>

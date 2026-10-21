@@ -45,6 +45,35 @@ final class SecurityRequirementsTest extends TestCase
         );
     }
 
+    public function testKeepsAndReportsRawArrays(): void
+    {
+        $spec = new Specification();
+        /* @phpstan-ignore argument.type (intentionally a raw array) */
+        $spec->openapi = new OA\OpenApi(security: [['bearer' => []]]);
+        /* @phpstan-ignore argument.type (intentionally a raw array) */
+        $spec->pathItems[] = new OA\PathItem(prefix: '/users', security: [['api_key']]);
+        /* @phpstan-ignore argument.type (intentionally a raw array) */
+        $spec->operations[] = $operation = new OA\Operation\Get(path: '/optional', security: [[]]);
+
+        $logger = new CollectingLogger();
+        $augmenter = new Augmenter\SecurityRequirements();
+        $augmenter->setLogger($logger);
+        $augmenter($spec);
+
+        $this->assertSame([['bearer' => []]], $spec->openapi->security);
+        $this->assertSame([['api_key']], $spec->pathItems[0]->security);
+        $this->assertSame([[]], $operation->security);
+
+        $messages = array_column($logger->entries(), 'message');
+        $this->assertCount(3, $messages);
+        $this->assertStringStartsWith(
+            'Security requirement {"bearer":[]} is a raw array, use Security\Requirement (array form removed in 8.0; rector rule OpenApi\Rector\SecurityToRequirementRector rewrites it) in ',
+            $messages[0],
+        );
+        $this->assertStringStartsWith('Security requirement ["api_key"] is a raw array', $messages[1]);
+        $this->assertStringStartsWith('Security requirement [] is a raw array', $messages[2]);
+    }
+
     public function testKeepsAnEmptyList(): void
     {
         $spec = new Specification();
