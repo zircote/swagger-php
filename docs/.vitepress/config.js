@@ -41,6 +41,7 @@ function getGuideSidebar() {
     {
       text: 'Upgrading',
       items: [
+        { text: 'Migration from 6.x to 7.x', link: '/guide/migrating-to-v7' },
         { text: 'Migration from 5.x to 6.x', link: '/guide/migrating-to-v6' },
         { text: 'Migration from 4.x to 5.x', link: '/guide/migrating-to-v5' },
         { text: 'Migration from 3.x to 4.x', link: '/guide/migrating-to-v4' },
