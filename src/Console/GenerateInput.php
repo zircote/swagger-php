@@ -52,7 +52,7 @@ class GenerateInput
     /**
      * @deprecated since 7.0, removed in 8.0
      */
-    public Mode $mode = Mode::CLASSIC;
+    public Mode $mode = Mode::HYBRID;
 
     public bool $debug = false;
 
