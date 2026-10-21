@@ -126,11 +126,17 @@ abstract class DocGenerator
         $see = [];
         $var = '';
         $params = [];
+        $deprecated = null;
         $contentLines = [];
         $append = false;
         foreach ($comment as $line) {
             $line = preg_replace('/^\s+\* ?/', '', (string) $line);
             if (str_starts_with((string) $line, '@')) {
+                if (str_starts_with((string) $line, '@deprecated')) {
+                    // an inline {@see X} means nothing on the page; the class name does
+                    $deprecated = ucfirst(trim((string) preg_replace('/\{@see ([^}]+)\}/', '`$1`', substr((string) $line, 11))));
+                    continue;
+                }
                 if (str_starts_with((string) $line, '@see ')) {
                     $see[] = trim(substr((string) $line, 5));
                     continue;
@@ -168,6 +174,11 @@ abstract class DocGenerator
         }
 
         $content = trim(implode("\n", $contentLines));
+        if ($deprecated !== null) {
+            // a VitePress container, the same one the hand-written pages use for deprecations
+            $warning = "::: warning Deprecated\n" . ($deprecated ?: 'This is deprecated.') . "\n:::";
+            $content = trim($warning . "\n\n" . $content);
+        }
 
         return ['content' => $content, 'see' => $see, 'var' => $var, 'params' => $params];
     }

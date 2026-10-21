@@ -11,7 +11,9 @@ In addition to this page, there are also a number of [examples](https://github.c
 
 ### [AdditionalProperties](https://github.com/zircote/swagger-php/tree/master/src/Attributes/AdditionalProperties.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Schema\AdditionalProperties` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Schema\AdditionalProperties` instead
+:::
 
 #### Allowed in
 ---
@@ -239,7 +241,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Attachable](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Attachable.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Attachable` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Attachable` instead
+:::
 
 #### Allowed in
 ---
@@ -254,7 +258,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Components](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Components.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Components` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Components` instead
+:::
 
 #### Allowed in
 ---
@@ -296,7 +302,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Contact](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Contact.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Contact` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Contact` instead
+:::
 
 #### Allowed in
 ---
@@ -326,7 +334,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [CookieParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/CookieParameter.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Cookie` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Cookie` instead
+:::
 
 #### Allowed in
 ---
@@ -431,7 +441,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Delete](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Delete.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Delete` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Delete` instead
+:::
 
 #### Allowed in
 ---
@@ -521,7 +533,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Discriminator](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Discriminator.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Discriminator` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Discriminator` instead
+:::
 
 #### Allowed in
 ---
@@ -549,7 +563,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Encoding](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Encoding.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Encoding` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Encoding` instead
+:::
 
 #### Allowed in
 ---
@@ -585,7 +601,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Examples](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Examples.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Example` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Example` instead
+:::
 
 #### Allowed in
 ---
@@ -636,7 +654,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [ExternalDocumentation](https://github.com/zircote/swagger-php/tree/master/src/Attributes/ExternalDocumentation.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\ExternalDocumentation` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\ExternalDocumentation` instead
+:::
 
 #### Allowed in
 ---
@@ -664,7 +684,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Flow](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Flow.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Flow` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Flow` instead
+:::
 
 #### Allowed in
 ---
@@ -708,7 +730,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Get](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Get.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Get` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Get` instead
+:::
 
 #### Allowed in
 ---
@@ -798,7 +822,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Head](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Head.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Head` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Head` instead
+:::
 
 #### Allowed in
 ---
@@ -888,7 +914,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Header](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Header.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Header` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Header` instead
+:::
 
 #### Allowed in
 ---
@@ -963,7 +991,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [HeaderParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/HeaderParameter.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Header` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Header` instead
+:::
 
 #### Allowed in
 ---
@@ -1068,7 +1098,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Info](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Info.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Info` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Info` instead
+:::
 
 #### Allowed in
 ---
@@ -1112,7 +1144,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Items](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Items.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Schema\Items` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Schema\Items` instead
+:::
 
 #### Allowed in
 ---
@@ -1340,6 +1374,10 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [JsonContent](https://github.com/zircote/swagger-php/tree/master/src/Attributes/JsonContent.php)
 
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\MediaType\Json` instead
+:::
+
 Shorthand for a json response.
 
 Example:
@@ -1357,9 +1395,6 @@ vs.
     )
 )
 ```
-
-
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\MediaType\Json` instead
 
 #### Nested elements
 ---
@@ -1581,7 +1616,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [License](https://github.com/zircote/swagger-php/tree/master/src/Attributes/License.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\License` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\License` instead
+:::
 
 #### Allowed in
 ---
@@ -1615,7 +1652,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Link](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Link.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Link` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Link` instead
+:::
 
 #### Allowed in
 ---
@@ -1669,7 +1708,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [MediaType](https://github.com/zircote/swagger-php/tree/master/src/Attributes/MediaType.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\MediaType` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\MediaType` instead
+:::
 
 #### Allowed in
 ---
@@ -1718,7 +1759,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [OpenApi](https://github.com/zircote/swagger-php/tree/master/src/Attributes/OpenApi.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\OpenApi` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\OpenApi` instead
+:::
 
 #### Nested elements
 ---
@@ -1776,7 +1819,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Options](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Options.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Options` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Options` instead
+:::
 
 #### Allowed in
 ---
@@ -1866,7 +1911,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Parameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Parameter.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter` instead
+:::
 
 #### Allowed in
 ---
@@ -1973,7 +2020,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Patch](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Patch.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Patch` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Patch` instead
+:::
 
 #### Allowed in
 ---
@@ -2063,7 +2112,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [PathItem](https://github.com/zircote/swagger-php/tree/master/src/Attributes/PathItem.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\PathItem` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\PathItem` instead
+:::
 
 #### Allowed in
 ---
@@ -2124,7 +2175,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [PathParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/PathParameter.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Path` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Path` instead
+:::
 
 #### Allowed in
 ---
@@ -2226,7 +2279,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Post](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Post.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Post` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Post` instead
+:::
 
 #### Allowed in
 ---
@@ -2316,7 +2371,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Property](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Property.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Property` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Property` instead
+:::
 
 #### Allowed in
 ---
@@ -2548,7 +2605,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Put](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Put.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Put` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Put` instead
+:::
 
 #### Allowed in
 ---
@@ -2638,9 +2697,11 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Query](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Query.php)
 
-@since OpenAPI 3.2.0
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation` with `method: 'query'` instead
+:::
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation` with `method: 'query'` instead
+@since OpenAPI 3.2.0
 
 #### Allowed in
 ---
@@ -2730,7 +2791,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [QueryParameter](https://github.com/zircote/swagger-php/tree/master/src/Attributes/QueryParameter.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Query` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Query` instead
+:::
 
 #### Allowed in
 ---
@@ -2835,7 +2898,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [RequestBody](https://github.com/zircote/swagger-php/tree/master/src/Attributes/RequestBody.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\RequestBody` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\RequestBody` instead
+:::
 
 #### Allowed in
 ---
@@ -2879,7 +2944,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Response](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Response.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Response` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Response` instead
+:::
 
 #### Allowed in
 ---
@@ -2931,7 +2998,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Schema](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Schema.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Schema` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Schema` instead
+:::
 
 #### Allowed in
 ---
@@ -3159,7 +3228,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [SecurityScheme](https://github.com/zircote/swagger-php/tree/master/src/Attributes/SecurityScheme.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Security\Scheme` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Security\Scheme` instead
+:::
 
 #### Allowed in
 ---
@@ -3205,7 +3276,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Server](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Server.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Server` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Server` instead
+:::
 
 #### Allowed in
 ---
@@ -3243,7 +3316,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [ServerVariable](https://github.com/zircote/swagger-php/tree/master/src/Attributes/ServerVariable.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\ServerVariable` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\ServerVariable` instead
+:::
 
 #### Allowed in
 ---
@@ -3285,7 +3360,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Tag](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Tag.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Tag` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Tag` instead
+:::
 
 #### Allowed in
 ---
@@ -3327,7 +3404,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Trace](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Trace.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Trace` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Trace` instead
+:::
 
 #### Allowed in
 ---
@@ -3417,7 +3496,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Webhook](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Webhook.php)
 
-@deprecated since 7.0, removed in 8.0 - use the `webhook:` argument of an operation attribute instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use the `webhook:` argument of an operation attribute instead
+:::
 
 #### Allowed in
 ---
@@ -3480,7 +3561,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [Xml](https://github.com/zircote/swagger-php/tree/master/src/Attributes/Xml.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Xml` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\Xml` instead
+:::
 
 #### Allowed in
 ---
@@ -3527,7 +3610,9 @@ These will be ignored but can be used for custom processing.</p><table class="ta
 
 ### [XmlContent](https://github.com/zircote/swagger-php/tree/master/src/Attributes/XmlContent.php)
 
-@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\MediaType\Xml` instead
+::: warning Deprecated
+Since 7.0, removed in 8.0 - use `OpenApi\Spec\MediaType\Xml` instead
+:::
 
 #### Nested elements
 ---
