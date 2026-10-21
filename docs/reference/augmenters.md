@@ -157,12 +157,15 @@ request body departs from the default.
 
 ### [SecurityRequirements](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/SecurityRequirements.php)
 
-Drops security requirements written as a bare scheme name.
+Drops security requirements written as a bare scheme name, and reports raw arrays.
 
 Classic reads `security: ['bearerAuth']` as `bearerAuth` with no scopes. Spec takes a
 `Security\Requirement` per entry, so a string is reported and dropped. An operation left with
 no requirements falls back to the ones above it, rather than declaring itself public with an
 empty list.
+
+A raw array, `['bearerAuth' => []]` or `['bearerAuth']`, still compiles and is kept, but is
+reported: the array form is removed in 8.0, and {@see SecurityToRequirementRector} rewrites it.
 
 Runs before `PathItems`, which clones path item requirements onto their operations.
 

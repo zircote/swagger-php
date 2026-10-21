@@ -6,6 +6,7 @@
 
 namespace OpenApi\Augmenter;
 
+use OpenApi\Rector\SecurityToRequirementRector;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Utils\PipeInterface;
@@ -13,12 +14,15 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
 /**
- * Drops security requirements written as a bare scheme name.
+ * Drops security requirements written as a bare scheme name, and reports raw arrays.
  *
  * Classic reads `security: ['bearerAuth']` as `bearerAuth` with no scopes. Spec takes a
  * `Security\Requirement` per entry, so a string is reported and dropped. An operation left with
  * no requirements falls back to the ones above it, rather than declaring itself public with an
  * empty list.
+ *
+ * A raw array, `['bearerAuth' => []]` or `['bearerAuth']`, still compiles and is kept, but is
+ * reported: the array form is removed in 8.0, and {@see SecurityToRequirementRector} rewrites it.
  *
  * Runs before `PathItems`, which clones path item requirements onto their operations.
  *
@@ -62,6 +66,15 @@ class SecurityRequirements implements PipeInterface, LoggerAwareInterface
                     $holder->getSourceLocation(),
                 ));
                 continue;
+            }
+
+            if (is_array($item)) {
+                $this->logger?->warning(sprintf(
+                    'Security requirement %s is a raw array, use Security\Requirement (array form removed in 8.0; rector rule %s rewrites it) in %s',
+                    json_encode($item, JSON_UNESCAPED_SLASHES),
+                    SecurityToRequirementRector::class,
+                    $holder->getSourceLocation(),
+                ));
             }
 
             $security[] = $item;
