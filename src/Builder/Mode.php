@@ -6,6 +6,9 @@
 
 namespace OpenApi\Builder;
 
+/**
+ * @deprecated since 7.0, removed in 8.0
+ */
 enum Mode: string
 {
     case CLASSIC = 'classic';

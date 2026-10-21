@@ -94,6 +94,9 @@ class Builder
         return $this;
     }
 
+    /**
+     * @deprecated since 7.0, removed in 8.0
+     */
     public function setMode(string|Mode $mode): static
     {
         $this->mode = $mode instanceof Mode ? $mode : Mode::from($mode);

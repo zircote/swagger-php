@@ -12,6 +12,8 @@ use OpenApi\Annotations as OA;
  * Converts classic annotations into a Specification by iterating the Analysis directly.
  *
  * All enrichment (types, refs, descriptions, hierarchy) is left to the spec augmenter chain.
+ *
+ * @deprecated since 7.0, removed in 8.0
  */
 class HybridBridge
 {
