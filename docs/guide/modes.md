@@ -6,7 +6,7 @@ Swagger-php supports three processing modes, which control how source code is tu
 
 |                 | Classic                | Hybrid                                                       | Spec                                         |
 | --------------- | ---------------------- | ------------------------------------------------------------ | -------------------------------------------- |
-| **Status**      | Stable                 | Beta                                                         | Beta                                         |
+| **Status**      | Deprecated             | Default, deprecated                                          | Stable                                       |
 | **Attributes**  | `OpenApi\Attributes`   | `OpenApi\Attributes`                                         | `OpenApi\Spec`                               |
 | **Annotations** | Yes                    | Yes                                                          | No                                           |
 | **Pipeline**    | Generator → Processors | Assembler → Resolver → HybridBridge → Augmenters → Compiler  | Assembler → Resolver → Augmenters → Compiler |
@@ -27,7 +27,7 @@ $result->toYaml();
 
 Classic mode gives access to the full `Generator` API through `withGenerator()`, including custom processors, analysers and configuration options.
 
-## Spec (beta) {#spec}
+## Spec {#spec}
 
 Spec mode reimplements the pipeline from the ground up, using attributes from the `OpenApi\Spec` namespace. It introduces:
 
@@ -50,11 +50,7 @@ $result->toYaml();
 
 Spec mode uses the `OpenApi\Spec` namespace (`use OpenApi\Spec as OA;`). See [Using Spec Attributes](/guide/spec-attributes) for a full guide.
 
-::: warning Beta
-Spec mode is beta until v7: the document it generates may still change, for example where an inference is fixed. The attribute API is frozen. Existing attributes keep their shape, and new fields and attributes may still be added.
-:::
-
-## Hybrid (beta) {#hybrid}
+## Hybrid {#hybrid}
 
 Hybrid mode scans with the classic `Generator`, so existing `OpenApi\Attributes` work unchanged. It then bridges the result into the spec pipeline's augmenters and compilers.
 

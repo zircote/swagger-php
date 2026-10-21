@@ -32,7 +32,7 @@ $builder->setMode(Mode::CLASSIC);
 // or: $builder->setMode('classic');
 ```
 
-### Spec (beta) {#mode-spec}
+### Spec {#mode-spec}
 
 Runs the spec attributes pipeline end-to-end: Assembler → Resolver → Augmenters → Compiler. Uses attributes from the `OpenApi\Spec` namespace with typed DTOs and version-aware compilers.
 
@@ -41,7 +41,7 @@ $builder->setMode(Mode::SPEC);
 // or: $builder->setMode('spec');
 ```
 
-### Hybrid (beta) {#mode-hybrid}
+### Hybrid {#mode-hybrid}
 
 Uses the classic Generator for scanning, then bridges the result into the spec pipeline's augmenters and compilers. A transition path for existing projects that want access to the new augmenter pipeline without rewriting all annotations.
 

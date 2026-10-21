@@ -1,9 +1,5 @@
 # 🧪 Using Spec Attributes
 
-::: warning Beta
-Spec attributes are mostly feature-complete but still beta. The API may evolve based on feedback before being promoted to the default mode in a future major version.
-:::
-
 Spec attributes are a new way to annotate PHP code for OpenAPI generation. They live in the `OpenApi\Spec` namespace and are typed data containers. Unlike classic annotations they carry no serialization logic, and the augmenter pipeline fills in derived values before compilation.
 
 ## Namespace

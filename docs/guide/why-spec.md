@@ -62,7 +62,7 @@ to populate, and no `_context` to fabricate on an object built by hand.
 
 ## What this costs
 
-Spec attributes are marked beta and live in `OpenApi\Spec`. The [roadmap][roadmap] has the
+Spec attributes live in `OpenApi\Spec`. The [roadmap][roadmap] has the
 plan through v7 and v8, including the namespace move that follows classic's removal.
 
 Mixing is supported. [Hybrid mode](/guide/modes) reads existing `OpenApi\Attributes` through

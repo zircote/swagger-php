@@ -28,17 +28,17 @@ assumed, so a body noting it says nothing.
 
 Do not restate something the page's own structure already establishes.
 
-The beta status of the spec pipeline, for example, is carried by the **Status** row in
-`guide/modes.md`, by `(beta)` in the section headings, by the `::: warning Beta` callouts,
-by the version timeline, and by the 🧪 in the page titles. A sentence saying "this is the
-only mode not marked beta" adds nothing and rots independently of the places that do.
+The deprecation of classic, for example, is carried by the **Status** row in
+`guide/modes.md`, by the `deprecated` badges in the sidebar and on the code tabs, and by the
+version timeline. A sentence saying "this is the only mode not deprecated" adds nothing and
+rots independently of the places that do.
 
 The question is whether the reader learns anything they could not already see. Reading well
 is not enough. This applies to maturity, version requirements, which namespace to use, and
 what a mode does.
 
 Marketing filler and restatement filler are the same defect. Replacing "the stable,
-production-ready mode" with "the only mode not marked beta" is not an improvement.
+production-ready mode" with "the only mode not deprecated" is not an improvement.
 
 A third form is the clause explaining why the fact matters: "which is what makes X
 possible", "which matters because…", "which is the point". It carries no fact of its own.

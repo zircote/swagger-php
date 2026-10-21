@@ -121,7 +121,7 @@ The keys `setConfig()` takes are listed per processor in the [Processor referenc
 
 ### Using spec mode
 
-To use the new spec attributes pipeline (beta), set the mode to `spec`:
+To use the spec attributes pipeline, set the mode to `spec`:
 
 ```php
 <?php
