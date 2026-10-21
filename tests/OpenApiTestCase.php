@@ -18,7 +18,6 @@ use OpenApi\Generator;
 use OpenApi\Tests\Concerns\AssertsSpecEquals;
 use OpenApi\Tests\Concerns\ExpectsLogEntries;
 use OpenApi\Tests\Concerns\UsesFixtures;
-use OpenApi\Type\LegacyTypeResolver;
 use OpenApi\Type\TypeInfoTypeResolver;
 use OpenApi\TypeResolverInterface;
 use OpenApi\Utils\Pipeline;
@@ -60,7 +59,6 @@ class OpenApiTestCase extends TestCase
     public static function getTypeResolvers(): array
     {
         return [
-            'legacy' => new LegacyTypeResolver(),
             'type-info' => new TypeInfoTypeResolver(),
         ];
     }

@@ -10,7 +10,6 @@ use OpenApi\Augmenter\Cleanup;
 use OpenApi\Builder;
 use OpenApi\Generator;
 use OpenApi\Tests\Concerns\GeneratesTestMatrix;
-use OpenApi\Type\LegacyTypeResolver;
 use OpenApi\TypeResolverInterface;
 use OpenApi\Utils\Pipeline;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -103,10 +102,6 @@ final class ScratchTest extends OpenApiTestCase
                     'version' => self::versions(),
                     'resolverName' => array_keys($resolvers),
                     'mode' => [Builder\Mode::CLASSIC, Builder\Mode::HYBRID, Builder\Mode::SPEC],
-                ],
-                [
-                    fn (array $c): bool => $c['mode'] !== Builder\Mode::CLASSIC
-                        && $resolvers[$c['resolverName']] instanceof LegacyTypeResolver,
                 ],
             ) as $combo) {
                 $source = $scratch;

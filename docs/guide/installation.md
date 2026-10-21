@@ -19,24 +19,12 @@ Alternatively, use the composer `global` argument to install `swagger-php` globa
 Remember to add the `~/.composer/vendor/bin` directory to the PATH in your environment.
 :::
 
-## Type resolvers
+## Type resolver
 
-`swagger-php` version `5.5` introduces a new type resolver used internally to determine the schema type
-of properties (and other elements with a schema).
-
-By default, a custom `LegacyTypeResolver` is used. If you are on PHP 8.2 or higher,
-the `TypeInfoTypeResolver` can be used instead.
-For this the [radebatz/type-info-extras](https://github.com/DerManoMann/type-info-extras) package is required.
-
-Since it is optional, it needs to be installed manually:
-
-```shell
-composer require radebatz/type-info-extras
-```
-
-::: warning Additional dependencies
-Installing `radebatz/type-info-extras` will also add `symfony/type-info` as a dependency.
-:::
+`swagger-php` determines the schema type of properties (and other elements with a schema) with the
+`TypeInfoTypeResolver`. It is built on [symfony/type-info](https://github.com/symfony/type-info), through
+[radebatz/type-info-extras](https://github.com/DerManoMann/type-info-extras), and both are installed with
+`swagger-php`.
 
 
 ## Using doctrine annotations
