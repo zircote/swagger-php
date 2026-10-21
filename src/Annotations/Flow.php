@@ -14,6 +14,8 @@ use OpenApi\Undefined;
  * @see [OAuth Flow Object](https://spec.openapis.org/oas/v3.1.1.html#oauth-flow-object)
  *
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Flow` instead
  */
 class Flow extends AbstractAnnotation
 {

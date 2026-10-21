@@ -9,6 +9,9 @@ namespace OpenApi\Attributes;
 use OpenApi\Annotations as OA;
 use OpenApi\Undefined;
 
+/**
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\OpenApi` instead
+ */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class OpenApi extends OA\OpenApi
 {

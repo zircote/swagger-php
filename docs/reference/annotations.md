@@ -11,6 +11,8 @@ In addition to this page, there are also a number of [examples](https://github.c
 
 ### [AdditionalProperties](https://github.com/zircote/swagger-php/tree/master/src/Annotations/AdditionalProperties.php)
 
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Schema\AdditionalProperties` instead
+
 #### Allowed in
 ---
 <a href="#schema">Schema</a>, <a href="#property">Property</a>, <a href="#items">Items</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#xmlcontent">XmlContent</a>, <a href="#additionalproperties">AdditionalProperties</a>
@@ -25,6 +27,9 @@ A container for custom data to be attached to an annotation.
 
 These will be ignored by `swagger-php` but can be used for custom processing.
 
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Attachable` instead
+
 #### Allowed in
 ---
 <a href="#additionalproperties">AdditionalProperties</a>, <a href="#components">Components</a>, <a href="#contact">Contact</a>, <a href="#delete">Delete</a>, <a href="#discriminator">Discriminator</a>, <a href="#encoding">Encoding</a>, <a href="#examples">Examples</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#flow">Flow</a>, <a href="#get">Get</a>, <a href="#head">Head</a>, <a href="#header">Header</a>, <a href="#info">Info</a>, <a href="#items">Items</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#license">License</a>, <a href="#link">Link</a>, <a href="#mediatype">MediaType</a>, <a href="#openapi">OpenApi</a>, <a href="#operation">Operation</a>, <a href="#options">Options</a>, <a href="#parameter">Parameter</a>, <a href="#patch">Patch</a>, <a href="#pathitem">PathItem</a>, <a href="#pathparameter">PathParameter</a>, <a href="#post">Post</a>, <a href="#property">Property</a>, <a href="#put">Put</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>, <a href="#schema">Schema</a>, <a href="#securityscheme">SecurityScheme</a>, <a href="#server">Server</a>, <a href="#servervariable">ServerVariable</a>, <a href="#tag">Tag</a>, <a href="#trace">Trace</a>, <a href="#webhook">Webhook</a>, <a href="#xml">Xml</a>, <a href="#xmlcontent">XmlContent</a>
@@ -35,6 +40,10 @@ Holds a set of reusable objects for different aspects of the OA.
 
 All objects defined within the components object will have no effect on the API unless they are explicitly
 referenced from properties outside the components object.
+
+
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Components` instead
 
 #### Allowed in
 ---
@@ -58,6 +67,10 @@ referenced from properties outside the components object.
 ### [Contact](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Contact.php)
 
 Contact information for the exposed API.
+
+
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Contact` instead
 
 #### Allowed in
 ---
@@ -86,6 +99,9 @@ Contact information for the exposed API.
 
 A <code>@OA\Request</code> cookie parameter.
 
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Cookie` instead
+
 #### Allowed in
 ---
 <a href="#components">Components</a>, <a href="#pathitem">PathItem</a>, <a href="#operation">Operation</a>, <a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#trace">Trace</a>
@@ -102,6 +118,8 @@ A <code>@OA\Request</code> cookie parameter.
 </dl>
 
 ### [Delete](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Delete.php)
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Delete` instead
 
 #### Allowed in
 ---
@@ -125,6 +143,10 @@ the specification of an alternative schema based on the value associated with it
 
 This object is based on the [JSON Schema Specification](http://json-schema.org) and uses a predefined subset of it.
 On top of this subset, there are extensions provided by this specification to allow for more complete documentation.
+
+
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Discriminator` instead
 
 #### Allowed in
 ---
@@ -151,6 +173,10 @@ On top of this subset, there are extensions provided by this specification to al
 ### [Encoding](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Encoding.php)
 
 A single encoding definition applied to a single schema property.
+
+
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Encoding` instead
 
 #### Allowed in
 ---
@@ -180,6 +206,8 @@ A single encoding definition applied to a single schema property.
 - [Encoding Object](https://spec.openapis.org/oas/v3.1.0.html#encoding-object) ↗
 
 ### [Examples](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Examples.php)
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Example` instead
 
 #### Allowed in
 ---
@@ -225,6 +253,10 @@ The value field and externalValue field are mutually exclusive.</p><table class=
 
 Allows referencing an external resource for extended documentation.
 
+
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\ExternalDocumentation` instead
+
 #### Allowed in
 ---
 <a href="#openapi">OpenApi</a>, <a href="#tag">Tag</a>, <a href="#schema">Schema</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#property">Property</a>, <a href="#operation">Operation</a>, <a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#trace">Trace</a>, <a href="#items">Items</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#xmlcontent">XmlContent</a>
@@ -249,6 +281,10 @@ Allows referencing an external resource for extended documentation.
 ### [Flow](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Flow.php)
 
 Configuration details for a supported OAuth flow.
+
+
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Flow` instead
 
 #### Allowed in
 ---
@@ -289,6 +325,8 @@ A map between the scope name and a short description for it.</p><table class="ta
 
 ### [Get](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Get.php)
 
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Get` instead
+
 #### Allowed in
 ---
 <a href="#pathitem">PathItem</a>
@@ -306,6 +344,8 @@ A map between the scope name and a short description for it.</p><table class="ta
 
 ### [Head](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Head.php)
 
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Head` instead
+
 #### Allowed in
 ---
 <a href="#pathitem">PathItem</a>
@@ -322,6 +362,8 @@ A map between the scope name and a short description for it.</p><table class="ta
 </dl>
 
 ### [Header](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Header.php)
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Header` instead
 
 #### Allowed in
 ---
@@ -380,6 +422,9 @@ If style is used, and if behavior is n/a (cannot be serialized), the value of al
 
 A <code>@OA\Request</code> header parameter.
 
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Header` instead
+
 #### Allowed in
 ---
 <a href="#components">Components</a>, <a href="#pathitem">PathItem</a>, <a href="#operation">Operation</a>, <a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#trace">Trace</a>
@@ -400,6 +445,10 @@ A <code>@OA\Request</code> header parameter.
 The object provides metadata about the API.
 
 The metadata may be used by the clients if needed and may be presented in editing or documentation generation tools for convenience.
+
+
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Info` instead
 
 #### Allowed in
 ---
@@ -438,6 +487,9 @@ Must be in the format of an url.</p><table class="table-plain"><tbody><tr><td><i
 
 The description of an item in a Schema with type <code>array</code>.
 
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Schema\Items` instead
+
 #### Allowed in
 ---
 <a href="#property">Property</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#schema">Schema</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#xmlcontent">XmlContent</a>, <a href="#items">Items</a>
@@ -466,6 +518,9 @@ vs.
 )
 ```
 
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\MediaType\Json` instead
+
 #### Nested elements
 ---
 <a href="#discriminator">Discriminator</a>, <a href="#items">Items</a>, <a href="#property">Property</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#additionalproperties">AdditionalProperties</a>, <a href="#encoding">Encoding</a>, <a href="#examples">Examples</a>, <a href="#attachable">Attachable</a>
@@ -473,6 +528,10 @@ vs.
 ### [License](https://github.com/zircote/swagger-php/tree/master/src/Annotations/License.php)
 
 License information for the exposed API.
+
+
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\License` instead
 
 #### Allowed in
 ---
@@ -513,6 +572,10 @@ link information in the runtime response.
 
 For computing links, and providing instructions to execute them, a runtime expression is used for
 accessing values in an operation and using them as parameters while invoking the linked operation.
+
+
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Link` instead
 
 #### Allowed in
 ---
@@ -565,6 +628,10 @@ Each Media Type object provides schema and examples for the media type identifie
 
 Parameter encodings can be set either here, or on nested `Property` annotations directly.
 
+
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\MediaType` instead
+
 #### Allowed in
 ---
 <a href="#response">Response</a>, <a href="#requestbody">RequestBody</a>, <a href="#header">Header</a>, <a href="#parameter">Parameter</a>
@@ -596,6 +663,10 @@ the example value shall override the example provided by the schema.</p><table c
 
 This is the root document object for the API specification.
 
+
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\OpenApi` instead
+
 #### Nested elements
 ---
 <a href="#info">Info</a>, <a href="#server">Server</a>, <a href="#pathitem">PathItem</a>, <a href="#components">Components</a>, <a href="#tag">Tag</a>, <a href="#externaldocumentation">ExternalDocumentation</a>, <a href="#webhook">Webhook</a>, <a href="#attachable">Attachable</a>
@@ -626,6 +697,8 @@ To make security optional, an empty security requirement (<code>{}</code>) can b
 
 ### [Options](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Options.php)
 
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Options` instead
+
 #### Allowed in
 ---
 <a href="#pathitem">PathItem</a>
@@ -646,6 +719,10 @@ To make security optional, an empty security requirement (<code>{}</code>) can b
 Describes a single operation parameter.
 
 A unique parameter is defined by a combination of a name and location.
+
+
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter` instead
 
 #### Allowed in
 ---
@@ -748,6 +825,8 @@ This option replaces collectionFormat equal to pipes from OpenAPI 2.0.</p><table
 
 ### [Patch](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Patch.php)
 
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Patch` instead
+
 #### Allowed in
 ---
 <a href="#pathitem">PathItem</a>
@@ -769,6 +848,10 @@ Describes the operations available on a single path.
 
 A Path Item may be empty, due to ACL constraints.
 The path itself is still exposed to the documentation viewer, but they will not know which operations and parameters are available.
+
+
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\PathItem` instead
 
 #### Allowed in
 ---
@@ -799,6 +882,9 @@ The path itself is still exposed to the documentation viewer, but they will not 
 
 A <code>@OA\Request</code> path parameter.
 
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Path` instead
+
 #### Allowed in
 ---
 <a href="#components">Components</a>, <a href="#pathitem">PathItem</a>, <a href="#operation">Operation</a>, <a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#trace">Trace</a>
@@ -818,6 +904,8 @@ A <code>@OA\Request</code> path parameter.
 
 ### [Post](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Post.php)
 
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Post` instead
+
 #### Allowed in
 ---
 <a href="#pathitem">PathItem</a>
@@ -835,6 +923,8 @@ A <code>@OA\Request</code> path parameter.
 
 ### [Property](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Property.php)
 
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Property` instead
+
 #### Allowed in
 ---
 <a href="#additionalproperties">AdditionalProperties</a>, <a href="#schema">Schema</a>, <a href="#jsoncontent">JsonContent</a>, <a href="#xmlcontent">XmlContent</a>, <a href="#property">Property</a>, <a href="#items">Items</a>
@@ -851,6 +941,8 @@ A <code>@OA\Request</code> path parameter.
 </dl>
 
 ### [Put](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Put.php)
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Put` instead
 
 #### Allowed in
 ---
@@ -871,6 +963,9 @@ A <code>@OA\Request</code> path parameter.
 
 @since OpenAPI 3.2.0
 
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation` with `method: 'query'` instead
+
 #### Allowed in
 ---
 <a href="#pathitem">PathItem</a>
@@ -890,6 +985,9 @@ A <code>@OA\Request</code> path parameter.
 
 A <code>@OA\Request</code> query parameter.
 
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Query` instead
+
 #### Allowed in
 ---
 <a href="#components">Components</a>, <a href="#pathitem">PathItem</a>, <a href="#operation">Operation</a>, <a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#trace">Trace</a>
@@ -908,6 +1006,10 @@ A <code>@OA\Request</code> query parameter.
 ### [RequestBody](https://github.com/zircote/swagger-php/tree/master/src/Annotations/RequestBody.php)
 
 Describes a single request body.
+
+
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\RequestBody` instead
 
 #### Allowed in
 ---
@@ -946,6 +1048,10 @@ Otherwise, the property may be included and its default value is false.</p><tabl
 Describes a single response from an API Operation, including design-time,
 static links to operations based on the response.
 
+
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Response` instead
+
 #### Allowed in
 ---
 <a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#patch">Patch</a>, <a href="#delete">Delete</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#trace">Trace</a>
@@ -981,6 +1087,10 @@ These types can be objects, but also primitives and arrays.
 
 This object is based on the [JSON Schema Specification](http://json-schema.org) and uses a predefined subset of it.
 On top of this subset, there are extensions provided by this specification to allow for more complete documentation.
+
+
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Schema` instead
 
 #### Allowed in
 ---
@@ -1093,6 +1203,8 @@ https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-validation-00#rf
 
 ### [SecurityScheme](https://github.com/zircote/swagger-php/tree/master/src/Annotations/SecurityScheme.php)
 
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Security\Scheme` instead
+
 #### Allowed in
 ---
 <a href="#components">Components</a>
@@ -1134,6 +1246,10 @@ Bearer tokens are usually generated by an authorization server, so this informat
 
 An object representing a server.
 
+
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Server` instead
+
 #### Allowed in
 ---
 <a href="#openapi">OpenApi</a>, <a href="#pathitem">PathItem</a>, <a href="#operation">Operation</a>, <a href="#get">Get</a>, <a href="#post">Post</a>, <a href="#put">Put</a>, <a href="#delete">Delete</a>, <a href="#patch">Patch</a>, <a href="#head">Head</a>, <a href="#options">Options</a>, <a href="#trace">Trace</a>, <a href="#link">Link</a>
@@ -1164,6 +1280,10 @@ CommonMark syntax may be used for rich text representation.</p><table class="tab
 ### [ServerVariable](https://github.com/zircote/swagger-php/tree/master/src/Annotations/ServerVariable.php)
 
 An object representing a server variable for server URL template substitution.
+
+
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\ServerVariable` instead
 
 #### Allowed in
 ---
@@ -1202,6 +1322,8 @@ CommonMark syntax MAY be used for rich text representation.</p><table class="tab
 
 ### [Tag](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Tag.php)
 
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Tag` instead
+
 #### Allowed in
 ---
 <a href="#openapi">OpenApi</a>
@@ -1237,6 +1359,8 @@ CommonMark syntax MAY be used for rich text representation.</p><table class="tab
 
 ### [Trace](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Trace.php)
 
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation\Trace` instead
+
 #### Allowed in
 ---
 <a href="#pathitem">PathItem</a>
@@ -1258,6 +1382,9 @@ Acts like a <code>PathItem</code> with the main difference being that it require
 
 @since OpenAPI 3.1.0
 
+
+@deprecated since 7.0, removed in 8.0 - use the `webhook:` argument of an operation attribute instead
+
 #### Allowed in
 ---
 <a href="#openapi">OpenApi</a>
@@ -1274,6 +1401,8 @@ Acts like a <code>PathItem</code> with the main difference being that it require
 </dl>
 
 ### [Xml](https://github.com/zircote/swagger-php/tree/master/src/Annotations/Xml.php)
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Xml` instead
 
 #### Allowed in
 ---
@@ -1320,6 +1449,9 @@ Default value is false. The definition takes effect only when defined alongside 
 Shorthand for a xml response.
 
 Use as <code>@OA\Schema</code> inside a <code>Response</code> and <code>MediaType</code>-><code>'application/xml'</code> will be generated.
+
+
+@deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\MediaType\Xml` instead
 
 #### Nested elements
 ---

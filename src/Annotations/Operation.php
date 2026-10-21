@@ -19,6 +19,8 @@ use OpenApi\Utils\SecurityRequirement;
  * @see [Operation Object](https://spec.openapis.org/oas/v3.1.1.html#operation-object)
  *
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Operation` instead
  */
 abstract class Operation extends AbstractAnnotation
 {

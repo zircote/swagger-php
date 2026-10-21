@@ -17,6 +17,8 @@ use OpenApi\Undefined;
  * @see [Parameter Object](https://spec.openapis.org/oas/v3.1.1.html#parameter-object)
  *
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter` instead
  */
 class Parameter extends AbstractAnnotation
 {

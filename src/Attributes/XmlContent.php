@@ -11,6 +11,8 @@ use OpenApi\Undefined;
 
 /**
  * @phpstan-import-type EnumValue from \OpenApi\Spec\Schema
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\MediaType\Xml` instead
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class XmlContent extends OA\XmlContent

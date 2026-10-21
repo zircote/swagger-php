@@ -8,6 +8,8 @@ namespace OpenApi\Annotations;
 
 /**
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Schema\AdditionalProperties` instead
  */
 class AdditionalProperties extends Schema
 {

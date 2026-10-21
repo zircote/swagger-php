@@ -15,6 +15,8 @@ use OpenApi\Undefined;
  * Use as <code>@OA\Schema</code> inside a <code>Response</code> and <code>MediaType</code>-><code>'application/xml'</code> will be generated.
  *
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\MediaType\Xml` instead
  */
 class XmlContent extends Schema
 {

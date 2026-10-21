@@ -12,6 +12,8 @@ namespace OpenApi\Annotations;
  * These will be ignored by `swagger-php` but can be used for custom processing.
  *
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Attachable` instead
  */
 class Attachable extends AbstractAnnotation
 {

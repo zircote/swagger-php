@@ -8,6 +8,9 @@ namespace OpenApi\Attributes;
 
 use OpenApi\Undefined;
 
+/**
+ * @deprecated since 7.0, removed in 8.0
+ */
 trait OperationTrait
 {
     /**

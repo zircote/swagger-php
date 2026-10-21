@@ -16,6 +16,8 @@ use OpenApi\Undefined;
  * @see [Request Body Object](https://spec.openapis.org/oas/v3.1.1.html#request-body-object)
  *
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\RequestBody` instead
  */
 class RequestBody extends AbstractAnnotation
 {

@@ -13,6 +13,8 @@ use OpenApi\Undefined;
  * @see [Security Scheme Object](https://spec.openapis.org/oas/v3.1.1.html#security-scheme-object-0)
  *
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Security\Scheme` instead
  */
 class SecurityScheme extends AbstractAnnotation
 {

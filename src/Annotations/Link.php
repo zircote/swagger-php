@@ -23,6 +23,8 @@ use OpenApi\Undefined;
  * @see [Link Object](https://spec.openapis.org/oas/v3.1.1.html#link-object)
  *
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Link` instead
  */
 class Link extends AbstractAnnotation
 {

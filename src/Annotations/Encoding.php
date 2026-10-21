@@ -14,6 +14,8 @@ use OpenApi\Undefined;
  * @see [Encoding Object](https://spec.openapis.org/oas/v3.1.0.html#encoding-object)
  *
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Encoding` instead
  */
 class Encoding extends AbstractAnnotation
 {

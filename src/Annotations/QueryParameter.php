@@ -12,6 +12,8 @@ use OpenApi\Annotations as OA;
  * A <code>@OA\Request</code> query parameter.
  *
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\Parameter\Query` instead
  */
 class QueryParameter extends Parameter
 {

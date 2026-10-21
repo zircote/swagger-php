@@ -15,6 +15,8 @@ use OpenApi\Undefined;
  *
  * @Annotation
  * @phpstan-import-type EnumValue from \OpenApi\Spec\Schema
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\ServerVariable` instead
  */
 class ServerVariable extends AbstractAnnotation
 {

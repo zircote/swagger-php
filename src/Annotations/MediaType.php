@@ -16,6 +16,8 @@ use OpenApi\Undefined;
  * @see [Media Type Object](https://spec.openapis.org/oas/v3.1.1.html#media-type-object)
  *
  * @Annotation
+ *
+ * @deprecated since 7.0, removed in 8.0 - use `OpenApi\Spec\MediaType` instead
  */
 class MediaType extends AbstractAnnotation
 {

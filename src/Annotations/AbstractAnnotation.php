@@ -16,6 +16,8 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * The openapi annotation base class.
+ *
+ * @deprecated since 7.0, removed in 8.0
  */
 abstract class AbstractAnnotation implements \JsonSerializable
 {
