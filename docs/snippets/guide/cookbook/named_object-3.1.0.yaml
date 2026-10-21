@@ -1,0 +1,15 @@
+openapi: 3.1.0
+components:
+  schemas:
+    Profile:
+      type: object
+      properties:
+        status:
+          type: string
+        group:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string

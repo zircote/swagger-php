@@ -72,6 +72,26 @@ Classic has no short form for this.
   </template>
 </codeblock>
 
+A named schema works the same way, with an empty class as the anchor. An `OA\Schema` as the value nests an object:
+
+<codeblock id="named-object">
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/named_object_spec.php
+
+  </template>
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/named_object_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/named_object_an.php
+
+  </template>
+</codeblock>
+
 See [Keyed `properties`](/guide/shortcuts#keyed-properties).
 
 ## Add constraints to a class property
@@ -475,27 +495,6 @@ This is done on the `@OA\OpenApi` annotation:
 
 See [`OA\Security\Requirement`](/guide/shortcuts#oa-security-requirement).
 
-## Nested objects
-Complex, nested data structures are defined by nesting `@OA\Property` annotations inside others (with `type="object"`).
-
-<codeblock id="minimal">
-  <template v-slot:at>
-
-<<< @/snippets/guide/cookbook/nested_objects_at.php
-
-  </template>
-  <template v-slot:an>
-
-<<< @/snippets/guide/cookbook/nested_objects_an.php
-
-  </template>
-  <template v-slot:spec>
-
-<<< @/snippets/guide/cookbook/nested_objects_spec.php
-
-  </template>
-</codeblock>
-
 ## Documenting union type response data using `oneOf`
 A response with either a single or a list of `QualificationHolder`'s.
 
@@ -670,32 +669,6 @@ The API does include basic support for callbacks. However, this needs to be set 
 
   </template>
 </codeblock>
-
-## (Mostly) virtual models
-Typically, a model is annotated by adding a `@OA\Schema` annotation to the class and then individual `@OA\Property` annotations
-to the individually declared class properties.
-
-It is possible, however, to nest `@\Property` annotations inside a schema even without properties. In fact, all that is needed
-is a code anchor - e.g. an empty class.
-
-<codeblock id="virtual-model">
-  <template v-slot:at>
-
-<<< @/snippets/guide/cookbook/virtual_model_at.php
-
-  </template>
-  <template v-slot:an>
-
-<<< @/snippets/guide/cookbook/virtual_model_an.php
-
-  </template>
-  <template v-slot:spec>
-
-<<< @/snippets/guide/cookbook/virtual_model_spec.php
-
-  </template>
-</codeblock>
-
 
 ## Using class name as a type instead of references
 Typically, when referencing schemas this is done using `$ref`'s
