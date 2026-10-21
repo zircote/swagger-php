@@ -43,8 +43,8 @@ class GenerateCommand extends Command
             ->addOption('exclude', 'e', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Exclude path(s) (e.g. -e vendor -e library/Zend)')
             ->addOption('pattern', 'n', InputOption::VALUE_REQUIRED, 'Pattern of files to scan (e.g. -n "/\.(phps|php)$/")', '*.php')
             ->addOption('bootstrap', 'b', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Bootstrap php file(s) for defining constants, etc. (e.g. -b config/constants.php)')
-            ->addOption('add-processor', 'a', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Register an additional processor')
-            ->addOption('remove-processor', 'r', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Remove an existing processor')
+            ->addOption('add-processor', 'a', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Register an additional processor (deprecated, removed in 8.0)')
+            ->addOption('remove-processor', 'r', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Remove an existing processor (deprecated, removed in 8.0)')
             ->addOption('version', null, InputOption::VALUE_REQUIRED, 'The OpenAPI version')
             ->addOption('mode', 'm', InputOption::VALUE_REQUIRED, 'Set mode classic, hybrid or spec', Builder\Mode::CLASSIC->value)
             ->addOption('debug', 'd', InputOption::VALUE_NONE, 'Show additional error information');

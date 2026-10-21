@@ -254,6 +254,8 @@ class Builder
      *
      * Runs during the build, once the Generator exists. A second call replaces the first.
      *
+     * @deprecated since 7.0, removed in 8.0
+     *
      * @param callable(Generator): (Generator|void) $hook
      */
     public function withGenerator(callable $hook): static

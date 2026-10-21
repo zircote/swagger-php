@@ -56,8 +56,8 @@ Options:
   -e, --exclude=EXCLUDE                    Exclude path(s) (e.g. -e vendor -e library/Zend) (multiple values allowed)
   -n, --pattern=PATTERN                    Pattern of files to scan (e.g. -n "/\.(phps|php)$/") [default: "*.php"]
   -b, --bootstrap=BOOTSTRAP                Bootstrap php file(s) for defining constants, etc. (e.g. -b config/constants.php) (multiple values allowed)
-  -a, --add-processor=ADD-PROCESSOR        Register an additional processor (multiple values allowed)
-  -r, --remove-processor=REMOVE-PROCESSOR  Remove an existing processor (multiple values allowed)
+  -a, --add-processor=ADD-PROCESSOR        Register an additional processor (deprecated, removed in 8.0) (multiple values allowed)
+  -r, --remove-processor=REMOVE-PROCESSOR  Remove an existing processor (deprecated, removed in 8.0) (multiple values allowed)
       --version=VERSION                    The OpenAPI version
   -m, --mode=MODE                          Set mode classic, hybrid or spec [default: "classic"]
   -d, --debug                              Show additional error information
