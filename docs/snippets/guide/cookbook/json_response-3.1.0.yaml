@@ -1,0 +1,11 @@
+openapi: 3.1.0
+paths:
+  /pets/current:
+    get:
+      responses:
+        '200':
+          description: 'The current pet'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'

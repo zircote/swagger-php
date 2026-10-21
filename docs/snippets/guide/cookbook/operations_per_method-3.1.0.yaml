@@ -1,0 +1,11 @@
+openapi: 3.1.0
+paths:
+  /pets:
+    get:
+      responses:
+        '200':
+          description: 'All pets'
+    post:
+      responses:
+        '201':
+          description: 'The new pet'

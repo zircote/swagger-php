@@ -1,0 +1,10 @@
+openapi: 3.1.0
+components:
+  schemas:
+    Pet:
+      properties:
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+      type: object

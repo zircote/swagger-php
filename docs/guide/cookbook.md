@@ -1,5 +1,153 @@
 # Cookbook
 
+## Return JSON from an endpoint
+
+For `application/json` content, `OA\MediaType\Json` takes the schema directly, without a nested `OA\Schema`.
+`OA\MediaType\Xml` is the same for XML.
+
+<codeblock id="json-response">
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/json_response_spec.php
+
+  </template>
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/json_response_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/json_response_an.php
+
+  </template>
+</codeblock>
+
+See [`OA\MediaType`](/guide/shortcuts#oa-mediatype).
+
+## Document a list of objects
+
+A property holding a list takes `OA\Schema\Items`, with the schema of one item as its arguments.
+
+<codeblock id="list-of-objects">
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/list_of_objects_spec.php
+
+  </template>
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/list_of_objects_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/list_of_objects_an.php
+
+  </template>
+</codeblock>
+
+See [`OA\Property`](/guide/shortcuts#oa-property-spec-only).
+
+## Describe an object without a PHP class
+
+Where a controller returns an array rather than an object of a class, `properties` can be keyed by property name.
+Classic has no short form for this.
+
+<codeblock id="object-without-class">
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/object_without_class_spec.php
+
+  </template>
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/object_without_class_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/object_without_class_an.php
+
+  </template>
+</codeblock>
+
+See [Keyed `properties`](/guide/shortcuts#keyed-properties-spec-only).
+
+## Add constraints to a class property
+
+A class property needs only an `OA\Schema` with the constraints. The name and the type come from the declaration.
+Spec also lists a typed property without a default as `required`.
+
+<codeblock id="property-constraints">
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/property_constraints_spec.php
+
+  </template>
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/property_constraints_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/property_constraints_an.php
+
+  </template>
+</codeblock>
+
+An explicit `OA\Property` is needed only where the document uses a different name, such as `full_name` for `$name`, or
+on a getter. See [`OA\Property`](/guide/shortcuts#oa-property-spec-only).
+
+## Document path, query and header parameters
+
+`OA\Parameter\Path`, `Query`, `Header` and `Cookie` set `in`, and a path parameter is always required.
+
+<codeblock id="parameters">
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/parameters_spec.php
+
+  </template>
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/parameters_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/parameters_an.php
+
+  </template>
+</codeblock>
+
+See [`OA\Parameter`](/guide/shortcuts#oa-parameter).
+
+## Document several operations on one path
+
+Each controller method gets the attribute for its HTTP method, `OA\Operation\Get`, `OA\Operation\Post` and so on.
+
+<codeblock id="operations-per-method">
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/operations_per_method_spec.php
+
+  </template>
+  <template v-slot:at>
+
+<<< @/snippets/guide/cookbook/operations_per_method_at.php
+
+  </template>
+  <template v-slot:an>
+
+<<< @/snippets/guide/cookbook/operations_per_method_an.php
+
+  </template>
+</codeblock>
+
+See the [Spec Attribute Reference](/reference/spec-attributes).
+
 ## `x-tagGroups`
 OpenApi has the concept of grouping endpoints using tags. On top of that, some tools
 ([redocly](https://redoc.ly/docs/api-reference-docs/specification-extensions/x-tag-groups/), for example)

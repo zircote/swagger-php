@@ -1,0 +1,15 @@
+openapi: 3.1.0
+paths:
+  /users/me:
+    get:
+      responses:
+        '200':
+          description: 'The signed in user'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name: { type: string }
+                  email: { type: string, format: email }
+                  lastLogin: { type: string, format: date-time }
