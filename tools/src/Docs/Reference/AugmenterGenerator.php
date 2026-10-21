@@ -36,7 +36,7 @@ class AugmenterGenerator extends DocGenerator
     {
         return parent::renderConfiguration(
             'augmenter',
-            '--mode spec',
+            '',
             [
                 '-c operationIds.hash=true src',
                 '-c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ src',

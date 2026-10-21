@@ -9,7 +9,7 @@ Augmenters enrich the collected specification with inferred data before compilat
 They run in three groups — **resolve** (type inference, refs), **reduce** (filtering, cleanup),
 and **augment** (docblocks, operation ids, tags) — and are listed below in execution order.
 
-Augmenters are part of the spec-attributes pipeline (`--mode spec` or `--mode hybrid`).
+Augmenters run in hybrid and spec mode.
 
 ## Augmenter Configuration
 
@@ -18,12 +18,12 @@ The `-c` option takes a name/value pair: the augmenter name (starting lowercase)
 and the option name, separated by a dot (`.`).
 
 To list the available augmenter names and options use `-D`. It still requires a
-source path, e.g. `./vendor/bin/openapi --mode spec -D src`. Unknown keys are
+source path, e.g. `./vendor/bin/openapi -D src`. Unknown keys are
 reported as warnings.
 
 ```shell
-> ./vendor/bin/openapi --mode spec -c operationIds.hash=true src
-> ./vendor/bin/openapi --mode spec -c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ src
+> ./vendor/bin/openapi -c operationIds.hash=true src
+> ./vendor/bin/openapi -c pathFilter.tags[]=/pets/ -c pathFilter.tags[]=/store/ src
 ```
 
 ### Programmatically with PHP

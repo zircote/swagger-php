@@ -136,7 +136,7 @@ Sometimes properties or even lists (arrays) may contain data of different types.
 
 This will resolve into this YAML
 ```yaml
-openapi: 3.0.0
+openapi: 3.1.0
 components:
   schemas:
     StringList:

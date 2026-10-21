@@ -27,7 +27,7 @@ The simples way of using enums is to annotate them as `OA\Schema`. This allows y
 **Results in:**
 
 ```yaml
-openapi: 3.0.0
+openapi: 3.1.0
 components:
   schemas:
     Colour:
@@ -116,7 +116,7 @@ Enum cases can be used as value in an `enum` list just like a `string`, `integer
 **Results in:**
 
 ```yaml
-openapi: 3.0.0
+openapi: 3.1.0
 components:
   schemas:
     Model:
@@ -167,7 +167,7 @@ By default, the name of a backed enum case is used.
 **Results in:**
 
 ```yaml
-openapi: 3.0.0
+openapi: 3.1.0
 components:
   schemas:
     Colour:
@@ -210,7 +210,7 @@ To force `swagger-php` to use the backing value of an enum, you need to set the 
 **Results in:**
 
 ```yaml
-openapi: 3.0.0
+openapi: 3.1.0
 components:
   schemas:
     Colour:

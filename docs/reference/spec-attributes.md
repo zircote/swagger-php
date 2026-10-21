@@ -6,7 +6,7 @@ For improvements head over to [GitHub](https://github.com/zircote/swagger-php) a
 
 
 Spec attributes are typed PHP attributes in the `OpenApi\Spec` namespace — the foundation of the
-spec-attributes pipeline (`--mode spec` or `--mode hybrid`).
+spec-attributes pipeline.
 
 They are data containers with no serialization logic; augmenters fill in derived values. Relationships are
 declared via `merge()` (what sibling an attribute composes into on the same reflector) and `contained()`

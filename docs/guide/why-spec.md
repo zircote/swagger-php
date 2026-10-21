@@ -48,7 +48,7 @@ The output version is a compiler, not a branch. `3.1.0` is the default, with `3.
 `3.2.0` as targets:
 
 ```shell
-> ./vendor/bin/openapi --mode spec --version 3.0.0 src
+> ./vendor/bin/openapi --version 3.0.0 src
 ```
 
 Keywords the target version does not have are dropped or warned about in the compiler, once.

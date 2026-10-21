@@ -135,7 +135,7 @@ For objects, the key is defined by the field with the same name as the annotatio
 
 **Results in**
 ```yaml
-openapi: 3.0.0
+openapi: 3.1.0
 paths:
   /products:
     get:

@@ -25,7 +25,7 @@ and will unfold into "x-" properties.
 **Results in:**
 
 ```yaml
-openapi: 3.0.0
+openapi: 3.1.0
 info:
   title: Example
   version: 1

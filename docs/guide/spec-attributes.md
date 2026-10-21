@@ -71,10 +71,8 @@ Generate the spec:
 
 ```php
 use OpenApi\Builder;
-use OpenApi\Builder\Mode;
 
 $result = (new Builder())
-    ->setMode(Mode::SPEC)
     ->addSource('src/')
     ->build();
 
@@ -84,7 +82,7 @@ echo $result->toYaml();
 Or via CLI:
 
 ```shell
-./vendor/bin/openapi src/ --mode spec
+./vendor/bin/openapi src/
 ```
 
 ## Schemas

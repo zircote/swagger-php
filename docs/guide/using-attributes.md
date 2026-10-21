@@ -1,6 +1,6 @@
 # Attributes <Badge type="warning" text="deprecated" />
 
-PHP Attributes are the preferred way to annotate your code.
+The attributes in `OpenApi\Attributes` are the classic way to annotate your code. [Spec attributes](/guide/spec-attributes) replace them.
 
 ::: tip Namespace
 Using a namespace alias simplifies typing and improves readability.
