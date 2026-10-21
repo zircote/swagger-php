@@ -57,15 +57,19 @@ This is where things turn:
 * the bridge and mode selection are marked `@deprecated`, removed in `8.0` - that is
   `Builder::setMode()`, the `Builder\Mode` enum, `Console\GenerateInput::$mode` and the CLI's
   `-m`/`--mode` option, which go together because there is one pipeline in `8.0` and nothing
-  left to select. These markers name no replacement, unlike every other marker here
+  left to select. The action in v7 is to leave the mode out
+* raw security arrays on spec attributes (`['bearerAuth' => []]`) are reported and marked for
+  removal in `8.0` - `Security\Requirement` replaces them, and a rector rule rewrites them
 * everything whose marker says `7.0` is removed
 * `nikic/php-parser` is raised to `^5.0` - the `^4.19` branch parses no further than
   PHP 8.3 syntax
+* the Symfony components are raised to `^6.4`
+* the documentation leads with spec attributes, and classic pages carry a `deprecated` badge
 * the v7 migration guide states the v8 namespace move below, so nobody meets it as a surprise
 
-Open: whether the default **output** version follows the default mode. `classic` defaults to
-OpenAPI 3.0.0 and `hybrid` to 3.1.0 today, so switching the default mode also switches the
-default output version for everyone unless v7 pins 3.0.0. Decided in #1953 before v7.
+The default **output** version follows the default mode: 3.1.0, where classic defaulted to 3.0.0.
+`Builder::setVersion('3.0.0')` or `--version 3.0.0` keeps the old output, and the migration guide
+says so.
 
 ### v8
 `classic` is removed from the codebase, leaving only the spec pipeline. Annotations are no longer
