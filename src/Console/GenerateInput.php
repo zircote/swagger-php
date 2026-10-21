@@ -49,6 +49,9 @@ class GenerateInput
 
     public ?string $version = null;
 
+    /**
+     * @deprecated since 7.0, removed in 8.0
+     */
     public Mode $mode = Mode::CLASSIC;
 
     public bool $debug = false;
