@@ -85,9 +85,3 @@ construction. If you change one, check the other. The check is that `./bin/opena
   `Pipeline::configure()`. In **classic** mode they are silently ignored, because
   configuration is routed through `Generator::setConfig()` instead. A typo in a classic
   `-c` key fails invisibly.
-
-## Known rough edge
-
-`AugmenterGenerator::renderConfigSection()` and `ProcessorGenerator::renderConfigSection()`
-are the same method twice, differing in the noun, the mode flag, and the programmatic
-example. A fix to one usually needs applying to the other.
