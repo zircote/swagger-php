@@ -4,6 +4,18 @@ It's quite common that endpoints have some overlap in either their request or re
 To keep things DRY (Don't Repeat Yourself) the specification allows reusing components using `$ref`s.
 
 <codeblock id="using-references">
+  <template v-slot:spec>
+
+```php
+#[OA\Schema(
+  schema: 'product_id',
+  type: 'integer',
+  format: 'int64',
+  description: 'The unique identifier of a product in our catalog',
+)]
+```
+
+  </template>
   <template v-slot:at>
 
 ```php
@@ -47,6 +59,14 @@ components:
 This doesn't do anything by itself, but now you can reference this fragment by its path in the document tree `#/components/schemas/product_id`
 
 <codeblock id="refer-to-$ref">
+  <template v-slot:spec>
+
+```php
+    #[OA\Schema(ref: "#/components/schemas/product_id")]
+    public $id;
+```
+
+  </template>
   <template v-slot:at>
 
 ```php

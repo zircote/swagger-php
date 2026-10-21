@@ -13,8 +13,9 @@ features:
   - title: Document your API inside PHP source code
     details: Using swagger-php lets you write the API documentation inside the PHP source files
       which helps keeping the documentation up-to-date.
-  - title: Annotation and Attribute support
-    details: Annotations can be either docblocks or PHP 8.1 attributes.
+  - title: Typed attributes
+    details: Attributes are PHP objects that can also be built by hand, and the pipeline reports
+      when one is wrong.
 ---
 
 ### 1. Install with composer:
@@ -25,22 +26,14 @@ features:
 
 ### 2. Update your code
 
-Add `swagger-php` attributes (or legacy annotations) to your source code.
-
-⚠️ The `doctrine/annotations` library used to parse annotations is going to be deprecated, so wherever
-possible attributes should be used.
-
-::: info `spec` [attributes](guide/why-spec)
-Since 6.5.0 there is a second set of attributes - typed objects you can also build by hand,
-with validation and version handling in the pipeline rather than in the attributes. They run
-in `spec` mode:
-```shell
-> ./vendor/bin/openapi -m spec ...
-```
-:::
-
+Add `swagger-php` [attributes](guide/spec-attributes) to your source code.
 
 <codeblock id="minimal">
+  <template v-slot:spec>
+
+<<< @/snippets/minimal_api_spec.php
+
+  </template>
   <template v-slot:at>
 
 <<< @/snippets/minimal_api_at.php
@@ -49,11 +42,6 @@ in `spec` mode:
   <template v-slot:an>
 
 <<< @/snippets/minimal_api_an.php
-
-  </template>
-  <template v-slot:spec>
-
-<<< @/snippets/minimal_api_spec.php
 
   </template>
 </codeblock>

@@ -1,14 +1,14 @@
 <template>
   <div>
     <tabs :options="{ useUrlFragment: false }">
+      <tab v-if="hasSpec" :id="specId" name="Spec Attributes">
+        <slot name="spec"></slot>
+      </tab>
       <tab :id="atId" name="Attributes" suffix=" <span class='VPBadge warning'>deprecated</span>">
         <slot name="at"></slot>
       </tab>
       <tab :id="anId" name="Annotations" suffix=" <span class='VPBadge warning'>deprecated</span>">
         <slot name="an"></slot>
-      </tab>
-      <tab v-if="hasSpec" :id="specId" name="Spec Attributes">
-        <slot name="spec"></slot>
       </tab>
     </tabs>
   </div>
