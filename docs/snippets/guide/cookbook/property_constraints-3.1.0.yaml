@@ -1,0 +1,12 @@
+openapi: 3.1.0
+components:
+  schemas:
+    User:
+      properties:
+        name:
+          type: string
+          maxLength: 50
+        email:
+          type: string
+          format: email
+      type: object

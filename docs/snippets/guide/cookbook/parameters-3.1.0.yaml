@@ -1,0 +1,24 @@
+openapi: 3.1.0
+paths:
+  '/pets/{id}':
+    get:
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        -
+          name: fields
+          in: query
+          schema:
+            type: string
+        -
+          name: X-Request-Id
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'The pet'
