@@ -43,6 +43,18 @@ class ClassRefHolderSpec
 
     #[OA\Property]
     public ?ClassRefPlainSpec $nullablePlain;
+
+    /** @var list<ClassRefPlainSpec> */
+    #[OA\Property]
+    public array $plainList;
+
+    /** @var array<string, ClassRefPlainSpec> */
+    #[OA\Property]
+    public array $plainMap;
+
+    /** @var array{plain: ClassRefPlainSpec} */
+    #[OA\Property]
+    public array $plainShape;
 }
 
 #[OA\Operation\Get(

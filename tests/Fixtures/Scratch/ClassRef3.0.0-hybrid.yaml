@@ -33,3 +33,15 @@ components:
           $ref: '#/components/schemas/YoYo'
         plain: {}
         nullablePlain: {}
+        plainList:
+          type: array
+          items: {}
+        plainMap:
+          type: object
+          additionalProperties: {}
+        plainShape:
+          type: object
+          properties:
+            plain: {}
+          required:
+            - plain
