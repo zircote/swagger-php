@@ -12,6 +12,18 @@ use OpenApi\Undefined;
 /**
  * Shorthand for an HTTP POST operation.
  *
+ * Allows to shorten this:
+ *
+ * ```php
+ * #[OA\Operation(method: 'post', path: '/pets')]
+ * ```
+ *
+ * to this:
+ *
+ * ```php
+ * #[OA\Operation\Post(path: '/pets')]
+ * ```
+ *
  * @see [Operation Object](https://spec.openapis.org/oas/v3.1.1.html#operation-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]

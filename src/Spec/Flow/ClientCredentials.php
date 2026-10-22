@@ -11,6 +11,25 @@ use OpenApi\Spec as OA;
 /**
  * Configuration for the OAuth2 Client Credentials flow.
  *
+ * Allows to shorten this:
+ *
+ * ```php
+ * new OA\Flow(
+ *     flow: 'clientCredentials',
+ *     tokenUrl: 'https://example.com/oauth/token',
+ *     scopes: ['read:pets' => 'Read your pets'],
+ * )
+ * ```
+ *
+ * to this:
+ *
+ * ```php
+ * new OA\Flow\ClientCredentials(
+ *     tokenUrl: 'https://example.com/oauth/token',
+ *     scopes: ['read:pets' => 'Read your pets'],
+ * )
+ * ```
+ *
  * @see [OAuth Flow Object](https://spec.openapis.org/oas/v3.1.1.html#oauth-flow-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]

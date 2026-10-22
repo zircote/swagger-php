@@ -11,6 +11,27 @@ use OpenApi\Spec as OA;
 /**
  * An HTTP authentication security scheme (Basic, Bearer, etc.).
  *
+ * Allows to shorten this:
+ *
+ * ```php
+ * #[OA\Security\Scheme(
+ *     component: 'bearerAuth',
+ *     type: 'http',
+ *     scheme: 'bearer',
+ *     bearerFormat: 'JWT',
+ * )]
+ * ```
+ *
+ * to this:
+ *
+ * ```php
+ * #[OA\Security\Scheme\Http(
+ *     component: 'bearerAuth',
+ *     scheme: 'bearer',
+ *     bearerFormat: 'JWT',
+ * )]
+ * ```
+ *
  * @see [Security Scheme Object](https://spec.openapis.org/oas/v3.1.1.html#security-scheme-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]

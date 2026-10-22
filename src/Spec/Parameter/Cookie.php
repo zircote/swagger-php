@@ -12,6 +12,18 @@ use OpenApi\Undefined;
 /**
  * A parameter passed via an HTTP cookie.
  *
+ * Allows to shorten this:
+ *
+ * ```php
+ * #[OA\Parameter(name: 'session', in: 'cookie', schema: new OA\Schema(type: 'string'))]
+ * ```
+ *
+ * to this:
+ *
+ * ```php
+ * #[OA\Parameter\Cookie(name: 'session', schema: new OA\Schema(type: 'string'))]
+ * ```
+ *
  * @see [Parameter Object](https://spec.openapis.org/oas/v3.1.1.html#parameter-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
