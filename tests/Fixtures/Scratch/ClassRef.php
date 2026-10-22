@@ -57,6 +57,12 @@ class ClassRefHolder
     /** @var array{plain: ClassRefPlain} */
     #[OAT\Property]
     public array $plainShape;
+
+    #[OAT\Property]
+    public ClassRefPlain|int $plainUnion;
+
+    #[OAT\Property]
+    public ClassRef|int $componentUnion;
 }
 
 #[OAT\Get(

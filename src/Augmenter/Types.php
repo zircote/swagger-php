@@ -417,7 +417,15 @@ class Types implements PipeInterface, LoggerAwareInterface
         }
 
         if ($schemaType->oneOf !== null) {
-            $schema->oneOf = array_map($this->schemaTypeToSchema(...), $schemaType->oneOf);
+            $members = array_map($this->schemaTypeToSchema(...), $schemaType->oneOf);
+            // a member typed with a class that is no component matches anything, and so does the union
+            $unknown = array_filter(
+                $schemaType->oneOf,
+                fn (SchemaType $member): bool => $member->isRef() && is_string($member->type) && !$this->isComponent($member->type),
+            );
+            if ($unknown === []) {
+                $schema->oneOf = $members;
+            }
         }
 
         if ($schemaType->allOf !== null) {

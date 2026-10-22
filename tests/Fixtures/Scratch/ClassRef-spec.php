@@ -55,6 +55,12 @@ class ClassRefHolderSpec
     /** @var array{plain: ClassRefPlainSpec} */
     #[OA\Property]
     public array $plainShape;
+
+    #[OA\Property]
+    public ClassRefPlainSpec|int $plainUnion;
+
+    #[OA\Property]
+    public ClassRefSpec|int $componentUnion;
 }
 
 #[OA\Operation\Get(

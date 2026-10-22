@@ -142,6 +142,12 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
                 return;
             }
             $schema->type = Undefined::UNDEFINED;
+            // a member typed with a class that is no component matches anything, and so does the union
+            foreach ($schemaType->oneOf as $childType) {
+                if ($childType->isRef() && is_string($childType->type) && !$analysis->getAnnotationForSource($childType->type, $sourceClass) instanceof OA\AbstractAnnotation) {
+                    return;
+                }
+            }
             $schema->oneOf = [];
             foreach ($schemaType->oneOf as $childType) {
                 $childSchema = new OA\Schema(['_context' => new Context(['generated' => true], $schema->_context)]);

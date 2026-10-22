@@ -36,7 +36,7 @@ final class ScratchTest extends OpenApiTestCase
         // a property typed with a class that is no component is left untyped, with a word
         $classRef = static fn (string $suffix): array => array_map(
             static fn (string $property): string => "No schema for OpenApi\\Tests\\Fixtures\\Scratch\\ClassRefPlain{$suffix} in OpenApi\\Tests\\Fixtures\\Scratch\\ClassRefHolder{$suffix}::\${$property}",
-            ['plain', 'nullablePlain', 'plainList', 'plainMap', 'plainShape'],
+            ['plain', 'nullablePlain', 'plainList', 'plainMap', 'plainShape', 'plainUnion'],
         );
 
         // Keyed `{fixture}-{version}`, applying to every mode, or `{fixture}-{version}-{mode}`

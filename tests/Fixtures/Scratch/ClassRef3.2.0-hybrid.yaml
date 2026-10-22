@@ -45,3 +45,10 @@ components:
             plain: {}
           required:
             - plain
+        plainUnion: {}
+        componentUnion:
+          oneOf:
+            -
+              type: integer
+            -
+              $ref: '#/components/schemas/YoYo'
