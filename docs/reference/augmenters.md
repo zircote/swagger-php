@@ -79,6 +79,20 @@ as one on a class holding only `Info`, is left a declaration.
 An operation belongs to the class its reflector names. For one inherited into a child
 controller that is the child, so it takes the child's class tags.
 
+### [ImpliedSchemas](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/ImpliedSchemas.php)
+
+Adds the schemas the document's types imply but nobody declared.
+
+A property, parameter or request body typed with a class that has no schema would lose its
+type, since only a component can be referenced. Where the class can be described without
+guessing, it is added as if it carried `#[OA\Schema]`, and the augmenters after this one name,
+fill and reference it as they would a declared schema.
+
+Today that is a PHP enum, whose cases are the whole description: `Names` names it, `Enums` fills
+its cases and `Types` references it. A backed enum's schema takes the backing type, so it lists
+the backing values, which is what a backed enum serialises to. A bare `#[OA\Schema]` on the enum
+lists the case names instead.
+
 ### [Names](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Names.php)
 
 Infers component keys from PHP reflectors when not explicitly set.

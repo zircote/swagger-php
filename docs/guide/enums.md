@@ -43,6 +43,52 @@ components:
       type: object
 ```
 
+## Enum as a type
+
+In hybrid and spec mode, an enum without an `OA\Schema` still describes the property, parameter or
+request body it types. It becomes a schema named after the enum, as if it carried `OA\Schema`, and
+the type references it.
+
+A backed enum's schema lists the backing values, since that is what the enum serializes to. A bare
+`OA\Schema` on the enum lists the case names instead, as [below](#backed-enums) explains.
+
+```php
+enum Language: string
+{
+    case English = 'en';
+    case German = 'de';
+}
+
+#[OA\Schema]
+class Book
+{
+    #[OA\Property]
+    public Language $language;
+}
+```
+
+**Results in:**
+
+```yaml
+openapi: 3.1.0
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        language:
+          $ref: '#/components/schemas/Language'
+      required:
+        - language
+    Language:
+      type: string
+      enum:
+        - en
+        - de
+```
+
+Classic mode leaves the property untyped.
+
 ## Enum cases
 
 Enum cases can be used as value in an `enum` list just like a `string`, `integer` or any other primitive type.

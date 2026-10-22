@@ -471,6 +471,7 @@ class Builder
             new Augmenter\TypeAliases(),
             new Augmenter\Inheritance(),
             new Augmenter\OperationTags(),
+            new Augmenter\ImpliedSchemas(),
             new Augmenter\Names(),
             new Augmenter\Enums(),
             new Augmenter\Shortcuts(),

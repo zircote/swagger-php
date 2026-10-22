@@ -1,0 +1,71 @@
+openapi: 3.2.0
+info:
+  title: EnumTypes
+  version: '1.0'
+paths:
+  '/items/{language}':
+    get:
+      operationId: EnumTypesItems
+      parameters:
+        -
+          name: language
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/EnumTypesLanguageSpec'
+        -
+          name: priority
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EnumTypesPrioritySpec'
+      responses:
+        '200':
+          description: 'The items'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnumTypesHolder'
+components:
+  schemas:
+    EnumTypesColourSpec:
+      type: string
+      enum:
+        - Red
+        - Blue
+    EnumTypesHolder:
+      type: object
+      properties:
+        language:
+          $ref: '#/components/schemas/EnumTypesLanguageSpec'
+        suit:
+          oneOf:
+            -
+              $ref: '#/components/schemas/EnumTypesSuitSpec'
+            -
+              type: 'null'
+        priorities:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnumTypesPrioritySpec'
+        colour:
+          $ref: '#/components/schemas/EnumTypesColourSpec'
+      required:
+        - language
+        - priorities
+        - colour
+    EnumTypesLanguageSpec:
+      type: string
+      enum:
+        - en
+        - de
+    EnumTypesSuitSpec:
+      type: string
+      enum:
+        - Hearts
+        - Spades
+    EnumTypesPrioritySpec:
+      type: integer
+      enum:
+        - 1
+        - 2
