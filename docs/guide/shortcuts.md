@@ -7,6 +7,7 @@ Shortcuts save boilerplate: a typed subclass fills in the arguments that are alw
 |---|---|---|
 | [`OA\MediaType\Json`, `OA\MediaType\Xml`](#oa-mediatype-json-and-xml) | `OA\MediaType` with the media type set and a nested `OA\Schema` | `OA\JsonContent`, `OA\XmlContent` |
 | [Implied `OA\Property`](#implied-oa-property) | `OA\Property` beside an `OA\Schema` on a class property | — |
+| [Implied enum schema](/guide/enums#enum-as-a-type) | `OA\Schema` on an enum used as a type | — |
 | [Keyed `properties`](#keyed-properties) | a list of `OA\Property` | — |
 | [`OA\Schema` subclasses](#oa-schema-subclasses) | `OA\Schema` for an array, a reference or additional properties | — |
 | [`OA\Parameter\*`](#oa-parameter) | `OA\Parameter` with `in` | `OA\PathParameter`, `OA\QueryParameter`, `OA\HeaderParameter`, `OA\CookieParameter` |
