@@ -109,7 +109,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
                 $this->applyToAnnotation($schema->items, $schemaType->items, $analysis, $sourceClass);
                 $this->type2ref($schema->items, $analysis, $sourceClass);
             }
-            $this->mapNativeType($schema->items, $schema->items->type);
+            $this->handlePostAugment($schema->items);
         }
 
         if ($schemaType->additionalProperties instanceof SchemaType) {
@@ -128,7 +128,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
                     $this->applyToAnnotation($schema->additionalProperties, $schemaType->additionalProperties, $analysis, $sourceClass);
                     $this->type2ref($schema->additionalProperties, $analysis, $sourceClass);
                 }
-                $this->mapNativeType($schema->additionalProperties, $schema->additionalProperties->type);
+                $this->handlePostAugment($schema->additionalProperties);
             }
         } elseif ($schemaType->additionalProperties === true) {
             if (Undefined::isDefault($schema->additionalProperties)) {
@@ -147,6 +147,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
                 $childSchema = new OA\Schema(['_context' => new Context(['generated' => true], $schema->_context)]);
                 $this->applyToAnnotation($childSchema, $childType, $analysis, $sourceClass);
                 $this->type2ref($childSchema, $analysis, $sourceClass);
+                $this->handlePostAugment($childSchema);
                 $analysis->addAnnotation($childSchema, $childSchema->_context);
                 $schema->oneOf[] = $childSchema;
             }
@@ -159,6 +160,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
                 $childSchema = new OA\Schema(['_context' => new Context(['generated' => true], $schema->_context)]);
                 $this->applyToAnnotation($childSchema, $childType, $analysis, $sourceClass);
                 $this->type2ref($childSchema, $analysis, $sourceClass);
+                $this->handlePostAugment($childSchema);
                 $analysis->addAnnotation($childSchema, $childSchema->_context);
                 $schema->allOf[] = $childSchema;
             }
@@ -174,7 +176,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
                 ]);
                 $this->applyToAnnotation($property, $propType, $analysis, $sourceClass);
                 $this->type2ref($property, $analysis, $sourceClass);
-                $this->mapNativeType($property, $property->type);
+                $this->handlePostAugment($property);
                 $analysis->addAnnotation($property, $property->_context);
                 $properties[] = $property;
             }

@@ -99,8 +99,8 @@ class LegacyTypeResolver extends AbstractTypeResolver
             }
         }
 
-        if (!Undefined::isDefault($schema->items)) {
-            $this->mapNativeType($schema->items, $schema->items->type);
+        if ($schema->items instanceof OA\Items && !Undefined::isDefault($schema->items->type) && !$this->mapNativeType($schema->items, $schema->items->type)) {
+            $schema->items->type = Undefined::UNDEFINED;
         }
         $schema->type = 'array';
     }

@@ -45,6 +45,18 @@ class ClassRefHolder
 
     #[OAT\Property]
     public ?ClassRefPlain $nullablePlain;
+
+    /** @var list<ClassRefPlain> */
+    #[OAT\Property]
+    public array $plainList;
+
+    /** @var array<string, ClassRefPlain> */
+    #[OAT\Property]
+    public array $plainMap;
+
+    /** @var array{plain: ClassRefPlain} */
+    #[OAT\Property]
+    public array $plainShape;
 }
 
 #[OAT\Get(
