@@ -17,6 +17,10 @@ class SpecNamespaceAliasFixerTest extends TestCase
 
     protected function setUp(): void
     {
+        if (!class_exists(Tokens::class)) {
+            $this->markTestSkipped('php-cs-fixer is not installed');
+        }
+
         $this->fixer = new SpecNamespaceAliasFixer();
     }
 

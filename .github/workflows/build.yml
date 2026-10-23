@@ -42,3 +42,30 @@ jobs:
 
       - name: PHPUnit Tests
         run: composer test -- --configuration phpunit.xml.dist --coverage-text
+
+  floor:
+    runs-on: ubuntu-latest
+
+    # php-cs-fixer raises symfony/console's floor; a consumer does not install it
+    name: PHP 8.2 with the lowest dependencies a consumer can install
+
+    steps:
+      - uses: actions/checkout@v7
+        name: Checkout repository
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: Remove php-cs-fixer
+        run: composer remove --dev friendsofphp/php-cs-fixer --no-update
+
+      - name: Composer install
+        uses: ramsey/composer-install@v4
+        with:
+          dependency-versions: lowest
+
+      - name: PHPUnit Tests
+        run: composer test -- --configuration phpunit.xml.dist
