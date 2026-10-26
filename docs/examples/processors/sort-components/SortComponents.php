@@ -10,6 +10,8 @@ use OpenApi\Analysis;
 
 /**
  * Sorts components so they appear in alphabetical order in the generated specs.
+ *
+ * Classic only. For spec and hybrid mode, see `docs/examples/augmenters/sort-components`.
  */
 class SortComponents
 {

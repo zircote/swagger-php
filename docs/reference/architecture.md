@@ -125,6 +125,8 @@ class CustomAugmenter implements PipeInterface
 }
 ```
 
+Two worked examples, each with a scan and its output, are in [`docs/examples/augmenters`](https://github.com/zircote/swagger-php/tree/master/docs/examples/augmenters).
+
 ### Declaring configuration
 
 Mark a constructor parameter with `#[Config]` to make it settable via `-D`/`-c` and via
