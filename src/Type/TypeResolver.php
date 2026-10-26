@@ -6,14 +6,9 @@
 
 namespace OpenApi\Type;
 
-use PHPStan\PhpDocParser\Ast\AbstractNodeVisitor;
-use PHPStan\PhpDocParser\Ast\Node;
-use PHPStan\PhpDocParser\Ast\NodeTraverser;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
-use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
-use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\PhpDocParser\Lexer\Lexer;
 use PHPStan\PhpDocParser\Parser\ConstExprParser;
 use PHPStan\PhpDocParser\Parser\PhpDocParser;
@@ -36,7 +31,6 @@ use Symfony\Component\TypeInfo\Type\IntersectionType;
 use Symfony\Component\TypeInfo\Type\NullableType;
 use Symfony\Component\TypeInfo\Type\ObjectType;
 use Symfony\Component\TypeInfo\Type\UnionType;
-use Symfony\Component\TypeInfo\TypeContext\TypeContext;
 use Symfony\Component\TypeInfo\TypeContext\TypeContextFactory;
 use Symfony\Component\TypeInfo\TypeIdentifier;
 use Symfony\Component\TypeInfo\TypeResolver\ReflectionTypeResolver;
@@ -51,21 +45,6 @@ use Symfony\Component\TypeInfo\TypeResolver\StringTypeResolver as SymfonyStringT
 class TypeResolver implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
-
-    /**
-     * Docblock keywords PHP reserves. No class can have one of these names, in any letter case.
-     */
-    protected const RESERVED_KEYWORDS = [
-        'array', 'bool', 'callable', 'false', 'float', 'int', 'iterable', 'mixed', 'never', 'null',
-        'object', 'parent', 'self', 'static', 'string', 'true', 'void',
-    ];
-
-    /**
-     * Docblock keywords that are also valid class names. Each is a keyword only where no class of that name exists.
-     */
-    protected const ALIAS_KEYWORDS = [
-        'boolean', 'double', 'integer', 'list', 'number', 'numeric', 'resource', 'scalar',
-    ];
 
     protected TypeMapper $typeMapper;
 
@@ -160,8 +139,6 @@ class TypeResolver implements LoggerAwareInterface
                 || ($tagValue instanceof ParamTagValueNode && '$' . $reflector->getName() === $tagValue->parameterName)
                 || $tagValue instanceof ReturnTagValueNode
             ) {
-                $this->lowercaseKeywords($tagValue->type, $typeContext);
-
                 try {
                     return (new StringTypeResolver())->resolve((string) $tagValue, $typeContext);
                 } catch (UnsupportedException) {
@@ -185,38 +162,6 @@ class TypeResolver implements LoggerAwareInterface
             $reflector instanceof \ReflectionFunctionAbstract => $reflector->name . '()',
             default => $reflector::class,
         };
-    }
-
-    /**
-     * PHPDoc does not enforce case on keywords, so `@var String` means `string`.
-     */
-    protected function lowercaseKeywords(TypeNode $type, TypeContext $typeContext): void
-    {
-        $keyword = static function (string $name) use ($typeContext): ?string {
-            $lowercase = strtolower($name);
-
-            return in_array($lowercase, self::RESERVED_KEYWORDS, true)
-                || (in_array($lowercase, self::ALIAS_KEYWORDS, true) && !class_exists($typeContext->normalize($name)))
-                ? $lowercase
-                : null;
-        };
-
-        $visitor = new class ($keyword) extends AbstractNodeVisitor {
-            public function __construct(protected \Closure $keyword)
-            {
-            }
-
-            public function enterNode(Node $node): ?Node
-            {
-                if ($node instanceof IdentifierTypeNode) {
-                    $node->name = ($this->keyword)($node->name) ?? $node->name;
-                }
-
-                return null;
-            }
-        };
-
-        (new NodeTraverser([$visitor]))->traverse([$type]);
     }
 
     protected function mapType(Type $type): SchemaType
