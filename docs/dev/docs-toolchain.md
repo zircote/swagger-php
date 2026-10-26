@@ -60,6 +60,18 @@ as drift.
 | `composer docs:build` | runs `docs:gen`, then builds the static site |
 | `composer docs:dev` | local preview, **long-running**. It prints its URL on startup and does not return |
 
+## Setup and publishing
+
+The site is built with [VitePress](https://vitepress.vuejs.org/). Its dependencies install once:
+
+```shell
+cd docs
+npm install
+```
+
+Changes go in as a pull request against `master`. The online docs update when the `gh-pages`
+workflow is triggered by hand, which needs commit rights on `zircote/swagger-php`.
+
 ## What counts as a documented config setting
 
 `reference/augmenters.md` and `reference/processors.md` list the options accepted by
