@@ -16,6 +16,8 @@ use OpenApi\Undefined;
  * Custom processor to translate the vendor tag `query-args-$ref` into query parameter annotations.
  *
  * Details for the parameters are taken from the referenced schema.
+ *
+ * Classic only. For spec and hybrid mode, see `docs/examples/augmenters/schema-query-parameter`.
  */
 class SchemaQueryParameter
 {

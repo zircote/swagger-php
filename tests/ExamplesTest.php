@@ -13,6 +13,7 @@ use OpenApi\Serializer;
 use OpenApi\Tests\Concerns\GeneratesTestMatrix;
 use OpenApi\Tests\Concerns\UsesExamples;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 
 final class ExamplesTest extends OpenApiTestCase
 {
@@ -107,6 +108,38 @@ final class ExamplesTest extends OpenApiTestCase
             file_get_contents($specFilename),
             "Example: {$name}/{$implementation}/" . basename($specFilename)
         );
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function augmenterExamples(): iterable
+    {
+        foreach (['schema-query-parameter', 'sort-components'] as $name) {
+            yield $name => [$name];
+        }
+    }
+
+    /**
+     * Runs the example's own `scan.php`, so the script the docs point to is the one checked.
+     *
+     * Each example has its own `App` namespace, so each runs in a process of its own.
+     */
+    #[DataProvider('augmenterExamples')]
+    #[RunInSeparateProcess]
+    public function testAugmenterExample(string $name): void
+    {
+        $path = dirname(__DIR__) . "/docs/examples/augmenters/{$name}";
+
+        ob_start();
+        try {
+            require "{$path}/scan.php";
+        } finally {
+            $yaml = (string) ob_get_clean();
+        }
+
+        // compared as text: `assertSpecEquals()` ignores key order, which is what sort-components changes
+        $this->assertSame(file_get_contents("{$path}/{$name}.yaml"), $yaml, "Example: augmenters/{$name}");
     }
 
     #[DataProvider('exampleSpecs')]

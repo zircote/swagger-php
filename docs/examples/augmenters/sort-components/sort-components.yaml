@@ -1,0 +1,64 @@
+openapi: 3.1.0
+info:
+  title: 'Example of sorting components with a custom augmenter'
+  version: 1.0.0
+paths:
+  /products:
+    get:
+      operationId: 5f41d9a29b9e5074e8f88af1a3c40c1d
+      responses:
+        '200':
+          description: 'The products'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+  /categories:
+    get:
+      operationId: 223a22f2ac3460f2eace7aea14100f7f
+      responses:
+        '200':
+          description: 'The categories'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+  /brands:
+    get:
+      operationId: 9a663d4a545d4fd4342edc3a86471990
+      responses:
+        '200':
+          description: 'The brands'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Brand'
+components:
+  schemas:
+    Brand:
+      type: object
+      properties:
+        id:
+          type: integer
+      required:
+        - id
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+      required:
+        - id
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+      required:
+        - id

@@ -1,0 +1,78 @@
+openapi: 3.1.0
+info:
+  title: 'Example of using a custom augmenter in swagger-php'
+  version: 1.0.0
+paths:
+  '/products/{id}':
+    get:
+      tags:
+        - Products
+      operationId: 399b71a7672f0a46be1b5f4c120c355d
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'A single product'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  /products/search:
+    get:
+      tags:
+        - Products
+      operationId: 178f74de3417eec20dee95709821e6ca
+      parameters:
+        -
+          name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+          example: 43
+        -
+          name: name
+          in: query
+          required: false
+          schema:
+            type:
+              - string
+              - 'null'
+          example: 'Lorem ipsum'
+      responses:
+        '200':
+          description: 'A list of products'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+components:
+  schemas:
+    Product:
+      type: object
+      title: Product
+      description: 'A simple product model'
+      properties:
+        id:
+          type: integer
+          title: 'The unique identifier of a product in our catalog.'
+          example: 43
+        name:
+          type:
+            - string
+            - 'null'
+          title: 'The name of the product.'
+          example: 'Lorem ipsum'
+      required:
+        - id
+tags:
+  -
+    name: Products
+    description: Products
