@@ -20,7 +20,8 @@ if (class_exists(Undefined::class) === false) {
 
 $input = new class extends ArgvInput
 {
-    public function hasParameterOption(array|string $values, bool $onlyParams = false): bool
+    // $values stays untyped: symfony/console 5.4 declares it without a type
+    public function hasParameterOption($values, bool $onlyParams = false): bool
     {
         // Skip the built-in version option check
         // thus the command can use it for its own purpose
