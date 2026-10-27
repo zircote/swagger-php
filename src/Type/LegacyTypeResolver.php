@@ -42,8 +42,13 @@ class LegacyTypeResolver extends AbstractTypeResolver
 
             if ('int' === $schema->type && is_array($details->explicitDetails)) {
                 if (array_key_exists('min', $details->explicitDetails)) {
-                    $schema->minimum = $details->explicitDetails['min'];
-                    $schema->maximum = $details->explicitDetails['max'];
+                    // an open end is `PHP_INT_MIN`/`PHP_INT_MAX`, which is no bound of the API
+                    if (\PHP_INT_MIN !== $details->explicitDetails['min']) {
+                        $schema->minimum = $details->explicitDetails['min'];
+                    }
+                    if (\PHP_INT_MAX !== $details->explicitDetails['max']) {
+                        $schema->maximum = $details->explicitDetails['max'];
+                    }
                 } elseif ('non-zero-int' === $details->explicitType) {
                     $schema->not = ['const' => 0];
                 }
