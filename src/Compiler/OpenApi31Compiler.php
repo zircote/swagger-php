@@ -123,11 +123,11 @@ class OpenApi31Compiler implements CompilerInterface
             'info' => $specification->info instanceof OA\Info ? $this->compileInfo($specification->info) : null,
             'servers' => array_map($this->compileServer(...), $specification->servers),
             'paths' => $this->compilePaths($specification->operations, $specification->pathItems),
-            'webhooks' => $this->compileWebhooks($specification->operations),
-            'tags' => array_map($this->compileTag(...), $specification->tags),
-            'security' => $this->compileSecurity($specification->openapi->security ?? []),
-            'externalDocs' => $specification->externalDocs ? $this->compileExternalDocs($specification->externalDocs[0]) : null,
             'components' => $this->compileComponents($specification),
+            'security' => $this->compileSecurity($specification->openapi->security ?? []),
+            'tags' => array_map($this->compileTag(...), $specification->tags),
+            'externalDocs' => $specification->externalDocs ? $this->compileExternalDocs($specification->externalDocs[0]) : null,
+            'webhooks' => $this->compileWebhooks($specification->operations),
         ], $specification->openapi);
     }
 
