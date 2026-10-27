@@ -1146,8 +1146,18 @@ class HybridBridge
         return is_array($annotation->x) ? $annotation->x : null;
     }
 
+    /**
+     * A property takes the reflector only when its own context holds it.
+     *
+     * A nested property's context inherits the reflector of the member that declares its
+     * parent, and that member's docblock describes the member, not the property.
+     */
     protected function copyReflector(OA\AbstractAnnotation $from, Spec\AbstractAttribute $to): void
     {
+        if ($from instanceof OA\Property && !$from->_context->is('reflector')) {
+            return;
+        }
+
         if ($from->_context->reflector !== null && $from->_context->reflector instanceof \Reflector) {
             $to->setReflector($from->_context->reflector);
         }

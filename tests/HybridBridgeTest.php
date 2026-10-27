@@ -81,6 +81,22 @@ final class HybridBridgeTest extends TestCase
         $this->assertStringContainsString('on line 53', $unexpected['HYBRID'][1]);
     }
 
+    /**
+     * A nested property inherits its parent's reflector in classic, which would give it the
+     * class docblock. Hybrid follows spec here: the schemas take it, their properties do not.
+     */
+    public function testNestedPropertiesDoNotTakeTheClassDocblock(): void
+    {
+        $schemas = $this->build('NestedProperties', Mode::HYBRID)->toArray()['components']['schemas'];
+
+        foreach (['First' => ['a', 'b'], 'Second' => ['c']] as $name => $properties) {
+            $this->assertSame('Describes the schemas, not their properties.', $schemas[$name]['description']);
+            foreach ($properties as $property) {
+                $this->assertArrayNotHasKey('description', $schemas[$name]['properties'][$property], "{$name}.{$property}");
+            }
+        }
+    }
+
     protected function build(string $fixture, Mode $mode, ?LoggerInterface $logger = null): Builder\Result
     {
         // classic scans files, so hybrid does too — a reflector source yields nothing here
