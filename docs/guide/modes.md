@@ -124,11 +124,7 @@ See [Augmenters](/reference/augmenters) for the `Cleanup` options.
 
 The recommended migration path is:
 
-1. **Classic → Hybrid**: hybrid is the default, so this needs no code changes, and the augmenter pipeline becomes available. Output stays the same, with two exceptions:
-
-   - Components that no path references are removed, including a schema kept only for client code generation. [Behavioral differences](#behavioral-differences) has the switch that keeps them.
-
-   - `-c` takes augmenter keys rather than processor keys, apart from `generator.*`. `-D src` lists them.
+1. **Classic → Hybrid**: hybrid is the default, so this needs no code changes, and the augmenter pipeline becomes available. Output stays the same, with the exceptions listed in [Migrating to v7](/guide/migrating-to-v7#the-default-mode).
 
 2. **Hybrid → Spec**: when starting new code, use `OpenApi\Spec` attributes. Existing `OpenApi\Attributes` code keeps working through hybrid mode. The spec attributes are not a one-for-one rename of the classic ones. A reusable attribute takes a single `component:` key, where classic spells the key after its own type (`schema:`, `parameter:`, `request:`, `securityScheme:`). See [Components](/guide/spec-attributes#components).
 
