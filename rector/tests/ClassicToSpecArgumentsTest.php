@@ -32,12 +32,15 @@ final class ClassicToSpecArgumentsTest extends TestCase
      * @var array<string, list<string>>
      */
     private const REWRITTEN = [
+        'CookieParameter' => ['in', 'allowEmptyValue', 'style', 'allowReserved', ...self::STYLES],
         'Encoding' => ['property'],
+        'Header' => ['allowEmptyValue'],
+        'HeaderParameter' => ['in', 'allowEmptyValue', 'style', 'allowReserved', ...self::STYLES],
         'OpenApi' => ['openapi', 'info', 'servers', 'tags', 'externalDocs'],
         'Parameter' => self::STYLES,
-        'PathParameter' => self::STYLES,
+        'PathParameter' => ['in', 'allowEmptyValue', 'allowReserved', ...self::STYLES],
         'Property' => ['encoding'],
-        'QueryParameter' => self::STYLES,
+        'QueryParameter' => ['in', ...self::STYLES],
     ];
 
     /**
@@ -49,19 +52,14 @@ final class ClassicToSpecArgumentsTest extends TestCase
         'AdditionalProperties' => self::SCHEMA_ONLY_IN_CLASSIC,
         'Attachable' => ['properties'],
         'Components' => ['callbacks'],
-        'CookieParameter' => ['in', 'allowEmptyValue', 'style', 'allowReserved', ...self::STYLES],
         'Get' => ['requestBody'],
         'Head' => ['requestBody'],
-        'Header' => ['allowEmptyValue'],
-        'HeaderParameter' => ['in', 'allowEmptyValue', 'style', 'allowReserved', ...self::STYLES],
         'Items' => self::SCHEMA_ONLY_IN_CLASSIC,
         'JsonContent' => self::SCHEMA_ONLY_IN_CLASSIC,
         'OpenApi' => ['paths', 'components', 'webhooks'],
         'Options' => ['requestBody'],
         'PathItem' => ['path', 'get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace', 'query'],
-        'PathParameter' => ['in', 'allowEmptyValue', 'allowReserved'],
         'Property' => self::SCHEMA_ONLY_IN_CLASSIC,
-        'QueryParameter' => ['in'],
         'Schema' => self::SCHEMA_ONLY_IN_CLASSIC,
         'ServerVariable' => ['variables'],
         'Trace' => ['requestBody'],

@@ -15,6 +15,7 @@
 
 use OpenApi\Rector\AliasSpecImportsRector;
 use OpenApi\Rector\ComponentsHolderRector;
+use OpenApi\Rector\DropParameterArgumentsRector;
 use OpenApi\Rector\EncodedPropertyRector;
 use OpenApi\Rector\EncodingKeyRector;
 use OpenApi\Rector\MoveSchemaKeywordsRector;
@@ -36,6 +37,7 @@ return RectorConfig::configure()
         EncodingKeyRector::class,
         EncodedPropertyRector::class,
         ParameterStyleRector::class,
+        DropParameterArgumentsRector::class,
         UnnestOpenApiRector::class,
         WrapEnumClassStringRector::class,
         TypeClassStringToRefRector::class,
