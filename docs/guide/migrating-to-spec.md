@@ -46,6 +46,12 @@ The set:
   it stands for, `deepObject: true` to `style: 'deepObject'`. Classic writes them into the
   document as keys of their own, which OpenAPI does not define, so the migrated document gains
   the `style` and loses the stray key
+- drops parameter arguments spec does not take where nothing is lost: an `in:` that repeats
+  what `QueryParameter`, `PathParameter`, `HeaderParameter` or `CookieParameter` already says,
+  `allowEmptyValue:` and `allowReserved:` outside query parameters and on `Header`, and any style
+  on a header or cookie parameter. OpenAPI defines the first two for query parameters only, and
+  allows one style each for headers and cookies. Classic writes them into the document as given;
+  the migrated document leaves them out
 - wraps a bare `enum: Suit::class` into `enum: [Suit::class]`
 - turns a class-string `type: Pet::class` into `ref: Pet::class`
 - rewrites the type names classic maps, such as `type: 'long'`, to the OpenAPI type and format
@@ -199,12 +205,8 @@ The set leaves these as they are:
 These classic arguments have no spec counterpart and are left in place. Each throws
 `Unknown named parameter` once the migrated attribute loads, so remove or replace it:
 
-- `in:` on `QueryParameter`, `PathParameter`, `HeaderParameter` and `CookieParameter`. The class
-  already says where the parameter goes, so drop it.
-- `allowEmptyValue:` and `allowReserved:` anywhere but a query parameter, and `style:` on a
-  header or cookie parameter. OpenAPI defines the first two for query parameters only, and allows
-  one style each for headers and cookies. The same goes for `spaceDelimited:`, `pipeDelimited:`
-  and `deepObject:` on a header or cookie parameter.
+- `in:` on `QueryParameter`, `PathParameter`, `HeaderParameter` or `CookieParameter` that names
+  another location, or is not a literal. Decide which the parameter is, and use that class.
 - `collectionFormat:` on a schema, a property, items or content. It is OpenAPI 2.0; describe the
   serialization with `style:` and `explode:` on the parameter.
 - `additionalItems:` and `dependencies:`. JSON Schema replaced them with `prefixItems:` beside
