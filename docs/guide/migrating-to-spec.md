@@ -38,6 +38,8 @@ The set:
 - names positional arguments by the classic constructor's parameters, including
   `parent::__construct()` in your own subclasses. The spec classes order their parameters
   differently, so a positional call would bind to the wrong ones after the rename
+- renames `Encoding`'s `property:` to `encoding:`, and turns a `Property` with `encoding:` into a
+  `Property\Encoded`, the spec property that takes one
 - lifts `info:`, `servers:`, `tags:` and `externalDocs:` off a root `OpenApi` attribute into
   sibling attributes, and renames its `openapi:` to `version:`
 - wraps a bare `enum: Suit::class` into `enum: [Suit::class]`

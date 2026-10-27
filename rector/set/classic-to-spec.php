@@ -15,6 +15,8 @@
 
 use OpenApi\Rector\AliasSpecImportsRector;
 use OpenApi\Rector\ComponentsHolderRector;
+use OpenApi\Rector\EncodedPropertyRector;
+use OpenApi\Rector\EncodingKeyRector;
 use OpenApi\Rector\MoveSchemaKeywordsRector;
 use OpenApi\Rector\NamePositionalArgumentsRector;
 use OpenApi\Rector\SecurityToRequirementRector;
@@ -30,6 +32,8 @@ use Rector\Renaming\Rector\Name\RenameClassRector;
 return RectorConfig::configure()
     ->withRules([
         NamePositionalArgumentsRector::class,
+        EncodingKeyRector::class,
+        EncodedPropertyRector::class,
         UnnestOpenApiRector::class,
         WrapEnumClassStringRector::class,
         TypeClassStringToRefRector::class,
