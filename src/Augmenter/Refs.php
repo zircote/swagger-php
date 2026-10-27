@@ -212,7 +212,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
      */
     protected function mergeAllOf(OA\Schema $schema): void
     {
-        if ($schema->allOf === null || $schema->properties === null) {
+        if ($schema->allOf === null || $schema->properties === null || $schema->properties === []) {
             return;
         }
 
