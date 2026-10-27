@@ -45,6 +45,7 @@ final class MoveSchemaKeywordsRector extends AbstractRector
      */
     private const TARGETS = [
         'OpenApi\Spec\Property' => 'OpenApi\Spec\Property',
+        'OpenApi\Spec\Property\Encoded' => 'OpenApi\Spec\Property\Encoded',
         'OpenApi\Spec\MediaType\Json' => 'OpenApi\Spec\MediaType\Json',
         'OpenApi\Spec\MediaType\Xml' => 'OpenApi\Spec\MediaType\Xml',
         'OpenApi\Attributes\Property' => 'OpenApi\Spec\Property',
