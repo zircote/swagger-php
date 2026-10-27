@@ -80,7 +80,10 @@
         "rector/rector": "2.7.0"
     },
     "conflict": {
-        "symfony/process": ">=6, <6.4.14"
+        "symfony/console": "<5.4.35",
+        "symfony/finder": "<5.3.7",
+        "symfony/process": ">=6, <6.4.14",
+        "symfony/string": "<5.4.41"
     },
     "scripts-descriptions": {
         "cs": "Fix all codestyle issues",
