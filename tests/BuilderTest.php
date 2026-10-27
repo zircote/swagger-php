@@ -172,6 +172,21 @@ final class BuilderTest extends OpenApiTestCase
         $this->assertSpecEquals($fileResult->toArray(), $reflectorResult->toArray());
     }
 
+    public function testHybridOrdersTheTopLevelKeysAsClassic(): void
+    {
+        $build = static fn (Mode $mode): array => array_keys((new Builder())
+            ->setMode($mode)
+            ->addSource(new SourceFinder(__DIR__ . '/Fixtures/KeyOrder'))
+            ->build()
+            ->toArray());
+
+        $this->assertSame(
+            ['openapi', 'info', 'servers', 'paths', 'components', 'security', 'tags', 'externalDocs', 'webhooks'],
+            $build(Mode::CLASSIC),
+        );
+        $this->assertSame($build(Mode::CLASSIC), $build(Mode::HYBRID));
+    }
+
     /**
      * A class from `eval()` has no file to scan. Spec reads its attributes through reflection
      * alone, and the classic half of a hybrid build, which needs the file, skips it.
