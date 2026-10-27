@@ -302,7 +302,8 @@ class AttributeFactory implements LoggerAwareInterface
      *
      * An inner attribute matching one outer attribute via contained() is nested into it. Matching
      * more than one is an error, unless the inner attribute fans out to all of them. Inner
-     * attributes that find no container pass through alongside outer.
+     * attributes that find no container pass through alongside outer, and are no container for
+     * the inner attributes after them: one member's attribute does not nest into another's.
      *
      * @param  list<AttributeInterface> $outer
      * @param  list<AttributeInterface> $inner
@@ -310,6 +311,8 @@ class AttributeFactory implements LoggerAwareInterface
      */
     public function resolveHierarchy(array $outer, array $inner): array
     {
+        // kept apart from $outer while iterating, so a passing attribute is no container for the next ones
+        $passing = [];
         foreach ($inner as $innerAttribute) {
             $matches = [];
             foreach ($outer as $outerAttribute) {
@@ -320,14 +323,14 @@ class AttributeFactory implements LoggerAwareInterface
             }
 
             if ($matches === []) {
-                $outer[] = $innerAttribute;
+                $passing[] = $innerAttribute;
                 continue;
             }
 
             $this->nestIntoMatches($innerAttribute, $matches, 'Ambiguous hierarchy: %s matches multiple containers');
         }
 
-        return $outer;
+        return [...$outer, ...$passing];
     }
 
     /**
