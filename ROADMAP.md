@@ -63,7 +63,7 @@ This is where things turn:
 * everything whose marker says `7.0` is removed
 * `nikic/php-parser` is raised to `^5.0` - the `^4.19` branch parses no further than
   PHP 8.3 syntax
-* the Symfony components are raised to `^6.4`
+* the Symfony components accept 5.4 and 6.4 or later, dropping 5.0 to 5.3 and 6.0 to 6.3
 * the documentation leads with spec attributes, and classic pages carry a `deprecated` badge
 * the v7 migration guide states the v8 namespace move below, so nobody meets it as a surprise
 

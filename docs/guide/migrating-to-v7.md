@@ -7,7 +7,7 @@
 * Hybrid is the default mode, and spec and hybrid are no longer beta
 * The default output version is OpenAPI 3.1.0
 * Classic attributes, annotations and the classic pipeline are deprecated, and removed in 8.0
-* `nikic/php-parser` 4.x is no longer supported, and the Symfony components need at least 6.4
+* `nikic/php-parser` 4.x is no longer supported, and the Symfony components need 5.4, or 6.4 or later
 * The elements deprecated for 7.0 have been removed (see below)
 
 For most installations upgrading does not require any code changes.
