@@ -52,7 +52,8 @@ The set:
   are left for you
 - adds `#[Components]` to a class whose members declare keyed components, since spec takes a
   component on a member only in a holder. A class with a `Schema` of its own is left alone, and
-  so is a keyed attribute that something beside it nests, such as a response beside an operation.
+  so is a keyed attribute that something beside it nests, such as a response beside an operation,
+  and a response keyed by a status code, `response: 200`, which was meant to nest in one.
   A method carrying a framework's route attribute can be left out too, see
   [Routes from a framework](#routes-from-a-framework)
 - renames the classes, `OpenApi\Attributes\Get` to `OpenApi\Spec\Operation\Get` and so on
@@ -65,17 +66,19 @@ Formatting is left to your code style tooling.
 
 ### Routes from a framework
 
-Where a framework derives the operation from a route attribute, a keyed attribute beside the
-route decorates that operation:
+Where a framework derives the operation from a route attribute, the attributes beside the route
+decorate that operation:
 
 ```php
 #[Route('/pets', methods: ['GET'])]
+#[OA\Parameter(parameter: 'page', name: 'page', in: 'query')]
 #[OA\Response(response: 200, description: 'The pets')]
 public function list() {}
 ```
 
-The set cannot tell that from a component, and would make the class a holder. Name the route
-attributes in your own `rector.php`, and a method carrying one of them does not count:
+The response is keyed by a status code and does not count, but the set cannot tell the keyed
+parameter from a component, and would make the class a holder. Name the route attributes in your
+own `rector.php`, and a method carrying one of them does not count:
 
 ```php
 use OpenApi\Rector\ComponentsHolderRector;
@@ -92,6 +95,13 @@ return RectorConfig::configure()
 ```
 
 Then run `./vendor/bin/rector process src --dry-run` without `--config`.
+
+To keep the rule out of whole directories instead, skip it there with Rector's own
+`withSkip()`:
+
+```php
+    ->withSkip([ComponentsHolderRector::class => ['*/Controller/*']]);
+```
 
 ## What it leaves for you
 

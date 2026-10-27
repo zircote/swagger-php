@@ -6,11 +6,14 @@
 
 namespace OpenApi\Rector;
 
+use OpenApi\Spec\Response;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Attribute;
 use PhpParser\Node\AttributeGroup;
 use PhpParser\Node\Name\FullyQualified;
+use PhpParser\Node\Scalar\Int_;
+use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassConst;
 use PhpParser\Node\Stmt\ClassMethod;
@@ -31,6 +34,9 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  * response beside an operation, or a link beside a response, is nested, not a component. A class
  * with a `Schema` of its own is left alone. It is a model, and in a holder its property schemas
  * would turn into components.
+ *
+ * A response keyed by a status code, `response: 200`, does not count either: it was meant to nest
+ * in an operation, and in a holder it would become a component named after the code.
  *
  * A member carrying one of the configured route attributes is left out: where a framework derives
  * the operation from the route, a keyed response beside it decorates that operation. None are
@@ -147,7 +153,7 @@ CODE_SAMPLE,
 
             foreach ($attributes as $index => [$attribute, $local, $prefix]) {
                 $kind = $kinds[$index];
-                if ($kind === null || !isset(self::KINDS[$kind]) || !$this->isKeyed($attribute, self::KINDS[$kind][0])) {
+                if ($kind === null || !isset(self::KINDS[$kind]) || !$this->isKeyed($attribute, $kind)) {
                     continue;
                 }
 
@@ -260,14 +266,38 @@ CODE_SAMPLE,
         return false;
     }
 
-    private function isKeyed(Attribute $attribute, string $key): bool
+    private function isKeyed(Attribute $attribute, string $kind): bool
     {
         foreach ($attribute->args as $arg) {
-            if ($arg instanceof Arg && ($this->isName($arg, 'component') || $this->isName($arg, $key))) {
+            if (!$arg instanceof Arg) {
+                continue;
+            }
+
+            if ($this->isName($arg, 'component')) {
                 return true;
+            }
+
+            if ($this->isName($arg, self::KINDS[$kind][0])) {
+                return $kind !== 'response' || !$this->isStatusCode($arg->value);
             }
         }
 
         return false;
+    }
+
+    /**
+     * A literal status code: `200`, `'404'`, `'4XX'` or `'default'`.
+     */
+    private function isStatusCode(Node\Expr $value): bool
+    {
+        if ($value instanceof Int_) {
+            $value = (string) $value->value;
+        } elseif ($value instanceof String_) {
+            $value = $value->value;
+        } else {
+            return false;
+        }
+
+        return preg_match(Response::STATUS_CODE_PATTERN, $value) === 1;
     }
 }

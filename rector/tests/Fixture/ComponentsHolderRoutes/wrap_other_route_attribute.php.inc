@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PetController
 {
     #[Route('/pets', methods: ['GET'])]
-    #[OA\Response(response: 200, description: 'The pets')]
+    #[OA\Response(response: 'Pets', description: 'The pets')]
     public function list(): void
     {
     }
@@ -27,7 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PetController
 {
     #[Route('/pets', methods: ['GET'])]
-    #[OA\Response(response: 200, description: 'The pets')]
+    #[OA\Response(response: 'Pets', description: 'The pets')]
     public function list(): void
     {
     }
