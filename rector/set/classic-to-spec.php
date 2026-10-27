@@ -19,6 +19,7 @@ use OpenApi\Rector\EncodedPropertyRector;
 use OpenApi\Rector\EncodingKeyRector;
 use OpenApi\Rector\MoveSchemaKeywordsRector;
 use OpenApi\Rector\NamePositionalArgumentsRector;
+use OpenApi\Rector\ParameterStyleRector;
 use OpenApi\Rector\SecurityToRequirementRector;
 use OpenApi\Rector\TypeAliasesRector;
 use OpenApi\Rector\TypeClassStringToRefRector;
@@ -34,6 +35,7 @@ return RectorConfig::configure()
         NamePositionalArgumentsRector::class,
         EncodingKeyRector::class,
         EncodedPropertyRector::class,
+        ParameterStyleRector::class,
         UnnestOpenApiRector::class,
         WrapEnumClassStringRector::class,
         TypeClassStringToRefRector::class,
