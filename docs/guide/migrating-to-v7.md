@@ -42,10 +42,20 @@ annotations as classic, so the document stays the same, with these exceptions:
 
 * **The OpenAPI version.** Hybrid generates OpenAPI 3.1.0 where classic generated 3.0.0. To keep
   3.0.0, set the version: `Builder::setVersion('3.0.0')`, or `--version 3.0.0` on the command line.
-* **Unreferenced components.** Components that no path references are removed. Set
-  `cleanup.enabled` to `false` to keep them, see [Behavioral differences](/guide/modes#behavioral-differences).
+* **Unreferenced components.** Components that no path references are removed. That includes
+  parameters and responses, and a schema kept only for client code generation. Set `cleanup.enabled`
+  to `false` to keep them, see [Behavioral differences](/guide/modes#behavioral-differences).
+* **Class docblocks.** A class docblock becomes the description of each schema declared on the
+  class that has none of its own. Where a schema listed its properties inline, classic gave the
+  docblock to the first of those properties instead, if that one had no description.
+* **Properties beside `allOf`.** On a nested property, `properties` declared beside `allOf` stay
+  beside it. Classic moved them into an `allOf` entry of their own. Both say the same.
 * **Configuration keys.** `-c` takes augmenter keys rather than processor keys, apart from
   `generator.*`. `openapi -D src` lists them.
+
+Hybrid also logs warnings where classic logged nothing. Most of them are classic type names such as
+`bool` or `datetime`, which hybrid still translates, with a warning, until 8.0.
+`TypeAliasesRector` rewrites them to the OpenAPI types.
 
 Custom processors run in hybrid mode only [over the annotations as scanned](/guide/extension-points#the-classic-escape-hatch).
 A project that depends on them can stay on classic with `Builder::setMode(Mode::CLASSIC)`, or
