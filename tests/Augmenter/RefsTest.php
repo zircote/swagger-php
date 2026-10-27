@@ -55,6 +55,19 @@ final class RefsTest extends TestCase
         $this->assertSame('#/components/schemas/Odd~1Name~0With/allOf/0/properties/name', $pointing->ref);
     }
 
+    public function testEmptyPropertiesBesideAllOfAddNoAllOfEntry(): void
+    {
+        $spec = new Specification();
+
+        $schema = new OA\Schema(schema: 'Composed', properties: [], allOf: [new OA\Schema(ref: '#/components/schemas/Base')]);
+        $schema->setReflector(new \ReflectionClass(Fixtures\Augmenter\RefTarget::class));
+        $spec->schemas[] = $schema;
+
+        (new Augmenter\Refs())($spec);
+
+        $this->assertCount(1, $schema->allOf);
+    }
+
     public function testLeavesAlreadyResolvedUntouched(): void
     {
         $spec = new Specification();
