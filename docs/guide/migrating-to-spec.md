@@ -42,6 +42,10 @@ The set:
   `Property\Encoded`, the spec property that takes one
 - lifts `info:`, `servers:`, `tags:` and `externalDocs:` off a root `OpenApi` attribute into
   sibling attributes, and renames its `openapi:` to `version:`
+- rewrites a parameter's `spaceDelimited:`, `pipeDelimited:` or `deepObject:` to the `style:`
+  it stands for, `deepObject: true` to `style: 'deepObject'`. Classic writes them into the
+  document as keys of their own, which OpenAPI does not define, so the migrated document gains
+  the `style` and loses the stray key
 - wraps a bare `enum: Suit::class` into `enum: [Suit::class]`
 - turns a class-string `type: Pet::class` into `ref: Pet::class`
 - rewrites the type names classic maps, such as `type: 'long'`, to the OpenAPI type and format
@@ -189,6 +193,30 @@ The set leaves these as they are:
   schema keywords is left whole, and fails at generation time with `Unknown named parameter`.
   Move the keywords into the nested schema by hand. The same holds for a `schema:` string that
   is neither a pointer nor a `::class`, and for one with a `ref:` beside it.
+
+### Arguments spec does not take
+
+These classic arguments have no spec counterpart and are left in place. Each throws
+`Unknown named parameter` once the migrated attribute loads, so remove or replace it:
+
+- `in:` on `QueryParameter`, `PathParameter`, `HeaderParameter` and `CookieParameter`. The class
+  already says where the parameter goes, so drop it.
+- `allowEmptyValue:` and `allowReserved:` anywhere but a query parameter, and `style:` on a
+  header or cookie parameter. OpenAPI defines the first two for query parameters only, and allows
+  one style each for headers and cookies. The same goes for `spaceDelimited:`, `pipeDelimited:`
+  and `deepObject:` on a header or cookie parameter.
+- `collectionFormat:` on a schema, a property, items or content. It is OpenAPI 2.0; describe the
+  serialization with `style:` and `explode:` on the parameter.
+- `additionalItems:` and `dependencies:`. JSON Schema replaced them with `prefixItems:` beside
+  `items:`, and with `dependentRequired:` and `dependentSchemas:`.
+- `requestBody:` on `Get`, `Head`, `Options` and `Trace`. Spec defines no body for these
+  methods, so remove it. See [No `requestBody` on `Get`, `Head`, `Options`,
+  `Trace`](/guide/spec-attributes#no-requestbody-on-get-head-options-trace).
+- `callbacks:` on `Components`. Declare callbacks on the operation.
+- `variables:` on `ServerVariable` and `properties:` on `Attachable`, which spec has no use for.
+
+`PathItem`'s `path:` and operation arguments, and a root `OpenApi`'s `paths:`, `components:` and
+`webhooks:`, are covered [above](#constructs-with-no-one-to-one-replacement).
 
 ### The component keys
 
