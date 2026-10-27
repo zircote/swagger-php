@@ -35,6 +35,7 @@ class HybridBridge
                 $annotation instanceof OA\Tag => $specification->tags[] = $this->convertTag($annotation),
                 $annotation instanceof OA\SecurityScheme && !$annotation->_context->is('nested') => $specification->securitySchemes[] = $this->convertSecurityScheme($annotation),
                 $annotation instanceof OA\PathItem && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->path) && !($annotation instanceof OA\Webhook) => $this->collectPathItem($annotation, $specification),
+                $annotation instanceof OA\Webhook && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->webhook) => $this->convertWebhook($annotation, $specification),
                 $annotation instanceof OA\Components => $this->convertComponents($annotation, $specification),
                 $annotation instanceof OA\Operation && !$annotation->_context->is('nested') => $specification->operations[] = $this->convertOperation($annotation, $this->val($annotation->path), $this->methodFromAnnotation($annotation)),
                 $annotation instanceof OA\Schema && !$this->isNestedSchemaType($annotation) && $annotation->_context->reflector instanceof \ReflectionClass && !$annotation->_context->is('nested') => $classSchemas[$annotation->_context->reflector->getName()][] = $annotation,
@@ -46,6 +47,7 @@ class HybridBridge
                 $annotation instanceof OA\Parameter && !$annotation->_context->is('nested') && ($annotation->_context->reflector instanceof \ReflectionClass || !Undefined::isDefault($annotation->parameter)) => $specification->parameters[] = $this->convertParameter($annotation),
                 $annotation instanceof OA\Header && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->header) => $specification->headers[] = $this->convertHeader($annotation),
                 $annotation instanceof OA\Link && !$annotation->_context->is('nested') => $specification->links[] = $this->convertLink($annotation),
+                $annotation instanceof OA\Examples && !$annotation->_context->is('nested') && !Undefined::isDefault($annotation->example) => $specification->examples[] = $this->convertExample($annotation),
                 $annotation instanceof OA\ExternalDocumentation && !$annotation->_context->is('nested') => $specification->externalDocs[] = $this->convertExternalDocs($annotation),
                 default => isset($held[spl_object_id($annotation)]) ? null : $this->reportStray($annotation),
             };

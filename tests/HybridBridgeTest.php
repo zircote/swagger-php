@@ -33,6 +33,7 @@ final class HybridBridgeTest extends TestCase
     {
         yield 'operation nested in a PathItem' => ['NestedPathItem'];
         yield 'operation nested in a Webhook' => ['NestedWebhook'];
+        yield 'example and webhook declared on a class' => ['ClassLevelComponents'];
     }
 
     #[DataProvider('fixtures')]
