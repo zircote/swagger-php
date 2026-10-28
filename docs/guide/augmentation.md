@@ -1,7 +1,7 @@
 # Augmentation
 
 One benefit of using `swagger-php` is that the library will use a number of strategies to augment your
-annotations.
+attributes and annotations.
 
 This includes things like:
 
@@ -9,9 +9,9 @@ This includes things like:
 * the description of elements
 * the data type of properties
 
-Based on the context of the annotation `swagger-php` will look at (in order of priority):
+Based on the context of the attribute or annotation `swagger-php` will look at (in order of priority):
 
-* the OpenApi annotation itself
+* the attribute or annotation itself
 * the docblock (if any)
 * PHP native type hints (if any)
 
@@ -88,7 +88,7 @@ Data types that are not recognized and cannot be resolved to a class-like name (
 A class implementing `DateTimeInterface`, such as `DateTimeImmutable` or a subclass of it, is a
 `string` with format `date-time`.
 
-Most of these schema elements will be resolved in isolation. For example, `nullable` may be enforced by the OpenApi annotation
+Most of these schema elements will be resolved in isolation. For example, `nullable` may be enforced by the attribute or annotation
 while the actual data type may be resolved from the docblock (or type-hint).
 
 ### Which source wins
@@ -137,23 +137,23 @@ class Pet
 ```
 
 ::: info Mode difference
-Only spec attributes are read. Classic annotations and attributes add neither, in `classic` or in
+Only spec attributes are read. Classic attributes and docblock annotations add neither, in `classic` or in
 `hybrid`, and a classic parameter stays required by its type alone, whatever its default.
 :::
 
 ## Summary and description
 
-`summary` and `description` of certain annotation types (`OA\Operation`, `OA\Property`, `OA\Parameter` and `OA\Schema`) may be augmented
+`summary` and `description` of certain attribute types (`OA\Operation`, `OA\Property`, `OA\Parameter` and `OA\Schema`) may be augmented
 by extracting the summary and description of the docblock (if any).
 
 ## References
 
 OpenApi specs support references to allow reuse of elements and reduce duplication. One of the most common use cases is
-to set the `type` or `ref` property of a schema to a class name. The only requirement is that the class name must be
-annotated as a `OA\Schema` itself.
+to set the `type` or `ref` property of a schema to a class name. The only requirement is that the class
+is annotated with `OA\Schema` itself.
 
 ## Tags
 
-Tags are an OpenApi concept and may be added to your spec via the `Tag` annotation. For convenience, however, it is also
+Tags are an OpenApi concept and may be added to your spec with `OA\Tag`. For convenience, however, it is also
 possible to create tags by just adding them to your HTTP operations (`Get`, `Post`, etc.).
-All tags used that are not explicitly defined with a `Tag` annotation will be added to the spec.
+All tags used that are not explicitly defined with `OA\Tag` will be added to the spec.

@@ -1,7 +1,7 @@
 # Vendor extensions
 
 The specification allows for [custom properties](http://swagger.io/specification/#vendorExtensions)
-as long as they start with "x-". Therefore, all swagger-php annotations have an `x` property which accepts an array (map)
+as long as they start with "x-". Therefore, all swagger-php attributes and annotations have an `x` property which accepts an array (map)
 and will unfold into "x-" properties.
 
 <codeblock id="custom-property">

@@ -17,16 +17,16 @@ same augmenters and compilers ([Hybrid](/guide/modes#hybrid)).
 - The `Generator` iterates over the given sources (Symfony `Finder`, file/directory list, etc.)
 - The configured analyser (`AnalyserInterface`) reads the files and builds an `Analysis` object.
   The default is the `ReflectionAnalyser`.
-- The `Analysis` object and its annotations are then processed by the configured processors.
-- If enabled, the analysis/annotations are validated.
-- The root `OpenApi` annotation then contains all annotations and is serialized into YAML/JSON.
+- The `Analysis` object and its annotation instances are then processed by the configured processors.
+- If enabled, the annotation instances are validated.
+- The root `OpenApi` instance then contains all annotation instances and is serialized into YAML/JSON.
 
 ### `Context`
 
-Each annotation is associated with a unique `Context` instance. This contains details, collected by the parser/analyser,
-about the PHP context where the annotation was found.
+Each annotation instance is associated with a unique `Context` instance. This contains details, collected by the parser/analyser,
+about the PHP context where the attribute or annotation was found.
 
-Typically, there will be a processor that uses the data to augment the annotation.
+Typically, there will be a processor that uses the data to augment the annotation instance.
 
 **Examples of the data collected:**
   - class/interface/trait/enum names
@@ -36,6 +36,6 @@ Typically, there will be a processor that uses the data to augment the annotatio
 
 ### Analysis
 
-Contains all detected annotations and other relevant meta-data.
+Contains all detected annotation instances and other relevant metadata.
 
-It uses a `SplObjectStorage` instance to store the parsed annotations.
+It uses a `SplObjectStorage` instance to store the annotation instances.

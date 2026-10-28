@@ -23,7 +23,7 @@ The Builder supports three processing modes via `setMode(string|Mode $mode)`. Hy
 
 ### Classic
 
-Scans source files for annotations/attributes and assembles the OpenAPI document via the Generator pipeline.
+Scans source files for classic attributes and docblock annotations and assembles the OpenAPI document via the Generator pipeline.
 
 ```php
 use OpenApi\Builder\Mode;
@@ -232,7 +232,7 @@ $builder->withAttributeFactory(function (AttributeFactory $factory): void {
 });
 ```
 
-Translators convert non-OA attributes (e.g. Symfony `#[Assert\*]`, framework route annotations) into spec DTOs during assembly. See the [Assembler section](/reference/architecture#assembler) in the architecture docs for how assembly and slot-map nesting work.
+Translators convert non-OA attributes (e.g. Symfony `#[Assert\*]`, framework route annotations) into spec attribute instances during assembly. See the [Assembler section](/reference/architecture#assembler) in the architecture docs for how assembly and slot-map nesting work.
 
 ## Result
 
