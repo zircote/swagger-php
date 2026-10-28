@@ -243,38 +243,17 @@ tests/Fixtures/Scratch/Security3.0.0.yaml:
   no-unused-components:
     - '#/components/securitySchemes/api_key'
     - '#/components/securitySchemes/store_auth'
-tests/Fixtures/Scratch/RequestBody3.2.0-type-info.yaml:
+tests/Fixtures/Scratch/RequestBody3.2.0.yaml:
   struct:
     - '#/components/requestBodies/RequestBodyRef'
     - '#/components/requestBodies/foo'
-tests/Fixtures/Scratch/RequestBody3.2.0-legacy.yaml:
-  struct:
-    - '#/components/requestBodies/RequestBodyRef'
-    - '#/paths/~1endpoint~1ref-foo/post/requestBody'
-    - '#/components/requestBodies/foo'
-  no-unused-components:
-    - '#/components/requestBodies/foo'
-tests/Fixtures/Scratch/RequestBody3.1.0-type-info.yaml:
+tests/Fixtures/Scratch/RequestBody3.1.0.yaml:
   struct:
     - '#/components/requestBodies/RequestBodyRef'
     - '#/components/requestBodies/foo'
-tests/Fixtures/Scratch/RequestBody3.1.0-legacy.yaml:
+tests/Fixtures/Scratch/RequestBody3.0.0.yaml:
   struct:
     - '#/components/requestBodies/RequestBodyRef'
-    - '#/paths/~1endpoint~1ref-foo/post/requestBody'
-    - '#/components/requestBodies/foo'
-  no-unused-components:
-    - '#/components/requestBodies/foo'
-tests/Fixtures/Scratch/RequestBody3.0.0-type-info.yaml:
-  struct:
-    - '#/components/requestBodies/RequestBodyRef'
-    - '#/components/requestBodies/foo'
-tests/Fixtures/Scratch/RequestBody3.0.0-legacy.yaml:
-  struct:
-    - '#/components/requestBodies/RequestBodyRef'
-    - '#/paths/~1endpoint~1ref-foo/post/requestBody'
-    - '#/components/requestBodies/foo'
-  no-unused-components:
     - '#/components/requestBodies/foo'
 tests/Fixtures/Scratch/PropertyItems3.2.0.yaml:
   no-unused-components:
@@ -333,22 +312,13 @@ tests/Fixtures/Scratch/NestedAdditionalProperties3.1.0.yaml:
 tests/Fixtures/Scratch/NestedAdditionalProperties3.0.0.yaml:
   no-unused-components:
     - '#/components/schemas/NestedAdditionalAttributes'
-tests/Fixtures/Scratch/MultiTypeProperty3.2.0-type-info.yaml:
+tests/Fixtures/Scratch/MultiTypeProperty3.2.0.yaml:
   no-unused-components:
     - '#/components/schemas/MultiTypeProperty'
-tests/Fixtures/Scratch/MultiTypeProperty3.2.0-legacy.yaml:
+tests/Fixtures/Scratch/MultiTypeProperty3.1.0.yaml:
   no-unused-components:
     - '#/components/schemas/MultiTypeProperty'
-tests/Fixtures/Scratch/MultiTypeProperty3.1.0-type-info.yaml:
-  no-unused-components:
-    - '#/components/schemas/MultiTypeProperty'
-tests/Fixtures/Scratch/MultiTypeProperty3.1.0-legacy.yaml:
-  no-unused-components:
-    - '#/components/schemas/MultiTypeProperty'
-tests/Fixtures/Scratch/MultiTypeProperty3.0.0-type-info.yaml:
-  no-unused-components:
-    - '#/components/schemas/MultiTypeProperty'
-tests/Fixtures/Scratch/MultiTypeProperty3.0.0-legacy.yaml:
+tests/Fixtures/Scratch/MultiTypeProperty3.0.0.yaml:
   no-unused-components:
     - '#/components/schemas/MultiTypeProperty'
 tests/Fixtures/Scratch/ExclusiveMinMax3.2.0.yaml:
