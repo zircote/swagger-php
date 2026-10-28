@@ -35,7 +35,7 @@ class AttributeGenerator extends DocGenerator
 
         foreach ($this->types() as $type) {
             $content = $this->renderer->preamble(
-                rtrim((string) $type, 's'),
+                $type === 'Annotations' ? 'Docblock Annotation' : 'Classic Attribute',
                 $this->snippetContent($type),
                 deprecated: true,
             );

@@ -180,6 +180,33 @@ The codebase is mixed. `normalise` sits alongside `serialization`, and both spel
 Match whatever the file you are editing already uses, and leave the rest alone. A bulk
 correction would churn far more than it fixes.
 
+## Terminology
+
+Three kinds of source-level metadata exist side by side, so the words for them are fixed.
+
+| Term | Means |
+|---|---|
+| annotate, annotating | Adding metadata to the source code for `swagger-php`, by any means. A verb only. |
+| attributes | Spec attributes, `OpenApi\Spec`. Say "spec attributes" on a page that also covers classic. |
+| classic attributes | `OpenApi\Attributes`. Always qualified. |
+| docblock annotations | `@OA\...` in doc comments. "Docblock" at least at the first mention on a page. |
+| attributes and annotations | All kinds, where a statement holds for each of them. |
+
+"Annotations" alone never stands for all kinds. Neither does "attributes" for classic
+attributes.
+
+A runtime object is an instance of whatever the source-level term names: "attribute
+instances" in the `Specification`, "annotation instances" in the `Analysis`. Classic
+attributes extend the annotation classes, so classic builds annotation instances from both
+classic kinds. A bucket is the typed collection in the `Specification` that holds instances,
+not an instance.
+
+The migration guides for versions before v7 and the ADRs keep the words of their time. So do
+the docblocks of the classic classes, which the deprecated reference pages are generated from:
+there "annotation" covers both classic kinds.
+Names from other projects, such as framework route annotations, stay as those projects use
+them.
+
 ## Structure
 
 - Code snippets under `docs/snippets/` are executed by the test suite.

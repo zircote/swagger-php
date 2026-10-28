@@ -1,6 +1,6 @@
 # Using Spec Attributes
 
-Spec attributes are a new way to annotate PHP code for OpenAPI generation. They live in the `OpenApi\Spec` namespace and are typed data containers. Unlike classic annotations they carry no serialization logic, and the augmenter pipeline fills in derived values before compilation.
+Spec attributes are the way to annotate PHP code for OpenAPI generation. They live in the `OpenApi\Spec` namespace and are typed data containers. Unlike classic attributes and docblock annotations they carry no serialization logic, and the augmenter pipeline fills in derived values before compilation.
 
 ## Namespace
 
@@ -604,7 +604,7 @@ operation falls back to the requirements declared above it.
 | `#[OA\PathParameter(...)]`               | `#[OA\Parameter\Path(...)]`                                                        |
 | `#[OA\Items(...)]`                       | `#[OA\Schema\Items(...)]`                                                          |
 | `Property extends Schema`                | `Property` and `Schema` are siblings, stackable                                    |
-| Processors walk a nested annotation tree | Augmenters enrich a flat set of typed buckets                                      |
+| Processors walk a nested tree of annotation instances | Augmenters enrich a flat set of typed buckets                         |
 | Single serializer with version branches  | Dedicated compiler per OpenAPI version                                             |
 
 ## Other differences

@@ -32,13 +32,13 @@ However, `swagger-php` offers more.
 
 ## Classic <Badge type="warning" text="deprecated" />
 
-* [Attributes](attributes.md)
+* [Classic attributes](attributes.md)
 
-  The attributes in the `OpenApi\Attributes` namespace.
+  The classic attributes in the `OpenApi\Attributes` namespace.
 
 * [Docblock annotations](annotations.md)
 
-  The `@OA` annotations in docblocks.
+  The `@OA` docblock annotations.
 
 * The [`Generator`](generator.md)
 
@@ -46,5 +46,5 @@ However, `swagger-php` offers more.
 
 * [Processors](processors.md)
 
-  The processors that convert the collected annotations into a complete OpenAPI document.
+  The processors that convert the collected annotation instances into a complete OpenAPI document.
   Custom processors can be added, and existing ones removed.

@@ -2,16 +2,16 @@
 
 `swagger-php` is a library that extracts API metadata from your PHP source code files.
 
-The idea is to add `swagger-php` [annotations](using-annotations.md) or [attributes](using-attributes.md)
+The idea is to add `swagger-php` [attributes](using-attributes.md)
 next to the relevant PHP code in your application. These will contain the details about your API and
 `swagger-php` will convert those into machine-readable [OpenAPI documentation](https://spec.openapis.org/oas/v3.1.0.html).
 
 Keeping your API documentation next to the corresponding source code (same file!) makes it easy to keep up-to-date,
 as all details can be modified in one place.
 
-::: tip Annotating vs. Annotations
-When talking about annotating your code, we mean the act of adding meta-data to your codebase. This can be done by
-either adding [`Annotations`](using-annotations.md) or [`Attributes`](using-attributes.md).
+::: tip Annotating
+Annotating your code means adding metadata to the source code for `swagger-php`. This is done with
+[attributes](using-attributes.md), classic attributes or [docblock annotations](using-annotations.md).
 :::
 
 ::: warning Requirements

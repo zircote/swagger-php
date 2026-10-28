@@ -266,9 +266,9 @@ OpenApi allows a single reference to external documentation. This is a part of t
 </codeblock>
 
 ::: tip
-If no `@OA\OpenApi` is configured, `swagger-php` will create one automatically.
+If no `OA\OpenApi` is configured, `swagger-php` will create one automatically.
 
-That means the above example would also work with just the `OA\ExternalDocumentation` annotation.
+That means the above example would also work with just the `OA\ExternalDocumentation`.
 ```php
 /**
  * @OA\ExternalDocumentation(
@@ -428,7 +428,7 @@ See [`OA\Security\Requirement`](/guide/shortcuts#oa-security-requirement) and
 
 ## Set the XML root name
 
-The `OA\Xml` annotation may be used to set the XML root element for a given `@OA\XmlContent` response body
+`OA\Xml` may be used to set the XML root element for a given `OA\XmlContent` response body
 
 <codeblock id="set-xml-root-name">
   <template v-slot:at>
@@ -473,7 +473,7 @@ Form posts are `@OA\Post` requests with a `multipart/form-data` `@OA\RequestBody
 Unless specified, each endpoint needs to declare what security schemes it supports. However, there is a way
 to also configure security schemes globally for the whole API.
 
-This is done on the `@OA\OpenApi` annotation:
+This is done on `OA\OpenApi`:
 
 <codeblock id="minimal">
   <template v-slot:at>
@@ -542,7 +542,7 @@ Even if referencing a shared response definition, the `response` parameter is st
 :::
 
 ## mediaType="*/*" <Badge type="warning" text="deprecated" />
-Using `*/*` as `mediaType` is not possible using annotations. Attributes do not have this problem.
+Using `*/*` as `mediaType` is not possible with docblock annotations. Attributes do not have this problem.
 
 **Example:**
 ```php
@@ -895,7 +895,7 @@ class Controller
 }
 ```
 
-### Classic attributes and annotations <Badge type="warning" text="deprecated" />
+### Classic attributes and docblock annotations <Badge type="warning" text="deprecated" />
 
 ```php
 use OpenApi\Attributes as OA;
@@ -938,10 +938,10 @@ class Controller
 }
 ```
 
-::: tip Annotations only?
-If you are only interested in annotations, you can leave out the attribute setup line (`#[\Attribute...`) for `BadRequest`.
+::: tip Docblock annotations only?
+If you are only interested in docblock annotations, you can leave out the attribute setup line (`#[\Attribute...`) for `BadRequest`.
 
-Furthermore, your custom annotations should extend from the `OpenApi\Annotations` namespace.
+Furthermore, your custom docblock annotations should extend from the `OpenApi\Annotations` namespace.
 :::
 
 ## Annotating class constants

@@ -15,11 +15,11 @@ Supported locations:
 * property
 * class/interface const
 
-Most attributes belong to a specific piece of code. `OA\Info` (and a few more) is global, so there is no obvious place for
+Most attributes and annotations belong to a specific piece of code. `OA\Info` (and a few more) is global, so there is no obvious place for
 it, and it ends up nowhere.
 
 The simplest solution is a 'dummy' class that holds all global attributes (e.g. `OA\Info`, `OA\Tag`, `OA\Server`).
-With annotations they go **in a single docblock** on that class.
+With docblock annotations they go **in a single docblock** on that class.
 
 <codeblock id="dummy-class">
   <template v-slot:at>
@@ -45,7 +45,7 @@ annotations are not read, and the same message appears:
 composer require doctrine/annotations
 ```
 
-## Annotations missing <Badge type="warning" text="deprecated" />
+## Docblock annotations missing <Badge type="warning" text="deprecated" />
 
 Another side effect of using reflection is that `swagger-php` _"can't see"_ multiple consecutive docblocks anymore as the PHP reflection API only provides access to the docblock closest to a given structural element.
 
@@ -147,7 +147,7 @@ openapi -b myapp/vendor/autoload.php myapp/src
 The `-b` allows to execute some extra PHP code to load whatever is needed to register your apps classloader with PHP.
 
 ::: warning
-One common case for this type of error is when trying out annotations in a standalone single file.
+One common case for this type of error is when trying out attributes or annotations in a standalone single file.
 Typically, this means it will not use namespaces or conform to any other autoloading standards.
 
 In this case the `-b` option can also be used to autoload the actual file.

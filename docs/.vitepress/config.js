@@ -12,7 +12,7 @@ function getGuideSidebar() {
       text: 'Annotating your code',
       items: [
         { text: 'Using Attributes', link: '/guide/using-attributes' },
-        { text: 'Using Annotations <span class="VPBadge warning">deprecated</span>', link: '/guide/using-annotations' },
+        { text: 'Using Docblock Annotations <span class="VPBadge warning">deprecated</span>', link: '/guide/using-annotations' },
         { text: 'Minimum requirements', link: '/guide/minimum-requirements' },
         { text: 'Augmentation', link: '/guide/augmentation' },
         { text: 'References', link: '/guide/references' },
@@ -76,8 +76,8 @@ function getReferenceSidebar() {
       text: 'Reference',
       items: [
         { text: 'Spec Attributes', link: '/reference/spec-attributes' },
-        { text: 'Attributes <span class="VPBadge warning">deprecated</span>', link: '/reference/attributes' },
-        { text: 'Annotations <span class="VPBadge warning">deprecated</span>', link: '/reference/annotations' },
+        { text: 'Classic Attributes <span class="VPBadge warning">deprecated</span>', link: '/reference/attributes' },
+        { text: 'Docblock Annotations <span class="VPBadge warning">deprecated</span>', link: '/reference/annotations' },
       ]
     },
     {

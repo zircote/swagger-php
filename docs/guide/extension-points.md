@@ -229,7 +229,7 @@ and may configure it in place or return another. Spec mode has no `Generator`, s
 is never called there.
 
 In hybrid, the `Generator` arrives with an empty processor pipeline, so a processor added
-here is the only one that runs, and it sees the annotations as scanned: properties are not
+here is the only one that runs, and it sees the annotation instances as scanned: properties are not
 yet attached to their schemas, and inheritance has not yet produced any `allOf`. The bridge
 and the augmenters do that work afterwards. A processor that only reads or changes what the
 author wrote works in hybrid. One that depends on that structure belongs in an augmenter.

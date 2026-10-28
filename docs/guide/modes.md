@@ -4,16 +4,16 @@ Swagger-php supports three processing modes, which control how source code is tu
 
 ## Overview
 
-|                 | Classic                | Hybrid                                                       | Spec                                         |
-| --------------- | ---------------------- | ------------------------------------------------------------ | -------------------------------------------- |
-| **Status**      | Deprecated             | Default, deprecated                                          | Stable                                       |
-| **Attributes**  | `OpenApi\Attributes`   | `OpenApi\Attributes`, `OpenApi\Spec`                         | `OpenApi\Spec`                               |
-| **Annotations** | Yes                    | Yes                                                          | No                                           |
-| **Pipeline**    | Generator → Processors | Assembler → Resolver → HybridBridge → Augmenters → Compiler  | Assembler → Resolver → Augmenters → Compiler |
+|                          | Classic                | Hybrid                                                       | Spec                                         |
+| ------------------------ | ---------------------- | ------------------------------------------------------------ | -------------------------------------------- |
+| **Status**               | Deprecated             | Default, deprecated                                          | Stable                                       |
+| **Attributes**           | `OpenApi\Attributes`   | `OpenApi\Attributes`, `OpenApi\Spec`                         | `OpenApi\Spec`                               |
+| **Docblock annotations** | Yes                    | Yes                                                          | No                                           |
+| **Pipeline**             | Generator → Processors | Assembler → Resolver → HybridBridge → Augmenters → Compiler  | Assembler → Resolver → Augmenters → Compiler |
 
 ## Classic
 
-Classic mode scans source files for `OpenApi\Attributes` (and legacy `OpenApi\Annotations`) and builds the OpenAPI document through the `Generator` and its processor chain.
+Classic mode scans source files for classic attributes (`OpenApi\Attributes`) and docblock annotations (`OpenApi\Annotations`) and builds the OpenAPI document through the `Generator` and its processor chain.
 
 ```php
 use OpenApi\Builder;
@@ -69,7 +69,7 @@ $result->toYaml();
 ```
 
 ::: warning Custom processors
-Custom processors run in hybrid mode only over the annotations as scanned. A project that depends on them stays on classic until they are rewritten as augmenters, see [Migrating to v7](/guide/migrating-to-v7#the-default-mode).
+Custom processors run in hybrid mode only over the annotation instances as scanned. A project that depends on them stays on classic until they are rewritten as augmenters, see [Migrating to v7](/guide/migrating-to-v7#the-default-mode).
 :::
 
 ## Switching modes
@@ -97,7 +97,7 @@ The modes aim for equivalent output from the same source, but differ in what the
 
 | Behavior                                | Classic                | Hybrid                                               | Spec                                   |
 | --------------------------------------- | ---------------------- | ---------------------------------------------------- | -------------------------------------- |
-| Annotation support (`/** @OA\... */`)   | Yes                    | Yes                                                  | No                                     |
+| Docblock annotations (`/** @OA\... */`) | Yes                    | Yes                                                  | No                                     |
 | `MergeJsonContent` / `MergeXmlContent`  | Yes                    | Yes                                                  | Yes (via `OA\MediaType\Json`)          |
 | Processor chain (`withGenerator()`)     | Yes                    | Scanning only (`MergeJsonContent`/`MergeXmlContent`) | No                                     |
 | Resolver (`withResolver()`)             | No                     | Yes (`Resolver\Reflection` by default)               | Yes (`Resolver\Reflection` by default) |

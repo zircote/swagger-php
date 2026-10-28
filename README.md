@@ -78,12 +78,13 @@ Visit the [Documentation website](https://zircote.github.io/swagger-php/) for
 the [Getting started guide](https://zircote.github.io/swagger-php/guide) or look at
 the [examples directory](docs/examples) for more examples.
 
-### Classic attributes and annotations
+### Classic attributes and docblock annotations
 
 **Deprecated since 7.0, removed in 8.0.**
 
-The attributes in `OpenApi\Attributes` and the docblock annotations still work. They run in hybrid mode,
-which scans them and hands them to the same pipeline as the attributes above.
+Classic attributes in `OpenApi\Attributes` and docblock annotations still work, in hybrid and in classic
+mode. Hybrid, the default, scans them and hands them to the same pipeline as the attributes above.
+Classic mode builds them with its own pipeline, as in 6.x.
 
 ```php
 use OpenApi\Attributes as OAT;

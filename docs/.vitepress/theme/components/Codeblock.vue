@@ -4,10 +4,10 @@
       <tab v-if="hasSpec" :id="specId" name="Spec Attributes">
         <slot name="spec"></slot>
       </tab>
-      <tab :id="atId" name="Attributes" suffix=" <span class='VPBadge warning'>deprecated</span>">
+      <tab :id="atId" name="Classic Attributes" suffix=" <span class='VPBadge warning'>deprecated</span>">
         <slot name="at"></slot>
       </tab>
-      <tab :id="anId" name="Annotations" suffix=" <span class='VPBadge warning'>deprecated</span>">
+      <tab :id="anId" name="Docblock Annotations" suffix=" <span class='VPBadge warning'>deprecated</span>">
         <slot name="an"></slot>
       </tab>
     </tabs>

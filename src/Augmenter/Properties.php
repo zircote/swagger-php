@@ -27,7 +27,8 @@ use OpenApi\Utils\PipeInterface;
  * schema's type does not admit.
  *
  * What the attribute sets wins: an explicit `required` list is kept as written, and so is an
- * explicit `default`, `null` included. Schemas converted from classic annotations are left alone.
+ * explicit `default`, `null` included. Schemas converted from classic attributes and docblock
+ * annotations are left alone.
  *
  * Runs after `Augmenter\Types`, which names each property and gives it the type its default is
  * checked against.

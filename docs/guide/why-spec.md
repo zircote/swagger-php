@@ -17,7 +17,7 @@ Given `['rate' => 'number', 'name' => 'string']` that produces:
 <<< @/snippets/guide/why-spec/value_objects-3.1.0.yaml
 
 This suits an API surface that is computed rather than declared, such as an entity
-registry, a serializer's metadata or a table of fields. The classic annotation objects
+registry, a serializer's metadata or a table of fields. Classic annotation instances
 cannot be used this way. Their properties carry no type declarations and default to an
 `UNDEFINED` sentinel, so reading one back means a sentinel check on every field.
 

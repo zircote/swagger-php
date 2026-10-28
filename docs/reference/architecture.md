@@ -204,4 +204,4 @@ How each classic processor maps to the new pipeline:
 | CleanUnusedComponents | `Cleanup`                                | reduce             |
 | PathFilter            | `PathFilter`                             | reduce             |
 
-The key architectural difference: classic processors walk a single nested annotation tree in one chain. Spec augmenters operate on a flat Specification of typed buckets, grouped into explicit phases. Both mutate their attributes in place — the pipelines differ in shape and ordering, not in mutability.
+The key architectural difference: classic processors walk a single nested tree of annotation instances in one chain. Spec augmenters operate on a flat Specification of typed buckets, grouped into explicit phases. Both mutate their attributes in place — the pipelines differ in shape and ordering, not in mutability.

@@ -37,8 +37,8 @@ spec pipeline. It also builds spec attributes, so both can be mixed in one codeb
 
 ## The default mode
 
-Without a mode set, the document is built in hybrid mode. Hybrid scans the same attributes and
-annotations as classic, so for most projects the document stays the same. The known differences:
+Without a mode set, the document is built in hybrid mode. Hybrid scans the same classic attributes and
+docblock annotations as classic, so for most projects the document stays the same. The known differences:
 
 * **The OpenAPI version.** Hybrid generates OpenAPI 3.1.0 where classic generated 3.0.0. To keep
   3.0.0, set the version: `Builder::setVersion('3.0.0')`, or `--version 3.0.0` on the command line.
@@ -60,7 +60,7 @@ Hybrid also logs warnings where classic logged nothing. Most of them are classic
 Compare the document with one built in classic mode before relying on it. A difference not listed
 here is worth an [issue](https://github.com/zircote/swagger-php/issues).
 
-Custom processors run in hybrid mode only [over the annotations as scanned](/guide/extension-points#the-classic-escape-hatch).
+Custom processors run in hybrid mode only [over the annotation instances as scanned](/guide/extension-points#the-classic-escape-hatch).
 A project that depends on them can stay on classic with `Builder::setMode(Mode::CLASSIC)`, or
 `--mode classic`, while the processors are rewritten as augmenters.
 
@@ -83,7 +83,7 @@ Everything below still works in v7 and is removed in 8.0.
 | `Serializer` | No replacement yet |
 | Raw security arrays on spec attributes, `['bearerAuth' => []]` | `Security\Requirement`. `SecurityToRequirementRector` rewrites them. |
 
-The [Attribute](/reference/attributes), [Annotation](/reference/annotations) and
+The [Classic Attribute](/reference/attributes), [Docblock Annotation](/reference/annotations) and
 [Processor](/reference/processors) references mark each deprecated class.
 
 ## Preparing for 8.0
