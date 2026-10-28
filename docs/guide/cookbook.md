@@ -191,7 +191,7 @@ support further grouping via the vendor extension `x-tagGroups`.
   </template>
 </codeblock>
 
-## Adding examples to `@OA\Response`
+## Adding examples to `OA\Response`
 
 <codeblock id="response-examples">
   <template v-slot:at>
@@ -211,11 +211,11 @@ support further grouping via the vendor extension `x-tagGroups`.
   </template>
 </codeblock>
 
-## Adding examples to `@OA\Schema`
+## Adding examples to `OA\Schema`
 
 A schema's `examples` is the JSON Schema keyword rather than a map of Example Objects, so it
-takes a list of values. `@OA\Property`, `@OA\Items` and `@OA\AdditionalProperties` are schemas
-too and take the same list.
+takes a list of values. `OA\Schema\Items` and `OA\Schema\AdditionalProperties` are schemas too
+and take the same list. A property takes it on the `OA\Schema` beside its `OA\Property`.
 
 <codeblock id="schema-examples">
   <template v-slot:at>
@@ -235,17 +235,20 @@ too and take the same list.
   </template>
 </codeblock>
 
-A nested `@OA\Examples` is accepted here and contributes its `value`. The rest of an Example
-Object (the key, `summary`, `description`, `externalValue`) has nowhere to go in a list and is
-dropped. A media type, parameter or header can carry those instead.
+A media type, parameter or header takes Example Objects instead.
 
 ::: info Mode difference
+In `classic`, `OA\Property`, `OA\Items` and `OA\AdditionalProperties` are schemas themselves
+and take the list directly. A nested `OA\Examples` is accepted there and contributes its
+`value`. The rest of it (the key, `summary`, `description`, `externalValue`) is dropped. In
+`spec`, an Example Object in the list is reported with a warning.
+
 The keyword arrived in OpenAPI 3.1. Generating 3.0 from the same source drops the list in
 `classic` and carries the first value across as `example` in `spec`. Both warn.
 :::
 
 ## External documentation
-OpenApi allows a single reference to external documentation. This is a part of the top level `@OA\OpenApi`.
+OpenApi allows a single reference to external documentation. This is a part of the top level `OA\OpenApi`.
 
 <codeblock id="external-doc">
   <template v-slot:at>
@@ -270,12 +273,10 @@ If no `OA\OpenApi` is configured, `swagger-php` will create one automatically.
 
 That means the above example would also work with just the `OA\ExternalDocumentation`.
 ```php
-/**
- * @OA\ExternalDocumentation(
- *   description="More documentation here...",
- *   url="https://example.com/externaldoc1/"
- * )
- */
+#[OA\ExternalDocumentation(
+    description: 'More documentation here...',
+    url: 'https://example.com/externaldoc1/',
+)]
 ```
 
 :::
@@ -428,7 +429,7 @@ See [`OA\Security\Requirement`](/guide/shortcuts#oa-security-requirement) and
 
 ## Set the XML root name
 
-`OA\Xml` may be used to set the XML root element for a given `OA\XmlContent` response body
+`OA\Xml` may be used to set the XML root element for an XML response body
 
 <codeblock id="set-xml-root-name">
   <template v-slot:at>
@@ -449,7 +450,7 @@ See [`OA\Security\Requirement`](/guide/shortcuts#oa-security-requirement) and
 </codeblock>
 
 ## upload multipart/form-data
-Form posts are `@OA\Post` requests with a `multipart/form-data` `@OA\RequestBody`. The relevant bit looks something like this
+Form posts are POST operations with a `multipart/form-data` request body. The relevant bit looks something like this
 
 <codeblock id="upload-multipart-form-data">
   <template v-slot:at>
@@ -674,25 +675,25 @@ The API does include basic support for callbacks. However, this needs to be set 
 Typically, when referencing schemas this is done using `$ref`'s
 
 ```php
-#[OAT\Schema(schema: 'user')]
+#[OA\Schema(component: 'user')]
 class User
 {
 }
 
-#[OAT\Schema()]
+#[OA\Schema]
 class Book
 {
     /**
      * @var User
      */
-    #[OAT\Property(ref: '#/components/schemas/user')]
+    #[OA\Schema(ref: '#/components/schemas/user')]
     public $author;
 }
 ```
 
 This works but is not very convenient.
 
-First, when using custom schema names (`schema: 'user'`), this needs to be taken into account everywhere.
+First, when using custom schema names (`component: 'user'`), this needs to be taken into account everywhere.
 Secondly, having to write `ref: '#/components/schemas/user'` is tedious and error-prone.
 
 Using attributes, all this changes as we can take advantage of PHP itself by referring to a schema by its (fully qualified)
