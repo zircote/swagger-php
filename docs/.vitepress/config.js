@@ -11,7 +11,7 @@ function getGuideSidebar() {
     {
       text: 'Annotating your code',
       items: [
-        { text: 'Using Attributes <span class="VPBadge warning">deprecated</span>', link: '/guide/using-attributes' },
+        { text: 'Using Attributes', link: '/guide/using-attributes' },
         { text: 'Using Annotations <span class="VPBadge warning">deprecated</span>', link: '/guide/using-annotations' },
         { text: 'Minimum requirements', link: '/guide/minimum-requirements' },
         { text: 'Augmentation', link: '/guide/augmentation' },
