@@ -68,8 +68,8 @@ $result = (new Builder())
 $result->toYaml();
 ```
 
-::: warning Disclaimer
-Hybrid mode will not work in heavily customized projects like `NelmioApiDocBundle`, or in projects adding custom processors.
+::: warning Custom processors
+Custom processors run in hybrid mode only over the annotations as scanned. A project that depends on them stays on classic until they are rewritten as augmenters, see [Migrating to v7](/guide/migrating-to-v7#the-default-mode).
 :::
 
 ## Switching modes

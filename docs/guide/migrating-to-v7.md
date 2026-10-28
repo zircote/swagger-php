@@ -38,7 +38,7 @@ spec pipeline. It also builds spec attributes, so both can be mixed in one codeb
 ## The default mode
 
 Without a mode set, the document is built in hybrid mode. Hybrid scans the same attributes and
-annotations as classic, so the document stays the same, with these exceptions:
+annotations as classic, so for most projects the document stays the same. The known differences:
 
 * **The OpenAPI version.** Hybrid generates OpenAPI 3.1.0 where classic generated 3.0.0. To keep
   3.0.0, set the version: `Builder::setVersion('3.0.0')`, or `--version 3.0.0` on the command line.
@@ -56,6 +56,9 @@ annotations as classic, so the document stays the same, with these exceptions:
 Hybrid also logs warnings where classic logged nothing. Most of them are classic type names such as
 `bool` or `datetime`, which hybrid still translates, with a warning, until 8.0.
 `TypeAliasesRector` rewrites them to the OpenAPI types.
+
+Compare the document with one built in classic mode before relying on it. A difference not listed
+here is worth an [issue](https://github.com/zircote/swagger-php/issues).
 
 Custom processors run in hybrid mode only [over the annotations as scanned](/guide/extension-points#the-classic-escape-hatch).
 A project that depends on them can stay on classic with `Builder::setMode(Mode::CLASSIC)`, or
