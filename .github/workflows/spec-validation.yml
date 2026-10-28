@@ -5,10 +5,12 @@ on:
     branches:
       - master
       - 5.x
+      - 6.x
   pull_request:
     branches:
       - master
       - 5.x
+      - 6.x
 
 jobs:
   spec-validation:
