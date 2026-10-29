@@ -13,7 +13,7 @@ sidebar: false
 | [Lumen swagger][5]            | swagger-php integration with lumen/laravel                |
 | [NelmioApiDocBundle][6]       | Symfony bundle on top of swagger-php                      |
 | [auto-swagger-ui][7]          | Automatically add swagger ui and json to your application |
-| [openapi-router][8]           | Configure framework routes from OpenApi annotations       |
+| [openapi-router][8]           | Configure framework routes from spec attributes           |
 | [openapi-verifier][9]         | Verify response against OpenAPI specification in PHPUnit  |
 | [openapi-filter][10]          | Filter internal paths, operations, parameters, etc        |
 | [OpenAPI-Symfony-Routing][11] | Load routes in Symfony based on OpenAPI annotations       |
