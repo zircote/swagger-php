@@ -111,6 +111,16 @@ The docblock tag read depends on the element:
 * a promoted constructor property: the constructor's `@param`
 * a method: `@return`
 
+### Property examples
+
+::: info Mode difference
+In the spec pipeline, a property's `@example` text is decoded as JSON when its value matches
+the schema's type. For example, `@example false` on a boolean property produces the boolean
+`false`. String schemas, unions containing `string`, and untyped schemas keep the text.
+Invalid JSON and values of a different type also keep the text. An explicit schema `example`
+takes precedence over the docblock.
+:::
+
 ### Required properties and defaults
 
 An object schema's `required` list and its properties' `default` come from the PHP declarations:
