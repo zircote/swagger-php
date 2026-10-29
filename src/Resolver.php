@@ -7,6 +7,7 @@
 namespace OpenApi;
 
 use OpenApi\Contracts\AttributeInterface;
+use OpenApi\Contracts\DependencyProviderInterface;
 use OpenApi\Contracts\ResolverInterface;
 use OpenApi\Resolver\Reflection;
 use OpenApi\Spec as OA;
@@ -19,9 +20,11 @@ use Psr\Log\LoggerInterface;
 /**
  * Finds and resolves FQCNs referenced by the specification that have no corresponding schema.
  *
- * Two sources are inspected:
+ * Built-in discovery inspects two sources:
  * 1. Ref values that are raw FQCNs (not yet rewritten to `#/components/...` paths)
  * 2. Property/parameter type hints on schema class reflectors
+ *
+ * Integrations can register dependency providers for their own metadata.
  */
 class Resolver implements LoggerAwareInterface
 {
@@ -30,11 +33,17 @@ class Resolver implements LoggerAwareInterface
     protected const MAX_ITERATIONS = 50;
 
     /**
+     * @var TypedList<DependencyProviderInterface>
+     */
+    protected TypedList $dependencyProviders;
+
+    /**
      * @param TypedList<ResolverInterface>|null $resolvers defaults to the built-in resolvers
      */
     public function __construct(protected TypedList|null $resolvers = null)
     {
         $this->resolvers ??= new TypedList($this->getDefaultResolvers());
+        $this->dependencyProviders = new TypedList();
     }
 
     /**
@@ -55,6 +64,20 @@ class Resolver implements LoggerAwareInterface
     public function withResolvers(callable $hook): static
     {
         $hook($this->resolvers);
+
+        return $this;
+    }
+
+    /**
+     * Configure additional dependency discovery alongside native refs and reflector types.
+     *
+     * Providers contribute names on each discovery pass, including newly collected components.
+     *
+     * @param callable(TypedList<DependencyProviderInterface>): (TypedList<DependencyProviderInterface>|void) $hook
+     */
+    public function withDependencyProviders(callable $hook): static
+    {
+        $hook($this->dependencyProviders);
 
         return $this;
     }
@@ -135,6 +158,7 @@ class Resolver implements LoggerAwareInterface
 
         $this->collectFromRefs($specification, $index, $unresolved);
         $this->collectFromReflectors($specification, $index, $unresolved);
+        $this->collectFromDependencyProviders($specification, $index, $unresolved);
 
         return array_values(array_unique($unresolved));
     }
@@ -188,6 +212,20 @@ class Resolver implements LoggerAwareInterface
                     continue;
                 }
 
+                if (!$index->find($fqcn) instanceof AttributeInterface) {
+                    $unresolved[] = $fqcn;
+                }
+            }
+        }
+    }
+
+    /**
+     * @param list<string> $unresolved
+     */
+    protected function collectFromDependencyProviders(Specification $specification, ComponentIndex $index, array &$unresolved): void
+    {
+        foreach ($this->dependencyProviders as $provider) {
+            foreach ($provider->dependencies($specification) as $fqcn) {
                 if (!$index->find($fqcn) instanceof AttributeInterface) {
                     $unresolved[] = $fqcn;
                 }

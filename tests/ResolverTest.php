@@ -7,18 +7,152 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Assembler;
+use OpenApi\Augmenter\Cleanup;
 use OpenApi\Builder;
 use OpenApi\Builder\Mode;
+use OpenApi\Contracts\DependencyProviderInterface;
 use OpenApi\Contracts\ResolverInterface;
 use OpenApi\Loggers\CollectingLogger;
 use OpenApi\Resolver;
 use OpenApi\Spec as OA;
+use OpenApi\Specification;
+use OpenApi\Utils\Pipeline;
 use OpenApi\Utils\TypedList;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class ResolverTest extends TestCase
 {
+    public function testDependencyProvidersShareDeduplicationAndTransitiveResolution(): void
+    {
+        $assembler = new Assembler();
+        $operation = new OA\Operation\Get(path: '/metadata');
+        $operation->setMeta('dependencies', [Fixtures\Resolver\Product::class, Fixtures\Resolver\Product::class]);
+        $assembler->getSpecification()->add($operation);
+        $spy = new Fixtures\Resolver\CountingResolver();
+        $resolver = $this->resolver($spy, new Resolver\Reflection());
+        $resolver->withDependencyProviders(fn (TypedList $providers): TypedList => $providers->add(new Fixtures\Resolver\MetadataDependencyProvider()));
+
+        $resolver->resolve($assembler);
+
+        $this->assertSame(['Product', 'Manufacturer'], $this->schemaNames($assembler));
+        $this->assertSame([
+            Fixtures\Resolver\Product::class => 1,
+            Fixtures\Resolver\Manufacturer::class => 1,
+            Fixtures\Resolver\Weight::class => 1,
+        ], $spy->attempts);
+    }
+
+    public function testProvidersDiscoverMetadataOnNewlyCollectedComponents(): void
+    {
+        $assembler = new Assembler();
+        $resolver = new Resolver();
+        $resolver->withDependencyProviders(fn (TypedList $providers): TypedList => $providers->add(new class () implements DependencyProviderInterface {
+            public function dependencies(Specification $specification): iterable
+            {
+                yield Fixtures\Resolver\MetadataContainer::class;
+                foreach ($specification->schemas as $schema) {
+                    if ($schema->getClassName() === Fixtures\Resolver\MetadataContainer::class) {
+                        yield Fixtures\Resolver\Product::class;
+                    }
+                }
+            }
+        }));
+
+        $resolver->resolve($assembler);
+
+        $this->assertSame(['MetadataContainer', 'Product', 'Manufacturer'], $this->schemaNames($assembler));
+    }
+
+    public function testProviderNamesDoNotHaveToExistAsPhpClasses(): void
+    {
+        $assembler = new Assembler();
+        $resolver = $this->resolver(new class () implements ResolverInterface {
+            public function resolve(string $fqcn, Assembler $assembler): bool
+            {
+                if ($fqcn !== 'ExternalModel') {
+                    return false;
+                }
+                $schema = new OA\Schema(type: 'object', component: 'ExternalModel');
+                $assembler->getSpecification()->add($schema);
+
+                return true;
+            }
+        });
+        $resolver->withDependencyProviders(fn (TypedList $providers): TypedList => $providers->add(new class () implements DependencyProviderInterface {
+            public function dependencies(Specification $specification): iterable
+            {
+                yield 'ExternalModel';
+            }
+        }));
+
+        $resolver->resolve($assembler);
+
+        $this->assertSame(['ExternalModel'], $this->schemaNames($assembler));
+    }
+
+    public function testMultipleProvidersUseTheSameListAndDeclinedNamesAreAttemptedOnce(): void
+    {
+        $assembler = new Assembler();
+        $operation = new OA\Operation\Get(path: '/metadata');
+        $operation->setMeta('dependencies', [Fixtures\Resolver\Weight::class]);
+        $assembler->getSpecification()->add($operation);
+        $spy = new Fixtures\Resolver\CountingResolver();
+        $resolver = $this->resolver($spy, new Resolver\Reflection());
+        $resolver->withDependencyProviders(fn (TypedList $providers): TypedList => $providers->add(new Fixtures\Resolver\MetadataDependencyProvider()));
+        $resolver->withDependencyProviders(fn (TypedList $providers): TypedList => $providers->add(new class () implements DependencyProviderInterface {
+            public function dependencies(Specification $specification): iterable
+            {
+                yield Fixtures\Resolver\Product::class;
+            }
+        }));
+
+        $resolver->resolve($assembler);
+
+        $this->assertSame(['Product', 'Manufacturer'], $this->schemaNames($assembler));
+        $this->assertSame(1, $spy->attempts[Fixtures\Resolver\Weight::class]);
+    }
+
+    public function testNoResolversAlsoDisablesProviderCollection(): void
+    {
+        $assembler = new Assembler();
+        $resolver = $this->resolver();
+        $resolver->withDependencyProviders(fn (TypedList $providers): TypedList => $providers->add(new class () implements DependencyProviderInterface {
+            public function dependencies(Specification $specification): iterable
+            {
+                throw new \LogicException('Discovery must not run when resolution is disabled');
+            }
+        }));
+
+        $resolver->resolve($assembler);
+
+        $this->assertSame([], $this->schemaNames($assembler));
+    }
+
+    public function testProvidersSeeAllSpecificationContributions(): void
+    {
+        $result = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->withResolver(fn (Resolver $resolver): Resolver => $resolver->withDependencyProviders(
+                fn (TypedList $providers): TypedList => $providers->add(new Fixtures\Resolver\MetadataDependencyProvider()),
+            ))
+            ->withSpecification(function (Specification $specification): void {
+                $operation = new OA\Operation\Get(path: '/metadata', responses: [new OA\Response(response: 200, description: 'OK')]);
+                $operation->setMeta('dependencies', [Fixtures\Resolver\Product::class]);
+                $specification->add($operation);
+            })
+            ->withSpecification(function (Specification $specification): void {
+                $specification->info = new OA\Info(title: 'Metadata', version: '1.0');
+            })
+            ->withAugmenters(function (Pipeline $pipeline): void {
+                $pipeline->get(Cleanup::class)->setEnabled(false);
+            })
+            ->build();
+
+        $this->assertSame(['Product', 'Manufacturer'], array_keys($result->toArray()['components']['schemas']));
+        $this->assertSame('#/components/schemas/Manufacturer', $result->toArray()['components']['schemas']['Product']['properties']['manufacturer']['$ref']);
+    }
+
     public function testResolvesRefAndTransitivePropertyTypeByDefault(): void
     {
         $assembler = $this->assembler(Fixtures\Resolver\ProductController::class);
