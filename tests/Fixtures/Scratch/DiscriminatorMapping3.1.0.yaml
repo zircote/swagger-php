@@ -1,0 +1,53 @@
+openapi: 3.1.0
+info:
+  title: 'Discriminator Mapping Scratch'
+  version: '1.0'
+paths:
+  /api/endpoint:
+    get:
+      description: 'An endpoint'
+      operationId: getDiscriminatorMapping
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    DiscriminatorMappingCat:
+      type: object
+      properties:
+        type:
+          type: string
+    DiscriminatorMappingDog:
+      type: object
+      properties:
+        type:
+          type: string
+    DiscriminatorMappingPet:
+      oneOf:
+        -
+          $ref: '#/components/schemas/DiscriminatorMappingCat'
+        -
+          $ref: '#/components/schemas/DiscriminatorMappingDog'
+      discriminator:
+        propertyName: type
+        mapping:
+          cat: '#/components/schemas/DiscriminatorMappingCat'
+          dog: '#/components/schemas/DiscriminatorMappingDog'
+    DiscriminatorMappingShelter:
+      type: object
+      properties:
+        pets:
+          type: array
+          items:
+            oneOf:
+              -
+                $ref: '#/components/schemas/DiscriminatorMappingCat'
+              -
+                $ref: '#/components/schemas/DiscriminatorMappingDog'
+            discriminator:
+              propertyName: type
+              mapping:
+                cat: '#/components/schemas/DiscriminatorMappingCat'
+                dog: '#/components/schemas/DiscriminatorMappingDog'
+      required:
+        - pets
