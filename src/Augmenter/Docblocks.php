@@ -36,18 +36,22 @@ class Docblocks implements PipeInterface
             $this->augmentSummaryAndDescription($operation);
             $this->augmentDeprecated($operation);
             $this->augmentOperationParameters($operation);
-            $this->augmentResponseHeaders($operation->responses ?? []);
+            $this->augmentResponses($operation->responses ?? []);
+            $this->augmentMediaTypes($operation->requestBody->content ?? []);
         }
 
         foreach ($payload->schemas as $schema) {
-            $this->augmentDescription($schema);
-            $this->augmentDeprecated($schema);
-            $this->augmentProperties($schema);
+            $this->augmentSchema($schema);
         }
 
         $this->augmentParameters($payload->parameters);
-        $this->augmentResponseHeaders($payload->responses);
+        foreach ($payload->requestBodies as $requestBody) {
+            $this->augmentMediaTypes($requestBody->content ?? []);
+        }
+
+        $this->augmentResponses($payload->responses);
         $this->augmentHeaders($payload->headers);
+        $this->augmentMediaTypes($payload->mediaTypes);
 
         return null;
     }
@@ -151,6 +155,8 @@ class Docblocks implements PipeInterface
     protected function augmentParameters(array $parameters, array $parentParamTags = []): void
     {
         foreach ($parameters as $parameter) {
+            $this->augmentSchema($parameter->schema);
+            $this->augmentMediaTypes($parameter->content ?? []);
             if (!$parameter->getReflector() instanceof \ReflectionProperty) {
                 $this->augmentParameterDescription($parameter, $parentParamTags);
 
@@ -164,10 +170,11 @@ class Docblocks implements PipeInterface
     /**
      * @param list<OA\Response> $responses
      */
-    protected function augmentResponseHeaders(array $responses): void
+    protected function augmentResponses(array $responses): void
     {
         foreach ($responses as $response) {
             $this->augmentHeaders($response->headers ?? []);
+            $this->augmentMediaTypes($response->content ?? []);
         }
     }
 
@@ -177,11 +184,13 @@ class Docblocks implements PipeInterface
     protected function augmentHeaders(array $headers): void
     {
         foreach ($headers as $header) {
+            $this->augmentSchema($header->schema);
+            $this->augmentMediaTypes($header->content ?? []);
             $this->augmentPropertyDocumentation($header);
         }
     }
 
-    protected function augmentPropertyDocumentation(OA\Parameter|OA\Header $attribute): void
+    protected function augmentPropertyDocumentation(OA\Parameter|OA\Header|OA\Schema $attribute): void
     {
         if (!$attribute->getReflector() instanceof \ReflectionProperty) {
             return;
@@ -213,7 +222,8 @@ class Docblocks implements PipeInterface
         }
 
         if (Undefined::isDefault($attribute->example) && !$attribute->examples) {
-            $attribute->example = $this->extractExample($attribute->schema ?? new OA\Schema(), $docblock);
+            $schema = $attribute instanceof OA\Schema ? $attribute : ($attribute->schema ?? new OA\Schema());
+            $attribute->example = $this->extractExample($schema, $docblock);
         }
     }
 
@@ -268,16 +278,45 @@ class Docblocks implements PipeInterface
         }
     }
 
+    /**
+     * @param list<OA\MediaType> $mediaTypes
+     */
+    protected function augmentMediaTypes(array $mediaTypes): void
+    {
+        foreach ($mediaTypes as $mediaType) {
+            $this->augmentSchema($mediaType->schema);
+        }
+    }
+
+    protected function augmentSchema(?OA\Schema $schema): void
+    {
+        if (!$schema instanceof OA\Schema) {
+            return;
+        }
+
+        if ($schema->getReflector() instanceof \ReflectionProperty) {
+            $this->augmentPropertyDocumentation($schema);
+        } else {
+            $this->augmentDescription($schema);
+            $this->augmentDeprecated($schema);
+        }
+        $this->augmentProperties($schema);
+
+        foreach (['items', 'additionalProperties', 'contains', 'unevaluatedItems', 'unevaluatedProperties', 'propertyNames', 'not', 'if', 'then', 'else', 'contentSchema'] as $field) {
+            if ($schema->{$field} instanceof OA\Schema) {
+                $this->augmentSchema($schema->{$field});
+            }
+        }
+        foreach (['allOf', 'anyOf', 'oneOf', 'prefixItems', 'patternProperties', 'dependentSchemas'] as $field) {
+            foreach ($schema->{$field} ?? [] as $child) {
+                $this->augmentSchema($child);
+            }
+        }
+    }
+
     protected function augmentProperties(OA\Schema $schema): void
     {
         $properties = $schema->properties ?? [];
-
-        // Also walk properties inside allOf entries (placed there by Augmenter\Inheritance)
-        foreach ($schema->allOf ?? [] as $entry) {
-            if ($entry->properties) {
-                array_push($properties, ...$entry->properties);
-            }
-        }
 
         foreach ($properties as $property) {
             if (!$property instanceof OA\Property) {
@@ -313,6 +352,7 @@ class Docblocks implements PipeInterface
                     $property->schema->example = $this->extractExample($property->schema, $docblock);
                 }
             }
+            $this->augmentSchema($property->schema);
         }
     }
 

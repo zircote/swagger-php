@@ -297,6 +297,38 @@ final class DocblocksTest extends TestCase
         $this->assertSame($examples, $parameter->examples);
     }
 
+    public function testAugmentsInlinePropertySchema(): void
+    {
+        $schema = new OA\Schema(type: 'integer');
+        $schema->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'offset'));
+        $spec = (new Specification())->add(new OA\Operation\Post(
+            requestBody: new OA\RequestBody(content: [new OA\MediaType(schema: $schema)]),
+        ));
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame('the offset', $schema->description);
+        $this->assertSame(0, $schema->example);
+    }
+
+    public function testAugmentsNestedResponseSchema(): void
+    {
+        $property = new OA\Property(property: 'limit', schema: new OA\Schema(type: 'integer'));
+        $property->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $spec = (new Specification())->add(new OA\Response(
+            content: [new OA\MediaType(schema: new OA\Schema(oneOf: [
+                new OA\Schema(type: 'array', items: new OA\Schema(type: 'object', properties: [$property])),
+            ]))],
+            component: 'Shared',
+        ));
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame('The page size.', $property->schema->description);
+        $this->assertSame(20, $property->schema->example);
+        $this->assertTrue($property->schema->deprecated);
+    }
+
     public function testAugmentsPropertyHeaders(): void
     {
         $limit = new OA\Header(schema: new OA\Schema(type: 'integer'), component: 'Limit');
