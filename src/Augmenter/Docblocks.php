@@ -36,6 +36,7 @@ class Docblocks implements PipeInterface
             $this->augmentSummaryAndDescription($operation);
             $this->augmentDeprecated($operation);
             $this->augmentOperationParameters($operation);
+            $this->augmentResponseHeaders($operation->responses ?? []);
         }
 
         foreach ($payload->schemas as $schema) {
@@ -45,6 +46,8 @@ class Docblocks implements PipeInterface
         }
 
         $this->augmentParameters($payload->parameters);
+        $this->augmentResponseHeaders($payload->responses);
+        $this->augmentHeaders($payload->headers);
 
         return null;
     }
@@ -154,34 +157,63 @@ class Docblocks implements PipeInterface
                 continue;
             }
 
-            $docblock = $this->getDocComment($parameter);
-            if ($docblock === null) {
-                continue;
-            }
+            $this->augmentPropertyDocumentation($parameter);
+        }
+    }
 
-            if (Undefined::isDefault($parameter->description)) {
-                $content = $this->parser->parseDocblock($docblock);
-                if ($content !== '' && !Undefined::isDefault($content)) {
-                    $parameter->description = $content;
-                } else {
-                    /*
-                     * Descriptions embedded in @var tags need parseVarLine();
-                     * parseDocblock() only extracts free text before tags.
-                     */
-                    $varLine = $this->parser->parseVarLine($docblock);
-                    if ($varLine['description'] !== null) {
-                        $parameter->description = $varLine['description'];
-                    }
+    /**
+     * @param list<OA\Response> $responses
+     */
+    protected function augmentResponseHeaders(array $responses): void
+    {
+        foreach ($responses as $response) {
+            $this->augmentHeaders($response->headers ?? []);
+        }
+    }
+
+    /**
+     * @param list<OA\Header> $headers
+     */
+    protected function augmentHeaders(array $headers): void
+    {
+        foreach ($headers as $header) {
+            $this->augmentPropertyDocumentation($header);
+        }
+    }
+
+    protected function augmentPropertyDocumentation(OA\Parameter|OA\Header $attribute): void
+    {
+        if (!$attribute->getReflector() instanceof \ReflectionProperty) {
+            return;
+        }
+
+        $docblock = $this->getDocComment($attribute);
+        if ($docblock === null) {
+            return;
+        }
+
+        if ($attribute instanceof OA\Header ? $attribute->description === null : Undefined::isDefault($attribute->description)) {
+            $content = $this->parser->parseDocblock($docblock);
+            if ($content !== '' && !Undefined::isDefault($content)) {
+                $attribute->description = $content;
+            } else {
+                /*
+                 * Descriptions embedded in @var tags need parseVarLine();
+                 * parseDocblock() only extracts free text before tags.
+                 */
+                $varLine = $this->parser->parseVarLine($docblock);
+                if ($varLine['description'] !== null) {
+                    $attribute->description = $varLine['description'];
                 }
             }
+        }
 
-            if ($parameter->deprecated === null && $this->parser->isDeprecated($docblock)) {
-                $parameter->deprecated = true;
-            }
+        if ($attribute->deprecated === null && $this->parser->isDeprecated($docblock)) {
+            $attribute->deprecated = true;
+        }
 
-            if (Undefined::isDefault($parameter->example) && !$parameter->examples) {
-                $parameter->example = $this->extractExample($parameter->schema ?? new OA\Schema(), $docblock);
-            }
+        if (Undefined::isDefault($attribute->example) && !$attribute->examples) {
+            $attribute->example = $this->extractExample($attribute->schema ?? new OA\Schema(), $docblock);
         }
     }
 

@@ -296,4 +296,64 @@ final class DocblocksTest extends TestCase
         $this->assertSame(Undefined::UNDEFINED, $parameter->example);
         $this->assertSame($examples, $parameter->examples);
     }
+
+    public function testAugmentsPropertyHeaders(): void
+    {
+        $limit = new OA\Header(schema: new OA\Schema(type: 'integer'), component: 'Limit');
+        $limit->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $offset = new OA\Header(header: 'X-Offset', schema: new OA\Schema(type: 'integer'));
+        $offset->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'offset'));
+        $shared = new OA\Header(header: 'X-Shared', schema: new OA\Schema(type: 'integer'));
+        $shared->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $spec = (new Specification())->add(
+            $limit,
+            new OA\Operation\Get(responses: [new OA\Response(headers: [$offset])]),
+            new OA\Response(headers: [$shared], component: 'Shared'),
+        );
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame('The page size.', $limit->description);
+        $this->assertSame(20, $limit->example);
+        $this->assertTrue($limit->deprecated);
+        $this->assertSame('the offset', $offset->description);
+        $this->assertSame(0, $offset->example);
+        $this->assertSame(Undefined::UNDEFINED, $limit->schema->example);
+        $this->assertSame('The page size.', $shared->description);
+        $this->assertSame(20, $shared->example);
+        $this->assertTrue($shared->deprecated);
+    }
+
+    #[DataProvider('explicitExamples')]
+    public function testKeepsExplicitPropertyHeaderValues(mixed $example): void
+    {
+        $header = new OA\Header(
+            description: '',
+            deprecated: false,
+            schema: new OA\Schema(type: 'integer'),
+            example: $example,
+            component: 'Limit',
+        );
+        $header->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $spec = (new Specification())->add($header);
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame('', $header->description);
+        $this->assertFalse($header->deprecated);
+        $this->assertSame($example, $header->example);
+    }
+
+    public function testKeepsExplicitPropertyHeaderExamples(): void
+    {
+        $examples = [new OA\Example(example: 'chosen', value: 10)];
+        $header = new OA\Header(schema: new OA\Schema(type: 'integer'), examples: $examples, component: 'Limit');
+        $header->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $spec = (new Specification())->add($header);
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame(Undefined::UNDEFINED, $header->example);
+        $this->assertSame($examples, $header->examples);
+    }
 }

@@ -70,7 +70,8 @@ What has no reflector anywhere, an entity registry or a serializer's configurati
 bare, and this is the only way it gets in.
 
 An `OA\Parameter` carrying a `ReflectionProperty` gets its description, `@example` and
-deprecation from the property's docblock. Explicit parameter values take precedence.
+deprecation from the property's docblock. Response headers, including reusable Header and
+Response components, follow the same rule. Explicit values take precedence.
 
 An augmenter can also `add()` attributes, but it runs after resolution, so a `$ref` inside
 what it adds stays unresolved. Use an augmenter to enrich what is there, and this to put
