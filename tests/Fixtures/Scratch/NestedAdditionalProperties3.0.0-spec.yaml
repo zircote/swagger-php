@@ -24,4 +24,4 @@ components:
         items:
           type: object
           additionalProperties: false
-          default: []
+          default: {}

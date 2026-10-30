@@ -75,6 +75,53 @@ final class ComponentNameTest extends TestCase
     }
 
     /**
+     * @return iterable<string, array{callable(): OA\AbstractAttribute, string, string}>
+     */
+    public static function assignedSpellings(): iterable
+    {
+        yield 'schema' => [static function (): OA\AbstractAttribute {
+            $schema = new OA\Schema();
+            $schema->schema = 'Pet';
+
+            return $schema;
+        }, 'schema', 'schemas'];
+        yield 'parameter' => [static function (): OA\AbstractAttribute {
+            $parameter = new OA\Parameter(name: 'page');
+            $parameter->parameter = 'Page';
+
+            return $parameter;
+        }, 'parameter', 'parameters'];
+        yield 'request' => [static function (): OA\AbstractAttribute {
+            $body = new OA\RequestBody();
+            $body->request = 'Body';
+
+            return $body;
+        }, 'request', 'requestBodies'];
+        yield 'securityScheme' => [static function (): OA\AbstractAttribute {
+            $scheme = new OA\Security\Scheme(type: 'apiKey');
+            $scheme->securityScheme = 'api';
+
+            return $scheme;
+        }, 'securityScheme', 'securitySchemes'];
+    }
+
+    #[DataProvider('assignedSpellings')]
+    public function testASpellingAssignedAfterConstructionIsStillTheKey(callable $build, string $field, string $bucket): void
+    {
+        $attribute = $build();
+        $this->assertNull($attribute->component, 'the constructor never saw it');
+        $this->assertSame($attribute->{$field}, ComponentName::of($attribute));
+
+        $spec = new Specification();
+        $spec->{$bucket}[] = $attribute;
+        ComponentName::normalise($spec, deprecate: true);
+
+        $this->assertSame($attribute->{$field}, $attribute->component);
+        $this->assertCount(1, $this->deprecations);
+        $this->assertStringContainsString("`{$field}` is deprecated as the component key", $this->deprecations[0]);
+    }
+
+    /**
      * @return iterable<string, array{OA\AbstractAttribute, string|null}>
      */
     public static function keysRead(): iterable

@@ -198,7 +198,8 @@ adds nothing to `required`.
 A default is taken where it is a value the document can hold: a scalar, an enum case or an array
 of them. An enum case gives the value its schema lists: a backed case's value, a unit case's
 name. `null` is not taken, since the nullable type already says it, and neither is a value the
-schema's type does not admit.
+schema's type does not admit. An empty array becomes an empty object where the schema admits
+objects but not arrays.
 
 What the attribute sets wins: an explicit `required` list is kept as written, and so is an
 explicit `default`, `null` included. Schemas converted from classic annotations are left alone.

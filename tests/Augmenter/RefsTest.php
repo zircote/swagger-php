@@ -158,6 +158,24 @@ final class RefsTest extends TestCase
         );
     }
 
+    public function testResolvesDiscriminatorMappingOnNestedSchema(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\RefTarget::class);
+        $items = new OA\Schema\Items(
+            oneOf: [new OA\Schema(ref: Fixtures\Augmenter\RefTarget::class)],
+            discriminator: new OA\Discriminator(propertyName: 'type', mapping: ['target' => Fixtures\Augmenter\RefTarget::class]),
+        );
+        $spec->schemas[] = new OA\Schema(
+            type: OA\Type::Object,
+            properties: ['targets' => new OA\Schema(type: OA\Type::Array, items: $items)],
+            component: 'Holder',
+        );
+
+        (new Augmenter\Refs())($spec);
+
+        $this->assertSame(['target' => '#/components/schemas/RefTarget'], $items->discriminator->mapping);
+    }
+
     /**
      * No component has a class here, so there is no class map at all; the refs are checked anyway.
      */
