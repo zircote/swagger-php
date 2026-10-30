@@ -44,9 +44,7 @@ class Docblocks implements PipeInterface
             $this->augmentProperties($schema);
         }
 
-        foreach ($payload->parameters as $parameter) {
-            $this->augmentParameterDescription($parameter);
-        }
+        $this->augmentParameters($payload->parameters);
 
         return null;
     }
@@ -140,8 +138,50 @@ class Docblocks implements PipeInterface
         }
         $paramDescriptions = $paramTags['param'] ?? [];
 
-        foreach ($operation->parameters as $parameter) {
-            $this->augmentParameterDescription($parameter, $paramDescriptions);
+        $this->augmentParameters($operation->parameters, $paramDescriptions);
+    }
+
+    /**
+     * @param list<OA\Parameter>                                        $parameters
+     * @param array<string, array{type: ?string, description: ?string}> $parentParamTags
+     */
+    protected function augmentParameters(array $parameters, array $parentParamTags = []): void
+    {
+        foreach ($parameters as $parameter) {
+            if (!$parameter->getReflector() instanceof \ReflectionProperty) {
+                $this->augmentParameterDescription($parameter, $parentParamTags);
+
+                continue;
+            }
+
+            $docblock = $this->getDocComment($parameter);
+            if ($docblock === null) {
+                continue;
+            }
+
+            if (Undefined::isDefault($parameter->description)) {
+                $content = $this->parser->parseDocblock($docblock);
+                if ($content !== '' && !Undefined::isDefault($content)) {
+                    $parameter->description = $content;
+                } else {
+                    /*
+                     * Descriptions embedded in @var tags need parseVarLine();
+                     * parseDocblock() only extracts free text before tags.
+                     */
+                    $varLine = $this->parser->parseVarLine($docblock);
+                    if ($varLine['description'] !== null) {
+                        $parameter->description = $varLine['description'];
+                    }
+                }
+            }
+
+            if ($parameter->deprecated === null && $this->parser->isDeprecated($docblock)) {
+                $parameter->deprecated = true;
+            }
+
+            if (Undefined::isDefault($parameter->example) && !$parameter->examples) {
+                $parameter->example = $this->extractExample($parameter->schema ?? new OA\Schema(), $docblock);
+            }
         }
     }
 

@@ -10,6 +10,7 @@ use OpenApi\Augmenter;
 use OpenApi\Builder;
 use OpenApi\Builder\Mode;
 use OpenApi\Spec as OA;
+use OpenApi\Specification;
 use OpenApi\Tests\Concerns\AssemblesSpecification;
 use OpenApi\Tests\Concerns\GeneratesTestMatrix;
 use OpenApi\Tests\Fixtures;
@@ -225,5 +226,74 @@ final class DocblocksTest extends TestCase
         (new Augmenter\Docblocks())($spec);
 
         $this->assertSame($example, $schema->example);
+    }
+
+    public function testAugmentsPropertyParameters(): void
+    {
+        $limit = new OA\Parameter(name: 'limit', in: 'query', schema: new OA\Schema(type: 'integer'));
+        $limit->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $offset = new OA\Parameter(name: 'offset', in: 'query', schema: new OA\Schema(type: 'integer'));
+        $offset->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'offset'));
+        $spec = (new Specification())->add($limit, new OA\Operation\Get(parameters: [$offset]));
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame('The page size.', $limit->description);
+        $this->assertSame(20, $limit->example);
+        $this->assertTrue($limit->deprecated);
+        $this->assertSame('the offset', $offset->description);
+        $this->assertSame(0, $offset->example);
+    }
+
+    #[DataProvider('explicitExamples')]
+    public function testKeepsExplicitPropertyParameterValues(mixed $example): void
+    {
+        $parameter = new OA\Parameter(
+            name: 'limit',
+            in: 'query',
+            description: null,
+            deprecated: false,
+            schema: new OA\Schema(type: 'integer'),
+            example: $example,
+        );
+        $parameter->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $spec = (new Specification())->add($parameter);
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertNull($parameter->description);
+        $this->assertFalse($parameter->deprecated);
+        $this->assertSame($example, $parameter->example);
+    }
+
+    public function testAugmentsPropertyParameterWithExplicitDescription(): void
+    {
+        $parameter = new OA\Parameter(
+            name: 'renamed',
+            in: 'query',
+            description: 'Explicit description',
+            schema: new OA\Schema(type: 'integer'),
+        );
+        $parameter->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $spec = (new Specification())->add($parameter);
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame('Explicit description', $parameter->description);
+        $this->assertSame(20, $parameter->example);
+        $this->assertTrue($parameter->deprecated);
+    }
+
+    public function testKeepsExplicitPropertyParameterExamples(): void
+    {
+        $examples = [new OA\Example(example: 'chosen', value: 10)];
+        $parameter = new OA\Parameter(schema: new OA\Schema(type: 'integer'), examples: $examples);
+        $parameter->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $spec = (new Specification())->add($parameter);
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame(Undefined::UNDEFINED, $parameter->example);
+        $this->assertSame($examples, $parameter->examples);
     }
 }
