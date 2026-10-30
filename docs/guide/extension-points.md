@@ -99,6 +99,30 @@ resolver ahead of the default rather than after it.
 A resolver implementing `LoggerAwareInterface` is given the logger set with
 [`Builder::setLogger()`](/reference/builder#logger).
 
+### Discovering integration dependencies
+
+A class name stored in integration metadata is not a native `$ref` or a property type.
+A `DependencyProviderInterface` supplies those names to the resolver:
+
+<<< @/snippets/guide/extension-points/dependency_provider.php
+
+Register it alongside the resolver chain:
+
+```php
+$builder->withResolver(fn (Resolver $resolver) => $resolver->withDependencyProviders(
+    fn (TypedList $providers) => $providers->add(new MetadataDependencies())
+));
+```
+
+Providers read the specification after all `withSpecification()` hooks. They run again when
+resolution collects more components. The resolver filters duplicates and existing components,
+then passes the remaining names to the same resolver chain and assembler used for native
+dependencies. A provider does not collect attributes or change the specification.
+
+The names can also refer to models supplied by a custom resolver that have no PHP class.
+Disabling the resolver chain disables this discovery too. Augmenters run after resolution,
+so metadata they add is not discovered by providers.
+
 ## Augmenters
 
 An augmenter runs after assembly, over the whole `Specification`, and fills in what the

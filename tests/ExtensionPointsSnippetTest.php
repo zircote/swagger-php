@@ -9,9 +9,13 @@ namespace OpenApi\Tests;
 use OpenApi\Augmenter\Cleanup;
 use OpenApi\Builder;
 use OpenApi\Builder\Mode;
+use OpenApi\Resolver;
 use OpenApi\Snippets\Guide\ExtensionPoints as Snippet;
+use OpenApi\Spec as OA;
+use OpenApi\Specification;
 use OpenApi\Tests\Concerns\AssertsSpecEquals;
 use OpenApi\Utils\Pipeline;
+use OpenApi\Utils\TypedList;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -63,5 +67,24 @@ final class ExtensionPointsSnippetTest extends TestCase
 
         $this->assertSame('Pet', $schema->component);
         $this->assertSame(['name', 'age'], $schema->required);
+    }
+
+    public function testDependencyProviderCollectsMetadataReferences(): void
+    {
+        $result = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->withResolver(fn (Resolver $resolver): Resolver => $resolver->withDependencyProviders(
+                fn (TypedList $providers): TypedList => $providers->add(new Snippet\MetadataDependencies()),
+            ))
+            ->withSpecification(function (Specification $specification): void {
+                $operation = new OA\Operation\Get(path: '/pets', responses: [new OA\Response(response: 200, description: 'OK')]);
+                $operation->setMeta('my-integration.dependencies', [Snippet\Pet::class]);
+                $specification->add(new OA\Info(title: 'Metadata', version: '1.0'), $operation);
+            })
+            ->withAugmenters(fn (Pipeline $augmenters): Pipeline => $augmenters->remove(Cleanup::class))
+            ->build();
+
+        $this->assertTrue($result->isValid());
+        $this->assertSame(['name', 'age'], $result->specification()->buildComponentIndex()->findSchema(Snippet\Pet::class)->required);
     }
 }
