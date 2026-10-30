@@ -41,6 +41,18 @@ class PropertyDeclarations
     #[OA\Property]
     public array $tags = ['pet'];
 
+    /**
+     * @var array<string, string>
+     */
+    #[OA\Property]
+    public array $emptyMap = [];
+
+    /**
+     * @var list<string>
+     */
+    #[OA\Property]
+    public array $emptyList = [];
+
     #[OA\Property]
     public PetStatus $state = PetStatus::New;
 
