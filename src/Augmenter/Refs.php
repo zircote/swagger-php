@@ -148,9 +148,9 @@ class Refs implements PipeInterface, LoggerAwareInterface
      */
     protected function resolveDiscriminatorMappings(Specification $specification, array $refMap): void
     {
-        foreach ($specification->schemas as $schema) {
+        $specification->getWalker()->eachSchema(function (OA\Schema $schema) use ($refMap): void {
             if (!$schema->discriminator instanceof OA\Discriminator || $schema->discriminator->mapping === null) {
-                continue;
+                return;
             }
 
             foreach ($schema->discriminator->mapping as $value => $type) {
@@ -161,7 +161,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
                     $schema->discriminator->mapping[$value] = $refMap[$type];
                 }
             }
-        }
+        });
     }
 
     /**
