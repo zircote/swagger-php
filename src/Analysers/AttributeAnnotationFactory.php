@@ -11,6 +11,7 @@ use OpenApi\Attributes as OAT;
 use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\GeneratorAwareTrait;
+use OpenApi\Undefined;
 
 /**
  * @deprecated since 7.0, removed in 8.0
@@ -119,6 +120,15 @@ class AttributeAnnotationFactory implements AnnotationFactoryInterface
         $isParent = static function (OA\AbstractAnnotation $annotation, OA\AbstractAnnotation $possibleParent): bool {
             // regular annotation hierarchy
             $explicitParent = null !== $possibleParent->matchNested($annotation) && !$annotation instanceof OA\Attachable;
+            if ($explicitParent) {
+                // a single slot already filled has no room; what the root also takes goes there instead,
+                // as it does for docblock annotations
+                $slot = $possibleParent::$_nested[$annotation->getRoot()];
+                if (!is_array($slot) && !Undefined::isDefault($possibleParent->{$slot})
+                    && array_key_exists($annotation->getRoot(), OA\OpenApi::$_nested)) {
+                    $explicitParent = false;
+                }
+            }
             $isParentAllowed = false;
             // support Attachable subclasses
             if ($isAttachable = $annotation instanceof OA\Attachable) {
