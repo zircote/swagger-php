@@ -34,7 +34,8 @@ class ComponentName
      * The key, or null when the component has none and cannot be referenced.
      *
      * One field on every type, `component`. The historic per-type spellings — `schema`,
-     * `parameter`, `request`, `securityScheme` — alias onto it in their constructors. The
+     * `parameter`, `request`, `securityScheme` — alias onto it in their constructors, and are
+     * read as a fallback for a value set after construction, which the constructor never sees. The
      * ones that are also a nesting key — `response`, `header`, `link`, `example` — cannot:
      * the object does not know at construction whether it is nested. This is only ever asked
      * of an item in a root bucket, where it is not nested, so here the historic key *is* the
@@ -83,7 +84,8 @@ class ComponentName
      * at construction — nesting is structural, and a nested attribute never reaches a root
      * slot. Here it has: anything in a root bucket is a component, so its historic key is the
      * component key and aliases across. The one inference that reads a value field —
-     * `Parameter::$name` — lives here for the same reason.
+     * `Parameter::$name` — lives here for the same reason. So do the constructor-aliased
+     * spellings, for a value assigned after construction.
      *
      * Runs before the resolver builds the first `ComponentIndex`, and again after the hybrid
      * bridge adds classic-derived attributes; only the first pass reports the spelling as
@@ -114,8 +116,9 @@ class ComponentName
     }
 
     /**
-     * What `component` falls back to: the historic spelling for the four nesting-key types,
-     * and the one inference that reads a value field — a parameter is keyed by its name. The
+     * What `component` falls back to: the historic spelling, and the one inference that reads a
+     * value field — a parameter without one is keyed by its name. The constructors alias the
+     * spellings that can only be the key, so those are only found here when assigned later. The
      * field name is reported when the spelling is deprecated, and is null for the inference,
      * which is not. A schema used to fall back to its title; nothing relied on it, and a
      * keyless schema is better reported than silently named.
@@ -129,7 +132,10 @@ class ComponentName
             $item instanceof OA\Header => ['header', $item->header],
             $item instanceof OA\Link => ['link', $item->link],
             $item instanceof OA\Example => ['example', $item->example],
-            $item instanceof OA\Parameter => [null, $item->name],
+            $item instanceof OA\Schema => ['schema', $item->schema],
+            $item instanceof OA\RequestBody => ['request', $item->request],
+            $item instanceof OA\Security\Scheme => ['securityScheme', $item->securityScheme],
+            $item instanceof OA\Parameter => $item->parameter !== null ? ['parameter', $item->parameter] : [null, $item->name],
             default => [null, null],
         };
     }
