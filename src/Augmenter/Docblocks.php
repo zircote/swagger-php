@@ -9,6 +9,7 @@ namespace OpenApi\Augmenter;
 use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Type\TypeMapper;
 use OpenApi\Undefined;
 use OpenApi\Utils\DocBlockParser;
 use OpenApi\Utils\PipeInterface;
@@ -237,7 +238,7 @@ class Docblocks implements PipeInterface
                 }
 
                 if (Undefined::isDefault($property->schema->example)) {
-                    $property->schema->example = $this->parser->extractExample($docblock) ?? Undefined::UNDEFINED;
+                    $property->schema->example = $this->extractExample($property->schema, $docblock);
                 }
             }
         }
@@ -279,5 +280,48 @@ class Docblocks implements PipeInterface
         $description = $this->parser->extractCommentDescription($content);
 
         return Undefined::isDefault($description) ? null : $description;
+    }
+
+    protected function extractExample(OA\Schema $schema, string $docblock): mixed
+    {
+        $example = $this->parser->extractExample($docblock);
+        if ($example === null) {
+            return Undefined::UNDEFINED;
+        }
+
+        $types = (array) $schema->type;
+        if ($types === [] || in_array('string', $types, true)) {
+            return $example;
+        }
+
+        try {
+            $value = json_decode($example, flags: JSON_THROW_ON_ERROR | JSON_BIGINT_AS_STRING);
+            $decoded = json_decode($example, flags: JSON_THROW_ON_ERROR);
+
+            /*
+             * Reject non-finite numbers and integers that would become strings, including nested values.
+             */
+            if (json_encode($value, JSON_THROW_ON_ERROR) !== json_encode($decoded, JSON_THROW_ON_ERROR)) {
+                return $example;
+            }
+        } catch (\JsonException) {
+            return $example;
+        }
+
+        $valueType = match (true) {
+            $value === null => 'null',
+            $value instanceof \stdClass => 'object',
+            is_float($value) && floor($value) === $value => 'integer',
+            default => TypeMapper::valueType($value),
+        };
+
+        if (in_array($valueType, $types, true)
+            || ($valueType === 'integer' && in_array('number', $types, true))
+            || ($valueType === 'null' && $schema->nullable === true)
+        ) {
+            return $value;
+        }
+
+        return $example;
     }
 }
