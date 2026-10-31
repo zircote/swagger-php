@@ -996,9 +996,12 @@ attributes directly skips all of that.
 
 <<< @/snippets/guide/cookbook/fragments/fragments.php
 
+Nothing references a part, so the `Cleanup` augmenter would remove it as unused. Each part is
+marked with `setMeta(Cleanup::class, false)`, which `Cleanup` leaves alone, together with what
+the part references.
+
 The builder:
 
-* removes the `Cleanup` augmenter. Nothing references a part, so `Cleanup` would remove it as unused.
 * adds an `OA\Info`, since a document without one reports an error. It is filler, marked with
   `setMeta()` under a key the integration owns, so its own augmenters can leave it alone.
 * is new for every part. A `Builder` builds one document, and building a few classes is cheap.
