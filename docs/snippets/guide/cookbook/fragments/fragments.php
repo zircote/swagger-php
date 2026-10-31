@@ -8,7 +8,6 @@ use OpenApi\Builder\Mode;
 use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
-use OpenApi\Utils\Pipeline;
 
 /**
  * A new builder for each part; the host's own augmenters are registered here too.
@@ -18,7 +17,6 @@ function partBuilder(): Builder
     return (new Builder())
         ->setMode(Mode::SPEC)
         ->setVersion('3.1.0')
-        ->withAugmenters(fn (Pipeline $augmenters) => $augmenters->remove(Cleanup::class))
         ->withSpecification(fn (Specification $specification) => $specification->add(
             (new OA\Info(title: 'Part', version: '1.0.0'))->setMeta('host.filler', true)
         ));
@@ -34,7 +32,15 @@ function partBuilder(): Builder
 function buildModel(string $class): array
 {
     $reflector = new \ReflectionClass($class);
-    $document = partBuilder()->addSource($reflector)->build()->toArray();
+    $document = partBuilder()
+        ->addSource($reflector)
+        ->withSpecification(function (Specification $specification): void {
+            foreach ($specification->schemas as $schema) {
+                $schema->setMeta(Cleanup::class, false);
+            }
+        })
+        ->build()
+        ->toArray();
 
     return $document['components']['schemas'][$reflector->getShortName()];
 }
@@ -47,7 +53,7 @@ function buildModel(string $class): array
 function buildPart(AttributeInterface $part, string $bucket): array
 {
     $document = partBuilder()
-        ->withSpecification(fn (Specification $specification) => $specification->add($part))
+        ->withSpecification(fn (Specification $specification) => $specification->add($part->setMeta(Cleanup::class, false)))
         ->build()
         ->toArray();
 
