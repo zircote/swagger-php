@@ -69,6 +69,12 @@ router that knows `[UserController::class, 'index']` for a route can hand all of
 What has no reflector anywhere, an entity registry or a serializer's configuration, goes in
 bare, and this is the only way it gets in.
 
+An `OA\Parameter` carrying a `ReflectionProperty` gets its description, `@example` and
+deprecation from the property's docblock. Response headers, including reusable Header and
+Response components, follow the same rule. Explicit values take precedence.
+Schemas in request bodies, responses and nested schema fields are also enriched from their
+reflectors, including property docblocks on inline schemas.
+
 An augmenter can also `add()` attributes, but it runs after resolution, so a `$ref` inside
 what it adds stays unresolved. Use an augmenter to enrich what is there, and this to put
 something there.

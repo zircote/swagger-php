@@ -36,17 +36,22 @@ class Docblocks implements PipeInterface
             $this->augmentSummaryAndDescription($operation);
             $this->augmentDeprecated($operation);
             $this->augmentOperationParameters($operation);
+            $this->augmentResponses($operation->responses ?? []);
+            $this->augmentMediaTypes($operation->requestBody->content ?? []);
         }
 
         foreach ($payload->schemas as $schema) {
-            $this->augmentDescription($schema);
-            $this->augmentDeprecated($schema);
-            $this->augmentProperties($schema);
+            $this->augmentSchema($schema);
         }
 
-        foreach ($payload->parameters as $parameter) {
-            $this->augmentParameterDescription($parameter);
+        $this->augmentParameters($payload->parameters);
+        foreach ($payload->requestBodies as $requestBody) {
+            $this->augmentMediaTypes($requestBody->content ?? []);
         }
+
+        $this->augmentResponses($payload->responses);
+        $this->augmentHeaders($payload->headers);
+        $this->augmentMediaTypes($payload->mediaTypes);
 
         return null;
     }
@@ -140,8 +145,85 @@ class Docblocks implements PipeInterface
         }
         $paramDescriptions = $paramTags['param'] ?? [];
 
-        foreach ($operation->parameters as $parameter) {
-            $this->augmentParameterDescription($parameter, $paramDescriptions);
+        $this->augmentParameters($operation->parameters, $paramDescriptions);
+    }
+
+    /**
+     * @param list<OA\Parameter>                                        $parameters
+     * @param array<string, array{type: ?string, description: ?string}> $parentParamTags
+     */
+    protected function augmentParameters(array $parameters, array $parentParamTags = []): void
+    {
+        foreach ($parameters as $parameter) {
+            $this->augmentSchema($parameter->schema);
+            $this->augmentMediaTypes($parameter->content ?? []);
+            if (!$parameter->getReflector() instanceof \ReflectionProperty) {
+                $this->augmentParameterDescription($parameter, $parentParamTags);
+
+                continue;
+            }
+
+            $this->augmentPropertyDocumentation($parameter);
+        }
+    }
+
+    /**
+     * @param list<OA\Response> $responses
+     */
+    protected function augmentResponses(array $responses): void
+    {
+        foreach ($responses as $response) {
+            $this->augmentHeaders($response->headers ?? []);
+            $this->augmentMediaTypes($response->content ?? []);
+        }
+    }
+
+    /**
+     * @param list<OA\Header> $headers
+     */
+    protected function augmentHeaders(array $headers): void
+    {
+        foreach ($headers as $header) {
+            $this->augmentSchema($header->schema);
+            $this->augmentMediaTypes($header->content ?? []);
+            $this->augmentPropertyDocumentation($header);
+        }
+    }
+
+    protected function augmentPropertyDocumentation(OA\Parameter|OA\Header|OA\Schema $attribute): void
+    {
+        if (!$attribute->getReflector() instanceof \ReflectionProperty) {
+            return;
+        }
+
+        $docblock = $this->getDocComment($attribute);
+        if ($docblock === null) {
+            return;
+        }
+
+        if ($attribute instanceof OA\Header ? $attribute->description === null : Undefined::isDefault($attribute->description)) {
+            $content = $this->parser->parseDocblock($docblock);
+            if ($content !== '' && !Undefined::isDefault($content)) {
+                $attribute->description = $content;
+            } else {
+                /*
+                 * Descriptions embedded in @var tags need parseVarLine();
+                 * parseDocblock() only extracts free text before tags.
+                 */
+                $varLine = $this->parser->parseVarLine($docblock);
+                if ($varLine['description'] !== null) {
+                    $attribute->description = $varLine['description'];
+                }
+            }
+        }
+
+        if ($attribute->deprecated === null && $this->parser->isDeprecated($docblock)) {
+            $attribute->deprecated = true;
+        }
+
+        if (Undefined::isDefault($attribute->example) && !$attribute->examples) {
+            $schema = $attribute instanceof OA\Schema ? $attribute : ($attribute->schema ?? new OA\Schema());
+            $attribute->example = $this->extractExample($schema, $docblock);
         }
     }
 
@@ -196,16 +278,45 @@ class Docblocks implements PipeInterface
         }
     }
 
+    /**
+     * @param list<OA\MediaType> $mediaTypes
+     */
+    protected function augmentMediaTypes(array $mediaTypes): void
+    {
+        foreach ($mediaTypes as $mediaType) {
+            $this->augmentSchema($mediaType->schema);
+        }
+    }
+
+    protected function augmentSchema(?OA\Schema $schema): void
+    {
+        if (!$schema instanceof OA\Schema) {
+            return;
+        }
+
+        if ($schema->getReflector() instanceof \ReflectionProperty) {
+            $this->augmentPropertyDocumentation($schema);
+        } else {
+            $this->augmentDescription($schema);
+            $this->augmentDeprecated($schema);
+        }
+        $this->augmentProperties($schema);
+
+        foreach (['items', 'additionalProperties', 'contains', 'unevaluatedItems', 'unevaluatedProperties', 'propertyNames', 'not', 'if', 'then', 'else', 'contentSchema'] as $field) {
+            if ($schema->{$field} instanceof OA\Schema) {
+                $this->augmentSchema($schema->{$field});
+            }
+        }
+        foreach (['allOf', 'anyOf', 'oneOf', 'prefixItems', 'patternProperties', 'dependentSchemas'] as $field) {
+            foreach ($schema->{$field} ?? [] as $child) {
+                $this->augmentSchema($child);
+            }
+        }
+    }
+
     protected function augmentProperties(OA\Schema $schema): void
     {
         $properties = $schema->properties ?? [];
-
-        // Also walk properties inside allOf entries (placed there by Augmenter\Inheritance)
-        foreach ($schema->allOf ?? [] as $entry) {
-            if ($entry->properties) {
-                array_push($properties, ...$entry->properties);
-            }
-        }
 
         foreach ($properties as $property) {
             if (!$property instanceof OA\Property) {
@@ -241,6 +352,7 @@ class Docblocks implements PipeInterface
                     $property->schema->example = $this->extractExample($property->schema, $docblock);
                 }
             }
+            $this->augmentSchema($property->schema);
         }
     }
 
