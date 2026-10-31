@@ -1,0 +1,23 @@
+User:
+  type: object
+  description: 'A registered user'
+  properties:
+    id:
+      type: integer
+      readOnly: true
+      example: 7
+    display_name:
+      type:
+        - string
+        - 'null'
+    address:
+      $ref: '#/components/schemas/Address'
+  required:
+    - id
+    - address
+id:
+  name: id
+  in: path
+  required: true
+  schema:
+    type: integer

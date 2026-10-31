@@ -986,3 +986,41 @@ components:
             enum:
               - Airport
 ```
+
+## Build parts of a document for another one
+
+An integration that keeps a document of its own can still take parts of it from spec attributes:
+a model's schema, or a parameter. Build each part with a `Builder`, so it goes through the whole
+pipeline: the resolver, the augmenters and any augmenter the integration registers. Compiling the
+attributes directly skips all of that.
+
+<<< @/snippets/guide/cookbook/fragments/fragments.php
+
+The builder:
+
+* removes the `Cleanup` augmenter. Nothing references a part, so `Cleanup` would remove it as unused.
+* adds an `OA\Info`, since a document without one reports an error. It is filler, marked with
+  `setMeta()` under a key the integration owns, so its own augmenters can leave it alone.
+* is new for every part. A `Builder` builds one document, and building a few classes is cheap.
+
+The integration then reads each part by its key and ignores the rest of the document. For the
+classes below, `buildModel(User::class)` and a path parameter passed to `buildPart()`:
+
+<<< @/snippets/guide/cookbook/fragments/models.php
+
+```php
+buildPart(new OA\Parameter\Path(name: 'id', schema: new OA\Schema(type: 'integer'), component: 'id'), 'parameters');
+```
+
+give:
+
+<<< @/snippets/guide/cookbook/fragments/fragments-3.1.0.yaml
+
+A `$ref` in a part points into the `components` of the build that made it, as
+`#/components/schemas/Address` does here. The integration maps it to the name it uses for that
+class in its own document.
+
+At version `3.0.0` the build also warns that `paths` is required. An `OA\Operation` added as
+filler next to the `OA\Info` removes the warning.
+
+See [Contributing to the Specification](/guide/extension-points#contributing-to-the-specification).
