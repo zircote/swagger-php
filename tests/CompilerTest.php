@@ -656,6 +656,17 @@ final class CompilerTest extends TestCase
         $specDuplicateResponse->responses[] = new OA\Response(response: 'Dup', description: 'first');
         $specDuplicateResponse->responses[] = new OA\Response(response: 'Dup', description: 'second');
 
+        $specOptionalPath = new Specification();
+        $specOptionalPath->openapi = new OA\OpenApi(version: '3.1.0');
+        $specOptionalPath->info = new OA\Info(title: 'T', version: '1.0');
+        $specOptionalPath->parameters[] = new OA\Parameter(parameter: 'id', name: 'id', in: 'path', required: false);
+
+        yield 'path parameter not required' => [
+            new OpenApi31Compiler(),
+            $specOptionalPath,
+            'Path parameter "id" must be required in unknown',
+        ];
+
         yield 'component key claimed twice' => [
             new OpenApi31Compiler(),
             $specDuplicateResponse,
@@ -745,6 +756,17 @@ final class CompilerTest extends TestCase
         $messages = array_column((new OpenApi31Compiler())->validate($spec), 'message');
 
         $this->assertEmpty(array_filter($messages, fn (string $m): bool => str_contains($m, 'unknown type')));
+    }
+
+    public function testARequiredPathParameterIsNotReported(): void
+    {
+        $spec = $this->createSpecification();
+        $spec->parameters[] = new OA\Parameter\Path(parameter: 'id', name: 'id');
+        $spec->parameters[] = new OA\Parameter(parameter: 'q', name: 'q', in: 'query', required: false);
+
+        $messages = array_column((new OpenApi31Compiler())->validate($spec), 'message');
+
+        $this->assertEmpty(array_filter($messages, static fn (string $message): bool => str_starts_with($message, 'Path parameter')));
     }
 
     public function test30ReportsSchemaDiagnosticsOnce(): void

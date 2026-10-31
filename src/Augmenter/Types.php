@@ -322,10 +322,9 @@ class Types implements PipeInterface, LoggerAwareInterface
             $this->mergeIntoSchema($parameter->schema, $resolved);
         }
 
-        // a default means a value exists when the parameter is left out. A path parameter is required
-        // whatever its default, and one converted from classic keeps classic's rule
+        // a default means a value exists when the parameter is left out, and one converted from classic
+        // keeps classic's rule. A path parameter has `required` already, from `PathParameters`
         $hasDefault = $reflector->isDefaultValueAvailable()
-            && $parameter->in !== 'path'
             && $parameter->getMeta(HybridBridge::class) !== true;
 
         $parameter->required ??= !$isNullable && !$hasDefault;

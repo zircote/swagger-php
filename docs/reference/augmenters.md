@@ -184,6 +184,14 @@ made through one operation or path stays there.
 
 The ancestor walk and the prefix composition belong to `Specification\PathItemHierarchy`.
 
+### [PathParameters](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/PathParameters.php)
+
+Marks every path parameter that does not say otherwise as required.
+
+OpenAPI requires `required: true` on a parameter `in: path`. `OA\Parameter\Path` defaults to
+it, and this gives a plain `OA\Parameter(in: 'path')` the same, whatever its PHP type or
+default. An explicit `required` is left alone, and the compiler warns about one that is not `true`.
+
 ### [Types](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Types.php)
 
 Infers schema type, format, nullable, items, etc. from PHP type declarations and docblocks.
