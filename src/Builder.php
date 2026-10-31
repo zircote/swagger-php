@@ -483,6 +483,7 @@ class Builder
             new Augmenter\DefaultMediaType(),
             new Augmenter\SecurityRequirements(),
             new Augmenter\PathItems(),
+            new Augmenter\PathParameters(),
             new Augmenter\Types(),
             new Augmenter\Properties(),
             new Augmenter\Refs(),
