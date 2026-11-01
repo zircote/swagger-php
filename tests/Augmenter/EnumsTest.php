@@ -29,6 +29,15 @@ final class EnumsTest extends TestCase
         $this->assertSame(['GREEN', 'BLUE', 'RED'], $schema->enum);
     }
 
+    public function testEnumSchemaIsNamedByTheNamer(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\BasicEnum::class);
+
+        (new Augmenter\Enums(namer: new Fixtures\PrefixedComponentNamer()))($spec);
+
+        $this->assertSame('ApiBasicEnum', $spec->schemas[0]->component);
+    }
+
     public function testBackedEnumWithoutTypeUsesNames(): void
     {
         $spec = $this->assemble(Fixtures\Augmenter\BackedStringEnum::class);

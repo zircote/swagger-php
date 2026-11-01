@@ -6,6 +6,8 @@
 
 namespace OpenApi\Augmenter;
 
+use OpenApi\ComponentNamer;
+use OpenApi\Contracts\ComponentNamerInterface;
 use OpenApi\Specification;
 use OpenApi\Utils\AttributeFactory;
 use OpenApi\Utils\PipeInterface;
@@ -25,13 +27,14 @@ class Inheritance implements PipeInterface
 
     public function __construct(
         AttributeFactory $attributeFactory = new AttributeFactory(),
+        protected ComponentNamerInterface $namer = new ComponentNamer\ShortName(),
     ) {
         $this->setAttributeFactory($attributeFactory);
     }
 
     public function __invoke(mixed $payload): mixed
     {
-        (new Inheritance\Schemas($this->attributeFactory))->resolve($payload);
+        (new Inheritance\Schemas($this->attributeFactory, $this->namer))->resolve($payload);
         (new Inheritance\Operations($this->attributeFactory))->resolve($payload);
 
         return null;
@@ -45,6 +48,13 @@ class Inheritance implements PipeInterface
     public function setAttributeFactory(AttributeFactory $attributeFactory): static
     {
         $this->attributeFactory = $attributeFactory;
+
+        return $this;
+    }
+
+    public function setNamer(ComponentNamerInterface $namer): static
+    {
+        $this->namer = $namer;
 
         return $this;
     }

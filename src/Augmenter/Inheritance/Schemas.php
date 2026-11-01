@@ -6,6 +6,8 @@
 
 namespace OpenApi\Augmenter\Inheritance;
 
+use OpenApi\ComponentNamer;
+use OpenApi\Contracts\ComponentNamerInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Specification\ComponentIndex;
@@ -23,6 +25,7 @@ class Schemas
 {
     public function __construct(
         protected AttributeFactory $attributeFactory = new AttributeFactory(),
+        protected ComponentNamerInterface $namer = new ComponentNamer\ShortName(),
     ) {
     }
 
@@ -131,9 +134,9 @@ class Schemas
     protected function addAllOfRef(OA\Schema $schema, OA\Schema $referenced): void
     {
         $schema->allOf ??= [];
-        // the explicit key or the class name, as `Names` will key it — not `of()`, whose
+        // the explicit key or the namer's name, as `Names` will key it — not `of()`, whose
         // title fallback would name a class schema after its title before `Names` has run
-        $name = $referenced->component ?? $referenced->getShortClassName();
+        $name = $referenced->component ?? $this->namer->name($referenced);
         if ($name !== null) {
             $schema->allOf[] = new OA\Schema(ref: JsonPointer::ref('components', 'schemas', $name));
         }
