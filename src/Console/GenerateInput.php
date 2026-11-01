@@ -49,6 +49,8 @@ class GenerateInput
 
     public ?string $version = null;
 
+    public ?string $componentNamer = null;
+
     /**
      * @deprecated since 7.0, removed in 8.0
      */
@@ -77,6 +79,7 @@ class GenerateInput
         $generateInput->addProcessor = $input->getOption('add-processor');
         $generateInput->removeProcessor = $input->getOption('remove-processor');
         $generateInput->version = $input->getOption('version');
+        $generateInput->componentNamer = $input->getOption('component-namer');
         $generateInput->mode = self::enum(Mode::class, 'mode', $input->getOption('mode'));
         $generateInput->debug = (bool) $input->getOption('debug');
 

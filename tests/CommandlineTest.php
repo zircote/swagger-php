@@ -184,6 +184,35 @@ final class CommandlineTest extends OpenApiTestCase
         }
     }
 
+    /**
+     * @return iterable<mixed>
+     */
+    public static function componentNamerCases(): iterable
+    {
+        yield 'built-in' => ['--component-namer ShortName', 'UnreferencedSchemaModel:'];
+        yield 'fqcn' => ['--component-namer ' . escapeshellarg(Fixtures\PrefixedComponentNamer::class), 'ApiUnreferencedSchemaModel:'];
+    }
+
+    #[DataProvider('componentNamerCases')]
+    public function testComponentNamer(string $args, string $expected): void
+    {
+        $fixture = __DIR__ . '/Fixtures/UnreferencedSchema.php';
+        $cmd = __DIR__ . '/../bin/openapi --bootstrap ' . escapeshellarg($fixture) . " -c cleanup.enabled=false {$args} --format yaml " . escapeshellarg($fixture);
+        exec($this->getCommandToExecute($cmd, '2>'), $output, $retval);
+        $this->assertSame(0, $retval, $cmd . PHP_EOL . implode(PHP_EOL, $output));
+
+        $this->assertStringContainsString($expected, implode(PHP_EOL, $output));
+    }
+
+    public function testInvalidComponentNamer(): void
+    {
+        $fixture = __DIR__ . '/Fixtures/UnreferencedSchema.php';
+        exec($this->getCommandToExecute(__DIR__ . '/../bin/openapi --component-namer Bogus ' . escapeshellarg($fixture) . ' 2>&1'), $output, $retval);
+
+        $this->assertSame(1, $retval);
+        $this->assertStringContainsString('The value "Bogus" is not valid for the "component-namer" option.', (string) preg_replace('/\s+/', ' ', implode(' ', $output)));
+    }
+
     private function getCommandToExecute(string $cmd, ?string $devNullRedir = null): string
     {
         if (PHP_OS_FAMILY === 'Windows') {
