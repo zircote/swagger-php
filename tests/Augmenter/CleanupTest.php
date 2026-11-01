@@ -37,6 +37,31 @@ final class CleanupTest extends TestCase
         $this->assertSame('Used', $spec->schemas[0]->schema);
     }
 
+    public function testKeepsAComponentMarkedToBeKept(): void
+    {
+        $kept = (new OA\Schema(properties: [
+            new OA\Property(property: 'child', schema: new OA\Schema(ref: '#/components/schemas/Child')),
+        ], component: 'Kept'))->setMeta(Augmenter\Cleanup::class, false);
+        $child = new OA\Schema(component: 'Child');
+        $marked = (new OA\Schema(component: 'Marked'))->setMeta(Augmenter\Cleanup::class, true);
+        $spec = (new Specification())->add($kept, $child, $marked, new OA\Schema(component: 'Unused'));
+
+        (new Augmenter\Cleanup())($spec);
+
+        $this->assertSame(['Kept', 'Child'], array_map(static fn (OA\Schema $schema): ?string => $schema->component, $spec->schemas));
+    }
+
+    public function testTheMetaKeyIsConfigurable(): void
+    {
+        $kept = (new OA\Schema(component: 'Kept'))->setMeta('host.keep', false);
+        $default = (new OA\Schema(component: 'Default'))->setMeta(Augmenter\Cleanup::class, false);
+        $spec = (new Specification())->add($kept, $default);
+
+        (new Augmenter\Cleanup())->setMetaKey('host.keep')($spec);
+
+        $this->assertSame([$kept], $spec->schemas);
+    }
+
     public function testKeepsReferencedSchemaInProperty(): void
     {
         $spec = new Specification();

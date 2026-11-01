@@ -76,7 +76,7 @@ something there.
 Once added, a contribution looks like any scanned attribute. If a later step needs to tell
 yours apart, such as a [merger](#mergers) deciding precedence or an augmenter that should leave
 them alone, mark them as you add them with `setMeta()` under a key you own. Read it back with
-`getMeta()` there.
+`getMeta()` there. Keys that are the name of a swagger-php class belong to swagger-php.
 
 ## Resolvers
 

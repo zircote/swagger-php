@@ -276,6 +276,10 @@ Removes unreferenced components from the specification.
 Iterates multiple times to catch nested dependencies (a schema only
 referenced by another unused schema should also be removed).
 
+A component whose meta value under the configured `metaKey` is `false` is kept, referenced or
+not, and so is what it references. Setting the value back to `true`
+makes it a candidate for removal again.
+
 Removal is reported once per run, as a notice with the count and the switch that turns it
 off; the components themselves are listed at debug level. A response component keyed by a
 status code is also reported on its own, as a warning, because it is a response that was
@@ -284,6 +288,8 @@ meant to nest into an operation.
 #### Config settings
 - **cleanup.enabled** : `bool` · default: `true`  
   Enables/disables removal of unreferenced components.
+- **cleanup.metaKey** : `string` · default: `OpenApi\Augmenter\Cleanup`  
+  The meta key that keeps a component: one whose meta value under it is <code>false</code> is not removed.
 
 ### [MediaTypes](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/MediaTypes.php)
 
