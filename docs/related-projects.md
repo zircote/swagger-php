@@ -22,6 +22,7 @@ sidebar: false
 | [openapi-serialize][14]       | Serialize an object using swagger-php                     |
 | [Scalar][15]                  | An alternative webinterface for generating documentation  |
 | [openapi-introspector][16]    | Document the routes a Laravel or Slim app already has     |
+| [openapi-json-schema][17]     | Describe plain classes through symfony/json-schema        |
 
 Is a related project missing? Create a pull request!
 
@@ -41,3 +42,4 @@ Is a related project missing? Create a pull request!
 [14]: https://github.com/MattyRad/openapi-serialize
 [15]: https://github.com/scalar/scalar
 [16]: https://github.com/DerManoMann/openapi-introspector
+[17]: https://github.com/DerManoMann/openapi-json-schema
