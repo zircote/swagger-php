@@ -190,6 +190,7 @@ final class CommandlineTest extends OpenApiTestCase
     public static function componentNamerCases(): iterable
     {
         yield 'built-in' => ['--component-namer ShortName', 'UnreferencedSchemaModel:'];
+        yield 'built-in, qualified' => ['--component-namer QualifiedName', 'OpenApi.Tests.Fixtures.UnreferencedSchemaModel:'];
         yield 'fqcn' => ['--component-namer ' . escapeshellarg(Fixtures\PrefixedComponentNamer::class), 'ApiUnreferencedSchemaModel:'];
     }
 

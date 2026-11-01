@@ -26,7 +26,7 @@ class ShortName implements ComponentNamerInterface
         $reflector = $component->getReflector();
 
         if ($reflector instanceof \ReflectionClass) {
-            return $component->getShortClassName();
+            return $this->className($reflector);
         }
 
         $holder = $component->getClassReflector()?->getAttributes(OA\Components::class) ?? [];
@@ -35,5 +35,13 @@ class ShortName implements ComponentNamerInterface
         }
 
         return null;
+    }
+
+    /**
+     * @param \ReflectionClass<object> $class
+     */
+    protected function className(\ReflectionClass $class): string
+    {
+        return $class->getShortName();
     }
 }
