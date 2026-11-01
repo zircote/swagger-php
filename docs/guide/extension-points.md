@@ -125,6 +125,42 @@ registration order.
 The enum is `OpenApi\Augmenter\Group`. The [Augmenters
 reference](/reference/augmenters) lists the built-in pipeline and what each phase is for.
 
+## Component names
+
+A component declared on a class without a key is, by default, named after the class, by its
+short name. Two classes that share a short name, such as `App\Dto\User\CreateDTO` and
+`App\Dto\Order\CreateDTO`, then claim one key. The document keeps one of them and logs a
+warning.
+
+The name comes from a component namer, set with `Builder::setComponentNamer()`.
+`ComponentNamer\ShortName` is the default. `ComponentNamer\QualifiedName` uses the whole class
+name:
+
+```php
+use OpenApi\ComponentNamer\QualifiedName;
+
+$builder->setComponentNamer(new QualifiedName(strip: 'App\Dto\\'));
+```
+
+The two classes above become `User.CreateDTO` and `Order.CreateDTO`. `strip` removes a
+namespace prefix first, and `separator` joins what is left. It defaults to `.`, and an empty
+string runs the segments together as `UserCreateDTO`. A component with an explicit key keeps
+it.
+
+A namer of your own implements `OpenApi\Contracts\ComponentNamerInterface`. Its `name()`
+receives the component and returns its name, or `null` to leave the component inline. It can
+be asked about one component more than once, before its key is set and after, so the answer
+depends on the component alone. Extending `ShortName` and overriding `className()` changes how
+a class is named and keeps the names of an `#[OA\Components]` holder's members.
+
+On the command line, `--component-namer` picks a namer by class: `QualifiedName` for a built-in
+one, or the fully qualified name of your own, loaded with `--bootstrap`. It is built without
+arguments, so other settings need a subclass.
+
+::: info Mode difference
+The namer names components in spec and hybrid mode. Classic mode does not use it.
+:::
+
 ## Mergers
 
 Two attributes can claim one key. Two operations on the same path and method, or two schemas

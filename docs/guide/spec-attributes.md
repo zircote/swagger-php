@@ -435,7 +435,8 @@ public function list() {}
 Note the two keys on that response: `response: 404` is where it nests in the operation, and
 `NotFound` is the component it points at. The same split holds for a header (`header:` is the
 HTTP header name, `component:` the reusable definition), a link and an example. A schema
-declared on a class needs no key at all. It is named after the class.
+declared on a class needs no key at all. It is named after the class, by its short name unless a
+[component namer](/guide/extension-points#component-names) says otherwise.
 
 `#[OA\Components]` remains as a class-level container for declaring several components on one
 class, and for the historic spellings below. On a class it also makes a holder. Each method or

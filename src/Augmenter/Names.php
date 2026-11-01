@@ -16,13 +16,9 @@ use OpenApi\Utils\PipeInterface;
 /**
  * Infers component keys from PHP reflectors when not explicitly set.
  *
- * The name comes from the namer, `ComponentNamer\ShortName` by default. A component declared on a
- * class is named after that class, so it can be referenced by class name. Declared anywhere else — a method, a parameter — the class reflector belongs
- * to the *declaring* class, whose name is already taken by that class's own component, so
- * nothing is inferred and the component stays inline.
- *
- * A class carrying `#[OA\Components]` is the exception: it is a holder, so each of its members
- * declares a component of its own, named after the member.
+ * The key is the name the component namer gives, or none, which leaves the component inline.
+ * `ComponentNamer\ShortName`, the default, names a component declared on a class after the class,
+ * and a member of an `#[OA\Components]` holder after the member.
  *
  * A parameter is keyed differently: its `name` is its identity in OpenAPI, so a parameter
  * component is keyed by it wherever it was declared, holder or not, and falls back to the class name only
