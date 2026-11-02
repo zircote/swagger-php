@@ -63,7 +63,7 @@ class Xml extends OA\MediaType
      * @param mixed                                            $example     Example of the media type content
      * @param list<OA\Example>|null                            $examples    Examples of the media type content
      * @param list<OA\Encoding>|array<string,OA\Encoding>|null $encoding    Encoding information for specific properties
-     * @param string|null                                      $component   The key this is filed under in `components`, which makes it a reusable component
+     * @param string|null                                      $component   The name this is filed under in `components`, which makes it a reusable component
      * @param array<string,mixed>|null                         $x           Vendor extensions (x-* properties)
      * @param list<OA\Attachable>|null                         $attachables Reusable custom attachable attributes
      * @param OA\Fan|null                                      $fan         Where this attribute goes when more than one attribute could hold it
