@@ -99,6 +99,8 @@ class OpenApi31Compiler implements CompilerInterface
 
         $this->validateOperationIds($specification);
 
+        $this->validatePathParameters($specification);
+
         $this->validateResponses($specification);
 
         $this->validateMediaTypes($specification);
@@ -1042,6 +1044,21 @@ class OpenApi31Compiler implements CompilerInterface
             }
 
             $seen[$operation->operationId] = true;
+        });
+    }
+
+    /**
+     * `Augmenter\PathParameters` fills in what was left out, so this only fires for a
+     * `required` set by hand.
+     */
+    protected function validatePathParameters(Specification $specification): void
+    {
+        $specification->getWalker()->visit(OA\Parameter::class, function (OA\Parameter $parameter): void {
+            if ($parameter->in !== OA\ParameterIn::Path->value || $parameter->ref !== null || $parameter->required === true) {
+                return;
+            }
+
+            $this->logger->warning("Path parameter \"{$parameter->name}\" must be required in " . $parameter->getSourceLocation());
         });
     }
 
