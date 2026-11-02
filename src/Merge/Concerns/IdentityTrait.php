@@ -22,7 +22,7 @@ trait IdentityTrait
     /**
      * What makes two attributes the same one depends on the collection they are in:
      *
-     * - anything in a `components` bucket: its component key
+     * - anything in a `components` bucket: its component name
      * - an operation: its path and method, or its webhook and method
      * - a path item outside `components`: its path
      * - a tag: its name
@@ -54,7 +54,7 @@ trait IdentityTrait
                 return 'component:' . $component;
             }
 
-            // a path item without a component key is path-bound, and keyed by its path
+            // a path item without a component name is path-bound, and keyed by its path
             return $attribute instanceof OA\PathItem && $attribute->path !== null
                 ? 'path:' . $attribute->path
                 : null;

@@ -23,7 +23,7 @@ use OpenApi\Undefined;
  *       new OA\Parameter\Query(name: 'status', schema: new OA\Schema(type: 'string', enum: ['active', 'sold'])),
  *   ])]
  *
- * Or as a reusable component (set `component` for the component key):
+ * Or as a reusable component (set `component` for the component name):
  *
  *   #[OA\Parameter\Path(component: 'petId', name: 'id', schema: new OA\Schema(type: 'integer'))]
  *
@@ -42,7 +42,7 @@ use OpenApi\Undefined;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
 class Parameter extends AbstractAttribute
 {
-    /** The key this attribute is filed under in `components`; null for an inline one. */
+    /** The name this attribute is filed under in `components`; null for an inline one. */
     public ?string $component = null;
 
     public ?string $in = null;
@@ -68,7 +68,7 @@ class Parameter extends AbstractAttribute
      * @param mixed                          $example         Example of the parameter's value
      * @param list<Example>|null             $examples        Examples of the parameter's value
      * @param MediaType|list<MediaType>|null $content         Content-type based parameter serialization
-     * @param string|null                    $component       The key this is filed under in `components`, which makes it a reusable component
+     * @param string|null                    $component       The name this is filed under in `components`, which makes it a reusable component
      * @param array<string,mixed>|null       $x               Vendor extensions (x-* properties)
      * @param list<Attachable>|null          $attachables     Reusable custom attachable attributes
      * @param Fan|null                       $fan             Where this attribute goes when more than one attribute could hold it
@@ -97,7 +97,7 @@ class Parameter extends AbstractAttribute
         parent::__construct(x: $x, attachables: $attachables, fan: $fan);
         $this->component = $component;
         if ($component === null && $this->parameter !== null) {
-            trigger_deprecation('zircote/swagger-php', '6.12', '`parameter` is deprecated as the component key of %s and will be removed in 8.0; use `component`', static::class);
+            trigger_deprecation('zircote/swagger-php', '6.12', '`parameter` is deprecated as the component name of %s and will be removed in 8.0; use `component`', static::class);
             $this->component = $this->parameter;
         }
         $this->in = $in instanceof \BackedEnum ? $in->value : $in;

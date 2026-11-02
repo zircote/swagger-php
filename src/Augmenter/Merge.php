@@ -29,7 +29,7 @@ use Psr\Log\LoggerInterface;
  *
  * Registered twice, and both are this class. The first run is the first pipe of the **reduce**
  * phase, which is the earliest point every identity exists: `Augmenter\PathItems` resolves an
- * operation's path and `Augmenter\Names` infers component keys, both in **resolve**. It is also
+ * operation's path and `Augmenter\Names` infers component names, both in **resolve**. It is also
  * before `Cleanup` and everything downstream that should see the survivor rather than both
  * attributes. The second is the last pipe of all, so what a late augmenter adds is reduced too.
  * It is a grouping over lists and costs nothing when there is nothing to do. An augmenter

@@ -400,10 +400,10 @@ class ValidationErrors {}
 
 ## Components
 
-Any reusable attribute becomes a component by giving it a `component:` key. That is the name it
+Any reusable attribute becomes a component by giving it a `component:` name. That is the name it
 is filed under in the document's `components` section, and the name a `$ref` points at.
 Schemas, responses, parameters, request bodies, headers, links, examples, security schemes and
-path items all take it, and a keyed attribute is a root: it can be declared on a class by
+path items all take it, and a named attribute is a root: it can be declared on a class by
 itself, with no wrapper.
 
 ```php
@@ -435,12 +435,12 @@ public function list() {}
 Note the two keys on that response: `response: 404` is where it nests in the operation, and
 `NotFound` is the component it points at. The same split holds for a header (`header:` is the
 HTTP header name, `component:` the reusable definition), a link and an example. A schema
-declared on a class needs no key at all. It is named after the class, by its short name unless a
+declared on a class needs no name at all. It is named after the class, by its short name unless a
 [component namer](/guide/extension-points#component-names) says otherwise.
 
 `#[OA\Components]` remains as a class-level container for declaring several components on one
 class, and for the historic spellings below. On a class it also makes a holder. Each method or
-property declares a component of its own, and one without a key is named after the member, the
+property declares a component of its own, and one without a name is named after the member, the
 way a class names its own. That saves an empty class per schema, and the member's docblock
 becomes the description:
 
@@ -458,14 +458,14 @@ class Models
 ```
 
 That gives `#/components/schemas/thing` and `#/components/responses/notFound`. A parameter is
-still keyed by its `name`, as anywhere else.
+still named by its `name`, as anywhere else.
 
-A component declared on a member needs the holder, keyed or not. Without it, a schema on a
-property is that property's own, and a keyed component on a method or property is left out of
+A component declared on a member needs the holder, named or not. Without it, a schema on a
+property is that property's own, and a named component on a method or property is left out of
 the document with a warning.
 
 ::: warning Historic spellings, deprecated
-Before 6.12 each type spelled its key after itself: `schema: 'Pet'`, `parameter: 'page'`,
+Before 6.12 each type spelled its name field after itself: `schema: 'Pet'`, `parameter: 'page'`,
 `request: 'Body'`, `securityScheme: 'api'`, and, only when declared as a component,
 `response: 'NotFound'`, `header: 'RateLimit'`, `link: 'Self'`, `example: 'Minimal'`. They still
 work, produce the same document, and trigger a deprecation. They are removed in 8.0. Only the
@@ -473,10 +473,10 @@ component use is deprecated: `response: 404` on a nested response, or `header: '
 on a header inside a response, is the nesting key and stays.
 
 Classic is not affected and reports nothing. `OpenApi\Attributes` keeps `schema:`,
-`parameter:`, `request:` and `securityScheme:` as its component keys, and hybrid mode
+`parameter:`, `request:` and `securityScheme:` as its component names, and hybrid mode
 translates them to `component:` through the bridge. What this does change is the price of
 moving a classic codebase onto `OpenApi\Spec`: it is no longer a change of `use` line and
-nothing else, because every component key is renamed with it. See
+nothing else, because every component name field is renamed with it. See
 [Migration path](/guide/modes#migration-path).
 :::
 
@@ -746,10 +746,12 @@ oneOf:
 ```
 
 The FQCN is resolved to the appropriate `#/components/schemas/Pet` JSON reference at augmentation time.
+A class described by more than one schema resolves to none of them, with a warning, unless the
+reference says which. See [Describing a class more than once](/guide/extension-points#describing-a-class-more-than-once).
 
 ### Schema\Ref
 
-`OA\Schema\Ref` is a restricted `Schema` subclass that only accepts `ref`, `title`, and `description`. It can be used in two ways:
+`OA\Schema\Ref` is a restricted `Schema` subclass that only accepts `ref`, `title`, `description` and `qualifiers`. It can be used in two ways:
 
 **As a schema**: a reference-only schema with optional metadata overrides (OpenAPI 3.1+):
 
@@ -765,3 +767,10 @@ public Pet $pet;
 ```
 
 When used on `ref` directly, the `Refs` augmenter unwraps it to the plain string value before further resolution.
+
+Either way, `qualifiers` picks one description of a class that is described more than once:
+
+```php
+#[OA\Schema\Ref(ref: Author::class, qualifiers: ['groups' => ['summary']])]
+public Author $reviewer;
+```

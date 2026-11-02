@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests\Fixtures\ComponentKey;
+namespace OpenApi\Tests\Fixtures\ComponentName;
 
 use OpenApi\Spec as OA;
 

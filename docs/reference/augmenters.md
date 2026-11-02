@@ -97,14 +97,14 @@ lists the case names instead.
 
 ### [Names](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Names.php)
 
-Infers component keys from PHP reflectors when not explicitly set.
+Infers component names from PHP reflectors when not explicitly set.
 
-The key is the name the component namer gives, or none, which leaves the component inline.
+The name is the one the component namer gives, or none, which leaves the component inline.
 `ComponentNamer\ShortName`, the default, names a component declared on a class after the class,
 and a member of an `#[OA\Components]` holder after the member.
 
-A parameter is keyed differently: its `name` is its identity in OpenAPI, so a parameter
-component is keyed by it wherever it was declared, holder or not, and falls back to the class name only
+A parameter is named differently: its `name` is its identity in OpenAPI, so a parameter
+component is named after it wherever it was declared, holder or not, and falls back to the class name only
 when it has no name either.
 
 ### [Enums](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Enums.php)
@@ -221,9 +221,10 @@ checked against.
 
 Resolves FQCN-based $ref values to JSON Reference paths.
 
-Builds a map of class names to their component paths and rewrites
-any $ref that looks like a FQCN into the proper #/components/... path.
-A ref that is neither a known class nor a pointer to an existing component is reported.
+A $ref that looks like a FQCN is looked up by its `ComponentKey`, in the bucket the ref points
+into, and rewritten into the proper #/components/... path. A `Schema\Ref` adds its qualifiers
+to the key. A ref that is neither a known class nor a pointer to an existing component is
+reported, and so is one whose key names more than one component.
 
 ### [Parameters](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Parameters.php)
 
@@ -254,7 +255,7 @@ in one place. The compiler reports it and keeps its own last-write-wins.
 
 Registered twice, and both are this class. The first run is the first pipe of the **reduce**
 phase, which is the earliest point every identity exists: `Augmenter\PathItems` resolves an
-operation's path and `Augmenter\Names` infers component keys, both in **resolve**. It is also
+operation's path and `Augmenter\Names` infers component names, both in **resolve**. It is also
 before `Cleanup` and everything downstream that should see the survivor rather than both
 attributes. The second is the last pipe of all, so what a late augmenter adds is reduced too.
 It is a grouping over lists and costs nothing when there is nothing to do. An augmenter
@@ -285,7 +286,7 @@ not, and so is what it references. Setting the value back to `true`
 makes it a candidate for removal again.
 
 Removal is reported once per run, as a notice with the count and the switch that turns it
-off; the components themselves are listed at debug level. A response component keyed by a
+off; the components themselves are listed at debug level. A response component named by a
 status code is also reported on its own, as a warning, because it is a response that was
 meant to nest into an operation.
 

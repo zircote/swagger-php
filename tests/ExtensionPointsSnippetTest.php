@@ -50,6 +50,14 @@ final class ExtensionPointsSnippetTest extends TestCase
         );
     }
 
+    public function testDescriptionsProduceTheDocumentedOutput(): void
+    {
+        $this->assertSpecEquals(
+            file_get_contents(self::SNIPPETS . '/descriptions-3.1.0.yaml'),
+            Snippet\buildWithDescriptions()->toYaml()
+        );
+    }
+
     public function testSubclassedAttributeDerivesSchemaAndRequired(): void
     {
         $result = (new Builder())

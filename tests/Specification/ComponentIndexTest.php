@@ -9,8 +9,11 @@ namespace OpenApi\Tests\Specification;
 use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Specification\ComponentKey;
 use OpenApi\Tests\Concerns\AssemblesSpecification;
 use OpenApi\Tests\Fixtures\Augmenter\PathItemUserController;
+use OpenApi\Tests\Fixtures\ClassDescriptions\Account;
+use OpenApi\Tests\Fixtures\ClassDescriptions\Author;
 use OpenApi\Tests\Fixtures\ComponentIndex\OddlyNamed;
 use OpenApi\Tests\Fixtures\ComponentIndex\Product;
 use OpenApi\Tests\Fixtures\ComponentIndex\UnnamedTag;
@@ -84,7 +87,7 @@ final class ComponentIndexTest extends TestCase
         $this->assertNotInstanceOf(OA\Schema::class, $index->findSchema('notFound'));
     }
 
-    public function testParameterFallsBackToNameWhenUnkeyed(): void
+    public function testParameterIsNamedByItsNameWithoutAComponentName(): void
     {
         $index = (new Specification())
             ->add(new OA\Parameter(name: 'page', in: 'query'))
@@ -171,5 +174,48 @@ final class ComponentIndexTest extends TestCase
         $map = $this->assemble(UnnamedTag::class)->buildComponentIndex()->buildRefMap();
 
         $this->assertArrayNotHasKey(UnnamedTag::class, $map);
+    }
+
+    public function testAClassWithTwoSchemasIsFoundByNeitherLookup(): void
+    {
+        $index = $this->twoAuthors(new ComponentKey(Author::class))->buildComponentIndex();
+
+        $this->assertCount(2, $index->findAllByKey(new ComponentKey(Author::class), 'schemas'));
+        $this->assertNotInstanceOf(AttributeInterface::class, $index->findByKey(new ComponentKey(Author::class), 'schemas'));
+        $this->assertNotInstanceOf(AttributeInterface::class, $index->find(Author::class));
+        $this->assertArrayNotHasKey(Author::class, $index->buildRefMap());
+        $this->assertTrue($index->hasKey(new ComponentKey(Author::class)));
+    }
+
+    public function testQualifiersTellTheDescriptionsApart(): void
+    {
+        $light = new ComponentKey(Author::class, ['groups' => ['light']]);
+        $specification = $this->twoAuthors($light);
+        [$full, $lighter] = $specification->schemas;
+        $index = $specification->buildComponentIndex();
+
+        $this->assertSame($full, $index->findByKey(new ComponentKey(Author::class), 'schemas'));
+        $this->assertSame($lighter, $index->findByKey($light, 'schemas'));
+        $this->assertSame($full, $index->findSchema(Author::class));
+    }
+
+    public function testEachBucketFindsItsOwnComponentOfAClass(): void
+    {
+        $index = $this->assemble(Account::class)->buildComponentIndex();
+
+        $this->assertInstanceOf(OA\Schema::class, $index->findSchema(Account::class));
+        $this->assertInstanceOf(OA\Response::class, $index->findResponse(Account::class));
+        $this->assertInstanceOf(OA\Response::class, $index->findByKey(new ComponentKey(Account::class), 'responses'));
+    }
+
+    /**
+     * `Author` contributed twice, as a full schema keyed plainly and a light one keyed by `$light`.
+     */
+    protected function twoAuthors(ComponentKey $light): Specification
+    {
+        $full = (new OA\Schema(component: 'Author'))->setReflector(new \ReflectionClass(Author::class));
+        $lighter = (new OA\Schema(component: 'AuthorLight'))->setReflector(new \ReflectionClass(Author::class))->setComponentKey($light);
+
+        return (new Specification())->add($full, $lighter);
     }
 }

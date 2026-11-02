@@ -11,6 +11,7 @@ use OpenApi\Contracts\ResolverInterface;
 use OpenApi\Resolver\Reflection;
 use OpenApi\Spec as OA;
 use OpenApi\Specification\ComponentIndex;
+use OpenApi\Specification\ComponentKey;
 use OpenApi\Utils\TypedList;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -161,7 +162,7 @@ class Resolver implements LoggerAwareInterface
                 return;
             }
 
-            if (!$index->find($ref) instanceof AttributeInterface) {
+            if (!$index->hasKey(new ComponentKey($ref))) {
                 $unresolved[] = $ref;
             }
         });
@@ -188,7 +189,7 @@ class Resolver implements LoggerAwareInterface
                     continue;
                 }
 
-                if (!$index->find($fqcn) instanceof AttributeInterface) {
+                if (!$index->hasKey(new ComponentKey($fqcn))) {
                     $unresolved[] = $fqcn;
                 }
             }

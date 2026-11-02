@@ -871,12 +871,12 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * Every component takes its key from one field, and a property from `property`. None can
+     * Every component takes its name from one field, and a property from `property`. None can
      * be derived from a method or a non-constructor parameter, so an attribute declared there
      * has to carry its own name — the same requirement classic enforces. `Augmenter\Names`
-     * fills the key in for anything declared on a class, so what reaches here is unnameable.
+     * fills the name in for anything declared on a class, so what reaches here is unnameable.
      *
-     * A key claimed twice is `Augmenter\Merge`'s to reduce and report, and it runs first, so a
+     * A name claimed twice is `Augmenter\Merge`'s to reduce and report, and it runs first, so a
      * repeat seen here means a `Specification` that was compiled without the pipeline.
      */
     protected function validateNames(Specification $specification): void
@@ -1064,9 +1064,9 @@ class OpenApi31Compiler implements CompilerInterface
 
     /**
      * Only responses nested in an operation are checked, because position is what gives
-     * `Response::$response` its meaning: a status code there, and a component key in the
+     * `Response::$response` its meaning: a status code there, and a component name in the
      * `responses` bucket, where `components.responses.product` is a name. `isRoot()` cannot
-     * tell them apart — it is true whenever the key is set.
+     * tell them apart — it is true whenever the field is set.
      *
      * A nested response carries no reflector of its own, so the operation is reported
      * instead, which is where the reader has to go to fix it anyway.
@@ -1138,9 +1138,9 @@ class OpenApi31Compiler implements CompilerInterface
     /**
      * Compiles one `components` bucket, keyed the way `ComponentIndex` resolves a `$ref`.
      *
-     * A component with no key is dropped rather than given a positional one: it cannot be
+     * A component with no name is dropped rather than filed under its position: it cannot be
      * referenced, and an integer key turns the whole bucket into a JSON array where OpenAPI
-     * requires a map. A key claimed twice keeps the last. `validateNames()` reports both.
+     * requires a map. A name claimed twice keeps the last. `validateNames()` reports both.
      *
      * @param  list<AttributeInterface> $components
      * @return array<string,mixed>

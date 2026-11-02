@@ -14,7 +14,7 @@ namespace OpenApi\Spec;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
 class RequestBody extends AbstractAttribute
 {
-    /** The key this attribute is filed under in `components`; null for an inline one. */
+    /** The name this attribute is filed under in `components`; null for an inline one. */
     public ?string $component = null;
 
     /** @var list<MediaType>|null */
@@ -26,7 +26,7 @@ class RequestBody extends AbstractAttribute
      * @param bool|null                             $required    Whether the request body is required
      * @param string|Schema\Ref|null                $ref         A JSON Reference to a reusable request body
      * @param MediaType|list<MediaType>|Schema|null $content     The content of the request body; a bare `Schema` is the payload of one media type, which `Augmenter\DefaultMediaType` fills in
-     * @param string|null                           $component   The key this is filed under in `components`, which makes it a reusable component
+     * @param string|null                           $component   The name this is filed under in `components`, which makes it a reusable component
      * @param array<string,mixed>|null              $x           Vendor extensions (x-* properties)
      * @param list<Attachable>|null                 $attachables Reusable custom attachable attributes
      * @param Fan|null                              $fan         Where this attribute goes when more than one attribute could hold it
@@ -45,7 +45,7 @@ class RequestBody extends AbstractAttribute
         parent::__construct(x: $x, attachables: $attachables, fan: $fan);
         $this->component = $component;
         if ($component === null && $this->request !== null) {
-            trigger_deprecation('zircote/swagger-php', '6.12', '`request` is deprecated as the component key of %s and will be removed in 8.0; use `component`', static::class);
+            trigger_deprecation('zircote/swagger-php', '6.12', '`request` is deprecated as the component name of %s and will be removed in 8.0; use `component`', static::class);
             $this->component = $this->request;
         }
         $this->content = self::wrapContent($content);

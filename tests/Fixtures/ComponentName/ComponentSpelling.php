@@ -4,45 +4,45 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests\Fixtures\ComponentKey;
+namespace OpenApi\Tests\Fixtures\ComponentName;
 
 use OpenApi\Spec as OA;
 
-// Every component keyed the historic way — the field named after its type. The document this
-// produces is the one `ComponentSpelling` produces, which is what makes the alias exact.
+// Every component keyed by `component:`. See `LegacySpelling` for the same document spelled the
+// historic way; the two producing one document is what makes the alias exact.
 
-#[OA\Schema(schema: 'Pet', type: 'object')]
-class LegacyPet
+#[OA\Schema(component: 'Pet', type: 'object')]
+class ComponentPet
 {
 }
 
-#[OA\Response(response: 'NotFound', description: 'No such pet')]
-class LegacyNotFound
+#[OA\Response(component: 'NotFound', description: 'No such pet')]
+class ComponentNotFound
 {
 }
 
-#[OA\RequestBody(request: 'PetBody', description: 'A pet', content: [new OA\MediaType\Json(ref: '#/components/schemas/Pet')])]
-class LegacyPetBody
+#[OA\RequestBody(component: 'PetBody', description: 'A pet', content: [new OA\MediaType\Json(ref: '#/components/schemas/Pet')])]
+class ComponentPetBody
 {
 }
 
 #[OA\Components]
-#[OA\Parameter(parameter: 'page', name: 'page', in: 'query', schema: new OA\Schema(type: 'integer'))]
-#[OA\Header(header: 'RateLimit', description: 'Requests left', schema: new OA\Schema(type: 'integer'))]
-#[OA\Link(link: 'Self', operationId: 'getPet')]
-class LegacyShared
+#[OA\Parameter(component: 'page', name: 'page', in: 'query', schema: new OA\Schema(type: 'integer'))]
+#[OA\Header(component: 'RateLimit', description: 'Requests left', schema: new OA\Schema(type: 'integer'))]
+#[OA\Link(component: 'Self', operationId: 'getPet')]
+class ComponentShared
 {
 }
 
 // An example beside a parameter and a header is an ambiguous merge — both take examples — so
 // it gets a wrapper of its own.
 #[OA\Components]
-#[OA\Example(example: 'Minimal', value: ['name' => 'Rex'])]
-class LegacyMinimalExample
+#[OA\Example(component: 'Minimal', value: ['name' => 'Rex'])]
+class ComponentMinimalExample
 {
 }
 
-#[OA\Info(title: 'ComponentKey', version: '1.0')]
+#[OA\Info(title: 'ComponentName', version: '1.0')]
 #[OA\Operation\Post(
     path: '/pets/{id}',
     operationId: 'getPet',
@@ -59,6 +59,6 @@ class LegacyMinimalExample
         new OA\Response(response: 404, ref: '#/components/responses/NotFound'),
     ],
 )]
-class LegacyController
+class ComponentController
 {
 }

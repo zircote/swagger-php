@@ -40,13 +40,13 @@ Place on a class to declare standalone components that go into the components se
 of the OpenAPI document. The Components attribute itself is not emitted — its children
 are promoted to their respective Specification buckets.
 
-Any attribute given a `component:` key is a root on its own and needs no wrapper. The
-wrapper remains for the historic spellings — a Header or Example keyed by `header`/`example`
+Any attribute given a `component:` name is a root on its own and needs no wrapper. The
+wrapper remains for the historic spellings — a Header or Example named by `header`/`example`
 — and for grouping several components on one class.
 
 On a class it also makes a holder: each member declares a component of its own, and one
-without a key is named after the member, the way a class names its own. A component declared
-on a member needs the holder; without it, a keyed one is left out with a warning.
+without a name is named after the member, the way a class names its own. A component declared
+on a member needs the holder; without it, a named one is left out with a warning.
 
   #[Components]
   class SharedComponents {
@@ -195,7 +195,7 @@ Describes an example value for a parameter, media type, or schema.
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A JSON Reference to a reusable example</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
@@ -502,7 +502,7 @@ Describes a single HTTP header.
   <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|list&lt;MediaType&gt;|null</span></dt>
   <dd><p>Content-type based header serialization</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
@@ -597,7 +597,7 @@ Describes a possible design-time link for a response.
   <dt><strong>server</strong> : <span style="font-family: monospace;">Server|null</span></dt>
   <dd><p>A server object to be used by the target operation</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
@@ -632,7 +632,7 @@ Describes the content payload for a specific media type.
   <dt><strong>encoding</strong> : <span style="font-family: monospace;">list&lt;Encoding&gt;|array&lt;string,Encoding&gt;|null</span></dt>
   <dd><p>Encoding information for specific properties</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
@@ -692,7 +692,7 @@ The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema
   <dt><strong>encoding</strong> : <span style="font-family: monospace;">list&lt;OA\Encoding&gt;|array&lt;string,OA\Encoding&gt;|null</span></dt>
   <dd><p>Encoding information for specific properties</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">OA\Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
@@ -752,7 +752,7 @@ The `Shortcuts` augmenter expands the schema properties into a nested `OA\Schema
   <dt><strong>encoding</strong> : <span style="font-family: monospace;">list&lt;OA\Encoding&gt;|array&lt;string,OA\Encoding&gt;|null</span></dt>
   <dd><p>Encoding information for specific properties</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">OA\Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
@@ -1310,7 +1310,7 @@ Inline on an operation:
       new OA\Parameter\Query(name: 'status', schema: new OA\Schema(type: 'string', enum: ['active', 'sold'])),
   ])]
 
-Or as a reusable component (set `component` for the component key):
+Or as a reusable component (set `component` for the component name):
 
   #[OA\Parameter\Path(component: 'petId', name: 'id', schema: new OA\Schema(type: 'integer'))]
 
@@ -1366,7 +1366,7 @@ Produces:
   <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|list&lt;MediaType&gt;|null</span></dt>
   <dd><p>Content-type based parameter serialization</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
@@ -1675,7 +1675,7 @@ name+in (parameters).
   <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;Response&gt;|null</span></dt>
   <dd><p>Shared responses to clone to contained operations</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
@@ -1793,7 +1793,7 @@ Describes a single request body.
   <dt><strong>content</strong> : <span style="font-family: monospace;">MediaType|list&lt;MediaType&gt;|Schema|null</span></dt>
   <dd><p>The content of the request body; a bare `Schema` is the payload of one media type, which `Augmenter\DefaultMediaType` fills in</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
@@ -1830,7 +1830,7 @@ Describes a single response from an API operation.
   <dt><strong>links</strong> : <span style="font-family: monospace;">list&lt;Link&gt;|null</span></dt>
   <dd><p>Design-time links for the response</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
@@ -1867,7 +1867,7 @@ Inline — used within parameters, responses, or other schemas:
   new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))
 
 Only a class supplies a name. On a method or a parameter, pass `schema:` explicitly;
-without it the schema has no component key and is reported as missing one.
+without it the schema has no component name and is reported as missing one.
 
 #### Allowed in
 ---
@@ -1991,7 +1991,7 @@ without it the schema has no component key and is reported as missing one.
   <dt><strong>xml</strong> : <span style="font-family: monospace;">Xml|null</span></dt>
   <dd><p>XML representation metadata</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
@@ -2133,7 +2133,7 @@ new OA\Schema(
   <dt><strong>xml</strong> : <span style="font-family: monospace;">Xml|null</span></dt>
   <dd><p>XML representation metadata</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
@@ -2285,7 +2285,7 @@ Since Items extends Schema, the implicit `OA\Property` shortcut applies — no e
   <dt><strong>xml</strong> : <span style="font-family: monospace;">Xml|null</span></dt>
   <dd><p>XML representation metadata</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
@@ -2308,7 +2308,14 @@ Usage:
 #[OA\Property(schema: new OA\Schema\Ref(ref: Pet::class, description: 'Override desc'))]
 ```
 
-If used on a `$ref` directly, only the ref value is used.
+If used on a `$ref` directly, only the ref value and the qualifiers are used.
+
+A ref given as a class can carry qualifiers. A class can be described more than once, such as
+once per serialization group, and the qualifiers say which description the ref means. They
+have to match the qualifiers that description was registered with:
+```php
+#[OA\Property(schema: new OA\Schema\Ref(ref: Author::class, qualifiers: ['groups' => ['light']]))]
+```
 
 #### Allowed in
 ---
@@ -2325,6 +2332,8 @@ If used on a `$ref` directly, only the ref value is used.
   <dd><p>No details available.</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>qualifiers</strong> : <span style="font-family: monospace;">array&lt;string, scalar|list&lt;scalar&gt;&gt;|null</span></dt>
+  <dd><p>Which description of the class to reference, when it has more than one</p></dd>
 </dl>
 
 ### [Security\Requirement](https://github.com/zircote/swagger-php/tree/master/src/Spec/Security/Requirement.php)
@@ -2419,7 +2428,7 @@ Example:
   <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A JSON Reference to a reusable security scheme</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>The key this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">OA\Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>

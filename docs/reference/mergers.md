@@ -93,7 +93,7 @@ falling back to the later's reflector when the earlier has none.
 
 What makes two attributes the same one depends on the collection they are in:
 
-- anything in a `components` bucket: its component key
+- anything in a `components` bucket: its component name
 - an operation: its path and method, or its webhook and method
 - a path item outside `components`: its path
 - a tag: its name

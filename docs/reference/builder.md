@@ -221,7 +221,7 @@ merger looks like and how it recognises its own attributes.
 
 ### Component namer (spec/hybrid mode) {#component-namer}
 
-Use `setComponentNamer()` to choose how components without an explicit key are named.
+Use `setComponentNamer()` to choose how components without an explicit name are named.
 `ComponentNamer\ShortName` is the default:
 
 ```php

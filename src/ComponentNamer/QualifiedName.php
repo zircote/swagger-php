@@ -21,7 +21,7 @@ use OpenApi\OpenApiException;
 class QualifiedName extends ShortName
 {
     /**
-     * The characters OpenAPI allows in a component key, besides letters and digits.
+     * The characters OpenAPI allows in a component name, besides letters and digits.
      */
     protected const SEPARATORS = ['', '.', '-', '_'];
 
@@ -32,7 +32,7 @@ class QualifiedName extends ShortName
         protected string $separator = '.',
     ) {
         if (!in_array($separator, static::SEPARATORS, true)) {
-            throw new OpenApiException(sprintf('Invalid separator "%s": a component key allows only "%s"', $separator, implode('", "', static::SEPARATORS)));
+            throw new OpenApiException(sprintf('Invalid separator "%s": a component name allows only "%s"', $separator, implode('", "', static::SEPARATORS)));
         }
 
         $this->strip = trim($strip, '\\') === '' ? '' : trim($strip, '\\') . '\\';

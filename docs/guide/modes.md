@@ -126,12 +126,12 @@ The recommended migration path is:
 
 1. **Classic → Hybrid**: hybrid is the default, so this needs no code changes, and the augmenter pipeline becomes available. Output stays the same, with the exceptions listed in [Migrating to v7](/guide/migrating-to-v7#the-default-mode).
 
-2. **Hybrid → Spec**: when starting new code, use `OpenApi\Spec` attributes. Existing `OpenApi\Attributes` code keeps working through hybrid mode. The spec attributes are not a one-for-one rename of the classic ones. A reusable attribute takes a single `component:` key, where classic spells the key after its own type (`schema:`, `parameter:`, `request:`, `securityScheme:`). See [Components](/guide/spec-attributes#components).
+2. **Hybrid → Spec**: when starting new code, use `OpenApi\Spec` attributes. Existing `OpenApi\Attributes` code keeps working through hybrid mode. The spec attributes are not a one-for-one rename of the classic ones. A reusable attribute takes a single `component:` name, where classic spells the name field after its own type (`schema:`, `parameter:`, `request:`, `securityScheme:`). See [Components](/guide/spec-attributes#components).
 
 3. **Full Spec**: once all code uses `OpenApi\Spec` attributes, the migration is done. Hybrid builds them as spec mode does, so no mode switch is needed.
 
 ::: tip Version timeline
 - **v6**: spec and hybrid ship as opt-in beta. The spec attribute API is frozen within v6, and `Builder` is the stable entry point for every mode. Classic remains the default.
 - **v7**: hybrid becomes the default mode, and spec and hybrid are no longer beta. Classic is still available. `setMode()` and all classic code are deprecated.
-- **v8**: classic is removed, and so is `setMode()`. Spec becomes the default. Spec attributes move to `OpenApi\Attributes`. For code already written against `OpenApi\Spec`, that move is one `use` line per file. Coming from classic, the component keys are renamed as well.
+- **v8**: classic is removed, and so is `setMode()`. Spec becomes the default. Spec attributes move to `OpenApi\Attributes`. For code already written against `OpenApi\Spec`, that move is one `use` line per file. Coming from classic, the component name fields are renamed as well.
 :::

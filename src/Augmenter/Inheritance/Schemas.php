@@ -134,7 +134,7 @@ class Schemas
     protected function addAllOfRef(OA\Schema $schema, OA\Schema $referenced): void
     {
         $schema->allOf ??= [];
-        // the explicit key or the namer's name, as `Names` will key it — not `of()`, whose
+        // the explicit name or the namer's, as `Names` will name it — not `of()`, whose
         // title fallback would name a class schema after its title before `Names` has run
         $name = $referenced->component ?? $this->namer->name($referenced);
         if ($name !== null) {

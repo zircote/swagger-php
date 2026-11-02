@@ -62,10 +62,10 @@ The set:
   schemes in one array become `schemes:`. Spec drops a string there, with a warning, and
   compiles an array only as a deprecated form. Items that are not literals, such as a constant,
   are left for you
-- adds `#[Components]` to a class whose members declare keyed components, since spec takes a
+- adds `#[Components]` to a class whose members declare named components, since spec takes a
   component on a member only in a holder. A class with a `Schema` of its own is left alone, and
-  so is a keyed attribute that something beside it nests, such as a response beside an operation,
-  and a response keyed by a status code, `response: 200`, which was meant to nest in one.
+  so is a named attribute that something beside it nests, such as a response beside an operation,
+  and a response named by a status code, `response: 200`, which was meant to nest in one.
   A method carrying a framework's route attribute can be left out too, see
   [Routes from a framework](#routes-from-a-framework)
 - renames the classes, `OpenApi\Attributes\Get` to `OpenApi\Spec\Operation\Get` and so on
@@ -88,7 +88,7 @@ decorate that operation:
 public function list() {}
 ```
 
-The response is keyed by a status code and does not count, but the set cannot tell the keyed
+The response is named by a status code and does not count, but the set cannot tell the named
 parameter from a component, and would make the class a holder. Name the route attributes in your
 own `rector.php`, and a method carrying one of them does not count:
 
@@ -220,7 +220,7 @@ These classic arguments have no spec counterpart and are left in place. Each thr
 `PathItem`'s `path:` and operation arguments, and a root `OpenApi`'s `paths:`, `components:` and
 `webhooks:`, are covered [above](#constructs-with-no-one-to-one-replacement).
 
-### The component keys
+### The component names
 
 Spec attributes name a reusable component with `component:`. The classic spellings, `schema:`,
 `parameter:`, `request:` and `securityScheme:`, still work on the spec attributes

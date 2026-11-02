@@ -335,12 +335,12 @@ class AttributeFactory implements LoggerAwareInterface
 
     /**
      * A component declared on a member is one only in a class carrying `OA\Components`. Without
-     * it, the key alone does not say which is meant: on a property the same schema is the
-     * property's own, and on a method it would be a component. So a keyed component left over
+     * it, the name alone does not say which is meant: on a property the same schema is the
+     * property's own, and on a method it would be a component. So a named component left over
      * from a member is dropped, and said so.
      *
-     * A schema on a property arrives inside the `OA\Property` the shortcut adds, so its key is
-     * looked for there. Unkeyed attributes are left alone: a parent class without a schema leaves
+     * A schema on a property arrives inside the `OA\Property` the shortcut adds, so its name is
+     * looked for there. Unnamed attributes are left alone: a parent class without a schema leaves
      * its properties unabsorbed on purpose, for `Augmenter\Inheritance` to read again.
      *
      * @param list<AttributeInterface> $outer    the class's own attributes
@@ -599,7 +599,7 @@ class AttributeFactory implements LoggerAwareInterface
     }
 
     /**
-     * An attribute as an ambiguity message names it: its class, and its component key if it has one.
+     * An attribute as an ambiguity message names it: its class, and its component name if it has one.
      */
     protected function matchLabel(AttributeInterface $attribute): string
     {
