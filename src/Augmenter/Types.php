@@ -9,6 +9,8 @@ namespace OpenApi\Augmenter;
 use OpenApi\HybridBridge;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Specification\ComponentIndex;
+use OpenApi\Specification\ComponentKey;
 use OpenApi\Type\SchemaType;
 use OpenApi\Type\TypeMapper;
 use OpenApi\Type\TypeResolver;
@@ -29,8 +31,8 @@ class Types implements PipeInterface, LoggerAwareInterface
 {
     protected ?LoggerInterface $logger = null;
 
-    /** @var array<string, string> class name => component pointer, for the components that exist */
-    protected array $refMap = [];
+    /** the components a class type is looked up in, by its plain key, in the bucket its use means */
+    protected ?ComponentIndex $index = null;
 
     /** the member whose type is being applied, for the warning when a class in it has no schema */
     protected ?\Reflector $subject = null;
@@ -45,7 +47,7 @@ class Types implements PipeInterface, LoggerAwareInterface
 
     public function __invoke(mixed $payload): mixed
     {
-        $this->refMap = $payload->buildComponentIndex()->buildRefMap();
+        $this->index = $payload->buildComponentIndex();
         $this->inferredTypes = new \SplObjectStorage();
 
         $payload->getWalker()->eachSchema(function (OA\Schema $schema): void {
@@ -175,8 +177,8 @@ class Types implements PipeInterface, LoggerAwareInterface
             $resolved = $this->typeResolver->resolve($reflector);
 
             if ($resolved instanceof SchemaType) {
-                if ($resolved->type !== null && $resolved->isRef() && $this->isComponent($resolved->type)) {
-                    $requestBody->ref = $resolved->type;
+                if ($resolved->type !== null && $resolved->isRef()) {
+                    $this->refRequestBody($requestBody, $resolved->type, $reflector);
                 }
 
                 if ($resolved->nullable !== null && $requestBody->required === null) {
@@ -330,9 +332,38 @@ class Types implements PipeInterface, LoggerAwareInterface
         $parameter->required ??= !$isNullable && !$hasDefault;
     }
 
-    protected function isComponent(string $class): bool
+    /**
+     * Points a request body at the request body component its parameter's class names. One left
+     * with neither a ref nor content is reported, since it describes nothing.
+     */
+    protected function refRequestBody(OA\RequestBody $requestBody, string $class, \ReflectionParameter $reflector): void
     {
-        return isset($this->refMap[ltrim($class, '\\')]);
+        $count = $this->countComponents($class, 'requestBodies');
+        if ($count === 1) {
+            $requestBody->ref = $class;
+
+            return;
+        }
+
+        if ($requestBody->ref !== null || $requestBody->content !== null) {
+            return;
+        }
+
+        $subject = $this->typeResolver->describe($reflector);
+        $this->logger?->warning(match (true) {
+            $count > 1 => "{$class} in {$subject} has several request bodies, so the request body is left empty; reference one by name",
+            $this->countComponents($class) === 1 => "No request body for {$class} in {$subject}, so the request body is left empty; its schema belongs in the request body's content",
+            default => "No request body for {$class} in {$subject}, so the request body is left empty",
+        });
+    }
+
+    /**
+     * How many components a class names by its plain key in a bucket. The class references one only
+     * when it is the only one.
+     */
+    protected function countComponents(string $class, string $bucket = 'schemas'): int
+    {
+        return count($this->index?->findAllByKey(new ComponentKey(ltrim($class, '\\')), $bucket) ?? []);
     }
 
     protected function schemaTypeToSchema(SchemaType $schemaType): OA\Schema
@@ -382,11 +413,14 @@ class Types implements PipeInterface, LoggerAwareInterface
             if ($schemaType->isRef()) {
                 // a class is referenced only when it is a component, and never in place of an explicit enum
                 if ($schema->enum === null) {
-                    if ($this->isComponent($schemaType->type)) {
+                    $count = $this->countComponents($schemaType->type);
+                    if ($count === 1) {
                         $schema->ref = $schemaType->type;
                     } else {
                         $subject = $this->subject instanceof \Reflector ? $this->typeResolver->describe($this->subject) : 'a schema';
-                        $this->logger?->warning("No schema for {$schemaType->type} in {$subject}, so its type is left out");
+                        $this->logger?->warning($count === 0
+                            ? "No schema for {$schemaType->type} in {$subject}, so its type is left out"
+                            : "{$schemaType->type} in {$subject} has several schemas, so its type is left out; reference one by name");
                     }
                 }
             } else {
@@ -420,7 +454,7 @@ class Types implements PipeInterface, LoggerAwareInterface
             // a member typed with a class that is no component matches anything, and so does the union
             $unknown = array_filter(
                 $schemaType->oneOf,
-                fn (SchemaType $member): bool => $member->isRef() && is_string($member->type) && !$this->isComponent($member->type),
+                fn (SchemaType $member): bool => $member->isRef() && is_string($member->type) && $this->countComponents($member->type) !== 1,
             );
             if ($unknown === []) {
                 $schema->oneOf = $members;

@@ -15,7 +15,8 @@ use OpenApi\Utils\JsonPointer;
  * Resolves `$ref` values to their corresponding component objects.
  *
  * Handles both canonical JSON Reference paths (`#/components/schemas/Foo`)
- * and FQCN refs (`App\Models\Foo`) that haven't been rewritten yet.
+ * and FQCN refs (`App\Models\Foo`) that haven't been rewritten yet. A FQCN is looked up as a plain
+ * `ComponentKey`, and finds nothing in a bucket where the class has more than one component.
  *
  * Indexes are built lazily per bucket on first access.
  */
@@ -24,6 +25,8 @@ class ComponentIndex
     protected const COMPONENTS_PREFIX = '#/components/';
 
     /** @var array<string, array<string, AttributeInterface>|null> */ protected array $indexes = [];
+
+    /** @var array<string, array<string, list<AttributeInterface>>> bucket → key → components */ protected array $keyed = [];
 
     public function __construct(
         protected Specification $specification,
@@ -101,6 +104,40 @@ class ComponentIndex
     }
 
     /**
+     * The one component a key names in a bucket, or null when it names none or more than one.
+     */
+    public function findByKey(ComponentKey $key, string $bucket): ?AttributeInterface
+    {
+        $found = $this->findAllByKey($key, $bucket);
+
+        return count($found) === 1 ? $found[0] : null;
+    }
+
+    /**
+     * Every component a key names in a bucket, in the order they were contributed.
+     *
+     * @return list<AttributeInterface>
+     */
+    public function findAllByKey(ComponentKey $key, string $bucket): array
+    {
+        return $this->getKeyed($bucket)[(string) $key] ?? [];
+    }
+
+    /**
+     * Whether a key names any component, in any bucket.
+     */
+    public function hasKey(ComponentKey $key): bool
+    {
+        foreach (ComponentName::BUCKETS as $bucket) {
+            if ($this->findAllByKey($key, $bucket) !== []) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * A parameter's identity, `in:name`, which is how OpenAPI tells two parameters apart. Null
      * when either half is unknown.
      *
@@ -124,6 +161,11 @@ class ComponentIndex
     }
 
     /**
+     * A class whose plain key names exactly one named component in a bucket, mapped to it. Where a
+     * class has a component in more than one bucket, the last bucket wins.
+     *
+     * @deprecated since 7.1, removed in 8.0; use `findByKey()`, which says which bucket a use means
+     *
      * @return array<string, string> FQCN → #/components/{type}/{name}
      */
     public function buildRefMap(): array
@@ -131,13 +173,11 @@ class ComponentIndex
         $map = [];
 
         foreach (ComponentName::BUCKETS as $bucket) {
-            $items = $this->specification->{$bucket};
-
-            foreach ($items as $item) {
-                $name = ComponentName::of($item);
-                $fqcn = $item->getClassName();
-                if ($name !== null && $fqcn !== null) {
-                    $map[$fqcn] = JsonPointer::ref('components', $bucket, $name);
+            foreach ($this->getKeyed($bucket) as $components) {
+                $key = $components[0]->getComponentKey();
+                $name = ComponentName::of($components[0]);
+                if (count($components) === 1 && $key?->isPlain() === true && $name !== null) {
+                    $map[$key->class] = JsonPointer::ref('components', $bucket, $name);
                 }
             }
         }
@@ -166,21 +206,44 @@ class ComponentIndex
      */
     protected function buildIndex(string $bucket): array
     {
-        $items = $this->specification->{$bucket};
         $index = [];
 
-        foreach ($items as $item) {
+        foreach ($this->specification->{$bucket} as $item) {
             $name = ComponentName::of($item);
             if ($name !== null) {
                 $index[$name] = $item;
             }
+        }
 
-            $fqcn = $item->getClassName();
-            if ($fqcn !== null) {
-                $index[$fqcn] = $item;
+        foreach ($this->getKeyed($bucket) as $components) {
+            $key = $components[0]->getComponentKey();
+            if (count($components) === 1 && $key?->isPlain() === true) {
+                $index[$key->class] = $components[0];
             }
         }
 
         return $index;
+    }
+
+    /**
+     * @return array<string, list<AttributeInterface>>
+     */
+    protected function getKeyed(string $bucket): array
+    {
+        if (!in_array($bucket, ComponentName::BUCKETS, true)) {
+            return [];
+        }
+
+        if (!array_key_exists($bucket, $this->keyed)) {
+            $this->keyed[$bucket] = [];
+            foreach ($this->specification->{$bucket} as $item) {
+                $key = $item->getComponentKey();
+                if ($key instanceof ComponentKey) {
+                    $this->keyed[$bucket][(string) $key][] = $item;
+                }
+            }
+        }
+
+        return $this->keyed[$bucket];
     }
 }

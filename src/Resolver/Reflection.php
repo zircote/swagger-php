@@ -7,8 +7,8 @@
 namespace OpenApi\Resolver;
 
 use OpenApi\Assembler;
-use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Contracts\ResolverInterface;
+use OpenApi\Specification\ComponentKey;
 
 /**
  * Resolves missing components by collecting the referenced class with the assembler in use.
@@ -29,6 +29,6 @@ class Reflection implements ResolverInterface
 
         $assembler->collect(new \ReflectionClass($fqcn));
 
-        return $assembler->getSpecification()->buildComponentIndex()->find($fqcn) instanceof AttributeInterface;
+        return $assembler->getSpecification()->buildComponentIndex()->hasKey(new ComponentKey($fqcn));
     }
 }

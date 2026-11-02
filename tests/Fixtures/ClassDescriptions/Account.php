@@ -1,0 +1,17 @@
+<?php declare(strict_types=1);
+
+/**
+ * @license Apache 2.0
+ */
+
+namespace OpenApi\Tests\Fixtures\ClassDescriptions;
+
+use OpenApi\Spec as OA;
+
+#[OA\Schema]
+#[OA\Response(component: 'AccountResponse', description: 'An account')]
+class Account
+{
+    #[OA\Property]
+    public int $id;
+}

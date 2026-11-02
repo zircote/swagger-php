@@ -7,6 +7,7 @@
 namespace OpenApi\Contracts;
 
 use OpenApi\Spec as OA;
+use OpenApi\Specification\ComponentKey;
 use OpenApi\Utils\SourceLocation;
 
 /**
@@ -79,6 +80,16 @@ interface AttributeInterface
     public function getClassName(): ?string;
 
     public function getShortClassName(): ?string;
+
+    /**
+     * The key a use looks this component up by, or null when no use can name it.
+     *
+     * Without one set, a component declared on a class is keyed by the class, plainly. Any other
+     * component has no key and is reached by its name.
+     */
+    public function getComponentKey(): ?ComponentKey;
+
+    public function setComponentKey(?ComponentKey $componentKey): static;
 
     /**
      * Extra data for whoever needs to carry it on an attribute, keyed by whoever writes it.

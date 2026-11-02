@@ -6,9 +6,9 @@
 
 namespace OpenApi\Augmenter;
 
-use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Specification\ComponentKey;
 use OpenApi\Type\SchemaType;
 use OpenApi\Type\TypeResolver;
 use OpenApi\Utils\PipeInterface;
@@ -55,7 +55,7 @@ class ImpliedSchemas implements PipeInterface
 
         $index = $payload->buildComponentIndex();
         foreach (array_keys($this->enums) as $enum) {
-            if ($index->find($enum) instanceof AttributeInterface) {
+            if ($index->hasKey(new ComponentKey($enum))) {
                 continue;
             }
 

@@ -2308,7 +2308,14 @@ Usage:
 #[OA\Property(schema: new OA\Schema\Ref(ref: Pet::class, description: 'Override desc'))]
 ```
 
-If used on a `$ref` directly, only the ref value is used.
+If used on a `$ref` directly, only the ref value and the qualifiers are used.
+
+A ref given as a class can carry qualifiers. A class can be described more than once, such as
+once per serialization group, and the qualifiers say which description the ref means. They
+have to match the qualifiers that description was registered with:
+```php
+#[OA\Property(schema: new OA\Schema\Ref(ref: Author::class, qualifiers: ['groups' => ['light']]))]
+```
 
 #### Allowed in
 ---
@@ -2325,6 +2332,8 @@ If used on a `$ref` directly, only the ref value is used.
   <dd><p>No details available.</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>qualifiers</strong> : <span style="font-family: monospace;">array&lt;string, scalar|list&lt;scalar&gt;&gt;|null</span></dt>
+  <dd><p>Which description of the class to reference, when it has more than one</p></dd>
 </dl>
 
 ### [Security\Requirement](https://github.com/zircote/swagger-php/tree/master/src/Spec/Security/Requirement.php)

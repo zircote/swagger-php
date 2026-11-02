@@ -10,6 +10,7 @@ use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Specification\ComponentIndex;
+use OpenApi\Specification\ComponentKey;
 use OpenApi\Specification\ComponentName;
 use OpenApi\Utils\JsonPointer;
 use OpenApi\Utils\PipeInterface;
@@ -19,9 +20,10 @@ use Psr\Log\LoggerAwareTrait;
 /**
  * Resolves FQCN-based $ref values to JSON Reference paths.
  *
- * Builds a map of class names to their component paths and rewrites
- * any $ref that looks like a FQCN into the proper #/components/... path.
- * A ref that is neither a known class nor a pointer to an existing component is reported.
+ * A $ref that looks like a FQCN is looked up by its `ComponentKey`, in the bucket the ref points
+ * into, and rewritten into the proper #/components/... path. A `Schema\Ref` adds its qualifiers
+ * to the key. A ref that is neither a known class nor a pointer to an existing component is
+ * reported, and so is one whose key names more than one component.
  *
  * @implements PipeInterface<Specification>
  */
@@ -39,10 +41,10 @@ class Refs implements PipeInterface, LoggerAwareInterface
         }
 
         $index = $payload->buildComponentIndex();
-        $refMap = $index->buildRefMap();
 
+        // keys first: a qualified Schema\Ref loses its qualifiers when collapsed into its string
+        $this->resolveFQCNRefs($payload, $index);
         $this->resolveRefRefs($payload);
-        $this->resolveFQCNRefs($payload, $refMap, $index);
 
         // deduplicate once every ref carries its final value: a FQCN and the component
         // pointer added by Augmenter\Inheritance name the same schema but differ as strings
@@ -53,11 +55,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
             $this->dedupAllOfRefs($schema);
         }
 
-        if ($refMap === []) {
-            return null;
-        }
-
-        $this->resolveDiscriminatorMappings($payload, $refMap);
+        $this->resolveDiscriminatorMappings($payload, $index);
         $this->resolveAllOfPropertyRefs($payload);
 
         return null;
@@ -77,29 +75,52 @@ class Refs implements PipeInterface, LoggerAwareInterface
         });
     }
 
-    /**
-     * @param array<string,string> $refMap
-     */
-    protected function resolveFQCNRefs(Specification $specification, array $refMap, ComponentIndex $index): void
+    protected function resolveFQCNRefs(Specification $specification, ComponentIndex $index): void
     {
         $unresolved = [];
         $dangling = [];
+        $ambiguous = [];
 
-        $specification->getWalker()->eachRef(function (AttributeInterface $attribute) use ($refMap, $index, &$unresolved, &$dangling): void {
-            if (!property_exists($attribute, 'ref') || !is_string($attribute->ref)) {
+        $specification->getWalker()->eachRef(function (AttributeInterface $attribute) use ($index, &$unresolved, &$dangling, &$ambiguous): void {
+            if (!property_exists($attribute, 'ref')) {
                 return;
             }
 
-            if (str_starts_with($attribute->ref, '#/')) {
-                if ($this->isDangling($attribute->ref, $index)) {
-                    $dangling[$attribute->ref] = true;
+            // a Schema\Ref carries the ref and its qualifiers, whether it is held in `ref` or is the schema itself
+            $holder = $attribute->ref instanceof OA\Schema\Ref ? $attribute->ref : $attribute;
+            $ref = $holder->ref;
+            if (!is_string($ref)) {
+                return;
+            }
+
+            if (str_starts_with($ref, '#/')) {
+                if ($this->isDangling($ref, $index)) {
+                    $dangling[$ref] = true;
                 }
-            } elseif (isset($refMap[$attribute->ref])) {
-                $attribute->ref = $refMap[$attribute->ref];
+
+                return;
+            }
+
+            $key = ($holder instanceof OA\Schema\Ref ? $holder->getRefKey() : null) ?? new ComponentKey($ref);
+            $bucket = $this->bucketFor($attribute);
+
+            $pointer = $this->pointerForKey($key, $bucket, $index);
+            if ($pointer !== null) {
+                $attribute->ref = $pointer;
+            } elseif (count($index->findAllByKey($key, $bucket)) > 1) {
+                $ambiguous[(string) $key] = [$key, $bucket];
             } else {
-                $unresolved[$attribute->ref] = true;
+                $unresolved[(string) $key] = true;
             }
         });
+
+        foreach ($ambiguous as [$key, $bucket]) {
+            $names = array_map(
+                fn (AttributeInterface $component): string => ComponentName::of($component) ?? '(unnamed)',
+                $index->findAllByKey($key, $bucket),
+            );
+            $this->logger?->warning("Ref: ambiguous reference '{$key}' — it names several {$bucket}: " . implode(', ', $names) . '; reference one by name');
+        }
 
         foreach (array_keys($unresolved) as $ref) {
             $pointer = $this->pointerFor((string) $ref, $index);
@@ -129,6 +150,35 @@ class Refs implements PipeInterface, LoggerAwareInterface
     }
 
     /**
+     * The bucket a ref on this attribute points into. A media type shortcut's ref is its schema's.
+     */
+    protected function bucketFor(AttributeInterface $attribute): string
+    {
+        return match (true) {
+            $attribute instanceof OA\Response => 'responses',
+            $attribute instanceof OA\Parameter => 'parameters',
+            $attribute instanceof OA\RequestBody => 'requestBodies',
+            $attribute instanceof OA\Header => 'headers',
+            $attribute instanceof OA\Link => 'links',
+            $attribute instanceof OA\Example => 'examples',
+            $attribute instanceof OA\PathItem => 'pathItems',
+            $attribute instanceof OA\Security\Scheme => 'securitySchemes',
+            default => 'schemas',
+        };
+    }
+
+    /**
+     * The pointer to the one named component a key names in a bucket, if there is one.
+     */
+    protected function pointerForKey(ComponentKey $key, string $bucket, ComponentIndex $index): ?string
+    {
+        $component = $index->findByKey($key, $bucket);
+        $name = $component instanceof AttributeInterface ? ComponentName::of($component) : null;
+
+        return $name !== null ? JsonPointer::ref('components', $bucket, $name) : null;
+    }
+
+    /**
      * The pointer to the component a bare name matches, if there is one.
      */
     protected function pointerFor(string $name, ComponentIndex $index): ?string
@@ -143,12 +193,9 @@ class Refs implements PipeInterface, LoggerAwareInterface
         return null;
     }
 
-    /**
-     * @param array<string, string> $refMap
-     */
-    protected function resolveDiscriminatorMappings(Specification $specification, array $refMap): void
+    protected function resolveDiscriminatorMappings(Specification $specification, ComponentIndex $index): void
     {
-        $specification->getWalker()->eachSchema(function (OA\Schema $schema) use ($refMap): void {
+        $specification->getWalker()->eachSchema(function (OA\Schema $schema) use ($index): void {
             if (!$schema->discriminator instanceof OA\Discriminator || $schema->discriminator->mapping === null) {
                 return;
             }
@@ -157,8 +204,9 @@ class Refs implements PipeInterface, LoggerAwareInterface
                 if (str_starts_with($type, '#/')) {
                     continue;
                 }
-                if (isset($refMap[$type])) {
-                    $schema->discriminator->mapping[$value] = $refMap[$type];
+                $pointer = $this->pointerForKey(new ComponentKey($type), 'schemas', $index);
+                if ($pointer !== null) {
+                    $schema->discriminator->mapping[$value] = $pointer;
                 }
             }
         });

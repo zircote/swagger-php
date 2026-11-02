@@ -7,6 +7,7 @@
 namespace OpenApi\Spec;
 
 use OpenApi\Contracts\AttributeInterface;
+use OpenApi\Specification\ComponentKey;
 use OpenApi\Utils\SourceLocation;
 
 abstract class AbstractAttribute implements AttributeInterface
@@ -21,6 +22,8 @@ abstract class AbstractAttribute implements AttributeInterface
     protected array $meta = [];
 
     protected ?Fan $fan = null;
+
+    protected ?ComponentKey $componentKey = null;
 
     /**
      * @param array<string,mixed>|null $x
@@ -90,6 +93,22 @@ abstract class AbstractAttribute implements AttributeInterface
     public function getShortClassName(): ?string
     {
         return $this->getClassReflector()?->getShortName();
+    }
+
+    public function getComponentKey(): ?ComponentKey
+    {
+        if ($this->componentKey instanceof ComponentKey) {
+            return $this->componentKey;
+        }
+
+        return $this->reflector instanceof \ReflectionClass ? new ComponentKey($this->reflector->getName()) : null;
+    }
+
+    public function setComponentKey(?ComponentKey $componentKey): static
+    {
+        $this->componentKey = $componentKey;
+
+        return $this;
     }
 
     public function setReflector(?\Reflector $reflector): static
