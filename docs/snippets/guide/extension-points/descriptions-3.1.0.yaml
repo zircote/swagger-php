@@ -1,0 +1,46 @@
+openapi: 3.1.0
+info:
+  title: Articles
+  version: 1.0.0
+paths:
+  /articles:
+    get:
+      operationId: cc5d455029f62da08111193b6f35384f
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+components:
+  schemas:
+    Article:
+      type: object
+      properties:
+        id:
+          type: integer
+        author:
+          $ref: '#/components/schemas/Author'
+        reviewer:
+          $ref: '#/components/schemas/AuthorSummary'
+      required:
+        - id
+        - author
+        - reviewer
+    Author:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+    AuthorSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string

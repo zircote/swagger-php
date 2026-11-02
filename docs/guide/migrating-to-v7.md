@@ -82,9 +82,26 @@ Everything below still works in v7 and is removed in 8.0.
 | `Result::openApi()` | `Result::specification()` |
 | `Serializer` | No replacement yet |
 | Raw security arrays on spec attributes, `['bearerAuth' => []]` | `Security\Requirement`. `SecurityToRequirementRector` rewrites them. |
+| `ComponentIndex::buildRefMap()` | `ComponentIndex::findByKey()`, which takes the bucket the use means |
 
 The [Classic Attribute](/reference/attributes), [Docblock Annotation](/reference/annotations) and
 [Processor](/reference/processors) references mark each deprecated class.
+
+## Changed output in 7.1
+
+A class used to stand for whichever of its components was indexed last, in any bucket, without a
+warning. Three cases change:
+
+- **A class with more than one component in a bucket.** A `$ref` given as the class, or a
+  property typed with it, now resolves to none of them and logs a warning.
+  [Describing a class more than once](/guide/extension-points#describing-a-class-more-than-once)
+  has the ways to pick one.
+- **A class with a schema and a component in another bucket.** A property typed with the class
+  references the schema. It used to reference the other component, a response for example,
+  which is not valid in a schema.
+- **A request body declared on a parameter whose class has no request body component.** It is
+  left empty and logs a warning. It used to reference the class's schema, which is not valid for
+  a request body.
 
 ## Preparing for 8.0
 

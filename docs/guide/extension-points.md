@@ -161,6 +161,43 @@ arguments, so other settings need a subclass.
 The namer names components in spec and hybrid mode. Classic mode does not use it.
 :::
 
+## Describing a class more than once
+
+A class name stands for one component. A `$ref` given as the class, and a property typed with
+it, point at the component declared on that class. A producer can describe one class more than
+once, for example once per serialization group. Each description is a component with a name of
+its own, and a key tells them apart.
+
+A key is the class plus qualifiers. A component declared on a class has the plain key, the class
+alone, unless `setComponentKey()` gives it another. Each further description gets a
+`ComponentKey` with qualifiers, and a `Schema\Ref` with the same qualifiers references it:
+
+<<< @/snippets/guide/extension-points/descriptions.php
+
+That produces:
+
+<<< @/snippets/guide/extension-points/descriptions-3.1.0.yaml
+
+`author` is typed with the class, so it references the plain key, `Author`. `reviewer` asks for
+the `summary` group and gets `AuthorSummary`.
+
+Qualifiers map a name to a scalar or a list of scalars, one level deep. Their order does not
+matter, and a list is compared as a set, so `['groups' => ['summary', 'admin']]` and
+`['groups' => ['admin', 'summary']]` are one key. A value whose order matters, such as type
+arguments, goes in as one string.
+
+A key names one component per bucket. Where two components share a key, a `$ref` given as that
+key resolves to neither and logs a warning naming both. A property typed with the class is left
+without a type, with a warning. Give all but one of them qualifiers, or reference the one you
+mean by its name, `#/components/schemas/AuthorSummary`.
+
+In an augmenter, `ComponentIndex::findByKey()` returns the component a key names in a bucket,
+and `findAllByKey()` returns every one.
+
+::: info Mode difference
+Keys are read in spec and hybrid mode. Classic mode does not use them.
+:::
+
 ## Mergers
 
 Two attributes can claim one key. Two operations on the same path and method, or two schemas

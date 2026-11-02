@@ -746,10 +746,12 @@ oneOf:
 ```
 
 The FQCN is resolved to the appropriate `#/components/schemas/Pet` JSON reference at augmentation time.
+A class described by more than one schema resolves to none of them, with a warning, unless the
+reference says which. See [Describing a class more than once](/guide/extension-points#describing-a-class-more-than-once).
 
 ### Schema\Ref
 
-`OA\Schema\Ref` is a restricted `Schema` subclass that only accepts `ref`, `title`, and `description`. It can be used in two ways:
+`OA\Schema\Ref` is a restricted `Schema` subclass that only accepts `ref`, `title`, `description` and `qualifiers`. It can be used in two ways:
 
 **As a schema**: a reference-only schema with optional metadata overrides (OpenAPI 3.1+):
 
@@ -765,3 +767,10 @@ public Pet $pet;
 ```
 
 When used on `ref` directly, the `Refs` augmenter unwraps it to the plain string value before further resolution.
+
+Either way, `qualifiers` picks one description of a class that is described more than once:
+
+```php
+#[OA\Schema\Ref(ref: Author::class, qualifiers: ['groups' => ['summary']])]
+public Author $reviewer;
+```
