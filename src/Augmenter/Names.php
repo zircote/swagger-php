@@ -14,14 +14,14 @@ use OpenApi\Specification\ComponentName;
 use OpenApi\Utils\PipeInterface;
 
 /**
- * Infers component keys from PHP reflectors when not explicitly set.
+ * Infers component names from PHP reflectors when not explicitly set.
  *
- * The key is the name the component namer gives, or none, which leaves the component inline.
+ * The name is the one the component namer gives, or none, which leaves the component inline.
  * `ComponentNamer\ShortName`, the default, names a component declared on a class after the class,
  * and a member of an `#[OA\Components]` holder after the member.
  *
- * A parameter is keyed differently: its `name` is its identity in OpenAPI, so a parameter
- * component is keyed by it wherever it was declared, holder or not, and falls back to the class name only
+ * A parameter is named differently: its `name` is its identity in OpenAPI, so a parameter
+ * component is named after it wherever it was declared, holder or not, and falls back to the class name only
  * when it has no name either.
  *
  * @implements PipeInterface<Specification>
@@ -29,8 +29,8 @@ use OpenApi\Utils\PipeInterface;
 class Names implements PipeInterface
 {
     /**
-     * A security scheme is only ever declared inside `Components`, where the key is the whole
-     * point, so nothing is inferred for it. A path item on a class is path-bound unless keyed
+     * A security scheme is only ever declared inside `Components`, where the name is the whole
+     * point, so nothing is inferred for it. A path item on a class is path-bound unless named
      * by hand, and a media type is only ever a component by hand, so neither is named after
      * the class either.
      */

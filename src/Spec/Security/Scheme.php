@@ -74,7 +74,7 @@ class Scheme extends OA\AbstractAttribute
         parent::__construct(x: $x, attachables: $attachables, fan: $fan);
         $this->component = $component;
         if ($component === null && $this->securityScheme !== null) {
-            trigger_deprecation('zircote/swagger-php', '6.12', '`securityScheme` is deprecated as the component key of %s and will be removed in 8.0; use `component`', static::class);
+            trigger_deprecation('zircote/swagger-php', '6.12', '`securityScheme` is deprecated as the component name of %s and will be removed in 8.0; use `component`', static::class);
             $this->component = $this->securityScheme;
         }
         $this->type = $type instanceof \BackedEnum ? $type->value : $type;

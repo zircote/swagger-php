@@ -92,8 +92,8 @@ In 8.0 classic is removed, and so is `setMode()`. Spec attributes move from `Ope
 `OpenApi\Attributes`. For code already written against `OpenApi\Spec`, that move is one `use`
 line per file.
 
-The classic component keys on spec attributes (`schema:`, `parameter:`, `request:`,
-`securityScheme:`) are removed with it. [The component keys](/guide/migrating-to-spec#the-component-keys)
+The classic component name fields on spec attributes (`schema:`, `parameter:`, `request:`,
+`securityScheme:`) are removed with it. [The component names](/guide/migrating-to-spec#the-component-names)
 has the details.
 
 ## Removed deprecated elements

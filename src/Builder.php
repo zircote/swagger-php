@@ -136,10 +136,10 @@ class Builder
     }
 
     /**
-     * Name components that have no explicit key.
+     * Name components that are not named explicitly.
      *
      * Every default augmenter that names a component asks this one namer, so a reference to a
-     * component and the component's own key cannot disagree. It is handed to them when the build
+     * component and the component's own name cannot disagree. It is handed to them when the build
      * runs, and replaces any namer set on those augmenters directly.
      */
     public function setComponentNamer(ComponentNamerInterface $componentNamer): static
@@ -384,7 +384,7 @@ class Builder
             $hook($specification);
         }
 
-        // every producer has run and nothing has read a component key yet; the resolver's
+        // every producer has run and nothing has read a component name yet; the resolver's
         // index is the first reader
         Specification\ComponentName::normalise($specification, deprecate: true);
 

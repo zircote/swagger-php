@@ -87,7 +87,7 @@ final class ComponentIndexTest extends TestCase
         $this->assertNotInstanceOf(OA\Schema::class, $index->findSchema('notFound'));
     }
 
-    public function testParameterFallsBackToNameWhenUnkeyed(): void
+    public function testParameterIsNamedByItsNameWithoutAComponentName(): void
     {
         $index = (new Specification())
             ->add(new OA\Parameter(name: 'page', in: 'query'))

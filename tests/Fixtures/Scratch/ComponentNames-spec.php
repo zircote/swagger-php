@@ -8,9 +8,9 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 
 use OpenApi\Spec as OA;
 
-// None of these carry a component key. Declared on a class, the class is the key — so each
+// None of these carry a component name. Declared on a class, the class names it — so each
 // compiles under its short name and a `$ref` given as the class resolves to it. The classic
-// pair spells the same keys out by hand, and both produce the one expected document.
+// pair spells the same names out by hand, and both produce the one expected document.
 
 #[OA\Components]
 #[OA\Response(description: 'Something went wrong')]

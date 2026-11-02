@@ -177,7 +177,7 @@ final class ReusableComponentsTest extends TestCase
     {
         $builder = (new Builder())->setMode(Mode::SPEC)->setVersion($version)->setLogger($this->trackingLogger());
         foreach ($files as $file) {
-            $path = self::fixture("ComponentKey/{$file}.php");
+            $path = self::fixture("ComponentName/{$file}.php");
             require_once $path; // fixtures are excluded from the classmap, as ScratchTest's are
             $builder->addSource($path);
         }

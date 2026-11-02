@@ -127,9 +127,9 @@ reference](/reference/augmenters) lists the built-in pipeline and what each phas
 
 ## Component names
 
-A component declared on a class without a key is, by default, named after the class, by its
+A component declared on a class without a name is, by default, named after the class, by its
 short name. Two classes that share a short name, such as `App\Dto\User\CreateDTO` and
-`App\Dto\Order\CreateDTO`, then claim one key. The document keeps one of them and logs a
+`App\Dto\Order\CreateDTO`, then claim one name. The document keeps one of them and logs a
 warning.
 
 The name comes from a component namer, set with `Builder::setComponentNamer()`.
@@ -144,12 +144,12 @@ $builder->setComponentNamer(new QualifiedName(strip: 'App\Dto\\'));
 
 The two classes above become `User.CreateDTO` and `Order.CreateDTO`. `strip` removes a
 namespace prefix first, and `separator` joins what is left. It defaults to `.`, and an empty
-string runs the segments together as `UserCreateDTO`. A component with an explicit key keeps
+string runs the segments together as `UserCreateDTO`. A component with an explicit name keeps
 it.
 
 A namer of your own implements `OpenApi\Contracts\ComponentNamerInterface`. Its `name()`
 receives the component and returns its name, or `null` to leave the component inline. It can
-be asked about one component more than once, before its key is set and after, so the answer
+be asked about one component more than once, before its name is set and after, so the answer
 depends on the component alone. Extending `ShortName` and overriding `className()` changes how
 a class is named and keeps the names of an `#[OA\Components]` holder's members.
 

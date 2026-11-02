@@ -62,7 +62,7 @@ final class ComponentNameTest extends TestCase
 
         $this->assertSame($attribute->{$field}, $attribute->component);
         $this->assertCount(1, $this->deprecations);
-        $this->assertStringContainsString("`{$field}` is deprecated as the component key", $this->deprecations[0]);
+        $this->assertStringContainsString("`{$field}` is deprecated as the component name", $this->deprecations[0]);
     }
 
     public function testComponentWinsOverTheSpellingAndIsNotReported(): void
@@ -118,7 +118,7 @@ final class ComponentNameTest extends TestCase
 
         $this->assertSame($attribute->{$field}, $attribute->component);
         $this->assertCount(1, $this->deprecations);
-        $this->assertStringContainsString("`{$field}` is deprecated as the component key", $this->deprecations[0]);
+        $this->assertStringContainsString("`{$field}` is deprecated as the component name", $this->deprecations[0]);
     }
 
     /**
@@ -203,24 +203,24 @@ final class ComponentNameTest extends TestCase
      */
     public static function rootness(): iterable
     {
-        yield 'header, unkeyed' => [new OA\Header(description: 'inline'), false];
-        yield 'header, keyed' => [new OA\Header(component: 'RateLimit'), true];
+        yield 'header, unnamed' => [new OA\Header(description: 'inline'), false];
+        yield 'header, named' => [new OA\Header(component: 'RateLimit'), true];
         yield 'header, nesting key only' => [new OA\Header(header: 'X-Rate-Limit'), false];
-        yield 'example, keyed' => [new OA\Example(component: 'Minimal'), true];
+        yield 'example, named' => [new OA\Example(component: 'Minimal'), true];
         yield 'example, nesting key only' => [new OA\Example(example: 'minimal'), false];
-        yield 'media type, keyed' => [new OA\MediaType(component: 'Patch'), true];
+        yield 'media type, named' => [new OA\MediaType(component: 'Patch'), true];
         yield 'media type, inline' => [new OA\MediaType(mediaType: 'application/json'), false];
-        yield 'response, keyed' => [new OA\Response(component: 'NotFound'), true];
+        yield 'response, named' => [new OA\Response(component: 'NotFound'), true];
         yield 'response, keyed with ref' => [new OA\Response(ref: '#/components/responses/NotFound', component: 'Alias'), false];
         yield 'response, code with ref' => [new OA\Response(response: 404, ref: '#/components/responses/NotFound'), false];
         yield 'response, historic spelling' => [new OA\Response(response: 'NotFound'), true];
         yield 'link, historic spelling' => [new OA\Link(link: 'Self'), true];
         yield 'link, keyed with ref' => [new OA\Link(ref: '#/components/links/Other', component: 'Self'), false];
-        yield 'request body, keyed' => [new OA\RequestBody(component: 'Body'), true];
+        yield 'request body, named' => [new OA\RequestBody(component: 'Body'), true];
         yield 'request body, keyed with ref' => [new OA\RequestBody(ref: '#/components/requestBodies/Body', component: 'Alias'), true];
-        yield 'parameter, keyed' => [new OA\Parameter(name: 'page', component: 'page'), true];
+        yield 'parameter, named' => [new OA\Parameter(name: 'page', component: 'page'), true];
         yield 'parameter, name only' => [new OA\Parameter(name: 'page'), false];
-        yield 'path item, keyed' => [new OA\PathItem(component: 'Paged'), true];
+        yield 'path item, named' => [new OA\PathItem(component: 'Paged'), true];
         yield 'path item, path-bound' => [new OA\PathItem(prefix: '/api'), true];
     }
 

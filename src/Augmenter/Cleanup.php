@@ -27,7 +27,7 @@ use Psr\Log\LoggerAwareTrait;
  * makes it a candidate for removal again.
  *
  * Removal is reported once per run, as a notice with the count and the switch that turns it
- * off; the components themselves are listed at debug level. A response component keyed by a
+ * off; the components themselves are listed at debug level. A response component named by a
  * status code is also reported on its own, as a warning, because it is a response that was
  * meant to nest into an operation.
  *
@@ -114,7 +114,7 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
     }
 
     /**
-     * A component with no key is left alone: nothing can reference it, so "unreferenced"
+     * A component with no name is left alone: nothing can reference it, so "unreferenced"
      * says nothing about whether it is wanted. The compiler reports it instead. A component
      * marked to be kept is left alone too.
      *
@@ -162,7 +162,7 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
     /**
      * `Response::$response` is the status code when the response is nested in an operation
      * and the component name when it is not, and `isRoot()` cannot tell the two apart — it
-     * is true whenever the key is set. So a response that fails to nest becomes a component
+     * is true whenever the field is set. So a response that fails to nest becomes a component
      * named after its status code, which nothing references and this then removes.
      *
      * Removing it is right, and silence is not: the response the author wrote disappears

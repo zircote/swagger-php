@@ -36,7 +36,7 @@ use OpenApi\Undefined;
  *   new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))
  *
  * Only a class supplies a name. On a method or a parameter, pass `schema:` explicitly;
- * without it the schema has no component key and is reported as missing one.
+ * without it the schema has no component name and is reported as missing one.
  *
  * @phpstan-type EnumValue string|int|float|bool|\UnitEnum
  * @phpstan-type TypeInput string|Type|list<string|Type>
@@ -226,7 +226,7 @@ class Schema extends AbstractAttribute
         $this->properties = self::propertyList($properties);
         $this->component = $component;
         if ($component === null && $this->schema !== null) {
-            trigger_deprecation('zircote/swagger-php', '6.12', '`schema` is deprecated as the component key of %s and will be removed in 8.0; use `component`', static::class);
+            trigger_deprecation('zircote/swagger-php', '6.12', '`schema` is deprecated as the component name of %s and will be removed in 8.0; use `component`', static::class);
             $this->component = $this->schema;
         }
     }

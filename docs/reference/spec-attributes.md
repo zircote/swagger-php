@@ -40,13 +40,13 @@ Place on a class to declare standalone components that go into the components se
 of the OpenAPI document. The Components attribute itself is not emitted — its children
 are promoted to their respective Specification buckets.
 
-Any attribute given a `component:` key is a root on its own and needs no wrapper. The
-wrapper remains for the historic spellings — a Header or Example keyed by `header`/`example`
+Any attribute given a `component:` name is a root on its own and needs no wrapper. The
+wrapper remains for the historic spellings — a Header or Example named by `header`/`example`
 — and for grouping several components on one class.
 
 On a class it also makes a holder: each member declares a component of its own, and one
-without a key is named after the member, the way a class names its own. A component declared
-on a member needs the holder; without it, a keyed one is left out with a warning.
+without a name is named after the member, the way a class names its own. A component declared
+on a member needs the holder; without it, a named one is left out with a warning.
 
   #[Components]
   class SharedComponents {
@@ -1310,7 +1310,7 @@ Inline on an operation:
       new OA\Parameter\Query(name: 'status', schema: new OA\Schema(type: 'string', enum: ['active', 'sold'])),
   ])]
 
-Or as a reusable component (set `component` for the component key):
+Or as a reusable component (set `component` for the component name):
 
   #[OA\Parameter\Path(component: 'petId', name: 'id', schema: new OA\Schema(type: 'integer'))]
 
@@ -1867,7 +1867,7 @@ Inline — used within parameters, responses, or other schemas:
   new OA\Schema(type: 'array', items: new OA\Schema(ref: Pet::class))
 
 Only a class supplies a name. On a method or a parameter, pass `schema:` explicitly;
-without it the schema has no component key and is reported as missing one.
+without it the schema has no component name and is reported as missing one.
 
 #### Allowed in
 ---
