@@ -148,7 +148,7 @@ class ComponentIndex
      */
     public function parameterKey(OA\Parameter $parameter): ?string
     {
-        $ref = $parameter->ref instanceof OA\Schema\Ref ? $parameter->ref->ref : $parameter->ref;
+        $ref = $parameter->getRefValue();
         $target = is_string($ref) ? $this->findParameter($ref) : null;
 
         $reflector = $parameter->getReflector();

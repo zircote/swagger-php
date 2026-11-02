@@ -6,6 +6,8 @@
 
 namespace OpenApi\Spec;
 
+use OpenApi\Contracts\RefInterface;
+use OpenApi\Spec\Concerns\RefTrait;
 use OpenApi\Undefined;
 
 /**
@@ -14,8 +16,10 @@ use OpenApi\Undefined;
  * @see [Link Object](https://spec.openapis.org/oas/v3.1.1.html#link-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class Link extends AbstractAttribute
+class Link extends AbstractAttribute implements RefInterface
 {
+    use RefTrait;
+
     /** The name this attribute is filed under in `components`; null for an inline one. */
     public ?string $component = null;
 

@@ -6,10 +6,9 @@
 
 namespace OpenApi;
 
-use OpenApi\Contracts\AttributeInterface;
+use OpenApi\Contracts\RefInterface;
 use OpenApi\Contracts\ResolverInterface;
 use OpenApi\Resolver\Reflection;
-use OpenApi\Spec as OA;
 use OpenApi\Specification\ComponentIndex;
 use OpenApi\Specification\ComponentKey;
 use OpenApi\Utils\TypedList;
@@ -145,16 +144,9 @@ class Resolver implements LoggerAwareInterface
      */
     protected function collectFromRefs(Specification $specification, ComponentIndex $index, array &$unresolved): void
     {
-        $specification->getWalker()->eachRef(function (AttributeInterface $attribute) use ($index, &$unresolved): void {
-            if (!property_exists($attribute, 'ref') || $attribute->ref === null) {
-                return;
-            }
-
-            $ref = $attribute->ref instanceof OA\Schema\Ref
-                ? $attribute->ref->ref
-                : $attribute->ref;
-
-            if (str_starts_with($ref, '#/')) {
+        $specification->getWalker()->eachRef(function (RefInterface $attribute) use ($index, &$unresolved): void {
+            $ref = $attribute->getRefValue();
+            if ($ref === null || str_starts_with($ref, '#/')) {
                 return;
             }
 

@@ -6,8 +6,10 @@
 
 namespace OpenApi\Spec\Security;
 
+use OpenApi\Contracts\RefInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Spec\Components;
+use OpenApi\Spec\Concerns\RefTrait;
 use OpenApi\Spec\Header;
 use OpenApi\Spec\Parameter;
 
@@ -30,8 +32,10 @@ use OpenApi\Spec\Parameter;
  * @see [Security Scheme Object](https://spec.openapis.org/oas/v3.1.1.html#security-scheme-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
-class Scheme extends OA\AbstractAttribute
+class Scheme extends OA\AbstractAttribute implements RefInterface
 {
+    use RefTrait;
+
     /** The name this attribute is filed under in `components`; null for an inline one. */
     public ?string $component = null;
 

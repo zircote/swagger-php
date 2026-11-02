@@ -7,6 +7,7 @@
 namespace OpenApi\Specification;
 
 use OpenApi\Contracts\AttributeInterface;
+use OpenApi\Contracts\RefInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Utils\JsonPointer;
@@ -32,14 +33,14 @@ class Walker
     }
 
     /**
-     * Walk every ref-bearing attribute in the specification.
+     * Walk every attribute in the specification that has a ref.
      *
-     * @param callable(AttributeInterface): void $visitor
+     * @param callable(RefInterface): void $visitor
      */
     public function eachRef(callable $visitor): void
     {
         $this->visit(AttributeInterface::class, function (AttributeInterface $attribute) use ($visitor): void {
-            if (property_exists($attribute, 'ref') && $attribute->ref !== null) {
+            if ($attribute instanceof RefInterface && $attribute->getRefValue() !== null) {
                 $visitor($attribute);
             }
 

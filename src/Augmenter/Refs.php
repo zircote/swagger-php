@@ -7,6 +7,7 @@
 namespace OpenApi\Augmenter;
 
 use OpenApi\Contracts\AttributeInterface;
+use OpenApi\Contracts\RefInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Specification\ComponentIndex;
@@ -68,10 +69,8 @@ class Refs implements PipeInterface, LoggerAwareInterface
 
     protected function resolveRefRefs(Specification $specification): void
     {
-        $specification->getWalker()->eachRef(function (AttributeInterface $attribute): void {
-            if (property_exists($attribute, 'ref') && $attribute->ref !== null && $attribute->ref instanceof OA\Schema\Ref) {
-                $attribute->ref = $attribute->ref->ref;
-            }
+        $specification->getWalker()->eachRef(function (RefInterface $attribute): void {
+            $attribute->setRef($attribute->getRefValue());
         });
     }
 
@@ -81,14 +80,8 @@ class Refs implements PipeInterface, LoggerAwareInterface
         $dangling = [];
         $ambiguous = [];
 
-        $specification->getWalker()->eachRef(function (AttributeInterface $attribute) use ($index, &$unresolved, &$dangling, &$ambiguous): void {
-            if (!property_exists($attribute, 'ref')) {
-                return;
-            }
-
-            // a Schema\Ref carries the ref and its qualifiers, whether it is held in `ref` or is the schema itself
-            $holder = $attribute->ref instanceof OA\Schema\Ref ? $attribute->ref : $attribute;
-            $ref = $holder->ref;
+        $specification->getWalker()->eachRef(function (RefInterface $attribute) use ($index, &$unresolved, &$dangling, &$ambiguous): void {
+            $ref = $attribute->getRefValue();
             if (!is_string($ref)) {
                 return;
             }
@@ -101,12 +94,12 @@ class Refs implements PipeInterface, LoggerAwareInterface
                 return;
             }
 
-            $key = ($holder instanceof OA\Schema\Ref ? $holder->getRefKey() : null) ?? new ComponentKey($ref);
+            $key = $attribute->getRefKey() ?? new ComponentKey($ref);
             $bucket = $this->bucketFor($attribute);
 
             $pointer = $this->pointerForKey($key, $bucket, $index);
             if ($pointer !== null) {
-                $attribute->ref = $pointer;
+                $attribute->setRef($pointer);
             } elseif (count($index->findAllByKey($key, $bucket)) > 1) {
                 $ambiguous[(string) $key] = [$key, $bucket];
             } else {
@@ -232,12 +225,8 @@ class Refs implements PipeInterface, LoggerAwareInterface
             }
         });
 
-        $specification->getWalker()->eachRef(function (AttributeInterface $attribute) use (&$candidates): void {
-            if (!property_exists($attribute, 'ref') || $attribute->ref === null) {
-                return;
-            }
-
-            preg_match('/#\/components\/schemas\/([^\/]+)\/(properties\/.+)/', (string) $attribute->ref, $matches);
+        $specification->getWalker()->eachRef(function (RefInterface $attribute) use (&$candidates): void {
+            preg_match('/#\/components\/schemas\/([^\/]+)\/(properties\/.+)/', (string) $attribute->getRefValue(), $matches);
 
             if (count($matches) !== 3) {
                 return;
@@ -249,7 +238,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
             if (array_key_exists($name, $candidates)) {
                 $index = $candidates[$name];
                 // `$path` is copied through as captured — it is already-escaped tokens plus separators
-                $attribute->ref = JsonPointer::ref('components', 'schemas', $name, 'allOf', (string) $index) . '/' . $path;
+                $attribute->setRef(JsonPointer::ref('components', 'schemas', $name, 'allOf', (string) $index) . '/' . $path);
             }
         });
     }
@@ -276,8 +265,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
 
         $unique = [];
         foreach ($schema->allOf as $ii => $allOf) {
-            // resolveRefRefs() has collapsed every Schema\Ref into its string by now
-            $ref = $allOf->ref instanceof OA\Schema\Ref ? $allOf->ref->ref : $allOf->ref;
+            $ref = $allOf->getRefValue();
             if (is_string($ref)) {
                 if (isset($unique[$ref])) {
                     continue;

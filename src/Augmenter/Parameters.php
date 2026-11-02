@@ -53,7 +53,7 @@ class Parameters implements PipeInterface
 
     protected function fillFromComponent(OA\Parameter $parameter, ComponentIndex $index): void
     {
-        $ref = $parameter->ref instanceof OA\Schema\Ref ? $parameter->ref->ref : $parameter->ref;
+        $ref = $parameter->getRefValue();
         $target = is_string($ref) ? $index->findParameter($ref) : null;
         if (!$target instanceof OA\Parameter) {
             return;
