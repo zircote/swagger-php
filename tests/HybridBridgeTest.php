@@ -10,7 +10,9 @@ use OpenApi\Augmenter\Cleanup;
 use OpenApi\Builder;
 use OpenApi\Builder\Mode;
 use OpenApi\Loggers\CollectingLogger;
+use OpenApi\Spec as OA;
 use OpenApi\Tests\Concerns\AssertsSpecEquals;
+use OpenApi\Undefined;
 use OpenApi\Utils\Pipeline;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -96,6 +98,27 @@ final class HybridBridgeTest extends TestCase
                 $this->assertArrayNotHasKey('description', $schemas[$name]['properties'][$property], "{$name}.{$property}");
             }
         }
+    }
+
+    public function testNestedSchemasDoNotTakeTheOperationDocblock(): void
+    {
+        $result = $this->build('NestedSchemas', Mode::HYBRID);
+        $operation = $result->specification()->operations[0];
+        $schema = $operation->responses[0]->content[0]->schema;
+        $items = $schema->items;
+        $this->assertInstanceOf(OA\Schema::class, $items);
+
+        $this->assertSame('Describes the operation, not its schemas.', $operation->summary);
+        $this->assertTrue($operation->deprecated);
+        foreach ([$schema, $items, $items->properties[0]->schema] as $nested) {
+            $this->assertNull($nested->getReflector());
+            $this->assertSame(Undefined::UNDEFINED, $nested->description);
+            $this->assertNull($nested->deprecated);
+        }
+        $this->assertSame(Undefined::UNDEFINED, $operation->responses[0]->headers[0]->description);
+        $this->assertNull($operation->responses[0]->headers[1]->description);
+        $document = $result->toArray();
+        $this->assertArrayNotHasKey('description', $document['paths']['/nested-schemas']['get']['responses'][200]['content']['application/json']['schema']);
     }
 
     protected function build(string $fixture, Mode $mode, ?LoggerInterface $logger = null): Builder\Result

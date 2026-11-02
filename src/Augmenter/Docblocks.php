@@ -36,22 +36,23 @@ class Docblocks implements PipeInterface
             $this->augmentSummaryAndDescription($operation);
             $this->augmentDeprecated($operation);
             $this->augmentOperationParameters($operation);
-            $this->augmentResponses($operation->responses ?? []);
-            $this->augmentMediaTypes($operation->requestBody->content ?? []);
         }
 
-        foreach ($payload->schemas as $schema) {
-            $this->augmentSchema($schema);
-        }
-
-        $this->augmentParameters($payload->parameters);
-        foreach ($payload->requestBodies as $requestBody) {
-            $this->augmentMediaTypes($requestBody->content ?? []);
-        }
-
-        $this->augmentResponses($payload->responses);
-        $this->augmentHeaders($payload->headers);
-        $this->augmentMediaTypes($payload->mediaTypes);
+        $walker = $payload->getWalker();
+        // A property's schema uses its own docblock before falling back to the property.
+        // Do not augment it a second time in the schema pass.
+        $propertySchemas = new \SplObjectStorage();
+        $walker->visit(OA\Property::class, function (OA\Property $property) use ($propertySchemas): void {
+            $this->augmentProperty($property);
+            $propertySchemas->offsetSet($property->schema);
+        });
+        $walker->eachSchema(function (OA\Schema $schema) use ($propertySchemas): void {
+            if (!$propertySchemas->offsetExists($schema)) {
+                $this->augmentSchema($schema);
+            }
+        });
+        $walker->visit(OA\Parameter::class, $this->augmentParameter(...));
+        $walker->visit(OA\Header::class, $this->augmentHeader(...));
 
         return null;
     }
@@ -145,71 +146,73 @@ class Docblocks implements PipeInterface
         }
         $paramDescriptions = $paramTags['param'] ?? [];
 
-        $this->augmentParameters($operation->parameters, $paramDescriptions);
-    }
-
-    /**
-     * @param list<OA\Parameter>                                        $parameters
-     * @param array<string, array{type: ?string, description: ?string}> $parentParamTags
-     */
-    protected function augmentParameters(array $parameters, array $parentParamTags = []): void
-    {
-        foreach ($parameters as $parameter) {
-            $this->augmentSchema($parameter->schema);
-            $this->augmentMediaTypes($parameter->content ?? []);
-            if (!$parameter->getReflector() instanceof \ReflectionProperty) {
-                $this->augmentParameterDescription($parameter, $parentParamTags);
-
+        foreach ($operation->parameters as $parameter) {
+            $reflector = $parameter->getReflector();
+            if ($reflector instanceof \ReflectionProperty || ($reflector instanceof \ReflectionParameter && $reflector->isPromoted())) {
                 continue;
             }
 
-            $this->augmentPropertyDocumentation($parameter);
+            $this->augmentParameterDescription($parameter, $paramDescriptions);
         }
     }
 
-    /**
-     * @param list<OA\Response> $responses
-     */
-    protected function augmentResponses(array $responses): void
+    protected function augmentProperty(OA\Property $property): void
     {
-        foreach ($responses as $response) {
-            $this->augmentHeaders($response->headers ?? []);
-            $this->augmentMediaTypes($response->content ?? []);
+        $property->schema ??= new OA\Schema();
+        $docblock = $this->getDocComment($property->schema) ?? $this->getDocComment($property);
+        if ($docblock !== null) {
+            $this->augmentPropertyDocumentation($property->schema, $docblock);
         }
     }
 
-    /**
-     * @param list<OA\Header> $headers
-     */
-    protected function augmentHeaders(array $headers): void
+    protected function augmentSchema(OA\Schema $schema): void
     {
-        foreach ($headers as $header) {
-            $this->augmentSchema($header->schema);
-            $this->augmentMediaTypes($header->content ?? []);
-            $this->augmentPropertyDocumentation($header);
+        $reflector = $schema->getReflector();
+        if ($reflector instanceof \ReflectionProperty || ($reflector instanceof \ReflectionParameter && $reflector->isPromoted())) {
+            $docblock = $this->getDocComment($schema);
+            if ($docblock !== null) {
+                $this->augmentPropertyDocumentation($schema, $docblock);
+            }
+        } else {
+            $this->augmentDescription($schema);
+            $this->augmentDeprecated($schema);
         }
     }
 
-    protected function augmentPropertyDocumentation(OA\Parameter|OA\Header|OA\Schema $attribute): void
+    protected function augmentParameter(OA\Parameter $parameter): void
     {
-        if (!$attribute->getReflector() instanceof \ReflectionProperty) {
+        $reflector = $parameter->getReflector();
+        if ($reflector instanceof \ReflectionProperty || ($reflector instanceof \ReflectionParameter && $reflector->isPromoted())) {
+            $docblock = $this->getDocComment($parameter);
+            if ($docblock !== null) {
+                $this->augmentPropertyDocumentation($parameter, $docblock);
+            }
+        }
+        $this->augmentParameterDescription($parameter);
+    }
+
+    protected function augmentHeader(OA\Header $header): void
+    {
+        $reflector = $header->getReflector();
+        if (!$reflector instanceof \ReflectionProperty && (!$reflector instanceof \ReflectionParameter || !$reflector->isPromoted())) {
             return;
         }
 
-        $docblock = $this->getDocComment($attribute);
-        if ($docblock === null) {
-            return;
+        $docblock = $this->getDocComment($header);
+        if ($docblock !== null) {
+            $this->augmentPropertyDocumentation($header, $docblock);
         }
+    }
 
-        if ($attribute instanceof OA\Header ? $attribute->description === null : Undefined::isDefault($attribute->description)) {
+    protected function augmentPropertyDocumentation(OA\Parameter|OA\Header|OA\Schema $attribute, string $docblock): void
+    {
+        if (Undefined::isDefault($attribute->description)) {
             $content = $this->parser->parseDocblock($docblock);
             if ($content !== '' && !Undefined::isDefault($content)) {
                 $attribute->description = $content;
             } else {
-                /*
-                 * Descriptions embedded in @var tags need parseVarLine();
-                 * parseDocblock() only extracts free text before tags.
-                 */
+                // Descriptions embedded in @var tags need parseVarLine();
+                // parseDocblock() only extracts free text before tags.
                 $varLine = $this->parser->parseVarLine($docblock);
                 if ($varLine['description'] !== null) {
                     $attribute->description = $varLine['description'];
@@ -221,7 +224,7 @@ class Docblocks implements PipeInterface
             $attribute->deprecated = true;
         }
 
-        if (Undefined::isDefault($attribute->example) && !$attribute->examples) {
+        if (Undefined::isDefault($attribute->example) && $attribute->examples === null) {
             $schema = $attribute instanceof OA\Schema ? $attribute : ($attribute->schema ?? new OA\Schema());
             $attribute->example = $this->extractExample($schema, $docblock);
         }
@@ -275,84 +278,6 @@ class Docblocks implements PipeInterface
 
         if ($parameter->name !== null && isset($parentParamTags[$parameter->name]) && $parentParamTags[$parameter->name]['description'] !== null) {
             $parameter->description = $parentParamTags[$parameter->name]['description'];
-        }
-    }
-
-    /**
-     * @param list<OA\MediaType> $mediaTypes
-     */
-    protected function augmentMediaTypes(array $mediaTypes): void
-    {
-        foreach ($mediaTypes as $mediaType) {
-            $this->augmentSchema($mediaType->schema);
-        }
-    }
-
-    protected function augmentSchema(?OA\Schema $schema): void
-    {
-        if (!$schema instanceof OA\Schema) {
-            return;
-        }
-
-        if ($schema->getReflector() instanceof \ReflectionProperty) {
-            $this->augmentPropertyDocumentation($schema);
-        } else {
-            $this->augmentDescription($schema);
-            $this->augmentDeprecated($schema);
-        }
-        $this->augmentProperties($schema);
-
-        foreach (['items', 'additionalProperties', 'contains', 'unevaluatedItems', 'unevaluatedProperties', 'propertyNames', 'not', 'if', 'then', 'else', 'contentSchema'] as $field) {
-            if ($schema->{$field} instanceof OA\Schema) {
-                $this->augmentSchema($schema->{$field});
-            }
-        }
-        foreach (['allOf', 'anyOf', 'oneOf', 'prefixItems', 'patternProperties', 'dependentSchemas'] as $field) {
-            foreach ($schema->{$field} ?? [] as $child) {
-                $this->augmentSchema($child);
-            }
-        }
-    }
-
-    protected function augmentProperties(OA\Schema $schema): void
-    {
-        $properties = $schema->properties ?? [];
-
-        foreach ($properties as $property) {
-            if (!$property instanceof OA\Property) {
-                continue;
-            }
-
-            $property->schema ??= new OA\Schema();
-
-            // Schema may have its own reflector (inline), otherwise fall back to
-            // the property's reflector (e.g. class constants where schema is synthetic)
-            $docblock = $this->getDocComment($property->schema) ?? $this->getDocComment($property);
-
-            if ($docblock) {
-                if (Undefined::isDefault($property->schema->description)) {
-                    $content = $this->parser->parseDocblock($docblock);
-                    if ($content !== '' && !Undefined::isDefault($content)) {
-                        $property->schema->description = $content;
-                    } else {
-                        // parseDocblock() only extracts free text before tags;
-                        // descriptions embedded in @var tags (e.g. "@var string The name") need parseVarLine()
-                        $varLine = $this->parser->parseVarLine($docblock);
-                        if ($varLine['description'] !== null) {
-                            $property->schema->description = $varLine['description'];
-                        }
-                    }
-                }
-
-                if ($property->schema->deprecated === null && $this->parser->isDeprecated($docblock)) {
-                    $property->schema->deprecated = true;
-                }
-
-                if (Undefined::isDefault($property->schema->example)) {
-                    $property->schema->example = $this->extractExample($property->schema, $docblock);
-                }
-            }
-            $this->augmentSchema($property->schema);
         }
     }
 

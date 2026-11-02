@@ -682,7 +682,7 @@ class HybridBridge
     {
         $result = new Spec\Header(
             header: $this->val($header->header),
-            description: $this->val($header->description),
+            description: Undefined::isDefault($header->description) ? Undefined::UNDEFINED : $header->description,
             required: $this->val($header->required),
             deprecated: $this->val($header->deprecated),
             ref: $this->val($header->ref),

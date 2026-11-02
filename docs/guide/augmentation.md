@@ -118,7 +118,8 @@ In the spec pipeline, a property's `@example` text is decoded as JSON when its v
 the schema's type. For example, `@example false` on a boolean property produces the boolean
 `false`. String schemas, unions containing `string`, and untyped schemas keep the text.
 Invalid JSON and values of a different type also keep the text. An explicit schema `example`
-takes precedence over the docblock.
+takes precedence over the docblock. Property-backed parameters and headers follow the same
+example rules; an explicit `example` or `examples`, including an empty list, takes precedence.
 :::
 
 ### Required properties and defaults
@@ -153,8 +154,15 @@ Only spec attributes are read. Classic attributes and docblock annotations add n
 
 ## Summary and description
 
-`summary` and `description` of certain attribute types (`OA\Operation`, `OA\Property`, `OA\Parameter` and `OA\Schema`) may be augmented
+`summary` and `description` of certain attribute types (`OA\Operation`, `OA\Property`, `OA\Parameter`, `OA\Header` and `OA\Schema`) may be augmented
 by extracting the summary and description of the docblock (if any).
+
+::: info Mode difference
+In the spec pipeline, parameters and headers carrying a property's reflector get their
+description, `@example` and deprecation from its docblock. Promoted constructor parameters
+also use the property's docblock. Schemas are augmented wherever they occur, including inline
+and nested schemas. Explicit values take precedence; `description: null` suppresses inference.
+:::
 
 ## References
 

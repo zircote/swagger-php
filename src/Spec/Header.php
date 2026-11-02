@@ -43,7 +43,7 @@ class Header extends AbstractAttribute
      */
     public function __construct(
         public ?string $header = null,
-        public ?string $description = null,
+        public ?string $description = Undefined::UNDEFINED,
         public ?bool $required = null,
         public ?bool $deprecated = null,
         public string|Schema\Ref|null $ref = null,

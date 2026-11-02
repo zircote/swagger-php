@@ -21,4 +21,18 @@ class DocblockPropertyParameters
      * @example 0
      */
     public int $offset;
+
+    /**
+     * @param int $pageSize the constructor parameter, not the property
+     */
+    public function __construct(
+        /**
+         * The promoted page size.
+         *
+         * @example 10
+         * @deprecated
+         */
+        public int $pageSize = 10,
+    ) {
+    }
 }
