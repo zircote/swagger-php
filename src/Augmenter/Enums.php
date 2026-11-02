@@ -6,6 +6,8 @@
 
 namespace OpenApi\Augmenter;
 
+use OpenApi\ComponentNamer;
+use OpenApi\Contracts\ComponentNamerInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Type\TypeMapper;
@@ -38,6 +40,7 @@ class Enums implements PipeInterface, LoggerAwareInterface
     public function __construct(
         #[Config('If set, stores enum case names in a vendor extension with this key (e.g. <code>x-enum-varnames</code>).')]
         protected ?string $enumNames = null,
+        protected ComponentNamerInterface $namer = new ComponentNamer\ShortName(),
     ) {
     }
 
@@ -52,6 +55,13 @@ class Enums implements PipeInterface, LoggerAwareInterface
     public function setEnumNames(?string $enumNames): static
     {
         $this->enumNames = $enumNames;
+
+        return $this;
+    }
+
+    public function setNamer(ComponentNamerInterface $namer): static
+    {
+        $this->namer = $namer;
 
         return $this;
     }
@@ -73,7 +83,7 @@ class Enums implements PipeInterface, LoggerAwareInterface
             $enumName = $reflector->getName();
             $reflector = new \ReflectionEnum($enumName);
 
-            $schema->component ??= $reflector->getShortName();
+            $schema->component ??= $this->namer->name($schema);
 
             $useName = $this->shouldUseName($schema, $reflector);
 

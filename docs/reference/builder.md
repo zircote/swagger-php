@@ -219,6 +219,20 @@ $builder->withMergers(fn (TypedList $mergers) => $mergers->insert(
 [Mergers section](/guide/extension-points#mergers) in the extension points guide for what a
 merger looks like and how it recognises its own attributes.
 
+### Component namer (spec/hybrid mode) {#component-namer}
+
+Use `setComponentNamer()` to choose how components without an explicit key are named.
+`ComponentNamer\ShortName` is the default:
+
+```php
+use OpenApi\ComponentNamer\QualifiedName;
+
+$builder->setComponentNamer(new QualifiedName());
+```
+
+See the [Component names section](/guide/extension-points#component-names) in the extension
+points guide for the built-in namers and writing your own.
+
 ### Attribute factory configuration (spec mode) {#attribute-factory}
 
 Use `withAttributeFactory()` to add custom attribute translators. The hook runs when called;

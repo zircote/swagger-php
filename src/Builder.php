@@ -9,6 +9,7 @@ namespace OpenApi;
 use OpenApi\Builder\Mode;
 use OpenApi\Builder\Result;
 use OpenApi\Contracts\CompilerInterface;
+use OpenApi\Contracts\ComponentNamerInterface;
 use OpenApi\Contracts\MergerInterface;
 use OpenApi\Loggers\CollectingLogger;
 use OpenApi\Utils\AttributeFactory;
@@ -53,6 +54,8 @@ class Builder
     protected ?CompilerInterface $compiler = null;
 
     protected ?Resolver $resolver = null;
+
+    protected ?ComponentNamerInterface $componentNamer = null;
 
     /**
      * @var Utils\Pipeline<Specification>|null
@@ -121,6 +124,27 @@ class Builder
     public function setCompiler(CompilerInterface $compiler): static
     {
         $this->compiler = $compiler;
+
+        return $this;
+    }
+
+    public function getComponentNamer(): ComponentNamerInterface
+    {
+        $this->componentNamer ??= new ComponentNamer\ShortName();
+
+        return $this->componentNamer;
+    }
+
+    /**
+     * Name components that have no explicit key.
+     *
+     * Every default augmenter that names a component asks this one namer, so a reference to a
+     * component and the component's own key cannot disagree. It is handed to them when the build
+     * runs, and replaces any namer set on those augmenters directly.
+     */
+    public function setComponentNamer(ComponentNamerInterface $componentNamer): static
+    {
+        $this->componentNamer = $componentNamer;
 
         return $this;
     }
@@ -375,6 +399,12 @@ class Builder
         // share the token scanner cache ...
         $this->getAugmenters()->get(Augmenter\Inheritance::class)
             ?->setAttributeFactory($attributeFactory);
+
+        // ... and one namer, so every augmenter that names a component names it alike
+        $componentNamer = $this->getComponentNamer();
+        $this->getAugmenters()->get(Augmenter\Inheritance::class)?->setNamer($componentNamer);
+        $this->getAugmenters()->get(Augmenter\Names::class)?->setNamer($componentNamer);
+        $this->getAugmenters()->get(Augmenter\Enums::class)?->setNamer($componentNamer);
 
         $this->getAugmenters()->setLogger($collecting);
         $this->getAugmenters()->process($specification);

@@ -14,6 +14,7 @@ use OpenApi\Examples\Specs\Webhooks\Attributes as WebhooksAttributes;
 use OpenApi\Examples\Specs\Webhooks\Spec as WebhooksSpec;
 use OpenApi\Generator;
 use OpenApi\Loggers\CollectingLogger;
+use OpenApi\Specification;
 use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\Utils\Pipeline;
 use OpenApi\Utils\SourceFinder;
@@ -452,5 +453,31 @@ final class BuilderTest extends OpenApiTestCase
 
         $rc = new \ReflectionProperty($operationId, 'hash');
         $this->assertFalse($rc->getValue($operationId));
+    }
+
+    public function testComponentNamerNamesEveryComponentAlike(): void
+    {
+        $specification = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->setComponentNamer(new Fixtures\PrefixedComponentNamer())
+            // nothing references the schemas, so keep them
+            ->withAugmenters(fn (Pipeline $augmenters): Pipeline => $augmenters->remove(Augmenter\Cleanup::class))
+            ->addSource([
+                new \ReflectionClass(Fixtures\Augmenter\Hierarchy\Spec\ParentWithSchema::class),
+                new \ReflectionClass(Fixtures\Augmenter\Hierarchy\Spec\ChildOfParentWithSchema::class),
+                new \ReflectionClass(Fixtures\Augmenter\BasicEnum::class),
+            ])
+            ->build()
+            ->specification();
+        $this->assertInstanceOf(Specification::class, $specification);
+
+        $schemas = [];
+        foreach ($specification->schemas as $schema) {
+            $schemas[(string) $schema->component] = $schema;
+        }
+        ksort($schemas);
+
+        $this->assertSame(['ApiBasicEnum', 'ApiChildOfParentWithSchema', 'ApiParentWithSchema'], array_keys($schemas));
+        $this->assertSame('#/components/schemas/ApiParentWithSchema', $schemas['ApiChildOfParentWithSchema']->allOf[0]->ref ?? null);
     }
 }

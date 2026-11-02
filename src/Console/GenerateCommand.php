@@ -8,11 +8,13 @@ namespace OpenApi\Console;
 
 use OpenApi\Builder;
 use OpenApi\Builder\Result;
+use OpenApi\Contracts\ComponentNamerInterface;
 use OpenApi\Generator;
 use OpenApi\Utils\Pipeline;
 use OpenApi\Utils\SourceFinder;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -46,6 +48,7 @@ class GenerateCommand extends Command
             ->addOption('add-processor', 'a', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Register an additional processor (deprecated, removed in 8.0)')
             ->addOption('remove-processor', 'r', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Remove an existing processor (deprecated, removed in 8.0)')
             ->addOption('version', null, InputOption::VALUE_REQUIRED, 'The OpenAPI version')
+            ->addOption('component-namer', null, InputOption::VALUE_REQUIRED, "Name components with this class, a built-in namer's class name or a FQCN (e.g. --component-namer QualifiedName)")
             ->addOption('mode', 'm', InputOption::VALUE_REQUIRED, 'Set mode classic, hybrid or spec (deprecated, removed in 8.0 - leave it out for hybrid)', Builder\Mode::HYBRID->value)
             ->addOption('debug', 'd', InputOption::VALUE_NONE, 'Show additional error information');
     }
@@ -150,6 +153,10 @@ class GenerateCommand extends Command
             $builder->setVersion($input->version);
         }
 
+        if ($input->componentNamer !== null) {
+            $builder->setComponentNamer($this->createComponentNamer($input->componentNamer));
+        }
+
         [$generatorConfig, $augmenterConfig] = $this->splitConfig($input);
 
         if ($generatorConfig !== [] || $input->addProcessor || $input->removeProcessor) {
@@ -191,5 +198,23 @@ class GenerateCommand extends Command
         }
 
         return $builder->build();
+    }
+
+    /**
+     * A built-in namer by its short name, or any class by its FQCN; built without arguments.
+     */
+    protected function createComponentNamer(string $name): ComponentNamerInterface
+    {
+        $class = class_exists($name) ? $name : 'OpenApi\\ComponentNamer\\' . $name;
+
+        if (!is_a($class, ComponentNamerInterface::class, true)) {
+            throw new InvalidOptionException(sprintf(
+                'The value "%s" is not valid for the "component-namer" option. Expected a class implementing %s.',
+                $name,
+                ComponentNamerInterface::class,
+            ));
+        }
+
+        return new $class();
     }
 }
