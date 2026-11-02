@@ -6,14 +6,19 @@
 
 namespace OpenApi\Spec;
 
+use OpenApi\Contracts\RefInterface;
+use OpenApi\Spec\Concerns\RefTrait;
+
 /**
  * Describes a single request body.
  *
  * @see [Request Body Object](https://spec.openapis.org/oas/v3.1.1.html#request-body-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
-class RequestBody extends AbstractAttribute
+class RequestBody extends AbstractAttribute implements RefInterface
 {
+    use RefTrait;
+
     /** The name this attribute is filed under in `components`; null for an inline one. */
     public ?string $component = null;
 

@@ -6,6 +6,8 @@
 
 namespace OpenApi\Spec;
 
+use OpenApi\Contracts\RefInterface;
+use OpenApi\Spec\Concerns\RefTrait;
 use OpenApi\Undefined;
 
 /**
@@ -40,8 +42,10 @@ use OpenApi\Undefined;
  * @see [Parameter Object](https://spec.openapis.org/oas/v3.1.1.html#parameter-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
-class Parameter extends AbstractAttribute
+class Parameter extends AbstractAttribute implements RefInterface
 {
+    use RefTrait;
+
     /** The name this attribute is filed under in `components`; null for an inline one. */
     public ?string $component = null;
 

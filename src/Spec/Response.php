@@ -6,14 +6,19 @@
 
 namespace OpenApi\Spec;
 
+use OpenApi\Contracts\RefInterface;
+use OpenApi\Spec\Concerns\RefTrait;
+
 /**
  * Describes a single response from an API operation.
  *
  * @see [Response Object](https://spec.openapis.org/oas/v3.1.1.html#response-object)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class Response extends AbstractAttribute
+class Response extends AbstractAttribute implements RefInterface
 {
+    use RefTrait;
+
     /**
      * The shape of `$response` when the response is nested in an operation: a status code,
      * a range, or `default`. In the `responses` bucket the same field is a component name

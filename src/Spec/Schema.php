@@ -6,6 +6,8 @@
 
 namespace OpenApi\Spec;
 
+use OpenApi\Contracts\RefInterface;
+use OpenApi\Spec\Concerns\RefTrait;
 use OpenApi\Spec\Concerns\SchemaInputTrait;
 use OpenApi\Undefined;
 
@@ -46,8 +48,9 @@ use OpenApi\Undefined;
  * @see [JSON Schema](https://json-schema.org/draft/2020-12/json-schema-validation)
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
-class Schema extends AbstractAttribute
+class Schema extends AbstractAttribute implements RefInterface
 {
+    use RefTrait;
     use SchemaInputTrait;
 
     public const ARRAY_PROPERTIES = [

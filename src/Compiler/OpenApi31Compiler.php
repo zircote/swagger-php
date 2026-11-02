@@ -1208,6 +1208,8 @@ class OpenApi31Compiler implements CompilerInterface
 
     /**
      * The reference a `$ref` holds, whether it is the string or a `Schema\Ref` around it.
+     *
+     * @deprecated since 7.1, removed in 8.0; use `RefInterface::getRefValue()`
      */
     protected function refString(string|OA\Schema\Ref|null $ref): ?string
     {

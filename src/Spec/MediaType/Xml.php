@@ -6,7 +6,9 @@
 
 namespace OpenApi\Spec\MediaType;
 
+use OpenApi\Contracts\RefInterface;
 use OpenApi\Spec as OA;
+use OpenApi\Spec\Concerns\RefTrait;
 use OpenApi\Spec\Concerns\SchemaInputTrait;
 use OpenApi\Spec\Property;
 use OpenApi\Spec\Schema;
@@ -43,8 +45,9 @@ use OpenApi\Undefined;
  * @phpstan-import-type PropertiesInput from Schema
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class Xml extends OA\MediaType
+class Xml extends OA\MediaType implements RefInterface
 {
+    use RefTrait;
     use SchemaInputTrait;
 
     /** @var string|list<string>|null */
