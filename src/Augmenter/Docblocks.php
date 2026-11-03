@@ -32,12 +32,6 @@ class Docblocks implements PipeInterface
 
     public function __invoke(mixed $payload): mixed
     {
-        foreach ($payload->operations as $operation) {
-            $this->augmentSummaryAndDescription($operation);
-            $this->augmentDeprecated($operation);
-            $this->augmentOperationParameters($operation);
-        }
-
         $walker = $payload->getWalker();
         $walker->visit(OA\Property::class, function (OA\Property $property): void {
             $this->augmentProperty($property);
@@ -45,6 +39,12 @@ class Docblocks implements PipeInterface
         $walker->eachSchema($this->augmentSchema(...));
         $walker->visit(OA\Parameter::class, $this->augmentParameterDescription(...));
         $walker->visit(OA\Header::class, $this->augmentHeader(...));
+
+        foreach ($payload->operations as $operation) {
+            $this->augmentSummaryAndDescription($operation);
+            $this->augmentDeprecated($operation);
+            $this->augmentOperationParameters($operation);
+        }
 
         return null;
     }
@@ -139,13 +139,23 @@ class Docblocks implements PipeInterface
         $paramDescriptions = $paramTags['param'] ?? [];
 
         foreach ($operation->parameters as $parameter) {
-            $this->augmentParameterDescription($parameter, $paramDescriptions);
+            if (Undefined::isDefault($parameter->description)
+                && $parameter->name !== null
+                && isset($paramDescriptions[$parameter->name])
+                && $paramDescriptions[$parameter->name]['description'] !== null
+            ) {
+                $parameter->description = $paramDescriptions[$parameter->name]['description'];
+            }
         }
     }
 
     protected function augmentProperty(OA\Property $property): void
     {
         $property->schema ??= new OA\Schema();
+        if ($this->getPropertyDocComment($property->schema) !== null) {
+            return;
+        }
+
         $docblock = $this->getDocComment($property->schema) ?? $this->getDocComment($property);
         if ($docblock !== null) {
             $this->augmentPropertyDocumentation($property->schema, $docblock);
@@ -195,10 +205,7 @@ class Docblocks implements PipeInterface
         }
     }
 
-    /**
-     * @param array<string, array{type: ?string, description: ?string}> $parentParamTags
-     */
-    protected function augmentParameterDescription(OA\Parameter $parameter, array $parentParamTags = []): void
+    protected function augmentParameterDescription(OA\Parameter $parameter): void
     {
         if (($docblock = $this->getPropertyDocComment($parameter)) !== null) {
             $this->augmentPropertyDocumentation($parameter, $docblock);
@@ -223,12 +230,6 @@ class Docblocks implements PipeInterface
                 }
             }
 
-            if (isset($parentParamTags[$name]) && $parentParamTags[$name]['description'] !== null) {
-                $parameter->description = $parentParamTags[$name]['description'];
-
-                return;
-            }
-
             $method = $reflector->getDeclaringFunction();
             if ($method instanceof \ReflectionMethod || $method instanceof \ReflectionFunction) {
                 $tags = [];
@@ -241,12 +242,6 @@ class Docblocks implements PipeInterface
                     }
                 }
             }
-
-            return;
-        }
-
-        if ($parameter->name !== null && isset($parentParamTags[$parameter->name]) && $parentParamTags[$parameter->name]['description'] !== null) {
-            $parameter->description = $parentParamTags[$parameter->name]['description'];
         }
     }
 

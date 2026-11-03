@@ -245,6 +245,25 @@ final class DocblocksTest extends TestCase
         $this->assertSame(0, $offset->example);
     }
 
+    public function testOperationParamTagsOnlyFillMissingDescriptions(): void
+    {
+        $documented = new OA\Parameter(name: 'id', in: 'query', schema: new OA\Schema(type: 'integer'));
+        $documented->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $fallback = new OA\Parameter(name: 'id', in: 'query', schema: new OA\Schema(type: 'integer'));
+        $fallback->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'count'));
+        $suppressed = new OA\Parameter(name: 'id', in: 'query', description: null);
+        $operation = new OA\Operation\Get(parameters: [$documented, $fallback, $suppressed]);
+        $operation->setReflector(new \ReflectionMethod(Fixtures\Augmenter\DocblockController::class, 'getThing'));
+        $spec = (new Specification())->add($operation);
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame('The page size.', $documented->description);
+        $this->assertSame('the thing identifier', $fallback->description);
+        $this->assertSame(5, $fallback->example);
+        $this->assertNull($suppressed->description);
+    }
+
     #[DataProvider('explicitExamples')]
     public function testKeepsExplicitPropertyParameterValues(mixed $example): void
     {
@@ -296,6 +315,20 @@ final class DocblocksTest extends TestCase
 
         $this->assertSame(Undefined::UNDEFINED, $parameter->example);
         $this->assertSame($examples, $parameter->examples);
+    }
+
+    #[DataProvider('exampleLists')]
+    public function testKeepsExplicitPropertySchemaExamples(bool $empty): void
+    {
+        $examples = $empty ? [] : [10];
+        $schema = new OA\Schema(type: 'integer', examples: $examples);
+        $schema->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $spec = (new Specification())->add(new OA\Schema(properties: [new OA\Property(property: 'limit', schema: $schema)]));
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame(Undefined::UNDEFINED, $schema->example);
+        $this->assertSame($examples, $schema->examples);
     }
 
     public function testAugmentsInlinePropertySchema(): void
@@ -355,6 +388,25 @@ final class DocblocksTest extends TestCase
         $this->assertSame('The page size.', $shared->description);
         $this->assertSame(20, $shared->example);
         $this->assertTrue($shared->deprecated);
+    }
+
+    public function testHeaderExampleNeedsAnExplicitSchemaType(): void
+    {
+        $reflector = new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit');
+        $header = new OA\Header(header: 'X-Limit');
+        $typed = new OA\Header(header: 'X-Typed-Limit', schema: new OA\Schema(type: 'integer'));
+        foreach ([$header, $typed] as $attribute) {
+            $attribute->setReflector($reflector);
+        }
+        $spec = (new Specification())->add(new OA\Operation\Get(
+            responses: [new OA\Response(headers: [$header, $typed])],
+        ));
+
+        (new Augmenter\Types())($spec);
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame('20', $header->example);
+        $this->assertSame(20, $typed->example);
     }
 
     #[DataProvider('explicitExamples')]
@@ -441,15 +493,21 @@ final class DocblocksTest extends TestCase
     public function testDoesNotAugmentMethodBackedSchema(): void
     {
         $schema = new OA\Schema(type: 'string');
-        $schema->setReflector(new \ReflectionMethod(Fixtures\HybridBridge\NestedSchemas::class, 'get'));
-        $spec = (new Specification())->add(new OA\Operation\Get(
-            responses: [new OA\Response(content: [new OA\MediaType(schema: $schema)])],
-        ));
+        $component = new OA\Schema(type: 'string', component: 'MethodSchema');
+        foreach ([$schema, $component] as $attribute) {
+            $attribute->setReflector(new \ReflectionMethod(Fixtures\HybridBridge\NestedSchemas::class, 'get'));
+        }
+        $spec = (new Specification())->add(
+            $component,
+            new OA\Operation\Get(responses: [new OA\Response(content: [new OA\MediaType(schema: $schema)])]),
+        );
 
         (new Augmenter\Docblocks())($spec);
 
-        $this->assertSame(Undefined::UNDEFINED, $schema->description);
-        $this->assertNull($schema->deprecated);
+        foreach ([$schema, $component] as $attribute) {
+            $this->assertSame(Undefined::UNDEFINED, $attribute->description);
+            $this->assertNull($attribute->deprecated);
+        }
     }
 
     public function testAugmentsEncodingHeaders(): void

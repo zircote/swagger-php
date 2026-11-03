@@ -118,8 +118,9 @@ In the spec pipeline, a property's `@example` text is decoded as JSON when its v
 the schema's type. For example, `@example false` on a boolean property produces the boolean
 `false`. String schemas, unions containing `string`, and untyped schemas keep the text.
 Invalid JSON and values of a different type also keep the text. An explicit schema `example`
-takes precedence over the docblock. Property-backed parameters and headers follow the same
-example rules; an explicit `example` or `examples`, including an empty list, takes precedence.
+or `examples`, including an empty list, takes precedence over the docblock. Property-backed
+parameters and headers follow these example rules. Headers need an explicit schema type
+for the example to be decoded, since their schema type is not inferred from the property.
 :::
 
 ### Required properties and defaults

@@ -23,6 +23,11 @@ class DocblockPropertyParameters
     public int $offset;
 
     /**
+     * @example 5
+     */
+    public int $count;
+
+    /**
      * @param int $pageSize the constructor parameter, not the property
      */
     public function __construct(

@@ -1158,7 +1158,7 @@ class HybridBridge
      */
     protected function copyReflector(OA\AbstractAnnotation $from, Spec\AbstractAttribute $to): void
     {
-        if (($from instanceof OA\Property || $from instanceof OA\Schema) && !$from->_context->is('reflector')) {
+        if ($from instanceof OA\Schema && !$from->_context->is('reflector')) {
             return;
         }
 
