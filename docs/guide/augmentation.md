@@ -160,8 +160,8 @@ by extracting the summary and description of the docblock (if any).
 ::: info Mode difference
 In the spec pipeline, parameters and headers carrying a property's reflector get their
 description, `@example` and deprecation from its docblock. Promoted constructor parameters
-also use the property's docblock. Schemas are augmented wherever they occur, including inline
-and nested schemas. Explicit values take precedence; `description: null` suppresses inference.
+also use the property's docblock. Property-backed nested schemas use the docblock of the
+property they describe. Explicit values take precedence; `description: null` suppresses inference.
 :::
 
 ## References

@@ -39,19 +39,11 @@ class Docblocks implements PipeInterface
         }
 
         $walker = $payload->getWalker();
-        // A property's schema uses its own docblock before falling back to the property.
-        // Do not augment it a second time in the schema pass.
-        $propertySchemas = new \SplObjectStorage();
-        $walker->visit(OA\Property::class, function (OA\Property $property) use ($propertySchemas): void {
+        $walker->visit(OA\Property::class, function (OA\Property $property): void {
             $this->augmentProperty($property);
-            $propertySchemas->offsetSet($property->schema);
         });
-        $walker->eachSchema(function (OA\Schema $schema) use ($propertySchemas): void {
-            if (!$propertySchemas->offsetExists($schema)) {
-                $this->augmentSchema($schema);
-            }
-        });
-        $walker->visit(OA\Parameter::class, $this->augmentParameter(...));
+        $walker->eachSchema($this->augmentSchema(...));
+        $walker->visit(OA\Parameter::class, $this->augmentParameterDescription(...));
         $walker->visit(OA\Header::class, $this->augmentHeader(...));
 
         return null;
@@ -147,11 +139,6 @@ class Docblocks implements PipeInterface
         $paramDescriptions = $paramTags['param'] ?? [];
 
         foreach ($operation->parameters as $parameter) {
-            $reflector = $parameter->getReflector();
-            if ($reflector instanceof \ReflectionProperty || ($reflector instanceof \ReflectionParameter && $reflector->isPromoted())) {
-                continue;
-            }
-
             $this->augmentParameterDescription($parameter, $paramDescriptions);
         }
     }
@@ -167,39 +154,17 @@ class Docblocks implements PipeInterface
 
     protected function augmentSchema(OA\Schema $schema): void
     {
-        $reflector = $schema->getReflector();
-        if ($reflector instanceof \ReflectionProperty || ($reflector instanceof \ReflectionParameter && $reflector->isPromoted())) {
-            $docblock = $this->getDocComment($schema);
-            if ($docblock !== null) {
-                $this->augmentPropertyDocumentation($schema, $docblock);
-            }
-        } else {
+        if (($docblock = $this->getPropertyDocComment($schema)) !== null) {
+            $this->augmentPropertyDocumentation($schema, $docblock);
+        } elseif ($schema->getReflector() instanceof \ReflectionClass) {
             $this->augmentDescription($schema);
             $this->augmentDeprecated($schema);
         }
     }
 
-    protected function augmentParameter(OA\Parameter $parameter): void
-    {
-        $reflector = $parameter->getReflector();
-        if ($reflector instanceof \ReflectionProperty || ($reflector instanceof \ReflectionParameter && $reflector->isPromoted())) {
-            $docblock = $this->getDocComment($parameter);
-            if ($docblock !== null) {
-                $this->augmentPropertyDocumentation($parameter, $docblock);
-            }
-        }
-        $this->augmentParameterDescription($parameter);
-    }
-
     protected function augmentHeader(OA\Header $header): void
     {
-        $reflector = $header->getReflector();
-        if (!$reflector instanceof \ReflectionProperty && (!$reflector instanceof \ReflectionParameter || !$reflector->isPromoted())) {
-            return;
-        }
-
-        $docblock = $this->getDocComment($header);
-        if ($docblock !== null) {
+        if (($docblock = $this->getPropertyDocComment($header)) !== null) {
             $this->augmentPropertyDocumentation($header, $docblock);
         }
     }
@@ -235,6 +200,10 @@ class Docblocks implements PipeInterface
      */
     protected function augmentParameterDescription(OA\Parameter $parameter, array $parentParamTags = []): void
     {
+        if (($docblock = $this->getPropertyDocComment($parameter)) !== null) {
+            $this->augmentPropertyDocumentation($parameter, $docblock);
+        }
+
         if (!Undefined::isDefault($parameter->description)) {
             return;
         }
@@ -279,6 +248,16 @@ class Docblocks implements PipeInterface
         if ($parameter->name !== null && isset($parentParamTags[$parameter->name]) && $parentParamTags[$parameter->name]['description'] !== null) {
             $parameter->description = $parentParamTags[$parameter->name]['description'];
         }
+    }
+
+    protected function getPropertyDocComment(AttributeInterface $attribute): ?string
+    {
+        $reflector = $attribute->getReflector();
+        if (!$reflector instanceof \ReflectionProperty && (!$reflector instanceof \ReflectionParameter || !$reflector->isPromoted())) {
+            return null;
+        }
+
+        return $this->getDocComment($attribute);
     }
 
     protected function getDocComment(AttributeInterface $attribute): ?string

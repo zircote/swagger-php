@@ -423,30 +423,33 @@ final class DocblocksTest extends TestCase
         }
     }
 
-    public function testPropertySchemaUsesItsOwnDocblockOnce(): void
+    public function testPropertySchemaUsesItsOwnDocblock(): void
     {
         $schema = new OA\Schema(type: 'integer');
         $schema->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'offset'));
         $property = new OA\Property(property: 'limit', schema: $schema);
         $property->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
         $spec = (new Specification())->add(new OA\Schema(properties: [$property]));
-        $parser = new class () extends DocBlockParser {
-            public int $deprecatedChecks = 0;
 
-            public function isDeprecated(?string $docblock): bool
-            {
-                ++$this->deprecatedChecks;
-
-                return parent::isDeprecated($docblock);
-            }
-        };
-
-        (new Augmenter\Docblocks())->setParser($parser)($spec);
+        (new Augmenter\Docblocks())($spec);
 
         $this->assertSame('the offset', $schema->description);
         $this->assertSame(0, $schema->example);
         $this->assertNull($schema->deprecated);
-        $this->assertSame(1, $parser->deprecatedChecks);
+    }
+
+    public function testDoesNotAugmentMethodBackedSchema(): void
+    {
+        $schema = new OA\Schema(type: 'string');
+        $schema->setReflector(new \ReflectionMethod(Fixtures\HybridBridge\NestedSchemas::class, 'get'));
+        $spec = (new Specification())->add(new OA\Operation\Get(
+            responses: [new OA\Response(content: [new OA\MediaType(schema: $schema)])],
+        ));
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame(Undefined::UNDEFINED, $schema->description);
+        $this->assertNull($schema->deprecated);
     }
 
     public function testAugmentsEncodingHeaders(): void
