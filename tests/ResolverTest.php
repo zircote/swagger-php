@@ -24,6 +24,26 @@ use PHPUnit\Framework\TestCase;
 
 final class ResolverTest extends TestCase
 {
+    /** @var list<string> */
+    private array $deprecations = [];
+
+    protected function setUp(): void
+    {
+        $this->deprecations = [];
+        set_error_handler(function (int $errno, string $message): bool {
+            if ($errno === E_USER_DEPRECATED) {
+                $this->deprecations[] = $message;
+            }
+
+            return true;
+        });
+    }
+
+    protected function tearDown(): void
+    {
+        restore_error_handler();
+    }
+
     public function testResolvesRefAndTransitivePropertyTypeByDefault(): void
     {
         $assembler = $this->assembler(Fixtures\Resolver\ProductController::class);
@@ -110,6 +130,17 @@ final class ResolverTest extends TestCase
         $this->resolver($spy)->resolve($assembler);
 
         $this->assertSame([ClassDescriptions\Author::class => 1], $spy->attempts);
+    }
+
+    public function testAClassNameResolverIsReportedAsDeprecated(): void
+    {
+        $assembler = $this->assembler(Fixtures\Resolver\ProductController::class);
+
+        $this->resolver(new Resolver\Reflection(), new Fixtures\Resolver\CountingResolver())->resolve($assembler);
+
+        $this->assertSame([
+            'Since zircote/swagger-php 7.2: ' . Fixtures\Resolver\CountingResolver::class . ' implements `ResolverInterface` alone, which is deprecated and will be removed in 8.0; implement `KeyResolverInterface`',
+        ], $this->deprecations);
     }
 
     public function testReflectionLeavesAQualifiedKeyToTheNextResolver(): void

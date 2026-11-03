@@ -69,7 +69,8 @@ class Resolver implements LoggerAwareInterface
      * Resolve all found unresolved keys in the specification assembled so far.
      *
      * The first resolver to claim success will resolve the key. A resolver implementing
-     * `LoggerAwareInterface` is given this resolver's logger first.
+     * `LoggerAwareInterface` is given this resolver's logger first. One implementing
+     * `ResolverInterface` alone is reported as deprecated, once per run.
      */
     public function resolve(Assembler $assembler): void
     {
@@ -78,6 +79,10 @@ class Resolver implements LoggerAwareInterface
         }
 
         foreach ($this->resolvers as $resolver) {
+            if (!$resolver instanceof KeyResolverInterface) {
+                trigger_deprecation('zircote/swagger-php', '7.2', '%s implements `ResolverInterface` alone, which is deprecated and will be removed in 8.0; implement `KeyResolverInterface`', $resolver::class);
+            }
+
             if ($resolver instanceof LoggerAwareInterface && $this->logger instanceof LoggerInterface) {
                 $resolver->setLogger($this->logger);
             }

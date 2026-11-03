@@ -45,7 +45,8 @@ Between assembly and augmentation, the Resolver looks for classes the specificat
 to but does not contain — a model used in a `$ref`, or the type of a property on a schema —
 and hands each one to a chain of resolvers. A `Schema\Ref` with qualifiers asks for one
 description of a class, and only a `KeyResolverInterface` is asked about it. A resolver
-implementing `ResolverInterface` alone is asked about the class without qualifiers.
+implementing `ResolverInterface` alone, deprecated since 7.2, is asked about the class without
+qualifiers.
 
 `Resolver\Reflection` is registered by default: it reflects the class and collects it with
 the assembler already in use. A class carrying no spec attributes contributes nothing, so

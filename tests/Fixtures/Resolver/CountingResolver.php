@@ -11,6 +11,9 @@ use OpenApi\Contracts\ResolverInterface;
 
 /**
  * Never resolves anything, but records every FQCN it was offered.
+ *
+ * A class-name resolver on purpose, as written before `KeyResolverInterface`: the chain still asks
+ * one like it about keys without qualifiers.
  */
 class CountingResolver implements ResolverInterface
 {
