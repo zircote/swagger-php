@@ -92,7 +92,7 @@ class TypeResolver implements LoggerAwareInterface
     {
         $docComment = match (true) {
             $reflector instanceof \ReflectionProperty => $reflector->isPromoted()
-                && $reflector->getDeclaringClass() instanceof \ReflectionClass && $reflector->getDeclaringClass()->getConstructor() instanceof \ReflectionMethod
+                && $reflector->getDeclaringClass()->getConstructor() instanceof \ReflectionMethod
                     ? $reflector->getDeclaringClass()->getConstructor()->getDocComment()
                     : $reflector->getDocComment(),
             $reflector instanceof \ReflectionParameter => $reflector->getDeclaringFunction()->getDocComment(),

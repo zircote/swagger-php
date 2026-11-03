@@ -105,7 +105,7 @@ class OpenApiTestCase extends TestCase
                 continue;
             }
             $class = $entry->getBasename('.php');
-            if (in_array($class, ['AbstractAnnotation', 'JsonSchemaTrait', 'Operation'])) {
+            if (in_array($class, ['AbstractAnnotation', 'JsonSchemaTrait', 'Operation'], true)) {
                 continue;
             }
             /** @var class-string<OA\AbstractAnnotation> $fqdn */
@@ -131,7 +131,7 @@ class OpenApiTestCase extends TestCase
                 continue;
             }
             $class = $entry->getBasename('.php');
-            if (in_array($class, ['OperationTrait', 'ParameterTrait'])) {
+            if (in_array($class, ['OperationTrait', 'ParameterTrait'], true)) {
                 continue;
             }
             /** @var class-string $fqdn */

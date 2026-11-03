@@ -160,7 +160,7 @@ class AttributeFactory implements LoggerAwareInterface
         }
 
         $constructor = $class->getConstructor();
-        if ($constructor) {
+        if ($constructor instanceof \ReflectionMethod) {
             foreach ($constructor->getParameters() as $parameter) {
                 array_push($inner, ...$this->fromMember($parameter));
             }

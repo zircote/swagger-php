@@ -57,7 +57,7 @@ class Properties implements PipeInterface
 
                 $default = $this->defaultOf($reflector);
 
-                if ($default === Undefined::UNDEFINED && $reflector->getType() !== null && !$reflector->getType()->allowsNull()) {
+                if ($default === Undefined::UNDEFINED && $reflector->getType() instanceof \ReflectionType && !$reflector->getType()->allowsNull()) {
                     $required[] = $property->property;
                 }
 

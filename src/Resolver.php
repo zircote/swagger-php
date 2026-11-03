@@ -221,7 +221,7 @@ class Resolver implements LoggerAwareInterface
             }
         }
 
-        if ($constructor = $reflector->getConstructor()) {
+        if (($constructor = $reflector->getConstructor()) instanceof \ReflectionMethod) {
             foreach ($constructor->getParameters() as $param) {
                 foreach ($this->extractNamedTypes($param->getType()) as $type) {
                     $types[] = $type;
