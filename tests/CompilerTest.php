@@ -974,6 +974,50 @@ final class CompilerTest extends TestCase
         $this->assertEquals(['oauth2' => ['read', 'write']], $output['security'][1]);
     }
 
+    /**
+     * The "no authentication" option is a requirement naming no scheme, and still an object.
+     */
+    public function testAnEmptySecurityRequirementIsAnObject(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        /* @phpstan-ignore assign.propertyType (intentionally testing BC with raw arrays) */
+        $spec->openapi->security = [
+            new OA\Security\Requirement(scheme: 'bearerAuth'),
+            new OA\Security\Requirement(),
+            [],
+        ];
+
+        $output = (new OpenApi31Compiler())->compile($spec);
+
+        $this->assertEquals([['bearerAuth' => []], new \stdClass(), new \stdClass()], $output['security']);
+    }
+
+    /**
+     * @return iterable<string, array{CompilerInterface, string}>
+     */
+    public static function compilerProvider(): iterable
+    {
+        yield '3.0' => [new OpenApi30Compiler(), '3.0.0'];
+        yield '3.1' => [new OpenApi31Compiler(), '3.1.0'];
+        yield '3.2' => [new OpenApi32Compiler(), '3.2.0'];
+    }
+
+    /**
+     * A media type with nothing but its type is `application/json: {}`, not a list.
+     */
+    #[DataProvider('compilerProvider')]
+    public function testAnEmptyMediaTypeIsAnObject(CompilerInterface $compiler, string $version): void
+    {
+        $spec = $this->createSpecification($version);
+        $spec->operations[] = new OA\Operation\Get(path: '/ping', responses: [
+            new OA\Response(response: 200, description: 'OK', content: new OA\MediaType(mediaType: 'application/json')),
+        ]);
+
+        $output = $compiler->compile($spec);
+
+        $this->assertEquals(new \stdClass(), $output['paths']['/ping']['get']['responses'][200]['content']['application/json']);
+    }
+
     // --- Undefined vs null on mixed properties ---
 
     public function testUnnamedSchemaIsOmittedFromComponents(): void
@@ -1191,7 +1235,8 @@ final class CompilerTest extends TestCase
 
         $result = $extract((new OpenApi31Compiler())->compile($spec));
 
-        $this->assertArrayNotHasKey('example', $result);
+        // a media type with nothing else set compiles to an object
+        $this->assertArrayNotHasKey('example', (array) $result);
     }
 
     protected function createSpecification(string $version = '3.1.0'): Specification
