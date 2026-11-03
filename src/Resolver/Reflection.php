@@ -7,7 +7,8 @@
 namespace OpenApi\Resolver;
 
 use OpenApi\Assembler;
-use OpenApi\Contracts\ResolverInterface;
+use OpenApi\Contracts\KeyResolverInterface;
+use OpenApi\Resolver\Concerns\KeyResolverTrait;
 use OpenApi\Specification\ComponentKey;
 
 /**
@@ -17,18 +18,22 @@ use OpenApi\Specification\ComponentKey;
  * is enough as long as everything it references (directly or transitively) carries spec attributes.
  *
  * A FQCN is considered resolved if the specification knows it once collected. Classes without any
- * spec attributes are left to the next resolver in the chain.
+ * spec attributes are left to the next resolver in the chain. So is a key with qualifiers: the
+ * class's own attributes describe it once, as the plain key.
  */
-class Reflection implements ResolverInterface
+class Reflection implements KeyResolverInterface
 {
-    public function resolve(string $fqcn, Assembler $assembler): bool
+    use KeyResolverTrait;
+
+    public function resolveKey(ComponentKey $key, Assembler $assembler): bool
     {
-        if (!class_exists($fqcn) && !interface_exists($fqcn) && !enum_exists($fqcn)) {
+        $fqcn = $key->class;
+        if (!$key->isPlain() || (!class_exists($fqcn) && !interface_exists($fqcn) && !enum_exists($fqcn))) {
             return false;
         }
 
         $assembler->collect(new \ReflectionClass($fqcn));
 
-        return $assembler->getSpecification()->buildComponentIndex()->hasKey(new ComponentKey($fqcn));
+        return $assembler->getSpecification()->buildComponentIndex()->hasKey($key);
     }
 }
