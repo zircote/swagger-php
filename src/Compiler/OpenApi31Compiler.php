@@ -474,9 +474,11 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * @return array<string,mixed>
+     * A media type with nothing set is still an object: `application/json: {}`.
+     *
+     * @return array<string,mixed>|\stdClass
      */
-    protected function compileMediaType(OA\MediaType $mediaType): array
+    protected function compileMediaType(OA\MediaType $mediaType): array|\stdClass
     {
         $result = $this->filter([
             'schema' => $mediaType->schema instanceof OA\Schema ? $this->compileSchema($mediaType->schema) : null,
@@ -484,7 +486,7 @@ class OpenApi31Compiler implements CompilerInterface
             'encoding' => $this->compileKeyedMap($mediaType->encoding ?? [], 'encoding', $this->compileEncoding(...)),
         ], $mediaType);
 
-        return $this->withDefined($result, ['example' => $mediaType->example]);
+        return $this->withDefined($result, ['example' => $mediaType->example]) ?: new \stdClass();
     }
 
     /**
@@ -785,17 +787,17 @@ class OpenApi31Compiler implements CompilerInterface
     /**
      * Passing raw arrays is deprecated; use OA\Security\Requirement instances instead.
      *
+     * A requirement naming no scheme makes authentication optional, and is still an object: `{}`.
+     *
      * @param  list<OA\Security\Requirement|array<string,list<string>>> $security
-     * @return list<array<string,mixed>>
+     * @return list<array<string,mixed>|\stdClass>
      */
     protected function compileSecurity(array $security): array
     {
-        return array_map(static function (OA\Security\Requirement|array $item): array {
-            if ($item instanceof OA\Security\Requirement) {
-                return $item->toArray();
-            }
+        return array_map(static function (OA\Security\Requirement|array $item): array|\stdClass {
+            $requirement = $item instanceof OA\Security\Requirement ? $item->toArray() : SecurityRequirement::normalise($item);
 
-            return SecurityRequirement::normalise($item);
+            return $requirement ?: new \stdClass();
         }, $security);
     }
 
