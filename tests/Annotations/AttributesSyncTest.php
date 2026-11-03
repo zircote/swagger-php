@@ -189,7 +189,7 @@ final class AttributesSyncTest extends OpenApiTestCase
     protected function parameterType(string $parameterName, \ReflectionParameter $parameter): ?string
     {
         $var = null;
-        if ($type = $parameter->getType()) {
+        if (($type = $parameter->getType()) instanceof \ReflectionType) {
             if ($type instanceof \ReflectionUnionType) {
                 $var = [];
                 foreach ($type->getTypes() as $unionType) {

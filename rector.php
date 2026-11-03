@@ -1,6 +1,5 @@
 <?php
 
-use Rector\CodeQuality\Rector\For_\ForRepeatedCountToOwnVariableRector;
 use Rector\CodingStyle\Rector\ClassMethod\NewlineBeforeNewAssignSetRector;
 use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
 use Rector\CodingStyle\Rector\Encapsed\WrapEncapsedVariableInCurlyBracesRector;
@@ -17,7 +16,6 @@ return RectorConfig::configure()
     ->withSkipPath(__DIR__ . '/tests/Fixtures')
     ->withSkip([
         NewlineBeforeNewAssignSetRector::class,
-        ForRepeatedCountToOwnVariableRector::class,
         ReadOnlyPropertyRector::class,
         NewlineAfterStatementRector::class,
         StringClassNameToClassConstantRector::class => [
