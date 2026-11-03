@@ -104,6 +104,14 @@ warning. Three cases change:
   left empty and logs a warning. It used to reference the class's schema, which is not valid for
   a request body.
 
+## Changed output in 7.2
+
+A component whose key has qualifiers, and no explicit name, is named after its key:
+`Author-groups.summary` rather than `Author`. It used to take its class's name and clash with the
+plain component, and the document kept only one of them.
+[Describing a class more than once](/guide/extension-points#describing-a-class-more-than-once)
+has the scheme.
+
 ## Preparing for 8.0
 
 In 8.0 classic is removed, and so is `setMode()`. Spec attributes move from `OpenApi\Spec` to

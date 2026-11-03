@@ -23,7 +23,7 @@ components:
         author:
           $ref: '#/components/schemas/Author'
         reviewer:
-          $ref: '#/components/schemas/AuthorSummary'
+          $ref: '#/components/schemas/Author-groups.summary'
       required:
         - id
         - author
@@ -37,7 +37,7 @@ components:
           type: string
         email:
           type: string
-    AuthorSummary:
+    Author-groups.summary:
       type: object
       properties:
         id:
