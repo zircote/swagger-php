@@ -14,7 +14,9 @@ use OpenApi\Contracts\MergerInterface;
 use OpenApi\Merge;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Specification\ComponentKey;
 use OpenApi\Tests\Concerns\ExpectsLogEntries;
+use OpenApi\Tests\Fixtures\ClassDescriptions\Author;
 use OpenApi\Utils\TypedList;
 use PHPUnit\Framework\TestCase;
 
@@ -116,6 +118,22 @@ final class MergeTest extends TestCase
         $this->assertCount(1, $schemas);
         $this->assertSame('SECOND', $schemas['Pet']['description']);
         $this->expectLogEntry('Schema "Pet" is declared more than once', 'warning');
+    }
+
+    public function testComponentsDerivingOneNameAreToldHowToSplit(): void
+    {
+        $this->build(function (Specification $specification): void {
+            foreach (['user:read', 'user_read'] as $group) {
+                $schema = (new OA\Schema(type: 'object'))
+                    ->setReflector(new \ReflectionClass(Author::class))
+                    ->setComponentKey(new ComponentKey(Author::class, ['groups' => [$group]]));
+                $specification->add($schema);
+            }
+        });
+
+        // nothing references either, and there are no paths
+        $this->allowLogEntry('unreferenced component', 'At least one of paths');
+        $this->expectLogEntry('Author.php:12. They describe ' . Author::class . '{"groups":["user:read"]} and ' . Author::class . '{"groups":["user_read"]}: give one a name of its own, or name components with `QualifiedName`', 'warning');
     }
 
     /**

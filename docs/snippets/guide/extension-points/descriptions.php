@@ -49,12 +49,12 @@ function buildWithDescriptions(): Result
                 ]),
             );
 
-            $full = new OA\Schema(component: 'Author', properties: [
+            $full = new OA\Schema(properties: [
                 'id' => OA\Type::Integer,
                 'name' => OA\Type::String,
                 'email' => OA\Type::String,
             ]);
-            $summary = new OA\Schema(component: 'AuthorSummary', properties: [
+            $summary = new OA\Schema(properties: [
                 'id' => OA\Type::Integer,
                 'name' => OA\Type::String,
             ]);

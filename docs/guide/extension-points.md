@@ -179,7 +179,14 @@ That produces:
 <<< @/snippets/guide/extension-points/descriptions-3.1.0.yaml
 
 `author` is typed with the class, so it references the plain key, `Author`. `reviewer` asks for
-the `summary` group and gets `AuthorSummary`.
+the `summary` group and gets `Author-groups.summary`.
+
+A description without an explicit name is named after its key. The namer names the class, and
+each qualifier follows in the key's order, with `-` before it, `.` between its name and its values,
+and `_` between values. `['groups' => ['summary', 'admin']]` gives `Author-groups.admin_summary`.
+A value that names a class is named like that class. Any other character a component name does
+not allow becomes `_`. Where that is not readable enough, give the description a name of its own
+with `component:`.
 
 Qualifiers map a name to a scalar or a list of scalars, one level deep. Their order does not
 matter, and a list is compared as a set, so `['groups' => ['summary', 'admin']]` and
@@ -189,7 +196,11 @@ arguments, goes in as one string.
 A key names one component per bucket. Where two components share a key, a `$ref` given as that
 key resolves to neither and logs a warning naming both. A property typed with the class is left
 without a type, with a warning. Give all but one of them qualifiers, or reference the one you
-mean by its name, `#/components/schemas/AuthorSummary`.
+mean by its name, `#/components/schemas/Author-groups.summary`.
+
+Two keys can still end up with one name, for example two `Author` classes in different
+namespaces with the same qualifiers. The document keeps the last one and logs a warning naming
+both keys. `QualifiedName` or an explicit name tells them apart.
 
 In an augmenter, `ComponentIndex::findByKey()` returns the component a key names in a bucket,
 and `findAllByKey()` returns every one.
