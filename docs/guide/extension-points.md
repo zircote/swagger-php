@@ -89,6 +89,11 @@ and carries spec attributes, so it is collected by reflection and the reference 
 returns `false` when the class yielded no component, and an unresolved reference is reported
 rather than silently dropped.
 
+A resolver is asked about a key, the class plus any qualifiers. It implements
+`KeyResolverInterface`, and `Resolver\Concerns\KeyResolverTrait` supplies the method for a class
+name alone. [Describing a class more than once](#describing-a-class-more-than-once) has what a
+key with qualifiers is for.
+
 `Builder::withResolver()` hands the resolver list to a callable. Resolvers are tried in
 order and the first success wins, so one added after the default is
 handed the classes the default could not resolve. What it makes of them is up to whoever writes
@@ -204,6 +209,12 @@ both keys. `QualifiedName` or an explicit name tells them apart.
 
 In an augmenter, `ComponentIndex::findByKey()` returns the component a key names in a bucket,
 and `findAllByKey()` returns every one.
+
+A description can also be made when something asks for it. A `Schema\Ref` with qualifiers that
+no component has goes to the [resolvers](#resolvers), with its key. A resolver that knows the
+class's groups adds a schema for them, with that key, and the reference finds it.
+`Resolver\Reflection` describes a class once, from its own attributes, so it leaves a key with
+qualifiers to the next resolver.
 
 ::: info Mode difference
 Keys are read in spec and hybrid mode. Classic mode does not use them.

@@ -193,7 +193,7 @@ $builder->withResolver(function (Resolver $resolver) {
 });
 ```
 
-Resolvers implement `OpenApi\Contracts\ResolverInterface` and receive the FQCN and the `Assembler` in use. The first one to return `true` claims the FQCN. See the [Resolver section](/reference/architecture#resolver) in the architecture docs for details, including how to reorder or clear the chain.
+Resolvers implement `OpenApi\Contracts\KeyResolverInterface` and receive the key, the class plus any qualifiers, and the `Assembler` in use. The first one to return `true` claims the key. See the [Resolver section](/reference/architecture#resolver) in the architecture docs for details, including how to reorder or clear the chain.
 
 ### Merger configuration (spec/hybrid mode) {#mergers}
 

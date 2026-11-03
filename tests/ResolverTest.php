@@ -7,12 +7,17 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Assembler;
+use OpenApi\Augmenter;
 use OpenApi\Builder;
 use OpenApi\Builder\Mode;
 use OpenApi\Contracts\ResolverInterface;
 use OpenApi\Loggers\CollectingLogger;
 use OpenApi\Resolver;
 use OpenApi\Spec as OA;
+use OpenApi\Specification;
+use OpenApi\Specification\ComponentKey;
+use OpenApi\Tests\Fixtures\ClassDescriptions;
+use OpenApi\Utils\Pipeline;
 use OpenApi\Utils\TypedList;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -77,6 +82,61 @@ final class ResolverTest extends TestCase
         $this->assertSame(['Warehouse', 'Manufacturer'], $this->schemaNames($assembler));
         $this->assertCount(1, $logger->entries());
         $this->assertStringStartsWith('Skipping unloadable ' . Fixtures\Resolver\UnloadableStock::class . ': Failed to instantiate attribute', $logger->entries()[0]['message']);
+    }
+
+    public function testAKeyAwareResolverDescribesAClassForAQualifiedRef(): void
+    {
+        $assembler = $this->assembler(ClassDescriptions\Article::class);
+        $groups = new Fixtures\Resolver\GroupsResolver();
+
+        $this->resolver(new Resolver\Reflection(), $groups)->resolve($assembler);
+
+        // the plain author has no attributes and no groups, so nothing describes it
+        $this->assertSame(
+            [ClassDescriptions\Article::class, ClassDescriptions\Author::class . '{"groups":["light"]}'],
+            array_map(fn (OA\Schema $schema): string => (string) $schema->getComponentKey(), $assembler->getSpecification()->schemas),
+        );
+        $this->assertSame([
+            ClassDescriptions\Author::class . '{"groups":["light"]}' => 1,
+            ClassDescriptions\Author::class => 1,
+        ], $groups->attempts);
+    }
+
+    public function testAClassNameResolverIsOnlyAskedAboutPlainKeys(): void
+    {
+        $assembler = $this->assembler(ClassDescriptions\Article::class);
+        $spy = new Fixtures\Resolver\CountingResolver();
+
+        $this->resolver($spy)->resolve($assembler);
+
+        $this->assertSame([ClassDescriptions\Author::class => 1], $spy->attempts);
+    }
+
+    public function testReflectionLeavesAQualifiedKeyToTheNextResolver(): void
+    {
+        $assembler = $this->assembler();
+
+        $claimed = (new Resolver\Reflection())->resolveKey(new ComponentKey(Fixtures\Resolver\Product::class, ['groups' => ['light']]), $assembler);
+
+        $this->assertFalse($claimed);
+        $this->assertSame([], $this->schemaNames($assembler));
+    }
+
+    public function testAQualifiedRefReferencesTheDescriptionItsResolverMade(): void
+    {
+        $document = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->withResolver(fn (Resolver $resolver): Resolver => $resolver->withResolvers(
+                fn (TypedList $resolvers): TypedList => $resolvers->add(new Fixtures\Resolver\GroupsResolver()),
+            ))
+            // nothing references the schemas from a path; keep them to assert on
+            ->withAugmenters(fn (Pipeline $augmenters): Pipeline => $augmenters->remove(Augmenter\Cleanup::class))
+            ->addSource(new \ReflectionClass(ClassDescriptions\Article::class))
+            ->withSpecification(fn (Specification $specification): Specification => $specification->add(new OA\Info(title: 'Resolver', version: '1.0.0')))
+            ->build()
+            ->toArray();
+
+        $this->assertSame('#/components/schemas/AuthorLight', $document['components']['schemas']['Article']['properties']['editor']['$ref']);
     }
 
     public function testALoggerAwareResolverGetsTheResolversLogger(): void

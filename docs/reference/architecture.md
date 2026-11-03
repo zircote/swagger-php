@@ -43,7 +43,9 @@ Augmenters read from and write to the Specification's buckets. The container is 
 
 Between assembly and augmentation, the Resolver looks for classes the specification refers
 to but does not contain — a model used in a `$ref`, or the type of a property on a schema —
-and hands each one to a chain of `ResolverInterface` implementations.
+and hands each one to a chain of resolvers. A `Schema\Ref` with qualifiers asks for one
+description of a class, and only a `KeyResolverInterface` is asked about it. A resolver
+implementing `ResolverInterface` alone is asked about the class without qualifiers.
 
 `Resolver\Reflection` is registered by default: it reflects the class and collects it with
 the assembler already in use. A class carrying no spec attributes contributes nothing, so
@@ -59,16 +61,22 @@ are in [Spec pipeline internals](/dev/pipeline).
 ```php
 namespace OpenApi\Contracts;
 
-interface ResolverInterface
+interface KeyResolverInterface extends ResolverInterface
 {
-    public function resolve(string $fqcn, Assembler $assembler): bool;
+    public function resolveKey(ComponentKey $key, Assembler $assembler): bool;
 }
 ```
 
-Resolvers are handed the `Assembler` that built the specification, so collecting a reflector
-with it adds the result straight into the specification in progress. A resolver that
-assembles differently can add to `$assembler->getSpecification()` directly. Return `true` to
-mark the FQCN handled and stop the chain for it.
+A resolver is handed a `ComponentKey`, the class plus any qualifiers, and the `Assembler` that
+built the specification. Collecting a reflector with the assembler adds the result straight
+into the specification in progress. A resolver that assembles differently can add to
+`$assembler->getSpecification()` directly. A component made for a key with qualifiers carries
+that key, set with `setComponentKey()`, so the reference finds it. Return `true` to mark the key
+handled and stop the chain for it.
+
+`KeyResolverInterface` extends `ResolverInterface`, so a key-aware resolver also has `resolve()`,
+for code that still calls it with a class name. `Resolver\Concerns\KeyResolverTrait` supplies it
+as `resolveKey()` with the class alone, so only `resolveKey()` needs writing.
 
 ## Augmenters
 
