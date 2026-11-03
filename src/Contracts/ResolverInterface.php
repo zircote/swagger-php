@@ -8,6 +8,12 @@ namespace OpenApi\Contracts;
 
 use OpenApi\Assembler;
 
+/**
+ * A resolver that is asked about a class name.
+ *
+ * @deprecated since 7.2, removed in 8.0; implement `KeyResolverInterface`, which is asked about
+ *             a key and keeps working in 8.0
+ */
 interface ResolverInterface
 {
     /**

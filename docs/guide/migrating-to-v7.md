@@ -84,6 +84,7 @@ Everything below still works in v7 and is removed in 8.0.
 | Raw security arrays on spec attributes, `['bearerAuth' => []]` | `Security\Requirement`. `SecurityToRequirementRector` rewrites them. |
 | `ComponentIndex::buildRefMap()` | `ComponentIndex::findByKey()`, which takes the bucket the use means |
 | `OpenApi31Compiler::refString()` | `RefInterface::getRefValue()`, on the attribute that holds the `ref` |
+| `ResolverInterface`, reported at runtime for each resolver implementing it alone | `KeyResolverInterface`. `KeyResolverTrait` supplies `resolve()`, so only `resolveKey()` needs writing. |
 
 The [Classic Attribute](/reference/attributes), [Docblock Annotation](/reference/annotations) and
 [Processor](/reference/processors) references mark each deprecated class.

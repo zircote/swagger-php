@@ -10,7 +10,7 @@ namespace OpenApi\Contracts;
  * When two attributes in one collection, such as two schemas or two operations, are the same
  * one, and what the one that survives looks like.
  *
- * Mergers are a chain, first match wins, the shape {@see ResolverInterface} already has:
+ * Mergers are a chain, first match wins, the shape {@see KeyResolverInterface} already has:
  * `supports()` is asked in registration order, so a merger claiming a specific type goes
  * before one claiming everything. `Merge\LastWins` ships as the catch-all and is registered
  * last for that reason.
