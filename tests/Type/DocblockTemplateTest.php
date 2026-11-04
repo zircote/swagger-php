@@ -35,4 +35,17 @@ final class DocblockTemplateTest extends TestCase
 
         $this->assertSame('array', $type?->type);
     }
+
+    /**
+     * Type-info reads an unbounded template as `mixed`, which an intersection does not take.
+     */
+    public function testAnIntersectionTypeInfoRejectsIsReported(): void
+    {
+        $this->expectLogEntry('Unsupported docblock type "(T & \\Countable)" on');
+
+        $resolver = new TypeResolver();
+        $resolver->setLogger($this->trackingLogger());
+
+        $this->assertNull($resolver->getDocblockType(new \ReflectionProperty(Template::class, 'unbounded')));
+    }
 }
