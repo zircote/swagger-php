@@ -32,13 +32,17 @@ class Docblocks implements PipeInterface
 
     public function __invoke(mixed $payload): mixed
     {
-        $walker = $payload->getWalker();
-        $walker->visit(OA\Property::class, function (OA\Property $property): void {
-            $this->augmentProperty($property);
+        $payload->getWalker()->visit(AttributeInterface::class, function (AttributeInterface $attribute): void {
+            if ($attribute instanceof OA\Property) {
+                $this->augmentProperty($attribute);
+            } elseif ($attribute instanceof OA\Schema) {
+                $this->augmentSchema($attribute);
+            } elseif ($attribute instanceof OA\Parameter) {
+                $this->augmentParameterDescription($attribute);
+            } elseif ($attribute instanceof OA\Header) {
+                $this->augmentHeader($attribute);
+            }
         });
-        $walker->eachSchema($this->augmentSchema(...));
-        $walker->visit(OA\Parameter::class, $this->augmentParameterDescription(...));
-        $walker->visit(OA\Header::class, $this->augmentHeader(...));
 
         foreach ($payload->operations as $operation) {
             $this->augmentSummaryAndDescription($operation);
