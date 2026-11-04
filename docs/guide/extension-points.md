@@ -128,7 +128,9 @@ An augmenter that needs one of the builder's services declares it with an interf
 `OpenApi\Contracts`, and the builder hands the service over when the build runs, as the pipeline
 does a logger to a `LoggerAwareInterface`. `ComponentNamerAwareInterface` gets the [component
 namer](#component-names), so a name the augmenter works out matches the one `Names` gives.
-`AttributeFactoryAwareInterface` gets the attribute factory, with its translators. A resolver
+`AttributeFactoryAwareInterface` gets the attribute factory, with its translators.
+`TypeResolverAwareInterface` gets the type resolver, so a PHP type the augmenter reads matches
+the one `Types` reads. A resolver
 added through `withResolver()` and a merger added through `withMergers()` get them the same
 way. What the builder hands over replaces what was set directly.
 

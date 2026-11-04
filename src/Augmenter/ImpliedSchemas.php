@@ -6,12 +6,15 @@
 
 namespace OpenApi\Augmenter;
 
+use OpenApi\Contracts\TypeResolverAwareInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Specification\ComponentKey;
 use OpenApi\Type\SchemaType;
 use OpenApi\Type\TypeResolver;
 use OpenApi\Utils\PipeInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Adds the schemas the document's types imply but nobody declared.
@@ -28,8 +31,10 @@ use OpenApi\Utils\PipeInterface;
  *
  * @implements PipeInterface<Specification>
  */
-class ImpliedSchemas implements PipeInterface
+class ImpliedSchemas implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInterface
 {
+    protected ?LoggerInterface $logger = null;
+
     /** @var array<class-string<\UnitEnum>, true> */
     protected array $enums = [];
 
@@ -76,8 +81,20 @@ class ImpliedSchemas implements PipeInterface
     public function setTypeResolver(TypeResolver $typeResolver): static
     {
         $this->typeResolver = $typeResolver;
+        if ($this->logger instanceof LoggerInterface) {
+            $this->typeResolver->setLogger($this->logger);
+        }
 
         return $this;
+    }
+
+    /**
+     * Passes the logger to the type resolver, including one set later.
+     */
+    public function setLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
+        $this->typeResolver->setLogger($logger);
     }
 
     public function group(): string|\BackedEnum

@@ -13,21 +13,25 @@ use OpenApi\Contracts\ComponentNamerAwareInterface;
 use OpenApi\Contracts\ComponentNamerInterface;
 use OpenApi\Contracts\KeyResolverInterface;
 use OpenApi\Contracts\MergerInterface;
+use OpenApi\Contracts\TypeResolverAwareInterface;
 use OpenApi\Resolver\Concerns\KeyResolverTrait;
 use OpenApi\Specification;
 use OpenApi\Specification\ComponentKey;
+use OpenApi\Type\TypeResolver;
 use OpenApi\Utils\AttributeFactory;
 
 /**
  * An augmenter, resolver and merger that does nothing but keep the services the builder hands it.
  */
-class ServiceRecorder implements AttributeFactoryAwareInterface, ComponentNamerAwareInterface, KeyResolverInterface, MergerInterface
+class ServiceRecorder implements AttributeFactoryAwareInterface, ComponentNamerAwareInterface, KeyResolverInterface, MergerInterface, TypeResolverAwareInterface
 {
     use KeyResolverTrait;
 
     public ?AttributeFactory $attributeFactory = null;
 
     public ?ComponentNamerInterface $namer = null;
+
+    public ?TypeResolver $typeResolver = null;
 
     public function __invoke(Specification $specification): Specification
     {
@@ -64,6 +68,13 @@ class ServiceRecorder implements AttributeFactoryAwareInterface, ComponentNamerA
     public function setNamer(ComponentNamerInterface $namer): static
     {
         $this->namer = $namer;
+
+        return $this;
+    }
+
+    public function setTypeResolver(TypeResolver $typeResolver): static
+    {
+        $this->typeResolver = $typeResolver;
 
         return $this;
     }

@@ -7,7 +7,9 @@
 namespace OpenApi\Tests;
 
 use OpenApi\Augmenter;
+use OpenApi\Augmenter\ImpliedSchemas;
 use OpenApi\Augmenter\OperationIds;
+use OpenApi\Augmenter\Types;
 use OpenApi\Builder;
 use OpenApi\Builder\Mode;
 use OpenApi\Examples\Specs\Webhooks\Attributes as WebhooksAttributes;
@@ -18,6 +20,7 @@ use OpenApi\Merge\LastWins;
 use OpenApi\Resolver;
 use OpenApi\Specification;
 use OpenApi\Tests\Concerns\UsesExamples;
+use OpenApi\Type\TypeResolver;
 use OpenApi\Utils\Pipeline;
 use OpenApi\Utils\SourceFinder;
 use OpenApi\Utils\TypedList;
@@ -479,7 +482,37 @@ final class BuilderTest extends OpenApiTestCase
         foreach (['augmenter' => $augmenter, 'resolver' => $resolver, 'merger' => $merger] as $role => $recorder) {
             $this->assertSame($namer, $recorder->namer, $role);
             $this->assertSame($builder->getAttributeFactory(), $recorder->attributeFactory, $role);
+            $this->assertSame($this->typeResolverOf($builder->getAugmenters()->get(Types::class)), $recorder->typeResolver, $role);
         }
+    }
+
+    public function testTheAugmentersReadingTypesShareOneResolver(): void
+    {
+        $builder = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->addSource([new \ReflectionClass(Fixtures\Augmenter\BasicEnum::class)])
+            ->setLogger($this->trackingLogger());
+        $this->allowLogEntry('info is required', 'At least one of paths, webhooks, or components is required', 'Removed ');
+        $builder->build();
+
+        $resolver = $this->typeResolverOf($builder->getAugmenters()->get(Types::class));
+        $this->assertInstanceOf(TypeResolver::class, $resolver);
+        $this->assertSame($resolver, $this->typeResolverOf($builder->getAugmenters()->get(ImpliedSchemas::class)));
+    }
+
+    /**
+     * `ImpliedSchemas` reads the member first. `Types` gets the shared resolver's answer again.
+     */
+    public function testAnUnreadableDocblockTypeIsReportedOnceInABuild(): void
+    {
+        $this->expectLogEntry('Unsupported docblock type "NoSuchClass" on ' . Fixtures\Augmenter\UnreadableDocblockType::class . '::$unknown', 'warning');
+        $this->allowLogEntry('info is required', 'At least one of paths, webhooks, or components is required', 'Removed ');
+
+        (new Builder())
+            ->setMode(Mode::SPEC)
+            ->addSource(new \ReflectionClass(Fixtures\Augmenter\UnreadableDocblockType::class))
+            ->setLogger($this->trackingLogger())
+            ->build();
     }
 
     public function testComponentNamerNamesEveryComponentAlike(): void
@@ -506,5 +539,12 @@ final class BuilderTest extends OpenApiTestCase
 
         $this->assertSame(['ApiBasicEnum', 'ApiChildOfParentWithSchema', 'ApiParentWithSchema'], array_keys($schemas));
         $this->assertSame('#/components/schemas/ApiParentWithSchema', $schemas['ApiChildOfParentWithSchema']->allOf[0]->ref ?? null);
+    }
+
+    protected function typeResolverOf(?object $augmenter): mixed
+    {
+        $this->assertNotNull($augmenter);
+
+        return (new \ReflectionProperty($augmenter, 'typeResolver'))->getValue($augmenter);
     }
 }
