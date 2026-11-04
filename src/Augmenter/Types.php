@@ -23,8 +23,8 @@ use Psr\Log\LoggerInterface;
 /**
  * Infers schema type, format, nullable, items, etc. from PHP type declarations and docblocks.
  *
- * Walks all properties and parameters in the specification and fills their schema
- * fields from the attached reflector's type information.
+ * Fills the schema of each property, parameter and request body that
+ * `Specification\Walker::eachTypedAttribute()` lists, from its reflector's type information.
  *
  * @implements PipeInterface<Specification>
  */
@@ -51,31 +51,15 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
         $this->index = $payload->buildComponentIndex();
         $this->inferredTypes = new \SplObjectStorage();
 
-        $payload->getWalker()->eachSchema(function (OA\Schema $schema): void {
-            $this->inferSchemaType($schema);
-            $this->walkSchema($schema);
+        $walker = $payload->getWalker();
+        $walker->eachSchema($this->inferSchemaType(...));
+        $walker->eachTypedAttribute(function (OA\Property|OA\Parameter|OA\RequestBody $attribute): void {
+            match (true) {
+                $attribute instanceof OA\Property => $this->augmentProperty($attribute),
+                $attribute instanceof OA\Parameter => $this->augmentParameter($attribute),
+                $attribute instanceof OA\RequestBody => $this->augmentRequestBody($attribute),
+            };
         });
-
-        foreach ($payload->operations as $operation) {
-            $this->augmentOperationParameters($operation);
-            $this->walkOperationSchemas($operation);
-        }
-
-        foreach ($payload->parameters as $parameter) {
-            $this->augmentParameter($parameter);
-        }
-
-        foreach ($payload->requestBodies as $requestBody) {
-            $this->augmentRequestBody($requestBody);
-        }
-
-        foreach ($payload->responses as $response) {
-            $this->walkMediaTypes($response->content);
-        }
-
-        foreach ($payload->headers as $header) {
-            $this->walkSchema($header->schema);
-        }
 
         return null;
     }
@@ -124,57 +108,8 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
         }
     }
 
-    protected function walkSchema(?OA\Schema $schema): void
-    {
-        if (!$schema instanceof OA\Schema) {
-            return;
-        }
-
-        $this->inferSchemaType($schema);
-
-        if ($schema->properties) {
-            foreach ($schema->properties as $property) {
-                if (!$property instanceof OA\Property) {
-                    continue;
-                }
-
-                $this->augmentProperty($property);
-
-                if ($property->schema instanceof OA\Schema) {
-                    $this->walkSchema($property->schema);
-                }
-            }
-        }
-
-        $this->walkSchema($schema->items instanceof OA\Schema ? $schema->items : null);
-        $this->walkSchema($schema->additionalProperties instanceof OA\Schema ? $schema->additionalProperties : null);
-
-        foreach ($schema->allOf ?? [] as $child) {
-            $this->walkSchema($child);
-        }
-        foreach ($schema->anyOf ?? [] as $child) {
-            $this->walkSchema($child);
-        }
-        foreach ($schema->oneOf ?? [] as $child) {
-            $this->walkSchema($child);
-        }
-    }
-
-    protected function walkOperationSchemas(OA\Operation $operation): void
-    {
-        foreach ($operation->responses ?? [] as $response) {
-            $this->walkMediaTypes($response->content);
-        }
-
-        if ($operation->requestBody instanceof OA\RequestBody) {
-            $this->augmentRequestBody($operation->requestBody);
-        }
-    }
-
     protected function augmentRequestBody(OA\RequestBody $requestBody): void
     {
-        $this->walkMediaTypes($requestBody->content);
-
         $reflector = $requestBody->getReflector();
         if ($reflector instanceof \ReflectionParameter) {
             $resolved = $this->typeResolver->resolve($reflector);
@@ -188,20 +123,6 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
                     $requestBody->required = !$resolved->nullable;
                 }
             }
-        }
-    }
-
-    /**
-     * @param list<OA\MediaType>|null $mediaTypes
-     */
-    protected function walkMediaTypes(?array $mediaTypes): void
-    {
-        if (!$mediaTypes) {
-            return;
-        }
-
-        foreach ($mediaTypes as $mediaType) {
-            $this->walkSchema($mediaType->schema);
         }
     }
 
@@ -278,18 +199,6 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
             $property->schema = $this->schemaTypeToSchema($resolved);
         } else {
             $this->mergeIntoSchema($property->schema, $resolved);
-        }
-    }
-
-    protected function augmentOperationParameters(OA\Operation $operation): void
-    {
-        if (!$operation->parameters) {
-            return;
-        }
-
-        foreach ($operation->parameters as $parameter) {
-            $this->augmentParameter($parameter);
-            $this->walkMediaTypes($parameter->content);
         }
     }
 

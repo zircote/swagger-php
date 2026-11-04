@@ -192,8 +192,8 @@ default. An explicit `required` is left alone, and the compiler warns about one 
 
 Infers schema type, format, nullable, items, etc. from PHP type declarations and docblocks.
 
-Walks all properties and parameters in the specification and fills their schema
-fields from the attached reflector's type information.
+Fills the schema of each property, parameter and request body that
+`Specification\Walker::eachTypedAttribute()` lists, from its reflector's type information.
 
 ### [Properties](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Properties.php)
 

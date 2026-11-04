@@ -47,4 +47,32 @@ final class WalkerTest extends TestCase
 
         $this->assertSame(['name'], $properties);
     }
+
+    /**
+     * A property of a nested schema is visited once, with the schema it belongs to, and a
+     * parameter or request body without one.
+     */
+    public function testEachTypedAttributeIsVisitedOnceWithItsSchema(): void
+    {
+        $address = new OA\Schema(properties: [new OA\Property(property: 'street')]);
+        $customer = new OA\Schema(schema: 'Customer', properties: [new OA\Property(property: 'address', schema: $address)]);
+        $parameter = new OA\Parameter(name: 'id', in: 'path');
+        $requestBody = new OA\RequestBody(content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: 'Customer'))]);
+
+        $specification = new Specification();
+        $specification->schemas[] = $customer;
+        $specification->operations[] = new OA\Operation(path: '/customers/{id}', method: 'put', parameters: [$parameter], requestBody: $requestBody);
+
+        $visited = new \SplObjectStorage();
+        $specification->getWalker()->eachTypedAttribute(function (OA\Property|OA\Parameter|OA\RequestBody $attribute, ?OA\Schema $schema) use ($visited): void {
+            $this->assertFalse($visited->offsetExists($attribute), 'visited twice');
+            $visited[$attribute] = $schema;
+        });
+
+        $this->assertCount(4, $visited);
+        $this->assertSame($address, $visited[$address->properties[0]]);
+        $this->assertSame($customer, $visited[$customer->properties[0]]);
+        $this->assertNull($visited[$parameter]);
+        $this->assertNull($visited[$requestBody]);
+    }
 }

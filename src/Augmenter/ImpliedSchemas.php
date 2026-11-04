@@ -47,15 +47,8 @@ class ImpliedSchemas implements PipeInterface, LoggerAwareInterface, TypeResolve
     {
         $this->enums = [];
 
-        $walker = $payload->getWalker();
-        $walker->visit(OA\Property::class, function (OA\Property $property): void {
-            $this->collect($property->getReflector(), $property->schema);
-        });
-        $walker->visit(OA\Parameter::class, function (OA\Parameter $parameter): void {
-            $this->collect($parameter->getReflector(), $parameter->schema);
-        });
-        $walker->visit(OA\RequestBody::class, function (OA\RequestBody $requestBody): void {
-            $this->collect($requestBody->getReflector());
+        $payload->getWalker()->eachTypedAttribute(function (OA\Property|OA\Parameter|OA\RequestBody $attribute): void {
+            $this->collect($attribute->getReflector(), $attribute instanceof OA\RequestBody ? null : $attribute->schema);
         });
 
         $index = $payload->buildComponentIndex();
