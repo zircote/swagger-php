@@ -41,6 +41,8 @@ class OpenApi31Compiler implements CompilerInterface
     /**
      * Maps nested in another object, as container => [property => the member field keying it].
      * `Schema::$examples` is absent: it is the JSON Schema keyword, which takes a list.
+     *
+     * @var array<class-string<AttributeInterface>, array<string, string>>
      */
     protected const NESTED_MAPS = [
         OA\Response::class => ['headers' => 'header', 'links' => 'link'],
@@ -926,10 +928,12 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function validateNestedNames(Specification $specification): void
     {
-        $walker = $specification->getWalker();
+        $specification->getWalker()->visit(array_keys(static::NESTED_MAPS), function (AttributeInterface $attribute): void {
+            foreach (static::NESTED_MAPS as $container => $maps) {
+                if (!$attribute instanceof $container) {
+                    continue;
+                }
 
-        foreach (static::NESTED_MAPS as $container => $maps) {
-            $walker->visit($container, function (AttributeInterface $attribute) use ($maps): void {
                 foreach ($maps as $property => $keyField) {
                     foreach ($attribute->{$property} ?? [] as $item) {
                         if (($item->{$keyField} ?? null) !== null) {
@@ -944,8 +948,8 @@ class OpenApi31Compiler implements CompilerInterface
                         ));
                     }
                 }
-            });
-        }
+            }
+        });
     }
 
     /**
@@ -1117,11 +1121,7 @@ class OpenApi31Compiler implements CompilerInterface
             }
         };
 
-        $walker = $specification->getWalker();
-        $walker->visit(OA\Response::class, $check);
-        $walker->visit(OA\RequestBody::class, $check);
-        $walker->visit(OA\Parameter::class, $check);
-        $walker->visit(OA\Header::class, $check);
+        $specification->getWalker()->visit([OA\Response::class, OA\RequestBody::class, OA\Parameter::class, OA\Header::class], $check);
     }
 
     /**

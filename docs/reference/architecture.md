@@ -124,6 +124,11 @@ class CustomAugmenter implements PipeInterface
             // ...
         });
 
+        // or several kinds in one walk; each call walks the whole specification
+        $payload->getWalker()->visit([OA\Parameter::class, OA\Header::class], function (OA\Parameter|OA\Header $attribute) {
+            // ...
+        });
+
         // or walk all attributes with $ref set
         $payload->getWalker()->eachRef(function () {
             // $attribute->ref = ...

@@ -6,6 +6,7 @@
 
 namespace OpenApi\Tests\Specification;
 
+use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use PHPUnit\Framework\TestCase;
@@ -31,6 +32,32 @@ final class WalkerTest extends TestCase
         });
 
         $this->assertSame([$shared], $visited);
+    }
+
+    /**
+     * A list of classes is one walk over all of them. An attribute that is an instance of more
+     * than one is still visited once.
+     */
+    public function testVisitTakesAListOfClasses(): void
+    {
+        $header = new OA\Header(header: 'X-Rate-Limit');
+        $response = new OA\Response(response: 200, description: 'OK', headers: [$header]);
+
+        $specification = new Specification();
+        $specification->operations[] = new OA\Operation(path: '/products', method: 'get', responses: [$response]);
+
+        $visited = [];
+        $specification->getWalker()->visit(
+            [OA\Response::class, OA\Header::class, AttributeInterface::class],
+            function (AttributeInterface $attribute) use (&$visited): void {
+                $visited[] = $attribute;
+            }
+        );
+
+        $ids = array_map(spl_object_id(...), $visited);
+        $this->assertSame(array_unique($ids), $ids, 'visited twice');
+        $this->assertContains($header, $visited);
+        $this->assertContains($response, $visited);
     }
 
     public function testNestedAttributesAreVisited(): void
