@@ -7,6 +7,7 @@
 namespace OpenApi\Augmenter;
 
 use OpenApi\ComponentNamer;
+use OpenApi\Contracts\ComponentNamerAwareInterface;
 use OpenApi\Contracts\ComponentNamerInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
@@ -33,7 +34,7 @@ use Psr\Log\LoggerAwareTrait;
  *
  * @implements PipeInterface<Specification>
  */
-class Enums implements PipeInterface, LoggerAwareInterface
+class Enums implements PipeInterface, LoggerAwareInterface, ComponentNamerAwareInterface
 {
     use LoggerAwareTrait;
 

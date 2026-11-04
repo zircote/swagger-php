@@ -8,6 +8,7 @@ namespace OpenApi\Augmenter;
 
 use OpenApi\ComponentNamer;
 use OpenApi\Contracts\AttributeInterface;
+use OpenApi\Contracts\ComponentNamerAwareInterface;
 use OpenApi\Contracts\ComponentNamerInterface;
 use OpenApi\Specification;
 use OpenApi\Specification\ComponentName;
@@ -26,7 +27,7 @@ use OpenApi\Utils\PipeInterface;
  *
  * @implements PipeInterface<Specification>
  */
-class Names implements PipeInterface
+class Names implements PipeInterface, ComponentNamerAwareInterface
 {
     /**
      * A security scheme is only ever declared inside `Components`, where the name is the whole
