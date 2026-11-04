@@ -49,44 +49,30 @@ class TypeResolver implements LoggerAwareInterface
 
     protected TypeMapper $typeMapper;
 
+    /** @var \WeakMap<\Reflector, array{?SchemaType}> what each reflector resolved to, so a docblock is read and reported once */
+    protected \WeakMap $resolved;
+
     public function __construct()
     {
         $this->typeMapper = new TypeMapper();
+        $this->resolved = new \WeakMap();
     }
 
     /**
      * Resolve the PHP type of a reflector into a SchemaType.
      *
+     * A reflector is resolved once. Asking again gives a copy of the first answer, which the
+     * caller can change freely.
+     *
      * @param \ReflectionProperty|\ReflectionParameter|\ReflectionMethod|\ReflectionClassConstant $reflector
      */
     public function resolve(\Reflector $reflector): ?SchemaType
     {
-        $docblockType = $this->getDocblockType($reflector);
-        $reflectionType = $this->getReflectionType($reflector);
+        // wrapped, as the map reads a null value as missing
+        $this->resolved[$reflector] ??= [$this->doResolve($reflector)];
+        [$resolved] = $this->resolved[$reflector];
 
-        if (!$docblockType && !$reflectionType) {
-            return null;
-        }
-
-        $nullable = null;
-        if (($docblockType instanceof Type && $docblockType->isNullable()) || ($reflectionType instanceof Type && $reflectionType->isNullable())) {
-            $nullable = true;
-        }
-
-        $docblockType = $docblockType instanceof NullableType ? $docblockType->getWrappedType() : $docblockType;
-        $reflectionType = $reflectionType instanceof NullableType ? $reflectionType->getWrappedType() : $reflectionType;
-
-        $effectiveType = $docblockType ?? $reflectionType;
-        if (!$effectiveType instanceof Type) {
-            return $nullable !== null ? new SchemaType(nullable: $nullable) : null;
-        }
-
-        $result = $this->mapType($effectiveType);
-        $result->nullable = $nullable;
-
-        $this->applyNativeTypeMapping($result);
-
-        return $result;
+        return $resolved instanceof SchemaType ? clone $resolved : null;
     }
 
     public function getDocblockType(\Reflector $reflector): ?Type
@@ -163,6 +149,39 @@ class TypeResolver implements LoggerAwareInterface
             $reflector instanceof \ReflectionFunctionAbstract => $reflector->name . '()',
             default => $reflector::class,
         };
+    }
+
+    /**
+     * @param \ReflectionProperty|\ReflectionParameter|\ReflectionMethod|\ReflectionClassConstant $reflector
+     */
+    protected function doResolve(\Reflector $reflector): ?SchemaType
+    {
+        $docblockType = $this->getDocblockType($reflector);
+        $reflectionType = $this->getReflectionType($reflector);
+
+        if (!$docblockType && !$reflectionType) {
+            return null;
+        }
+
+        $nullable = null;
+        if (($docblockType instanceof Type && $docblockType->isNullable()) || ($reflectionType instanceof Type && $reflectionType->isNullable())) {
+            $nullable = true;
+        }
+
+        $docblockType = $docblockType instanceof NullableType ? $docblockType->getWrappedType() : $docblockType;
+        $reflectionType = $reflectionType instanceof NullableType ? $reflectionType->getWrappedType() : $reflectionType;
+
+        $effectiveType = $docblockType ?? $reflectionType;
+        if (!$effectiveType instanceof Type) {
+            return $nullable !== null ? new SchemaType(nullable: $nullable) : null;
+        }
+
+        $result = $this->mapType($effectiveType);
+        $result->nullable = $nullable;
+
+        $this->applyNativeTypeMapping($result);
+
+        return $result;
     }
 
     protected function mapType(Type $type): SchemaType

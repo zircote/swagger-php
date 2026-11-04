@@ -47,6 +47,21 @@ class SchemaType
     }
 
     /**
+     * A clone holds clones of the types nested in it, so changing it leaves the original alone.
+     */
+    public function __clone()
+    {
+        $copy = static fn (self $type): self => clone $type;
+
+        $this->items = $this->items instanceof self ? clone $this->items : null;
+        $this->additionalProperties = $this->additionalProperties instanceof self ? clone $this->additionalProperties : $this->additionalProperties;
+        $this->oneOf = $this->oneOf === null ? null : array_map($copy, $this->oneOf);
+        $this->allOf = $this->allOf === null ? null : array_map($copy, $this->allOf);
+        $this->anyOf = $this->anyOf === null ? null : array_map($copy, $this->anyOf);
+        $this->properties = $this->properties === null ? null : array_map($copy, $this->properties);
+    }
+
+    /**
      * @phpstan-assert-if-true string $this->type
      */
     public function isRef(): bool

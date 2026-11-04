@@ -6,6 +6,7 @@
 
 namespace OpenApi\Augmenter;
 
+use OpenApi\Contracts\TypeResolverAwareInterface;
 use OpenApi\HybridBridge;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
@@ -27,7 +28,7 @@ use Psr\Log\LoggerInterface;
  *
  * @implements PipeInterface<Specification>
  */
-class Types implements PipeInterface, LoggerAwareInterface
+class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInterface
 {
     protected ?LoggerInterface $logger = null;
 
@@ -81,6 +82,8 @@ class Types implements PipeInterface, LoggerAwareInterface
 
     /**
      * Override the type resolver used to infer schema types from PHP type declarations.
+     *
+     * The builder hands its own when the build runs.
      */
     public function setTypeResolver(TypeResolver $typeResolver): static
     {

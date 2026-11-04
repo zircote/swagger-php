@@ -13,6 +13,7 @@ use OpenApi\Contracts\CompilerInterface;
 use OpenApi\Contracts\ComponentNamerAwareInterface;
 use OpenApi\Contracts\ComponentNamerInterface;
 use OpenApi\Contracts\MergerInterface;
+use OpenApi\Contracts\TypeResolverAwareInterface;
 use OpenApi\Loggers\CollectingLogger;
 use OpenApi\Utils\AttributeFactory;
 use OpenApi\Utils\ClassReflector;
@@ -75,6 +76,8 @@ class Builder
     protected $generatorHook;
 
     protected ?AttributeFactory $attributeFactory = null;
+
+    protected ?Type\TypeResolver $typeResolver = null;
 
     /** @var list<callable(Specification): (Specification|void)> */
     protected array $specificationHooks = [];
@@ -321,6 +324,7 @@ class Builder
     protected function shareServices(Utils\TypedList $members, AttributeFactory $attributeFactory): void
     {
         $componentNamer = $this->getComponentNamer();
+        $typeResolver = $this->getTypeResolver();
 
         foreach ($members as $member) {
             if ($member instanceof AttributeFactoryAwareInterface) {
@@ -329,7 +333,21 @@ class Builder
             if ($member instanceof ComponentNamerAwareInterface) {
                 $member->setNamer($componentNamer);
             }
+            if ($member instanceof TypeResolverAwareInterface) {
+                $member->setTypeResolver($typeResolver);
+            }
         }
+    }
+
+    /**
+     * The type resolver handed to each augmenter, resolver and merger implementing
+     * `TypeResolverAwareInterface`.
+     */
+    protected function getTypeResolver(): Type\TypeResolver
+    {
+        $this->typeResolver ??= new Type\TypeResolver();
+
+        return $this->typeResolver;
     }
 
     protected function getLogger(): LoggerInterface
@@ -414,6 +432,8 @@ class Builder
         // index is the first reader
         Specification\ComponentName::normalise($specification, deprecate: true);
 
+        // a type resolver reports from wherever it is read
+        $this->getTypeResolver()->setLogger($collecting);
         // before the resolvers, the first to run
         $this->getResolver()->withResolvers(fn (Utils\TypedList $resolvers) => $this->shareServices($resolvers, $attributeFactory));
         $this->shareServices($this->getAugmenters(), $attributeFactory);
