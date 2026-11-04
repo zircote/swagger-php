@@ -124,6 +124,14 @@ for traversal, `buildComponentIndex()` to resolve a `$ref`, and `buildPathItemHi
 the `PathItem`s governing a class. Path-level metadata has to be read through it, since a class
 without its own `PathItem` is governed by its ancestors'.
 
+An augmenter that needs one of the builder's services declares it with an interface from
+`OpenApi\Contracts`, and the builder hands the service over when the build runs, as the pipeline
+does a logger to a `LoggerAwareInterface`. `ComponentNamerAwareInterface` gets the [component
+namer](#component-names), so a name the augmenter works out matches the one `Names` gives.
+`AttributeFactoryAwareInterface` gets the attribute factory, with its translators. A resolver
+added through `withResolver()` and a merger added through `withMergers()` get them the same
+way. What the builder hands over replaces what was set directly.
+
 `Builder::withAugmenters()` hands the pipeline to a callable, which adds, replaces or
 removes. Phases run **resolve** → **reduce** → **augment**, and within a phase in
 registration order.

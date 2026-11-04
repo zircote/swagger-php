@@ -7,6 +7,8 @@
 namespace OpenApi\Augmenter;
 
 use OpenApi\ComponentNamer;
+use OpenApi\Contracts\AttributeFactoryAwareInterface;
+use OpenApi\Contracts\ComponentNamerAwareInterface;
 use OpenApi\Contracts\ComponentNamerInterface;
 use OpenApi\Specification;
 use OpenApi\Utils\AttributeFactory;
@@ -21,7 +23,7 @@ use OpenApi\Utils\PipeInterface;
  *
  * @implements PipeInterface<Specification>
  */
-class Inheritance implements PipeInterface
+class Inheritance implements PipeInterface, AttributeFactoryAwareInterface, ComponentNamerAwareInterface
 {
     protected AttributeFactory $attributeFactory;
 

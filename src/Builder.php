@@ -8,7 +8,9 @@ namespace OpenApi;
 
 use OpenApi\Builder\Mode;
 use OpenApi\Builder\Result;
+use OpenApi\Contracts\AttributeFactoryAwareInterface;
 use OpenApi\Contracts\CompilerInterface;
+use OpenApi\Contracts\ComponentNamerAwareInterface;
 use OpenApi\Contracts\ComponentNamerInterface;
 use OpenApi\Contracts\MergerInterface;
 use OpenApi\Loggers\CollectingLogger;
@@ -138,9 +140,10 @@ class Builder
     /**
      * Name components that are not named explicitly.
      *
-     * Every default augmenter that names a component asks this one namer, so a reference to a
-     * component and the component's own name cannot disagree. It is handed to them when the build
-     * runs, and replaces any namer set on those augmenters directly.
+     * Every augmenter that names a component asks this one namer, so a reference to a component
+     * and the component's own name cannot disagree. It is handed to each augmenter, resolver and
+     * merger implementing `ComponentNamerAwareInterface` when the build runs, and replaces any
+     * namer set on it directly.
      */
     public function setComponentNamer(ComponentNamerInterface $componentNamer): static
     {
@@ -306,6 +309,29 @@ class Builder
         };
     }
 
+    /**
+     * Hands the builder's services to each member of a list that implements the matching aware
+     * interface, built-in or added through `withAugmenters()`, `withResolver()` or
+     * `withMergers()`.
+     *
+     * @template T
+     *
+     * @param Utils\TypedList<T> $members
+     */
+    protected function shareServices(Utils\TypedList $members, AttributeFactory $attributeFactory): void
+    {
+        $componentNamer = $this->getComponentNamer();
+
+        foreach ($members as $member) {
+            if ($member instanceof AttributeFactoryAwareInterface) {
+                $member->setAttributeFactory($attributeFactory);
+            }
+            if ($member instanceof ComponentNamerAwareInterface) {
+                $member->setNamer($componentNamer);
+            }
+        }
+    }
+
     protected function getLogger(): LoggerInterface
     {
         $this->logger ??= new NullLogger();
@@ -388,6 +414,11 @@ class Builder
         // index is the first reader
         Specification\ComponentName::normalise($specification, deprecate: true);
 
+        // before the resolvers, the first to run
+        $this->getResolver()->withResolvers(fn (Utils\TypedList $resolvers) => $this->shareServices($resolvers, $attributeFactory));
+        $this->shareServices($this->getAugmenters(), $attributeFactory);
+        $this->shareServices($this->getMergers(), $attributeFactory);
+
         $this->getResolver()->setLogger($this->getLogger());
         $this->getResolver()->resolve($assembler);
 
@@ -395,16 +426,6 @@ class Builder
             $this->doHybridAssemble($specification);
             Specification\ComponentName::normalise($specification, deprecate: false);
         }
-
-        // share the token scanner cache ...
-        $this->getAugmenters()->get(Augmenter\Inheritance::class)
-            ?->setAttributeFactory($attributeFactory);
-
-        // ... and one namer, so every augmenter that names a component names it alike
-        $componentNamer = $this->getComponentNamer();
-        $this->getAugmenters()->get(Augmenter\Inheritance::class)?->setNamer($componentNamer);
-        $this->getAugmenters()->get(Augmenter\Names::class)?->setNamer($componentNamer);
-        $this->getAugmenters()->get(Augmenter\Enums::class)?->setNamer($componentNamer);
 
         $this->getAugmenters()->setLogger($collecting);
         $this->getAugmenters()->process($specification);

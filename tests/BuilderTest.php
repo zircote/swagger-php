@@ -14,10 +14,13 @@ use OpenApi\Examples\Specs\Webhooks\Attributes as WebhooksAttributes;
 use OpenApi\Examples\Specs\Webhooks\Spec as WebhooksSpec;
 use OpenApi\Generator;
 use OpenApi\Loggers\CollectingLogger;
+use OpenApi\Merge\LastWins;
+use OpenApi\Resolver;
 use OpenApi\Specification;
 use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\Utils\Pipeline;
 use OpenApi\Utils\SourceFinder;
+use OpenApi\Utils\TypedList;
 
 final class BuilderTest extends OpenApiTestCase
 {
@@ -453,6 +456,30 @@ final class BuilderTest extends OpenApiTestCase
 
         $rc = new \ReflectionProperty($operationId, 'hash');
         $this->assertFalse($rc->getValue($operationId));
+    }
+
+    public function testWhatYouAddGetsTheBuildersServices(): void
+    {
+        $augmenter = new Fixtures\ServiceRecorder();
+        $resolver = new Fixtures\ServiceRecorder();
+        $merger = new Fixtures\ServiceRecorder();
+        $namer = new Fixtures\PrefixedComponentNamer();
+
+        $builder = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->setComponentNamer($namer)
+            ->withAugmenters(fn (Pipeline $augmenters): Pipeline => $augmenters->add($augmenter))
+            ->withResolver(fn (Resolver $chain): Resolver => $chain->withResolvers(fn (TypedList $resolvers): TypedList => $resolvers->add($resolver)))
+            ->withMergers(fn (TypedList $mergers): TypedList => $mergers->insert($merger, LastWins::class))
+            ->addSource([new \ReflectionClass(Fixtures\Augmenter\BasicEnum::class)])
+            ->setLogger($this->trackingLogger());
+        $this->allowLogEntry('info is required', 'At least one of paths, webhooks, or components is required', 'Removed ');
+        $builder->build();
+
+        foreach (['augmenter' => $augmenter, 'resolver' => $resolver, 'merger' => $merger] as $role => $recorder) {
+            $this->assertSame($namer, $recorder->namer, $role);
+            $this->assertSame($builder->getAttributeFactory(), $recorder->attributeFactory, $role);
+        }
     }
 
     public function testComponentNamerNamesEveryComponentAlike(): void
