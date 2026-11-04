@@ -113,6 +113,17 @@ plain component, and the document kept only one of them.
 [Describing a class more than once](/guide/extension-points#describing-a-class-more-than-once)
 has the scheme.
 
+A component schema declared on a method no longer takes its description and `deprecated` from the
+method's docblock. A schema declared on a class still takes them from the class docblock.
+
+Parameters, response headers and inline schemas that describe a property take its docblock's
+description, `@example` and `@deprecated`, as the property's own schema already did.
+[Summary and description](/guide/augmentation#summary-and-description) has the details.
+
+`Spec\Header::$description` defaults to `Undefined::UNDEFINED` rather than `null`, so a description
+can be inferred for it. Code checking for the default with `=== null` uses `Undefined::isDefault()`
+instead.
+
 A type resolver set on `Types` with `setTypeResolver()` is replaced when the build runs, by the
 one every augmenter reading PHP types shares. Set it with `Builder::setTypeResolver()` instead.
 
