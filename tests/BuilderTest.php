@@ -500,6 +500,21 @@ final class BuilderTest extends OpenApiTestCase
         $this->assertSame($resolver, $this->typeResolverOf($builder->getAugmenters()->get(ImpliedSchemas::class)));
     }
 
+    public function testATypeResolverSetOnTheBuilderReachesTheAugmentersReadingTypes(): void
+    {
+        $resolver = new TypeResolver();
+        $builder = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->setTypeResolver($resolver)
+            ->addSource([new \ReflectionClass(Fixtures\Augmenter\BasicEnum::class)])
+            ->setLogger($this->trackingLogger());
+        $this->allowLogEntry('info is required', 'At least one of paths, webhooks, or components is required', 'Removed ');
+        $builder->build();
+
+        $this->assertSame($resolver, $this->typeResolverOf($builder->getAugmenters()->get(Types::class)));
+        $this->assertSame($resolver, $this->typeResolverOf($builder->getAugmenters()->get(ImpliedSchemas::class)));
+    }
+
     /**
      * `ImpliedSchemas` reads the member first. `Types` gets the shared resolver's answer again.
      */
