@@ -155,6 +155,20 @@ class Builder
         return $this;
     }
 
+    /**
+     * Read PHP types with this resolver.
+     *
+     * It is handed to each augmenter, resolver and merger implementing
+     * `TypeResolverAwareInterface` when the build runs, and replaces any type resolver set on it
+     * directly.
+     */
+    public function setTypeResolver(Type\TypeResolver $typeResolver): static
+    {
+        $this->typeResolver = $typeResolver;
+
+        return $this;
+    }
+
     public function getResolver(): Resolver
     {
         $this->resolver ??= new Resolver();
@@ -341,7 +355,7 @@ class Builder
 
     /**
      * The type resolver handed to each augmenter, resolver and merger implementing
-     * `TypeResolverAwareInterface`.
+     * `TypeResolverAwareInterface`: the one set with `setTypeResolver()`, or a default.
      */
     protected function getTypeResolver(): Type\TypeResolver
     {

@@ -113,6 +113,9 @@ plain component, and the document kept only one of them.
 [Describing a class more than once](/guide/extension-points#describing-a-class-more-than-once)
 has the scheme.
 
+A type resolver set on `Types` with `setTypeResolver()` is replaced when the build runs, by the
+one every augmenter reading PHP types shares. Set it with `Builder::setTypeResolver()` instead.
+
 ## Preparing for 8.0
 
 In 8.0 classic is removed, and so is `setMode()`. Spec attributes move from `OpenApi\Spec` to

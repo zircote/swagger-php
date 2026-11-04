@@ -130,9 +130,9 @@ does a logger to a `LoggerAwareInterface`. `ComponentNamerAwareInterface` gets t
 namer](#component-names), so a name the augmenter works out matches the one `Names` gives.
 `AttributeFactoryAwareInterface` gets the attribute factory, with its translators.
 `TypeResolverAwareInterface` gets the type resolver, so a PHP type the augmenter reads matches
-the one `Types` reads. A resolver
-added through `withResolver()` and a merger added through `withMergers()` get them the same
-way. What the builder hands over replaces what was set directly.
+the one `Types` reads. `Builder::setTypeResolver()` replaces it. A resolver added through
+`withResolver()` and a merger added through `withMergers()` get them the same way. What the
+builder hands over replaces what was set directly.
 
 `Builder::withAugmenters()` hands the pipeline to a callable, which adds, replaces or
 removes. Phases run **resolve** → **reduce** → **augment**, and within a phase in
