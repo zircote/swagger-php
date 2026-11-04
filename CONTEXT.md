@@ -103,6 +103,10 @@ _Avoid_: nesting map (that is the classic `$_nested`)
 An attribute that can live in the Specification without a parent container, and therefore has its own bucket.
 _Avoid_: top-level (ambiguous with source-code position)
 
+**Typed attribute**:
+A spec attribute whose schema can be inferred from its reflector's PHP type: a property in a schema's `properties`, a parameter or a request body. `Types` fills them, and `ImpliedSchemas` reads the same ones.
+_Avoid_: typed member (a member is the PHP property, method or constant a reflector points at)
+
 **Mode**:
 Which pipeline a run uses: `classic`, `hybrid` or `spec`.
 _Avoid_: driver, backend

@@ -33,6 +33,30 @@ class Walker
     }
 
     /**
+     * Walk every attribute whose schema can be inferred from its reflector's PHP type: each
+     * property in a schema's `properties`, with that schema, and each parameter and request body.
+     * These are the attributes `Augmenter\Types` types.
+     *
+     * Whether the reflector carries a type, and whether the attribute's schema leaves room for
+     * one, is the visitor's to decide.
+     *
+     * @param callable(OA\Property|OA\Parameter|OA\RequestBody, ?OA\Schema): void $visitor
+     */
+    public function eachTypedAttribute(callable $visitor): void
+    {
+        // one walk for all three kinds; each walk visits the whole document
+        $this->visit(AttributeInterface::class, static function (AttributeInterface $attribute) use ($visitor): void {
+            if ($attribute instanceof OA\Schema) {
+                foreach ($attribute->properties ?? [] as $property) {
+                    $visitor($property, $attribute);
+                }
+            } elseif ($attribute instanceof OA\Parameter || $attribute instanceof OA\RequestBody) {
+                $visitor($attribute, null);
+            }
+        });
+    }
+
+    /**
      * Walk every attribute in the specification that has a ref.
      *
      * @param callable(RefInterface): void $visitor
