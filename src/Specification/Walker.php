@@ -87,12 +87,17 @@ class Walker
     }
 
     /**
+     * Walk every attribute that is an instance of `$visitee`, or of any class in it.
+     *
+     * Each call walks the whole specification, so a pass after several kinds of attribute
+     * names them all in one call. They arrive in walk order, not grouped by class.
+     *
      * @template T of AttributeInterface
      *
-     * @param class-string<T>   $visitee
-     * @param callable(T): void $visitor
+     * @param class-string<T>|list<class-string<T>> $visitee
+     * @param callable(T): void                     $visitor
      */
-    public function visit(string $visitee, callable $visitor): void
+    public function visit(string|array $visitee, callable $visitor): void
     {
         // one `$seen` for every bucket: an attribute reachable from two of them — an
         // operation held both directly and inside a path item — is still one attribute
@@ -106,12 +111,12 @@ class Walker
     /**
      * @template T of AttributeInterface
      *
-     * @param class-string<T>                       $visitee
+     * @param class-string<T>|list<class-string<T>> $visitee
      * @param callable(T): void                     $visitor
      * @param array<mixed>                          $candidates
      * @param \SplObjectStorage<object, mixed>|null $seen
      */
-    protected function walk(string $visitee, callable $visitor, array $candidates, ?\SplObjectStorage $seen = null): void
+    protected function walk(string|array $visitee, callable $visitor, array $candidates, ?\SplObjectStorage $seen = null): void
     {
         $seen ??= new \SplObjectStorage();
 
@@ -130,8 +135,11 @@ class Walker
                     }
                 }
 
-                if ($candidate instanceof $visitee) {
-                    $visitor($candidate);
+                foreach ((array) $visitee as $class) {
+                    if ($candidate instanceof $class) {
+                        $visitor($candidate);
+                        break;
+                    }
                 }
             }
         }

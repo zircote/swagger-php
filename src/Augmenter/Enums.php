@@ -131,20 +131,20 @@ class Enums implements PipeInterface, LoggerAwareInterface, ComponentNamerAwareI
 
     protected function resolveEnumValues(Specification $specification): void
     {
-        $specification->getWalker()->visit(OA\Schema::class, function (OA\Schema $schema): void {
-            if ($schema->enum !== null) {
-                $schema->enum = $this->resolveEnumArray($schema->enum);
+        $specification->getWalker()->visit([OA\Schema::class, OA\ServerVariable::class], function (OA\Schema|OA\ServerVariable $attribute): void {
+            if ($attribute->enum === null) {
+                return;
             }
-        });
 
-        $specification->getWalker()->visit(OA\ServerVariable::class, function (OA\ServerVariable $variable): void {
-            if ($variable->enum !== null) {
+            if ($attribute instanceof OA\Schema) {
+                $attribute->enum = $this->resolveEnumArray($attribute->enum);
+            } elseif ($attribute instanceof OA\ServerVariable) {
                 // resolveEnumArray() is shared with Schema, whose enum may hold any JSON value.
                 // Only a server variable's is narrowed, and only after the cases are resolved.
-                $variable->enum = ServerVariableEnum::asStrings(
-                    $this->resolveEnumArray($variable->enum),
+                $attribute->enum = ServerVariableEnum::asStrings(
+                    $this->resolveEnumArray($attribute->enum),
                     $this->logger,
-                    $variable->serverVariable
+                    $attribute->serverVariable
                 );
             }
         });
