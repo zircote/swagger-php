@@ -32,20 +32,22 @@ class Docblocks implements PipeInterface
 
     public function __invoke(mixed $payload): mixed
     {
+        $payload->getWalker()->visit(AttributeInterface::class, function (AttributeInterface $attribute): void {
+            if ($attribute instanceof OA\Property) {
+                $this->augmentProperty($attribute);
+            } elseif ($attribute instanceof OA\Schema) {
+                $this->augmentSchema($attribute);
+            } elseif ($attribute instanceof OA\Parameter) {
+                $this->augmentParameterDescription($attribute);
+            } elseif ($attribute instanceof OA\Header) {
+                $this->augmentHeader($attribute);
+            }
+        });
+
         foreach ($payload->operations as $operation) {
             $this->augmentSummaryAndDescription($operation);
             $this->augmentDeprecated($operation);
             $this->augmentOperationParameters($operation);
-        }
-
-        foreach ($payload->schemas as $schema) {
-            $this->augmentDescription($schema);
-            $this->augmentDeprecated($schema);
-            $this->augmentProperties($schema);
-        }
-
-        foreach ($payload->parameters as $parameter) {
-            $this->augmentParameterDescription($parameter);
         }
 
         return null;
@@ -141,15 +143,78 @@ class Docblocks implements PipeInterface
         $paramDescriptions = $paramTags['param'] ?? [];
 
         foreach ($operation->parameters as $parameter) {
-            $this->augmentParameterDescription($parameter, $paramDescriptions);
+            if (Undefined::isDefault($parameter->description)
+                && $parameter->name !== null
+                && isset($paramDescriptions[$parameter->name])
+                && $paramDescriptions[$parameter->name]['description'] !== null
+            ) {
+                $parameter->description = $paramDescriptions[$parameter->name]['description'];
+            }
         }
     }
 
-    /**
-     * @param array<string, array{type: ?string, description: ?string}> $parentParamTags
-     */
-    protected function augmentParameterDescription(OA\Parameter $parameter, array $parentParamTags = []): void
+    protected function augmentProperty(OA\Property $property): void
     {
+        $property->schema ??= new OA\Schema();
+        if ($this->getPropertyDocComment($property->schema) !== null) {
+            return;
+        }
+
+        $docblock = $this->getDocComment($property->schema) ?? $this->getDocComment($property);
+        if ($docblock !== null) {
+            $this->augmentPropertyDocumentation($property->schema, $docblock);
+        }
+    }
+
+    protected function augmentSchema(OA\Schema $schema): void
+    {
+        if (($docblock = $this->getPropertyDocComment($schema)) !== null) {
+            $this->augmentPropertyDocumentation($schema, $docblock);
+        } elseif ($schema->getReflector() instanceof \ReflectionClass) {
+            $this->augmentDescription($schema);
+            $this->augmentDeprecated($schema);
+        }
+    }
+
+    protected function augmentHeader(OA\Header $header): void
+    {
+        if (($docblock = $this->getPropertyDocComment($header)) !== null) {
+            $this->augmentPropertyDocumentation($header, $docblock);
+        }
+    }
+
+    protected function augmentPropertyDocumentation(OA\Parameter|OA\Header|OA\Schema $attribute, string $docblock): void
+    {
+        if (Undefined::isDefault($attribute->description)) {
+            $content = $this->parser->parseDocblock($docblock);
+            if ($content !== '' && !Undefined::isDefault($content)) {
+                $attribute->description = $content;
+            } else {
+                // Descriptions embedded in @var tags need parseVarLine();
+                // parseDocblock() only extracts free text before tags.
+                $varLine = $this->parser->parseVarLine($docblock);
+                if ($varLine['description'] !== null) {
+                    $attribute->description = $varLine['description'];
+                }
+            }
+        }
+
+        if ($attribute->deprecated === null && $this->parser->isDeprecated($docblock)) {
+            $attribute->deprecated = true;
+        }
+
+        if (Undefined::isDefault($attribute->example) && $attribute->examples === null) {
+            $schema = $attribute instanceof OA\Schema ? $attribute : ($attribute->schema ?? new OA\Schema());
+            $attribute->example = $this->extractExample($schema, $docblock);
+        }
+    }
+
+    protected function augmentParameterDescription(OA\Parameter $parameter): void
+    {
+        if (($docblock = $this->getPropertyDocComment($parameter)) !== null) {
+            $this->augmentPropertyDocumentation($parameter, $docblock);
+        }
+
         if (!Undefined::isDefault($parameter->description)) {
             return;
         }
@@ -169,12 +234,6 @@ class Docblocks implements PipeInterface
                 }
             }
 
-            if (isset($parentParamTags[$name]) && $parentParamTags[$name]['description'] !== null) {
-                $parameter->description = $parentParamTags[$name]['description'];
-
-                return;
-            }
-
             $method = $reflector->getDeclaringFunction();
             if ($method instanceof \ReflectionMethod || $method instanceof \ReflectionFunction) {
                 $tags = [];
@@ -187,61 +246,17 @@ class Docblocks implements PipeInterface
                     }
                 }
             }
-
-            return;
-        }
-
-        if ($parameter->name !== null && isset($parentParamTags[$parameter->name]) && $parentParamTags[$parameter->name]['description'] !== null) {
-            $parameter->description = $parentParamTags[$parameter->name]['description'];
         }
     }
 
-    protected function augmentProperties(OA\Schema $schema): void
+    protected function getPropertyDocComment(AttributeInterface $attribute): ?string
     {
-        $properties = $schema->properties ?? [];
-
-        // Also walk properties inside allOf entries (placed there by Augmenter\Inheritance)
-        foreach ($schema->allOf ?? [] as $entry) {
-            if ($entry->properties) {
-                array_push($properties, ...$entry->properties);
-            }
+        $reflector = $attribute->getReflector();
+        if (!$reflector instanceof \ReflectionProperty && (!$reflector instanceof \ReflectionParameter || !$reflector->isPromoted())) {
+            return null;
         }
 
-        foreach ($properties as $property) {
-            if (!$property instanceof OA\Property) {
-                continue;
-            }
-
-            $property->schema ??= new OA\Schema();
-
-            // Schema may have its own reflector (inline), otherwise fall back to
-            // the property's reflector (e.g. class constants where schema is synthetic)
-            $docblock = $this->getDocComment($property->schema) ?? $this->getDocComment($property);
-
-            if ($docblock) {
-                if (Undefined::isDefault($property->schema->description)) {
-                    $content = $this->parser->parseDocblock($docblock);
-                    if ($content !== '' && !Undefined::isDefault($content)) {
-                        $property->schema->description = $content;
-                    } else {
-                        // parseDocblock() only extracts free text before tags;
-                        // descriptions embedded in @var tags (e.g. "@var string The name") need parseVarLine()
-                        $varLine = $this->parser->parseVarLine($docblock);
-                        if ($varLine['description'] !== null) {
-                            $property->schema->description = $varLine['description'];
-                        }
-                    }
-                }
-
-                if ($property->schema->deprecated === null && $this->parser->isDeprecated($docblock)) {
-                    $property->schema->deprecated = true;
-                }
-
-                if (Undefined::isDefault($property->schema->example)) {
-                    $property->schema->example = $this->extractExample($property->schema, $docblock);
-                }
-            }
-        }
+        return $this->getDocComment($attribute);
     }
 
     protected function getDocComment(AttributeInterface $attribute): ?string

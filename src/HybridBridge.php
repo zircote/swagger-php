@@ -682,7 +682,7 @@ class HybridBridge
     {
         $result = new Spec\Header(
             header: $this->val($header->header),
-            description: $this->val($header->description),
+            description: Undefined::isDefault($header->description) ? Undefined::UNDEFINED : $header->description,
             required: $this->val($header->required),
             deprecated: $this->val($header->deprecated),
             ref: $this->val($header->ref),
@@ -1151,14 +1151,14 @@ class HybridBridge
     }
 
     /**
-     * A property takes the reflector only when its own context holds it.
+     * A property or schema takes the reflector only when its own context holds it.
      *
-     * A nested property's context inherits the reflector of the member that declares its
-     * parent, and that member's docblock describes the member, not the property.
+     * A nested context inherits the reflector of the member that declares its parent,
+     * and that member's docblock describes the member, not the nested property or schema.
      */
     protected function copyReflector(OA\AbstractAnnotation $from, Spec\AbstractAttribute $to): void
     {
-        if ($from instanceof OA\Property && !$from->_context->is('reflector')) {
+        if ($from instanceof OA\Schema && !$from->_context->is('reflector')) {
             return;
         }
 

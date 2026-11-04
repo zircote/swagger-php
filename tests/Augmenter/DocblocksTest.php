@@ -10,6 +10,7 @@ use OpenApi\Augmenter;
 use OpenApi\Builder;
 use OpenApi\Builder\Mode;
 use OpenApi\Spec as OA;
+use OpenApi\Specification;
 use OpenApi\Tests\Concerns\AssemblesSpecification;
 use OpenApi\Tests\Concerns\GeneratesTestMatrix;
 use OpenApi\Tests\Fixtures;
@@ -59,6 +60,17 @@ final class DocblocksTest extends TestCase
         (new Augmenter\Docblocks())($spec);
 
         $this->assertSame('the thing identifier', $spec->operations[0]->parameters[0]->description);
+    }
+
+    public function testAugmentsComponentParameterDescription(): void
+    {
+        $parameter = new OA\Parameter(name: 'id', in: 'query', component: 'ThingId');
+        $parameter->setReflector(new \ReflectionParameter([Fixtures\Augmenter\DocblockController::class, 'getThing'], 'id'));
+        $spec = (new Specification())->add($parameter);
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame('the thing identifier', $parameter->description);
     }
 
     /**
@@ -225,5 +237,302 @@ final class DocblocksTest extends TestCase
         (new Augmenter\Docblocks())($spec);
 
         $this->assertSame($example, $schema->example);
+    }
+
+    public function testAugmentsPropertyParameters(): void
+    {
+        $limit = new OA\Parameter(name: 'limit', in: 'query', schema: new OA\Schema(type: 'integer'));
+        $limit->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $offset = new OA\Parameter(name: 'offset', in: 'query', schema: new OA\Schema(type: 'integer'));
+        $offset->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'offset'));
+        $spec = (new Specification())->add($limit, new OA\Operation\Get(parameters: [$offset]));
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame('The page size.', $limit->description);
+        $this->assertSame(20, $limit->example);
+        $this->assertTrue($limit->deprecated);
+        $this->assertSame('the offset', $offset->description);
+        $this->assertSame(0, $offset->example);
+    }
+
+    public function testOperationParamTagsOnlyFillMissingDescriptions(): void
+    {
+        $documented = new OA\Parameter(name: 'id', in: 'query', schema: new OA\Schema(type: 'integer'));
+        $documented->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $fallback = new OA\Parameter(name: 'id', in: 'query', schema: new OA\Schema(type: 'integer'));
+        $fallback->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'count'));
+        $suppressed = new OA\Parameter(name: 'id', in: 'query', description: null);
+        $operation = new OA\Operation\Get(parameters: [$documented, $fallback, $suppressed]);
+        $operation->setReflector(new \ReflectionMethod(Fixtures\Augmenter\DocblockController::class, 'getThing'));
+        $spec = (new Specification())->add($operation);
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame('The page size.', $documented->description);
+        $this->assertSame('the thing identifier', $fallback->description);
+        $this->assertSame(5, $fallback->example);
+        $this->assertNull($suppressed->description);
+    }
+
+    #[DataProvider('explicitExamples')]
+    public function testKeepsExplicitPropertyParameterValues(mixed $example): void
+    {
+        $parameter = new OA\Parameter(
+            name: 'limit',
+            in: 'query',
+            description: null,
+            deprecated: false,
+            schema: new OA\Schema(type: 'integer'),
+            example: $example,
+        );
+        $parameter->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $spec = (new Specification())->add($parameter);
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertNull($parameter->description);
+        $this->assertFalse($parameter->deprecated);
+        $this->assertSame($example, $parameter->example);
+    }
+
+    public function testAugmentsPropertyParameterWithExplicitDescription(): void
+    {
+        $parameter = new OA\Parameter(
+            name: 'renamed',
+            in: 'query',
+            description: 'Explicit description',
+            schema: new OA\Schema(type: 'integer'),
+        );
+        $parameter->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $spec = (new Specification())->add($parameter);
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame('Explicit description', $parameter->description);
+        $this->assertSame(20, $parameter->example);
+        $this->assertTrue($parameter->deprecated);
+    }
+
+    #[DataProvider('exampleLists')]
+    public function testKeepsExplicitPropertyParameterExamples(bool $empty): void
+    {
+        $examples = $empty ? [] : [new OA\Example(example: 'chosen', value: 10)];
+        $parameter = new OA\Parameter(schema: new OA\Schema(type: 'integer'), examples: $examples);
+        $parameter->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $spec = (new Specification())->add($parameter);
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame(Undefined::UNDEFINED, $parameter->example);
+        $this->assertSame($examples, $parameter->examples);
+    }
+
+    #[DataProvider('exampleLists')]
+    public function testKeepsExplicitPropertySchemaExamples(bool $empty): void
+    {
+        $examples = $empty ? [] : [10];
+        $schema = new OA\Schema(type: 'integer', examples: $examples);
+        $schema->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $spec = (new Specification())->add(new OA\Schema(properties: [new OA\Property(property: 'limit', schema: $schema)]));
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame(Undefined::UNDEFINED, $schema->example);
+        $this->assertSame($examples, $schema->examples);
+    }
+
+    public function testAugmentsInlinePropertySchema(): void
+    {
+        $schema = new OA\Schema(type: 'integer');
+        $schema->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'offset'));
+        $spec = (new Specification())->add(new OA\Operation\Post(
+            requestBody: new OA\RequestBody(content: [new OA\MediaType(schema: $schema)]),
+        ));
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame('the offset', $schema->description);
+        $this->assertSame(0, $schema->example);
+    }
+
+    public function testAugmentsNestedResponseSchema(): void
+    {
+        $property = new OA\Property(property: 'limit', schema: new OA\Schema(type: 'integer'));
+        $property->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $spec = (new Specification())->add(new OA\Response(
+            content: [new OA\MediaType(schema: new OA\Schema(oneOf: [
+                new OA\Schema(type: 'array', items: new OA\Schema(type: 'object', properties: [$property])),
+            ]))],
+            component: 'Shared',
+        ));
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame('The page size.', $property->schema->description);
+        $this->assertSame(20, $property->schema->example);
+        $this->assertTrue($property->schema->deprecated);
+    }
+
+    public function testAugmentsPropertyHeaders(): void
+    {
+        $limit = new OA\Header(schema: new OA\Schema(type: 'integer'), component: 'Limit');
+        $limit->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $offset = new OA\Header(header: 'X-Offset', schema: new OA\Schema(type: 'integer'));
+        $offset->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'offset'));
+        $shared = new OA\Header(header: 'X-Shared', schema: new OA\Schema(type: 'integer'));
+        $shared->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $spec = (new Specification())->add(
+            $limit,
+            new OA\Operation\Get(responses: [new OA\Response(headers: [$offset])]),
+            new OA\Response(headers: [$shared], component: 'Shared'),
+        );
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame('The page size.', $limit->description);
+        $this->assertSame(20, $limit->example);
+        $this->assertTrue($limit->deprecated);
+        $this->assertSame('the offset', $offset->description);
+        $this->assertSame(0, $offset->example);
+        $this->assertSame(Undefined::UNDEFINED, $limit->schema->example);
+        $this->assertSame('The page size.', $shared->description);
+        $this->assertSame(20, $shared->example);
+        $this->assertTrue($shared->deprecated);
+    }
+
+    public function testHeaderExampleNeedsAnExplicitSchemaType(): void
+    {
+        $reflector = new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit');
+        $header = new OA\Header(header: 'X-Limit');
+        $typed = new OA\Header(header: 'X-Typed-Limit', schema: new OA\Schema(type: 'integer'));
+        foreach ([$header, $typed] as $attribute) {
+            $attribute->setReflector($reflector);
+        }
+        $spec = (new Specification())->add(new OA\Operation\Get(
+            responses: [new OA\Response(headers: [$header, $typed])],
+        ));
+
+        (new Augmenter\Types())($spec);
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame('20', $header->example);
+        $this->assertSame(20, $typed->example);
+    }
+
+    #[DataProvider('explicitExamples')]
+    public function testKeepsExplicitPropertyHeaderValues(mixed $example): void
+    {
+        $header = new OA\Header(
+            description: null,
+            deprecated: false,
+            schema: new OA\Schema(type: 'integer'),
+            example: $example,
+            component: 'Limit',
+        );
+        $header->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $spec = (new Specification())->add($header);
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertNull($header->description);
+        $this->assertFalse($header->deprecated);
+        $this->assertSame($example, $header->example);
+    }
+
+    #[DataProvider('exampleLists')]
+    public function testKeepsExplicitPropertyHeaderExamples(bool $empty): void
+    {
+        $examples = $empty ? [] : [new OA\Example(example: 'chosen', value: 10)];
+        $header = new OA\Header(schema: new OA\Schema(type: 'integer'), examples: $examples, component: 'Limit');
+        $header->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $spec = (new Specification())->add($header);
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame(Undefined::UNDEFINED, $header->example);
+        $this->assertSame($examples, $header->examples);
+    }
+
+    /**
+     * @return iterable<string, array{bool}>
+     */
+    public static function exampleLists(): iterable
+    {
+        yield 'empty' => [true];
+        yield 'named' => [false];
+    }
+
+    public function testAugmentsPromotedPropertyDocumentation(): void
+    {
+        $reflector = new \ReflectionParameter([Fixtures\Augmenter\DocblockPropertyParameters::class, '__construct'], 'pageSize');
+        $parameter = new OA\Parameter(name: 'limit', in: 'query', schema: new OA\Schema(type: 'integer'));
+        $header = new OA\Header(header: 'X-Limit', schema: new OA\Schema(type: 'integer'));
+        $schema = new OA\Schema(type: 'integer');
+        foreach ([$parameter, $header, $schema] as $attribute) {
+            $attribute->setReflector($reflector);
+        }
+        $spec = (new Specification())->add(new OA\Operation\Get(
+            parameters: [$parameter],
+            responses: [new OA\Response(headers: [$header], content: [new OA\MediaType(schema: $schema)])],
+        ));
+
+        (new Augmenter\Docblocks())($spec);
+
+        foreach ([$parameter, $header, $schema] as $attribute) {
+            $this->assertSame('The promoted page size.', $attribute->description);
+            $this->assertSame(10, $attribute->example);
+            $this->assertTrue($attribute->deprecated);
+        }
+    }
+
+    public function testPropertySchemaUsesItsOwnDocblock(): void
+    {
+        $schema = new OA\Schema(type: 'integer');
+        $schema->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'offset'));
+        $property = new OA\Property(property: 'limit', schema: $schema);
+        $property->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $spec = (new Specification())->add(new OA\Schema(properties: [$property]));
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame('the offset', $schema->description);
+        $this->assertSame(0, $schema->example);
+        $this->assertNull($schema->deprecated);
+    }
+
+    public function testDoesNotAugmentMethodBackedSchema(): void
+    {
+        $schema = new OA\Schema(type: 'string');
+        $component = new OA\Schema(type: 'string', component: 'MethodSchema');
+        foreach ([$schema, $component] as $attribute) {
+            $attribute->setReflector(new \ReflectionMethod(Fixtures\HybridBridge\NestedSchemas::class, 'get'));
+        }
+        $spec = (new Specification())->add(
+            $component,
+            new OA\Operation\Get(responses: [new OA\Response(content: [new OA\MediaType(schema: $schema)])]),
+        );
+
+        (new Augmenter\Docblocks())($spec);
+
+        foreach ([$schema, $component] as $attribute) {
+            $this->assertSame(Undefined::UNDEFINED, $attribute->description);
+            $this->assertNull($attribute->deprecated);
+        }
+    }
+
+    public function testAugmentsEncodingHeaders(): void
+    {
+        $header = new OA\Header(header: 'X-Limit', schema: new OA\Schema(type: 'integer'));
+        $header->setReflector(new \ReflectionProperty(Fixtures\Augmenter\DocblockPropertyParameters::class, 'limit'));
+        $spec = (new Specification())->add(new OA\RequestBody(content: [new OA\MediaType(
+            encoding: [new OA\Encoding(encoding: 'file', headers: [$header])],
+        )], component: 'Upload'));
+
+        (new Augmenter\Docblocks())($spec);
+
+        $this->assertSame('The page size.', $header->description);
+        $this->assertSame(20, $header->example);
+        $this->assertTrue($header->deprecated);
     }
 }
