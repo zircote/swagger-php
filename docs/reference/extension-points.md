@@ -56,4 +56,5 @@ This makes listing all related classes as builder sources optional; adding a sin
 is enough as long as everything it references (directly or transitively) carries spec attributes.
 
 A FQCN is considered resolved if the specification knows it once collected. Classes without any
-spec attributes are left to the next resolver in the chain.
+spec attributes are left to the next resolver in the chain. So is a key with qualifiers: the
+class's own attributes describe it once, as the plain key.
