@@ -105,10 +105,12 @@ Sets the target OpenAPI version. Version resolution order:
 ### Logger
 
 ```php
-$builder->setLogger($psrLogger);
+$builder = new Builder($psrLogger);
 ```
 
-Accepts any PSR-3 logger. Defaults to `NullLogger` (silent). The CLI command sets its own console logger.
+Accepts any PSR-3 logger. Defaults to `NullLogger` (silent). The CLI command passes its own console logger.
+
+`setLogger()` is deprecated since 7.3 and will be removed in 8.0.
 
 The logger receives every message of a build: scan problems, skipped classes, assembly warnings and the validation diagnostics. A class that fails to load, or whose own attributes fail to assemble, is left out of the document with a warning. A method, property or constant that fails to assemble is left out with a warning of its own, and the rest of its class is kept.
 
@@ -269,6 +271,6 @@ $result->errors();        // deprecated — string[] — error messages
 ```
 
 ::: warning Deprecated
-`log()`, `warnings()` and `errors()` are deprecated since 6.16 and will be removed in 8.0. In spec and hybrid mode they hold only part of what the logger receives. Use a logger set with [`setLogger()`](#logger) instead.
+`log()`, `warnings()` and `errors()` are deprecated since 6.16 and will be removed in 8.0. Use a logger passed to the [constructor](#logger) instead.
 :::
 

@@ -18,12 +18,16 @@ use OpenApi\Generator;
 use OpenApi\Loggers\CollectingLogger;
 use OpenApi\Merge\LastWins;
 use OpenApi\Resolver;
+use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\Type\TypeResolver;
+use OpenApi\Utils\PipeInterface;
 use OpenApi\Utils\Pipeline;
 use OpenApi\Utils\SourceFinder;
 use OpenApi\Utils\TypedList;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
 final class BuilderTest extends OpenApiTestCase
 {
@@ -431,6 +435,60 @@ final class BuilderTest extends OpenApiTestCase
             ->build();
 
         $this->assertContains('info is required', array_column($logger->entries(), 'message'));
+    }
+
+    public function testALoggerPassedToTheConstructorReceivesTheBuild(): void
+    {
+        $logger = new CollectingLogger();
+
+        (new Builder($logger))
+            ->setMode(Mode::SPEC)
+            ->setSources([])
+            ->setVersion('3.0.0')
+            ->build();
+
+        $this->assertContains('info is required', array_column($logger->entries(), 'message'));
+    }
+
+    public function testASubclassWithAConstructorOfItsOwnBuilds(): void
+    {
+        $builder = new class () extends Builder {
+            public function __construct()
+            {
+            }
+        };
+
+        $result = $builder->setMode(Mode::SPEC)->setSources([])->setVersion('3.0.0')->build();
+
+        $this->assertContains('info is required', array_column($result->log(), 'message'));
+    }
+
+    public function testAnErrorLoggedDuringTheBuildMakesTheResultInvalid(): void
+    {
+        $result = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->setSources([])
+            ->withSpecification(function (Specification $specification): void {
+                $specification->info = new OA\Info(title: 'T', version: '1.0');
+            })
+            ->withAugmenters(fn (Pipeline $augmenters): Pipeline => $augmenters->add(new class () implements PipeInterface, LoggerAwareInterface {
+                use LoggerAwareTrait;
+
+                public function __invoke(mixed $specification): mixed
+                {
+                    $this->logger?->error('cannot augment');
+
+                    return $specification;
+                }
+
+                public function group(): \BackedEnum
+                {
+                    return Augmenter\Group::Augment;
+                }
+            }))
+            ->build();
+
+        $this->assertFalse($result->isValid());
     }
 
     public function testGetAugmentersReturnsDefaultPipeline(): void

@@ -91,7 +91,7 @@ class Result
     /**
      * @return list<array{level: string, message: string}>
      *
-     * @deprecated since 6.16, removed in 8.0 - attach a logger via {@see Builder::setLogger()}; it already receives these
+     * @deprecated since 6.16, removed in 8.0 - pass a logger to the {@see Builder} constructor; it already receives these
      */
     public function log(): array
     {
@@ -101,7 +101,7 @@ class Result
     /**
      * @return list<string>
      *
-     * @deprecated since 6.16, removed in 8.0 - attach a logger via {@see Builder::setLogger()}; it already receives these
+     * @deprecated since 6.16, removed in 8.0 - pass a logger to the {@see Builder} constructor; it already receives these
      */
     public function warnings(): array
     {
@@ -114,7 +114,7 @@ class Result
     /**
      * @return list<string>
      *
-     * @deprecated since 6.16, removed in 8.0 - attach a logger via {@see Builder::setLogger()}; it already receives these
+     * @deprecated since 6.16, removed in 8.0 - pass a logger to the {@see Builder} constructor; it already receives these
      */
     public function errors(): array
     {

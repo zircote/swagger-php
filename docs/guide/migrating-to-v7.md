@@ -76,7 +76,7 @@ Everything below still works in v7 and is removed in 8.0.
 | `Generator`, `Analysis`, `Context` and the analysers | `Builder` |
 | `ComposerAutoloaderScanner` | `Builder::addSource()`, with paths or `\ReflectionClass` instances |
 | `TypeResolverInterface`, `TypeInfoTypeResolver` | The augmenter pipeline infers types. A custom rule is an augmenter. |
-| `DefaultLogger` | Any PSR-3 logger, set with `Builder::setLogger()` |
+| `DefaultLogger` | Any PSR-3 logger, passed to the `Builder` constructor |
 | `Builder::setMode()`, `Mode`, CLI `--mode` | Leave them out. Hybrid is the default, and builds spec attributes as spec mode does. |
 | `HybridBridge` | Nothing. It goes with classic. |
 | `Result::openApi()` | `Result::specification()` |
@@ -85,6 +85,7 @@ Everything below still works in v7 and is removed in 8.0.
 | `ComponentIndex::buildRefMap()` | `ComponentIndex::findByKey()`, which takes the bucket the use means |
 | `OpenApi31Compiler::refString()` | `RefInterface::getRefValue()`, on the attribute that holds the `ref` |
 | `ResolverInterface`, reported at runtime for each resolver implementing it alone | `KeyResolverInterface`. `KeyResolverTrait` supplies `resolve()`, so only `resolveKey()` needs writing. |
+| `Builder::setLogger()` | The `Builder` constructor, `new Builder($logger)` |
 
 The [Classic Attribute](/reference/attributes), [Docblock Annotation](/reference/annotations) and
 [Processor](/reference/processors) references mark each deprecated class.
@@ -126,6 +127,19 @@ instead.
 
 A type resolver set on `Types` with `setTypeResolver()` is replaced when the build runs, by the
 one every augmenter reading PHP types shares. Set it with `Builder::setTypeResolver()` instead.
+
+## Changed output in 7.3
+
+`Result::isValid()`, `log()`, `warnings()` and `errors()` include what the source scan, the
+resolvers and skipped classes log. An error a resolver logs now makes `isValid()` false, as it
+already made the CLI exit with an error.
+
+## Changed in 7.3
+
+`Builder::$logger` holds, and `Builder::getLogger()` returns, a `CollectingLogger` that forwards
+to the logger the builder is given. A subclass assigning its own logger to `$logger` wraps it
+first, `new CollectingLogger($logger)`. A subclass overriding `getLogger()` declares
+`CollectingLogger` as its return type.
 
 ## Preparing for 8.0
 

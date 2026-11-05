@@ -144,10 +144,9 @@ class GenerateCommand extends Command
 
     protected function generate(GenerateInput $input): Result
     {
-        $builder = (new Builder())
+        $builder = (new Builder($this->logger))
             ->addSource(new SourceFinder($input->paths, $input->exclude, $input->pattern))
-            ->setMode($input->mode)
-            ->setLogger($this->logger);
+            ->setMode($input->mode);
 
         if ($input->version !== null) {
             $builder->setVersion($input->version);

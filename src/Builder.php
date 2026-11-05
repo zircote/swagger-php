@@ -52,7 +52,8 @@ class Builder
 
     protected ?string $version = null;
 
-    protected ?LoggerInterface $logger = null;
+    /** Forwards to the logger the builder is given, and holds what the next build reports. */
+    protected ?CollectingLogger $logger = null;
 
     protected ?CompilerInterface $compiler = null;
 
@@ -81,6 +82,14 @@ class Builder
 
     /** @var list<callable(Specification): (Specification|void)> */
     protected array $specificationHooks = [];
+
+    /**
+     * @param LoggerInterface|null $logger receives every message of a build; silent when not given
+     */
+    public function __construct(?LoggerInterface $logger = null)
+    {
+        $this->logger = new CollectingLogger($logger);
+    }
 
     /**
      * @param BuilderSource|iterable<BuilderSource> $source
@@ -119,9 +128,12 @@ class Builder
         return $this;
     }
 
+    /**
+     * @deprecated since 7.3, removed in 8.0 - pass the logger to the constructor
+     */
     public function setLogger(LoggerInterface $logger): static
     {
-        $this->logger = $logger;
+        $this->getLogger()->setLogger($logger);
 
         return $this;
     }
@@ -316,7 +328,8 @@ class Builder
      * Build the document.
      *
      * A `Builder` builds one document. To build another, configure a new `Builder`: a second
-     * call is not prevented, but what it reuses from the first is not part of the contract.
+     * call is not prevented, but what it reuses from the first is not part of the contract. Each
+     * result holds what was logged since the previous build.
      */
     public function build(): Result
     {
@@ -364,17 +377,18 @@ class Builder
         return $this->typeResolver;
     }
 
-    protected function getLogger(): LoggerInterface
+    /**
+     * The logger every part of a build reports to; each build's result takes what it collected since the last.
+     */
+    protected function getLogger(): CollectingLogger
     {
-        $this->logger ??= new NullLogger();
-
-        return $this->logger;
+        // a subclass with a constructor of its own may not call this one
+        return $this->logger ??= new CollectingLogger();
     }
 
     protected function doBuildClassic(): Result
     {
-        $collecting = new CollectingLogger($this->getLogger());
-        $generator = new Generator($collecting);
+        $generator = new Generator($this->getLogger());
 
         if ($this->version !== null) {
             $generator->setVersion($this->version);
@@ -389,15 +403,13 @@ class Builder
 
         $openApi = $generator->generate($files);
 
-        return Result::fromClassic($files, $openApi, $collecting->entries());
+        return Result::fromClassic($files, $openApi, $this->getLogger()->drain());
     }
 
     protected function doBuildSpec(bool $hybrid = false): Result
     {
-        $collecting = new CollectingLogger($this->getLogger());
-
         $attributeFactory = $this->getAttributeFactory();
-        $attributeFactory->setLogger($collecting);
+        $attributeFactory->setLogger($this->getLogger());
         $assembler = new Assembler(attributeFactory: $attributeFactory);
 
         $sourceScanner = new SourceScanner($this->getLogger());
@@ -447,7 +459,7 @@ class Builder
         Specification\ComponentName::normalise($specification, deprecate: true);
 
         // a type resolver reports from wherever it is read
-        $this->getTypeResolver()->setLogger($collecting);
+        $this->getTypeResolver()->setLogger($this->getLogger());
         // before the resolvers, the first to run
         $this->getResolver()->withResolvers(fn (Utils\TypedList $resolvers) => $this->shareServices($resolvers, $attributeFactory));
         $this->shareServices($this->getAugmenters(), $attributeFactory);
@@ -461,7 +473,7 @@ class Builder
             Specification\ComponentName::normalise($specification, deprecate: false);
         }
 
-        $this->getAugmenters()->setLogger($collecting);
+        $this->getAugmenters()->setLogger($this->getLogger());
         $this->getAugmenters()->process($specification);
 
         $version = $this->version ?? $specification->openapi->version ?? '3.1.0';
@@ -475,7 +487,7 @@ class Builder
             $sourceScanner->getFiles(),
             $specification,
             $output,
-            [...$collecting->entries(), ...$diagnostics],
+            [...$this->getLogger()->drain(), ...$diagnostics],
         );
     }
 
@@ -533,7 +545,8 @@ class Builder
 
     protected function resolveCompiler(string $version): CompilerInterface
     {
-        $logger = $this->getLogger();
+        // a compiler returns what it logs from `validate()`, so it reports past the collecting logger
+        $logger = $this->getLogger()->getDelegate();
         $compilers = [
             new Compiler\OpenApi30Compiler($logger),
             new Compiler\OpenApi31Compiler($logger),

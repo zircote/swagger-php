@@ -84,8 +84,8 @@ echo $result->toYaml();
 ```
 
 The result object provides access to the generated spec in multiple formats, the list of scanned
-files, and whether the build reported errors. The messages themselves go to the logger set with
-[`setLogger()`](/reference/builder#logger).
+files, and whether the build reported errors. The messages themselves go to the logger passed
+to the [`Builder` constructor](/reference/builder#logger).
 
 ```php
 $result->toYaml();        // YAML string
