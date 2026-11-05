@@ -13,12 +13,14 @@ use OpenApi\Contracts\CompilerInterface;
 use OpenApi\Contracts\ComponentNamerAwareInterface;
 use OpenApi\Contracts\ComponentNamerInterface;
 use OpenApi\Contracts\MergerInterface;
+use OpenApi\Contracts\PluginInterface;
 use OpenApi\Contracts\TypeResolverAwareInterface;
 use OpenApi\Loggers\CollectingLogger;
 use OpenApi\Utils\AttributeFactory;
 use OpenApi\Utils\ClassReflector;
 use OpenApi\Utils\PipeInterface;
 use OpenApi\Utils\SourceScanner;
+use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -83,6 +85,9 @@ class Builder
     /** @var list<callable(Specification): (Specification|void)> */
     protected array $specificationHooks = [];
 
+    /** Whether a plugin configured the builder; classic mode does not use what plugins add. */
+    protected bool $hasPlugins = false;
+
     /**
      * @param LoggerInterface|null $logger receives every message of a build; silent when not given
      */
@@ -129,7 +134,8 @@ class Builder
     }
 
     /**
-     * @deprecated since 7.3, removed in 8.0 - pass the logger to the constructor
+     * @deprecated since 7.3, removed in 8.0 - pass the logger to the constructor; what plugins log in
+     *             `withPlugins()` before this call does not reach the logger
      */
     public function setLogger(LoggerInterface $logger): static
     {
@@ -306,6 +312,65 @@ class Builder
     }
 
     /**
+     * Let plugins configure the builder, in the order given.
+     *
+     * Each entry is a plugin class, a plugin class mapped to its settings, or a plugin instance.
+     * A class is created without arguments, so the list can come from configuration:
+     *
+     * ```php
+     * $builder->withPlugins([
+     *     IntrospectorPlugin::class,
+     *     JsonSchemaPlugin::class => ['groups' => ['read']],
+     * ]);
+     * ```
+     *
+     * Each plugin is handed the builder's `Builder\Hooks`, so it adds to the resolver, augmenters,
+     * mergers, attribute factory and specification but cannot set a service such as the component
+     * namer. Runs when called; a second call runs its plugins after the first call's.
+     *
+     * An invalid entry is skipped and logged as an error. A plugin throwing from `configure()` stops
+     * the call: the builder holds whatever the plugin added before it threw, and is not fit to build.
+     *
+     * A plugin implementing `LoggerAwareInterface` is given the builder's logger before `configure()`.
+     * What it logs there is part of the next build's result.
+     *
+     * @param array<array-key, string|PluginInterface|array<string, mixed>> $plugins
+     */
+    public function withPlugins(array $plugins): static
+    {
+        $hooks = new Builder\Hooks($this);
+
+        foreach ($plugins as $key => $value) {
+            [$plugin, $config] = is_string($key) ? [$key, $value] : [$value, []];
+
+            try {
+                $plugin = $this->createPlugin($plugin);
+
+                if (!is_array($config)) {
+                    throw new OpenApiException(sprintf('The settings of plugin %s must be an array, %s given', $plugin::class, get_debug_type($config)));
+                }
+
+                if (array_filter(array_keys($config), is_int(...)) !== []) {
+                    throw new OpenApiException(sprintf('The settings of plugin %s must be keyed by name', $plugin::class));
+                }
+            } catch (OpenApiException $openApiException) {
+                $this->getLogger()->error('Skipping plugin: ' . $openApiException->getMessage());
+
+                continue;
+            }
+
+            if ($plugin instanceof LoggerAwareInterface) {
+                $plugin->setLogger($this->getLogger());
+            }
+
+            $plugin->configure($hooks, $config);
+            $this->hasPlugins = true;
+        }
+
+        return $this;
+    }
+
+    /**
      * Hook to configure the underlying Generator.
      *
      * The callable receives a default Generator and may either modify it in-place
@@ -329,7 +394,7 @@ class Builder
      *
      * A `Builder` builds one document. To build another, configure a new `Builder`: a second
      * call is not prevented, but what it reuses from the first is not part of the contract. Each
-     * result holds what was logged since the previous build.
+     * result holds what was logged since the previous build, including what plugins logged.
      */
     public function build(): Result
     {
@@ -337,6 +402,31 @@ class Builder
             Mode::CLASSIC => $this->doBuildClassic(),
             default => $this->doBuildSpec($this->mode === Mode::HYBRID),
         };
+    }
+
+    /**
+     * A plugin instance as given, or one created without arguments from its class.
+     */
+    protected function createPlugin(mixed $plugin): PluginInterface
+    {
+        if (is_string($plugin) && is_a($plugin, PluginInterface::class, true)) {
+            $class = new \ReflectionClass($plugin);
+            if (!$class->isInstantiable() || ($class->getConstructor()?->getNumberOfRequiredParameters() ?? 0) > 0) {
+                throw new OpenApiException(sprintf('Plugin %s cannot be created; a plugin named by its class needs a constructor without required arguments', $plugin));
+            }
+
+            return new $plugin();
+        }
+
+        if (is_string($plugin) && !class_exists($plugin) && !interface_exists($plugin)) {
+            throw new OpenApiException(sprintf('Plugin %s does not exist', $plugin));
+        }
+
+        if (!$plugin instanceof PluginInterface) {
+            throw new OpenApiException(sprintf('Plugin %s does not implement %s', is_string($plugin) ? $plugin : get_debug_type($plugin), PluginInterface::class));
+        }
+
+        return $plugin;
     }
 
     /**
@@ -388,6 +478,10 @@ class Builder
 
     protected function doBuildClassic(): Result
     {
+        if ($this->hasPlugins) {
+            $this->getLogger()->warning('Plugins configure the spec pipeline and are not used in classic mode');
+        }
+
         $generator = new Generator($this->getLogger());
 
         if ($this->version !== null) {

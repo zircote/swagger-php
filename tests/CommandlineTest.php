@@ -214,6 +214,25 @@ final class CommandlineTest extends OpenApiTestCase
         $this->assertStringContainsString('The value "Bogus" is not valid for the "component-namer" option.', (string) preg_replace('/\s+/', ' ', implode(' ', $output)));
     }
 
+    public function testPlugin(): void
+    {
+        $fixture = __DIR__ . '/Fixtures/UnreferencedSchema.php';
+        $cmd = __DIR__ . '/../bin/openapi --bootstrap ' . escapeshellarg(__DIR__ . '/Fixtures/ServerPlugin.php') . ' --plugin ' . escapeshellarg(Fixtures\ServerPlugin::class) . ' --format yaml ' . escapeshellarg($fixture);
+        exec($this->getCommandToExecute($cmd, '2>'), $output, $retval);
+        $this->assertSame(0, $retval, $cmd . PHP_EOL . implode(PHP_EOL, $output));
+
+        $this->assertStringContainsString("url: 'https://plugin.example'", implode(PHP_EOL, $output));
+    }
+
+    public function testInvalidPlugin(): void
+    {
+        $fixture = __DIR__ . '/Fixtures/UnreferencedSchema.php';
+        exec($this->getCommandToExecute(__DIR__ . '/../bin/openapi --plugin Bogus ' . escapeshellarg($fixture) . ' 2>&1'), $output, $retval);
+
+        $this->assertSame(1, $retval);
+        $this->assertStringContainsString('The value "Bogus" is not valid for the "plugin" option.', (string) preg_replace('/\s+/', ' ', implode(' ', $output)));
+    }
+
     private function getCommandToExecute(string $cmd, ?string $devNullRedir = null): string
     {
         if (PHP_OS_FAMILY === 'Windows') {

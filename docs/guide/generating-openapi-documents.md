@@ -53,6 +53,7 @@ Options:
   -a, --add-processor=ADD-PROCESSOR        Register an additional processor (deprecated, removed in 8.0) (multiple values allowed)
   -r, --remove-processor=REMOVE-PROCESSOR  Remove an existing processor (deprecated, removed in 8.0) (multiple values allowed)
       --version=VERSION                    The OpenAPI version
+      --plugin=PLUGIN                      Add this plugin class, built without settings (e.g. --plugin "Vendor\Package\Plugin") (multiple values allowed)
       --component-namer=COMPONENT-NAMER    Name components with this class, a built-in namer's class name or a FQCN (e.g. --component-namer QualifiedName)
   -m, --mode=MODE                          Set mode classic, hybrid or spec (deprecated, removed in 8.0 - leave it out for hybrid) [default: "hybrid"]
   -d, --debug                              Show additional error information

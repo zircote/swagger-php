@@ -235,6 +235,22 @@ $builder->setComponentNamer(new QualifiedName());
 See the [Component names section](/guide/extension-points#component-names) in the extension
 points guide for the built-in namers and writing your own.
 
+### Plugins {#plugins}
+
+Use `withPlugins()` to let libraries configure the builder. Each entry is a plugin class, a
+plugin class mapped to its settings, or a plugin instance. Plugins run when called, in the order
+given, and a second call runs its plugins after the first call's:
+
+```php
+$builder->withPlugins([
+    RoutePlugin::class,
+    SchemaPlugin::class => ['groups' => ['read']],
+]);
+```
+
+See the [Plugins section](/guide/extension-points#plugins) in the extension points guide for
+writing one.
+
 ### Attribute factory configuration (spec mode) {#attribute-factory}
 
 Use `withAttributeFactory()` to add custom attribute translators. The hook runs when called;
