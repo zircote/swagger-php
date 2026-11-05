@@ -6,24 +6,36 @@
 
 namespace OpenApi\Tests;
 
+use OpenApi\Assembler;
 use OpenApi\Augmenter;
 use OpenApi\Augmenter\ImpliedSchemas;
 use OpenApi\Augmenter\OperationIds;
 use OpenApi\Augmenter\Types;
 use OpenApi\Builder;
+use OpenApi\Builder\Hooks;
 use OpenApi\Builder\Mode;
+use OpenApi\Contracts\KeyResolverInterface;
+use OpenApi\Contracts\PluginInterface;
 use OpenApi\Examples\Specs\Webhooks\Attributes as WebhooksAttributes;
 use OpenApi\Examples\Specs\Webhooks\Spec as WebhooksSpec;
 use OpenApi\Generator;
 use OpenApi\Loggers\CollectingLogger;
 use OpenApi\Merge\LastWins;
+use OpenApi\OpenApiException;
 use OpenApi\Resolver;
+use OpenApi\Resolver\Concerns\KeyResolverTrait;
+use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Specification\ComponentKey;
 use OpenApi\Tests\Concerns\UsesExamples;
 use OpenApi\Type\TypeResolver;
+use OpenApi\Utils\PipeInterface;
 use OpenApi\Utils\Pipeline;
 use OpenApi\Utils\SourceFinder;
 use OpenApi\Utils\TypedList;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
 final class BuilderTest extends OpenApiTestCase
 {
@@ -433,6 +445,60 @@ final class BuilderTest extends OpenApiTestCase
         $this->assertContains('info is required', array_column($logger->entries(), 'message'));
     }
 
+    public function testALoggerPassedToTheConstructorReceivesTheBuild(): void
+    {
+        $logger = new CollectingLogger();
+
+        (new Builder($logger))
+            ->setMode(Mode::SPEC)
+            ->setSources([])
+            ->setVersion('3.0.0')
+            ->build();
+
+        $this->assertContains('info is required', array_column($logger->entries(), 'message'));
+    }
+
+    public function testASubclassWithAConstructorOfItsOwnBuilds(): void
+    {
+        $builder = new class () extends Builder {
+            public function __construct()
+            {
+            }
+        };
+
+        $result = $builder->setMode(Mode::SPEC)->setSources([])->setVersion('3.0.0')->build();
+
+        $this->assertContains('info is required', array_column($result->log(), 'message'));
+    }
+
+    public function testAnErrorLoggedDuringTheBuildMakesTheResultInvalid(): void
+    {
+        $result = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->setSources([])
+            ->withSpecification(function (Specification $specification): void {
+                $specification->info = new OA\Info(title: 'T', version: '1.0');
+            })
+            ->withAugmenters(fn (Pipeline $augmenters): Pipeline => $augmenters->add(new class () implements PipeInterface, LoggerAwareInterface {
+                use LoggerAwareTrait;
+
+                public function __invoke(mixed $specification): mixed
+                {
+                    $this->logger?->error('cannot augment');
+
+                    return $specification;
+                }
+
+                public function group(): \BackedEnum
+                {
+                    return Augmenter\Group::Augment;
+                }
+            }))
+            ->build();
+
+        $this->assertFalse($result->isValid());
+    }
+
     public function testGetAugmentersReturnsDefaultPipeline(): void
     {
         $builder = new Builder();
@@ -554,6 +620,218 @@ final class BuilderTest extends OpenApiTestCase
 
         $this->assertSame(['ApiBasicEnum', 'ApiChildOfParentWithSchema', 'ApiParentWithSchema'], array_keys($schemas));
         $this->assertSame('#/components/schemas/ApiParentWithSchema', $schemas['ApiChildOfParentWithSchema']->allOf[0]->ref ?? null);
+    }
+
+    /**
+     * @return iterable<string, array{array<array-key, mixed>, list<string>}>
+     */
+    public static function plugins(): iterable
+    {
+        yield 'class' => [[Fixtures\ServerPlugin::class], ['https://plugin.example']];
+        yield 'class with settings' => [[Fixtures\ServerPlugin::class => ['url' => 'https://configured.example']], ['https://configured.example']];
+        yield 'instance' => [[new Fixtures\ServerPlugin()], ['https://plugin.example']];
+        yield 'several, in order' => [[Fixtures\ServerPlugin::class, new Fixtures\ServerPlugin(), Fixtures\ServerPlugin::class => ['url' => 'https://last.example']], ['https://plugin.example', 'https://plugin.example', 'https://last.example']];
+    }
+
+    /**
+     * @param array<array-key, mixed> $plugins
+     * @param list<string>            $expected
+     */
+    #[DataProvider('plugins')]
+    public function testPluginsConfigureTheBuilder(array $plugins, array $expected): void
+    {
+        $specification = new Specification();
+
+        (new Builder())
+            ->setMode(Mode::SPEC)
+            ->withPlugins($plugins)
+            ->withSpecification(function (Specification $assembled) use (&$specification): void {
+                $specification = $assembled;
+            })
+            ->build();
+
+        $this->assertSame($expected, array_map(static fn (OA\Server $server): ?string => $server->url, $specification->servers));
+    }
+
+    public function testPluginsRunInTheOrderGiven(): void
+    {
+        $first = new class () implements KeyResolverInterface {
+            use KeyResolverTrait;
+
+            public function resolveKey(ComponentKey $key, Assembler $assembler): bool
+            {
+                return false;
+            }
+        };
+        $second = clone $first;
+        $plugin = static fn (KeyResolverInterface $resolver): PluginInterface => new class ($resolver) implements PluginInterface {
+            public function __construct(protected KeyResolverInterface $resolver)
+            {
+            }
+
+            public function configure(Hooks $hooks, array $config): void
+            {
+                $hooks->withResolver(fn (Resolver $resolver): Resolver => $resolver->withResolvers(fn (TypedList $resolvers): TypedList => $resolvers->add($this->resolver)));
+            }
+        };
+
+        // withPlugins() and withResolver() both run when called, so no build is needed
+        (new Builder())
+            ->withPlugins([$plugin($first), $plugin($second)])
+            ->withResolver(function (Resolver $resolver) use ($first, $second): void {
+                $resolver->withResolvers(function (TypedList $resolvers) use ($first, $second): void {
+                    $added = array_values(array_filter(iterator_to_array($resolvers, false), static fn (object $resolver): bool => $resolver === $first || $resolver === $second));
+                    $this->assertSame([$first, $second], $added);
+                });
+            });
+    }
+
+    /**
+     * A hook added to the builder reaches plugins only once `Hooks` has it too.
+     */
+    public function testHooksMirrorTheBuildersHooks(): void
+    {
+        $hooks = static function (\ReflectionClass $class): array {
+            $names = array_map(static fn (\ReflectionMethod $method): string => $method->getName(), $class->getMethods(\ReflectionMethod::IS_PUBLIC));
+            $names = array_values(array_filter($names, static fn (string $name): bool => str_starts_with($name, 'with')));
+            sort($names);
+
+            return $names;
+        };
+
+        // the classic Generator hook is deprecated, and plugins do not add plugins
+        $this->assertSame(array_values(array_diff($hooks(new \ReflectionClass(Builder::class)), ['withGenerator', 'withPlugins'])), $hooks(new \ReflectionClass(Hooks::class)));
+    }
+
+    public function testAPluginGetsTheBuildersLogger(): void
+    {
+        $plugin = new class () implements PluginInterface, LoggerAwareInterface {
+            use LoggerAwareTrait;
+
+            public function configure(Hooks $hooks, array $config): void
+            {
+                $this->logger?->warning('optional package missing');
+            }
+        };
+        $logger = new CollectingLogger();
+
+        (new Builder($logger))->withPlugins([$plugin]);
+
+        $this->assertSame([['level' => 'warning', 'message' => 'optional package missing']], $logger->entries());
+    }
+
+    public function testWhatAPluginLogsIsPartOfTheNextBuild(): void
+    {
+        $plugin = new class () implements PluginInterface, LoggerAwareInterface {
+            use LoggerAwareTrait;
+
+            public function configure(Hooks $hooks, array $config): void
+            {
+                $this->logger?->error('cannot work here');
+            }
+        };
+        $builder = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->setSources([])
+            ->withSpecification(function (Specification $specification): void {
+                $specification->info = new OA\Info(title: 'T', version: '1.0');
+            })
+            ->withPlugins([$plugin]);
+
+        $this->assertFalse($builder->build()->isValid());
+        $this->assertTrue($builder->build()->isValid());
+    }
+
+    public function testALoggerSetAfterThePluginsGetsWhatTheyLog(): void
+    {
+        $plugin = new class () implements PluginInterface, LoggerAwareInterface {
+            use LoggerAwareTrait;
+
+            public function configure(Hooks $hooks, array $config): void
+            {
+                $hooks->withSpecification(fn () => $this->logger?->warning('from the build'));
+            }
+        };
+        $logger = new CollectingLogger();
+
+        (new Builder())
+            ->setMode(Mode::SPEC)
+            ->setSources([])
+            ->withPlugins([$plugin])
+            ->setLogger($logger)
+            ->build();
+
+        $this->assertContains('from the build', array_column($logger->entries(), 'message'));
+    }
+
+    /**
+     * @return iterable<string, array{array<array-key, mixed>, string}>
+     */
+    public static function invalidPlugins(): iterable
+    {
+        yield 'not a plugin' => [[\stdClass::class], 'Plugin stdClass does not implement'];
+        yield 'not a class' => [['Bogus'], 'Plugin Bogus does not exist'];
+        yield 'settings not an array' => [[Fixtures\ServerPlugin::class => true], 'must be an array, bool given'];
+        yield 'settings not keyed by name' => [[Fixtures\ServerPlugin::class => ['https://configured.example']], 'must be keyed by name'];
+        yield 'not instantiable' => [[PluginInterface::class], 'cannot be created'];
+        yield 'constructor arguments' => [[Fixtures\ArgumentServerPlugin::class], 'cannot be created'];
+    }
+
+    /**
+     * @param array<array-key, mixed> $plugins
+     */
+    #[DataProvider('invalidPlugins')]
+    public function testInvalidPluginsAreSkipped(array $plugins, string $expected): void
+    {
+        $logger = new CollectingLogger();
+
+        (new Builder($logger))->withPlugins($plugins);
+
+        $this->assertCount(1, $logger->entries());
+        $this->assertSame('error', $logger->entries()[0]['level']);
+        $this->assertStringContainsString($expected, $logger->entries()[0]['message']);
+    }
+
+    public function testTheValidPluginsOfAListRun(): void
+    {
+        $specification = new Specification();
+        (new Builder())
+            ->setMode(Mode::SPEC)
+            ->setSources([])
+            ->withPlugins(['Bogus', Fixtures\ServerPlugin::class])
+            ->withSpecification(function (Specification $assembled) use (&$specification): void {
+                $specification = $assembled;
+            })
+            ->build();
+
+        $this->assertCount(1, $specification->servers);
+    }
+
+    public function testAPluginThrowingStopsTheCall(): void
+    {
+        $plugin = new class () implements PluginInterface {
+            public function configure(Hooks $hooks, array $config): void
+            {
+                throw new OpenApiException('unusable settings');
+            }
+        };
+
+        $this->expectException(OpenApiException::class);
+        $this->expectExceptionMessage('unusable settings');
+
+        (new Builder())->withPlugins([$plugin, Fixtures\ServerPlugin::class]);
+    }
+
+    public function testPluginsAreReportedUnusedInClassicMode(): void
+    {
+        $logger = new CollectingLogger();
+        (new Builder($logger))
+            ->setMode(Mode::CLASSIC)
+            ->setSources([])
+            ->withPlugins([Fixtures\ServerPlugin::class])
+            ->build();
+
+        $this->assertContains('Plugins configure the spec pipeline and are not used in classic mode', array_column($logger->entries(), 'message'));
     }
 
     protected function typeResolverOf(?object $augmenter): mixed

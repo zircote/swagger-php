@@ -9,6 +9,7 @@ namespace OpenApi\Console;
 use OpenApi\Builder;
 use OpenApi\Builder\Result;
 use OpenApi\Contracts\ComponentNamerInterface;
+use OpenApi\Contracts\PluginInterface;
 use OpenApi\Generator;
 use OpenApi\Utils\Pipeline;
 use OpenApi\Utils\SourceFinder;
@@ -48,6 +49,7 @@ class GenerateCommand extends Command
             ->addOption('add-processor', 'a', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Register an additional processor (deprecated, removed in 8.0)')
             ->addOption('remove-processor', 'r', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Remove an existing processor (deprecated, removed in 8.0)')
             ->addOption('version', null, InputOption::VALUE_REQUIRED, 'The OpenAPI version')
+            ->addOption('plugin', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Add this plugin class, built without settings (e.g. --plugin "Vendor\\Package\\Plugin")')
             ->addOption('component-namer', null, InputOption::VALUE_REQUIRED, "Name components with this class, a built-in namer's class name or a FQCN (e.g. --component-namer QualifiedName)")
             ->addOption('mode', 'm', InputOption::VALUE_REQUIRED, 'Set mode classic, hybrid or spec (deprecated, removed in 8.0 - leave it out for hybrid)', Builder\Mode::HYBRID->value)
             ->addOption('debug', 'd', InputOption::VALUE_NONE, 'Show additional error information');
@@ -144,10 +146,10 @@ class GenerateCommand extends Command
 
     protected function generate(GenerateInput $input): Result
     {
-        $builder = (new Builder())
+        $builder = (new Builder($this->logger))
             ->addSource(new SourceFinder($input->paths, $input->exclude, $input->pattern))
             ->setMode($input->mode)
-            ->setLogger($this->logger);
+            ->withPlugins(array_map($this->checkPlugin(...), $input->plugins));
 
         if ($input->version !== null) {
             $builder->setVersion($input->version);
@@ -198,6 +200,22 @@ class GenerateCommand extends Command
         }
 
         return $builder->build();
+    }
+
+    /**
+     * Refuses a mistyped `--plugin` up front; the builder would only skip it, and build without it.
+     */
+    protected function checkPlugin(string $class): string
+    {
+        if (!class_exists($class) || !is_a($class, PluginInterface::class, true)) {
+            throw new InvalidOptionException(sprintf(
+                'The value "%s" is not valid for the "plugin" option. Expected a class implementing %s.',
+                $class,
+                PluginInterface::class,
+            ));
+        }
+
+        return $class;
     }
 
     /**

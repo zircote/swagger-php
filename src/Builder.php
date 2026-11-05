@@ -13,12 +13,14 @@ use OpenApi\Contracts\CompilerInterface;
 use OpenApi\Contracts\ComponentNamerAwareInterface;
 use OpenApi\Contracts\ComponentNamerInterface;
 use OpenApi\Contracts\MergerInterface;
+use OpenApi\Contracts\PluginInterface;
 use OpenApi\Contracts\TypeResolverAwareInterface;
 use OpenApi\Loggers\CollectingLogger;
 use OpenApi\Utils\AttributeFactory;
 use OpenApi\Utils\ClassReflector;
 use OpenApi\Utils\PipeInterface;
 use OpenApi\Utils\SourceScanner;
+use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -52,7 +54,8 @@ class Builder
 
     protected ?string $version = null;
 
-    protected ?LoggerInterface $logger = null;
+    /** Forwards to the logger the builder is given, and holds what the next build reports. */
+    protected ?CollectingLogger $logger = null;
 
     protected ?CompilerInterface $compiler = null;
 
@@ -81,6 +84,17 @@ class Builder
 
     /** @var list<callable(Specification): (Specification|void)> */
     protected array $specificationHooks = [];
+
+    /** Whether a plugin configured the builder; classic mode does not use what plugins add. */
+    protected bool $hasPlugins = false;
+
+    /**
+     * @param LoggerInterface|null $logger receives every message of a build; silent when not given
+     */
+    public function __construct(?LoggerInterface $logger = null)
+    {
+        $this->logger = new CollectingLogger($logger);
+    }
 
     /**
      * @param BuilderSource|iterable<BuilderSource> $source
@@ -119,9 +133,13 @@ class Builder
         return $this;
     }
 
+    /**
+     * @deprecated since 7.3, removed in 8.0 - pass the logger to the constructor; what plugins log in
+     *             `withPlugins()` before this call does not reach the logger
+     */
     public function setLogger(LoggerInterface $logger): static
     {
-        $this->logger = $logger;
+        $this->getLogger()->setLogger($logger);
 
         return $this;
     }
@@ -294,6 +312,65 @@ class Builder
     }
 
     /**
+     * Let plugins configure the builder, in the order given.
+     *
+     * Each entry is a plugin class, a plugin class mapped to its settings, or a plugin instance.
+     * A class is created without arguments, so the list can come from configuration:
+     *
+     * ```php
+     * $builder->withPlugins([
+     *     IntrospectorPlugin::class,
+     *     JsonSchemaPlugin::class => ['groups' => ['read']],
+     * ]);
+     * ```
+     *
+     * Each plugin is handed the builder's `Builder\Hooks`, so it adds to the resolver, augmenters,
+     * mergers, attribute factory and specification but cannot set a service such as the component
+     * namer. Runs when called; a second call runs its plugins after the first call's.
+     *
+     * An invalid entry is skipped and logged as an error. A plugin throwing from `configure()` stops
+     * the call: the builder holds whatever the plugin added before it threw, and is not fit to build.
+     *
+     * A plugin implementing `LoggerAwareInterface` is given the builder's logger before `configure()`.
+     * What it logs there is part of the next build's result.
+     *
+     * @param array<array-key, string|PluginInterface|array<string, mixed>> $plugins
+     */
+    public function withPlugins(array $plugins): static
+    {
+        $hooks = new Builder\Hooks($this);
+
+        foreach ($plugins as $key => $value) {
+            [$plugin, $config] = is_string($key) ? [$key, $value] : [$value, []];
+
+            try {
+                $plugin = $this->createPlugin($plugin);
+
+                if (!is_array($config)) {
+                    throw new OpenApiException(sprintf('The settings of plugin %s must be an array, %s given', $plugin::class, get_debug_type($config)));
+                }
+
+                if (array_filter(array_keys($config), is_int(...)) !== []) {
+                    throw new OpenApiException(sprintf('The settings of plugin %s must be keyed by name', $plugin::class));
+                }
+            } catch (OpenApiException $openApiException) {
+                $this->getLogger()->error('Skipping plugin: ' . $openApiException->getMessage());
+
+                continue;
+            }
+
+            if ($plugin instanceof LoggerAwareInterface) {
+                $plugin->setLogger($this->getLogger());
+            }
+
+            $plugin->configure($hooks, $config);
+            $this->hasPlugins = true;
+        }
+
+        return $this;
+    }
+
+    /**
      * Hook to configure the underlying Generator.
      *
      * The callable receives a default Generator and may either modify it in-place
@@ -316,7 +393,8 @@ class Builder
      * Build the document.
      *
      * A `Builder` builds one document. To build another, configure a new `Builder`: a second
-     * call is not prevented, but what it reuses from the first is not part of the contract.
+     * call is not prevented, but what it reuses from the first is not part of the contract. Each
+     * result holds what was logged since the previous build, including what plugins logged.
      */
     public function build(): Result
     {
@@ -324,6 +402,31 @@ class Builder
             Mode::CLASSIC => $this->doBuildClassic(),
             default => $this->doBuildSpec($this->mode === Mode::HYBRID),
         };
+    }
+
+    /**
+     * A plugin instance as given, or one created without arguments from its class.
+     */
+    protected function createPlugin(mixed $plugin): PluginInterface
+    {
+        if (is_string($plugin) && is_a($plugin, PluginInterface::class, true)) {
+            $class = new \ReflectionClass($plugin);
+            if (!$class->isInstantiable() || ($class->getConstructor()?->getNumberOfRequiredParameters() ?? 0) > 0) {
+                throw new OpenApiException(sprintf('Plugin %s cannot be created; a plugin named by its class needs a constructor without required arguments', $plugin));
+            }
+
+            return new $plugin();
+        }
+
+        if (is_string($plugin) && !class_exists($plugin) && !interface_exists($plugin)) {
+            throw new OpenApiException(sprintf('Plugin %s does not exist', $plugin));
+        }
+
+        if (!$plugin instanceof PluginInterface) {
+            throw new OpenApiException(sprintf('Plugin %s does not implement %s', is_string($plugin) ? $plugin : get_debug_type($plugin), PluginInterface::class));
+        }
+
+        return $plugin;
     }
 
     /**
@@ -364,17 +467,22 @@ class Builder
         return $this->typeResolver;
     }
 
-    protected function getLogger(): LoggerInterface
+    /**
+     * The logger every part of a build reports to; each build's result takes what it collected since the last.
+     */
+    protected function getLogger(): CollectingLogger
     {
-        $this->logger ??= new NullLogger();
-
-        return $this->logger;
+        // a subclass with a constructor of its own may not call this one
+        return $this->logger ??= new CollectingLogger();
     }
 
     protected function doBuildClassic(): Result
     {
-        $collecting = new CollectingLogger($this->getLogger());
-        $generator = new Generator($collecting);
+        if ($this->hasPlugins) {
+            $this->getLogger()->warning('Plugins configure the spec pipeline and are not used in classic mode');
+        }
+
+        $generator = new Generator($this->getLogger());
 
         if ($this->version !== null) {
             $generator->setVersion($this->version);
@@ -389,15 +497,13 @@ class Builder
 
         $openApi = $generator->generate($files);
 
-        return Result::fromClassic($files, $openApi, $collecting->entries());
+        return Result::fromClassic($files, $openApi, $this->getLogger()->drain());
     }
 
     protected function doBuildSpec(bool $hybrid = false): Result
     {
-        $collecting = new CollectingLogger($this->getLogger());
-
         $attributeFactory = $this->getAttributeFactory();
-        $attributeFactory->setLogger($collecting);
+        $attributeFactory->setLogger($this->getLogger());
         $assembler = new Assembler(attributeFactory: $attributeFactory);
 
         $sourceScanner = new SourceScanner($this->getLogger());
@@ -447,7 +553,7 @@ class Builder
         Specification\ComponentName::normalise($specification, deprecate: true);
 
         // a type resolver reports from wherever it is read
-        $this->getTypeResolver()->setLogger($collecting);
+        $this->getTypeResolver()->setLogger($this->getLogger());
         // before the resolvers, the first to run
         $this->getResolver()->withResolvers(fn (Utils\TypedList $resolvers) => $this->shareServices($resolvers, $attributeFactory));
         $this->shareServices($this->getAugmenters(), $attributeFactory);
@@ -461,7 +567,7 @@ class Builder
             Specification\ComponentName::normalise($specification, deprecate: false);
         }
 
-        $this->getAugmenters()->setLogger($collecting);
+        $this->getAugmenters()->setLogger($this->getLogger());
         $this->getAugmenters()->process($specification);
 
         $version = $this->version ?? $specification->openapi->version ?? '3.1.0';
@@ -475,7 +581,7 @@ class Builder
             $sourceScanner->getFiles(),
             $specification,
             $output,
-            [...$collecting->entries(), ...$diagnostics],
+            [...$this->getLogger()->drain(), ...$diagnostics],
         );
     }
 
@@ -533,7 +639,8 @@ class Builder
 
     protected function resolveCompiler(string $version): CompilerInterface
     {
-        $logger = $this->getLogger();
+        // a compiler returns what it logs from `validate()`, so it reports past the collecting logger
+        $logger = $this->getLogger()->getDelegate();
         $compilers = [
             new Compiler\OpenApi30Compiler($logger),
             new Compiler\OpenApi31Compiler($logger),

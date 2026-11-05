@@ -101,8 +101,8 @@ it. Deriving a schema from a class's public properties and PHP types is one opti
 and would let a DTO carrying no spec attributes appear in the document. `insert()` places a
 resolver ahead of the default rather than after it.
 
-A resolver implementing `LoggerAwareInterface` is given the logger set with
-[`Builder::setLogger()`](/reference/builder#logger).
+A resolver implementing `LoggerAwareInterface` is given the logger passed to the
+[`Builder` constructor](/reference/builder#logger).
 
 ## Augmenters
 
@@ -338,6 +338,72 @@ here is the only one that runs, and it sees the annotation instances as scanned:
 yet attached to their schemas, and inheritance has not yet produced any `allOf`. The bridge
 and the augmenters do that work afterwards. A processor that only reads or changes what the
 author wrote works in hybrid. One that depends on that structure belongs in an augmenter.
+
+## Plugins
+
+A library that ships translators, resolvers or augmenters can wire them into a builder
+itself, with a plugin. A project or an integration then names the plugin, rather than
+repeating the wiring.
+
+A plugin implements `OpenApi\Contracts\PluginInterface`. Its `configure()` receives the
+builder's hooks and the plugin's settings:
+
+```php
+use OpenApi\Builder\Hooks;
+use OpenApi\Contracts\PluginInterface;
+use OpenApi\Utils\AttributeFactory;
+use OpenApi\Utils\TypedList;
+
+class RoutePlugin implements PluginInterface
+{
+    public function configure(Hooks $hooks, array $config): void
+    {
+        $hooks->withAttributeFactory(fn (AttributeFactory $factory) => $factory->withTranslators(
+            fn (TypedList $translators) => $translators->add(new RouteTranslator())
+        ));
+    }
+}
+```
+
+`Builder::withPlugins()` takes a list. Each entry is a plugin class, a plugin class mapped to
+its settings, or a plugin instance:
+
+```php
+$builder->withPlugins([
+    RoutePlugin::class,
+    SchemaPlugin::class => ['groups' => ['read']],
+]);
+```
+
+A class is created without arguments, so the list can live in a configuration file. Plugins
+run when `withPlugins()` is called, in the order given, and that order decides where each
+plugin's translators, resolvers and mergers sit. Calling it again runs the new plugins after
+the earlier ones. An invalid entry, such as a class that is not a plugin, is skipped and
+logged as an error.
+
+A plugin that throws from `configure()` stops `withPlugins()`. What it added before throwing
+stays in the builder, which is then not fit to build.
+
+The hooks are `withResolver()`, `withAugmenters()`, `withMergers()`,
+`withAttributeFactory()` and `withSpecification()`. Each one configures what the builder
+holds. A plugin could also remove or replace what is there, for example drop `Cleanup`, but
+plugins build on one another when each adds its own. A plugin cannot set the component namer,
+the type resolver, the compiler or the version: those are for whoever runs the build to
+choose. A library that ships a component namer
+documents it, and the project sets it with `setComponentNamer()`.
+
+A plugin throws for settings it cannot use. To report what it can work around, such as an
+optional package that is not installed, it implements `Psr\Log\LoggerAwareInterface` and
+gets the builder's logger before `configure()`. What it logs there counts towards the next
+build's result, so an error makes `Result::isValid()` false. Translators, resolvers, augmenters and mergers a
+plugin adds get the build's logger the same way the builder's own do, when they implement
+`LoggerAwareInterface`.
+
+The hooks act on the spec pipeline, so in classic mode nothing a plugin adds is used, and the
+build logs a warning saying so.
+
+On the command line, `--plugin` names a plugin class and can be repeated. The plugin is
+created without settings.
 
 ## Putting it together
 

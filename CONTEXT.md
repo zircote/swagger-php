@@ -111,6 +111,14 @@ _Avoid_: typed member (a member is the PHP property, method or constant a reflec
 Which pipeline a run uses: `classic`, `hybrid` or `spec`.
 _Avoid_: driver, backend
 
+**Plugin**:
+A library's wiring of its translators, resolvers, augmenters, mergers or contributions into a Builder, so a project or an integration only names it. Configured through the hooks, with an optional array of settings.
+_Avoid_: extension (the extension points are the parts a plugin wires up), bundle, module
+
+**Hooks**:
+The Builder's `with*()` hooks as a plugin sees them: the resolver, augmenters, mergers, attribute factory and contributions, without the services (component namer, type resolver, compiler, version) that stay with whoever runs the build.
+_Avoid_: builder (a plugin never holds the Builder itself)
+
 ## Relationships
 
 - A **Generator** uses an **Analyser** to produce an **Analysis**
@@ -125,6 +133,7 @@ In the spec pipeline:
 - The **Assembler** resolves **slot maps** to decide what nests where; what survives are **root attributes**
 - **Augmenters** run over the **Specification** in phases (resolve → reduce → augment)
 - A **Compiler** turns the finished **Specification** into the output document
+- A **Plugin** configures a **Builder** through its **Hooks**, in the order the plugins are listed
 
 ## Example dialogue
 
