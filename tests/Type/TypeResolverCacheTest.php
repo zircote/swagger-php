@@ -59,6 +59,36 @@ final class TypeResolverCacheTest extends TestCase
         $this->assertSame(KeywordCase::class, $second?->type);
     }
 
+    public function testNativeSelfAndParentResolveWithoutTheSourceFile(): void
+    {
+        $class = 'NativeContext' . bin2hex(random_bytes(4));
+        $file = sys_get_temp_dir() . "/{$class}.php";
+        file_put_contents($file, <<<PHP
+            <?php
+
+            namespace OpenApi\\Tests\\Fixtures\\Type;
+
+            class {$class}Base
+            {
+            }
+
+            final class {$class} extends {$class}Base
+            {
+                public self \$self;
+
+                public parent \$parent;
+            }
+            PHP);
+        require $file;
+        unlink($file);
+        $class = "OpenApi\\Tests\\Fixtures\\Type\\{$class}";
+        $this->assertTrue(class_exists($class));
+        $resolver = new TypeResolver();
+
+        $this->assertSame($class, $resolver->resolve(new \ReflectionProperty($class, 'self'))?->type);
+        $this->assertSame("{$class}Base", $resolver->resolve(new \ReflectionProperty($class, 'parent'))?->type);
+    }
+
     public function testEachAnswerIsACopy(): void
     {
         $resolver = new TypeResolver();

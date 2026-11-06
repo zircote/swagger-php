@@ -32,6 +32,7 @@ use Symfony\Component\TypeInfo\Type\IntersectionType;
 use Symfony\Component\TypeInfo\Type\NullableType;
 use Symfony\Component\TypeInfo\Type\ObjectType;
 use Symfony\Component\TypeInfo\Type\UnionType;
+use Symfony\Component\TypeInfo\TypeContext\TypeContext;
 use Symfony\Component\TypeInfo\TypeContext\TypeContextFactory;
 use Symfony\Component\TypeInfo\TypeIdentifier;
 use Symfony\Component\TypeInfo\TypeResolver\ReflectionTypeResolver;
@@ -52,17 +53,14 @@ class TypeResolver implements LoggerAwareInterface
     /** @var \WeakMap<\Reflector, array{?SchemaType}> what each reflector resolved to, so a docblock is read and reported once */
     protected \WeakMap $resolved;
 
-    /** Kept for the resolver's lifetime: each factory caches the use statements it reads from a class's source file */
+    /** Kept for the resolver's lifetime: it caches the use statements it reads from a class's source file */
     protected TypeContextFactory $docblockContexts;
-
-    protected TypeContextFactory $reflectionContexts;
 
     public function __construct()
     {
         $this->typeMapper = new TypeMapper();
         $this->resolved = new \WeakMap();
         $this->docblockContexts = new TypeContextFactory(new SymfonyStringTypeResolver());
-        $this->reflectionContexts = new TypeContextFactory();
     }
 
     /**
@@ -412,11 +410,25 @@ class TypeResolver implements LoggerAwareInterface
             );
 
         try {
-            $typeContext = $this->reflectionContexts->createFromReflection($reflector);
-
-            return (new ReflectionTypeResolver())->resolve($subject, $typeContext);
+            return (new ReflectionTypeResolver())->resolve($subject, $this->getReflectionContext($reflector));
         } catch (UnsupportedException) {
             return null;
         }
+    }
+
+    /**
+     * Native types arrive fully qualified, so only `self`, `static` and `parent` need a context:
+     * building it from the declaring class spares reading the source file for its use statements.
+     */
+    protected function getReflectionContext(\Reflector $reflector): ?TypeContext
+    {
+        $class = match (true) {
+            $reflector instanceof \ReflectionClass => $reflector,
+            $reflector instanceof \ReflectionMethod, $reflector instanceof \ReflectionProperty, $reflector instanceof \ReflectionParameter => $reflector->getDeclaringClass(),
+            $reflector instanceof \ReflectionFunctionAbstract => $reflector->getClosureScopeClass(),
+            default => null,
+        };
+
+        return $class instanceof \ReflectionClass ? new TypeContext($class->getName(), $class->getName(), $class->getNamespaceName()) : null;
     }
 }
