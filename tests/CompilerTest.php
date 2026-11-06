@@ -285,6 +285,34 @@ final class CompilerTest extends TestCase
         $this->assertNotEmpty(array_filter($reported, fn (string $message): bool => str_starts_with($message, 'Example summary and description beside $ref #/components/examples/E ')));
     }
 
+    /**
+     * @return iterable<string, array{CompilerInterface, non-empty-string}>
+     */
+    public static function droppedSchemaSiblingsProvider(): iterable
+    {
+        yield '3.0' => [new OpenApi30Compiler(), 'Schema "Checkout": description, required, minProperties beside $ref #/components/schemas/Cat will be omitted in '];
+        yield '3.1' => [new OpenApi31Compiler(), 'Schema "Checkout": required, minProperties beside $ref #/components/schemas/Cat will be omitted in '];
+        yield '3.2' => [new OpenApi32Compiler(), 'Schema "Checkout": required, minProperties beside $ref #/components/schemas/Cat will be omitted in '];
+    }
+
+    /**
+     * @param non-empty-string $expected
+     */
+    #[DataProvider('droppedSchemaSiblingsProvider')]
+    public function testReportsSchemaKeywordsDroppedBesideRef(CompilerInterface $compiler, string $expected): void
+    {
+        $specification = new Specification();
+        $specification->add(new OA\Info(title: 'Siblings', version: '1.0.0'));
+        $specification->add(new OA\Schema(type: 'object', component: 'Cat'));
+        $specification->add(new OA\Schema(description: 'A checkout', ref: '#/components/schemas/Cat', required: ['name'], minProperties: 1, component: 'Checkout'));
+
+        $messages = array_column($compiler->validate($specification), 'message');
+        $reported = array_values(array_filter($messages, fn (string $message): bool => str_contains($message, 'beside $ref')));
+
+        $this->assertCount(1, $reported);
+        $this->assertStringStartsWith($expected, $reported[0]);
+    }
+
     public function test31ReportsNoReferenceSiblings(): void
     {
         $messages = array_column((new OpenApi31Compiler())->validate($this->referencingSpecification('3.1.0')), 'message');

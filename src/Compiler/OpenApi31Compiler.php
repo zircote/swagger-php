@@ -36,6 +36,9 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected const SCHEMA_TYPES = ['string', 'number', 'integer', 'boolean', 'array', 'object', 'null'];
 
+    /** schema properties that are not keywords beside a `$ref`, or that compile into its form */
+    protected const NOT_REF_KEYWORDS = ['schema', 'component', 'ref', 'nullable', 'x', 'attachables'];
+
     protected const RESPONSE_KEY = OA\Response::STATUS_CODE_PATTERN;
 
     /**
@@ -987,6 +990,40 @@ class OpenApi31Compiler implements CompilerInterface
             }
 
             $this->validateSchemaType($schema);
+            $this->validateRefSiblings($schema);
+        }
+    }
+
+    /**
+     * Warns about the keywords a schema with a `$ref` sets that its compiled form leaves out.
+     */
+    protected function validateRefSiblings(OA\Schema $schema): void
+    {
+        if ($schema->ref === null) {
+            return;
+        }
+
+        $compiled = $this->compileSchema($schema);
+        $dropped = [];
+        foreach (get_object_vars($schema) as $keyword => $value) {
+            if (in_array($keyword, static::NOT_REF_KEYWORDS, true)
+                || in_array($value, [null, Undefined::UNDEFINED, []], true)
+                || (is_array($compiled) && array_key_exists($keyword, $compiled))
+            ) {
+                continue;
+            }
+
+            $dropped[] = $keyword;
+        }
+
+        if ($dropped !== []) {
+            $this->logger->warning(sprintf(
+                'Schema%s: %s beside $ref %s will be omitted in %s',
+                $this->schemaLabel($schema),
+                implode(', ', $dropped),
+                $schema->getRefValue(),
+                $schema->getSourceLocation(),
+            ));
         }
     }
 
