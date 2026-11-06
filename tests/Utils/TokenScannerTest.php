@@ -456,6 +456,24 @@ final class TokenScannerTest extends OpenApiTestCase
         $this->assertNull((new TokenScanner())->detailsFor(new \ReflectionClass($instance)));
     }
 
+    public function testDetailsForDoesNotRecheckAScannedFile(): void
+    {
+        $class = 'ScannedOnce' . bin2hex(random_bytes(4));
+        $file = sys_get_temp_dir() . "/{$class}.php";
+        file_put_contents($file, "<?php\n\nnamespace OpenApi\\Tests\\Utils;\n\nfinal class {$class}\n{\n    public \$prop;\n}\n");
+        require $file;
+        $class = "OpenApi\\Tests\\Utils\\{$class}";
+        $this->assertTrue(class_exists($class));
+        $scanner = new TokenScanner();
+        $rc = new \ReflectionClass($class);
+
+        $first = $scanner->detailsFor($rc);
+        unlink($file);
+
+        $this->assertSame(['prop'], $first['properties'] ?? null);
+        $this->assertSame($first, $scanner->detailsFor($rc));
+    }
+
     /**
      * @param  array<string, mixed> $overrides
      * @return array<string, mixed>
