@@ -10,6 +10,7 @@ use OpenApi\Contracts\KeyResolverInterface;
 use OpenApi\Contracts\RefInterface;
 use OpenApi\Contracts\ResolverInterface;
 use OpenApi\Resolver\Reflection;
+use OpenApi\Spec as OA;
 use OpenApi\Specification\ComponentIndex;
 use OpenApi\Specification\ComponentKey;
 use OpenApi\Utils\TypedList;
@@ -23,7 +24,8 @@ use Psr\Log\LoggerInterface;
  * Two sources are inspected:
  * 1. Ref values that are raw FQCNs (not yet rewritten to `#/components/...` paths), with the
  *    qualifiers of a `Schema\Ref`
- * 2. Property/parameter type hints on schema class reflectors, which are plain keys
+ * 2. The PHP types of a schema's documented properties that set no type of their own, which are
+ *    plain keys
  *
  * A `KeyResolverInterface` is asked about every key. A resolver implementing `ResolverInterface`
  * alone is asked about plain keys only: it knows the class alone, and would describe the plain
@@ -175,17 +177,15 @@ class Resolver implements LoggerAwareInterface
     }
 
     /**
+     * The resolver runs before the augmenters, so a ref inferred from a PHP type does not exist yet.
+     * Its class is collected here in advance.
+     *
      * @param array<string, ComponentKey> $unresolved
      */
     protected function collectFromReflectors(Specification $specification, ComponentIndex $index, array &$unresolved): void
     {
         foreach ($specification->schemas as $schema) {
-            $reflector = $schema->getClassReflector();
-            if ($reflector === null) {
-                continue;
-            }
-
-            foreach ($this->getTypedReflectors($reflector) as $type) {
+            foreach ($this->getPropertyTypes($schema) as $type) {
                 if ($type->isBuiltin()) {
                     continue;
                 }
@@ -204,32 +204,61 @@ class Resolver implements LoggerAwareInterface
     }
 
     /**
-     * @param \ReflectionClass<object> $reflector
+     * The PHP types of the schema's own properties that leave their type to the PHP declaration.
+     *
+     * Only a property attribute on a PHP property or promoted parameter counts, and only where its
+     * schema says nothing about the type yet. A public property without one is not documented, and a
+     * schema built elsewhere, by a resolver from another description of the class, has no
+     * reflectors on its properties.
      *
      * @return list<\ReflectionNamedType>
      */
-    protected function getTypedReflectors(\ReflectionClass $reflector): array
+    protected function getPropertyTypes(OA\Schema $schema): array
     {
-        $types = [];
-
-        foreach ($reflector->getProperties(\ReflectionProperty::IS_PUBLIC) as $prop) {
-            if ($prop->getDeclaringClass()->getName() !== $reflector->getName()) {
+        $reflectors = [];
+        foreach ($schema->properties ?? [] as $property) {
+            $reflector = $property->getReflector();
+            if ((!$reflector instanceof \ReflectionProperty && !$reflector instanceof \ReflectionParameter)
+                || ($property->schema instanceof OA\Schema && !$this->isUntyped($property->schema))
+            ) {
                 continue;
             }
-            foreach ($this->extractNamedTypes($prop->getType()) as $type) {
+
+            $reflectors[] = $reflector;
+        }
+
+        // in the order the class declares them, which is the order their components are added in
+        $declared = array_flip(array_map(
+            static fn (\ReflectionProperty $property): string => $property->getName(),
+            $schema->getClassReflector()?->getProperties() ?? [],
+        ));
+        usort($reflectors, static fn (\Reflector $a, \Reflector $b): int => ($declared[$a->getName()] ?? PHP_INT_MAX) <=> ($declared[$b->getName()] ?? PHP_INT_MAX));
+
+        $types = [];
+        foreach ($reflectors as $reflector) {
+            foreach ($this->extractNamedTypes($reflector->getType()) as $type) {
                 $types[] = $type;
             }
         }
 
-        if (($constructor = $reflector->getConstructor()) instanceof \ReflectionMethod) {
-            foreach ($constructor->getParameters() as $param) {
-                foreach ($this->extractNamedTypes($param->getType()) as $type) {
-                    $types[] = $type;
-                }
-            }
-        }
-
         return $types;
+    }
+
+    /**
+     * Whether the schema leaves its type to the PHP declaration.
+     */
+    protected function isUntyped(OA\Schema $schema): bool
+    {
+        return $schema->ref === null
+            && $schema->enum === null
+            && !$schema instanceof OA\Schema\Items
+            && $schema->type === null
+            && $schema->oneOf === null
+            && $schema->allOf === null
+            && $schema->anyOf === null
+            && $schema->items === null
+            && !$schema->properties
+            && !$schema->patternProperties;
     }
 
     /**

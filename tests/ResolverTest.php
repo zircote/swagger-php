@@ -74,6 +74,86 @@ final class ResolverTest extends TestCase
         $this->assertSame(['Product', 'Manufacturer'], $this->schemaNames($assembler));
     }
 
+    public function testOnlyDocumentedPropertiesWithoutATypeAreChased(): void
+    {
+        $assembler = $this->assembler(Fixtures\Resolver\Catalogue::class);
+        $spy = new Fixtures\Resolver\CountingResolver();
+
+        $this->resolver(new Resolver\Reflection(), $spy)->resolve($assembler);
+
+        $this->assertSame(['Catalogue'], $this->schemaNames($assembler));
+        $this->assertSame([], $spy->attempts);
+    }
+
+    public function testAPropertyImpliedByASchemaIsChased(): void
+    {
+        $assembler = $this->assembler(Fixtures\Resolver\Shelf::class);
+
+        $this->resolver(new Resolver\Reflection())->resolve($assembler);
+
+        $this->assertSame(['Shelf', 'Manufacturer'], $this->schemaNames($assembler));
+    }
+
+    public function testAPromotedParameterIsChasedAndAnEnumIsNot(): void
+    {
+        $assembler = $this->assembler(Fixtures\Resolver\Crate::class);
+        $spy = new Fixtures\Resolver\CountingResolver();
+
+        $this->resolver(new Resolver\Reflection(), $spy)->resolve($assembler);
+
+        $this->assertSame(['Crate', 'Manufacturer'], $this->schemaNames($assembler));
+        $this->assertSame([], $spy->attempts);
+    }
+
+    public function testPropertyTypesAreChasedInDeclarationOrder(): void
+    {
+        $assembler = $this->assembler(Fixtures\Resolver\Pallet::class);
+
+        $this->resolver(new Resolver\Reflection())->resolve($assembler);
+
+        $this->assertSame(['Pallet', 'Manufacturer', 'Catalogue'], $this->schemaNames($assembler));
+    }
+
+    /**
+     * A discriminator map on the parent of a flattened class made the parent and its children
+     * reference each other.
+     */
+    public function testAFlattenedHierarchyKeepsItsShape(): void
+    {
+        $document = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->withResolver(fn (Resolver $resolver): Resolver => $resolver->withResolvers(
+                fn (TypedList $resolvers): TypedList => $resolvers->add(new Fixtures\Resolver\FlatResolver()),
+            ))
+            ->addSource(new \ReflectionClass(Fixtures\Resolver\Checkout::class))
+            ->withSpecification(fn (Specification $specification): Specification => $specification->add(new OA\Info(title: 'Resolver', version: '1.0.0')))
+            ->withAugmenters(fn (Pipeline $augmenters): Pipeline => $augmenters->remove(Augmenter\Cleanup::class))
+            ->build()
+            ->toArray();
+
+        $schemas = $document['components']['schemas'];
+        $this->assertArrayNotHasKey('allOf', $schemas['CardPayment']);
+        $this->assertArrayNotHasKey('allOf', $schemas['BankPayment']);
+        $this->assertSame(['type', 'number'], array_keys($schemas['CardPayment']['properties']));
+        $this->assertSame('#/components/schemas/CardPayment', $schemas['Payment']['discriminator']['mapping']['card']);
+    }
+
+    public function testASchemaBuiltElsewhereAsksForNothing(): void
+    {
+        $assembler = $this->assembler();
+        // as a resolver describing the class from another source adds it: the class behind it,
+        // properties without reflectors
+        $assembler->getSpecification()->add((new OA\Schema(properties: [
+            new OA\Property(property: 'manufacturer', schema: new OA\Schema(type: 'object')),
+        ]))->setReflector(new \ReflectionClass(Fixtures\Resolver\Product::class)));
+        $spy = new Fixtures\Resolver\CountingResolver();
+
+        $this->resolver(new Resolver\Reflection(), $spy)->resolve($assembler);
+
+        $this->assertSame([], $spy->attempts);
+        $this->assertCount(1, $assembler->getSpecification()->schemas);
+    }
+
     public function testFailedFqcnIsAttemptedOnlyOncePerRun(): void
     {
         $assembler = $this->assembler(Fixtures\Resolver\ProductController::class);

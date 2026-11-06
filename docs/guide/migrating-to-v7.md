@@ -141,6 +141,19 @@ to the logger the builder is given. A subclass assigning its own logger to `$log
 first, `new CollectingLogger($logger)`. A subclass overriding `getLogger()` declares
 `CollectingLogger` as its return type.
 
+## Changed output in 7.4
+
+A public property with neither a property nor a schema attribute no longer puts its class in
+`components`. With `cleanup.enabled` off, such a class used to show there, unreferenced. Where
+nothing else adds the class, an operation parameter, a getter or a docblock type such as
+`list<Part>` typed with it used to reference that component. Now that type is left out, with a
+warning. Add the class as a source, or document the property.
+
+## Changed in 7.4
+
+`Resolver::getTypedReflectors()` is replaced by `getPropertyTypes()`, which takes the schema rather
+than its class. A subclass overriding it overrides `getPropertyTypes()` instead.
+
 ## Preparing for 8.0
 
 In 8.0 classic is removed, and so is `setMode()`. Spec attributes move from `OpenApi\Spec` to

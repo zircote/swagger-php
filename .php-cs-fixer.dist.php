@@ -29,6 +29,9 @@ $finder = PhpCsFixer\Finder::create()
             && !strpos($file->getPathname(), 'tests/Fixtures/Scratch/DocblockGenerics-spec.php')
             // the capitalised keywords are the subject of the test, and phpdoc_types lowercases them
             && !strpos($file->getPathname(), 'tests/Fixtures/Type/KeywordCase.php')
+            // the constructor declared before the property is the subject of the test, and
+            // ordered_class_elements moves it after
+            && !strpos($file->getPathname(), 'tests/Fixtures/Resolver/Pallet.php')
         ;
     })
     ->in(__DIR__);

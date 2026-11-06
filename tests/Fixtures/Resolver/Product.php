@@ -19,5 +19,6 @@ class Product
     public Manufacturer $manufacturer;
 
     // no spec attributes; not resolvable
+    #[OA\Property(property: 'weight')]
     public Weight $weight;
 }

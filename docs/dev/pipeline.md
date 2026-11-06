@@ -237,8 +237,9 @@ Discovery draws on two sources, both readable before any augmenter has run:
 
 - **Ref values**: raw FQCN strings in `$ref`, not yet rewritten to `#/components/...`, so no
   dependency on `Names` or `Refs`. A `Schema\Ref` adds its qualifiers to the key
-- **Reflector types**: non-builtin types on properties and constructor parameters, read
-  straight off `\ReflectionProperty::getType()`, so no dependency on `Types`
+- **Reflector types**: non-builtin types of a schema's own properties that carry a property
+  attribute and no type yet, the ones `Types` will turn into a `$ref`. They are read straight off
+  `\ReflectionProperty::getType()`, so no dependency on `Types`
 
 A `ComponentIndex` deduplicates against what the specification already holds.
 
