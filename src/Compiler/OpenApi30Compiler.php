@@ -38,6 +38,9 @@ class OpenApi30Compiler extends OpenApi31Compiler
      */
     protected const NULL_SCHEMA = ['type' => 'object', 'nullable' => true, 'enum' => [null]];
 
+    /** `examples` has a 3.0 warning of its own, beside a `$ref` or not */
+    protected const NOT_REF_KEYWORDS = [...parent::NOT_REF_KEYWORDS, 'examples'];
+
     #[\Override]
     public function getVersion(): string
     {
@@ -360,6 +363,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
     protected function validateSchemas(Specification $specification): void
     {
         $allSchemas = $this->collectSchemas($specification);
+        $owners = $this->collectSchemaOwners($specification);
 
         foreach ($allSchemas as $schema) {
             $type = $schema->type;
@@ -373,6 +377,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
             }
 
             $this->validateSchemaType($schema);
+            $this->validateRefSiblings($schema, $owners);
 
             if ($schema->prefixItems !== null) {
                 $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': prefixItems is not supported in OpenAPI 3.0');

@@ -75,7 +75,6 @@ class Scheme extends OA\AbstractAttribute implements RefInterface
         ?array $attachables = null,
         ?OA\Fan $fan = null,
     ) {
-        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
         $this->component = $component;
         if ($component === null && $this->securityScheme !== null) {
             trigger_deprecation('zircote/swagger-php', '6.12', '`securityScheme` is deprecated as the component name of %s and will be removed in 8.0; use `component`', static::class);
@@ -83,6 +82,8 @@ class Scheme extends OA\AbstractAttribute implements RefInterface
         }
         $this->type = $type instanceof \BackedEnum ? $type->value : $type;
         $this->in = $in instanceof \BackedEnum ? $in->value : $in;
+
+        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
     }
 
     public function isRoot(): bool

@@ -159,12 +159,27 @@ public function __construct(
     string|FlowType|null $flow = null,
     // ...
 ) {
-    parent::__construct(x: $x, attachables: $attachables);
     $this->flow = $flow instanceof \BackedEnum ? $flow->value : $flow;
+
+    parent::__construct(x: $x, attachables: $attachables);
 }
 ```
 
 Augmenters, compilers and serialization then never need to branch on type.
+
+### The parent constructor runs last
+
+`AbstractAttribute`'s constructor records which public fields hold something other than a
+default, and `isAuthored()` reads that record. A field filled in later, by an augmenter or
+anything else, is not authored. The compilers use this to warn only about what the author
+wrote, for example a keyword dropped beside a `$ref`.
+
+The record is taken when the parent constructor runs. Promoted parameters are assigned before
+the constructor body, so they are always in it. A field the body assigns itself, such as a
+normalized `flow` or `component`, is in it only if the assignment comes first. Every
+constructor in `src/Spec` therefore calls `parent::__construct()` as its last statement.
+`AuthoredTest` builds each attribute class with every argument set and fails on any field
+the record misses.
 
 ## The model speaks OpenAPI 3.1, the compilers translate
 

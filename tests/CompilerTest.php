@@ -6,13 +6,18 @@
 
 namespace OpenApi\Tests;
 
+use OpenApi\Augmenter;
+use OpenApi\Builder;
+use OpenApi\Builder\Mode;
 use OpenApi\Compiler\OpenApi30Compiler;
 use OpenApi\Compiler\OpenApi31Compiler;
 use OpenApi\Compiler\OpenApi32Compiler;
 use OpenApi\Contracts\CompilerInterface;
+use OpenApi\Loggers\CollectingLogger;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Undefined;
+use OpenApi\Utils\Pipeline;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -283,6 +288,105 @@ final class CompilerTest extends TestCase
         $this->assertCount(7, $reported);
         $this->assertStringStartsWith('Parameter description beside $ref #/components/parameters/P is not supported in OpenAPI 3.0 and will be omitted in ', $reported[0]);
         $this->assertNotEmpty(array_filter($reported, fn (string $message): bool => str_starts_with($message, 'Example summary and description beside $ref #/components/examples/E ')));
+    }
+
+    /**
+     * @return iterable<string, array{CompilerInterface, non-empty-string}>
+     */
+    public static function droppedSchemaSiblingsProvider(): iterable
+    {
+        yield '3.0' => [new OpenApi30Compiler(), 'Schema "Checkout": description, required, minProperties beside $ref #/components/schemas/Cat will be omitted'];
+        yield '3.1' => [new OpenApi31Compiler(), 'Schema "Checkout": required, minProperties beside $ref #/components/schemas/Cat will be omitted'];
+        yield '3.2' => [new OpenApi32Compiler(), 'Schema "Checkout": required, minProperties beside $ref #/components/schemas/Cat will be omitted'];
+    }
+
+    /**
+     * @param non-empty-string $expected
+     */
+    #[DataProvider('droppedSchemaSiblingsProvider')]
+    public function testReportsSchemaKeywordsDroppedBesideRef(CompilerInterface $compiler, string $expected): void
+    {
+        $specification = new Specification();
+        $specification->add(new OA\Info(title: 'Siblings', version: '1.0.0'));
+        $specification->add(new OA\Schema(type: 'object', component: 'Cat'));
+        $specification->add(new OA\Schema(description: 'A checkout', ref: '#/components/schemas/Cat', required: ['name'], minProperties: 1, component: 'Checkout'));
+
+        $messages = array_column($compiler->validate($specification), 'message');
+        $reported = array_values(array_filter($messages, fn (string $message): bool => str_contains($message, 'beside $ref')));
+
+        $this->assertCount(1, $reported);
+        $this->assertStringStartsWith($expected, $reported[0]);
+    }
+
+    public function testADroppedSiblingIsReportedAtItsOwnersLocation(): void
+    {
+        $property = (new OA\Property(property: 'title', schema: new OA\Schema(description: 'A title', ref: '#/components/schemas/Cat')))
+            ->setReflector(new \ReflectionProperty(OA\Info::class, 'title'));
+        $specification = new Specification();
+        $specification->add(new OA\Info(title: 'Siblings', version: '1.0.0'));
+        $specification->add(new OA\Schema(type: 'object', component: 'Cat'));
+        $specification->add(new OA\Schema(properties: [$property], component: 'Owner'));
+
+        $messages = array_column((new OpenApi30Compiler())->validate($specification), 'message');
+
+        $this->assertContains('Schema: description beside $ref #/components/schemas/Cat will be omitted in ' . OA\Info::class . '::$title in ' . (new \ReflectionClass(OA\Info::class))->getFileName(), $messages);
+    }
+
+    public function testADroppedSiblingWithoutALocationIsReportedWithoutOne(): void
+    {
+        $specification = new Specification();
+        $specification->add(new OA\Info(title: 'Siblings', version: '1.0.0'));
+        $specification->add(new OA\Schema(type: 'object', component: 'Cat'));
+        $specification->add(new OA\Schema(description: 'A checkout', ref: '#/components/schemas/Cat', component: 'Checkout'));
+
+        $messages = array_column((new OpenApi30Compiler())->validate($specification), 'message');
+
+        $this->assertContains('Schema "Checkout": description beside $ref #/components/schemas/Cat will be omitted', $messages);
+    }
+
+    public function testAKeywordSetAfterConstructionIsNotReported(): void
+    {
+        $specification = new Specification();
+        $specification->add(new OA\Info(title: 'Siblings', version: '1.0.0'));
+        $specification->add(new OA\Schema(type: 'object', component: 'Cat'));
+        $checkout = new OA\Schema(ref: '#/components/schemas/Cat', minProperties: 1, component: 'Checkout');
+        $checkout->description = 'From a docblock';
+        $specification->add($checkout);
+
+        $messages = array_column((new OpenApi30Compiler())->validate($specification), 'message');
+
+        $this->assertContains('Schema "Checkout": minProperties beside $ref #/components/schemas/Cat will be omitted', $messages);
+    }
+
+    public function testADocblockBesideARefIsNotReported(): void
+    {
+        $logger = new CollectingLogger();
+
+        (new Builder(logger: $logger))
+            ->setMode(Mode::SPEC)
+            ->setVersion('3.0.0')
+            ->addSource(new \ReflectionClass(Fixtures\RefSiblings\Owner::class))
+            ->addSource(new \ReflectionClass(Fixtures\RefSiblings\Pet::class))
+            ->withSpecification(fn (Specification $specification): Specification => $specification->add(new OA\Info(title: 'Siblings', version: '1.0.0')))
+            ->withAugmenters(fn (Pipeline $augmenters): Pipeline => $augmenters->remove(Augmenter\Cleanup::class))
+            ->build();
+
+        $reported = array_values(array_filter(array_column($logger->entries(), 'message'), fn (string $message): bool => str_contains($message, 'beside $ref')));
+
+        $this->assertCount(1, $reported);
+        $this->assertStringStartsWith('Schema: description beside $ref #/components/schemas/Pet will be omitted in ' . Fixtures\RefSiblings\Owner::class . '::$other ', $reported[0]);
+    }
+
+    public function testAFalseThatMeansNothingIsNotReported(): void
+    {
+        $specification = new Specification();
+        $specification->add(new OA\Info(title: 'Siblings', version: '1.0.0'));
+        $specification->add(new OA\Schema(type: 'object', component: 'Cat'));
+        $specification->add(new OA\Schema(ref: '#/components/schemas/Cat', deprecated: false, readOnly: false, writeOnly: false, component: 'Checkout'));
+
+        $messages = array_column((new OpenApi30Compiler())->validate($specification), 'message');
+
+        $this->assertSame([], array_values(array_filter($messages, fn (string $message): bool => str_contains($message, 'beside $ref'))));
     }
 
     public function test31ReportsNoReferenceSiblings(): void

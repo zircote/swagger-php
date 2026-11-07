@@ -60,10 +60,28 @@ final class ScratchTest extends OpenApiTestCase
             'NullRef-3.0.0-spec' => [
                 'examples array is not supported in OpenAPI 3.0, using first value as example',
                 'examples beside $ref #/components/schemas/repository is not supported in OpenAPI 3.0 and will be omitted',
+                'title, description, example, deprecated, readOnly, default beside $ref #/components/schemas/repository will be omitted',
+                'writeOnly beside $ref #/components/schemas/repository will be omitted',
             ],
             'NullRef-3.0.0-hybrid' => [
                 'examples array is not supported in OpenAPI 3.0, using first value as example',
                 'examples beside $ref #/components/schemas/repository is not supported in OpenAPI 3.0 and will be omitted',
+                'title, description, example, deprecated, readOnly, default beside $ref #/components/schemas/repository will be omitted',
+                'writeOnly beside $ref #/components/schemas/repository will be omitted',
+            ],
+            'CustomAttributes-3.0.0-spec' => ['title beside $ref #/components/schemas/CAItemModel will be omitted'],
+            'CustomAttributes-3.0.0-hybrid' => ['title beside $ref #/components/schemas/CAItemModel will be omitted'],
+            'ComplexCustomAttributes-3.0.0-hybrid' => [
+                'title beside $ref #/components/schemas/TargetId will be omitted',
+                'title beside $ref #/components/schemas/TargetType will be omitted',
+            ],
+            'NestedSchema-3.0.0-spec' => [
+                'description beside $ref #/components/schemas/NestedSchemaTwo will be omitted',
+                'description beside $ref #/components/schemas/MultipleOneOf will be omitted',
+            ],
+            'NestedSchema-3.0.0-hybrid' => [
+                'description beside $ref #/components/schemas/NestedSchemaTwo will be omitted',
+                'description beside $ref #/components/schemas/MultipleOneOf will be omitted',
             ],
             'Docblocks-3.0.0-spec' => ['const is not supported in OpenAPI 3.0'],
             'Docblocks-3.0.0-hybrid' => ['const is not supported in OpenAPI 3.0'],

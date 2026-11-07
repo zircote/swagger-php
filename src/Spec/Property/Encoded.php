@@ -64,9 +64,9 @@ class Encoded extends OA\Property
         ?array $attachables = null,
         ?OA\Fan $fan = null,
     ) {
-        parent::__construct(property: $property, schema: $schema, x: $x, attachables: $attachables, fan: $fan);
-
         $this->encoding = $encoding;
+
+        parent::__construct(property: $property, schema: $schema, x: $x, attachables: $attachables, fan: $fan);
     }
 
     public function merge(): array
