@@ -98,7 +98,6 @@ class Parameter extends AbstractAttribute implements RefInterface
         ?array $attachables = null,
         ?Fan $fan = null,
     ) {
-        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
         $this->component = $component;
         if ($component === null && $this->parameter !== null) {
             trigger_deprecation('zircote/swagger-php', '6.12', '`parameter` is deprecated as the component name of %s and will be removed in 8.0; use `component`', static::class);
@@ -107,6 +106,8 @@ class Parameter extends AbstractAttribute implements RefInterface
         $this->in = $in instanceof \BackedEnum ? $in->value : $in;
         $this->style = $style instanceof \BackedEnum ? $style->value : $style;
         $this->content = self::wrapList($content);
+
+        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
     }
 
     public function isRoot(): bool

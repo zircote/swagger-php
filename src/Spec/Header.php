@@ -62,10 +62,11 @@ class Header extends AbstractAttribute implements RefInterface
         ?array $attachables = null,
         ?Fan $fan = null,
     ) {
-        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
         $this->component = $component;
         $this->style = $style instanceof \BackedEnum ? $style->value : $style;
         $this->content = self::wrapList($content);
+
+        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
     }
 
     public function isRoot(): bool

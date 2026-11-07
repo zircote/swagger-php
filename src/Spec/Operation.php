@@ -92,9 +92,10 @@ class Operation extends AbstractAttribute
         ?Fan $fan = null,
         ?array $methods = null,
     ) {
-        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
         $this->method = $method === null ? null : self::normaliseMethod($method);
         $this->methods = $methods === null ? null : array_values(array_unique(array_map(self::normaliseMethod(...), $methods)));
+
+        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
     }
 
     public function isRoot(): bool

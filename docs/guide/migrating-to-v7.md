@@ -151,6 +151,9 @@ The classic component name fields on spec attributes (`schema:`, `parameter:`, `
 `securityScheme:`) are removed with it. [The component names](/guide/migrating-to-spec#the-component-names)
 has the details.
 
+`AttributeInterface` gains `isAuthored()`, which `AbstractAttribute` has since 7.4. A class
+implementing the interface without extending `AbstractAttribute` adds it.
+
 ## Removed deprecated elements
 
 ### `LegacyTypeResolver`

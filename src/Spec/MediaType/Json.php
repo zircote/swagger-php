@@ -88,6 +88,9 @@ class Json extends OA\MediaType implements RefInterface
         ?array $attachables = null,
         ?OA\Fan $fan = null,
     ) {
+        $this->type = self::typeValue($type);
+        $this->properties = self::propertyList($properties);
+
         parent::__construct(
             mediaType: 'application/json',
             schema: $schema,
@@ -99,7 +102,5 @@ class Json extends OA\MediaType implements RefInterface
             attachables: $attachables,
             fan: $fan,
         );
-        $this->type = self::typeValue($type);
-        $this->properties = self::propertyList($properties);
     }
 }

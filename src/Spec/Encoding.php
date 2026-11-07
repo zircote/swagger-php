@@ -38,8 +38,9 @@ class Encoding extends AbstractAttribute
         ?array $attachables = null,
         ?Fan $fan = null,
     ) {
-        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
         $this->style = $style instanceof \BackedEnum ? $style->value : $style;
+
+        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
     }
 
     public function merge(): array

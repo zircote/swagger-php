@@ -39,6 +39,9 @@ class OpenApi31Compiler implements CompilerInterface
     /** schema properties that are not keywords beside a `$ref`, or that compile into its form */
     protected const NOT_REF_KEYWORDS = ['schema', 'component', 'ref', 'nullable', 'x', 'attachables'];
 
+    /** schema keywords whose `false` means the same as leaving them out */
+    protected const FALSE_BY_DEFAULT_KEYWORDS = ['deprecated', 'readOnly', 'writeOnly', 'uniqueItems'];
+
     protected const RESPONSE_KEY = OA\Response::STATUS_CODE_PATTERN;
 
     /**
@@ -981,6 +984,7 @@ class OpenApi31Compiler implements CompilerInterface
     protected function validateSchemas(Specification $specification): void
     {
         $allSchemas = $this->collectSchemas($specification);
+        $owners = $this->collectSchemaOwners($specification);
 
         foreach ($allSchemas as $schema) {
             if ($schema->type !== null && (is_array($schema->type) ? in_array('array', $schema->type, true) : $schema->type === 'array')) {
@@ -990,14 +994,40 @@ class OpenApi31Compiler implements CompilerInterface
             }
 
             $this->validateSchemaType($schema);
-            $this->validateRefSiblings($schema);
+            $this->validateRefSiblings($schema, $owners);
         }
     }
 
     /**
-     * Warns about the keywords a schema with a `$ref` sets that its compiled form leaves out.
+     * The property or parameter that holds each schema, for a schema without a location of its own.
+     *
+     * @return \SplObjectStorage<OA\Schema, OA\Property|OA\Parameter>
      */
-    protected function validateRefSiblings(OA\Schema $schema): void
+    protected function collectSchemaOwners(Specification $specification): \SplObjectStorage
+    {
+        /** @var \SplObjectStorage<OA\Schema, OA\Property|OA\Parameter> $owners */
+        $owners = new \SplObjectStorage();
+        $specification->getWalker()->visit([OA\Property::class, OA\Parameter::class], function (OA\Property|OA\Parameter $owner) use ($owners): void {
+            if ($owner->schema instanceof OA\Schema) {
+                $owners->offsetSet($owner->schema, $owner);
+            }
+        });
+
+        return $owners;
+    }
+
+    /**
+     * Warns about the keywords a schema with a `$ref` sets that its compiled form leaves out.
+     *
+     * Only an authored keyword is reported: one an augmenter filled in, such as a docblock
+     * description on a property typed with a class, is no mistake of the author's.
+     *
+     * A schema type resolution made has no location of its own, so the warning names its owner's,
+     * or none.
+     *
+     * @param \SplObjectStorage<OA\Schema, OA\Property|OA\Parameter> $owners
+     */
+    protected function validateRefSiblings(OA\Schema $schema, \SplObjectStorage $owners): void
     {
         if ($schema->ref === null) {
             return;
@@ -1007,7 +1037,9 @@ class OpenApi31Compiler implements CompilerInterface
         $dropped = [];
         foreach (get_object_vars($schema) as $keyword => $value) {
             if (in_array($keyword, static::NOT_REF_KEYWORDS, true)
+                || !$schema->isAuthored($keyword)
                 || in_array($value, [null, Undefined::UNDEFINED, []], true)
+                || ($value === false && in_array($keyword, static::FALSE_BY_DEFAULT_KEYWORDS, true))
                 || (is_array($compiled) && array_key_exists($keyword, $compiled))
             ) {
                 continue;
@@ -1017,12 +1049,16 @@ class OpenApi31Compiler implements CompilerInterface
         }
 
         if ($dropped !== []) {
+            $located = $schema->getReflector() instanceof \Reflector || !$owners->offsetExists($schema)
+                ? $schema
+                : $owners->offsetGet($schema);
+
             $this->logger->warning(sprintf(
-                'Schema%s: %s beside $ref %s will be omitted in %s',
+                'Schema%s: %s beside $ref %s will be omitted%s',
                 $this->schemaLabel($schema),
                 implode(', ', $dropped),
                 $schema->getRefValue(),
-                $schema->getSourceLocation(),
+                $located->getReflector() instanceof \Reflector ? ' in ' . $located->getSourceLocation() : '',
             ));
         }
     }

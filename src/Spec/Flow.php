@@ -64,8 +64,9 @@ class Flow extends AbstractAttribute
         ?array $attachables = null,
         ?Fan $fan = null,
     ) {
-        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
         $this->flow = $flow instanceof \BackedEnum ? $flow->value : $flow;
+
+        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
     }
 
     public function merge(): array

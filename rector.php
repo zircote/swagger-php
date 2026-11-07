@@ -4,6 +4,7 @@ use Rector\CodingStyle\Rector\ClassMethod\NewlineBeforeNewAssignSetRector;
 use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
 use Rector\CodingStyle\Rector\Encapsed\WrapEncapsedVariableInCurlyBracesRector;
 use Rector\CodingStyle\Rector\If_\NullableCompareToNullRector;
+use Rector\CodeQuality\Rector\BooleanAnd\RepeatedAndNotEqualToNotInArrayRector;
 use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
 use Rector\Config\RectorConfig;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
@@ -29,6 +30,10 @@ return RectorConfig::configure()
         ClassPropertyAssignToConstructorPromotionRector::class,
         ArrayToFirstClassCallableRector::class => [
             __DIR__ . '/tests/Analysers/ComposerAutoloaderScannerTest.php',
+        ],
+        // runs for every attribute constructed; `in_array()` there is measurably slower
+        RepeatedAndNotEqualToNotInArrayRector::class => [
+            __DIR__ . '/src/Spec/AbstractAttribute.php',
         ],
     ])
     ->withPreparedSets(

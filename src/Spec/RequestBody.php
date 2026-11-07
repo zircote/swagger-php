@@ -47,13 +47,14 @@ class RequestBody extends AbstractAttribute implements RefInterface
         ?array $attachables = null,
         ?Fan $fan = null,
     ) {
-        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
         $this->component = $component;
         if ($component === null && $this->request !== null) {
             trigger_deprecation('zircote/swagger-php', '6.12', '`request` is deprecated as the component name of %s and will be removed in 8.0; use `component`', static::class);
             $this->component = $this->request;
         }
         $this->content = self::wrapContent($content);
+
+        parent::__construct(x: $x, attachables: $attachables, fan: $fan);
     }
 
     public function isRoot(): bool

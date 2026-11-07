@@ -8,6 +8,7 @@ namespace OpenApi\Spec;
 
 use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Specification\ComponentKey;
+use OpenApi\Undefined;
 use OpenApi\Utils\SourceLocation;
 
 abstract class AbstractAttribute implements AttributeInterface
@@ -26,6 +27,16 @@ abstract class AbstractAttribute implements AttributeInterface
     protected ?ComponentKey $componentKey = null;
 
     /**
+     * The public fields set by the time the constructor ran; names only, so a copy stays cheap.
+     *
+     * @var list<string>
+     */
+    protected array $authored = [];
+
+    /** @var (\Closure(object): array<string, mixed>)|null */
+    private static ?\Closure $publicFields = null;
+
+    /**
      * @param array<string,mixed>|null $x
      * @param list<Attachable>|null    $attachables Reusable custom attachable attributes
      * @param Fan|null                 $fan         Where this attribute goes when more than one attribute could hold it
@@ -36,6 +47,7 @@ abstract class AbstractAttribute implements AttributeInterface
         ?Fan $fan = null,
     ) {
         $this->fan = $fan;
+        $this->authored = static::authoredFields($this);
     }
 
     public function isRoot(): bool
@@ -154,6 +166,21 @@ abstract class AbstractAttribute implements AttributeInterface
         return $this;
     }
 
+    /**
+     * Whether the author set the field: it held something other than a default once the attribute
+     * was constructed.
+     *
+     * A field set later, by an augmenter or anything else, is not authored. An attribute an
+     * augmenter constructs itself counts as authored all the same.
+     *
+     * Joins `AttributeInterface` in 8.0. Added to the interface in a minor, it would break a class
+     * implementing the interface without extending this one.
+     */
+    public function isAuthored(string $field): bool
+    {
+        return in_array($field, $this->authored, true);
+    }
+
     public function getSourceLocation(): SourceLocation
     {
         if (!$this->sourceLocation instanceof SourceLocation) {
@@ -163,6 +190,27 @@ abstract class AbstractAttribute implements AttributeInterface
         }
 
         return $this->sourceLocation;
+    }
+
+    /**
+     * The public fields of an attribute holding something other than a default.
+     *
+     * @return list<string>
+     */
+    protected static function authoredFields(AttributeInterface $attribute): array
+    {
+        // bound outside the class, so only the public fields are read; once, as every attribute
+        // constructed runs this
+        self::$publicFields ??= \Closure::bind(static fn (object $object): array => get_object_vars($object), null, null);
+
+        $authored = [];
+        foreach ((self::$publicFields)($attribute) as $field => $value) {
+            if ($value !== null && $value !== Undefined::UNDEFINED && $value !== []) {
+                $authored[] = $field;
+            }
+        }
+
+        return $authored;
     }
 
     /**

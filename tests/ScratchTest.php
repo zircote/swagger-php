@@ -83,7 +83,6 @@ final class ScratchTest extends OpenApiTestCase
                 'description beside $ref #/components/schemas/NestedSchemaTwo will be omitted',
                 'description beside $ref #/components/schemas/MultipleOneOf will be omitted',
             ],
-            'PromotedProperty-3.0.0-spec' => ['default beside $ref #/components/schemas/MyEnum will be omitted'],
             'Docblocks-3.0.0-spec' => ['const is not supported in OpenAPI 3.0'],
             'Docblocks-3.0.0-hybrid' => ['const is not supported in OpenAPI 3.0'],
             'ServerVariableEnumClassString-3.0.0' => ['ServerVariable(secure): enum values must be strings, dropping true', 'ServerVariable(secure): enum values must be strings, dropping false'],
