@@ -992,6 +992,74 @@ final class CompilerTest extends TestCase
         $this->assertSame([], array_filter($messages, fn (string $m): bool => str_starts_with($m, 'Request body not supported')));
     }
 
+    public function testValidatingAgainSeesWhatChangedSince(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->operations[] = new OA\Operation(path: '/p', method: 'get', responses: [new OA\Response(response: 200, description: 'ok')]);
+
+        $compiler = new OpenApi31Compiler();
+        $compiler->validate($spec);
+        $spec->operations[] = new OA\Operation(path: '/q', responses: [new OA\Response(response: 200, description: 'ok')]);
+        $messages = array_column($compiler->validate($spec), 'message');
+
+        $this->assertCount(1, array_filter($messages, fn (string $m): bool => str_starts_with($m, 'Operation without a method will be omitted in ')));
+    }
+
+    public function testValidatingAgainSeesANestedAddition(): void
+    {
+        $spec = $this->createSpecification('3.0.0');
+        $operation = new OA\Operation(path: '/p', method: 'get', responses: [new OA\Response(response: 200, description: 'ok')]);
+        $spec->operations[] = $operation;
+
+        $compiler = new OpenApi30Compiler();
+        $compiler->validate($spec);
+        $operation->parameters = [new OA\Parameter(description: 'beside', ref: '#/components/parameters/P')];
+        $messages = array_column($compiler->validate($spec), 'message');
+
+        $this->assertCount(1, array_filter($messages, fn (string $m): bool => str_starts_with($m, 'Parameter description beside $ref #/components/parameters/P ')));
+    }
+
+    public function testACheckCalledOutsideValidateSeesWhatChangedSince(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $compiler = new class () extends OpenApi31Compiler {
+            /**
+             * @return list<string>
+             */
+            public function operationWarnings(Specification $specification): array
+            {
+                $this->validateOperations($specification);
+
+                return array_column($this->logger->entries(), 'message');
+            }
+        };
+
+        $compiler->validate($spec);
+        $spec->operations[] = new OA\Operation(path: '/q', responses: [new OA\Response(response: 200, description: 'ok')]);
+
+        $this->assertCount(1, array_filter($compiler->operationWarnings($spec), fn (string $m): bool => str_starts_with($m, 'Operation without a method will be omitted in ')));
+    }
+
+    public function testACheckThatChangesTheSpecificationRewalksForTheChecksAfterIt(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->operations[] = new OA\Operation(path: '/p', method: 'get', responses: [new OA\Response(response: 200, description: 'ok')]);
+        $compiler = new class () extends OpenApi31Compiler {
+            protected function validateSchemas(Specification $specification): void
+            {
+                parent::validateSchemas($specification);
+
+                // runs before validateOperations()
+                $specification->operations[] = new OA\Operation(path: '/q', responses: [new OA\Response(response: 200, description: 'ok')]);
+                $this->rewalk($specification);
+            }
+        };
+
+        $messages = array_column($compiler->validate($spec), 'message');
+
+        $this->assertCount(1, array_filter($messages, fn (string $m): bool => str_starts_with($m, 'Operation without a method will be omitted in ')));
+    }
+
     // --- x- extensions ---
 
     public function testExtensionsEmitted(): void

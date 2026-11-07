@@ -19,11 +19,11 @@ use PHPUnit\Framework\TestCase;
  * more fails on any machine. Each count follows from the shape. One that moves means the build
  * does more than it needs to, or the expectation here moves with a reason.
  *
- * Walks over the whole document do not follow from the shape: each augmenter, resolver pass or
- * compiler check that walks does so once, whatever the size. A cleanup that removes something
- * walks again, and so does a second resolver pass. A scan and a seeded build come to the same
- * count for that reason: the scan's cleanup removes the unused schemas, and the seeded build,
- * which never reached them, makes a second resolver pass instead.
+ * Walks over the whole document do not follow from the shape: each augmenter or resolver pass
+ * that walks, and the compiler's checks together, do so once, whatever the size. A cleanup that
+ * removes something walks again, and so does a second resolver pass. A scan and a seeded build
+ * come to the same count for that reason: the scan's cleanup removes the unused schemas, and the
+ * seeded build, which never reached them, makes a second resolver pass instead.
  */
 final class CountersTest extends TestCase
 {
@@ -65,7 +65,7 @@ final class CountersTest extends TestCase
             'parsed' => 1 + $shape->schemas + $shape->controllers() + $shape->noise,
             'passes' => 1,
             'unresolved' => 0,
-            'walks' => 32,
+            'walks' => 23,
         ], $builder->counts());
     }
 
@@ -84,7 +84,7 @@ final class CountersTest extends TestCase
             'parsed' => 1 + $shape->controllers() + $shape->used(),
             'passes' => 2,
             'unresolved' => $shape->used(),
-            'walks' => 32,
+            'walks' => 23,
         ], $builder->counts());
     }
 }

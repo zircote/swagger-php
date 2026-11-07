@@ -60,6 +60,22 @@ class OpenApi31Compiler implements CompilerInterface
 
     protected CollectingLogger $logger;
 
+    /**
+     * Every attribute of the specification `$walked`, in walk order, while `withOneWalk()` runs.
+     *
+     * @var list<AttributeInterface>
+     */
+    protected array $attributes = [];
+
+    /**
+     * The positions in `$attributes` of each class's instances, in walk order.
+     *
+     * @var array<class-string<AttributeInterface>, list<int>>
+     */
+    protected array $positions = [];
+
+    protected ?Specification $walked = null;
+
     public function __construct(?LoggerInterface $logger = null)
     {
         $this->logger = new CollectingLogger($logger);
@@ -77,51 +93,53 @@ class OpenApi31Compiler implements CompilerInterface
 
     public function validate(Specification $specification): array
     {
-        if (!$specification->info instanceof OA\Info) {
-            $this->logger->error('info is required');
-        } elseif ($specification->info->title === null) {
-            $this->logger->error('info.title is required in ' . $specification->info->getSourceLocation());
-        }
-
-        $hasPaths = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->path !== null);
-        $hasWebhooks = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->webhook !== null);
-        $hasComponents = $specification->schemas || $specification->responses
-            || $specification->parameters || $specification->requestBodies
-            || $specification->headers || $specification->securitySchemes
-            || $specification->links || $specification->examples;
-
-        if (!$hasPaths && !$hasWebhooks && !$hasComponents) {
-            $this->logger->warning('At least one of paths, webhooks, or components is required');
-        }
-
-        if ($specification->info?->license instanceof OA\License) {
-            $license = $specification->info->license;
-            if ($license->url !== null && $license->identifier !== null) {
-                $this->logger->warning('License url and identifier are mutually exclusive in ' . $license->getSourceLocation());
+        return $this->withOneWalk($specification, function () use ($specification): array {
+            if (!$specification->info instanceof OA\Info) {
+                $this->logger->error('info is required');
+            } elseif ($specification->info->title === null) {
+                $this->logger->error('info.title is required in ' . $specification->info->getSourceLocation());
             }
-        }
 
-        $this->validateSchemas($specification);
+            $hasPaths = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->path !== null);
+            $hasWebhooks = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->webhook !== null);
+            $hasComponents = $specification->schemas || $specification->responses
+                || $specification->parameters || $specification->requestBodies
+                || $specification->headers || $specification->securitySchemes
+                || $specification->links || $specification->examples;
 
-        $this->validateOperations($specification);
+            if (!$hasPaths && !$hasWebhooks && !$hasComponents) {
+                $this->logger->warning('At least one of paths, webhooks, or components is required');
+            }
 
-        $this->validateOperationIds($specification);
+            if ($specification->info?->license instanceof OA\License) {
+                $license = $specification->info->license;
+                if ($license->url !== null && $license->identifier !== null) {
+                    $this->logger->warning('License url and identifier are mutually exclusive in ' . $license->getSourceLocation());
+                }
+            }
 
-        $this->validatePathParameters($specification);
+            $this->validateSchemas($specification);
 
-        $this->validateResponses($specification);
+            $this->validateOperations($specification);
 
-        $this->validateMediaTypes($specification);
+            $this->validateOperationIds($specification);
 
-        $this->validateNames($specification);
+            $this->validatePathParameters($specification);
 
-        $this->validateVersionedComponents($specification);
+            $this->validateResponses($specification);
 
-        $this->validateNestedNames($specification);
+            $this->validateMediaTypes($specification);
 
-        $this->validateSchemaExamples($specification);
+            $this->validateNames($specification);
 
-        return $this->logger->entries();
+            $this->validateVersionedComponents($specification);
+
+            $this->validateNestedNames($specification);
+
+            $this->validateSchemaExamples($specification);
+
+            return $this->logger->entries();
+        });
     }
 
     public function compile(Specification $specification): array
@@ -934,7 +952,7 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function validateNestedNames(Specification $specification): void
     {
-        $specification->getWalker()->visit(array_keys(static::NESTED_MAPS), function (AttributeInterface $attribute): void {
+        foreach ($this->attributesOf($specification, array_keys(static::NESTED_MAPS)) as $attribute) {
             foreach (static::NESTED_MAPS as $container => $maps) {
                 if (!$attribute instanceof $container) {
                     continue;
@@ -955,7 +973,7 @@ class OpenApi31Compiler implements CompilerInterface
                     }
                 }
             }
-        });
+        }
     }
 
     /**
@@ -966,7 +984,7 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function validateSchemaExamples(Specification $specification): void
     {
-        $specification->getWalker()->visit(OA\Schema::class, function (OA\Schema $schema): void {
+        foreach ($this->attributesOf($specification, OA\Schema::class) as $schema) {
             foreach ($schema->examples ?? [] as $example) {
                 if (!$example instanceof OA\Example) {
                     continue;
@@ -978,7 +996,7 @@ class OpenApi31Compiler implements CompilerInterface
                     $example->getSourceLocation(),
                 ));
             }
-        });
+        }
     }
 
     protected function validateSchemas(Specification $specification): void
@@ -1007,11 +1025,11 @@ class OpenApi31Compiler implements CompilerInterface
     {
         /** @var \SplObjectStorage<OA\Schema, OA\Property|OA\Parameter> $owners */
         $owners = new \SplObjectStorage();
-        $specification->getWalker()->visit([OA\Property::class, OA\Parameter::class], function (OA\Property|OA\Parameter $owner) use ($owners): void {
+        foreach ($this->attributesOf($specification, [OA\Property::class, OA\Parameter::class]) as $owner) {
             if ($owner->schema instanceof OA\Schema) {
                 $owners->offsetSet($owner->schema, $owner);
             }
-        });
+        }
 
         return $owners;
     }
@@ -1080,25 +1098,25 @@ class OpenApi31Compiler implements CompilerInterface
 
     protected function validateOperations(Specification $specification): void
     {
-        $specification->getWalker()->visit(OA\Operation::class, function (OA\Operation $operation): void {
+        foreach ($this->attributesOf($specification, OA\Operation::class) as $operation) {
             if ($operation->method === null) {
                 if ($operation->path !== null || $operation->webhook !== null) {
                     $this->logger->warning('Operation without a method will be omitted in ' . $operation->getSourceLocation());
                 }
 
-                return;
+                continue;
             }
 
             if (!in_array($operation->method, static::OPERATION_METHODS, true)) {
                 $this->logger->warning("Method {$operation->method} is not supported in OpenAPI " . substr($this->getVersion(), 0, 3) . ' and will be omitted in ' . $operation->getSourceLocation());
 
-                return;
+                continue;
             }
 
             if ($operation->requestBody instanceof OA\RequestBody && !in_array($operation->method, static::OPERATION_REQUEST_BODY_METHODS)) {
                 $this->logger->warning("Request body not supported for method {$operation->method} in " . $operation->getSourceLocation());
             }
-        });
+        }
     }
 
     /**
@@ -1111,19 +1129,19 @@ class OpenApi31Compiler implements CompilerInterface
     protected function validateOperationIds(Specification $specification): void
     {
         $seen = [];
-        $specification->getWalker()->visit(OA\Operation::class, function (OA\Operation $operation) use (&$seen): void {
+        foreach ($this->attributesOf($specification, OA\Operation::class) as $operation) {
             if ($operation->operationId === null || ($operation->path === null && $operation->webhook === null)) {
-                return;
+                continue;
             }
 
             if (isset($seen[$operation->operationId])) {
                 $this->logger->warning("operationId must be unique, found \"{$operation->operationId}\" again in " . $operation->getSourceLocation());
 
-                return;
+                continue;
             }
 
             $seen[$operation->operationId] = true;
-        });
+        }
     }
 
     /**
@@ -1132,13 +1150,13 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function validatePathParameters(Specification $specification): void
     {
-        $specification->getWalker()->visit(OA\Parameter::class, function (OA\Parameter $parameter): void {
+        foreach ($this->attributesOf($specification, OA\Parameter::class) as $parameter) {
             if ($parameter->in !== OA\ParameterIn::Path->value || $parameter->ref !== null || $parameter->required === true) {
-                return;
+                continue;
             }
 
             $this->logger->warning("Path parameter \"{$parameter->name}\" must be required in " . $parameter->getSourceLocation());
-        });
+        }
     }
 
     /**
@@ -1152,7 +1170,7 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function validateResponses(Specification $specification): void
     {
-        $specification->getWalker()->visit(OA\Operation::class, function (OA\Operation $operation): void {
+        foreach ($this->attributesOf($specification, OA\Operation::class) as $operation) {
             foreach ($operation->responses ?? [] as $response) {
                 if ($response->response === null) {
                     continue;
@@ -1162,7 +1180,7 @@ class OpenApi31Compiler implements CompilerInterface
                     $this->logger->warning("Invalid response \"{$response->response}\", expecting \"default\", a HTTP status code or a range such as \"2XX\" in " . $operation->getSourceLocation());
                 }
             }
-        });
+        }
     }
 
     /**
@@ -1171,7 +1189,7 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function validateMediaTypes(Specification $specification): void
     {
-        $check = function (OA\Response|OA\RequestBody|OA\Parameter|OA\Header $holder): void {
+        foreach ($this->attributesOf($specification, [OA\Response::class, OA\RequestBody::class, OA\Parameter::class, OA\Header::class]) as $holder) {
             $seen = [];
             foreach ($holder->content ?? [] as $mediaType) {
                 if ($mediaType->mediaType === null) {
@@ -1192,9 +1210,7 @@ class OpenApi31Compiler implements CompilerInterface
                 }
                 $seen[$mediaType->mediaType] = true;
             }
-        };
-
-        $specification->getWalker()->visit([OA\Response::class, OA\RequestBody::class, OA\Parameter::class, OA\Header::class], $check);
+        }
     }
 
     /**
@@ -1202,12 +1218,101 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function collectSchemas(Specification $specification): array
     {
-        $schemas = [];
-        $specification->getWalker()->visit(OA\Schema::class, function (OA\Schema $schema) use (&$schemas): void {
-            $schemas[] = $schema;
+        return $this->attributesOf($specification, OA\Schema::class);
+    }
+
+    /**
+     * Runs `$checks` with one walk of `$specification`, shared by every `attributesOf()` call
+     * they make. The walk is dropped when they return.
+     *
+     * Called again inside `$checks` for the same specification, as an overriding `validate()`
+     * calling its parent's does, it shares the walk already made.
+     *
+     * The walk is not repeated on its own: a check that adds or removes attributes calls
+     * `rewalk()` before the next `attributesOf()`, or later checks see the document as it was.
+     *
+     * @template R
+     *
+     * @param  callable(): R $checks
+     * @return R
+     */
+    protected function withOneWalk(Specification $specification, callable $checks): mixed
+    {
+        if ($this->walked === $specification) {
+            return $checks();
+        }
+
+        $outer = [$this->walked, $this->attributes, $this->positions];
+        $this->walk($specification);
+
+        try {
+            return $checks();
+        } finally {
+            [$this->walked, $this->attributes, $this->positions] = $outer;
+        }
+    }
+
+    /**
+     * Walks `$specification` again for the `withOneWalk()` running on it, after a check has
+     * changed it. Outside one there is no walk to refresh and it does nothing.
+     */
+    protected function rewalk(Specification $specification): void
+    {
+        if ($this->walked === $specification) {
+            $this->walk($specification);
+        }
+    }
+
+    protected function walk(Specification $specification): void
+    {
+        $attributes = [];
+        $positions = [];
+        $specification->getWalker()->visit(AttributeInterface::class, function (AttributeInterface $attribute) use (&$attributes, &$positions): void {
+            $positions[$attribute::class][] = count($attributes);
+            $attributes[] = $attribute;
         });
 
-        return $schemas;
+        [$this->walked, $this->attributes, $this->positions] = [$specification, $attributes, $positions];
+    }
+
+    /**
+     * The attributes of `$specification` that are an instance of `$classes`, or of any class in
+     * it, in walk order.
+     *
+     * Outside `withOneWalk()` it makes a walk for this call.
+     *
+     * @template T of AttributeInterface
+     *
+     * @param  class-string<T>|list<class-string<T>> $classes
+     * @return list<T>
+     */
+    protected function attributesOf(Specification $specification, string|array $classes): array
+    {
+        if ($this->walked !== $specification) {
+            return $this->withOneWalk($specification, fn (): array => $this->attributesOf($specification, $classes));
+        }
+
+        // the classes' buckets, then the instances in them in walk order
+        $buckets = [];
+        foreach ($this->positions as $class => $positions) {
+            foreach ((array) $classes as $wanted) {
+                if (is_a($class, $wanted, true)) {
+                    $buckets[] = $positions;
+                    break;
+                }
+            }
+        }
+
+        $positions = array_merge(...$buckets);
+        if (count($buckets) > 1) {
+            sort($positions);
+        }
+
+        // every instance in a bucket is of a wanted class already
+        /** @var list<T> $matching */
+        $matching = array_map(fn (int $position): AttributeInterface => $this->attributes[$position], $positions);
+
+        return $matching;
     }
 
     /**

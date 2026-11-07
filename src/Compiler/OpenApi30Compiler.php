@@ -50,41 +50,44 @@ class OpenApi30Compiler extends OpenApi31Compiler
     #[\Override]
     public function validate(Specification $specification): array
     {
-        parent::validate($specification);
+        // one walk for the parent's checks and this one's
+        return $this->withOneWalk($specification, function () use ($specification): array {
+            parent::validate($specification);
 
-        $hasPaths = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->path !== null);
-        if (!$hasPaths) {
-            $this->logger->warning('paths is required in OpenAPI 3.0');
-        }
-
-        $hasWebhooks = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->webhook !== null);
-        if ($hasWebhooks) {
-            $this->logger->warning('webhooks are not supported in OpenAPI 3.0 and will be omitted');
-        }
-
-        $hasMutualTls = (bool) array_filter(
-            $specification->securitySchemes,
-            fn (OA\Security\Scheme $scheme): bool => $scheme->type === OA\SchemeType::MutualTLS->value
-        );
-        if ($hasMutualTls) {
-            $this->logger->warning('mutualTLS security schemes are not supported in OpenAPI 3.0 and will be omitted');
-        }
-
-        $hasPathItemComponents = (bool) array_filter($specification->pathItems, fn (OA\PathItem $pathItem): bool => $pathItem->component !== null);
-        if ($hasPathItemComponents) {
-            $this->logger->warning('pathItems components are not supported in OpenAPI 3.0 and will be omitted');
-        }
-
-        if ($specification->info?->license instanceof OA\License) {
-            $license = $specification->info->license;
-            if ($license->identifier !== null) {
-                $this->logger->warning('License identifier is not supported in OpenAPI 3.0, use url instead');
+            $hasPaths = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->path !== null);
+            if (!$hasPaths) {
+                $this->logger->warning('paths is required in OpenAPI 3.0');
             }
-        }
 
-        $this->validateReferenceSiblings($specification);
+            $hasWebhooks = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->webhook !== null);
+            if ($hasWebhooks) {
+                $this->logger->warning('webhooks are not supported in OpenAPI 3.0 and will be omitted');
+            }
 
-        return $this->logger->entries();
+            $hasMutualTls = (bool) array_filter(
+                $specification->securitySchemes,
+                fn (OA\Security\Scheme $scheme): bool => $scheme->type === OA\SchemeType::MutualTLS->value
+            );
+            if ($hasMutualTls) {
+                $this->logger->warning('mutualTLS security schemes are not supported in OpenAPI 3.0 and will be omitted');
+            }
+
+            $hasPathItemComponents = (bool) array_filter($specification->pathItems, fn (OA\PathItem $pathItem): bool => $pathItem->component !== null);
+            if ($hasPathItemComponents) {
+                $this->logger->warning('pathItems components are not supported in OpenAPI 3.0 and will be omitted');
+            }
+
+            if ($specification->info?->license instanceof OA\License) {
+                $license = $specification->info->license;
+                if ($license->identifier !== null) {
+                    $this->logger->warning('License identifier is not supported in OpenAPI 3.0, use url instead');
+                }
+            }
+
+            $this->validateReferenceSiblings($specification);
+
+            return $this->logger->entries();
+        });
     }
 
     /**
@@ -98,11 +101,10 @@ class OpenApi30Compiler extends OpenApi31Compiler
 
     protected function validateReferenceSiblings(Specification $specification): void
     {
-        $specification->getWalker()->eachRef(function (object $attribute): void {
-            if (!$attribute instanceof OA\Parameter && !$attribute instanceof OA\RequestBody && !$attribute instanceof OA\Response
-                && !$attribute instanceof OA\Header && !$attribute instanceof OA\Link && !$attribute instanceof OA\Example
-                && !$attribute instanceof OA\Security\Scheme) {
-                return;
+        $referables = [OA\Parameter::class, OA\RequestBody::class, OA\Response::class, OA\Header::class, OA\Link::class, OA\Example::class, OA\Security\Scheme::class];
+        foreach ($this->attributesOf($specification, $referables) as $attribute) {
+            if ($attribute->getRefValue() === null) {
+                continue;
             }
 
             $siblings = array_keys($this->filter([
@@ -119,7 +121,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
                     $attribute->getSourceLocation(),
                 ));
             }
-        });
+        }
     }
 
     #[\Override]
