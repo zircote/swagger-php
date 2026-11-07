@@ -50,7 +50,7 @@ class TokenScanner
             return $this->cache[$filename];
         }
 
-        $code = is_file($filename) ? @file_get_contents($filename) : false;
+        $code = is_file($filename) && is_readable($filename) ? file_get_contents($filename) : false;
         if (false === $code) {
             throw new \RuntimeException("Unable to read {$filename}");
         }
