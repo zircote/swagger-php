@@ -75,6 +75,7 @@
     "require-dev": {
         "doctrine/annotations": "^2.0",
         "friendsofphp/php-cs-fixer": "3.95.27",
+        "phpbench/phpbench": "^1.7",
         "phpstan/phpstan": "2.3.4",
         "phpunit/phpunit": "^11.5 || >=12.5.22",
         "rector/rector": "2.8.3"
@@ -89,7 +90,8 @@
         "rector": "Automatic refactoring",
         "lint": "Test codestyle",
         "test": "Run the unit tests",
-        "performance": "Run performance regression tests",
+        "bench": "Run the benchmarks (phpbench)",
+        "bench:phases": "Show where a build spends its time, by phase",
         "analyse": "Run static analysis (phpstan)",
         "redocly": "Validate generated specs with Redocly",
         "docs:check": "Verify documentation accuracy against the codebase",
@@ -108,7 +110,8 @@
             "export XDEBUG_MODE=off && phpunit --display-all-issues --exclude-testsuite 'Rector Test Suite' @additional_args",
             "export XDEBUG_MODE=off && phpunit --display-all-issues --testsuite 'Rector Test Suite' @additional_args"
         ],
-        "performance": "export XDEBUG_MODE=off && phpunit --group performance",
+        "bench": "export XDEBUG_MODE=off && phpbench run --report=aggregate",
+        "bench:phases": "export XDEBUG_MODE=off && php tests/Benchmarks/phases.php",
         "analyse": [
             "export XDEBUG_MODE=off && phpstan clear-result-cache -q && phpstan analyse --memory-limit=3G",
             "export XDEBUG_MODE=off && phpstan analyse -c phpstan-level5.neon.dist --memory-limit=3G"

@@ -44,7 +44,7 @@ jobs:
   floor:
     runs-on: ubuntu-latest
 
-    # php-cs-fixer raises symfony/console's floor; a consumer does not install it
+    # php-cs-fixer and phpbench raise symfony's floor; a consumer installs neither
     name: PHP 8.2 with the lowest dependencies a consumer can install
 
     steps:
@@ -59,8 +59,8 @@ jobs:
           # deprecations on stdout, as a development setup prints them into the CLI's output
           ini-file: development
 
-      - name: Remove php-cs-fixer
-        run: composer remove --dev friendsofphp/php-cs-fixer --no-update
+      - name: Remove php-cs-fixer and phpbench
+        run: composer remove --dev friendsofphp/php-cs-fixer phpbench/phpbench --no-update
 
       - name: Composer install
         uses: ramsey/composer-install@v4
