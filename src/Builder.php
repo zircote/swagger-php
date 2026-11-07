@@ -500,11 +500,19 @@ class Builder
         return Result::fromClassic($files, $openApi, $this->getLogger()->drain());
     }
 
+    /**
+     * Creates the empty specification a spec or hybrid build assembles into.
+     */
+    protected function createSpecification(): Specification
+    {
+        return new Specification();
+    }
+
     protected function doBuildSpec(bool $hybrid = false): Result
     {
         $attributeFactory = $this->getAttributeFactory();
         $attributeFactory->setLogger($this->getLogger());
-        $assembler = new Assembler(attributeFactory: $attributeFactory);
+        $assembler = new Assembler($this->createSpecification(), $attributeFactory);
 
         $sourceScanner = new SourceScanner($this->getLogger());
         $sourceScanner->scan($this->sources);
