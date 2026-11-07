@@ -10,6 +10,7 @@ use OpenApi\Tests\Concerns\ExpectsLogEntries;
 use OpenApi\Tests\Fixtures\Type\KeywordCase;
 use OpenApi\Type\TypeResolver;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\TypeInfo\TypeContext\TypeContextFactory;
 
 final class TypeResolverCacheTest extends TestCase
 {
@@ -28,6 +29,10 @@ final class TypeResolverCacheTest extends TestCase
 
     public function testAClassSourceFileIsReadOnce(): void
     {
+        if (!property_exists(TypeContextFactory::class, 'usesCache')) {
+            $this->markTestSkipped('This version of symfony/type-info does not cache use statements.');
+        }
+
         $class = 'UseStatements' . bin2hex(random_bytes(4));
         $file = sys_get_temp_dir() . "/{$class}.php";
         file_put_contents($file, <<<PHP
@@ -59,7 +64,7 @@ final class TypeResolverCacheTest extends TestCase
         $this->assertSame(KeywordCase::class, $second?->type);
     }
 
-    public function testNativeSelfAndParentResolveWithoutTheSourceFile(): void
+    public function testNativeSelfAndParentResolve(): void
     {
         $class = 'NativeContext' . bin2hex(random_bytes(4));
         $file = sys_get_temp_dir() . "/{$class}.php";
@@ -79,14 +84,17 @@ final class TypeResolverCacheTest extends TestCase
                 public parent \$parent;
             }
             PHP);
-        require $file;
-        unlink($file);
-        $class = "OpenApi\\Tests\\Fixtures\\Type\\{$class}";
-        $this->assertTrue(class_exists($class));
-        $resolver = new TypeResolver();
+        try {
+            require $file;
+            $class = "OpenApi\\Tests\\Fixtures\\Type\\{$class}";
+            $this->assertTrue(class_exists($class));
+            $resolver = new TypeResolver();
 
-        $this->assertSame($class, $resolver->resolve(new \ReflectionProperty($class, 'self'))?->type);
-        $this->assertSame("{$class}Base", $resolver->resolve(new \ReflectionProperty($class, 'parent'))?->type);
+            $this->assertSame($class, $resolver->resolve(new \ReflectionProperty($class, 'self'))?->type);
+            $this->assertSame("{$class}Base", $resolver->resolve(new \ReflectionProperty($class, 'parent'))?->type);
+        } finally {
+            unlink($file);
+        }
     }
 
     public function testEachAnswerIsACopy(): void
