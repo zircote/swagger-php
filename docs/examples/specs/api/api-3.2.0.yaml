@@ -151,6 +151,7 @@ components:
               type: integer
             id:
               description: 'The id.'
+              type: integer
               format: int64
               example: 1
             releasedAt:

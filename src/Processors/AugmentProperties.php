@@ -69,7 +69,8 @@ class AugmentProperties implements GeneratorAwareInterface
             $this->generator->getTypeResolver()->mapNativeType($property, $property->type);
 
             if (Undefined::isDefault($property->example) && ($example = $this->extractExampleDescription((string) $context->comment))) {
-                $property->example = $example;
+                $types = Undefined::isDefault($property->type) ? [] : (array) $property->type;
+                $property->example = $this->castExample($example, $types, $property->nullable === true);
             }
 
             if (Undefined::isDefault($property->deprecated) && ($deprecated = $this->isDeprecated($context->comment))) {

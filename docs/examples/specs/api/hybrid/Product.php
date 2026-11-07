@@ -28,7 +28,7 @@ class Product
      *
      * @example 1
      */
-    public $id;
+    public int $id;
 
     public function __construct(
         #[OA\Property(property: 'quantity')]

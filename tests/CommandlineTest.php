@@ -21,7 +21,7 @@ final class CommandlineTest extends OpenApiTestCase
         exec($this->getCommandToExecute(__DIR__ . '/../bin/openapi --bootstrap ' . __DIR__ . '/cl_bootstrap.php --format yaml ' . escapeshellarg($path), '2>'), $output, $retval);
         $this->assertSame(0, $retval, implode(PHP_EOL, $output));
         $yaml = implode(PHP_EOL, $output);
-        $this->assertSpecEquals(file_get_contents(self::getSpecFilename('petstore', 'annotations', '3.1.0', Mode::HYBRID)), $yaml);
+        $this->assertSpecEquals($yaml, file_get_contents(self::getSpecFilename('petstore', 'annotations', '3.1.0', Mode::HYBRID)));
     }
 
     public function testOutputToFile(): void
@@ -34,7 +34,7 @@ final class CommandlineTest extends OpenApiTestCase
         $this->assertCount(0, $output, 'No output to stdout');
         $yaml = file_get_contents($filename);
         unlink($filename);
-        $this->assertSpecEquals(file_get_contents(self::getSpecFilename('petstore', 'annotations', '3.1.0', Mode::HYBRID)), $yaml);
+        $this->assertSpecEquals($yaml, file_get_contents(self::getSpecFilename('petstore', 'annotations', '3.1.0', Mode::HYBRID)));
     }
 
     /**

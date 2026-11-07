@@ -118,6 +118,6 @@ final class DocSnippetsTest extends OpenApiTestCase
             ->build();
 
         // file_put_contents($spec, $result->toYaml());
-        $this->assertSpecEquals(file_get_contents($spec), $result->toYaml());
+        $this->assertSpecEquals($result->toYaml(), file_get_contents($spec));
     }
 }

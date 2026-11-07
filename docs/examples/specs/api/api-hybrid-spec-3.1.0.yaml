@@ -151,8 +151,9 @@ components:
               type: integer
             id:
               description: 'The id.'
+              type: integer
               format: int64
-              example: '1'
+              example: 1
             releasedAt:
               type: string
             brand:
@@ -170,6 +171,7 @@ components:
               const: Virtual
           type: object
       required:
+        - id
         - quantity
         - colour
         - releasedAt

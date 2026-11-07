@@ -23,6 +23,9 @@ trait AssertsSpecEquals
     /**
      * Compare OpenApi specs assuming strings to contain YAML.
      *
+     * Key order in maps is ignored. Lists keep their order, and values compare strictly: `1` is
+     * not `'1'` and `0` is not `false`.
+     *
      * @param array<mixed>|\stdClass|string|false|null $actual     The generated output; `false`
      *                                                             is accepted so a caller can
      *                                                             pass file_get_contents()
@@ -92,7 +95,7 @@ trait AssertsSpecEquals
                 $this->assertSpecEquals(((array) $actual)[$key], $value, $message . ' > ' . $key, true);
             }
         } else {
-            $this->assertEquals($expected, $actual, $message);
+            $this->assertSame($expected, $actual, $message);
         }
     }
 }

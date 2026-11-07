@@ -24,4 +24,4 @@ components:
                 success: true
             bool:
               summary: 'A boolean value.'
-              value: 0
+              value: false

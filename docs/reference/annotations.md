@@ -241,7 +241,7 @@ The value field and externalValue field are mutually exclusive.<br />
 <br />
 To represent examples of media types that cannot naturally be represented<br />
 in JSON or YAML, use a string value to contain the example, escaping where necessary.</p><table class="table-plain"><tbody><tr><td><i>Required</i>:</td><td style="padding-left: 0;"><b>no</b></td></tr></tbody></table></dd>
-  <dt><strong>value</strong> : <span style="font-family: monospace;">int|string|array</span></dt>
+  <dt><strong>value</strong> : <span style="font-family: monospace;">mixed</span></dt>
   <dd><p>Embedded literal example.<br />
 <br />
 The value field and externalValue field are mutually exclusive.<br />

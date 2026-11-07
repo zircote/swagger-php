@@ -29,8 +29,8 @@ final class WhySpecSnippetTest extends TestCase
     public function testValueObjectsProduceTheDocumentedOutput(): void
     {
         $this->assertSpecEquals(
-            file_get_contents(self::SNIPPETS . '/value_objects-3.1.0.yaml'),
-            Yaml::dump(Snippet\buildFromFields(['rate' => 'number', 'name' => 'string']), 10, 2)
+            Yaml::dump(Snippet\buildFromFields(['rate' => 'number', 'name' => 'string']), 10, 2),
+            file_get_contents(self::SNIPPETS . '/value_objects-3.1.0.yaml')
         );
     }
 }

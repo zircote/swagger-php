@@ -29,7 +29,7 @@ class Product implements ProductInterface
      *
      * @OA\Property(format="int64", example=1, @OA\Attachable)
      */
-    public $id;
+    public int $id;
 
     #[OAT\Property(type: 'string')]
     public \DateTimeInterface $releasedAt;

@@ -24,7 +24,7 @@ class Examples extends OA\Examples
         ?string $example = null,
         ?string $summary = Undefined::UNDEFINED,
         ?string $description = Undefined::UNDEFINED,
-        int|string|array|null $value = null,
+        mixed $value = null,
         ?string $externalValue = null,
         string|object|null $ref = null,
 
