@@ -6,6 +6,7 @@ Conventions and helpers for the test suite.
 composer test                            # the whole suite
 composer test -- --filter CompilerTest   # a single class
 composer bench                           # benchmarks (phpbench), see tests/Benchmarks
+composer bench:phases -- 500 2           # time per phase and augmenter, 500 schemas, depth 2
 ```
 
 `composer test` runs tests only. Code style is `composer lint` and static analysis is `composer
