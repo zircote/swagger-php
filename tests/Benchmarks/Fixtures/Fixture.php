@@ -64,8 +64,10 @@ final class Fixture
 
     /**
      * Builds the document, scanning the directory or seeded with `entryClasses()`.
+     *
+     * A `$builder` given replaces the default one, and `$logger` is then ignored.
      */
-    public function build(Mode $mode, bool $cleanup = true, bool $scan = true, string $version = '3.1.0', ?LoggerInterface $logger = null): Result
+    public function build(Mode $mode, bool $cleanup = true, bool $scan = true, string $version = '3.1.0', ?LoggerInterface $logger = null, ?Builder $builder = null): Result
     {
         if (!in_array($mode, $this->modes(), true)) {
             throw new \InvalidArgumentException(sprintf('A %s fixture is not read by %s mode', $this->flavour->value, $mode->value));
@@ -73,7 +75,7 @@ final class Fixture
 
         $this->register();
 
-        $builder = (new Builder(logger: $logger))
+        $builder = ($builder ?? new Builder(logger: $logger))
             ->setMode($mode)
             ->setVersion($version);
 
