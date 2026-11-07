@@ -5,7 +5,7 @@ Conventions and helpers for the test suite.
 ```shell
 composer test                            # the whole suite
 composer test -- --filter CompilerTest   # a single class
-composer performance                     # perf tests, excluded from the default run
+composer bench                           # benchmarks (phpbench), see tests/Benchmarks
 ```
 
 `composer test` runs tests only. Code style is `composer lint` and static analysis is `composer

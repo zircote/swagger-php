@@ -11,6 +11,8 @@ use OpenApi\Builder;
 use OpenApi\Builder\Mode;
 use OpenApi\Builder\Result;
 use OpenApi\Generator;
+use OpenApi\Specification;
+use OpenApi\Utils\PipeInterface;
 use OpenApi\Utils\Pipeline;
 use Psr\Log\LoggerInterface;
 
@@ -93,6 +95,42 @@ final class Fixture
         }
 
         return $builder->build();
+    }
+
+    /**
+     * Builds in spec mode and stops right before `Augmenter\Cleanup`, so it can run on its own.
+     *
+     * The pipeline is cut short by an exception rather than by removing the later augmenters,
+     * since the augmenters run grouped and their order is the pipeline's to decide.
+     */
+    public function specificationBeforeCleanup(string $version = '3.1.0'): Specification
+    {
+        $this->register();
+
+        $stop = new class () implements PipeInterface {
+            public function __invoke(mixed $payload): mixed
+            {
+                throw new StopBeforeCleanup($payload);
+            }
+
+            public function group(): string|\BackedEnum
+            {
+                return (new Augmenter\Cleanup())->group();
+            }
+        };
+
+        try {
+            (new Builder())
+                ->setMode(Mode::SPEC)
+                ->setVersion($version)
+                ->addSource($this->dir)
+                ->withAugmenters(fn (Pipeline $augmenters): Pipeline => $augmenters->insert($stop, Augmenter\Cleanup::class))
+                ->build();
+        } catch (StopBeforeCleanup $stopBeforeCleanup) {
+            return $stopBeforeCleanup->specification;
+        }
+
+        throw new \LogicException('The build did not reach Augmenter\Cleanup');
     }
 
     /**
