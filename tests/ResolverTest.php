@@ -114,6 +114,28 @@ final class ResolverTest extends TestCase
         $this->assertSame(['Pallet', 'Manufacturer', 'Catalogue'], $this->schemaNames($assembler));
     }
 
+    public function testADocumentedTraitPropertyIsChased(): void
+    {
+        $assembler = $this->assembler(Fixtures\Resolver\Bin::class);
+
+        $this->resolver(new Resolver\Reflection())->resolve($assembler);
+
+        $this->assertSame(['Bin', 'Manufacturer'], $this->schemaNames($assembler));
+    }
+
+    public function testATraitIsNotChasedForASchemaInheritanceLeavesAlone(): void
+    {
+        $assembler = $this->assembler();
+        $assembler->getSpecification()->add((new OA\Schema())
+            ->setReflector(new \ReflectionClass(Fixtures\Resolver\Bin::class))
+            ->setMeta(Augmenter\Inheritance\Schemas::class, false));
+        $spy = new Fixtures\Resolver\CountingResolver();
+
+        $this->resolver(new Resolver\Reflection(), $spy)->resolve($assembler);
+
+        $this->assertSame([], $spy->attempts);
+    }
+
     /**
      * A discriminator map on the parent of a flattened class made the parent and its children
      * reference each other.

@@ -152,7 +152,9 @@ warning. Add the class as a source, or document the property.
 ## Changed in 7.4
 
 `Resolver::getTypedReflectors()` is replaced by `getPropertyTypes()`, which takes the schema rather
-than its class. A subclass overriding it overrides `getPropertyTypes()` instead.
+than its class, and the attribute factory that reads its traits. A subclass overriding it
+overrides `getPropertyTypes()` instead. `findUnresolved()` and `collectFromReflectors()` take the
+attribute factory too.
 
 ## Preparing for 8.0
 

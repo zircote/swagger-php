@@ -13,6 +13,7 @@ use OpenApi\Resolver\Reflection;
 use OpenApi\Spec as OA;
 use OpenApi\Specification\ComponentIndex;
 use OpenApi\Specification\ComponentKey;
+use OpenApi\Utils\AttributeFactory;
 use OpenApi\Utils\TypedList;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -24,8 +25,8 @@ use Psr\Log\LoggerInterface;
  * Two sources are inspected:
  * 1. Ref values that are raw FQCNs (not yet rewritten to `#/components/...` paths), with the
  *    qualifiers of a `Schema\Ref`
- * 2. The PHP types of a schema's documented properties that set no type of their own, which are
- *    plain keys
+ * 2. The PHP types of a schema's documented properties that set no type of their own, and of the
+ *    ones its traits add, which are plain keys
  *
  * A `KeyResolverInterface` is asked about every key. A resolver implementing `ResolverInterface`
  * alone is asked about plain keys only: it knows the class alone, and would describe the plain
@@ -101,7 +102,7 @@ class Resolver implements LoggerAwareInterface
                 throw new OpenApiException(sprintf('Resolver loop did not converge after %d iterations; check for resolvers that return true without resolving', static::MAX_ITERATIONS));
             }
 
-            $unresolved = $this->findUnresolved($specification);
+            $unresolved = $this->findUnresolved($specification, $assembler->getAttributeFactory());
             $resolved = false;
             foreach ($unresolved as $id => $key) {
                 if (isset($attempted[$id])) {
@@ -148,13 +149,13 @@ class Resolver implements LoggerAwareInterface
      * @return array<string, ComponentKey> keys that are referenced but have no component in the
      *                                     specification, by their string
      */
-    protected function findUnresolved(Specification $specification): array
+    protected function findUnresolved(Specification $specification, AttributeFactory $attributeFactory): array
     {
         $index = $specification->buildComponentIndex();
         $unresolved = [];
 
         $this->collectFromRefs($specification, $index, $unresolved);
-        $this->collectFromReflectors($specification, $index, $unresolved);
+        $this->collectFromReflectors($specification, $index, $unresolved, $attributeFactory);
 
         return $unresolved;
     }
@@ -182,10 +183,10 @@ class Resolver implements LoggerAwareInterface
      *
      * @param array<string, ComponentKey> $unresolved
      */
-    protected function collectFromReflectors(Specification $specification, ComponentIndex $index, array &$unresolved): void
+    protected function collectFromReflectors(Specification $specification, ComponentIndex $index, array &$unresolved, AttributeFactory $attributeFactory): void
     {
         foreach ($specification->schemas as $schema) {
-            foreach ($this->getPropertyTypes($schema) as $type) {
+            foreach ($this->getPropertyTypes($schema, $attributeFactory) as $type) {
                 if ($type->isBuiltin()) {
                     continue;
                 }
@@ -204,19 +205,22 @@ class Resolver implements LoggerAwareInterface
     }
 
     /**
-     * The PHP types of the schema's own properties that leave their type to the PHP declaration.
+     * The PHP types of the schema's properties that leave their type to the PHP declaration.
      *
      * Only a property attribute on a PHP property or promoted parameter counts, and only where its
      * schema says nothing about the type yet. A public property without one is not documented, and a
      * schema built elsewhere, by a resolver from another description of the class, has no
      * reflectors on its properties.
      *
+     * The properties of the class's traits count too: `Augmenter\Inheritance\Schemas` merges them
+     * into the schema only after the resolver has run.
+     *
      * @return list<\ReflectionNamedType>
      */
-    protected function getPropertyTypes(OA\Schema $schema): array
+    protected function getPropertyTypes(OA\Schema $schema, AttributeFactory $attributeFactory): array
     {
         $reflectors = [];
-        foreach ($schema->properties ?? [] as $property) {
+        foreach ([...$schema->properties ?? [], ...$this->getTraitProperties($schema, $attributeFactory)] as $property) {
             $reflector = $property->getReflector();
             if ((!$reflector instanceof \ReflectionProperty && !$reflector instanceof \ReflectionParameter)
                 || ($property->schema instanceof OA\Schema && !$this->isUntyped($property->schema))
@@ -245,7 +249,35 @@ class Resolver implements LoggerAwareInterface
     }
 
     /**
+     * The documented properties `Augmenter\Inheritance\Schemas` merges into the schema from the
+     * class's own traits, and none for a schema it leaves alone.
+     *
+     * @return list<OA\Property>
+     */
+    protected function getTraitProperties(OA\Schema $schema, AttributeFactory $attributeFactory): array
+    {
+        $reflector = $schema->getClassReflector();
+        if (!$reflector instanceof \ReflectionClass || $schema->getMeta(Augmenter\Inheritance\Schemas::class) === false) {
+            return [];
+        }
+
+        $properties = [];
+        foreach ($attributeFactory->getDirectTraits($reflector) as $trait) {
+            foreach ($attributeFactory->membersOf($trait) as $member) {
+                if ($member instanceof OA\Property) {
+                    $properties[] = $member;
+                }
+            }
+        }
+
+        return $properties;
+    }
+
+    /**
      * Whether the schema leaves its type to the PHP declaration.
+     *
+     * Mirrors the checks `Augmenter\Types` makes before it adds a `$ref`, in `augmentProperty()`,
+     * `mergeIntoSchema()` and `inferSchemaType()`; a change to one belongs in the other.
      */
     protected function isUntyped(OA\Schema $schema): bool
     {
