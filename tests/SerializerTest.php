@@ -103,7 +103,7 @@ JSON;
         $spec = self::examplePath('petstore/petstore-3.1.0.yaml');
         $openapi = $serializer->deserializeFile($spec, 'yaml');
         $this->assertInstanceOf(OpenApi::class, $openapi);
-        $this->assertSpecEquals(file_get_contents($spec), $openapi->toYaml());
+        $this->assertSpecEquals($openapi->toYaml(), file_get_contents($spec));
     }
 
     /**

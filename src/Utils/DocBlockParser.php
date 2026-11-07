@@ -6,6 +6,7 @@
 
 namespace OpenApi\Utils;
 
+use OpenApi\Type\TypeMapper;
 use OpenApi\Undefined;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
@@ -192,6 +193,50 @@ class DocBlockParser
         }
 
         return null;
+    }
+
+    /**
+     * `$example` decoded as JSON where the value is one of `$types`, or `null` where the schema
+     * is nullable. Anything else, and any example of a schema that has no type or allows a
+     * string, stays the string written.
+     *
+     * @param array<string> $types
+     */
+    public function castExample(string $example, array $types, bool $nullable): mixed
+    {
+        if ($types === [] || in_array('string', $types, true)) {
+            return $example;
+        }
+
+        try {
+            $value = json_decode($example, flags: JSON_THROW_ON_ERROR | JSON_BIGINT_AS_STRING);
+            $decoded = json_decode($example, flags: JSON_THROW_ON_ERROR);
+
+            /*
+             * Reject non-finite numbers and integers that would become strings, including nested values.
+             */
+            if (json_encode($value, JSON_THROW_ON_ERROR) !== json_encode($decoded, JSON_THROW_ON_ERROR)) {
+                return $example;
+            }
+        } catch (\JsonException) {
+            return $example;
+        }
+
+        $valueType = match (true) {
+            $value === null => 'null',
+            $value instanceof \stdClass => 'object',
+            is_float($value) && floor($value) === $value => 'integer',
+            default => TypeMapper::valueType($value),
+        };
+
+        if (in_array($valueType, $types, true)
+            || ($valueType === 'integer' && in_array('number', $types, true))
+            || ($valueType === 'null' && $nullable)
+        ) {
+            return $value;
+        }
+
+        return $example;
     }
 
     public function isDeprecated(?string $docblock): bool

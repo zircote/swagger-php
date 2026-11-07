@@ -87,6 +87,14 @@ trait DocblockTrait
         return $this->docBlockParser()->extractExample($docblock);
     }
 
+    /**
+     * @param array<string> $types
+     */
+    public function castExample(string $example, array $types, bool $nullable): mixed
+    {
+        return $this->docBlockParser()->castExample($example, $types, $nullable);
+    }
+
     public function isDeprecated(?string $docblock): bool
     {
         return $this->docBlockParser()->isDeprecated($docblock);

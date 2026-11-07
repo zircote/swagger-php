@@ -29,7 +29,7 @@ class Product implements ProductInterface
      *
      * @example 1
      */
-    public $id;
+    public int $id;
 
     public function __construct(
         #[OAT\Property]

@@ -42,7 +42,7 @@ final class GeneratorTest extends OpenApiTestCase
             ->setTypeResolver($this->getTypeResolver())
             ->generate($sources);
 
-        $this->assertSpecEquals(file_get_contents(self::getSpecFilename($name)), $openapi?->toYaml());
+        $this->assertSpecEquals($openapi?->toYaml(), file_get_contents(self::getSpecFilename($name)));
     }
 
     public function testScanInvalidSource(): void

@@ -37,24 +37,24 @@ final class ExtensionPointsSnippetTest extends TestCase
     public function testWiringProducesTheDocumentedOutput(): void
     {
         $this->assertSpecEquals(
-            file_get_contents(self::SNIPPETS . '/wiring-3.1.0.yaml'),
-            Snippet\buildSpec()->toYaml()
+            Snippet\buildSpec()->toYaml(),
+            file_get_contents(self::SNIPPETS . '/wiring-3.1.0.yaml')
         );
     }
 
     public function testContributionProducesTheDocumentedOutput(): void
     {
         $this->assertSpecEquals(
-            file_get_contents(self::SNIPPETS . '/contribution-3.1.0.yaml'),
-            Snippet\buildFromRoutes(['/pets' => Snippet\Pet::class])->toYaml()
+            Snippet\buildFromRoutes(['/pets' => Snippet\Pet::class])->toYaml(),
+            file_get_contents(self::SNIPPETS . '/contribution-3.1.0.yaml')
         );
     }
 
     public function testDescriptionsProduceTheDocumentedOutput(): void
     {
         $this->assertSpecEquals(
-            file_get_contents(self::SNIPPETS . '/descriptions-3.1.0.yaml'),
-            Snippet\buildWithDescriptions()->toYaml()
+            Snippet\buildWithDescriptions()->toYaml(),
+            file_get_contents(self::SNIPPETS . '/descriptions-3.1.0.yaml')
         );
     }
 
