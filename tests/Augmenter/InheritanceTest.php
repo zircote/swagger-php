@@ -8,6 +8,7 @@ namespace OpenApi\Tests\Augmenter;
 
 use OpenApi\Assembler;
 use OpenApi\Augmenter;
+use OpenApi\Spec as OA;
 use OpenApi\Tests\Concerns\AssemblesSpecification;
 use OpenApi\Tests\Concerns\AssertsSchemaStructure;
 use OpenApi\Tests\Fixtures as OperationalFixtures;
@@ -44,6 +45,39 @@ final class InheritanceTest extends TestCase
             $spec,
             __DIR__ . '/../Fixtures/Augmenter/Hierarchy/expected.yaml',
         );
+    }
+
+    /**
+     * A resolver that builds a class's schema from another description has the hierarchy in it
+     * already; with a discriminator map on the parent, adding the parent again makes a cycle.
+     */
+    public function testASchemaMarkedByItsBuilderKeepsItsShape(): void
+    {
+        $assembler = new Assembler();
+        $assembler->collect(new \ReflectionClass(HierarchyFixtures\ParentWithSchema::class));
+        $spec = $assembler->getSpecification();
+        $built = static fn (\ReflectionClass $class): OA\Schema => (new OA\Schema(properties: [
+            new OA\Property(property: 'parentProp', schema: new OA\Schema(type: 'string')),
+        ]))->setReflector($class);
+        $spec->add($marked = $built(new \ReflectionClass(HierarchyFixtures\ChildOfParentWithSchema::class))->setMeta(Augmenter\Inheritance\Schemas::class, false));
+        $spec->add($mergedInto = $built(new \ReflectionClass(HierarchyFixtures\ChildOfPlainParent::class))->setMeta(Augmenter\Inheritance\Schemas::class, false));
+
+        (new Augmenter\Inheritance())($spec);
+
+        $this->assertNull($marked->allOf);
+        $this->assertSame(['parentProp'], array_map(static fn (OA\Property $property): ?string => $property->property, $mergedInto->properties ?? []));
+    }
+
+    public function testAnUnmarkedSchemaBuiltElsewhereGetsItsParent(): void
+    {
+        $assembler = new Assembler();
+        $assembler->collect(new \ReflectionClass(HierarchyFixtures\ParentWithSchema::class));
+        $spec = $assembler->getSpecification();
+        $spec->add($schema = (new OA\Schema())->setReflector(new \ReflectionClass(HierarchyFixtures\ChildOfParentWithSchema::class)));
+
+        (new Augmenter\Inheritance())($spec);
+
+        $this->assertCount(1, $schema->allOf ?? []);
     }
 
     public function testInheritedOperationClonedToChild(): void

@@ -42,7 +42,7 @@ Augmenters read from and write to the Specification's buckets. The container is 
 ## Resolver
 
 Between assembly and augmentation, the Resolver looks for classes the specification refers
-to but does not contain — a model used in a `$ref`, or the type of a property on a schema —
+to but does not contain — a model used in a `$ref`, or the type of a documented property on a schema —
 and hands each one to a chain of resolvers. A `Schema\Ref` with qualifiers asks for one
 description of a class, and only a `KeyResolverInterface` is asked about it. A resolver
 implementing `ResolverInterface` alone, deprecated since 7.2, is asked about the class without
@@ -74,6 +74,11 @@ into the specification in progress. A resolver that assembles differently can ad
 `$assembler->getSpecification()` directly. A component made for a key with qualifiers carries
 that key, set with `setComponentKey()`, so the reference finds it. Return `true` to mark the key
 handled and stop the chain for it.
+
+A schema with the class as its reflector is given the class's hierarchy by `Augmenter\Inheritance`:
+the parent's component in `allOf`, or the parent's members merged in. A resolver that builds the
+schema from another description of the class, one that holds the inherited members already, marks
+it with `setMeta(Augmenter\Inheritance\Schemas::class, false)`, and the schema is left as built.
 
 `KeyResolverInterface` extends `ResolverInterface`, so a key-aware resolver also has `resolve()`,
 for code that still calls it with a class name. `Resolver\Concerns\KeyResolverTrait` supplies it
