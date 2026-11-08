@@ -517,10 +517,10 @@ class Builder
         $sourceScanner = new SourceScanner($this->getLogger());
         $sourceScanner->scan($this->sources);
 
-        $tokenScanner = $attributeFactory->getTokenScanner();
+        $sourceInspector = $attributeFactory->getSourceInspector();
 
         foreach ($sourceScanner->getFiles() as $file) {
-            foreach (array_keys($tokenScanner->scanFile($file)) as $class) {
+            foreach ($sourceInspector->classesIn($file) as $class) {
                 [$rc, $reason] = ClassReflector::tryReflect($class);
                 if (!$rc instanceof \ReflectionClass) {
                     $this->getLogger()->error($reason === null

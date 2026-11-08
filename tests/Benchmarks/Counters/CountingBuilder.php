@@ -32,12 +32,12 @@ class CountingBuilder extends Builder
      */
     public function counts(): array
     {
-        $scanner = $this->getAttributeFactory()->getTokenScanner();
+        $sourceInspector = $this->getAttributeFactory()->getSourceInspector();
         $resolver = $this->getResolver();
-        assert($scanner instanceof CountingTokenScanner && $resolver instanceof CountingResolver);
+        assert($sourceInspector instanceof CountingTokenScanner && $resolver instanceof CountingResolver);
 
         return [
-            'parsed' => $scanner->parsed(),
+            'parsed' => $sourceInspector->parsed(),
             'passes' => $resolver->passes,
             'unresolved' => $resolver->unresolved,
             'walks' => $this->specification?->walks() ?? 0,

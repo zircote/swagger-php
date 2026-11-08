@@ -70,9 +70,10 @@ final class CountersTest extends TestCase
     }
 
     /**
-     * Seeded with the controllers, a build parses only what the API reaches: the entry classes and
-     * the used models. The first resolver pass finds every used model, since each has an operation,
-     * and the second finds nothing more.
+     * Seeded with the controllers, a build parses only what the API reaches: the controllers and
+     * the used models. The class holding `Info` declares no members, so nothing asks about its file.
+     * The first resolver pass finds every used model, since each has an operation, and the second
+     * finds nothing more.
      */
     #[DataProvider('shapesProvider')]
     public function testASeededBuildParsesOnlyWhatTheApiReaches(Shape $shape): void
@@ -81,7 +82,7 @@ final class CountersTest extends TestCase
         (new FixtureWriter())->write($shape, Flavour::Spec)->build(Mode::SPEC, scan: false, builder: $builder);
 
         $this->assertSame([
-            'parsed' => 1 + $shape->controllers() + $shape->used(),
+            'parsed' => $shape->controllers() + $shape->used(),
             'passes' => 2,
             'unresolved' => $shape->used(),
             'walks' => 32,

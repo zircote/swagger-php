@@ -6,6 +6,7 @@
 
 namespace OpenApi\Utils;
 
+use OpenApi\Contracts\SourceInspectorInterface;
 use PhpParser\Error;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Stmt;
@@ -22,6 +23,10 @@ use PhpParser\ParserFactory;
 /**
  * High-level, PHP-token-based, scanner.
  *
+ * Answers {@see SourceInspectorInterface} by parsing the file a class is declared in. A class
+ * without a readable file, internal or from `eval()`, owns every member declared on it, and uses
+ * no trait as far as the scanner can tell.
+ *
  * @phpstan-type ScannerDetails array{
  *     uses: array<string, class-string>,
  *     interfaces: list<class-string>,
@@ -32,7 +37,7 @@ use PhpParser\ParserFactory;
  *     consts: list<string>,
  * }
  */
-class TokenScanner
+class TokenScanner implements SourceInspectorInterface
 {
     /** @var array<string, array<class-string, ScannerDetails>> */
     protected array $cache = [];
@@ -96,6 +101,41 @@ class TokenScanner
         }
 
         return $this->scanFile($filename)[$class->getName()] ?? null;
+    }
+
+    public function classesIn(string $filename): array
+    {
+        return array_keys($this->scanFile($filename));
+    }
+
+    public function declares(\ReflectionClass $class, \ReflectionMethod|\ReflectionProperty|\ReflectionClassConstant $member): bool
+    {
+        if ($member->getDeclaringClass()->getName() !== $class->getName()) {
+            return false;
+        }
+
+        // reflection reports a trait's member as declared by the class using it
+        $details = $this->detailsFor($class);
+        $declared = match (true) {
+            $details === null => null,
+            $member instanceof \ReflectionMethod => $details['methods'],
+            $member instanceof \ReflectionProperty => $details['properties'],
+            default => $details['consts'],
+        };
+
+        return $declared === null || in_array($member->getName(), $declared, true);
+    }
+
+    public function directTraits(\ReflectionClass $class): array
+    {
+        $traits = [];
+        foreach ($this->detailsFor($class)['traits'] ?? [] as $name) {
+            if (trait_exists($name) || class_exists($name)) {
+                $traits[] = new \ReflectionClass($name);
+            }
+        }
+
+        return $traits;
     }
 
     /**

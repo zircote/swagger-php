@@ -69,7 +69,7 @@ final class InheritanceBcTest extends TestCase
 
         foreach (glob($directory . '/*.php') ?: [] as $file) {
             require_once $file;
-            foreach (array_keys($tokenScanner->scanFile($file)) as $class) {
+            foreach ($tokenScanner->classesIn($file) as $class) {
                 if (class_exists($class) || interface_exists($class) || enum_exists($class) || trait_exists($class)) {
                     $assembler->collect(new \ReflectionClass($class));
                 }

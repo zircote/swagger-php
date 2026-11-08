@@ -11,6 +11,7 @@ use OpenApi\Assembler\OperationMethodsTranslator;
 use OpenApi\Assembler\OptionalPropertyAttributeTranslator;
 use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Contracts\AttributeTranslatorInterface;
+use OpenApi\Contracts\SourceInspectorInterface;
 use OpenApi\OpenApiException;
 use OpenApi\Spec as OA;
 use OpenApi\Specification\ComponentName;
@@ -35,7 +36,10 @@ class AttributeFactory implements LoggerAwareInterface
      */
     protected TypedList $translators;
 
-    public function __construct(protected TokenScanner $tokenScanner = new TokenScanner())
+    /**
+     * @param SourceInspectorInterface $tokenScanner tells a class's own members and traits from inherited ones
+     */
+    public function __construct(protected SourceInspectorInterface $tokenScanner = new TokenScanner())
     {
         /** @var list<AttributeTranslatorInterface> $translators */
         $translators = [
@@ -47,9 +51,17 @@ class AttributeFactory implements LoggerAwareInterface
         $this->translators = new TypedList($translators);
     }
 
-    public function getTokenScanner(): TokenScanner
+    public function getSourceInspector(): SourceInspectorInterface
     {
         return $this->tokenScanner;
+    }
+
+    /**
+     * @deprecated since 7.6, removed in 8.0 - use `getSourceInspector()`
+     */
+    public function getTokenScanner(): TokenScanner
+    {
+        return $this->tokenScanner instanceof TokenScanner ? $this->tokenScanner : new TokenScanner();
     }
 
     /**
@@ -146,13 +158,9 @@ class AttributeFactory implements LoggerAwareInterface
     public function membersOf(\ReflectionClass $class): array
     {
         $inner = [];
-        $scannerDetails = $this->tokenScanner->detailsFor($class);
 
         foreach ($class->getProperties() as $property) {
-            if ($property->isPromoted()
-                || $property->getDeclaringClass()->getName() !== $class->getName()
-                || ($scannerDetails && !in_array($property->getName(), $scannerDetails['properties'], true))
-            ) {
+            if ($property->isPromoted() || !$this->tokenScanner->declares($class, $property)) {
                 continue;
             }
 
@@ -169,9 +177,7 @@ class AttributeFactory implements LoggerAwareInterface
         }
 
         foreach ($class->getReflectionConstants() as $constant) {
-            if ($constant->getDeclaringClass()->getName() !== $class->getName()
-                || ($scannerDetails && !in_array($constant->getName(), $scannerDetails['consts'], true))
-            ) {
+            if (!$this->tokenScanner->declares($class, $constant)) {
                 continue;
             }
 
@@ -228,14 +234,9 @@ class AttributeFactory implements LoggerAwareInterface
      */
     public function getDirectMethods(\ReflectionClass $class): array
     {
-        $scannerDetails = $this->tokenScanner->detailsFor($class);
-
         $methods = [];
         foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            if ($method->isConstructor()
-                || $method->getDeclaringClass()->getName() !== $class->getName()
-                || ($scannerDetails && !in_array($method->getName(), $scannerDetails['methods'], true))
-            ) {
+            if ($method->isConstructor() || !$this->tokenScanner->declares($class, $method)) {
                 continue;
             }
 
@@ -272,10 +273,7 @@ class AttributeFactory implements LoggerAwareInterface
     }
 
     /**
-     * Get traits directly used by the given class (excludes inherited trait-uses).
-     *
-     * PHP's ReflectionClass::getTraits() flattens the entire trait tree, so we
-     * must exclude traits that come from a parent class or from another trait's use.
+     * The traits the class uses itself, without those of its parents or of other traits.
      *
      * @param \ReflectionClass<object> $class
      *
@@ -283,18 +281,7 @@ class AttributeFactory implements LoggerAwareInterface
      */
     public function getDirectTraits(\ReflectionClass $class): array
     {
-        $scannerDetails = $this->tokenScanner->detailsFor($class);
-
-        if ($scannerDetails !== null) {
-            return array_values(array_filter(
-                array_map(
-                    fn (string $name): ?\ReflectionClass => class_exists($name) || trait_exists($name) ? new \ReflectionClass($name) : null,
-                    $scannerDetails['traits'],
-                ),
-            ));
-        }
-
-        return [];
+        return $this->tokenScanner->directTraits($class);
     }
 
     /**
@@ -400,10 +387,7 @@ class AttributeFactory implements LoggerAwareInterface
     protected function reportConstructorAttributes(\ReflectionClass $class, \ReflectionMethod $constructor): void
     {
         // inherited or brought in by a trait, it is reported where it is declared
-        $scannerDetails = $this->tokenScanner->detailsFor($class);
-        if ($constructor->getDeclaringClass()->getName() !== $class->getName()
-            || ($scannerDetails && !in_array($constructor->getName(), $scannerDetails['methods'], true))
-        ) {
+        if (!$this->tokenScanner->declares($class, $constructor)) {
             return;
         }
 
