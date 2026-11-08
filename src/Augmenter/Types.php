@@ -262,7 +262,7 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
         }
 
         $subject = $this->typeResolver->describe($reflector);
-        $this->logger?->warning(match (true) {
+        $this->logger?->error(match (true) {
             $count > 1 => "{$class} in {$subject} has several request bodies, so the request body is left empty; reference one by name",
             $this->countComponents($class) === 1 => "No request body for {$class} in {$subject}, so the request body is left empty; its schema belongs in the request body's content",
             default => "No request body for {$class} in {$subject}, so the request body is left empty",
@@ -330,7 +330,7 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
                         $schema->ref = $schemaType->type;
                     } else {
                         $subject = $this->subject instanceof \Reflector ? $this->typeResolver->describe($this->subject) : 'a schema';
-                        $this->logger?->warning($count === 0
+                        $this->logger?->error($count === 0
                             ? "No schema for {$schemaType->type} in {$subject}, so its type is left out"
                             : "{$schemaType->type} in {$subject} has several schemas, so its type is left out; reference one by name");
                     }

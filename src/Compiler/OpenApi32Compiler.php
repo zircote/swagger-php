@@ -35,7 +35,7 @@ class OpenApi32Compiler extends OpenApi31Compiler
 
         foreach ($specification->tags as $tag) {
             if ($tag->parent !== null && !in_array($tag->parent, $tagNames, true)) {
-                $this->logger->warning('Tag "' . $tag->name . '" references non-existent parent "' . $tag->parent . '"');
+                $this->logger->error('Tag "' . $tag->name . '" references non-existent parent "' . $tag->parent . '"');
                 $tag->parent = null;
             }
         }

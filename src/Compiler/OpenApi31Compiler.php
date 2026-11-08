@@ -91,13 +91,13 @@ class OpenApi31Compiler implements CompilerInterface
             || $specification->links || $specification->examples;
 
         if (!$hasPaths && !$hasWebhooks && !$hasComponents) {
-            $this->logger->warning('At least one of paths, webhooks, or components is required');
+            $this->logger->error('At least one of paths, webhooks, or components is required');
         }
 
         if ($specification->info?->license instanceof OA\License) {
             $license = $specification->info->license;
             if ($license->url !== null && $license->identifier !== null) {
-                $this->logger->warning('License url and identifier are mutually exclusive in ' . $license->getSourceLocation());
+                $this->logger->error('License url and identifier are mutually exclusive in ' . $license->getSourceLocation());
             }
         }
 
@@ -902,7 +902,7 @@ class OpenApi31Compiler implements CompilerInterface
                         continue; // path-bound, keyed by its path under `paths`
                     }
 
-                    $this->logger->warning(sprintf(
+                    $this->logger->error(sprintf(
                         '%s is missing key-field: "%s" in %s',
                         $type,
                         ComponentName::keyField($component),
@@ -912,7 +912,7 @@ class OpenApi31Compiler implements CompilerInterface
                 }
 
                 if (isset($seen[$name])) {
-                    $this->logger->warning(sprintf('%s "%s" is declared more than once in %s', $type, $name, $component->getSourceLocation()));
+                    $this->logger->error(sprintf('%s "%s" is declared more than once in %s', $type, $name, $component->getSourceLocation()));
                 }
                 $seen[$name] = true;
             }
@@ -921,7 +921,7 @@ class OpenApi31Compiler implements CompilerInterface
         foreach ($this->collectSchemas($specification) as $schema) {
             foreach ($schema->properties ?? [] as $property) {
                 if ($property->property === null) {
-                    $this->logger->warning('Property is missing key-field: "property" in ' . $property->getSourceLocation());
+                    $this->logger->error('Property is missing key-field: "property" in ' . $property->getSourceLocation());
                 }
             }
         }
@@ -946,7 +946,7 @@ class OpenApi31Compiler implements CompilerInterface
                             continue;
                         }
 
-                        $this->logger->warning(sprintf(
+                        $this->logger->error(sprintf(
                             '%s is missing key-field: "%s" in %s',
                             (new \ReflectionClass($item))->getShortName(),
                             $keyField,
@@ -1074,7 +1074,7 @@ class OpenApi31Compiler implements CompilerInterface
                 continue;
             }
 
-            $this->logger->warning('Schema' . $this->schemaLabel($schema) . " has unknown type \"$type\", expecting one of " . implode(', ', static::SCHEMA_TYPES) . ' in ' . $schema->getSourceLocation());
+            $this->logger->error('Schema' . $this->schemaLabel($schema) . " has unknown type \"$type\", expecting one of " . implode(', ', static::SCHEMA_TYPES) . ' in ' . $schema->getSourceLocation());
         }
     }
 
@@ -1083,7 +1083,7 @@ class OpenApi31Compiler implements CompilerInterface
         $specification->getWalker()->visit(OA\Operation::class, function (OA\Operation $operation): void {
             if ($operation->method === null) {
                 if ($operation->path !== null || $operation->webhook !== null) {
-                    $this->logger->warning('Operation without a method will be omitted in ' . $operation->getSourceLocation());
+                    $this->logger->error('Operation without a method will be omitted in ' . $operation->getSourceLocation());
                 }
 
                 return;
@@ -1117,7 +1117,7 @@ class OpenApi31Compiler implements CompilerInterface
             }
 
             if (isset($seen[$operation->operationId])) {
-                $this->logger->warning("operationId must be unique, found \"{$operation->operationId}\" again in " . $operation->getSourceLocation());
+                $this->logger->error("operationId must be unique, found \"{$operation->operationId}\" again in " . $operation->getSourceLocation());
 
                 return;
             }
@@ -1137,7 +1137,7 @@ class OpenApi31Compiler implements CompilerInterface
                 return;
             }
 
-            $this->logger->warning("Path parameter \"{$parameter->name}\" must be required in " . $parameter->getSourceLocation());
+            $this->logger->error("Path parameter \"{$parameter->name}\" must be required in " . $parameter->getSourceLocation());
         });
     }
 
@@ -1159,7 +1159,7 @@ class OpenApi31Compiler implements CompilerInterface
                 }
 
                 if (preg_match(static::RESPONSE_KEY, (string) $response->response) !== 1) {
-                    $this->logger->warning("Invalid response \"{$response->response}\", expecting \"default\", a HTTP status code or a range such as \"2XX\" in " . $operation->getSourceLocation());
+                    $this->logger->error("Invalid response \"{$response->response}\", expecting \"default\", a HTTP status code or a range such as \"2XX\" in " . $operation->getSourceLocation());
                 }
             }
         });
@@ -1175,7 +1175,7 @@ class OpenApi31Compiler implements CompilerInterface
             $seen = [];
             foreach ($holder->content ?? [] as $mediaType) {
                 if ($mediaType->mediaType === null) {
-                    $this->logger->warning(sprintf(
+                    $this->logger->error(sprintf(
                         '%s is missing key-field: "mediaType" in %s; left out',
                         (new \ReflectionClass($mediaType))->getShortName(),
                         $holder->getSourceLocation(),
@@ -1184,7 +1184,7 @@ class OpenApi31Compiler implements CompilerInterface
                 }
 
                 if (isset($seen[$mediaType->mediaType])) {
-                    $this->logger->warning(sprintf(
+                    $this->logger->error(sprintf(
                         'Media type "%s" is declared more than once in one content, the last one is kept, in %s',
                         $mediaType->mediaType,
                         $holder->getSourceLocation(),

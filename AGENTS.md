@@ -29,6 +29,7 @@ Read the relevant page before working in that part of the tree:
 | [docs/dev/testing.md](docs/dev/testing.md) | data providers, the `tests/Concerns` helpers, how documentation is test-verified |
 | [docs/dev/docs-toolchain.md](docs/dev/docs-toolchain.md) | which documentation is generated, and the CLI's rough edges |
 | [docs/dev/writing-docs.md](docs/dev/writing-docs.md) | conventions for hand-written documentation, and a checklist for reviewing doc changes |
+| [docs/dev/messages.md](docs/dev/messages.md) | the form of spec pipeline messages, and which level each takes |
 
 ## Conventions
 

@@ -133,14 +133,14 @@ final class PipelineTest extends TestCase
      * @param array<int|string, mixed> $config
      */
     #[DataProvider('unknownConfigCases')]
-    public function testConfigureWarnsAboutUnknownConfig(array $config, string $expected): void
+    public function testConfigureReportsUnknownConfig(array $config, string $expected): void
     {
         $logger = new CollectingLogger();
         $pipeline = new Pipeline([new OperationIds(hash: true)], logger: $logger);
 
         $pipeline->configure($config);
 
-        $this->assertSame([['level' => 'warning', 'message' => $expected]], $logger->entries());
+        $this->assertSame([['level' => 'error', 'message' => $expected]], $logger->entries());
     }
 
     public function testConfigureIsQuietForKnownConfig(): void

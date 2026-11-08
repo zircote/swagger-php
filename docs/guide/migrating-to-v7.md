@@ -161,6 +161,29 @@ than its class, and the attribute factory that reads its traits. A subclass over
 overrides `getPropertyTypes()` instead. `findUnresolved()` and `collectFromReflectors()` take the
 attribute factory too.
 
+## Changed output in 7.5
+
+Spec and hybrid log an `error`, rather than a `warning`, where the document is invalid or something
+declared is lost. Such a build makes `isValid()` false, and the CLI exits with 1:
+
+* the document is invalid: `paths`, or all of `paths`, `webhooks` and `components`, missing; a
+  license with both `url` and `identifier`; a duplicate `operationId`; a path parameter that is
+  not required; an invalid response key or schema type; a missing key field; a tag whose parent
+  does not exist; in 3.0, an array without `items`; a reference that resolves to nothing, or to
+  several components;
+* something declared is lost: a class or member skipped; a `\Reflector` source that is not a
+  class; a component declared on a member, or declared twice; a media type declared twice;
+  attributes on a constructor; an `operationId` on an operation with several methods; a security
+  requirement given as a bare scheme name; a request body or type whose class has no schema, or
+  several; an operation without a method;
+* in 3.0, `prefixItems`, `unevaluatedProperties`, `unevaluatedItems` and `if`/`then`/`else`, which
+  are kept and make the document invalid;
+* an unknown config option or key, and plugins in classic mode.
+
+Classic type aliases and the array form of a security requirement log a `notice`. A merge
+collision stays a `warning`, and so does what a version leaves out because it cannot express it,
+such as webhooks in 3.0. [Writing messages](/dev/messages) has the rules the levels follow.
+
 ## Preparing for 8.0
 
 In 8.0 classic is removed, and so is `setMode()`. Spec attributes move from `OpenApi\Spec` to

@@ -71,7 +71,7 @@ final class OperationMethodsTranslatorTest extends TestCase
 
     public function testAnOperationIdWithoutTheMethodIsGeneratedInstead(): void
     {
-        $this->expectLogEntry('operationId "updatePet" ignored on an operation with several methods (put, patch), add {method} to tell them apart', 'warning');
+        $this->expectLogEntry('operationId "updatePet" ignored on an operation with several methods (put, patch), add {method} to tell them apart', 'error');
 
         $path = $this->build()->toArray()['paths']['/pets/{id}'];
 

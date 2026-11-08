@@ -479,7 +479,7 @@ class Builder
     protected function doBuildClassic(): Result
     {
         if ($this->hasPlugins) {
-            $this->getLogger()->warning('Plugins configure the spec pipeline and are not used in classic mode');
+            $this->getLogger()->error('Plugins configure the spec pipeline and are not used in classic mode');
         }
 
         $generator = new Generator($this->getLogger());
@@ -523,7 +523,7 @@ class Builder
             foreach (array_keys($tokenScanner->scanFile($file)) as $class) {
                 [$rc, $reason] = ClassReflector::tryReflect($class);
                 if (!$rc instanceof \ReflectionClass) {
-                    $this->getLogger()->warning($reason === null
+                    $this->getLogger()->error($reason === null
                         ? 'Skipping unknown ' . $class
                         : "Skipping unloadable {$class}: {$reason}");
 
@@ -538,7 +538,7 @@ class Builder
             if ($reflector instanceof \ReflectionClass) {
                 $this->collectSafely($assembler, $reflector);
             } else {
-                $this->getLogger()->warning(sprintf(
+                $this->getLogger()->error(sprintf(
                     'Skipping %s source %s: only ReflectionClass sources are read',
                     $reflector::class,
                     match (true) {
@@ -601,7 +601,7 @@ class Builder
         try {
             $assembler->collect($reflector);
         } catch (\Throwable $throwable) {
-            $this->getLogger()->warning("Skipping unloadable {$reflector->getName()}: {$throwable->getMessage()}");
+            $this->getLogger()->error("Skipping unloadable {$reflector->getName()}: {$throwable->getMessage()}");
         }
     }
 
@@ -637,7 +637,7 @@ class Builder
             if ($analyser instanceof Analysers\ReflectionAnalyser) {
                 $analyser->fromFqdn($reflector->getName(), $analysis);
             } else {
-                $this->getLogger()->warning(sprintf('Skipping %s for classic attributes: %s reads files only', $reflector->getName(), $analyser::class));
+                $this->getLogger()->error(sprintf('Skipping %s for classic attributes: %s reads files only', $reflector->getName(), $analyser::class));
             }
         }
 

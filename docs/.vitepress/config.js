@@ -65,6 +65,7 @@ function getGuideSidebar() {
         { text: 'Testing', link: '/dev/testing' },
         { text: 'Documentation toolchain', link: '/dev/docs-toolchain' },
         { text: 'Writing documentation', link: '/dev/writing-docs' },
+        { text: 'Writing messages', link: '/dev/messages' },
       ]
     },
   ]

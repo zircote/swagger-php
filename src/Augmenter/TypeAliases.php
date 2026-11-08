@@ -149,7 +149,7 @@ class TypeAliases implements PipeInterface, LoggerAwareInterface
     {
         $located = !$schema->getReflector() instanceof \Reflector && isset($this->holders[$schema]) ? $this->holders[$schema] : $schema;
 
-        $this->logger?->warning(sprintf(
+        $this->logger?->notice(sprintf(
             'Schema type "%s" is a classic alias, use %s (translation removed in 8.0; rector rule %s rewrites it) in %s',
             $alias,
             $replacement,

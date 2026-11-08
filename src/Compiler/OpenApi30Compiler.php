@@ -54,7 +54,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
 
         $hasPaths = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->path !== null);
         if (!$hasPaths) {
-            $this->logger->warning('paths is required in OpenAPI 3.0');
+            $this->logger->error('paths is required in OpenAPI 3.0');
         }
 
         $hasWebhooks = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->webhook !== null);
@@ -373,26 +373,26 @@ class OpenApi30Compiler extends OpenApi31Compiler
             }
 
             if ($type === 'array' && $schema->items === null) {
-                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ' has type "array" but no items' . $this->schemaLocation($schema));
+                $this->logger->error('Schema' . $this->schemaLabel($schema) . ' has type "array" but no items' . $this->schemaLocation($schema));
             }
 
             $this->validateSchemaType($schema);
             $this->validateRefSiblings($schema, $owners);
 
             if ($schema->prefixItems !== null) {
-                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': prefixItems is not supported in OpenAPI 3.0' . $this->schemaLocation($schema));
+                $this->logger->error('Schema' . $this->schemaLabel($schema) . ': prefixItems is not supported in OpenAPI 3.0' . $this->schemaLocation($schema));
             }
 
             if ($schema->unevaluatedProperties !== null) {
-                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': unevaluatedProperties is not supported in OpenAPI 3.0' . $this->schemaLocation($schema));
+                $this->logger->error('Schema' . $this->schemaLabel($schema) . ': unevaluatedProperties is not supported in OpenAPI 3.0' . $this->schemaLocation($schema));
             }
 
             if ($schema->unevaluatedItems !== null) {
-                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': unevaluatedItems is not supported in OpenAPI 3.0' . $this->schemaLocation($schema));
+                $this->logger->error('Schema' . $this->schemaLabel($schema) . ': unevaluatedItems is not supported in OpenAPI 3.0' . $this->schemaLocation($schema));
             }
 
             if ($schema->if instanceof OA\Schema || $schema->then instanceof OA\Schema || $schema->else instanceof OA\Schema) {
-                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': if/then/else is not supported in OpenAPI 3.0' . $this->schemaLocation($schema));
+                $this->logger->error('Schema' . $this->schemaLabel($schema) . ': if/then/else is not supported in OpenAPI 3.0' . $this->schemaLocation($schema));
             }
 
             if ($schema->contentEncoding !== null || $schema->contentMediaType !== null) {

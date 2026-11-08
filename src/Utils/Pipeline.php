@@ -155,7 +155,7 @@ class Pipeline extends TypedList implements LoggerAwareInterface
                 if (method_exists($pipe, $setter)) {
                     $pipe->{$setter}($value);
                 } else {
-                    $this->logger?->warning("Unknown config option '{$pipeKey}.{$name}'");
+                    $this->logger?->error("Unknown config option '{$pipeKey}.{$name}'");
                 }
             }
         };
@@ -164,7 +164,7 @@ class Pipeline extends TypedList implements LoggerAwareInterface
 
         foreach (array_keys($config) as $pipeKey) {
             if (!isset($applied[$pipeKey])) {
-                $this->logger?->warning("Unknown config key '{$pipeKey}'; no matching pipe in this pipeline");
+                $this->logger?->error("Unknown config key '{$pipeKey}'; no matching pipe in this pipeline");
             }
         }
     }

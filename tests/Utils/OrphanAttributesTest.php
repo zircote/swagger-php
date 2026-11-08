@@ -39,7 +39,7 @@ final class OrphanAttributesTest extends TestCase
     #[DataProvider('orders')]
     public function testAnOrphanIsDroppedAndEveryOperationKept(string $class, array $methods): void
     {
-        $this->expectLogEntry('Response "422" ignored', 'warning');
+        $this->expectLogEntry('Response "422" ignored', 'error');
 
         $document = $this->build($class)->toArray();
 

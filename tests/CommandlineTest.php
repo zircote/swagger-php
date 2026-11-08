@@ -38,8 +38,9 @@ final class CommandlineTest extends OpenApiTestCase
     }
 
     /**
-     * Without `-o` the document goes to stdout, so diagnostics must not: a warning there ends
-     * up as the first line of `openapi src > openapi.yaml`.
+     * Without `-o` the document goes to stdout, so diagnostics must not: a message there ends
+     * up as the first line of `openapi src > openapi.yaml`. A duplicate `operationId` is an
+     * error, so the command still writes the document and exits with 1.
      */
     public function testDiagnosticsGoToStderr(): void
     {
@@ -52,7 +53,7 @@ final class CommandlineTest extends OpenApiTestCase
         $stderr = (string) stream_get_contents($pipes[2]);
         fclose($pipes[1]);
         fclose($pipes[2]);
-        $this->assertSame(0, proc_close($process), $stderr);
+        $this->assertSame(1, proc_close($process), $stderr);
 
         $this->assertStringStartsWith('openapi: ', $stdout);
         $this->assertStringNotContainsString('operationId must be unique', $stdout);
