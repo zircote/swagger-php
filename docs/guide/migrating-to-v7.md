@@ -149,6 +149,11 @@ nothing else adds the class, an operation parameter, a getter or a docblock type
 `list<Part>` typed with it used to reference that component. Now that type is left out, with a
 warning. Add the class as a source, or document the property.
 
+In classic mode, a docblock `@example` takes the schema's type: `@example 1` on an `int` property
+writes `1` rather than `"1"`. A value that does not match the type, or any example on a schema that
+allows a string, stays as written. `#[OA\Examples(value: false)]` writes `false` rather than `0`,
+and a float stays a number.
+
 ## Changed in 7.4
 
 `Resolver::getTypedReflectors()` is replaced by `getPropertyTypes()`, which takes the schema rather
