@@ -68,6 +68,8 @@ The set:
   and a response named by a status code, `response: 200`, which was meant to nest in one.
   A method carrying a framework's route attribute can be left out too, see
   [Routes from a framework](#routes-from-a-framework)
+- adds `fan: Fan::All` to an attribute that classic copied into several others, see
+  [Attributes stacked beside several targets](#attributes-stacked-beside-several-targets)
 - renames the classes, `OpenApi\Attributes\Get` to `OpenApi\Spec\Operation\Get` and so on
 - moves schema keywords off `Property`, `JsonContent` and `XmlContent` into a nested
   `schema: new Schema(...)`, since the spec classes no longer accept them. A `schema:` written
@@ -115,72 +117,42 @@ To keep the rule out of whole directories instead, skip it there with Rector's o
     ->withSkip([ComponentsHolderRector::class => ['*/Controller/*']]);
 ```
 
-## What it leaves for you
+### Attributes stacked beside several targets
 
-### A header beside several responses
-
-Classic resolves a `#[Header]` stacked beside more than one `#[Response]` by copying it into
-every one of them, and also lists it under `components/headers`:
-
-```php
-#[OA\Get(path: '/pets/{id}', operationId: 'getPet')]
-#[OA\Response(response: 200, description: 'The pet')]
-#[OA\Response(response: 404, description: 'No such pet')]
-#[OA\Header(header: 'X-Request-Id', description: 'Correlates the request')]
-public function get(): void
-```
-
-```yaml
-responses:
-  '200':
-    description: 'The pet'
-    headers:
-      X-Request-Id:
-        description: 'Correlates the request'
-  '404':
-    description: 'No such pet'
-    headers:
-      X-Request-Id:
-        description: 'Correlates the request'
-```
-
-Spec mode reports `Ambiguous merge` instead and leaves the method out. Which response the header
-belongs to is not something the code says, so the set does not guess. Set
-`fan: OA\Fan::All` on the header to put it in every response, nest it in the response it
-belongs to, or give it a `component:` and reference it from each. See
-[One attribute for several targets](/guide/spec-attributes#one-attribute-for-several-targets)
-and [Components](/guide/spec-attributes#components).
-
-### Responses beside several operations
-
-The same happens one level up. A method carrying more than one operation attribute, with
-`#[Response]`s stacked beside them, gets every response copied into every operation in
-classic:
+Classic copies an attribute into every attribute beside it that can hold it. A `#[Response]`
+stacked beside two operations goes into both, and so does a `#[Header]` beside two responses:
 
 ```php
 #[OA\Get(path: '/pets/{id}', operationId: 'getPet')]
 #[OA\Post(path: '/pets/{id}', operationId: 'postPet')]
 #[OA\Response(response: 200, description: 'The pet')]
 #[OA\Response(response: 404, description: 'No such pet')]
+#[OA\Header(header: 'X-Request-Id', description: 'Correlates the request')]
 public function pet(): void
 ```
 
-Spec mode reports `Ambiguous merge` for the first `Response` and leaves the method out, which
-drops both operations from the document. Where the operations differ only in their method, declare
-one operation with `methods:`, and `{method}` in its `operationId`:
+Spec takes one target, and reports `Ambiguous merge` for more. The set keeps classic's document
+by adding `fan: OAS\Fan::All` to each attribute classic copied, here the two responses and the
+header. Parameters, request bodies, links and examples are handled the same way, and so is an
+attribute on a method parameter beside several operations. See
+[One attribute for several targets](/guide/spec-attributes#one-attribute-for-several-targets).
+
+The argument makes the copying visible. Where it was not meant, there are other spellings:
+
+- operations that differ only in their method can be one operation with `methods:`, and
+  `{method}` in its `operationId`. See
+  [One operation for several methods](/guide/spec-attributes#one-operation-for-several-methods)
+- an attribute meant for one target can be nested in it
+- one shared by several can be declared once with a `component:` and referenced from each. See
+  [Components](/guide/spec-attributes#components)
+
+To review these by hand instead, skip the rule and fix what spec reports:
 
 ```php
-#[OA\Operation(path: '/pets/{id}', operationId: '{method}Pet', methods: [OA\HttpMethod::Get, OA\HttpMethod::Post])]
-#[OA\Response(response: 200, description: 'The pet')]
-#[OA\Response(response: 404, description: 'No such pet')]
-public function pet(): void
+    ->withSkip([FanOutRector::class]);
 ```
 
-Otherwise set `fan: OA\Fan::All` on each shared `Response`, or give each operation its own
-`responses:`. See [One operation for several methods](/guide/spec-attributes#one-operation-for-several-methods).
-
-A response both operations share can be declared once with a `component:` and referenced as
-`new OA\Response(response: 404, ref: '#/components/responses/NoSuchPet')` from each.
+## What it leaves for you
 
 ### Constructs with no one-to-one replacement
 
