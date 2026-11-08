@@ -479,7 +479,7 @@ class Builder
     protected function doBuildClassic(): Result
     {
         if ($this->hasPlugins) {
-            $this->getLogger()->error('Plugins configure the spec pipeline and are not used in classic mode');
+            $this->getLogger()->warning('Plugins configure the spec pipeline and are not used in classic mode');
         }
 
         $generator = new Generator($this->getLogger());

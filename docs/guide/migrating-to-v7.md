@@ -178,11 +178,12 @@ declared is lost. Such a build makes `isValid()` false, and the CLI exits with 1
   several; an operation without a method;
 * in 3.0, `prefixItems`, `unevaluatedProperties`, `unevaluatedItems` and `if`/`then`/`else`, which
   are kept and make the document invalid;
-* an unknown config option or key, and plugins in classic mode.
+* an unknown config option or key.
 
 Classic type aliases and the array form of a security requirement log a `notice`. A merge
 collision stays a `warning`, and so does what a version leaves out because it cannot express it,
-such as webhooks in 3.0. [Writing messages](/dev/messages) has the rules the levels follow.
+such as webhooks in 3.0. Plugins in classic mode stay a `warning` too: classic builds what it did
+without them. [Writing messages](/dev/messages) has the rules the levels follow.
 
 ## Preparing for 8.0
 
