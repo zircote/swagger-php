@@ -188,7 +188,7 @@ CODE_SAMPLE
 
     /**
      * @param list<array{Attribute, class-string<AttributeInterface>}> $attributes
-     * @param array<int, true>               $pending
+     * @param array<int, true>                                         $pending
      */
     private function isMergeTarget(array $attributes, array $pending, int $index): bool
     {
@@ -210,7 +210,7 @@ CODE_SAMPLE
     /**
      * The target types each candidate matches, for those matching any.
      *
-     * @param class-string<AttributeInterface>                                $class
+     * @param class-string<AttributeInterface>                               $class
      * @param array<int, array{Attribute, class-string<AttributeInterface>}> $candidates
      * @param 'merge'|'contained'                                            $kind
      *
