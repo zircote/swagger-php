@@ -89,14 +89,13 @@ class TokenScanner
     public function detailsFor(\ReflectionClass $class): ?array
     {
         $filename = $class->getFileName();
-        // internal classes have no file, and a class from `eval()` names one that does not exist
-        if ($filename === false || !is_file($filename)) {
+        // internal classes have no file, and a class from `eval()` names one that does not exist;
+        // a scanned file is answered from the cache without touching the filesystem again
+        if ($filename === false || (!isset($this->cache[$filename]) && !is_file($filename))) {
             return null;
         }
 
-        $results = $this->scanFile($filename);
-
-        return $results[$class->getName()] ?? null;
+        return $this->scanFile($filename)[$class->getName()] ?? null;
     }
 
     /**
