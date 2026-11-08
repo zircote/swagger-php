@@ -15,4 +15,5 @@ vendor/
 .idea/
 .phpstan/
 .phpunit.cache/
+.phpbench/
 .claude/settings.local.json
