@@ -31,9 +31,9 @@ final class ClassDescriptionsTest extends TestCase
 
     public function testATypeNamingTwoSchemasIsLeftOut(): void
     {
-        $this->expectLogEntry(Author::class . ' in ' . Article::class . '::$author has several schemas');
+        $this->expectLogEntry('Type "' . Author::class . '" in ' . Article::class . '::$author matches several schemas');
         // the editor asks for a light description, and there is none
-        $this->allowLogEntry('unresolved reference');
+        $this->allowLogEntry('matches no component');
 
         $document = $this->build(new ComponentKey(Author::class));
 
@@ -51,9 +51,9 @@ final class ClassDescriptionsTest extends TestCase
 
     public function testAClassRefNamingTwoSchemasIsReported(): void
     {
-        $this->expectLogEntry("Ref: ambiguous reference '" . Author::class . "{\"groups\":[\"light\"]}' — it names several schemas: Author, AuthorLight");
+        $this->expectLogEntry('Reference "' . Author::class . '{"groups":["light"]}" is ambiguous, it names several schemas (Author, AuthorLight)');
         // neither is plain, so the author's type names no schema
-        $this->allowLogEntry('No schema for ' . Author::class);
+        $this->allowLogEntry('Type "' . Author::class . '"');
 
         $document = $this->build(
             new ComponentKey(Author::class, ['groups' => ['light']]),
@@ -81,7 +81,7 @@ final class ClassDescriptionsTest extends TestCase
 
     public function testARequestBodyTypedWithAClassThatHasNoRequestBodyIsReported(): void
     {
-        $this->expectLogEntry('No request body for ' . Account::class . ' in $account of ' . AccountController::class . "::open(), so the request body is left empty; its schema belongs in the request body's content");
+        $this->expectLogEntry('Request body "' . Account::class . '" in $account of ' . AccountController::class . "::open() matches no request body, left empty; its schema belongs in the request body's content");
 
         $document = (new Builder())
             ->setMode(Mode::SPEC)

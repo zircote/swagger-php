@@ -203,7 +203,7 @@ final class ResolverTest extends TestCase
 
         $this->assertSame(['Warehouse', 'Manufacturer'], $this->schemaNames($assembler));
         $this->assertCount(1, $logger->entries());
-        $this->assertStringStartsWith('Skipping unloadable ' . Fixtures\Resolver\UnloadableStock::class . ': Failed to instantiate attribute', $logger->entries()[0]['message']);
+        $this->assertStringStartsWith('Class "' . Fixtures\Resolver\UnloadableStock::class . '" cannot be loaded, skipped: Failed to instantiate attribute', $logger->entries()[0]['message']);
     }
 
     public function testAKeyAwareResolverDescribesAClassForAQualifiedRef(): void

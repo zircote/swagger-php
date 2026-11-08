@@ -104,9 +104,9 @@ final class ExpectsLogEntriesTest extends TestCase
     public function testAgainstARealBuild(): void
     {
         // the diagnostic this test is about ...
-        $this->expectLogEntry('info is required', 'error');
+        $this->expectLogEntry('Document is missing info', 'error');
         // ... and one that merely comes with an empty source set
-        $this->allowLogEntry('At least one of paths, webhooks, or components is required');
+        $this->allowLogEntry('Document needs at least one of paths, webhooks or components');
 
         (new Builder())
             ->setMode(Mode::SPEC)

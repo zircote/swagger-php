@@ -117,15 +117,15 @@ final class PipelineTest extends TestCase
     {
         yield 'unknown pipe' => [
             ['noSuchPipe.hash' => false],
-            "Unknown config key 'noSuchPipe'; no matching pipe in this pipeline",
+            'Config key "noSuchPipe" matches no pipe in this pipeline, ignored',
         ];
         yield 'unknown option' => [
             ['operationIds.noSuchOption' => false],
-            "Unknown config option 'operationIds.noSuchOption'",
+            'Config option "operationIds.noSuchOption" is unknown, ignored',
         ];
         yield 'stale classic key' => [
             ['operationId.hash' => false],
-            "Unknown config key 'operationId'; no matching pipe in this pipeline",
+            'Config key "operationId" matches no pipe in this pipeline, ignored',
         ];
     }
 

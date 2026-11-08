@@ -54,7 +54,7 @@ class Pipeline extends TypedList implements LoggerAwareInterface
                 : null;
 
             if ($defaultKey !== null && !in_array($defaultKey, $this->groups, true)) {
-                throw new OpenApiException("Default group '{$defaultKey}' must be listed in groups");
+                throw new OpenApiException("Default group \"{$defaultKey}\" must be listed in groups");
             }
             $this->defaultGroup = $defaultKey ?? $this->groups[array_key_last($this->groups)];
         }
@@ -155,7 +155,7 @@ class Pipeline extends TypedList implements LoggerAwareInterface
                 if (method_exists($pipe, $setter)) {
                     $pipe->{$setter}($value);
                 } else {
-                    $this->logger?->error("Unknown config option '{$pipeKey}.{$name}'");
+                    $this->logger?->error("Config option \"{$pipeKey}.{$name}\" is unknown, ignored");
                 }
             }
         };
@@ -164,7 +164,7 @@ class Pipeline extends TypedList implements LoggerAwareInterface
 
         foreach (array_keys($config) as $pipeKey) {
             if (!isset($applied[$pipeKey])) {
-                $this->logger?->error("Unknown config key '{$pipeKey}'; no matching pipe in this pipeline");
+                $this->logger?->error("Config key \"{$pipeKey}\" matches no pipe in this pipeline, ignored");
             }
         }
     }
@@ -198,7 +198,7 @@ class Pipeline extends TypedList implements LoggerAwareInterface
                 : $this->defaultGroup;
 
             if (!isset($buckets[$group])) {
-                throw new OpenApiException("Pipe declares unknown group '{$group}'; valid groups: " . implode(', ', $this->groups));
+                throw new OpenApiException("Pipe declares unknown group \"{$group}\"; valid groups: " . implode(', ', $this->groups));
             }
 
             $buckets[$group][] = $pipe;

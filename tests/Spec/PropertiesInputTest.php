@@ -45,7 +45,7 @@ final class PropertiesInputTest extends TestCase
     public function testOneWithoutAKeyIsAnError(\Closure $create, string $label): void
     {
         $this->expectException(OpenApiException::class);
-        $this->expectExceptionMessage("properties: {$label} needs a string key that names the property");
+        $this->expectExceptionMessage("Property {$label} in properties needs a string key that names it");
 
         $create();
     }

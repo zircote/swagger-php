@@ -9,11 +9,28 @@ in 8.0.
 
 1. **Subject first**, named as a user would search for it: `Schema "Pet"`, `Property
    Pet::$name`, `Operation "getPets"`. No internal class or processor names such as `Ref:`.
-2. **What is wrong, then what happens**: `…, omitted` or `…, using enum fallback`, with one
-   phrasing per outcome.
-3. **Location last**, ` in <source>`, wherever it is known.
+2. **What is wrong, then what happens**, in one of the outcomes below. A hint on how to fix it
+   follows a semicolon: `…, omitted; use url instead`.
+3. **Location last**, ` in <source>`, wherever it is known. The message of an exception that caused
+   the problem goes last instead, after a colon: `…, skipped: <reason>`.
 4. **User values in double quotes**, spec keywords bare (`const`, `paths`).
 5. **Sentence case**, no trailing period, no em dash.
+
+The outcomes, one phrasing each:
+
+| Outcome | Phrasing | For example |
+|---|---|---|
+| A class, member, plugin or source is not read | `skipped` | `Class "Foo" cannot be loaded, skipped: …` |
+| Something read has no effect | `ignored` | `Config option "x.y" is unknown, ignored` |
+| Something declared is left out of the document | `omitted` | `Webhooks are not supported in OpenAPI 3.0, omitted` |
+| Something is removed after it was added | `removed` | `Component "#/components/schemas/Foo" is unreferenced, removed` |
+| One of several declarations wins | `the last one kept`, or the merge mode's own words | `Schema "Pet" is declared more than once, the last one kept in …` |
+| Something takes the place of what was declared | `using …` | `…, using enum fallback` |
+| A field is left without a value | `left empty` | `Request body "Foo" in … matches no request body, left empty` |
+
+A message about an invalid document has no outcome: the document is written as declared.
+
+`MessageFormTest` checks rules 1 and 5 over what the scratch fixtures log.
 
 ## Levels
 

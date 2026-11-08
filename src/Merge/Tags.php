@@ -71,11 +71,7 @@ class Tags implements MergerInterface, LoggerAwareInterface
         $survivor->x = $this->extensions($survivor->x, $later->x, $mode, $conflicts);
 
         if ($conflicts !== []) {
-            $this->logger?->warning(sprintf(
-                '%s; %s set differently',
-                $this->collision($earlier, $later, $mode->outcome()),
-                implode(', ', array_unique($conflicts)),
-            ));
+            $this->logger?->warning($this->collision($earlier, $later, $mode->outcome(), implode(', ', array_unique($conflicts)) . ' set differently'));
         }
 
         return $survivor;

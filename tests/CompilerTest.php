@@ -286,8 +286,8 @@ final class CompilerTest extends TestCase
         $reported = array_values(array_filter($messages, fn (string $message): bool => str_contains($message, 'beside $ref')));
 
         $this->assertCount(7, $reported);
-        $this->assertStringStartsWith('Parameter description beside $ref #/components/parameters/P is not supported in OpenAPI 3.0 and will be omitted in ', $reported[0]);
-        $this->assertNotEmpty(array_filter($reported, fn (string $message): bool => str_starts_with($message, 'Example summary and description beside $ref #/components/examples/E ')));
+        $this->assertStringStartsWith('Parameter description beside $ref "#/components/parameters/P" is not supported in OpenAPI 3.0, omitted in ', $reported[0]);
+        $this->assertNotEmpty(array_filter($reported, fn (string $message): bool => str_starts_with($message, 'Example summary and description beside $ref "#/components/examples/E" ')));
     }
 
     /**
@@ -295,9 +295,9 @@ final class CompilerTest extends TestCase
      */
     public static function droppedSchemaSiblingsProvider(): iterable
     {
-        yield '3.0' => [new OpenApi30Compiler(), 'Schema "Checkout": description, required, minProperties beside $ref #/components/schemas/Cat will be omitted'];
-        yield '3.1' => [new OpenApi31Compiler(), 'Schema "Checkout": required, minProperties beside $ref #/components/schemas/Cat will be omitted'];
-        yield '3.2' => [new OpenApi32Compiler(), 'Schema "Checkout": required, minProperties beside $ref #/components/schemas/Cat will be omitted'];
+        yield '3.0' => [new OpenApi30Compiler(), 'Schema "Checkout" sets description, required, minProperties beside $ref "#/components/schemas/Cat", omitted'];
+        yield '3.1' => [new OpenApi31Compiler(), 'Schema "Checkout" sets required, minProperties beside $ref "#/components/schemas/Cat", omitted'];
+        yield '3.2' => [new OpenApi32Compiler(), 'Schema "Checkout" sets required, minProperties beside $ref "#/components/schemas/Cat", omitted'];
     }
 
     /**
@@ -329,7 +329,7 @@ final class CompilerTest extends TestCase
 
         $messages = array_column((new OpenApi30Compiler())->validate($specification), 'message');
 
-        $this->assertContains('Schema: description beside $ref #/components/schemas/Cat will be omitted in ' . OA\Info::class . '::$title in ' . (new \ReflectionClass(OA\Info::class))->getFileName(), $messages);
+        $this->assertContains('Schema sets description beside $ref "#/components/schemas/Cat", omitted in ' . OA\Info::class . '::$title in ' . (new \ReflectionClass(OA\Info::class))->getFileName(), $messages);
     }
 
     public function testADroppedSiblingWithoutALocationIsReportedWithoutOne(): void
@@ -341,7 +341,7 @@ final class CompilerTest extends TestCase
 
         $messages = array_column((new OpenApi30Compiler())->validate($specification), 'message');
 
-        $this->assertContains('Schema "Checkout": description beside $ref #/components/schemas/Cat will be omitted', $messages);
+        $this->assertContains('Schema "Checkout" sets description beside $ref "#/components/schemas/Cat", omitted', $messages);
     }
 
     public function testAKeywordSetAfterConstructionIsNotReported(): void
@@ -355,7 +355,7 @@ final class CompilerTest extends TestCase
 
         $messages = array_column((new OpenApi30Compiler())->validate($specification), 'message');
 
-        $this->assertContains('Schema "Checkout": minProperties beside $ref #/components/schemas/Cat will be omitted', $messages);
+        $this->assertContains('Schema "Checkout" sets minProperties beside $ref "#/components/schemas/Cat", omitted', $messages);
     }
 
     public function testADocblockBesideARefIsNotReported(): void
@@ -374,7 +374,7 @@ final class CompilerTest extends TestCase
         $reported = array_values(array_filter(array_column($logger->entries(), 'message'), fn (string $message): bool => str_contains($message, 'beside $ref')));
 
         $this->assertCount(1, $reported);
-        $this->assertStringStartsWith('Schema: description beside $ref #/components/schemas/Pet will be omitted in ' . Fixtures\RefSiblings\Owner::class . '::$other ', $reported[0]);
+        $this->assertStringStartsWith('Schema sets description beside $ref "#/components/schemas/Pet", omitted in ' . Fixtures\RefSiblings\Owner::class . '::$other ', $reported[0]);
     }
 
     public function test30SchemaWarningsNameTheirSource(): void
@@ -391,12 +391,12 @@ final class CompilerTest extends TestCase
         ));
 
         $messages = array_column((new OpenApi30Compiler())->validate($specification), 'message');
-        $reported = array_values(array_filter($messages, fn (string $message): bool => str_contains($message, 'const is not supported')));
+        $reported = array_values(array_filter($messages, fn (string $message): bool => str_contains($message, 'uses const, not supported')));
 
         $this->assertCount(3, $reported);
-        $this->assertContains('Schema: const is not supported in OpenAPI 3.0, using enum fallback', $reported);
+        $this->assertContains('Schema uses const, not supported in OpenAPI 3.0, using enum fallback', $reported);
         foreach (['pet', 'other'] as $property) {
-            $located = array_filter($reported, fn (string $message): bool => str_starts_with($message, 'Schema: const is not supported in OpenAPI 3.0, using enum fallback in ' . Fixtures\RefSiblings\Owner::class . '::$' . $property . ' '));
+            $located = array_filter($reported, fn (string $message): bool => str_starts_with($message, 'Schema uses const, not supported in OpenAPI 3.0, using enum fallback in ' . Fixtures\RefSiblings\Owner::class . '::$' . $property . ' '));
             $this->assertCount(1, $located, $property);
         }
     }
@@ -688,7 +688,7 @@ final class CompilerTest extends TestCase
         yield '3.0 webhooks unsupported' => [
             new OpenApi30Compiler(),
             $specWithWebhook,
-            'webhooks are not supported in OpenAPI 3.0 and will be omitted',
+            'Webhooks are not supported in OpenAPI 3.0, omitted',
         ];
 
         $specWithIdentifier = new Specification();
@@ -703,13 +703,13 @@ final class CompilerTest extends TestCase
         yield '3.0 mutualTLS unsupported' => [
             new OpenApi30Compiler(),
             $specWithMutualTls,
-            'mutualTLS security schemes are not supported in OpenAPI 3.0 and will be omitted',
+            'Security schemes of type mutualTLS are not supported in OpenAPI 3.0, omitted',
         ];
 
         yield '3.0 license identifier' => [
             new OpenApi30Compiler(),
             $specWithIdentifier,
-            'License identifier is not supported in OpenAPI 3.0, use url instead',
+            'License identifier is not supported in OpenAPI 3.0, omitted; use url instead',
         ];
 
         $specNoInfo = new Specification();
@@ -718,7 +718,7 @@ final class CompilerTest extends TestCase
         yield '3.1 missing info' => [
             new OpenApi31Compiler(),
             $specNoInfo,
-            'info is required',
+            'Document is missing info',
         ];
 
         $specArrayNoItems = new Specification();
@@ -740,7 +740,7 @@ final class CompilerTest extends TestCase
         yield 'component schema without a name' => [
             new OpenApi31Compiler(),
             $specUnnamedSchema,
-            'Schema is missing key-field: "component" in unknown',
+            'Schema is missing the key field component in unknown',
         ];
 
         $specUnnamedProperty = new Specification();
@@ -751,7 +751,7 @@ final class CompilerTest extends TestCase
         yield 'schema property without a name' => [
             new OpenApi31Compiler(),
             $specUnnamedProperty,
-            'Property is missing key-field: "property" in unknown',
+            'Property is missing the key field property in unknown',
         ];
 
         $specUnnamedHeader = new Specification();
@@ -762,7 +762,7 @@ final class CompilerTest extends TestCase
         yield 'component header without a name' => [
             new OpenApi31Compiler(),
             $specUnnamedHeader,
-            'Header is missing key-field: "component" in unknown',
+            'Header is missing the key field component in unknown',
         ];
 
         $specNestedUnnamed = new Specification();
@@ -775,7 +775,7 @@ final class CompilerTest extends TestCase
         yield 'nested header without a name' => [
             new OpenApi31Compiler(),
             $specNestedUnnamed,
-            'Header is missing key-field: "header" in unknown',
+            'Header is missing the key field header, omitted in unknown',
         ];
 
         $specDuplicateResponse = new Specification();
@@ -798,7 +798,7 @@ final class CompilerTest extends TestCase
         yield 'component name claimed twice' => [
             new OpenApi31Compiler(),
             $specDuplicateResponse,
-            'Response "Dup" is declared more than once in unknown',
+            'Response "Dup" is declared more than once, the last one kept in unknown',
         ];
 
         $specDuplicateOperationId = new Specification();
@@ -810,7 +810,7 @@ final class CompilerTest extends TestCase
         yield 'duplicate operationId' => [
             new OpenApi31Compiler(),
             $specDuplicateOperationId,
-            'operationId must be unique, found "getItem" again in unknown',
+            'Operation "getItem" shares its operationId with another operation; operationId must be unique in unknown',
         ];
 
         $specBadResponseKey = new Specification();
@@ -823,7 +823,7 @@ final class CompilerTest extends TestCase
         yield 'invalid response key' => [
             new OpenApi31Compiler(),
             $specBadResponseKey,
-            'Invalid response "Default", expecting "default", a HTTP status code or a range such as "2XX" in unknown',
+            'Response "Default" is not "default", an HTTP status code or a range such as "2XX" in unknown',
         ];
 
         $specBadSchemaType = new Specification();
@@ -931,7 +931,7 @@ final class CompilerTest extends TestCase
 
         $messages = array_column($compiler->validate($spec), 'message');
         $document = $compiler->compile($spec);
-        $warning = "Method {$method} is not supported in OpenAPI " . substr($compiler->getVersion(), 0, 3) . ' and will be omitted';
+        $warning = "Method \"{$method}\" is not supported in OpenAPI " . substr($compiler->getVersion(), 0, 3) . ', omitted';
 
         $this->assertSame($supported, isset($document['paths']['/p'][$method]));
         if (!$compiler instanceof OpenApi30Compiler) {
@@ -980,7 +980,7 @@ final class CompilerTest extends TestCase
         $compiler = new OpenApi31Compiler();
         $messages = array_column($compiler->validate($spec), 'message');
 
-        $this->assertCount(1, array_filter($messages, static fn (string $message): bool => str_starts_with($message, 'MediaType is missing key-field: "mediaType"')));
+        $this->assertCount(1, array_filter($messages, static fn (string $message): bool => str_starts_with($message, 'MediaType is missing the key field mediaType')));
         $this->assertSame(['application/xml'], array_keys($compiler->compile($spec)['paths']['/p']['get']['responses'][200]['content']));
     }
 
@@ -995,7 +995,7 @@ final class CompilerTest extends TestCase
         $compiler = new OpenApi31Compiler();
         $messages = array_column($compiler->validate($spec), 'message');
 
-        $this->assertCount(1, array_filter($messages, static fn (string $message): bool => str_starts_with($message, 'Media type "application/json" is declared more than once in one content, the last one is kept')));
+        $this->assertCount(1, array_filter($messages, static fn (string $message): bool => str_starts_with($message, 'Media type "application/json" is declared more than once in one content, the last one kept')));
         $this->assertSame('integer', $compiler->compile($spec)['paths']['/p']['post']['requestBody']['content']['application/json']['schema']['type']);
     }
 
@@ -1012,7 +1012,7 @@ final class CompilerTest extends TestCase
         $this->assertNull($spec->operations[0]->method);
         $this->assertArrayNotHasKey('paths', $document);
         $this->assertArrayNotHasKey('webhooks', $document);
-        $this->assertCount(2, array_filter($messages, fn (string $m): bool => str_starts_with($m, 'Operation without a method will be omitted in ')));
+        $this->assertCount(2, array_filter($messages, fn (string $m): bool => str_starts_with($m, 'Operation has no method, omitted in ')));
         $this->assertSame([], array_filter($messages, fn (string $m): bool => str_starts_with($m, 'Request body not supported')));
     }
 

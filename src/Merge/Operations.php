@@ -97,11 +97,7 @@ class Operations implements MergerInterface, LoggerAwareInterface
         $survivor->responses = $this->keyed($survivor->responses, $later->responses, $this->responseKey(...), 'response', $mode, $conflicts);
 
         if ($conflicts !== []) {
-            $this->logger?->warning(sprintf(
-                '%s; %s set differently',
-                $this->collision($earlier, $later, $mode->outcome()),
-                implode(', ', array_unique($conflicts)),
-            ));
+            $this->logger?->warning($this->collision($earlier, $later, $mode->outcome(), implode(', ', array_unique($conflicts)) . ' set differently'));
         }
 
         return $survivor;

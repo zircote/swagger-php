@@ -224,7 +224,7 @@ final class CleanupTest extends TestCase
         $spec->responses = [new OA\Response(response: 200, description: 'OK')];
 
         $this->expectLogEntry('Response "200" is a component named after a status code', 'warning');
-        $this->allowLogEntry('unreferenced component');
+        $this->allowLogEntry('unreferenced');
 
         $cleanup = new Augmenter\Cleanup();
         $cleanup->setLogger($this->trackingLogger());
@@ -243,7 +243,7 @@ final class CleanupTest extends TestCase
 
         $this->expectLogEntry('Response "2XX" is a component named after a status code', 'warning');
         $this->expectLogEntry('Response "default" is a component named after a status code', 'warning');
-        $this->allowLogEntry('unreferenced component');
+        $this->allowLogEntry('unreferenced');
 
         $cleanup = new Augmenter\Cleanup();
         $cleanup->setLogger($this->trackingLogger());
@@ -262,8 +262,8 @@ final class CleanupTest extends TestCase
         $spec = new Specification();
         $spec->responses = [new OA\Response(response: 'NotFound', description: 'nope')];
 
-        $this->expectLogEntry('Removed 1 unreferenced component; set cleanup.enabled to false to keep it', 'notice');
-        $this->expectLogEntry('Removed unreferenced component #/components/responses/NotFound', 'debug');
+        $this->expectLogEntry('1 unreferenced component removed; set cleanup.enabled to false to keep it', 'notice');
+        $this->expectLogEntry('Component "#/components/responses/NotFound" is unreferenced, removed', 'debug');
 
         $cleanup = new Augmenter\Cleanup();
         $cleanup->setLogger($this->trackingLogger());
@@ -301,9 +301,9 @@ final class CleanupTest extends TestCase
             ]),
         ];
 
-        $this->expectLogEntry('Removed 2 unreferenced components; set cleanup.enabled to false to keep them', 'notice');
-        $this->expectLogEntry('Removed unreferenced component #/components/schemas/Middle', 'debug');
-        $this->expectLogEntry('Removed unreferenced component #/components/schemas/Deep', 'debug');
+        $this->expectLogEntry('2 unreferenced components removed; set cleanup.enabled to false to keep them', 'notice');
+        $this->expectLogEntry('Component "#/components/schemas/Middle" is unreferenced, removed', 'debug');
+        $this->expectLogEntry('Component "#/components/schemas/Deep" is unreferenced, removed', 'debug');
 
         $cleanup = new Augmenter\Cleanup();
         $cleanup->setLogger($this->trackingLogger());

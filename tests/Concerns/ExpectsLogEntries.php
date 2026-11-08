@@ -16,8 +16,8 @@ use Psr\Log\LoggerInterface;
  * Hand {@see self::trackingLogger()} to `Builder::setLogger()`, then declare what the
  * build is allowed to say:
  *
- *   $this->expectLogEntry('info is required');            // must be logged
- *   $this->allowLogEntry('const is not supported');       // may be logged
+ *   $this->expectLogEntry('Document is missing info');   // must be logged
+ *   $this->allowLogEntry('uses const');                 // may be logged
  *
  * Strict by default: any entry matching neither is a failure, which is what stops a
  * diagnostic from appearing unnoticed. Use `allowLogEntry()` for diagnostics that are

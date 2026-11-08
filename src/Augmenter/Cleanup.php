@@ -68,9 +68,7 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
         }
 
         $this->reportRemoved();
-        $this->logger?->warning('CleanUnused: maximum iterations ({max}) reached, some unused components may remain', [
-            'max' => self::MAX_ITERATIONS,
-        ]);
+        $this->logger?->warning(sprintf('Components cleanup stopped after %d passes, some unused components may remain', self::MAX_ITERATIONS));
 
         return null;
     }
@@ -150,14 +148,14 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
 
         $count = count($this->removed);
         $this->logger?->notice(sprintf(
-            'Removed %d unreferenced %s; set cleanup.enabled to false to keep %s',
+            '%d unreferenced %s removed; set cleanup.enabled to false to keep %s',
             $count,
             $count === 1 ? 'component' : 'components',
             $count === 1 ? 'it' : 'them',
         ));
 
         foreach ($this->removed as $ref) {
-            $this->logger?->debug(sprintf('Removed unreferenced component %s', $ref));
+            $this->logger?->debug(sprintf('Component "%s" is unreferenced, removed', $ref));
         }
     }
 
@@ -184,7 +182,7 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
         }
 
         $this->logger?->warning(sprintf(
-            'Response "%s" is a component named after a status code; it was most likely meant to nest into an operation in %s',
+            'Response "%s" is a component named after a status code, removed; it was most likely meant to nest into an operation in %s',
             $name,
             $item->getSourceLocation(),
         ));

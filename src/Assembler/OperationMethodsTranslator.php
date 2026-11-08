@@ -122,7 +122,7 @@ class OperationMethodsTranslator extends AbstractAttributeTranslator implements 
 
         if (count($methods) > 1 && $operation->operationId !== null && !str_contains($operation->operationId, '{method}')) {
             $this->logger?->error(sprintf(
-                'operationId "%s" ignored on an operation with several methods (%s), add {method} to tell them apart in %s',
+                'Operation "%s" has several methods (%s), operationId ignored; add {method} to tell them apart in %s',
                 $operation->operationId,
                 implode(', ', $methods),
                 $operation->getSourceLocation(),
