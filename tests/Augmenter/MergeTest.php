@@ -244,7 +244,7 @@ final class MergeTest extends TestCase
         $this->assertCount(2, $result->specification()->operations, 'both runs go, so nothing is reduced');
         $this->assertSame('SECOND', $result->toArray()['paths']['/pets']['get']['summary']);
         // the only signal left is the accidental one, and it guards a different key
-        $this->expectLogEntry('operationId must be unique', 'warning');
+        $this->expectLogEntry('operationId must be unique', 'error');
     }
 
     protected function build(callable $contribution): Builder\Result

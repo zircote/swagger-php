@@ -46,7 +46,7 @@ wrapper remains for the historic spellings — a Header or Example named by `hea
 
 On a class it also makes a holder: each member declares a component of its own, and one
 without a name is named after the member, the way a class names its own. A component declared
-on a member needs the holder; without it, a named one is left out with a warning.
+on a member needs the holder; without it, a named one is left out with an error.
 
   #[Components]
   class SharedComponents {

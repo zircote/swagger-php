@@ -74,7 +74,7 @@ Sources can be directory paths, file paths, `\SplFileInfo`, `\Symfony\Component\
 
 #### Reflector sources (spec/hybrid mode)
 
-In spec and hybrid mode, you can pass `\ReflectionClass` instances directly instead of file paths. Each one contributes that class alone, and any other `\Reflector` is skipped with a warning. This is useful when you already have reflection objects available or want to build a spec from a specific set of classes without file scanning:
+In spec and hybrid mode, you can pass `\ReflectionClass` instances directly instead of file paths. Each one contributes that class alone, and any other `\Reflector` is skipped with an error. This is useful when you already have reflection objects available or want to build a spec from a specific set of classes without file scanning:
 
 ```php
 use OpenApi\Builder;
@@ -112,7 +112,7 @@ Accepts any PSR-3 logger. Defaults to `NullLogger` (silent). The CLI command pas
 
 `setLogger()` is deprecated since 7.3 and will be removed in 8.0.
 
-The logger receives every message of a build: scan problems, skipped classes, assembly warnings and the validation diagnostics. A class that fails to load, or whose own attributes fail to assemble, is left out of the document with a warning. A method, property or constant that fails to assemble is left out with a warning of its own, and the rest of its class is kept.
+The logger receives every message of a build: scan problems, skipped classes, assembly warnings and the validation diagnostics. A class that fails to load, or whose own attributes fail to assemble, is left out of the document with an error. A method, property or constant that fails to assemble is left out with an error of its own, and the rest of its class is kept.
 
 ### Generator configuration (classic mode)
 

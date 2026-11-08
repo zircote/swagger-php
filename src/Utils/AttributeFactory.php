@@ -203,7 +203,7 @@ class AttributeFactory implements LoggerAwareInterface
                 throw $openApiException;
             }
 
-            $this->logger->warning(sprintf('Skipping %s: %s', $this->memberLabel($member), $openApiException->getMessage()));
+            $this->logger->error(sprintf('Skipping %s: %s', $this->memberLabel($member), $openApiException->getMessage()));
 
             return [];
         }
@@ -368,7 +368,7 @@ class AttributeFactory implements LoggerAwareInterface
                 continue;
             }
 
-            $this->logger?->warning(sprintf(
+            $this->logger?->error(sprintf(
                 '%s "%s" ignored, a component declared on a member needs %s on its class, in %s',
                 $component::class,
                 $key,
@@ -412,7 +412,7 @@ class AttributeFactory implements LoggerAwareInterface
             return;
         }
 
-        $this->logger?->warning(sprintf(
+        $this->logger?->error(sprintf(
             '%s ignored on a constructor, declare %s on the class in %s',
             implode(', ', array_map(static fn (\ReflectionAttribute $attribute): string => $attribute->getName(), $attributes)),
             count($attributes) === 1 ? 'it' : 'them',

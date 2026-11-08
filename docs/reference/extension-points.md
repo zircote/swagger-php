@@ -40,7 +40,7 @@ parameters, or on `__invoke`'s for an operation declared on an invokable class. 
 fanned, and an attribute that could go into more than one of them is the usual ambiguity.
 
 An explicit `operationId` on several methods has to tell them apart with `{method}`, which
-`Augmenter\OperationIdTemplates` expands. Without it, it is dropped with a warning and each
+`Augmenter\OperationIdTemplates` expands. Without it, it is dropped with an error and each
 method gets a generated one.
 
 A translator creating `methods:` operations itself has to run before this one: `insert()` it
