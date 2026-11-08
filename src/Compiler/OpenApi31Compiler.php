@@ -1282,6 +1282,16 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
+     * Where the schema was declared, as a diagnostic's ending — or nothing, for one built in code.
+     *
+     * An inline schema has no name, so this is what tells the warnings of two such schemas apart.
+     */
+    protected function schemaLocation(OA\Schema $schema): string
+    {
+        return $schema->getReflector() instanceof \Reflector ? ' in ' . $schema->getSourceLocation() : '';
+    }
+
+    /**
      * The reference a `$ref` holds, whether it is the string or a `Schema\Ref` around it.
      *
      * @deprecated since 7.1, removed in 8.0; use `RefInterface::getRefValue()`
