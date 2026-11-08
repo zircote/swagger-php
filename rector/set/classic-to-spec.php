@@ -18,6 +18,7 @@ use OpenApi\Rector\ComponentsHolderRector;
 use OpenApi\Rector\DropParameterArgumentsRector;
 use OpenApi\Rector\EncodedPropertyRector;
 use OpenApi\Rector\EncodingKeyRector;
+use OpenApi\Rector\FanOutRector;
 use OpenApi\Rector\MoveSchemaKeywordsRector;
 use OpenApi\Rector\NamePositionalArgumentsRector;
 use OpenApi\Rector\ParameterStyleRector;
@@ -44,6 +45,7 @@ return RectorConfig::configure()
         TypeAliasesRector::class,
         SecurityToRequirementRector::class,
         ComponentsHolderRector::class,
+        FanOutRector::class,
     ])
     ->withConfiguredRule(RenameClassRector::class, require __DIR__ . '/classic-to-spec-classes.php')
     ->withRules([MoveSchemaKeywordsRector::class])
