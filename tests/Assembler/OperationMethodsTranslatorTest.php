@@ -31,7 +31,7 @@ final class OperationMethodsTranslatorTest extends TestCase
 
     public function testEachMethodGetsTheWholeDescription(): void
     {
-        $this->allowLogEntry('operationId "updatePet" ignored');
+        $this->allowLogEntry('operationId ignored');
 
         $path = $this->build()->toArray()['paths']['/pets/{id}'];
 
@@ -60,7 +60,7 @@ final class OperationMethodsTranslatorTest extends TestCase
 
     public function testAnOperationIdTemplateIsExpandedPerMethod(): void
     {
-        $this->allowLogEntry('operationId "updatePet" ignored');
+        $this->allowLogEntry('operationId ignored');
 
         $paths = $this->build()->toArray()['paths'];
 
@@ -71,7 +71,7 @@ final class OperationMethodsTranslatorTest extends TestCase
 
     public function testAnOperationIdWithoutTheMethodIsGeneratedInstead(): void
     {
-        $this->expectLogEntry('operationId "updatePet" ignored on an operation with several methods (put, patch), add {method} to tell them apart', 'error');
+        $this->expectLogEntry('Operation "updatePet" has several methods (put, patch), operationId ignored; add {method} to tell them apart', 'error');
 
         $path = $this->build()->toArray()['paths']['/pets/{id}'];
 

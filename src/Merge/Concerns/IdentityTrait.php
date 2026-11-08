@@ -70,8 +70,10 @@ trait IdentityTrait
      *
      * Two components with different keys describe different things, so the name was most likely
      * derived twice rather than written twice, and the message says how to tell them apart.
+     *
+     * `$detail` goes before the locations, which end the message.
      */
-    protected function collision(AttributeInterface $earlier, AttributeInterface $later, string $outcome = 'keeping the last'): string
+    protected function collision(AttributeInterface $earlier, AttributeInterface $later, string $outcome = 'the last one kept', string $detail = ''): string
     {
         $earlierAt = (string) $earlier->getSourceLocation();
         $laterAt = (string) $later->getSourceLocation();
@@ -81,13 +83,17 @@ trait IdentityTrait
             && $earlierKey instanceof ComponentKey && $laterKey instanceof ComponentKey
             && !$earlierKey->equals($laterKey);
 
+        if ($split) {
+            $detail .= ($detail !== '' ? '; ' : '') . sprintf('they describe %s and %s, give one a name of its own or name components with QualifiedName', $earlierKey, $laterKey);
+        }
+
         return sprintf(
-            '%s "%s" is declared more than once, %s in %s%s',
+            '%s "%s" is declared more than once, %s%s in %s',
             (new \ReflectionClass($later))->getShortName(),
             $this->label($later),
             $outcome,
+            $detail !== '' ? '; ' . $detail : '',
             $earlierAt === $laterAt ? $laterAt : $laterAt . ' and ' . $earlierAt,
-            $split ? sprintf('. They describe %s and %s: give one a name of its own, or name components with `QualifiedName`', $earlierKey, $laterKey) : '',
         );
     }
 

@@ -60,7 +60,7 @@ class SecurityRequirements implements PipeInterface, LoggerAwareInterface
         foreach ($holder->security as $item) {
             if (is_string($item)) {
                 $this->logger?->error(sprintf(
-                    'Security requirement "%s" is a bare scheme name and was dropped, use new Security\Requirement(scheme: \'%s\') in %s',
+                    'Security requirement "%s" is a bare scheme name, omitted; use new Security\Requirement(scheme: \'%s\') in %s',
                     $item,
                     $item,
                     $holder->getSourceLocation(),

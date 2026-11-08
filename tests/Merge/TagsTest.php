@@ -48,7 +48,7 @@ final class TagsTest extends TestCase
 
     public function testModeFirstKeepsTheEarlierValue(): void
     {
-        $this->expectLogEntry('Tag "pets" is declared more than once, folding into the first in unknown; description set differently', 'warning');
+        $this->expectLogEntry('Tag "pets" is declared more than once, folding into the first; description set differently in unknown', 'warning');
 
         $tags = $this->build(
             new OA\Tag(name: 'pets', description: 'Everything about pets'),

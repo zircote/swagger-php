@@ -183,7 +183,14 @@ declared is lost. Such a build makes `isValid()` false, and the CLI exits with 1
 Classic type aliases and the array form of a security requirement log a `notice`. A merge
 collision stays a `warning`, and so does what a version leaves out because it cannot express it,
 such as webhooks in 3.0. Plugins in classic mode stay a `warning` too: classic builds what it did
-without them. [Writing messages](/dev/messages) has the rules the levels follow.
+without them.
+
+The messages themselves are reworded in spec and hybrid, so they start with what they are about
+and end with where it was declared. `Ref: dangling reference '#/components/schemas/Pet' — no such
+component` now reads `Reference "#/components/schemas/Pet" points to no component`, and
+`Skipping unknown Foo` reads `Class "Foo" not found, skipped`. A test matching log lines in full
+needs updating. Classic's messages are unchanged. [Writing messages](/dev/messages) has the form
+and the rules the levels follow.
 
 ## Preparing for 8.0
 

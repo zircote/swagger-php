@@ -72,10 +72,10 @@ final class TypesTest extends TestCase
     public function testWarnsForAClassWithNoSchema(): void
     {
         $holder = Fixtures\Augmenter\UndescribedClasses::class;
-        $this->expectLogEntry('No schema for ' . Fixtures\Augmenter\Money::class . " in {$holder}::\$price", 'error');
-        $this->expectLogEntry('No schema for ' . Fixtures\Augmenter\Labelled::class . " in {$holder}::\$label", 'error');
-        $this->expectLogEntry('No schema for ' . Fixtures\Augmenter\Money::class . " in {$holder}::\$history", 'error');
-        $this->allowLogEntry('info is required');
+        $this->expectLogEntry('Type "' . Fixtures\Augmenter\Money::class . "\" in {$holder}::\$price matches no schema", 'error');
+        $this->expectLogEntry('Type "' . Fixtures\Augmenter\Labelled::class . "\" in {$holder}::\$label matches no schema", 'error');
+        $this->expectLogEntry('Type "' . Fixtures\Augmenter\Money::class . "\" in {$holder}::\$history matches no schema", 'error');
+        $this->allowLogEntry('Document is missing info');
 
         $properties = (new Builder())
             ->setMode(Builder\Mode::SPEC)

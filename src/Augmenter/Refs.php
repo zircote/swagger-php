@@ -112,18 +112,18 @@ class Refs implements PipeInterface, LoggerAwareInterface
                 fn (AttributeInterface $component): string => ComponentName::of($component) ?? '(unnamed)',
                 $index->findAllByKey($key, $bucket),
             );
-            $this->logger?->error("Ref: ambiguous reference '{$key}' — it names several {$bucket}: " . implode(', ', $names) . '; reference one by name');
+            $this->logger?->error("Reference \"{$key}\" is ambiguous, it names several {$bucket} (" . implode(', ', $names) . '); reference one by name');
         }
 
         foreach (array_keys($unresolved) as $ref) {
             $pointer = $this->pointerFor((string) $ref, $index);
             $this->logger?->error($pointer !== null
-                ? "Ref: unresolved reference '{$ref}' — a component of that name exists, use '{$pointer}'"
-                : "Ref: unresolved reference '{$ref}' — no matching component found");
+                ? "Reference \"{$ref}\" matches no component; a component of that name exists, use \"{$pointer}\""
+                : "Reference \"{$ref}\" matches no component");
         }
 
         foreach (array_keys($dangling) as $ref) {
-            $this->logger?->error("Ref: dangling reference '{$ref}' — no such component");
+            $this->logger?->error("Reference \"{$ref}\" points to no component");
         }
     }
 

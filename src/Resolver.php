@@ -120,7 +120,7 @@ class Resolver implements LoggerAwareInterface
                             : $resolver->resolve($key->class, $assembler);
                     } catch (\Throwable $throwable) {
                         // as the scan does for a class it cannot load: report it, and resolve the rest
-                        $this->logger?->error("Skipping unloadable {$id}: {$throwable->getMessage()}");
+                        $this->logger?->error("Class \"{$id}\" cannot be loaded, skipped: {$throwable->getMessage()}");
                         $attempted[$id] = true;
 
                         continue 2;

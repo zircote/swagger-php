@@ -132,8 +132,8 @@ final class MergeTest extends TestCase
         });
 
         // nothing references either, and there are no paths
-        $this->allowLogEntry('unreferenced component', 'At least one of paths');
-        $this->expectLogEntry('Author.php:12. They describe ' . Author::class . '{"groups":["user:read"]} and ' . Author::class . '{"groups":["user_read"]}: give one a name of its own, or name components with `QualifiedName`', 'warning');
+        $this->allowLogEntry('unreferenced', 'Document needs at least one of paths');
+        $this->expectLogEntry('the last one kept; they describe ' . Author::class . '{"groups":["user:read"]} and ' . Author::class . '{"groups":["user_read"]}, give one a name of its own or name components with QualifiedName in ', 'warning');
     }
 
     /**

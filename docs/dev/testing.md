@@ -145,8 +145,8 @@ Mechanics that are easy to get wrong:
   name deliberately does not match the class.
 - Which means **`Scratch` fixtures are not autoloadable**: `tests/Fixtures` is
   `exclude-from-classmap`, and `ScratchTest` `require_once`s the path instead. Pointing
-  `bin/openapi` at a fixture to see what it produces prints `Skipping unknown
-  OpenApi\Tests\Fixtures\Scratch\…` and an empty document. That is the autoloader, not a broken
+  `bin/openapi` at a fixture to see what it produces prints `Class
+  "OpenApi\Tests\Fixtures\Scratch\…" not found, skipped` and an empty document. That is the autoloader, not a broken
   fixture. `require` the file from a script if you want to run one by hand.
 
 Two constraints cap how much a single fixture should absorb, and both are worth weighing

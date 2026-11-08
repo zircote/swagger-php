@@ -63,8 +63,8 @@ final class BuilderTest extends OpenApiTestCase
 
     public function testIsValidReportsCompilerErrors(): void
     {
-        // no OA\Info anywhere -> the compiler reports "info is required"
-        $this->expectLogEntry('info is required', 'error');
+        // no OA\Info anywhere -> the compiler reports "Document is missing info"
+        $this->expectLogEntry('Document is missing info', 'error');
 
         $result = (new Builder())
             ->setMode(Mode::SPEC)
@@ -230,7 +230,7 @@ final class BuilderTest extends OpenApiTestCase
         $class = $instance::class;
 
         $this->expectLogEntry("Skipping {$class}: its source file ", 'warning');
-        $this->allowLogEntry('info is required');
+        $this->allowLogEntry('Document is missing info');
 
         foreach ([Mode::SPEC, Mode::HYBRID] as $mode) {
             $result = (new Builder())
@@ -245,8 +245,8 @@ final class BuilderTest extends OpenApiTestCase
 
     public function testBuildReportsANonClassReflectorSpec(): void
     {
-        $this->expectLogEntry('Skipping ReflectionMethod source ' . Fixtures\Assembler\SimpleController::class . '::', 'error');
-        $this->allowLogEntry('info is required', 'At least one of paths, webhooks, or components is required');
+        $this->expectLogEntry('Source "' . Fixtures\Assembler\SimpleController::class . '::', 'error');
+        $this->allowLogEntry('Document is missing info', 'Document needs at least one of paths, webhooks or components');
 
         $method = (new \ReflectionClass(Fixtures\Assembler\SimpleController::class))->getMethods()[0];
 
@@ -302,11 +302,11 @@ final class BuilderTest extends OpenApiTestCase
         $this->assertArrayNotHasKey('/constructor', $result->toArray()['paths']);
         $this->assertArrayHasKey('/method', $result->toArray()['paths']);
 
-        $this->expectLogEntry('ignored on a constructor', 'error');
+        $this->expectLogEntry('on a constructor, ignored', 'error');
 
         $reported = array_column($this->recordedLogEntries(), 'message');
         $this->assertStringStartsWith(
-            'OpenApi\Spec\Operation\Post, OpenApi\Spec\Response ignored on a constructor, declare them on the class in ',
+            'OpenApi\Spec\Operation\Post, OpenApi\Spec\Response on a constructor, ignored; declare them on the class in ',
             $reported[0],
         );
         $this->assertStringContainsString('ConstructorAttributesController::__construct()', $reported[0]);
@@ -328,11 +328,11 @@ final class BuilderTest extends OpenApiTestCase
 
         $this->assertArrayNotHasKey('components', $result->toArray());
 
-        $this->expectLogEntry('OpenApi\Spec\Schema "onProperty" ignored, a component declared on a member needs OpenApi\Spec\Components on its class, in ' . Fixtures\PHP\StrayComponents::class . '::$property in ', 'error');
-        $this->expectLogEntry('OpenApi\Spec\Schema "onMethod" ignored, a component declared on a member needs OpenApi\Spec\Components on its class, in ' . Fixtures\PHP\StrayComponents::class . '::method() in ', 'error');
+        $this->expectLogEntry('Schema "onProperty" is declared on a member without OpenApi\Spec\Components on its class, ignored in ' . Fixtures\PHP\StrayComponents::class . '::$property in ', 'error');
+        $this->expectLogEntry('Schema "onMethod" is declared on a member without OpenApi\Spec\Components on its class, ignored in ' . Fixtures\PHP\StrayComponents::class . '::method() in ', 'error');
         // what referred to them is left pointing nowhere
-        $this->expectLogEntry("Ref: dangling reference '#/components/schemas/onProperty' — no such component", 'error');
-        $this->expectLogEntry("Ref: dangling reference '#/components/schemas/onMethod' — no such component", 'error');
+        $this->expectLogEntry('Reference "#/components/schemas/onProperty" points to no component', 'error');
+        $this->expectLogEntry('Reference "#/components/schemas/onMethod" points to no component', 'error');
     }
 
     /**
@@ -359,7 +359,7 @@ final class BuilderTest extends OpenApiTestCase
     {
         // hybrid scans twice — the spec-side Assembler pass and doHybridAssemble()'s
         // classic pass — so the broken class is independently skipped, and reported, by each
-        $this->expectLogEntry('Skipping unloadable', 'error');
+        $this->expectLogEntry('cannot be loaded, skipped', 'error');
         $this->expectLogEntry('Skipping unloadable', 'warning');
 
         $result = (new Builder())
@@ -373,8 +373,8 @@ final class BuilderTest extends OpenApiTestCase
 
     public function testBuildSkipsClassThatWillNotLoadSpec(): void
     {
-        $this->expectLogEntry('Skipping unloadable', 'error');
-        $this->allowLogEntry('info is required', 'At least one of paths, webhooks, or components is required');
+        $this->expectLogEntry('cannot be loaded, skipped', 'error');
+        $this->allowLogEntry('Document is missing info', 'Document needs at least one of paths, webhooks or components');
 
         (new Builder())
             ->setMode(Mode::SPEC)
@@ -391,8 +391,8 @@ final class BuilderTest extends OpenApiTestCase
      */
     public function testBuildSkipsTheMemberOfAReferencedClassThatWillNotLoadSpec(): void
     {
-        $this->expectLogEntry('Skipping $unit of ' . Fixtures\Resolver\UnloadableStock::class . '::__construct(): Failed to instantiate attribute', 'error');
-        $this->allowLogEntry('info is required', 'At least one of paths, webhooks, or components is required', 'Ref: unresolved reference');
+        $this->expectLogEntry('Parameter $unit of ' . Fixtures\Resolver\UnloadableStock::class . '::__construct() cannot be read, skipped: Failed to instantiate attribute', 'error');
+        $this->allowLogEntry('Document is missing info', 'Document needs at least one of paths, webhooks or components', 'Reference "');
 
         $result = (new Builder())
             ->setMode(Mode::SPEC)
@@ -416,8 +416,8 @@ final class BuilderTest extends OpenApiTestCase
      */
     public function testBuildLogsSkippedClassesAsErrorsSpec(): void
     {
-        $this->expectLogEntry('Skipping unloadable ' . Fixtures\PHP\SkippedClasses\WillNotReflect::class . ': ', 'error');
-        $this->expectLogEntry('Skipping unloadable ' . Fixtures\PHP\SkippedClasses\WillNotCollect::class . ': ', 'error');
+        $this->expectLogEntry('Class "' . Fixtures\PHP\SkippedClasses\WillNotReflect::class . '" cannot be loaded, skipped: ', 'error');
+        $this->expectLogEntry('Class "' . Fixtures\PHP\SkippedClasses\WillNotCollect::class . '" cannot be loaded, skipped: ', 'error');
 
         $result = (new Builder())
             ->setMode(Mode::SPEC)
@@ -441,7 +441,7 @@ final class BuilderTest extends OpenApiTestCase
             ->setLogger($logger)
             ->build();
 
-        $this->assertContains('info is required', array_column($logger->entries(), 'message'));
+        $this->assertContains('Document is missing info', array_column($logger->entries(), 'message'));
     }
 
     public function testALoggerPassedToTheConstructorReceivesTheBuild(): void
@@ -454,7 +454,7 @@ final class BuilderTest extends OpenApiTestCase
             ->setVersion('3.0.0')
             ->build();
 
-        $this->assertContains('info is required', array_column($logger->entries(), 'message'));
+        $this->assertContains('Document is missing info', array_column($logger->entries(), 'message'));
     }
 
     public function testASubclassWithAConstructorOfItsOwnBuilds(): void
@@ -467,7 +467,7 @@ final class BuilderTest extends OpenApiTestCase
 
         $result = $builder->setMode(Mode::SPEC)->setSources([])->setVersion('3.0.0')->build();
 
-        $this->assertContains('info is required', array_column($result->log(), 'message'));
+        $this->assertContains('Document is missing info', array_column($result->log(), 'message'));
     }
 
     public function testAnErrorLoggedDuringTheBuildMakesTheResultInvalid(): void
@@ -541,7 +541,7 @@ final class BuilderTest extends OpenApiTestCase
             ->withMergers(fn (TypedList $mergers): TypedList => $mergers->insert($merger, LastWins::class))
             ->addSource([new \ReflectionClass(Fixtures\Augmenter\BasicEnum::class)])
             ->setLogger($this->trackingLogger());
-        $this->allowLogEntry('info is required', 'At least one of paths, webhooks, or components is required', 'Removed ');
+        $this->allowLogEntry('Document is missing info', 'Document needs at least one of paths, webhooks or components', 'unreferenced');
         $builder->build();
 
         foreach (['augmenter' => $augmenter, 'resolver' => $resolver, 'merger' => $merger] as $role => $recorder) {
@@ -557,7 +557,7 @@ final class BuilderTest extends OpenApiTestCase
             ->setMode(Mode::SPEC)
             ->addSource([new \ReflectionClass(Fixtures\Augmenter\BasicEnum::class)])
             ->setLogger($this->trackingLogger());
-        $this->allowLogEntry('info is required', 'At least one of paths, webhooks, or components is required', 'Removed ');
+        $this->allowLogEntry('Document is missing info', 'Document needs at least one of paths, webhooks or components', 'unreferenced');
         $builder->build();
 
         $resolver = $this->typeResolverOf($builder->getAugmenters()->get(Types::class));
@@ -573,7 +573,7 @@ final class BuilderTest extends OpenApiTestCase
             ->setTypeResolver($resolver)
             ->addSource([new \ReflectionClass(Fixtures\Augmenter\BasicEnum::class)])
             ->setLogger($this->trackingLogger());
-        $this->allowLogEntry('info is required', 'At least one of paths, webhooks, or components is required', 'Removed ');
+        $this->allowLogEntry('Document is missing info', 'Document needs at least one of paths, webhooks or components', 'unreferenced');
         $builder->build();
 
         $this->assertSame($resolver, $this->typeResolverOf($builder->getAugmenters()->get(Types::class)));
@@ -586,7 +586,7 @@ final class BuilderTest extends OpenApiTestCase
     public function testAnUnreadableDocblockTypeIsReportedOnceInABuild(): void
     {
         $this->expectLogEntry('Unsupported docblock type "NoSuchClass" on ' . Fixtures\Augmenter\UnreadableDocblockType::class . '::$unknown', 'warning');
-        $this->allowLogEntry('info is required', 'At least one of paths, webhooks, or components is required', 'Removed ');
+        $this->allowLogEntry('Document is missing info', 'Document needs at least one of paths, webhooks or components', 'unreferenced');
 
         (new Builder())
             ->setMode(Mode::SPEC)
@@ -769,10 +769,10 @@ final class BuilderTest extends OpenApiTestCase
      */
     public static function invalidPlugins(): iterable
     {
-        yield 'not a plugin' => [[\stdClass::class], 'Plugin stdClass does not implement'];
-        yield 'not a class' => [['Bogus'], 'Plugin Bogus does not exist'];
-        yield 'settings not an array' => [[Fixtures\ServerPlugin::class => true], 'must be an array, bool given'];
-        yield 'settings not keyed by name' => [[Fixtures\ServerPlugin::class => ['https://configured.example']], 'must be keyed by name'];
+        yield 'not a plugin' => [[\stdClass::class], 'Plugin "stdClass" does not implement'];
+        yield 'not a class' => [['Bogus'], 'Plugin "Bogus" does not exist'];
+        yield 'settings not an array' => [[Fixtures\ServerPlugin::class => true], 'has settings that are not an array, bool given'];
+        yield 'settings not keyed by name' => [[Fixtures\ServerPlugin::class => ['https://configured.example']], 'has settings that are not keyed by name'];
         yield 'not instantiable' => [[PluginInterface::class], 'cannot be created'];
         yield 'constructor arguments' => [[Fixtures\ArgumentServerPlugin::class], 'cannot be created'];
     }
@@ -831,7 +831,7 @@ final class BuilderTest extends OpenApiTestCase
             ->withPlugins([Fixtures\ServerPlugin::class])
             ->build();
 
-        $this->assertContains('Plugins configure the spec pipeline and are not used in classic mode', array_column($logger->entries(), 'message'));
+        $this->assertContains('Plugins configure the spec pipeline and are not used in classic mode, ignored', array_column($logger->entries(), 'message'));
     }
 
     protected function typeResolverOf(?object $augmenter): mixed

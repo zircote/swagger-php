@@ -52,7 +52,7 @@ final class OperationTagsTest extends TestCase
 
         $tags = array_column($document['tags'], null, 'name');
         $this->assertSame('Something else', $tags['users']['description']);
-        $this->assertStringEndsWith('; description set differently', $this->recordedLogEntries()[0]['message']);
+        $this->assertStringContainsString('; description set differently in ', $this->recordedLogEntries()[0]['message']);
     }
 
     public function testAnInheritedOperationTakesTheChildsClassTags(): void

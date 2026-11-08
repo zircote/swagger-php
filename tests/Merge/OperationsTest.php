@@ -93,7 +93,7 @@ final class OperationsTest extends TestCase
         $this->assertSame('The user id', $parameters[0]['description']);
         $this->assertSame('integer', $parameters[0]['schema']['type'], 'the later half wins a field both set');
         $this->assertSame('[0-9]+', $parameters[0]['schema']['pattern'], 'and keeps one only the earlier set');
-        $this->expectLogEntry('folding into the last in unknown; parameter path:id.schema.type set differently', 'warning');
+        $this->expectLogEntry('folding into the last; parameter path:id.schema.type set differently in unknown', 'warning');
     }
 
     public function testParametersInDifferentLocationsStayApart(): void
@@ -138,7 +138,7 @@ final class OperationsTest extends TestCase
         );
 
         $this->assertSame('SECOND', $result->toArray()['paths']['/users']['get']['summary']);
-        $this->expectLogEntry('Get "get /users" is declared more than once, folding into the last in unknown; summary set differently', 'warning');
+        $this->expectLogEntry('Get "get /users" is declared more than once, folding into the last; summary set differently in unknown', 'warning');
     }
 
     public function testAnExplicitEmptySecurityFromTheLaterHalfOptsOut(): void
@@ -149,7 +149,7 @@ final class OperationsTest extends TestCase
         );
 
         $this->assertSame([], $result->toArray()['paths']['/status']['get']['security']);
-        $this->expectLogEntry('Get "get /status" is declared more than once, folding into the last in unknown; security set differently', 'warning');
+        $this->expectLogEntry('Get "get /status" is declared more than once, folding into the last; security set differently in unknown', 'warning');
     }
 
     public function testTagsAreAUnionAndExtensionsMerge(): void
@@ -163,7 +163,7 @@ final class OperationsTest extends TestCase
         $this->assertSame(['users', 'admin'], $operation['tags']);
         $this->assertSame(1, $operation['x-first']);
         $this->assertSame('second', $operation['x-both']);
-        $this->expectLogEntry('Get "get /users" is declared more than once, folding into the last in unknown; x.both set differently', 'warning');
+        $this->expectLogEntry('Get "get /users" is declared more than once, folding into the last; x.both set differently in unknown', 'warning');
     }
 
     public function testFirstKeepsTheEarlierValueOfAConflict(): void
@@ -187,7 +187,7 @@ final class OperationsTest extends TestCase
         $this->assertSame('FIRST', $operation['summary']);
         $this->assertSame('string', $operation['parameters'][0]['schema']['type']);
         $this->assertSame('The user id', $operation['parameters'][0]['description'], 'a gap in a shared parameter is still filled');
-        $this->expectLogEntry('folding into the first in unknown; summary, parameter path:id.schema.type set differently', 'warning');
+        $this->expectLogEntry('folding into the first; summary, parameter path:id.schema.type set differently in unknown', 'warning');
     }
 
     public function testNonOverlappingTakesOnlyWhatOneHalfHasAlone(): void
@@ -217,7 +217,7 @@ final class OperationsTest extends TestCase
         $this->assertSame(['id', 'expand'], array_column($operation['parameters'], 'name'));
         $this->assertArrayNotHasKey('description', $operation['parameters'][0], "a parameter both describe is the earlier half's, whole");
         $this->assertSame('string', $operation['parameters'][0]['schema']['type']);
-        $this->expectLogEntry('taking only what does not overlap in unknown; summary, parameter path:id.schema.type set differently', 'warning');
+        $this->expectLogEntry('taking only what does not overlap; summary, parameter path:id.schema.type set differently in unknown', 'warning');
     }
 
     public function testAnOverlapThatAgreesIsNotReported(): void
@@ -243,7 +243,7 @@ final class OperationsTest extends TestCase
         );
 
         $this->assertSame('From the attribute', $result->toArray()['paths']['/users']['get']['summary']);
-        $this->expectLogEntry('Get "get /users" is declared more than once, folding into the first in unknown; summary set differently', 'warning');
+        $this->expectLogEntry('Get "get /users" is declared more than once, folding into the first; summary set differently in unknown', 'warning');
     }
 
     public function testACallableMustReturnAMode(): void

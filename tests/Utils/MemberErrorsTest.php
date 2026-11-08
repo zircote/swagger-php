@@ -22,7 +22,7 @@ final class MemberErrorsTest extends TestCase
 
     public function testAnAmbiguousMethodIsLeftOutAndTheClassKept(): void
     {
-        $this->expectLogEntry('Skipping ' . MemberErrors\PetController::class . '::change(): Ambiguous hierarchy', 'error');
+        $this->expectLogEntry('Method ' . MemberErrors\PetController::class . '::change() cannot be read, skipped: Ambiguous hierarchy', 'error');
 
         $document = $this->build(MemberErrors\PetController::class)->toArray();
 
@@ -35,8 +35,8 @@ final class MemberErrorsTest extends TestCase
      */
     public function testAnAmbiguousInheritedMethodDoesNotAbortTheBuild(): void
     {
-        $this->expectLogEntry('Skipping ' . MemberErrors\AbstractController::class . '::change(): Ambiguous hierarchy', 'error');
-        $this->expectLogEntry('Skipping ' . MemberErrors\PetController::class . '::change(): Ambiguous hierarchy', 'error');
+        $this->expectLogEntry('Method ' . MemberErrors\AbstractController::class . '::change() cannot be read, skipped: Ambiguous hierarchy', 'error');
+        $this->expectLogEntry('Method ' . MemberErrors\PetController::class . '::change() cannot be read, skipped: Ambiguous hierarchy', 'error');
 
         $document = $this->build(MemberErrors\InheritedController::class, MemberErrors\PetController::class)->toArray();
 
@@ -45,8 +45,8 @@ final class MemberErrorsTest extends TestCase
 
     public function testAPropertyThatFailsIsLeftOutAndItsSchemaKept(): void
     {
-        $this->expectLogEntry('Skipping ' . MemberErrors\Pet::class . ('::$tags: properties: ' . OA\Type::class . '::String needs a string key'), 'error');
-        $this->allowLogEntry('info is required');
+        $this->expectLogEntry('Property ' . MemberErrors\Pet::class . ('::$tags cannot be read, skipped: Property ' . OA\Type::class . '::String in properties needs a string key'), 'error');
+        $this->allowLogEntry('Document is missing info');
 
         $schemas = $this->build(MemberErrors\Pet::class)->toArray()['components']['schemas'];
 

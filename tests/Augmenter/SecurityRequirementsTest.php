@@ -40,7 +40,7 @@ final class SecurityRequirementsTest extends TestCase
 
         $this->assertCount(4, $logger->entries());
         $this->assertStringStartsWith(
-            'Security requirement "api_key" is a bare scheme name and was dropped, use new Security\Requirement(scheme: \'api_key\') in ',
+            'Security requirement "api_key" is a bare scheme name, omitted; use new Security\Requirement(scheme: \'api_key\') in ',
             $logger->entries()[2]['message'],
         );
     }

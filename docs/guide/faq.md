@@ -1,8 +1,8 @@
 # FAQ
 
-## Error: `info is required`
+## Error: `Document is missing info`
 
-Classic mode reports this as *Required `@OA\Info()` not found*.
+Before 7.5 this read `info is required`. Classic mode reports it as *Required `@OA\Info()` not found*.
 
 `swagger-php` reads attributes and annotations through the PHP reflection API, so it only finds them where reflection
 gives access to attributes and doc comments. A stand-alone docblock annotation is ignored.
@@ -129,9 +129,9 @@ paths:
 
 ```
 
-## Skipping unknown `\SomeClass`
+## `Class "\SomeClass" not found, skipped`
 
-This message means that `swagger-php` has tried to use reflection to inspect `\SomeClass` and that PHP could not find/load
+Classic mode, and spec before 7.5, report this as `Skipping unknown \SomeClass`. The message means that `swagger-php` has tried to use reflection to inspect `\SomeClass` and that PHP could not find/load
 that class. Effectively, this means that `class_exists("\SomeClass")` returns `false`.
 
 ### Using the `-b` `--bootstrap` option

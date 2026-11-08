@@ -347,14 +347,14 @@ class Builder
                 $plugin = $this->createPlugin($plugin);
 
                 if (!is_array($config)) {
-                    throw new OpenApiException(sprintf('The settings of plugin %s must be an array, %s given', $plugin::class, get_debug_type($config)));
+                    throw new OpenApiException(sprintf('Plugin "%s" has settings that are not an array, %s given', $plugin::class, get_debug_type($config)));
                 }
 
                 if (array_filter(array_keys($config), is_int(...)) !== []) {
-                    throw new OpenApiException(sprintf('The settings of plugin %s must be keyed by name', $plugin::class));
+                    throw new OpenApiException(sprintf('Plugin "%s" has settings that are not keyed by name', $plugin::class));
                 }
             } catch (OpenApiException $openApiException) {
-                $this->getLogger()->error('Skipping plugin: ' . $openApiException->getMessage());
+                $this->getLogger()->error($openApiException->getMessage() . ', skipped');
 
                 continue;
             }
@@ -412,18 +412,18 @@ class Builder
         if (is_string($plugin) && is_a($plugin, PluginInterface::class, true)) {
             $class = new \ReflectionClass($plugin);
             if (!$class->isInstantiable() || ($class->getConstructor()?->getNumberOfRequiredParameters() ?? 0) > 0) {
-                throw new OpenApiException(sprintf('Plugin %s cannot be created; a plugin named by its class needs a constructor without required arguments', $plugin));
+                throw new OpenApiException(sprintf('Plugin "%s" cannot be created; a plugin named by its class needs a constructor without required arguments', $plugin));
             }
 
             return new $plugin();
         }
 
         if (is_string($plugin) && !class_exists($plugin) && !interface_exists($plugin)) {
-            throw new OpenApiException(sprintf('Plugin %s does not exist', $plugin));
+            throw new OpenApiException(sprintf('Plugin "%s" does not exist', $plugin));
         }
 
         if (!$plugin instanceof PluginInterface) {
-            throw new OpenApiException(sprintf('Plugin %s does not implement %s', is_string($plugin) ? $plugin : get_debug_type($plugin), PluginInterface::class));
+            throw new OpenApiException(sprintf('Plugin "%s" does not implement %s', is_string($plugin) ? $plugin : get_debug_type($plugin), PluginInterface::class));
         }
 
         return $plugin;
@@ -479,7 +479,7 @@ class Builder
     protected function doBuildClassic(): Result
     {
         if ($this->hasPlugins) {
-            $this->getLogger()->warning('Plugins configure the spec pipeline and are not used in classic mode');
+            $this->getLogger()->warning('Plugins configure the spec pipeline and are not used in classic mode, ignored');
         }
 
         $generator = new Generator($this->getLogger());
@@ -524,8 +524,8 @@ class Builder
                 [$rc, $reason] = ClassReflector::tryReflect($class);
                 if (!$rc instanceof \ReflectionClass) {
                     $this->getLogger()->error($reason === null
-                        ? 'Skipping unknown ' . $class
-                        : "Skipping unloadable {$class}: {$reason}");
+                        ? "Class \"{$class}\" not found, skipped"
+                        : "Class \"{$class}\" cannot be loaded, skipped: {$reason}");
 
                     continue;
                 }
@@ -539,13 +539,13 @@ class Builder
                 $this->collectSafely($assembler, $reflector);
             } else {
                 $this->getLogger()->error(sprintf(
-                    'Skipping %s source %s: only ReflectionClass sources are read',
-                    $reflector::class,
+                    'Source "%s" is a %s, only ReflectionClass sources are read, skipped',
                     match (true) {
                         $reflector instanceof \ReflectionMethod, $reflector instanceof \ReflectionProperty => $reflector->class . '::' . $reflector->getName(),
                         method_exists($reflector, 'getName') => $reflector->getName(),
                         default => '',
                     },
+                    $reflector::class,
                 ));
             }
         }
@@ -601,7 +601,7 @@ class Builder
         try {
             $assembler->collect($reflector);
         } catch (\Throwable $throwable) {
-            $this->getLogger()->error("Skipping unloadable {$reflector->getName()}: {$throwable->getMessage()}");
+            $this->getLogger()->error("Class \"{$reflector->getName()}\" cannot be loaded, skipped: {$throwable->getMessage()}");
         }
     }
 
@@ -637,7 +637,7 @@ class Builder
             if ($analyser instanceof Analysers\ReflectionAnalyser) {
                 $analyser->fromFqdn($reflector->getName(), $analysis);
             } else {
-                $this->getLogger()->error(sprintf('Skipping %s for classic attributes: %s reads files only', $reflector->getName(), $analyser::class));
+                $this->getLogger()->error(sprintf('Class "%s" cannot be read for classic attributes, %s reads files only, skipped', $reflector->getName(), $analyser::class));
             }
         }
 
@@ -661,7 +661,7 @@ class Builder
             }
         }
 
-        throw new OpenApiException("No compiler available for version '{$version}'");
+        throw new OpenApiException("Version \"{$version}\" has no compiler");
     }
 
     /**

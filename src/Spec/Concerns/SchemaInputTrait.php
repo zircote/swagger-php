@@ -66,7 +66,7 @@ trait SchemaInputTrait
 
             if (!is_string($key)) {
                 throw new OpenApiException(sprintf(
-                    'properties: %s needs a string key that names the property',
+                    'Property %s in properties needs a string key that names it',
                     $value instanceof Schema ? $value::class : $value::class . '::' . $value->name,
                 ));
             }

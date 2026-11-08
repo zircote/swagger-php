@@ -263,9 +263,9 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
 
         $subject = $this->typeResolver->describe($reflector);
         $this->logger?->error(match (true) {
-            $count > 1 => "{$class} in {$subject} has several request bodies, so the request body is left empty; reference one by name",
-            $this->countComponents($class) === 1 => "No request body for {$class} in {$subject}, so the request body is left empty; its schema belongs in the request body's content",
-            default => "No request body for {$class} in {$subject}, so the request body is left empty",
+            $count > 1 => "Request body \"{$class}\" in {$subject} matches several request bodies, left empty; reference one by name",
+            $this->countComponents($class) === 1 => "Request body \"{$class}\" in {$subject} matches no request body, left empty; its schema belongs in the request body's content",
+            default => "Request body \"{$class}\" in {$subject} matches no request body, left empty",
         });
     }
 
@@ -331,8 +331,8 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
                     } else {
                         $subject = $this->subject instanceof \Reflector ? $this->typeResolver->describe($this->subject) : 'a schema';
                         $this->logger?->error($count === 0
-                            ? "No schema for {$schemaType->type} in {$subject}, so its type is left out"
-                            : "{$schemaType->type} in {$subject} has several schemas, so its type is left out; reference one by name");
+                            ? "Type \"{$schemaType->type}\" in {$subject} matches no schema, omitted"
+                            : "Type \"{$schemaType->type}\" in {$subject} matches several schemas, omitted; reference one by name");
                     }
                 }
             } else {

@@ -200,8 +200,8 @@ final class RefsTest extends TestCase
         $refs->setLogger($this->trackingLogger());
         $refs($spec);
 
-        $this->expectLogEntry("Ref: unresolved reference 'NoSuchPet' — a component of that name exists, use '#/components/responses/NoSuchPet'", 'error');
-        $this->expectLogEntry("Ref: unresolved reference 'Unknown' — no matching component found", 'error');
-        $this->expectLogEntry("Ref: dangling reference '#/components/schemas/Missing' — no such component", 'error');
+        $this->expectLogEntry('Reference "NoSuchPet" matches no component; a component of that name exists, use "#/components/responses/NoSuchPet"', 'error');
+        $this->expectLogEntry('Reference "Unknown" matches no component', 'error');
+        $this->expectLogEntry('Reference "#/components/schemas/Missing" points to no component', 'error');
     }
 }

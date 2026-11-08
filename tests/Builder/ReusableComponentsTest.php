@@ -124,7 +124,7 @@ final class ReusableComponentsTest extends TestCase
         }));
 
         $this->assertArrayNotHasKey('components', $result->toArray());
-        $this->expectLogEntry('pathItems components are not supported in OpenAPI 3.0 and will be omitted', 'warning');
+        $this->expectLogEntry('Path item components are not supported in OpenAPI 3.0, omitted', 'warning');
     }
 
     /**
@@ -163,7 +163,7 @@ final class ReusableComponentsTest extends TestCase
             $this->assertSame('array', $document['components']['mediaTypes']['Patch']['schema']['type']);
         } else {
             $this->assertArrayNotHasKey('components', $document);
-            $this->expectLogEntry('mediaTypes components are not supported before OpenAPI 3.2 and will be omitted', 'warning');
+            $this->expectLogEntry('Media type components are not supported before OpenAPI 3.2, omitted', 'warning');
         }
     }
 
