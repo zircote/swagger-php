@@ -18,6 +18,9 @@ parameters:
     scanFiles:
         # global namespace on purpose, so not autoloadable and not discovered on its own
         - tests/Fixtures/PHP/GlobalNamespaceTypes.php
+        # traits beside the class using them, so only that class is autoloadable
+        - tests/Fixtures/PHP/TraitEdges.php
+        - tests/Fixtures/PHP/BracesInStrings.php
     parallel:
         processTimeout: 300.0
     excludePaths:

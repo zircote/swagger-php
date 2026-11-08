@@ -196,9 +196,25 @@ and the rules the levels follow.
 ## Changed in 7.6
 
 `AttributeFactory` takes any `SourceInspectorInterface` where it took a `TokenScanner`, and asks it
-which members and traits are a class's own. `TokenScanner` implements it, and stays the default.
+which members and traits are a class's own. The default is `SourceInspector`, which answers from
+reflection and finds a file's classes from its tokens, so a spec build parses no PHP. `TokenScanner`
+implements the interface too, and classic analysis keeps using it. Pass `new TokenScanner()` to the
+`AttributeFactory` to get the parser back.
+
 A subclass reading `$tokenScanner` gets the interface: it calls `declares()`, `directTraits()` and
-`classesIn()` rather than `detailsFor()` and `scanFile()`.
+`classesIn()` rather than `detailsFor()` and `scanFile()`. With the default `SourceInspector`, a call
+to `detailsFor()` or `scanFile()` there fails with an undefined method error.
+
+`SourceInspector` and `TokenScanner` answer `declares()` differently in two cases:
+
+* **A class declared in `eval()`'d code** has no file to parse. `TokenScanner` treats all its
+  members as its own and finds no traits. `SourceInspector` tells the trait members apart, except
+  a property or constant the class repeats word for word from a trait, which it counts as the
+  trait's.
+* **A property promoted by a trait's constructor** is not declared by the trait for
+  `TokenScanner`, which only reads promoted properties in classes. `SourceInspector` says it is.
+  The generated spec is the same either way, since `AttributeFactory` reads promoted properties
+  through the constructor's parameters and does not ask about them.
 
 ## Preparing for 8.0
 
