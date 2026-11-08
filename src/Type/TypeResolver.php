@@ -52,10 +52,17 @@ class TypeResolver implements LoggerAwareInterface
     /** @var \WeakMap<\Reflector, array{?SchemaType}> what each reflector resolved to, so a docblock is read and reported once */
     protected \WeakMap $resolved;
 
+    /** Reuses parsed use statements when supported by symfony/type-info. */
+    protected TypeContextFactory $docblockContexts;
+
+    protected TypeContextFactory $reflectionContexts;
+
     public function __construct()
     {
         $this->typeMapper = new TypeMapper();
         $this->resolved = new \WeakMap();
+        $this->docblockContexts = new TypeContextFactory(new SymfonyStringTypeResolver());
+        $this->reflectionContexts = new TypeContextFactory();
     }
 
     /**
@@ -91,7 +98,7 @@ class TypeResolver implements LoggerAwareInterface
             return null;
         }
 
-        $typeContext = (new TypeContextFactory(new SymfonyStringTypeResolver()))->createFromReflection($reflector);
+        $typeContext = $this->docblockContexts->createFromReflection($reflector);
 
         $tagName = match (true) {
             $reflector instanceof \ReflectionProperty => $reflector->isPromoted()
@@ -405,7 +412,7 @@ class TypeResolver implements LoggerAwareInterface
             );
 
         try {
-            $typeContext = (new TypeContextFactory())->createFromReflection($reflector);
+            $typeContext = $this->reflectionContexts->createFromReflection($reflector);
 
             return (new ReflectionTypeResolver())->resolve($subject, $typeContext);
         } catch (UnsupportedException) {
