@@ -373,44 +373,45 @@ class OpenApi30Compiler extends OpenApi31Compiler
             }
 
             if ($type === 'array' && $schema->items === null) {
-                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ' has type "array" but no items');
+                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ' has type "array" but no items' . $this->schemaLocation($schema));
             }
 
             $this->validateSchemaType($schema);
             $this->validateRefSiblings($schema, $owners);
 
             if ($schema->prefixItems !== null) {
-                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': prefixItems is not supported in OpenAPI 3.0');
+                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': prefixItems is not supported in OpenAPI 3.0' . $this->schemaLocation($schema));
             }
 
             if ($schema->unevaluatedProperties !== null) {
-                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': unevaluatedProperties is not supported in OpenAPI 3.0');
+                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': unevaluatedProperties is not supported in OpenAPI 3.0' . $this->schemaLocation($schema));
             }
 
             if ($schema->unevaluatedItems !== null) {
-                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': unevaluatedItems is not supported in OpenAPI 3.0');
+                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': unevaluatedItems is not supported in OpenAPI 3.0' . $this->schemaLocation($schema));
             }
 
             if ($schema->if instanceof OA\Schema || $schema->then instanceof OA\Schema || $schema->else instanceof OA\Schema) {
-                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': if/then/else is not supported in OpenAPI 3.0');
+                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': if/then/else is not supported in OpenAPI 3.0' . $this->schemaLocation($schema));
             }
 
             if ($schema->contentEncoding !== null || $schema->contentMediaType !== null) {
                 $format = $this->contentFormat($schema);
                 if ($format === null || ($schema->format !== null && $schema->format !== $format)) {
-                    $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': contentEncoding/contentMediaType is not supported in OpenAPI 3.0 and will be omitted');
+                    $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': contentEncoding/contentMediaType is not supported in OpenAPI 3.0 and will be omitted' . $this->schemaLocation($schema));
                 }
             }
 
             if ($schema->const !== Undefined::UNDEFINED) {
-                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': const is not supported in OpenAPI 3.0, using enum fallback');
+                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ': const is not supported in OpenAPI 3.0, using enum fallback' . $this->schemaLocation($schema));
             }
 
             if ($schema->examples !== null) {
                 // a plain 3.0 `$ref` is a Reference Object, which drops everything beside it
-                $this->logger->warning($schema->ref !== null && $schema->nullable !== true
+                $this->logger->warning(($schema->ref !== null && $schema->nullable !== true
                     ? 'Schema' . $this->schemaLabel($schema) . ': examples beside $ref ' . $schema->getRefValue() . ' is not supported in OpenAPI 3.0 and will be omitted'
-                    : 'Schema' . $this->schemaLabel($schema) . ': examples array is not supported in OpenAPI 3.0, using first value as example');
+                    : 'Schema' . $this->schemaLabel($schema) . ': examples array is not supported in OpenAPI 3.0, using first value as example')
+                    . $this->schemaLocation($schema));
             }
         }
     }

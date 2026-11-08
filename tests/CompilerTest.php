@@ -377,6 +377,30 @@ final class CompilerTest extends TestCase
         $this->assertStringStartsWith('Schema: description beside $ref #/components/schemas/Pet will be omitted in ' . Fixtures\RefSiblings\Owner::class . '::$other ', $reported[0]);
     }
 
+    public function test30SchemaWarningsNameTheirSource(): void
+    {
+        $specification = new Specification();
+        $specification->add(new OA\Info(title: 'Const', version: '1.0.0'));
+        $specification->add(new OA\Schema(
+            properties: [
+                'pet' => (new OA\Schema(const: 'a'))->setReflector(new \ReflectionProperty(Fixtures\RefSiblings\Owner::class, 'pet')),
+                'other' => (new OA\Schema(const: 'b'))->setReflector(new \ReflectionProperty(Fixtures\RefSiblings\Owner::class, 'other')),
+                'built' => new OA\Schema(const: 'c'),
+            ],
+            component: 'Owner',
+        ));
+
+        $messages = array_column((new OpenApi30Compiler())->validate($specification), 'message');
+        $reported = array_values(array_filter($messages, fn (string $message): bool => str_contains($message, 'const is not supported')));
+
+        $this->assertCount(3, $reported);
+        $this->assertContains('Schema: const is not supported in OpenAPI 3.0, using enum fallback', $reported);
+        foreach (['pet', 'other'] as $property) {
+            $located = array_filter($reported, fn (string $message): bool => str_starts_with($message, 'Schema: const is not supported in OpenAPI 3.0, using enum fallback in ' . Fixtures\RefSiblings\Owner::class . '::$' . $property . ' '));
+            $this->assertCount(1, $located, $property);
+        }
+    }
+
     public function testAFalseThatMeansNothingIsNotReported(): void
     {
         $specification = new Specification();
