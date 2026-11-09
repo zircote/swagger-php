@@ -12,6 +12,7 @@ use OpenApi\Loggers\CollectingLogger;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Specification\ComponentName;
+use OpenApi\Specification\Walker;
 use OpenApi\Undefined;
 use OpenApi\Utils\SecurityRequirement;
 use Psr\Log\LoggerInterface;
@@ -60,6 +61,11 @@ class OpenApi31Compiler implements CompilerInterface
 
     protected CollectingLogger $logger;
 
+    /**
+     * The walker `validate()` shares between the checks, or null outside it.
+     */
+    private ?Walker $walker = null;
+
     public function __construct(?LoggerInterface $logger = null)
     {
         $this->logger = new CollectingLogger($logger);
@@ -75,7 +81,53 @@ class OpenApi31Compiler implements CompilerInterface
         return in_array($version, static::VERSIONS, true);
     }
 
+    /**
+     * Runs the checks in `validateSpecification()`, with their visits sharing one walk.
+     *
+     * The checks register their visits through `visit()`, and all of them run in one walk of the
+     * specification once `validateSpecification()` returns. A visitor must not change the
+     * specification, since the visitors after it share the walk. A check's messages keep their
+     * order; messages from different checks come in walk order.
+     *
+     * Add checks by overriding `validateSpecification()`, not this method: a check run from an
+     * overriding `validate()` outside it still works, but walks on its own.
+     */
     public function validate(Specification $specification): array
+    {
+        $this->walker = $specification->getWalker();
+
+        try {
+            $this->validateSpecification($specification);
+
+            $this->walker->visitDeferred();
+        } finally {
+            $this->walker = null;
+        }
+
+        return $this->logger->entries();
+    }
+
+    public function compile(Specification $specification): array
+    {
+        $version = $specification->openapi->version ?? $this->getVersion();
+
+        return $this->filter([
+            'openapi' => $version,
+            'info' => $specification->info instanceof OA\Info ? $this->compileInfo($specification->info) : null,
+            'servers' => array_map($this->compileServer(...), $specification->servers),
+            'paths' => $this->compilePaths($specification->operations, $specification->pathItems),
+            'components' => $this->compileComponents($specification),
+            'security' => $this->compileSecurity($specification->openapi->security ?? []),
+            'tags' => array_map($this->compileTag(...), $specification->tags),
+            'externalDocs' => $specification->externalDocs ? $this->compileExternalDocs($specification->externalDocs[0]) : null,
+            'webhooks' => $this->compileWebhooks($specification->operations),
+        ], $specification->openapi);
+    }
+
+    /**
+     * The checks `validate()` runs. An override calls its parent's and adds its own checks.
+     */
+    protected function validateSpecification(Specification $specification): void
     {
         if (!$specification->info instanceof OA\Info) {
             $this->logger->error('Document is missing info');
@@ -120,25 +172,6 @@ class OpenApi31Compiler implements CompilerInterface
         $this->validateNestedNames($specification);
 
         $this->validateSchemaExamples($specification);
-
-        return $this->logger->entries();
-    }
-
-    public function compile(Specification $specification): array
-    {
-        $version = $specification->openapi->version ?? $this->getVersion();
-
-        return $this->filter([
-            'openapi' => $version,
-            'info' => $specification->info instanceof OA\Info ? $this->compileInfo($specification->info) : null,
-            'servers' => array_map($this->compileServer(...), $specification->servers),
-            'paths' => $this->compilePaths($specification->operations, $specification->pathItems),
-            'components' => $this->compileComponents($specification),
-            'security' => $this->compileSecurity($specification->openapi->security ?? []),
-            'tags' => array_map($this->compileTag(...), $specification->tags),
-            'externalDocs' => $specification->externalDocs ? $this->compileExternalDocs($specification->externalDocs[0]) : null,
-            'webhooks' => $this->compileWebhooks($specification->operations),
-        ], $specification->openapi);
     }
 
     /**
@@ -918,13 +951,13 @@ class OpenApi31Compiler implements CompilerInterface
             }
         }
 
-        foreach ($this->collectSchemas($specification) as $schema) {
+        $this->visit($specification, OA\Schema::class, function (OA\Schema $schema): void {
             foreach ($schema->properties ?? [] as $property) {
                 if ($property->property === null) {
                     $this->logger->error('Property is missing the key field property in ' . $property->getSourceLocation());
                 }
             }
-        }
+        });
     }
 
     /**
@@ -934,7 +967,7 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function validateNestedNames(Specification $specification): void
     {
-        $specification->getWalker()->visit(array_keys(static::NESTED_MAPS), function (AttributeInterface $attribute): void {
+        $this->visit($specification, array_keys(static::NESTED_MAPS), function (AttributeInterface $attribute): void {
             foreach (static::NESTED_MAPS as $container => $maps) {
                 if (!$attribute instanceof $container) {
                     continue;
@@ -966,7 +999,7 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function validateSchemaExamples(Specification $specification): void
     {
-        $specification->getWalker()->visit(OA\Schema::class, function (OA\Schema $schema): void {
+        $this->visit($specification, OA\Schema::class, function (OA\Schema $schema): void {
             foreach ($schema->examples ?? [] as $example) {
                 if (!$example instanceof OA\Example) {
                     continue;
@@ -1080,7 +1113,7 @@ class OpenApi31Compiler implements CompilerInterface
 
     protected function validateOperations(Specification $specification): void
     {
-        $specification->getWalker()->visit(OA\Operation::class, function (OA\Operation $operation): void {
+        $this->visit($specification, OA\Operation::class, function (OA\Operation $operation): void {
             if ($operation->method === null) {
                 if ($operation->path !== null || $operation->webhook !== null) {
                     $this->logger->error('Operation has no method, omitted in ' . $operation->getSourceLocation());
@@ -1111,7 +1144,7 @@ class OpenApi31Compiler implements CompilerInterface
     protected function validateOperationIds(Specification $specification): void
     {
         $seen = [];
-        $specification->getWalker()->visit(OA\Operation::class, function (OA\Operation $operation) use (&$seen): void {
+        $this->visit($specification, OA\Operation::class, function (OA\Operation $operation) use (&$seen): void {
             if ($operation->operationId === null || ($operation->path === null && $operation->webhook === null)) {
                 return;
             }
@@ -1132,7 +1165,7 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function validatePathParameters(Specification $specification): void
     {
-        $specification->getWalker()->visit(OA\Parameter::class, function (OA\Parameter $parameter): void {
+        $this->visit($specification, OA\Parameter::class, function (OA\Parameter $parameter): void {
             if ($parameter->in !== OA\ParameterIn::Path->value || $parameter->ref !== null || $parameter->required === true) {
                 return;
             }
@@ -1152,7 +1185,7 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function validateResponses(Specification $specification): void
     {
-        $specification->getWalker()->visit(OA\Operation::class, function (OA\Operation $operation): void {
+        $this->visit($specification, OA\Operation::class, function (OA\Operation $operation): void {
             foreach ($operation->responses ?? [] as $response) {
                 if ($response->response === null) {
                     continue;
@@ -1194,7 +1227,7 @@ class OpenApi31Compiler implements CompilerInterface
             }
         };
 
-        $specification->getWalker()->visit([OA\Response::class, OA\RequestBody::class, OA\Parameter::class, OA\Header::class], $check);
+        $this->visit($specification, [OA\Response::class, OA\RequestBody::class, OA\Parameter::class, OA\Header::class], $check);
     }
 
     /**
@@ -1208,6 +1241,26 @@ class OpenApi31Compiler implements CompilerInterface
         });
 
         return $schemas;
+    }
+
+    /**
+     * Visits every attribute of `$classes`: in the shared walk inside `validate()`, at once outside it.
+     *
+     * Inside `validate()` the visitor runs after `validateSpecification()` returns, so a check
+     * that needs what it collects before going on walks with `getWalker()->visit()` instead.
+     *
+     * @template T of AttributeInterface
+     *
+     * @param class-string<T>|list<class-string<T>> $classes
+     * @param callable(T): void                     $visitor
+     */
+    protected function visit(Specification $specification, string|array $classes, callable $visitor): void
+    {
+        if ($this->walker instanceof Walker) {
+            $this->walker->deferredVisit($classes, $visitor);
+        } else {
+            $specification->getWalker()->visit($classes, $visitor);
+        }
     }
 
     /**

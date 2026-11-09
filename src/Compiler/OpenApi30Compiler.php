@@ -48,9 +48,9 @@ class OpenApi30Compiler extends OpenApi31Compiler
     }
 
     #[\Override]
-    public function validate(Specification $specification): array
+    protected function validateSpecification(Specification $specification): void
     {
-        parent::validate($specification);
+        parent::validateSpecification($specification);
 
         $hasPaths = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->path !== null);
         if (!$hasPaths) {
@@ -83,8 +83,6 @@ class OpenApi30Compiler extends OpenApi31Compiler
         }
 
         $this->validateReferenceSiblings($specification);
-
-        return $this->logger->entries();
     }
 
     /**
@@ -98,10 +96,11 @@ class OpenApi30Compiler extends OpenApi31Compiler
 
     protected function validateReferenceSiblings(Specification $specification): void
     {
-        $specification->getWalker()->eachRef(function (object $attribute): void {
-            if (!$attribute instanceof OA\Parameter && !$attribute instanceof OA\RequestBody && !$attribute instanceof OA\Response
-                && !$attribute instanceof OA\Header && !$attribute instanceof OA\Link && !$attribute instanceof OA\Example
-                && !$attribute instanceof OA\Security\Scheme) {
+        // `eachRef()` adds refs of its own, from discriminator mappings and security requirements;
+        // they carry the `$ref` alone, so they never have siblings to report
+        $referable = [OA\Parameter::class, OA\RequestBody::class, OA\Response::class, OA\Header::class, OA\Link::class, OA\Example::class, OA\Security\Scheme::class];
+        $this->visit($specification, $referable, function (OA\Parameter|OA\RequestBody|OA\Response|OA\Header|OA\Link|OA\Example|OA\Security\Scheme $attribute): void {
+            if ($attribute->getRefValue() === null) {
                 return;
             }
 

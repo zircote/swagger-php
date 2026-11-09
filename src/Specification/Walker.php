@@ -17,6 +17,13 @@ use OpenApi\Utils\JsonPointer;
  */
 class Walker
 {
+    /**
+     * The visits `deferredVisit()` registered for the next `visitDeferred()`, in registration order.
+     *
+     * @var list<array{list<class-string<AttributeInterface>>, callable}>
+     */
+    protected array $deferred = [];
+
     public function __construct(
         protected readonly Specification $specification,
     ) {
@@ -105,6 +112,49 @@ class Walker
 
         foreach (get_object_vars($this->specification) as $buckets) {
             $this->walk($visitee, $visitor, $buckets instanceof AttributeInterface ? [$buckets] : (array) $buckets, $seen);
+        }
+    }
+
+    /**
+     * Registers a visit like `visit()`, run by the next `visitDeferred()` rather than now.
+     *
+     * Nothing is visited before then, so what the visitor collects is ready once
+     * `visitDeferred()` returns, not when this does.
+     *
+     * @template T of AttributeInterface
+     *
+     * @param class-string<T>|list<class-string<T>> $visitee
+     * @param callable(T): void                     $visitor
+     */
+    public function deferredVisit(string|array $visitee, callable $visitor): void
+    {
+        $this->deferred[] = [(array) $visitee, $visitor];
+    }
+
+    /**
+     * Runs every visit `deferredVisit()` registered, in one walk of the specification.
+     *
+     * Each attribute goes to every visit whose classes it matches, in registration order, so a
+     * visitor sees the same attributes in the same order as its own `visit()` would. The visits
+     * share the walk, so a visitor must not change the specification. What ran is dropped, so a
+     * second call runs only what was registered since.
+     */
+    public function visitDeferred(): void
+    {
+        $deferred = $this->deferred;
+        $this->deferred = [];
+
+        if ($deferred !== []) {
+            $this->visit(AttributeInterface::class, static function (AttributeInterface $attribute) use ($deferred): void {
+                foreach ($deferred as [$visitee, $visitor]) {
+                    foreach ($visitee as $class) {
+                        if ($attribute instanceof $class) {
+                            $visitor($attribute);
+                            break;
+                        }
+                    }
+                }
+            });
         }
     }
 
