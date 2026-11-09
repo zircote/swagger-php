@@ -2,6 +2,7 @@ includes:
 	- phpstan-baseline.neon
 
 parameters:
+    tmpDir: .cache/phpstan
     phpVersion: 80200
     # classic and docs/examples are analysed at level 5 by phpstan-level5.neon.dist
     level: 7
