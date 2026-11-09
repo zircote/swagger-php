@@ -5,6 +5,7 @@ includes:
 # Classic leaves at v8 and takes no new capabilities; the examples are written to read well.
 # Neither is worth typing to level 7, and neither should lose the checks it has.
 parameters:
+    tmpDir: .cache/phpstan
     phpVersion: 80200
     level: 5
     paths:

@@ -1,5 +1,4 @@
-.phpunit.result.cache
-.php-cs-fixer.cache
+.cache/
 .php-cs-fixer.php
 bin/
 !bin/openapi
@@ -13,7 +12,5 @@ phpstan.neon
 phpunit.xml
 vendor/
 .idea/
-.phpstan/
-.phpunit.cache/
 .phpbench/
 .claude/settings.local.json
