@@ -49,20 +49,19 @@ final class CountersTest extends TestCase
     }
 
     /**
-     * A scan parses every file in the attribute factory's scanner, and the resolver finds nothing
-     * left to resolve.
+     * A scan reads every file once for its classes, and the resolver finds nothing left to resolve.
      *
-     * Only that scanner is counted. Hybrid's classic analysis parses each file again with scanners
-     * of its own, which this does not see.
+     * Only the attribute factory's inspector is counted. Hybrid's classic analysis parses each file
+     * with scanners of its own, which this does not see.
      */
     #[DataProvider('scansProvider')]
-    public function testAScanParsesEveryFileInTheAttributeFactory(Shape $shape, Flavour $flavour, Mode $mode): void
+    public function testAScanReadsEveryFileOnce(Shape $shape, Flavour $flavour, Mode $mode): void
     {
         $builder = new CountingBuilder();
         (new FixtureWriter())->write($shape, $flavour)->build($mode, builder: $builder);
 
         $this->assertSame([
-            'parsed' => 1 + $shape->schemas + $shape->controllers() + $shape->noise,
+            'read' => 1 + $shape->schemas + $shape->controllers() + $shape->noise,
             'passes' => 1,
             'unresolved' => 0,
             'walks' => 32,
@@ -70,19 +69,18 @@ final class CountersTest extends TestCase
     }
 
     /**
-     * Seeded with the controllers, a build parses only what the API reaches: the controllers and
-     * the used models. The class holding `Info` declares no members, so nothing asks about its file.
-     * The first resolver pass finds every used model, since each has an operation, and the second
-     * finds nothing more.
+     * Seeded with the controllers, a build reads no file: reflection tells each class's own members
+     * from inherited ones. The first resolver pass finds every used model, since each has an
+     * operation, and the second finds nothing more.
      */
     #[DataProvider('shapesProvider')]
-    public function testASeededBuildParsesOnlyWhatTheApiReaches(Shape $shape): void
+    public function testASeededBuildReadsNoFile(Shape $shape): void
     {
         $builder = new CountingBuilder();
         (new FixtureWriter())->write($shape, Flavour::Spec)->build(Mode::SPEC, scan: false, builder: $builder);
 
         $this->assertSame([
-            'parsed' => $shape->controllers() + $shape->used(),
+            'read' => 0,
             'passes' => 2,
             'unresolved' => $shape->used(),
             'walks' => 32,

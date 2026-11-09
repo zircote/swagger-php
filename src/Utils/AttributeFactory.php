@@ -37,9 +37,14 @@ class AttributeFactory implements LoggerAwareInterface
     protected TypedList $translators;
 
     /**
+     * Kept so each deprecated `getTokenScanner()` call shares one parse cache.
+     */
+    private ?TokenScanner $fallbackScanner = null;
+
+    /**
      * @param SourceInspectorInterface $tokenScanner tells a class's own members and traits from inherited ones
      */
-    public function __construct(protected SourceInspectorInterface $tokenScanner = new TokenScanner())
+    public function __construct(protected SourceInspectorInterface $tokenScanner = new SourceInspector())
     {
         /** @var list<AttributeTranslatorInterface> $translators */
         $translators = [
@@ -61,7 +66,7 @@ class AttributeFactory implements LoggerAwareInterface
      */
     public function getTokenScanner(): TokenScanner
     {
-        return $this->tokenScanner instanceof TokenScanner ? $this->tokenScanner : new TokenScanner();
+        return $this->tokenScanner instanceof TokenScanner ? $this->tokenScanner : $this->fallbackScanner ??= new TokenScanner();
     }
 
     /**

@@ -17,6 +17,10 @@ $finder = PhpCsFixer\Finder::create()
             // multi arg use; 'use a, b;`
             && !strpos($file->getPathname(), 'tests/Fixtures/Parser/HelloTrait.php')
             && !strpos($file->getPathname(), 'tests/Fixtures/PHP/TraitUsage.php')
+            // a trait and a class on one line
+            && !strpos($file->getPathname(), 'tests/Fixtures/PHP/TraitEdges.php')
+            // a property after a method, past the braces in its strings
+            && !strpos($file->getPathname(), 'tests/Fixtures/PHP/BracesInStrings.php')
             // FQDN in docblock
             && !strpos($file->getPathname(), 'tests/Fixtures/PHP/DocblockAndTypehintTypes.php')
             // parameter docblock for PHP 8.6

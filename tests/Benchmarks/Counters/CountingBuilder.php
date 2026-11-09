@@ -11,7 +11,7 @@ use OpenApi\Specification;
 use OpenApi\Utils\AttributeFactory;
 
 /**
- * A builder whose token scanner, resolver and specification count what they do.
+ * A builder whose source inspector, resolver and specification count what they do.
  *
  * Classic mode uses none of them, so its counts stay at zero.
  */
@@ -23,21 +23,21 @@ class CountingBuilder extends Builder
     {
         parent::__construct();
 
-        $this->attributeFactory = new AttributeFactory(new CountingTokenScanner());
+        $this->attributeFactory = new AttributeFactory(new CountingSourceInspector());
         $this->resolver = new CountingResolver();
     }
 
     /**
-     * @return array{parsed: int, passes: int, unresolved: int, walks: int}
+     * @return array{read: int, passes: int, unresolved: int, walks: int}
      */
     public function counts(): array
     {
         $sourceInspector = $this->getAttributeFactory()->getSourceInspector();
         $resolver = $this->getResolver();
-        assert($sourceInspector instanceof CountingTokenScanner && $resolver instanceof CountingResolver);
+        assert($sourceInspector instanceof CountingSourceInspector && $resolver instanceof CountingResolver);
 
         return [
-            'parsed' => $sourceInspector->parsed(),
+            'read' => $sourceInspector->read,
             'passes' => $resolver->passes,
             'unresolved' => $resolver->unresolved,
             'walks' => $this->specification?->walks() ?? 0,
