@@ -86,6 +86,7 @@ Everything below still works in v7 and is removed in 8.0.
 | `OpenApi31Compiler::refString()` | `RefInterface::getRefValue()`, on the attribute that holds the `ref` |
 | `ResolverInterface`, reported at runtime for each resolver implementing it alone | `KeyResolverInterface`. `KeyResolverTrait` supplies `resolve()`, so only `resolveKey()` needs writing. |
 | `Builder::setLogger()` | The `Builder` constructor, `new Builder($logger)` |
+| `AttributeFactory::getTokenScanner()` | `AttributeFactory::getSourceInspector()` |
 
 The [Classic Attribute](/reference/attributes), [Docblock Annotation](/reference/annotations) and
 [Processor](/reference/processors) references mark each deprecated class.
@@ -191,6 +192,13 @@ component` now reads `Reference "#/components/schemas/Pet" points to no componen
 `Skipping unknown Foo` reads `Class "Foo" not found, skipped`. A test matching log lines in full
 needs updating. Classic's messages are unchanged. [Writing messages](/dev/messages) has the form
 and the rules the levels follow.
+
+## Changed in 7.6
+
+`AttributeFactory` takes any `SourceInspectorInterface` where it took a `TokenScanner`, and asks it
+which members and traits are a class's own. `TokenScanner` implements it, and stays the default.
+A subclass reading `$tokenScanner` gets the interface: it calls `declares()`, `directTraits()` and
+`classesIn()` rather than `detailsFor()` and `scanFile()`.
 
 ## Preparing for 8.0
 

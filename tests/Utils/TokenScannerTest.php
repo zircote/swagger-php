@@ -7,6 +7,8 @@
 namespace OpenApi\Tests\Utils;
 
 use OpenApi\Tests\Fixtures\PHP\Inheritance\ExtendsClass;
+use OpenApi\Tests\Fixtures\PHP\OwnMembers;
+use OpenApi\Tests\Fixtures\PHP\TraitUsage;
 use OpenApi\Tests\OpenApiTestCase;
 use OpenApi\Utils\TokenScanner;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -454,6 +456,51 @@ final class TokenScannerTest extends OpenApiTestCase
         $instance ??= eval('namespace OpenApi\Tests\Utils; class EvaluatedForDetails {} return new EvaluatedForDetails();');
 
         $this->assertNull((new TokenScanner())->detailsFor(new \ReflectionClass($instance)));
+    }
+
+    public function testClassesIn(): void
+    {
+        $this->assertSame(
+            ['OpenApi\Tests\Fixtures\PHP\SharedMembers', OwnMembers::class],
+            (new TokenScanner())->classesIn($this->fixture('PHP/OwnMembers.php')),
+        );
+    }
+
+    public function testDeclaresOnlyWhatTheClassBodyHolds(): void
+    {
+        $scanner = new TokenScanner();
+        $class = new \ReflectionClass(OwnMembers::class);
+
+        $this->assertTrue($scanner->declares($class, $class->getMethod('own')));
+        $this->assertTrue($scanner->declares($class, $class->getProperty('own')));
+        $this->assertTrue($scanner->declares($class, $class->getReflectionConstant('OWN') ?: throw new \LogicException()));
+
+        $this->assertFalse($scanner->declares($class, $class->getMethod('shared')), 'from a trait');
+        $this->assertFalse($scanner->declares($class, $class->getProperty('shared')), 'from a trait');
+        $this->assertFalse($scanner->declares($class, $class->getReflectionConstant('SHARED') ?: throw new \LogicException()), 'from a trait');
+
+        $this->assertFalse($scanner->declares($class, $class->getMethod('baseClassFunc')), 'inherited');
+        $this->assertFalse($scanner->declares($class, $class->getProperty('baseClassProp')), 'inherited');
+    }
+
+    public function testDirectTraitsLeaveOutThoseOfParentsAndTraits(): void
+    {
+        $scanner = new TokenScanner();
+        $names = static fn (array $traits): array => array_map(static fn (\ReflectionClass $trait): string => $trait->getName(), $traits);
+
+        $this->assertSame(['OpenApi\Tests\Fixtures\PHP\SharedMembers'], $names($scanner->directTraits(new \ReflectionClass(OwnMembers::class))));
+        $this->assertSame(['OpenApi\Tests\Fixtures\PHP\CombinedTrait', 'OpenApi\Tests\Fixtures\PHP\GammaTrait'], $names($scanner->directTraits(new \ReflectionClass(TraitUsage::class))));
+    }
+
+    public function testAClassWithoutAFileDeclaresItsMembersAndUsesNoTraits(): void
+    {
+        static $instance = null;
+        $instance ??= eval('namespace OpenApi\Tests\Utils; class EvaluatedForInspector { public $prop; } return new EvaluatedForInspector();');
+        $scanner = new TokenScanner();
+        $class = new \ReflectionClass($instance);
+
+        $this->assertTrue($scanner->declares($class, $class->getProperty('prop')));
+        $this->assertSame([], $scanner->directTraits($class));
     }
 
     public function testDetailsForDoesNotRecheckAScannedFile(): void
