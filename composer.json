@@ -74,7 +74,7 @@
     },
     "require-dev": {
         "doctrine/annotations": "^2.0",
-        "friendsofphp/php-cs-fixer": "3.95.27",
+        "friendsofphp/php-cs-fixer": "3.95.29",
         "phpbench/phpbench": "^1.7",
         "phpstan/phpstan": "2.3.4",
         "phpunit/phpunit": "^11.5 || >=12.5.22",
