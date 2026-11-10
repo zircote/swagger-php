@@ -76,7 +76,7 @@
         "doctrine/annotations": "^2.0",
         "friendsofphp/php-cs-fixer": "3.95.27",
         "phpbench/phpbench": "^1.7",
-        "phpstan/phpstan": "2.3.4",
+        "phpstan/phpstan": "2.3.5",
         "phpunit/phpunit": "^11.5 || >=12.5.22",
         "rector/rector": "2.8.3"
     },
