@@ -130,8 +130,6 @@ class SourceInspector implements SourceInspectorInterface
      *
      * A brace in a string or around the PHP tags is text, not structure.
      *
-     * @internal
-     *
      * @return list<\PhpToken>
      */
     protected function tokens(string $filename): array
