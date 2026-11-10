@@ -81,9 +81,6 @@ class ImpliedSchemas implements PipeInterface, LoggerAwareInterface, TypeResolve
         return $this;
     }
 
-    /**
-     * Passes the logger to the type resolver, including one set later.
-     */
     public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;

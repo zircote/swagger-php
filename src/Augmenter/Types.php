@@ -64,11 +64,6 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
         return null;
     }
 
-    /**
-     * Override the type resolver used to infer schema types from PHP type declarations.
-     *
-     * The builder hands its own when the build runs.
-     */
     public function setTypeResolver(TypeResolver $typeResolver): static
     {
         $this->typeResolver = $typeResolver;
@@ -79,9 +74,6 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
         return $this;
     }
 
-    /**
-     * Passes the logger to the type resolver, including one set later.
-     */
     public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
