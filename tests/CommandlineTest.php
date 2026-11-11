@@ -225,6 +225,37 @@ final class CommandlineTest extends OpenApiTestCase
         $this->assertStringContainsString("url: 'https://plugin.example'", implode(PHP_EOL, $output));
     }
 
+    public function testDiscoverPlugins(): void
+    {
+        $fixture = __DIR__ . '/Fixtures/UnreferencedSchema.php';
+        exec($this->getCommandToExecute(__DIR__ . '/../bin/openapi --discover-plugins --format yaml ' . escapeshellarg($fixture) . ' 2>&1'), $output, $retval);
+
+        // found and read; whether a package there declares a plugin is up to this repository's dependencies
+        $this->assertSame(0, $retval, implode(PHP_EOL, $output));
+        $this->assertStringNotContainsString('to discover plugins', implode(PHP_EOL, $output));
+    }
+
+    public function testDiscoverPluginsWarnsAboutAProjectInstallationItDoesNotRead(): void
+    {
+        $project = sys_get_temp_dir() . '/swagger-php-discovery-' . getmypid();
+        mkdir($project . '/vendor/composer', 0777, true);
+        file_put_contents($project . '/vendor/composer/installed.json', '{"packages": []}');
+
+        try {
+            $fixture = __DIR__ . '/Fixtures/UnreferencedSchema.php';
+            $cmd = 'cd ' . escapeshellarg($project) . ' && ' . $this->getCommandToExecute(realpath(__DIR__ . '/../bin/openapi') . ' --discover-plugins --format yaml ' . escapeshellarg($fixture) . ' 2>&1');
+            exec($cmd, $output, $retval);
+        } finally {
+            unlink($project . '/vendor/composer/installed.json');
+            rmdir($project . '/vendor/composer');
+            rmdir($project . '/vendor');
+            rmdir($project);
+        }
+
+        $this->assertSame(0, $retval, implode(PHP_EOL, $output));
+        $this->assertStringContainsString("run the project's vendor/bin/openapi to discover its plugins", (string) preg_replace('/\s+/', ' ', implode(' ', $output)));
+    }
+
     public function testInvalidPlugin(): void
     {
         $fixture = __DIR__ . '/Fixtures/UnreferencedSchema.php';

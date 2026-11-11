@@ -54,6 +54,7 @@ Options:
   -r, --remove-processor=REMOVE-PROCESSOR  Remove an existing processor (deprecated, removed in 8.0) (multiple values allowed)
       --version=VERSION                    The OpenAPI version
       --plugin=PLUGIN                      Add this plugin class, built without settings (e.g. --plugin "Vendor\Package\Plugin") (multiple values allowed)
+      --discover-plugins                   Add the plugins declared in composer.json by the packages of the installation openapi runs from, after the --plugin ones
       --component-namer=COMPONENT-NAMER    Name components with this class, a built-in namer's class name or a FQCN (e.g. --component-namer QualifiedName)
   -m, --mode=MODE                          Set mode classic, hybrid or spec (deprecated, removed in 8.0 - leave it out for hybrid) [default: "hybrid"]
   -d, --debug                              Show additional error information

@@ -50,6 +50,7 @@ class GenerateCommand extends Command
             ->addOption('remove-processor', 'r', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Remove an existing processor (deprecated, removed in 8.0)')
             ->addOption('version', null, InputOption::VALUE_REQUIRED, 'The OpenAPI version')
             ->addOption('plugin', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Add this plugin class, built without settings (e.g. --plugin "Vendor\\Package\\Plugin")')
+            ->addOption('discover-plugins', null, InputOption::VALUE_NONE, 'Add the plugins declared in composer.json by the packages of the installation openapi runs from, after the --plugin ones')
             ->addOption('component-namer', null, InputOption::VALUE_REQUIRED, "Name components with this class, a built-in namer's class name or a FQCN (e.g. --component-namer QualifiedName)")
             ->addOption('mode', 'm', InputOption::VALUE_REQUIRED, 'Set mode classic, hybrid or spec (deprecated, removed in 8.0 - leave it out for hybrid)', Builder\Mode::HYBRID->value)
             ->addOption('debug', 'd', InputOption::VALUE_NONE, 'Show additional error information');
@@ -151,6 +152,11 @@ class GenerateCommand extends Command
             ->setMode($input->mode)
             ->withPlugins(array_map($this->checkPlugin(...), $input->plugins));
 
+        if ($input->discoverPlugins) {
+            $this->checkDiscoveryInstallation();
+            $builder->withDiscoveredPlugins();
+        }
+
         if ($input->version !== null) {
             $builder->setVersion($input->version);
         }
@@ -200,6 +206,21 @@ class GenerateCommand extends Command
         }
 
         return $builder->build();
+    }
+
+    /**
+     * Warns when the working directory has a Composer installation of its own that discovery does not read,
+     * as with a global install of openapi run in a project.
+     */
+    protected function checkDiscoveryInstallation(): void
+    {
+        $project = realpath('vendor');
+        $installation = (new Builder\PluginDiscovery($this->logger))->defaultVendorDir();
+        if ($project === false || !is_file($project . '/composer/installed.json') || $installation === null || realpath($installation) === $project) {
+            return;
+        }
+
+        $this->logger->warning(sprintf('Plugins are discovered in "%s", where openapi is installed, not in "%s"; run the project\'s vendor/bin/openapi to discover its plugins', $installation, $project));
     }
 
     /**

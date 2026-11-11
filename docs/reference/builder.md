@@ -251,6 +251,19 @@ $builder->withPlugins([
 See the [Plugins section](/guide/extension-points#plugins) in the extension points guide for
 writing one.
 
+Use `withDiscoveredPlugins()` to add the plugins installed packages declare in their
+`composer.json`. It discovers nothing unless called, and leaves out plugins that configured the
+builder already:
+
+```php
+$builder
+    ->withPlugins([SchemaPlugin::class => ['groups' => ['read']]])
+    ->withDiscoveredPlugins();
+```
+
+See [Shipping a plugin with a package](/guide/extension-points#plugin-discovery) for the order and
+the exclude list.
+
 ### Attribute factory configuration (spec mode) {#attribute-factory}
 
 Use `withAttributeFactory()` to add custom attribute translators. The hook runs when called;

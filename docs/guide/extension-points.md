@@ -405,6 +405,49 @@ build logs a warning saying so.
 On the command line, `--plugin` names a plugin class and can be repeated. The plugin is
 created without settings.
 
+### Shipping a plugin with a package {#plugin-discovery}
+
+A package declares its plugins in its `composer.json`, as a list of class names:
+
+```json
+{
+    "extra": {
+        "swagger-php": {
+            "plugins": ["Vendor\\Package\\OpenApiPlugin"]
+        }
+    }
+}
+```
+
+`Builder::withDiscoveredPlugins()` reads these from Composer's `installed.json`, and adds each
+plugin without settings. Nothing is discovered unless it is called, so installing a package does
+not change a document by itself. Each plugin found is logged at `info`. Packages installed for
+development count as well.
+
+The order does not depend on how Composer writes the file. A package's plugins run after those of
+the packages it requires, and packages otherwise go by name. A plugin that configured the builder
+already is left out, so a project gives a discovered plugin settings or a position by listing it
+in `withPlugins()` first:
+
+```php
+$builder
+    ->withPlugins([SchemaPlugin::class => ['groups' => ['read']]])
+    ->withDiscoveredPlugins(exclude: [AuditPlugin::class]);
+```
+
+A plugin named in `exclude` is left out. One listed in `withPlugins()` after discovery added it is
+skipped, with a warning. Class names compare as PHP compares them, ignoring case and a leading
+backslash.
+
+By default the installation read is the one `swagger-php` itself was loaded from. A tool that
+documents another project can pass that project's vendor directory as `vendorDir`. The plugins found
+there still have to be autoloadable.
+
+On the command line, `--discover-plugins` adds the discovered plugins after the `--plugin` ones.
+It reads the installation `openapi` runs from, so a project's plugins are found by running the
+project's own `vendor/bin/openapi`. Run from a global install in a project with its own `vendor`
+directory, it warns.
+
 ## Putting it together
 
 `RouteTranslator` and `TagFromController` from above, wired onto a builder seeded from a

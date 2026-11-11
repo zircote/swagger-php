@@ -1,0 +1,16 @@
+{
+    "packages": [
+        {
+            "name": "acme/not-a-list",
+            "extra": { "swagger-php": { "plugins": "OpenApi\\Tests\\Fixtures\\PluginDiscovery\\AlphaPlugin" } }
+        },
+        {
+            "name": "acme/missing-class",
+            "extra": { "swagger-php": { "plugins": ["Acme\\Missing\\Plugin"] } }
+        },
+        {
+            "name": "acme/gamma",
+            "extra": { "swagger-php": { "plugins": ["OpenApi\\Tests\\Fixtures\\PluginDiscovery\\GammaPlugin"] } }
+        }
+    ]
+}

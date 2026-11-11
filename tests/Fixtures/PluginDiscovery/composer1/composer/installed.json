@@ -1,0 +1,6 @@
+[
+    {
+        "name": "acme/beta",
+        "extra": { "swagger-php": { "plugins": ["OpenApi\\Tests\\Fixtures\\PluginDiscovery\\BetaPlugin"] } }
+    }
+]

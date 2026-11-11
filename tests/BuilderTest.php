@@ -699,7 +699,7 @@ final class BuilderTest extends OpenApiTestCase
         };
 
         // the classic Generator hook is deprecated, and plugins do not add plugins
-        $this->assertSame(array_values(array_diff($hooks(new \ReflectionClass(Builder::class)), ['withGenerator', 'withPlugins'])), $hooks(new \ReflectionClass(Hooks::class)));
+        $this->assertSame(array_values(array_diff($hooks(new \ReflectionClass(Builder::class)), ['withGenerator', 'withPlugins', 'withDiscoveredPlugins'])), $hooks(new \ReflectionClass(Hooks::class)));
     }
 
     public function testAPluginGetsTheBuildersLogger(): void
