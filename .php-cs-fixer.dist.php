@@ -17,6 +17,8 @@ $finder = PhpCsFixer\Finder::create()
             // multi arg use; 'use a, b;`
             && !strpos($file->getPathname(), 'tests/Fixtures/Parser/HelloTrait.php')
             && !strpos($file->getPathname(), 'tests/Fixtures/PHP/TraitUsage.php')
+            // grouped imports and mixed import kinds are the scanner regression fixture
+            && !strpos($file->getPathname(), 'tests/Fixtures/PHP/GroupedImports/')
             // FQDN in docblock
             && !strpos($file->getPathname(), 'tests/Fixtures/PHP/DocblockAndTypehintTypes.php')
             // parameter docblock for PHP 8.6
