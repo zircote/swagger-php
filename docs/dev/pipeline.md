@@ -107,7 +107,7 @@ parameters and what it can nest into.
 ### What belongs in `Utils/`
 
 A class goes in `Utils/` when it is about PHP rather than about OpenAPI, and the rest of the
-tree would use it whatever the pipeline compiled: `TypedList`, `JsonPointer`, `TokenScanner`,
+tree would use it whatever the pipeline compiled: `TypedList`, `JsonPointer`, `SourceInspector`,
 `SourceFinder`. Everything else belongs to a subsystem, and the directory named for that
 subsystem already exists. A logger goes in `Loggers/`, a `Specification` traversal in
 `Specification/`, a type concern in `Type/`.
