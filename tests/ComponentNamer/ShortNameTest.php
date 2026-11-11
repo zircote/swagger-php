@@ -15,6 +15,9 @@ use OpenApi\Tests\Fixtures\ClassDescriptions\Account;
 use OpenApi\Tests\Fixtures\ClassDescriptions\Author;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\TypeInfo\Type\ArrayShapeType;
+use Symfony\Component\TypeInfo\TypeIdentifier;
+use Symfony\Component\TypeInfo\TypeResolver\TypeResolver;
 
 final class ShortNameTest extends TestCase
 {
@@ -54,6 +57,10 @@ final class ShortNameTest extends TestCase
     #[DataProvider('qualifierCases')]
     public function testAddsTheKeysQualifiers(array $qualifiers, string $expected): void
     {
+        if (is_string($qualifiers['of'] ?? null) && str_contains($qualifiers['of'], '...') && !self::readsExtraValueTypes()) {
+            $this->markTestSkipped('This version of symfony/type-info gives an unsealed array shape\'s extra values the type of its extra keys.');
+        }
+
         $this->assertSame($expected, (new ShortName())->name($this->author($qualifiers)));
     }
 
@@ -124,5 +131,15 @@ final class ShortNameTest extends TestCase
         return (new OA\Schema())
             ->setReflector(new \ReflectionClass(Author::class))
             ->setComponentKey(new ComponentKey(Author::class, $qualifiers));
+    }
+
+    /**
+     * Before 7.4.6 and 8.0.6, type-info reads `...<string, bool>` as extra values of type `string`.
+     */
+    private static function readsExtraValueTypes(): bool
+    {
+        $type = TypeResolver::create()->resolve('array{id: int, ...<string, bool>}');
+
+        return $type instanceof ArrayShapeType && $type->getExtraValueType()?->isIdentifiedBy(TypeIdentifier::BOOL) === true;
     }
 }
