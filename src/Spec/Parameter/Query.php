@@ -54,6 +54,7 @@ class Query extends OA\Parameter
         ?array $x = null,
         ?array $attachables = null,
         ?OA\Fan $fan = null,
+        ?string $summary = null,
     ) {
         parent::__construct(
             parameter: $parameter,
@@ -75,6 +76,7 @@ class Query extends OA\Parameter
             x: $x,
             attachables: $attachables,
             fan: $fan,
+            summary: $summary,
         );
     }
 }

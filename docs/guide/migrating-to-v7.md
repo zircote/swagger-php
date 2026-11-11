@@ -216,6 +216,10 @@ to `detailsFor()` or `scanFile()` there fails with an undefined method error.
   The generated spec is the same either way, since `AttributeFactory` reads promoted properties
   through the constructor's parameters and does not ask about them.
 
+`Parameter`, `RequestBody`, `Response`, `Header`, `Link` and `Security\Scheme` take a `summary`,
+written beside a `$ref` from OpenAPI 3.1 on. A subclass declaring its own `$summary` property needs
+it as `public ?string $summary`. Any other type or visibility is a fatal error.
+
 ## Preparing for 8.0
 
 In 8.0 classic is removed, and so is `setMode()`. Spec attributes move from `OpenApi\Spec` to
