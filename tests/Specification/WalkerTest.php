@@ -102,4 +102,70 @@ final class WalkerTest extends TestCase
         $this->assertNull($visited[$parameter]);
         $this->assertNull($visited[$requestBody]);
     }
+
+    /**
+     * Deferred visits share one walk, and each sees what its own `visit()` would, in the same order.
+     */
+    public function testDeferredVisitsSeeWhatTheirOwnVisitWould(): void
+    {
+        $specification = new Specification();
+        $specification->schemas[] = new OA\Schema(schema: 'Product', properties: [
+            new OA\Property(property: 'name', schema: new OA\Schema(type: 'string')),
+            new OA\Property(property: 'price', schema: new OA\Schema(type: 'number')),
+        ]);
+        $specification->operations[] = new OA\Operation(path: '/products', method: 'get', responses: [
+            new OA\Response(response: 200, description: 'OK', headers: [new OA\Header(header: 'X-Rate-Limit')]),
+        ]);
+
+        $visits = [OA\Schema::class, OA\Property::class, [OA\Response::class, OA\Header::class]];
+
+        $expected = [];
+        foreach ($visits as $index => $visitee) {
+            $specification->getWalker()->visit($visitee, function (AttributeInterface $attribute) use (&$expected, $index): void {
+                $expected[$index][] = $attribute;
+            });
+        }
+
+        $walker = $specification->getWalker();
+        $deferred = [];
+        foreach ($visits as $index => $visitee) {
+            $walker->deferredVisit($visitee, function (AttributeInterface $attribute) use (&$deferred, $index): void {
+                $deferred[$index][] = $attribute;
+            });
+        }
+
+        $this->assertSame([], $deferred, 'visited before visitDeferred()');
+
+        $walker->visitDeferred();
+
+        // keyed by visit, filled in the order the walk reaches each
+        ksort($expected);
+        ksort($deferred);
+        $this->assertSame($expected, $deferred);
+    }
+
+    /**
+     * `visitDeferred()` drops what it ran, so a second call runs only what was registered since.
+     */
+    public function testVisitDeferredRunsEachVisitOnce(): void
+    {
+        $specification = new Specification();
+        $specification->schemas[] = new OA\Schema(schema: 'Product');
+
+        $walker = $specification->getWalker();
+        $first = 0;
+        $second = 0;
+        $walker->deferredVisit(OA\Schema::class, function () use (&$first): void {
+            ++$first;
+        });
+        $walker->visitDeferred();
+
+        $walker->deferredVisit(OA\Schema::class, function () use (&$second): void {
+            ++$second;
+        });
+        $walker->visitDeferred();
+        $walker->visitDeferred();
+
+        $this->assertSame([1, 1], [$first, $second]);
+    }
 }
