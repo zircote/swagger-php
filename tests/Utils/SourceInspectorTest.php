@@ -62,7 +62,9 @@ final class SourceInspectorTest extends OpenApiTestCase
     {
         $fixtures = [
             'AnonymousClasses', 'AnonymousFunctions', 'BracesInStrings', 'AttributeSyntax', 'CurlyBraceAccess',
-            'Enums/StatusEnum', 'Enums/StatusEnumBacked', 'Inheritance/ExtendsBaseInterface', 'Inheritance/ExtendsClass',
+            'Enums/StatusEnum', 'Enums/StatusEnumBacked',
+            'GroupedImports/Inline', 'GroupedImports/Multiline', 'GroupedImports/MixedKinds',
+            'Inheritance/ExtendsBaseInterface', 'Inheritance/ExtendsClass',
             'MultiNamespace', 'NamedArguments', 'NamespacesBraced', 'NamespacesSequential', 'NoNamespace', 'OwnMembers',
             'PromotedProperties', 'ReadonlyAndUnionTypes', 'References', 'TraitEdges', 'TraitUsage', 'TypedConstants',
         ];
