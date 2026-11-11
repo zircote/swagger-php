@@ -54,6 +54,8 @@ class GenerateInput
     /** @var list<string> */
     public array $plugins = [];
 
+    public bool $discoverPlugins = false;
+
     /**
      * @deprecated since 7.0, removed in 8.0
      */
@@ -84,6 +86,7 @@ class GenerateInput
         $generateInput->version = $input->getOption('version');
         $generateInput->componentNamer = $input->getOption('component-namer');
         $generateInput->plugins = $input->getOption('plugin');
+        $generateInput->discoverPlugins = (bool) $input->getOption('discover-plugins');
         $generateInput->mode = self::enum(Mode::class, 'mode', $input->getOption('mode'));
         $generateInput->debug = (bool) $input->getOption('debug');
 

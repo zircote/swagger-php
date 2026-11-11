@@ -1,0 +1,16 @@
+{
+    "packages": [
+        {
+            "name": "acme/alpha",
+            "extra": { "swagger-php": { "plugins": ["OpenApi\\Tests\\Fixtures\\PluginDiscovery\\AlphaPlugin"] } }
+        },
+        {
+            "name": "acme/beta",
+            "extra": { "swagger-php": { "plugins": ["openapi\\tests\\fixtures\\plugindiscovery\\betaplugin"] } }
+        },
+        {
+            "name": "acme/gamma",
+            "extra": { "swagger-php": { "plugins": ["OpenApi\\Tests\\Fixtures\\PluginDiscovery\\GammaPlugin"] } }
+        }
+    ]
+}

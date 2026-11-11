@@ -89,6 +89,14 @@ class Builder
     protected bool $hasPlugins = false;
 
     /**
+     * The class of each plugin that configured the builder, as `PluginDiscovery::classKey()` gives
+     * it, and whether discovery added it.
+     *
+     * @var array<string, bool>
+     */
+    protected array $pluginClasses = [];
+
+    /**
      * @param LoggerInterface|null $logger receives every message of a build; silent when not given
      */
     public function __construct(?LoggerInterface $logger = null)
@@ -359,12 +367,71 @@ class Builder
                 continue;
             }
 
+            if ($this->pluginClasses[Builder\PluginDiscovery::classKey($plugin::class)] ?? false) {
+                $this->getLogger()->warning(sprintf('Plugin "%s" was added by discovery already, skipped; list it before withDiscoveredPlugins() to give it settings or a position', $plugin::class));
+
+                continue;
+            }
+
             if ($plugin instanceof LoggerAwareInterface) {
                 $plugin->setLogger($this->getLogger());
             }
 
             $plugin->configure($hooks, $config);
             $this->hasPlugins = true;
+            $this->pluginClasses[Builder\PluginDiscovery::classKey($plugin::class)] ??= false;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Let the plugins installed packages declare configure the builder.
+     *
+     * A package declares its plugins in its `composer.json`, as a list of class names:
+     *
+     * ```json
+     * "extra": { "swagger-php": { "plugins": ["Vendor\\Package\\OpenApiPlugin"] } }
+     * ```
+     *
+     * Each one runs without settings, after the packages it requires and otherwise by package
+     * name, and is logged as discovered. A plugin that configured the builder already, through an
+     * earlier `withPlugins()`, is left out, so listing a plugin first gives it settings and a
+     * position. One named in `$exclude` is left out too. Class names compare as PHP compares them,
+     * ignoring case and a leading backslash.
+     *
+     * Packages installed for development count as well.
+     *
+     * Nothing is discovered unless this is called: installing a package does not change a
+     * document by itself.
+     *
+     * @param list<string> $exclude   plugin classes to leave out
+     * @param string|null  $vendorDir the Composer vendor directory to read; the one swagger-php was loaded from when not given
+     */
+    public function withDiscoveredPlugins(array $exclude = [], ?string $vendorDir = null): static
+    {
+        $excluded = array_map(Builder\PluginDiscovery::classKey(...), $exclude);
+
+        foreach ((new Builder\PluginDiscovery($this->getLogger()))->plugins($vendorDir) as $class => $package) {
+            $key = Builder\PluginDiscovery::classKey($class);
+            if (in_array($key, $excluded, true) || isset($this->pluginClasses[$key])) {
+                continue;
+            }
+
+            $this->getLogger()->info(sprintf('Plugin "%s" discovered in package "%s"', $class, $package));
+
+            try {
+                $plugin = $this->createPlugin($class);
+            } catch (OpenApiException $openApiException) {
+                $this->getLogger()->error(sprintf('%s, declared by package "%s", skipped', $openApiException->getMessage(), $package));
+
+                continue;
+            }
+
+            $this->withPlugins([$plugin]);
+            if (isset($this->pluginClasses[$key])) {
+                $this->pluginClasses[$key] = true;
+            }
         }
 
         return $this;

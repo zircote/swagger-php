@@ -1,0 +1,24 @@
+{
+    "packages": [
+        {
+            "name": "acme/alpha",
+            "require": { "php": ">=8.2", "acme/beta": "^1.0" },
+            "extra": { "swagger-php": { "plugins": ["OpenApi\\Tests\\Fixtures\\PluginDiscovery\\AlphaPlugin"] } }
+        },
+        {
+            "name": "acme/gamma",
+            "extra": { "swagger-php": { "plugins": ["\\OpenApi\\Tests\\Fixtures\\PluginDiscovery\\GammaPlugin"] } }
+        },
+        {
+            "name": "acme/beta",
+            "require": { "acme/plain": "^1.0" },
+            "extra": { "swagger-php": { "plugins": ["OpenApi\\Tests\\Fixtures\\PluginDiscovery\\BetaPlugin"] } }
+        },
+        {
+            "name": "acme/plain",
+            "extra": { "branch-alias": { "dev-main": "1.x-dev" } }
+        }
+    ],
+    "dev": true,
+    "dev-package-names": []
+}
