@@ -6,6 +6,12 @@
 
 namespace OpenApi\Tests\Utils;
 
+use OpenApi\Tests\Fixtures\PHP\GroupedImports\Inline;
+use OpenApi\Tests\Fixtures\PHP\GroupedImports\MixedKinds;
+use OpenApi\Tests\Fixtures\PHP\GroupedImports\Multiline;
+use OpenApi\Tests\Fixtures\PHP\Inheritance\BaseClass;
+use OpenApi\Tests\Fixtures\PHP\Inheritance\BaseInterface;
+use OpenApi\Tests\Fixtures\PHP\Inheritance\BaseTrait;
 use OpenApi\Tests\Fixtures\PHP\Inheritance\ExtendsClass;
 use OpenApi\Tests\Fixtures\PHP\OwnMembers;
 use OpenApi\Tests\Fixtures\PHP\TraitUsage;
@@ -417,6 +423,38 @@ final class TokenScannerTest extends OpenApiTestCase
     {
         $result = (new TokenScanner())->scanFile($this->fixture($fixture));
         $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @return iterable<string, array{string, class-string}>
+     */
+    public static function groupedImportCases(): iterable
+    {
+        yield 'inline group' => ['PHP/GroupedImports/Inline.php', Inline::class];
+        yield 'multiline group' => ['PHP/GroupedImports/Multiline.php', Multiline::class];
+        yield 'mixed class, function and constant groups' => ['PHP/GroupedImports/MixedKinds.php', MixedKinds::class];
+    }
+
+    /**
+     * @param class-string $class
+     */
+    #[DataProvider('groupedImportCases')]
+    public function testGroupedImportsResolveAliasesAndTraits(string $fixture, string $class): void
+    {
+        $scanner = new TokenScanner();
+        $details = $scanner->scanFile($this->fixture($fixture))[$class];
+
+        $this->assertSame([
+            'ParentClass' => BaseClass::class,
+            'Contract' => BaseInterface::class,
+            'Shared' => BaseTrait::class,
+        ], $details['uses']);
+        $this->assertSame([BaseInterface::class], $details['interfaces']);
+        $this->assertSame([BaseTrait::class], $details['traits']);
+        $this->assertSame(
+            [BaseTrait::class],
+            array_map(static fn (\ReflectionClass $trait): string => $trait->getName(), $scanner->directTraits(new \ReflectionClass($class))),
+        );
     }
 
     public function testScanFileCachesResults(): void

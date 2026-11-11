@@ -17,6 +17,8 @@ $finder = PhpCsFixer\Finder::create()
             // multi arg use; 'use a, b;`
             && !strpos($file->getPathname(), 'tests/Fixtures/Parser/HelloTrait.php')
             && !strpos($file->getPathname(), 'tests/Fixtures/PHP/TraitUsage.php')
+            // grouped imports and mixed import kinds are the scanner regression fixture
+            && !strpos($file->getPathname(), 'tests/Fixtures/PHP/GroupedImports/')
             // a trait and a class on one line
             && !strpos($file->getPathname(), 'tests/Fixtures/PHP/TraitEdges.php')
             // a property after a method, past the braces in its strings
