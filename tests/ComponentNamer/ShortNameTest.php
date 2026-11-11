@@ -57,8 +57,8 @@ final class ShortNameTest extends TestCase
     #[DataProvider('qualifierCases')]
     public function testAddsTheKeysQualifiers(array $qualifiers, string $expected): void
     {
-        if (is_string($qualifiers['of'] ?? null) && str_contains($qualifiers['of'], '...') && !self::readsExtraValueTypes()) {
-            $this->markTestSkipped('This version of symfony/type-info gives an unsealed array shape\'s extra values the type of its extra keys.');
+        if (is_string($qualifiers['of'] ?? null) && str_contains($qualifiers['of'], '...') && !$this->readsExtraValueTypes()) {
+            $this->markTestSkipped("This version of symfony/type-info gives an unsealed array shape's extra values the type of its extra keys.");
         }
 
         $this->assertSame($expected, (new ShortName())->name($this->author($qualifiers)));
@@ -136,7 +136,7 @@ final class ShortNameTest extends TestCase
     /**
      * Before 7.4.6 and 8.0.6, type-info reads `...<string, bool>` as extra values of type `string`.
      */
-    private static function readsExtraValueTypes(): bool
+    private function readsExtraValueTypes(): bool
     {
         $type = TypeResolver::create()->resolve('array{id: int, ...<string, bool>}');
 
