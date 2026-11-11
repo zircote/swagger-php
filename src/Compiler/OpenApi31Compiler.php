@@ -22,7 +22,10 @@ use Psr\Log\LoggerInterface;
  */
 class OpenApi31Compiler implements CompilerInterface
 {
-    protected const VERSIONS = ['3.1.0', '3.1.1', '3.1.2'];
+    /**
+     * The versions this compiler handles: any patch release of the minor.
+     */
+    protected const VERSION_PREFIX = '3.1.';
 
     /**
      * The methods a path item has an operation field for.
@@ -78,7 +81,7 @@ class OpenApi31Compiler implements CompilerInterface
 
     public function supports(string $version): bool
     {
-        return in_array($version, static::VERSIONS, true);
+        return str_starts_with($version, static::VERSION_PREFIX);
     }
 
     /**
