@@ -11,6 +11,9 @@ use OpenApi\Tests\Fixtures\Type\Template;
 use OpenApi\Type\TypeResolver;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\TypeInfo\Type;
+use Symfony\Component\TypeInfo\TypeContext\TypeContext;
+use Symfony\Component\TypeInfo\TypeResolver\TypeResolverInterface;
 
 final class DocblockTemplateTest extends TestCase
 {
@@ -47,5 +50,42 @@ final class DocblockTemplateTest extends TestCase
         $resolver->setLogger($this->trackingLogger());
 
         $this->assertNull($resolver->getDocblockType(new \ReflectionProperty(Template::class, 'unbounded')));
+    }
+
+    /**
+     * Type-info-extras up to 1.0.13 throws a `TypeError` here, then reads it as `class-string`.
+     */
+    public function testATemplateClassStringIsAString(): void
+    {
+        $this->allowLogEntry('Unsupported docblock type "class-string<T>" on');
+
+        $resolver = new TypeResolver();
+        $resolver->setLogger($this->trackingLogger());
+
+        $this->assertSame('string', $resolver->resolve(new \ReflectionProperty(Template::class, 'kind'))?->type);
+    }
+
+    /**
+     * Whatever the resolver throws, the docblock is reported and skipped.
+     */
+    public function testAnyResolverFailureIsReported(): void
+    {
+        $this->expectLogEntry('Unsupported docblock type "class-string<T>" on ' . Template::class . '::$kind', 'warning');
+
+        $resolver = new class () extends TypeResolver {
+            public function __construct()
+            {
+                parent::__construct();
+                $this->docblockResolver = new class () implements TypeResolverInterface {
+                    public function resolve(mixed $subject, ?TypeContext $typeContext = null): Type
+                    {
+                        throw new \TypeError('resolver failed');
+                    }
+                };
+            }
+        };
+        $resolver->setLogger($this->trackingLogger());
+
+        $this->assertSame('string', $resolver->resolve(new \ReflectionProperty(Template::class, 'kind'))?->type);
     }
 }
