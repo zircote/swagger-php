@@ -193,6 +193,17 @@ component` now reads `Reference "#/components/schemas/Pet" points to no componen
 needs updating. Classic's messages are unchanged. [Writing messages](/dev/messages) has the form
 and the rules the levels follow.
 
+## Changed output in 7.6
+
+A property or parameter typed with a generic class and type arguments, such as
+`Envelope<Customer>`, references a schema made for those arguments, `Envelope-of.Customer`,
+rather than the plain `Envelope`. The class has to declare its templates with `@template`.
+[Generic classes](/guide/augmentation#generic-classes) has the details.
+
+`of` is now a qualifier swagger-php reserves for type arguments. A `Schema\Ref` or component key
+that used `of` as a qualifier of its own has its value read as type arguments, and is reported
+where they bind no template. Rename the qualifier.
+
 ## Changed in 7.6
 
 `AttributeFactory` takes any `SourceInspectorInterface` where it took a `TokenScanner`, and asks it
@@ -215,6 +226,10 @@ to `detailsFor()` or `scanFile()` there fails with an undefined method error.
   `TokenScanner`, which only reads promoted properties in classes. `SourceInspector` says it is.
   The generated spec is the same either way, since `AttributeFactory` reads promoted properties
   through the constructor's parameters and does not ask about them.
+
+The default augmenters gain `Generics`, after `ImpliedSchemas`, and `Shortcuts` moves up to run
+before it, ahead of `Names` and `Enums`. An augmenter inserted before or after `Shortcuts` now runs
+earlier too. One that needs the old place inserts relative to `Names` or `Enums` instead.
 
 ## Preparing for 8.0
 

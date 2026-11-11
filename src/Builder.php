@@ -462,7 +462,8 @@ class Builder
      */
     protected function getTypeResolver(): Type\TypeResolver
     {
-        $this->typeResolver ??= new Type\TypeResolver();
+        // the attribute factory's inspector has read the sources already
+        $this->typeResolver ??= new Type\TypeResolver($this->getAttributeFactory()->getSourceInspector());
 
         return $this->typeResolver;
     }
@@ -677,9 +678,11 @@ class Builder
             new Augmenter\Inheritance(),
             new Augmenter\OperationTags(),
             new Augmenter\ImpliedSchemas(),
+            // before `Generics`, whose dry run of `Types` needs the enum schemas and plain array schemas `Types` sees
+            new Augmenter\Shortcuts(),
+            new Augmenter\Generics(),
             new Augmenter\Names(),
             new Augmenter\Enums(),
-            new Augmenter\Shortcuts(),
             new Augmenter\DefaultMediaType(),
             new Augmenter\SecurityRequirements(),
             new Augmenter\PathItems(),

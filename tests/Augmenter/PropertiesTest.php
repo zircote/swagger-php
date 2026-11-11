@@ -9,6 +9,8 @@ namespace OpenApi\Tests\Augmenter;
 use OpenApi\Augmenter;
 use OpenApi\HybridBridge;
 use OpenApi\Spec as OA;
+use OpenApi\Specification;
+use OpenApi\Specification\ComponentKey;
 use OpenApi\Tests\Concerns\AssemblesSpecification;
 use OpenApi\Tests\Fixtures;
 use OpenApi\Undefined;
@@ -24,6 +26,25 @@ final class PropertiesTest extends TestCase
         $schema = $this->augment(Fixtures\Augmenter\PropertyDeclarations::class);
 
         $this->assertSame(['id', 'born'], $schema->required);
+    }
+
+    /**
+     * `count` is `int` by its docblock, which names no template, so it counts by its PHP type as
+     * in the plain schema.
+     */
+    public function testACopyCountsOnlyATemplateByItsDocblock(): void
+    {
+        $copy = new OA\Schema(properties: array_map(
+            static fn (string $name): OA\Property => (new OA\Property(property: $name))->setReflector(new \ReflectionProperty(Fixtures\Augmenter\GenericBox::class, $name)),
+            ['value', 'count'],
+        ));
+        $copy->setComponentKey(new ComponentKey(Fixtures\Augmenter\GenericBox::class, [ComponentKey::TYPE_ARGUMENTS => 'int']));
+
+        $specification = new Specification();
+        $specification->schemas[] = $copy;
+        (new Augmenter\Properties())($specification);
+
+        $this->assertSame(['value'], $copy->required);
     }
 
     public function testInfersDefaults(): void

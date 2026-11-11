@@ -22,6 +22,23 @@ final class TypesTest extends TestCase
     use AssemblesSpecification;
     use ExpectsLogEntries;
 
+    /**
+     * The dry run `Generics` asks reads the attribute without changing it or logging.
+     */
+    public function testWantedKeysLeavesTheAttributeAlone(): void
+    {
+        $property = (new OA\Property(property: 'box'))->setReflector(new \ReflectionProperty(Fixtures\Augmenter\GenericBoxHolder::class, 'box'));
+        $specification = new Specification();
+        $specification->schemas[] = (new OA\Schema())->setReflector(new \ReflectionClass(Fixtures\Augmenter\GenericBox::class));
+        $types = new Augmenter\Types();
+        $types->setLogger($this->trackingLogger());
+
+        $keys = $types->wantedKeys($property, null, $specification->buildComponentIndex());
+
+        $this->assertSame([Fixtures\Augmenter\GenericBox::class . '{"of":"int"}'], array_map(strval(...), $keys));
+        $this->assertNull($property->schema);
+    }
+
     public function testInfersPropertyTypes(): void
     {
         $spec = $this->assemble(Fixtures\Augmenter\TypeSchema::class);

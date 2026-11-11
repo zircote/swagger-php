@@ -1,0 +1,60 @@
+openapi: 3.1.0
+info:
+  title: Generics
+  version: '1.0'
+paths:
+  /holder:
+    get:
+      operationId: getHolder
+      responses:
+        '200':
+          description: 'All good'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericsHolder'
+components:
+  schemas:
+    GenericsCustomer:
+      type: object
+      properties:
+        id:
+          type: integer
+    GenericsEnvelope:
+      type: object
+      properties:
+        data: {}
+        history:
+          type: array
+          items: {}
+        version:
+          type: string
+    GenericsHolder:
+      type: object
+      properties:
+        customer:
+          $ref: '#/components/schemas/GenericsEnvelope-of.GenericsCustomer'
+        number:
+          $ref: '#/components/schemas/GenericsEnvelope-of.int'
+    GenericsEnvelope-of.GenericsCustomer:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/GenericsCustomer'
+        history:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericsCustomer'
+        version:
+          type: string
+    GenericsEnvelope-of.int:
+      type: object
+      properties:
+        data:
+          type: integer
+        history:
+          type: array
+          items:
+            type: integer
+        version:
+          type: string

@@ -111,6 +111,98 @@ The docblock tag read depends on the element:
 * a promoted constructor property: the constructor's `@param`
 * a method: `@return`
 
+### Generic classes
+
+A class that declares templates and is used with type arguments gets a schema for each set of
+arguments. Each template is replaced by its argument in that schema, so a property typed `T`
+documents a `Customer` in `Envelope<Customer>`, and an `int` in `Envelope<int>`:
+
+```php
+/**
+ * @template T
+ */
+#[OA\Schema]
+class Envelope
+{
+    /** @var T */
+    #[OA\Property] public mixed $data;
+
+    /** @var list<T> */
+    #[OA\Property] public array $history;
+}
+
+#[OA\Schema]
+class Holder
+{
+    /** @var Envelope<Customer> */
+    #[OA\Property] public Envelope $customer;   // $ref: Envelope-of.Customer
+
+    /** @var Envelope<int> */
+    #[OA\Property] public Envelope $number;     // $ref: Envelope-of.int
+}
+```
+
+The schema is a copy of the class's own, named after the class and its arguments. Each argument is
+named as its own schema would be, and `_` separates the arguments, so `Pair<string, Customer>` is
+`Pair-of.string_Customer`, and `Envelope<Envelope<Customer>>` is `Envelope-of.Envelope-of.Customer`.
+Where the class's schema has a name of its own, the copies build on it:
+`#[OA\Schema(component: 'Wrapper')]` gives `Wrapper-of.Customer`. So does an argument's: with
+`component: 'BillingCustomer'` on `Billing\Customer`, `Envelope<Billing\Customer>` is
+`Envelope-of.BillingCustomer`, apart from another `Customer`.
+
+A member PHP declares `mixed` and types with a template is required in a copy unless its docblock
+type takes `null`, as `T|null` does. A member without a PHP type is never required, in a copy or
+not. A use with `mixed` only, or without arguments, references the class's plain schema. So does a
+use with more or fewer arguments than the class has templates, with a warning. A class needs a
+schema of its own to be copied.
+
+Only the members a class declares itself read its templates as the arguments. A member it inherits
+or takes from a trait keeps them unbound, with a warning: the arguments a class gives its parent
+with `@extends`, or a trait with `@use`, are not read yet. A template a method declares in its own
+docblock is the method's, as in PHPStan and Psalm, and stays unbound even where it shares a name
+with the class's.
+
+Rarer arguments keep their structure in the name, so no two uses share one:
+
+| Use | Schema name |
+|---|---|
+| `Pair<Envelope<Customer>, int>` | `Pair-of.Envelope-of.Customer.-_int` |
+| `Envelope<Pair<Customer, int>>` | `Envelope-of.Pair-of.Customer_int` |
+| `Envelope<Customer\|int>` | `Envelope-of.Customer.or.int` |
+| `Envelope<Customer&Countable>` | `Envelope-of.Customer.and.Countable` |
+| `Envelope<list<Customer>>` | `Envelope-of.list-of.Customer` |
+| `Envelope<array{id: int, note?: string}>` | `Envelope-of.shape-of.id.is.int_note.opt.string` |
+| `Envelope<array{id: int, ...}>` | `Envelope-of.shape-of.id.is.int_etc` |
+
+`.-` closes a nested list where another argument follows it. An array shape lists its members, with
+`.is.` between a key and its type, `.opt.` for an optional key, and `etc` last where the shape takes
+more keys. A type keyword with hyphens is written in camel case, so `Envelope<non-empty-string>` is
+`Envelope-of.nonEmptyString`, and `class-string<Customer>` is `classString-of.Customer`. Inside an
+argument, `-`, `.` and `_` are written `-h`, `-d` and `-u`, so a class named `Legacy_Customer`, or
+one a [`QualifiedName` namer](/guide/extension-points#component-names) writes as `App.Customer`,
+becomes `Legacy-uCustomer` and `App-dCustomer` there. Any other character a
+name does not allow, such as the space in an array shape key `'a b'`, is written `-x` and its hex
+code, `a-x20b`, so no two arguments share a name.
+
+A ref can ask for the same schema, with the arguments as one type string:
+
+```php
+#[OA\Property(schema: new OA\Schema\Ref(ref: Envelope::class, qualifiers: ['of' => Customer::class]))]
+```
+
+A ref with other qualifiers besides `of`, such as `groups`, gets a copy of the schema described for
+those qualifiers, so the arguments and the groups both apply.
+
+How the copies are made is in [Spec pipeline internals](/dev/pipeline#how-type-arguments-flow).
+
+OpenAPI 3.1 can also describe a generic schema once, with `$dynamicRef`. Few tools read it yet,
+so swagger-php does not write it.
+
+::: info Mode difference
+Classic references the plain schema. In `hybrid`, classic attributes get a schema per set of
+arguments too.
+:::
+
 ### Property examples
 
 ::: info Mode difference

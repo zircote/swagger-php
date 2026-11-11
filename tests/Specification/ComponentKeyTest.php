@@ -23,6 +23,14 @@ final class ComponentKeyTest extends TestCase
         $this->assertTrue($key->equals(new ComponentKey('App\Author', ['groups' => ['light'], 'version' => 2])));
     }
 
+    public function testTypeArgumentsComeLast(): void
+    {
+        $key = new ComponentKey('App\\Envelope', ['units' => 'metric', 'of' => 'App\\Customer', 'groups' => ['admin']]);
+
+        $this->assertSame(['groups', 'units', 'of'], array_keys($key->qualifiers));
+        $this->assertTrue($key->equals(new ComponentKey('App\\Envelope', ['of' => 'App\\Customer', 'groups' => ['admin'], 'units' => 'metric'])));
+    }
+
     public function testAListIsASet(): void
     {
         $key = new ComponentKey('App\Author', ['groups' => ['light', 'admin']]);
@@ -82,6 +90,46 @@ final class ComponentKeyTest extends TestCase
         $schema = (new OA\Schema())->setReflector(new \ReflectionClass(Article::class))->setComponentKey($key);
 
         $this->assertSame($key, $schema->getComponentKey());
+    }
+
+    public function testARefReadsTypeArgumentsInOneSpelling(): void
+    {
+        $key = (new OA\Schema\Ref(ref: Article::class, qualifiers: ['of' => 'string,\\' . Article::class]))->getRefKey();
+
+        $this->assertInstanceOf(ComponentKey::class, $key);
+        $this->assertSame('string, ' . Article::class, $key->qualifiers['of']);
+    }
+
+    /**
+     * A class nested in an argument loses its leading `\` too, as the name it gets has none.
+     */
+    public function testARefReadsNestedTypeArgumentsInOneSpelling(): void
+    {
+        $written = (new OA\Schema\Ref(ref: Article::class, qualifiers: ['of' => 'list<\\' . Article::class . '>']))->getRefKey();
+        $plain = (new OA\Schema\Ref(ref: Article::class, qualifiers: ['of' => 'list<' . Article::class . '>']))->getRefKey();
+
+        $this->assertInstanceOf(ComponentKey::class, $written);
+        $this->assertSame('list<' . Article::class . '>', $written->qualifiers['of']);
+        $this->assertEquals($plain, $written);
+    }
+
+    /**
+     * A refined type is spelled as a property typed with it spells it, so both find one copy.
+     */
+    public function testARefKeepsARefinedTypeArgument(): void
+    {
+        $key = (new OA\Schema\Ref(ref: Article::class, qualifiers: ['of' => 'int<0,100>']))->getRefKey();
+
+        $this->assertInstanceOf(ComponentKey::class, $key);
+        $this->assertSame('int<0, 100>', $key->qualifiers['of']);
+    }
+
+    public function testARefKeepsTypeArgumentsTypeInfoCannotRead(): void
+    {
+        $key = (new OA\Schema\Ref(ref: Article::class, qualifiers: ['of' => 'Unknown']))->getRefKey();
+
+        $this->assertInstanceOf(ComponentKey::class, $key);
+        $this->assertSame('Unknown', $key->qualifiers['of']);
     }
 
     public function testARefWithQualifiersHasAKey(): void

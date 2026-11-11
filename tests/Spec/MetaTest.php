@@ -54,6 +54,8 @@ final class MetaTest extends TestCase
      * reads too: a schema the caller marks with `false` under its name, built from another
      * description of its class, is not given the class's hierarchy again. `Resolver` reads the same
      * mark, so it does not chase the traits of a schema `Inheritance\Schemas` will leave alone.
+     * `Augmenter\Generics` leaves the explicit names a copy is built from under its name, and
+     * `ComponentNamer\ShortName` names the copy from them, since a namer sees only the component.
      */
     public function testNothingInTheCoreUsesMeta(): void
     {
@@ -72,6 +74,6 @@ final class MetaTest extends TestCase
 
         sort($users);
 
-        $this->assertSame(['AbstractAttribute.php', 'Cleanup.php', 'HybridBridge.php', 'Properties.php', 'Resolver.php', 'Schemas.php', 'Types.php'], $users, 'meta belongs to whoever extends swagger-php; core code using it is new behaviour');
+        $this->assertSame(['AbstractAttribute.php', 'Cleanup.php', 'Generics.php', 'HybridBridge.php', 'Properties.php', 'Resolver.php', 'Schemas.php', 'ShortName.php', 'Types.php'], $users, 'meta belongs to whoever extends swagger-php; core code using it is new behaviour');
     }
 }

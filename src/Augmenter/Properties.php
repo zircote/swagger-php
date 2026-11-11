@@ -6,10 +6,14 @@
 
 namespace OpenApi\Augmenter;
 
+use OpenApi\Contracts\TypeResolverAwareInterface;
 use OpenApi\HybridBridge;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Specification\ComponentKey;
+use OpenApi\Type\SchemaType;
 use OpenApi\Type\TypeMapper;
+use OpenApi\Type\TypeResolver;
 use OpenApi\Undefined;
 use OpenApi\Utils\PipeInterface;
 
@@ -19,7 +23,9 @@ use OpenApi\Utils\PipeInterface;
  * A property is required when its PHP type is not nullable and it has no default, the rule a
  * parameter follows, with the default counted too: a value exists when the field is left out. A
  * promoted constructor property counts by its parameter's default. A property with no PHP type
- * adds nothing to `required`.
+ * adds nothing to `required`. In a schema made for a generic class's type arguments, a property
+ * PHP declares `mixed` counts by its type as read in that schema, so `T` is required in
+ * `Envelope<int>`, and `T|null` is not.
  *
  * A default is taken where it is a value the document can hold: a scalar, an enum case or an array
  * of them. An enum case gives the value its schema lists: a backed case's value, a unit case's
@@ -36,8 +42,13 @@ use OpenApi\Utils\PipeInterface;
  *
  * @implements PipeInterface<Specification>
  */
-class Properties implements PipeInterface
+class Properties implements PipeInterface, TypeResolverAwareInterface
 {
+    public function __construct(
+        protected TypeResolver $typeResolver = new TypeResolver(),
+    ) {
+    }
+
     public function __invoke(mixed $payload): mixed
     {
         $payload->getWalker()->eachSchema(function (OA\Schema $schema): void {
@@ -57,7 +68,7 @@ class Properties implements PipeInterface
 
                 $default = $this->defaultOf($reflector);
 
-                if ($default === Undefined::UNDEFINED && $reflector->getType() instanceof \ReflectionType && !$reflector->getType()->allowsNull()) {
+                if ($default === Undefined::UNDEFINED && !$this->allowsNull($reflector, $schema->getComponentKey())) {
                     $required[] = $property->property;
                 }
 
@@ -72,9 +83,38 @@ class Properties implements PipeInterface
         return null;
     }
 
+    public function setTypeResolver(TypeResolver $typeResolver): static
+    {
+        $this->typeResolver = $typeResolver;
+
+        return $this;
+    }
+
     public function group(): string|\BackedEnum
     {
         return Group::Resolve;
+    }
+
+    /**
+     * Whether the member takes `null`, or has no PHP type to say. `mixed` is all PHP can declare
+     * for a template, so in a schema made for type arguments a `mixed` member counts by its type
+     * as read there. Where reading it there binds nothing, the type keeps the `null` of `mixed`,
+     * so only a member typed with a template changes.
+     */
+    protected function allowsNull(\ReflectionProperty|\ReflectionParameter $reflector, ?ComponentKey $component): bool
+    {
+        $type = $reflector->getType();
+        if (!$type instanceof \ReflectionType) {
+            return true;
+        }
+
+        if ($component instanceof ComponentKey && !$component->isPlain() && $type instanceof \ReflectionNamedType && $type->getName() === 'mixed') {
+            $resolved = $this->typeResolver->resolveIn($reflector, $component);
+
+            return !$resolved instanceof SchemaType || $resolved->nullable === true;
+        }
+
+        return $type->allowsNull();
     }
 
     /**

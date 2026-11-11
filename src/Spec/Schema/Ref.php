@@ -8,6 +8,7 @@ namespace OpenApi\Spec\Schema;
 
 use OpenApi\Spec as OA;
 use OpenApi\Specification\ComponentKey;
+use OpenApi\Type\TypeArguments;
 
 /**
  * A reference-only schema — $ref is required, most other Schema properties are unavailable.
@@ -29,6 +30,13 @@ use OpenApi\Specification\ComponentKey;
  * have to match the qualifiers that description was registered with:
  * ```php
  * #[OA\Property(schema: new OA\Schema\Ref(ref: Author::class, qualifiers: ['groups' => ['light']]))]
+ * ```
+ *
+ * `of` holds a generic class's type arguments, written as one type string with each class given
+ * with its namespace. It is read in the spelling swagger-php writes them in, so
+ * `string,\App\Customer` and `string, App\Customer` reference the same schema:
+ * ```php
+ * #[OA\Property(schema: new OA\Schema\Ref(ref: Envelope::class, qualifiers: ['of' => Customer::class]))]
  * ```
  */
 #[\Attribute(\Attribute::TARGET_ALL | \Attribute::IS_REPEATABLE)]
@@ -68,8 +76,16 @@ class Ref extends OA\Schema
      */
     public function getRefKey(): ?ComponentKey
     {
-        return is_string($this->ref) && !str_starts_with($this->ref, '#/')
-            ? new ComponentKey($this->ref, $this->qualifiers)
-            : null;
+        if (!is_string($this->ref) || str_starts_with($this->ref, '#/')) {
+            return null;
+        }
+
+        $qualifiers = $this->qualifiers;
+        $typeArguments = $qualifiers[ComponentKey::TYPE_ARGUMENTS] ?? null;
+        if (is_string($typeArguments)) {
+            $qualifiers[ComponentKey::TYPE_ARGUMENTS] = TypeArguments::normalise($this->ref, $typeArguments);
+        }
+
+        return new ComponentKey($this->ref, $qualifiers);
     }
 }
