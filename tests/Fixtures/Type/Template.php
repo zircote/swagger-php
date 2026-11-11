@@ -15,14 +15,34 @@ namespace OpenApi\Tests\Fixtures\Type;
 final class Template
 {
     /**
-     * @param list<T>      $results
-     * @param list<B>      $bounded
-     * @param T&\Countable $unbounded
+     * @param list<T>                 $results
+     * @param list<B>                 $bounded
+     * @param T|int                   $either
+     * @param B&\Countable            $counted
+     * @param T&\Countable            $unbounded
+     * @param array{item: T, id: int} $shaped
      */
     public function __construct(
         public array $results,
         public array $bounded,
+        public mixed $either = null,
+        public mixed $counted = null,
         public mixed $unbounded = null,
+        public array $shaped = [],
     ) {
+    }
+
+    /**
+     * A method's own template, hiding the class's.
+     *
+     * @template T
+     *
+     * @param T $value
+     *
+     * @return T
+     */
+    public function same(mixed $value): mixed
+    {
+        return $value;
     }
 }

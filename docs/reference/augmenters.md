@@ -95,6 +95,49 @@ its cases and `Types` references it. A backed enum's schema takes the backing ty
 the backing values, which is what a backed enum serialises to. A bare `#[OA\Schema]` on the enum
 lists the case names instead.
 
+### [Shortcuts](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Shortcuts.php)
+
+Resolves shortcut attributes into the plain attributes they stand for.
+
+A shortcut carries schema keywords on an attribute that holds a schema, so the common case
+needs no nested `OA\Schema`. This augmenter moves those keywords to where the document has
+them.
+
+Handles:
+* `OA\MediaType\Json` and `OA\MediaType\Xml`: their schema keywords move into the media
+  type's `schema`;
+* `OA\Schema\Items`: an array schema, whose item keywords move into a new `items` schema.
+
+### [Generics](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Generics.php)
+
+Adds a schema for each set of type arguments a generic class is used with.
+
+A class declaring `@template T` and used as `Envelope<Customer>` would otherwise be referenced
+as the plain `Envelope`, whose `T` says nothing. Here the class's schema is copied under the key
+`Envelope` with the type arguments `Customer`, and the augmenters after this one name, fill and
+reference the copy as they would any schema: `Names` names it, `Types` types its members with
+`T` as `Customer`, and a use of `Envelope<Customer>` references it.
+
+The uses are what `Types` would reference from the attributes
+`Specification\Walker::eachTypedAttribute()` lists, asked of `Types::wantedKeys()`, and a
+`Schema\Ref` qualified with type arguments. A copy's members can use another copy
+(`Envelope<Envelope<Customer>>`), so this runs until no use is left without a schema, to a
+limit of nesting.
+
+The names a copy is built from are left on it as meta under this class, for the namer: the
+explicit name of the copied schema, so `#[OA\Schema(component: 'Wrapper')]` gives
+`Wrapper-of.Customer`, and the explicit names of the argument classes' schemas, so two classes
+that share a short name but are named apart give copies named apart.
+
+A use with other qualifiers besides the type arguments, such as `groups`, copies the schema for
+those qualifiers rather than the plain one.
+
+A generic class used without arguments, or with `mixed` only, keeps its plain schema. So does a
+class without a schema of its own: there is nothing to copy. A use whose arguments cannot be
+made a copy of, such as one with more arguments than the class has templates, is reported, and
+references the plain schema too: `Refs` resolves a `Schema\Ref` whose arguments have no schema to
+the plain one.
+
 ### [Names](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Names.php)
 
 Infers component names from PHP reflectors when not explicitly set.
@@ -125,19 +168,6 @@ Rules for name vs. value:
 #### Config settings
 - **enums.enumNames** : `string` · default: `null`  
   If set, stores enum case names in a vendor extension with this key (e.g. <code>x-enum-varnames</code>).
-
-### [Shortcuts](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Shortcuts.php)
-
-Resolves shortcut attributes into the plain attributes they stand for.
-
-A shortcut carries schema keywords on an attribute that holds a schema, so the common case
-needs no nested `OA\Schema`. This augmenter moves those keywords to where the document has
-them.
-
-Handles:
-* `OA\MediaType\Json` and `OA\MediaType\Xml`: their schema keywords move into the media
-  type's `schema`;
-* `OA\Schema\Items`: an array schema, whose item keywords move into a new `items` schema.
 
 ### [DefaultMediaType](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/DefaultMediaType.php)
 
@@ -202,7 +232,9 @@ Infers an object schema's `required` list and its properties' `default` from the
 A property is required when its PHP type is not nullable and it has no default, the rule a
 parameter follows, with the default counted too: a value exists when the field is left out. A
 promoted constructor property counts by its parameter's default. A property with no PHP type
-adds nothing to `required`.
+adds nothing to `required`. In a schema made for a generic class's type arguments, a property
+PHP declares `mixed` counts by its type as read in that schema, so `T` is required in
+`Envelope<int>`, and `T|null` is not.
 
 A default is taken where it is a value the document can hold: a scalar, an enum case or an array
 of them. An enum case gives the value its schema lists: a backed case's value, a unit case's

@@ -18,10 +18,18 @@ use OpenApi\OpenApiException;
  *
  * Qualifiers are one level deep, a name mapped to a scalar or a list of scalars. Names are sorted,
  * and so is each list, so two keys built in a different order are the same key and a list acts as
- * a set. A value whose order matters goes in as one string.
+ * a set. A value whose order matters goes in as one string. The type arguments, `of`, always come
+ * last, after the sorted names, so a name written in the key's order ends with them.
  */
 final readonly class ComponentKey implements \Stringable
 {
+    /**
+     * The qualifier swagger-php itself adds, so a name no other producer should use for one of its
+     * own: the type arguments of a generic class, as one type string, so `Envelope<Customer>` is
+     * `Envelope` with `of` set to `Customer`. It sorts after every other qualifier.
+     */
+    public const TYPE_ARGUMENTS = 'of';
+
     /**
      * @var array<string, scalar|list<scalar>>
      */
@@ -48,6 +56,12 @@ final readonly class ComponentKey implements \Stringable
         }
 
         ksort($qualifiers);
+        // after the others, so nothing follows the arguments in a name
+        if (array_key_exists(self::TYPE_ARGUMENTS, $qualifiers)) {
+            $arguments = $qualifiers[self::TYPE_ARGUMENTS];
+            unset($qualifiers[self::TYPE_ARGUMENTS]);
+            $qualifiers[self::TYPE_ARGUMENTS] = $arguments;
+        }
         $this->qualifiers = $qualifiers;
     }
 

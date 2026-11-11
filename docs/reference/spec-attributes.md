@@ -2317,6 +2317,13 @@ have to match the qualifiers that description was registered with:
 #[OA\Property(schema: new OA\Schema\Ref(ref: Author::class, qualifiers: ['groups' => ['light']]))]
 ```
 
+`of` holds a generic class's type arguments, written as one type string with each class given
+with its namespace. It is read in the spelling swagger-php writes them in, so
+`string,\App\Customer` and `string, App\Customer` reference the same schema:
+```php
+#[OA\Property(schema: new OA\Schema\Ref(ref: Envelope::class, qualifiers: ['of' => Customer::class]))]
+```
+
 #### Allowed in
 ---
 <a href="#components">Components</a>

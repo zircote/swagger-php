@@ -35,11 +35,17 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
     /** the components a class type is looked up in, by its plain key, in the bucket its use means */
     protected ?ComponentIndex $index = null;
 
+    /** the key of the component the typed attribute being augmented belongs to, which its type is read in */
+    protected ?ComponentKey $component = null;
+
     /** the member whose type is being applied, for the warning when a class in it has no schema */
     protected ?\Reflector $subject = null;
 
     /** @var \SplObjectStorage<OA\Schema, null> schemas whose `type` this augmenter inferred, not the author */
     protected \SplObjectStorage $inferredTypes;
+
+    /** @var array<string, ComponentKey>|null the keys with type arguments a dry run would reference, by their string; null outside one */
+    protected ?array $wanted = null;
 
     public function __construct(
         protected TypeResolver $typeResolver = new TypeResolver(),
@@ -53,15 +59,44 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
 
         $walker = $payload->getWalker();
         $walker->eachSchema($this->inferSchemaType(...));
-        $walker->eachTypedAttribute(function (OA\Property|OA\Parameter|OA\RequestBody $attribute): void {
-            match (true) {
-                $attribute instanceof OA\Property => $this->augmentProperty($attribute),
-                $attribute instanceof OA\Parameter => $this->augmentParameter($attribute),
-                $attribute instanceof OA\RequestBody => $this->augmentRequestBody($attribute),
-            };
-        });
+        $walker->eachTypedAttribute($this->augment(...));
 
         return null;
+    }
+
+    /**
+     * The keys with type arguments a typed attribute's type would reference, were there schemas
+     * for them. `Generics` makes its copies for these, so the rules on which uses are referenced
+     * live here alone. The attribute is left as it is, and this augmenter logs nothing. The shared
+     * resolver may report a docblock while reading it, once, as it would when `Types` runs. An
+     * attribute whose type has no type arguments anywhere wants nothing and is not run.
+     *
+     * @return list<ComponentKey>
+     */
+    public function wantedKeys(OA\Property|OA\Parameter|OA\RequestBody $attribute, ?OA\Schema $schema, ComponentIndex $index): array
+    {
+        // a type with no arguments anywhere references no copy, so most attributes need no dry run
+        $reflector = $attribute->getReflector();
+        if (!$reflector instanceof \ReflectionProperty && !$reflector instanceof \ReflectionParameter && !$reflector instanceof \ReflectionMethod) {
+            return [];
+        }
+        if ($this->typeResolver->resolveIn($reflector, $schema?->getComponentKey())?->hasTypeArguments() !== true) {
+            return [];
+        }
+
+        $dryRun = clone $this;
+        $dryRun->index = $index;
+        $dryRun->logger = null;
+        $dryRun->inferredTypes = new \SplObjectStorage();
+        $dryRun->wanted = [];
+
+        $copy = $attribute->copy();
+        if (!$copy instanceof OA\RequestBody && $copy->schema instanceof OA\Schema) {
+            $dryRun->inferSchemaType($copy->schema);
+        }
+        $dryRun->augment($copy, $schema);
+
+        return array_values($dryRun->wanted);
     }
 
     /**
@@ -91,6 +126,17 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
     public function group(): string|\BackedEnum
     {
         return Group::Resolve;
+    }
+
+    protected function augment(OA\Property|OA\Parameter|OA\RequestBody $attribute, ?OA\Schema $schema): void
+    {
+        $this->component = $schema?->getComponentKey();
+        match (true) {
+            // read in its schema, so a schema made for type arguments binds the class's templates
+            $attribute instanceof OA\Property => $this->augmentProperty($attribute),
+            $attribute instanceof OA\Parameter => $this->augmentParameter($attribute),
+            $attribute instanceof OA\RequestBody => $this->augmentRequestBody($attribute),
+        };
     }
 
     protected function inferSchemaType(OA\Schema $schema): void
@@ -154,7 +200,7 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
             return;
         }
 
-        $resolved = $this->typeResolver->resolve($reflector);
+        $resolved = $this->typeResolver->resolveIn($reflector, $this->component);
         if (!$resolved instanceof SchemaType) {
             return;
         }
@@ -188,7 +234,7 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
             return;
         }
 
-        $resolved = $this->typeResolver->resolve($method);
+        $resolved = $this->typeResolver->resolveIn($method, $this->component);
         if (!$resolved instanceof SchemaType) {
             return;
         }
@@ -278,6 +324,26 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
         return count($this->index?->findAllByKey(new ComponentKey(ltrim($class, '\\')), $bucket) ?? []);
     }
 
+    /**
+     * A class type as the ref to its schema: the one made for its type arguments where there is
+     * one, otherwise the plain one.
+     */
+    protected function refTo(SchemaType $schemaType): string|OA\Schema\Ref|null
+    {
+        $key = $schemaType->componentKey();
+        if (!$key instanceof ComponentKey) {
+            return null;
+        }
+
+        if ($this->wanted !== null && !$key->isPlain()) {
+            $this->wanted[(string) $key] = $key;
+        }
+
+        return !$key->isPlain() && $this->index?->hasKey($key)
+            ? new OA\Schema\Ref(ref: $key->class, qualifiers: $key->qualifiers)
+            : $key->class;
+    }
+
     protected function schemaTypeToSchema(SchemaType $schemaType): OA\Schema
     {
         $schema = new OA\Schema();
@@ -327,7 +393,7 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
                 if ($schema->enum === null) {
                     $count = $this->countComponents($schemaType->type);
                     if ($count === 1) {
-                        $schema->ref = $schemaType->type;
+                        $schema->ref = $this->refTo($schemaType);
                     } else {
                         $subject = $this->subject instanceof \Reflector ? $this->typeResolver->describe($this->subject) : 'a schema';
                         $this->logger?->error($count === 0
@@ -362,6 +428,7 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
         }
 
         if ($schemaType->oneOf !== null) {
+            $wanted = $this->wanted;
             $members = array_map($this->schemaTypeToSchema(...), $schemaType->oneOf);
             // a member typed with a class that is no component matches anything, and so does the union
             $unknown = array_filter(
@@ -370,6 +437,9 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
             );
             if ($unknown === []) {
                 $schema->oneOf = $members;
+            } else {
+                // a dropped union references nothing, so a dry run wants nothing from it
+                $this->wanted = $wanted;
             }
         }
 

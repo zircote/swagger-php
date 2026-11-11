@@ -64,7 +64,7 @@ final class CountersTest extends TestCase
             'read' => 1 + $shape->schemas + $shape->controllers() + $shape->noise,
             'passes' => 1,
             'unresolved' => 0,
-            'walks' => 32,
+            'walks' => 34,
         ], $builder->counts());
     }
 
@@ -83,7 +83,7 @@ final class CountersTest extends TestCase
             'read' => 0,
             'passes' => 2,
             'unresolved' => $shape->used(),
-            'walks' => 32,
+            'walks' => 34,
         ], $builder->counts());
     }
 }

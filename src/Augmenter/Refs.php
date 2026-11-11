@@ -96,6 +96,10 @@ class Refs implements PipeInterface, LoggerAwareInterface
 
             $key = $attribute->getRefKey() ?? new ComponentKey($ref);
             $bucket = $this->bucketFor($attribute);
+            // type arguments `Generics` made no schema for mean the plain one, as in a use read from a type
+            if (isset($key->qualifiers[ComponentKey::TYPE_ARGUMENTS]) && $index->findAllByKey($key, $bucket) === []) {
+                $key = new ComponentKey($key->class, array_diff_key($key->qualifiers, [ComponentKey::TYPE_ARGUMENTS => true]));
+            }
 
             $pointer = $this->pointerForKey($key, $bucket, $index);
             if ($pointer !== null) {

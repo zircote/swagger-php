@@ -6,10 +6,12 @@
 
 namespace OpenApi\ComponentNamer;
 
+use OpenApi\Augmenter\Generics;
 use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Contracts\ComponentNamerInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification\ComponentKey;
+use OpenApi\Type\TypeArguments;
 
 /**
  * Names a component after the class or holder member it is declared on.
@@ -23,21 +25,41 @@ use OpenApi\Specification\ComponentKey;
  * A component whose key has qualifiers adds them, so each description of a class gets a name of
  * its own: `-` before each qualifier, `.` between its name and its values, `_` between values.
  * `Author` with groups `admin` and `summary` is `Author-groups.admin_summary`.
+ *
+ * Type arguments, the `of` qualifier, are written by `TypeArgumentNames`, each argument named like
+ * its own component: `Envelope<Customer>` is `Envelope-of.Customer`. A copy `Augmenter\Generics`
+ * makes is named from the names it leaves on it: the copied schema's explicit name in place of the
+ * class's, and an argument class's explicit name in place of its short name.
  */
 class ShortName implements ComponentNamerInterface
 {
+    /** @var array<string, string> the explicit names of the classes in the type arguments of the component being named, by class */
+    protected array $argumentNames = [];
+
     public function name(AttributeInterface $component): ?string
     {
         $name = $this->baseName($component);
         $key = $component->getComponentKey();
 
-        return $name !== null && $key instanceof ComponentKey && !$key->isPlain()
-            ? $name . $this->qualifiers($key)
-            : $name;
+        if ($name === null || !$key instanceof ComponentKey || $key->isPlain()) {
+            return $name;
+        }
+
+        $this->argumentNames = $this->copied($component)['arguments'] ?? [];
+        try {
+            return $name . $this->qualifiers($key);
+        } finally {
+            $this->argumentNames = [];
+        }
     }
 
     protected function baseName(AttributeInterface $component): ?string
     {
+        $base = $this->copied($component)['base'] ?? null;
+        if ($base !== null) {
+            return $base;
+        }
+
         $reflector = $component->getReflector();
 
         if ($reflector instanceof \ReflectionClass) {
@@ -61,6 +83,13 @@ class ShortName implements ComponentNamerInterface
     {
         $suffix = '';
         foreach ($key->qualifiers as $name => $values) {
+            $arguments = $name === ComponentKey::TYPE_ARGUMENTS ? TypeArguments::of($key) : null;
+            if ($arguments instanceof TypeArguments) {
+                $suffix .= (new TypeArgumentNames($this->typeArgumentValue(...)))->write($arguments);
+
+                continue;
+            }
+
             $values = array_map($this->qualifierValue(...), (array) $values);
             $suffix .= '-' . $this->clean($name) . ($values === [] ? '' : '.' . implode('_', $values));
         }
@@ -78,6 +107,27 @@ class ShortName implements ComponentNamerInterface
         }
 
         return $this->clean(is_bool($value) ? var_export($value, true) : (string) $value);
+    }
+
+    /**
+     * A value in type arguments: a class named as its own component would be, anything else as
+     * given, since `TypeArgumentNames` escapes what a name does not allow rather than losing it.
+     */
+    protected function typeArgumentValue(string $value): string
+    {
+        return $this->argumentNames[$value] ?? (class_exists($value) || interface_exists($value) ? $this->className(new \ReflectionClass($value)) : $value);
+    }
+
+    /**
+     * The names `Augmenter\Generics` left on a copy it made.
+     *
+     * @return array{base?: string, arguments?: array<string, string>}
+     */
+    protected function copied(AttributeInterface $component): array
+    {
+        $copied = $component->getMeta(Generics::class);
+
+        return is_array($copied) ? $copied : [];
     }
 
     /**

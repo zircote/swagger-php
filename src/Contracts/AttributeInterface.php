@@ -94,7 +94,8 @@ interface AttributeInterface
     /**
      * Extra data for whoever needs to carry it on an attribute, keyed by whoever writes it.
      *
-     * Nothing in swagger-php writes or reads it. A clone copies the entries; an object stored as a
+     * A key that is the name of a swagger-php class or interface belongs to swagger-php, and the
+     * class or interface says what it means. A clone copies the entries; an object stored as a
      * value is shared between the clone and the original.
      */
     public function getMeta(string $key, mixed $default = null): mixed;

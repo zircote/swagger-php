@@ -6,6 +6,8 @@
 
 namespace OpenApi\Type;
 
+use OpenApi\Specification\ComponentKey;
+
 /**
  * Value object describing the resolved OpenAPI schema type for a PHP reflector.
  *
@@ -28,6 +30,7 @@ class SchemaType
      * @param int|float|null           $maximum              Numeric maximum
      * @param array<string, self>|null $properties           Named properties (from array shapes)
      * @param list<string>|null        $required             Required property names (from array shapes)
+     * @param TypeArguments|null       $typeArguments        For a generic class: the type arguments it is used with
      */
     public function __construct(
         public string|array|null $type = null,
@@ -43,6 +46,7 @@ class SchemaType
         public int|float|null $maximum = null,
         public ?array $properties = null,
         public ?array $required = null,
+        public ?TypeArguments $typeArguments = null,
     ) {
     }
 
@@ -67,6 +71,49 @@ class SchemaType
     public function isRef(): bool
     {
         return is_string($this->type) && !$this->isNativeType();
+    }
+
+    /**
+     * The key of the component a class type references, with its type arguments where it has
+     * them, or null for a type that is no class.
+     */
+    public function componentKey(): ?ComponentKey
+    {
+        if (!$this->isRef()) {
+            return null;
+        }
+
+        return new ComponentKey(
+            ltrim($this->type, '\\'),
+            $this->typeArguments instanceof TypeArguments ? [ComponentKey::TYPE_ARGUMENTS => (string) $this->typeArguments] : [],
+        );
+    }
+
+    /**
+     * Whether a class anywhere in the type is used with type arguments: itself, its items, the
+     * values of a map, a member of a composition or a property of a shape.
+     */
+    public function hasTypeArguments(): bool
+    {
+        if ($this->typeArguments instanceof TypeArguments) {
+            return true;
+        }
+
+        $nested = [
+            $this->items,
+            $this->additionalProperties,
+            ...$this->oneOf ?? [],
+            ...$this->allOf ?? [],
+            ...$this->anyOf ?? [],
+            ...array_values($this->properties ?? []),
+        ];
+        foreach ($nested as $type) {
+            if ($type instanceof self && $type->hasTypeArguments()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected function isNativeType(): bool

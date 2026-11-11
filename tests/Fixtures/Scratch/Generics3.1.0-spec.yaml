@@ -1,0 +1,316 @@
+openapi: 3.1.0
+info:
+  title: Generics
+  version: '1.0'
+paths:
+  /holder:
+    get:
+      operationId: getHolder
+      responses:
+        '200':
+          description: 'All good'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericsHolderSpec'
+components:
+  schemas:
+    GenericsCustomerSpec:
+      type: object
+      properties:
+        id:
+          type: integer
+      required:
+        - id
+    GenericsEnvelopeSpec:
+      type: object
+      description: 'A generic class gets a schema per set of type arguments it is used with.'
+      properties:
+        data: {}
+        history:
+          type: array
+          items: {}
+        previous: {}
+        parent:
+          oneOf:
+            -
+              $ref: '#/components/schemas/GenericsEnvelopeSpec'
+            -
+              type: 'null'
+        version:
+          type: string
+      required:
+        - history
+        - version
+    GenericsPair:
+      type: object
+      description: 'A copy of a schema with a name of its own builds on that name.'
+      properties:
+        key: {}
+        keyOrIndex:
+          oneOf:
+            -
+              type: integer
+            - {}
+            -
+              type: 'null'
+        value: {}
+    GenericsHolderSpec:
+      type: object
+      properties:
+        customer:
+          $ref: '#/components/schemas/GenericsEnvelopeSpec-of.GenericsCustomerSpec'
+        number:
+          $ref: '#/components/schemas/GenericsEnvelopeSpec-of.int'
+        nested:
+          $ref: '#/components/schemas/GenericsEnvelopeSpec-of.GenericsEnvelopeSpec-of.GenericsCustomerSpec'
+        pairs:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericsPair-of.string_GenericsCustomerSpec'
+        anything:
+          $ref: '#/components/schemas/GenericsEnvelopeSpec'
+        loose:
+          $ref: '#/components/schemas/GenericsPair-of.mixed_GenericsCustomerSpec'
+        wrapped:
+          $ref: '#/components/schemas/GenericsPair-of.GenericsEnvelopeSpec-of.GenericsCustomerSpec.-_int'
+        either:
+          $ref: '#/components/schemas/GenericsEnvelopeSpec-of.GenericsCustomerSpec.or.int'
+        status:
+          $ref: '#/components/schemas/GenericsEnvelopeSpec-of.GenericsStatusSpec'
+        flag:
+          $ref: '#/components/schemas/GenericsEnvelopeSpec-of.bool'
+      required:
+        - customer
+        - number
+        - nested
+        - pairs
+        - anything
+        - loose
+        - wrapped
+        - either
+        - status
+        - flag
+    GenericsEnvelopeSpec-of.GenericsCustomerSpec:
+      type: object
+      description: 'A generic class gets a schema per set of type arguments it is used with.'
+      properties:
+        data:
+          $ref: '#/components/schemas/GenericsCustomerSpec'
+        history:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericsCustomerSpec'
+        previous:
+          oneOf:
+            -
+              $ref: '#/components/schemas/GenericsCustomerSpec'
+            -
+              type: 'null'
+        parent:
+          oneOf:
+            -
+              $ref: '#/components/schemas/GenericsEnvelopeSpec-of.GenericsCustomerSpec'
+            -
+              type: 'null'
+        version:
+          type: string
+      required:
+        - data
+        - history
+        - version
+    GenericsEnvelopeSpec-of.int:
+      type: object
+      description: 'A generic class gets a schema per set of type arguments it is used with.'
+      properties:
+        data:
+          type: integer
+        history:
+          type: array
+          items:
+            type: integer
+        previous:
+          type:
+            - integer
+            - 'null'
+        parent:
+          oneOf:
+            -
+              $ref: '#/components/schemas/GenericsEnvelopeSpec-of.int'
+            -
+              type: 'null'
+        version:
+          type: string
+      required:
+        - data
+        - history
+        - version
+    GenericsEnvelopeSpec-of.GenericsEnvelopeSpec-of.GenericsCustomerSpec:
+      type: object
+      description: 'A generic class gets a schema per set of type arguments it is used with.'
+      properties:
+        data:
+          $ref: '#/components/schemas/GenericsEnvelopeSpec-of.GenericsCustomerSpec'
+        history:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericsEnvelopeSpec-of.GenericsCustomerSpec'
+        previous:
+          oneOf:
+            -
+              $ref: '#/components/schemas/GenericsEnvelopeSpec-of.GenericsCustomerSpec'
+            -
+              type: 'null'
+        parent:
+          oneOf:
+            -
+              $ref: '#/components/schemas/GenericsEnvelopeSpec-of.GenericsEnvelopeSpec-of.GenericsCustomerSpec'
+            -
+              type: 'null'
+        version:
+          type: string
+      required:
+        - data
+        - history
+        - version
+    GenericsPair-of.string_GenericsCustomerSpec:
+      type: object
+      description: 'A copy of a schema with a name of its own builds on that name.'
+      properties:
+        key:
+          type: string
+        keyOrIndex:
+          type:
+            - integer
+            - string
+        value:
+          $ref: '#/components/schemas/GenericsCustomerSpec'
+      required:
+        - key
+        - keyOrIndex
+        - value
+    GenericsPair-of.mixed_GenericsCustomerSpec:
+      type: object
+      description: 'A copy of a schema with a name of its own builds on that name.'
+      properties:
+        key: {}
+        keyOrIndex: {}
+        value:
+          $ref: '#/components/schemas/GenericsCustomerSpec'
+      required:
+        - value
+    GenericsPair-of.GenericsEnvelopeSpec-of.GenericsCustomerSpec.-_int:
+      type: object
+      description: 'A copy of a schema with a name of its own builds on that name.'
+      properties:
+        key:
+          $ref: '#/components/schemas/GenericsEnvelopeSpec-of.GenericsCustomerSpec'
+        keyOrIndex:
+          oneOf:
+            -
+              type: integer
+            -
+              $ref: '#/components/schemas/GenericsEnvelopeSpec-of.GenericsCustomerSpec'
+        value:
+          type: integer
+      required:
+        - key
+        - keyOrIndex
+        - value
+    GenericsEnvelopeSpec-of.GenericsCustomerSpec.or.int:
+      type: object
+      description: 'A generic class gets a schema per set of type arguments it is used with.'
+      properties:
+        data:
+          oneOf:
+            -
+              type: integer
+            -
+              $ref: '#/components/schemas/GenericsCustomerSpec'
+        history:
+          type: array
+          items:
+            oneOf:
+              -
+                type: integer
+              -
+                $ref: '#/components/schemas/GenericsCustomerSpec'
+        previous:
+          oneOf:
+            -
+              type: integer
+            -
+              $ref: '#/components/schemas/GenericsCustomerSpec'
+            -
+              type: 'null'
+        parent:
+          oneOf:
+            -
+              $ref: '#/components/schemas/GenericsEnvelopeSpec-of.GenericsCustomerSpec.or.int'
+            -
+              type: 'null'
+        version:
+          type: string
+      required:
+        - data
+        - history
+        - version
+    GenericsEnvelopeSpec-of.GenericsStatusSpec:
+      type: object
+      description: 'A generic class gets a schema per set of type arguments it is used with.'
+      properties:
+        data:
+          $ref: '#/components/schemas/GenericsStatusSpec'
+        history:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericsStatusSpec'
+        previous:
+          oneOf:
+            -
+              $ref: '#/components/schemas/GenericsStatusSpec'
+            -
+              type: 'null'
+        parent:
+          oneOf:
+            -
+              $ref: '#/components/schemas/GenericsEnvelopeSpec-of.GenericsStatusSpec'
+            -
+              type: 'null'
+        version:
+          type: string
+      required:
+        - data
+        - history
+        - version
+    GenericsEnvelopeSpec-of.bool:
+      type: object
+      description: 'A generic class gets a schema per set of type arguments it is used with.'
+      properties:
+        data:
+          type: boolean
+        history:
+          type: array
+          items:
+            type: boolean
+        previous:
+          type:
+            - boolean
+            - 'null'
+        parent:
+          oneOf:
+            -
+              $ref: '#/components/schemas/GenericsEnvelopeSpec-of.bool'
+            -
+              type: 'null'
+        version:
+          type: string
+      required:
+        - data
+        - history
+        - version
+    GenericsStatusSpec:
+      type: string
+      enum:
+        - open
+        - closed

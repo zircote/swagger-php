@@ -38,6 +38,9 @@ class ImpliedSchemas implements PipeInterface, LoggerAwareInterface, TypeResolve
     /** @var array<class-string<\UnitEnum>, true> */
     protected array $enums = [];
 
+    /** the key of the component the typed attribute being read belongs to, which its type is read in */
+    protected ?ComponentKey $component = null;
+
     public function __construct(
         protected TypeResolver $typeResolver = new TypeResolver(),
     ) {
@@ -47,7 +50,8 @@ class ImpliedSchemas implements PipeInterface, LoggerAwareInterface, TypeResolve
     {
         $this->enums = [];
 
-        $payload->getWalker()->eachTypedAttribute(function (OA\Property|OA\Parameter|OA\RequestBody $attribute): void {
+        $payload->getWalker()->eachTypedAttribute(function (OA\Property|OA\Parameter|OA\RequestBody $attribute, ?OA\Schema $schema): void {
+            $this->component = $schema?->getComponentKey();
             $this->collect($attribute->getReflector(), $attribute instanceof OA\RequestBody ? null : $attribute->schema);
         });
 
@@ -106,7 +110,8 @@ class ImpliedSchemas implements PipeInterface, LoggerAwareInterface, TypeResolve
         }
 
         if ($reflector instanceof \ReflectionProperty || $reflector instanceof \ReflectionParameter || $reflector instanceof \ReflectionMethod) {
-            $this->collectFromType($this->typeResolver->resolve($reflector));
+            // read in its component, so an enum a schema made for type arguments binds is found too
+            $this->collectFromType($this->typeResolver->resolveIn($reflector, $this->component));
         }
     }
 
