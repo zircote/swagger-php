@@ -15,14 +15,16 @@ namespace OpenApi\Tests\Fixtures\Type;
 final class Template
 {
     /**
-     * @param list<T>      $results
-     * @param list<B>      $bounded
-     * @param T&\Countable $unbounded
+     * @param list<T>         $results
+     * @param list<B>         $bounded
+     * @param T&\Countable    $unbounded
+     * @param class-string<T> $kind
      */
     public function __construct(
         public array $results,
         public array $bounded,
         public mixed $unbounded = null,
+        public string $kind = '',
     ) {
     }
 }

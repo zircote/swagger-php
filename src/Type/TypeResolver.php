@@ -20,7 +20,6 @@ use Psr\Log\LoggerAwareTrait;
 use Radebatz\TypeInfoExtras\Type\ExplicitType;
 use Radebatz\TypeInfoExtras\Type\IntRangeType;
 use Radebatz\TypeInfoExtras\TypeResolver\StringTypeResolver;
-use Symfony\Component\TypeInfo\Exception\InvalidArgumentException;
 use Symfony\Component\TypeInfo\Exception\UnsupportedException;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\ArrayShapeType;
@@ -36,6 +35,7 @@ use Symfony\Component\TypeInfo\TypeContext\TypeContextFactory;
 use Symfony\Component\TypeInfo\TypeIdentifier;
 use Symfony\Component\TypeInfo\TypeResolver\ReflectionTypeResolver;
 use Symfony\Component\TypeInfo\TypeResolver\StringTypeResolver as SymfonyStringTypeResolver;
+use Symfony\Component\TypeInfo\TypeResolver\TypeResolverInterface;
 
 /**
  * Resolves a PHP reflector to a SchemaType value object.
@@ -57,9 +57,12 @@ class TypeResolver implements LoggerAwareInterface
 
     protected TypeContextFactory $reflectionContexts;
 
+    protected TypeResolverInterface $docblockResolver;
+
     public function __construct()
     {
         $this->typeMapper = new TypeMapper();
+        $this->docblockResolver = new StringTypeResolver();
         $this->resolved = new \WeakMap();
         $this->docblockContexts = new TypeContextFactory(new SymfonyStringTypeResolver());
         $this->reflectionContexts = new TypeContextFactory();
@@ -134,8 +137,9 @@ class TypeResolver implements LoggerAwareInterface
                 || $tagValue instanceof ReturnTagValueNode
             ) {
                 try {
-                    return (new StringTypeResolver())->resolve((string) $tagValue, $typeContext);
-                } catch (UnsupportedException|InvalidArgumentException) {
+                    return $this->docblockResolver->resolve((string) $tagValue, $typeContext);
+                } catch (\Throwable) {
+                    // not only the exceptions the resolver declares: a docblock it fails on must not end the build
                     $this->logger?->warning(sprintf('Unsupported docblock type "%s" on %s', $tagValue->type, $this->describe($reflector)));
                 }
             }
