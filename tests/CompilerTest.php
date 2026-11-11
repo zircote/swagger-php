@@ -265,13 +265,13 @@ final class CompilerTest extends TestCase
         $created = $operation['responses'][201];
 
         $references = [
-            'parameter' => [$operation['parameters'][0], ['description' => 'parameter']],
-            'request body' => [$operation['requestBody'], ['description' => 'request body']],
-            'response' => [$operation['responses'][200], ['description' => 'response']],
-            'header' => [$created['headers']['X-H'], ['description' => 'header']],
+            'parameter' => [$operation['parameters'][0], ['summary' => 'summary', 'description' => 'parameter']],
+            'request body' => [$operation['requestBody'], ['summary' => 'summary', 'description' => 'request body']],
+            'response' => [$operation['responses'][200], ['summary' => 'summary', 'description' => 'response']],
+            'header' => [$created['headers']['X-H'], ['summary' => 'summary', 'description' => 'header']],
             'example' => [$created['content']['application/json']['examples']['e'], ['summary' => 'summary', 'description' => 'example']],
-            'link' => [$created['links']['l'], ['description' => 'link']],
-            'security scheme' => [$document['components']['securitySchemes']['shared'], ['description' => 'security scheme']],
+            'link' => [$created['links']['l'], ['summary' => 'summary', 'description' => 'link']],
+            'security scheme' => [$document['components']['securitySchemes']['shared'], ['summary' => 'summary', 'description' => 'security scheme']],
         ];
 
         foreach ($references as $position => [$compiled, $siblings]) {
@@ -286,7 +286,7 @@ final class CompilerTest extends TestCase
         $reported = array_values(array_filter($messages, fn (string $message): bool => str_contains($message, 'beside $ref')));
 
         $this->assertCount(7, $reported);
-        $this->assertStringStartsWith('Parameter description beside $ref "#/components/parameters/P" is not supported in OpenAPI 3.0, omitted in ', $reported[0]);
+        $this->assertStringStartsWith('Parameter summary and description beside $ref "#/components/parameters/P" is not supported in OpenAPI 3.0, omitted in ', $reported[0]);
         $this->assertNotEmpty(array_filter($reported, fn (string $message): bool => str_starts_with($message, 'Example summary and description beside $ref "#/components/examples/E" ')));
     }
 
@@ -411,6 +411,55 @@ final class CompilerTest extends TestCase
         $messages = array_column((new OpenApi30Compiler())->validate($specification), 'message');
 
         $this->assertSame([], array_values(array_filter($messages, fn (string $message): bool => str_contains($message, 'beside $ref'))));
+    }
+
+    #[DataProvider('compilerProvider')]
+    public function testReportsSummaryWithoutRef(CompilerInterface $compiler, string $version): void
+    {
+        $spec = $this->createSpecification($version);
+        $spec->operations[] = new OA\Operation(
+            path: '/a',
+            method: 'get',
+            parameters: [
+                new OA\Parameter\Query(name: 'q', schema: new OA\Schema(type: 'string'), summary: 'Inline'),
+                new OA\Parameter\Query(ref: '#/components/parameters/P', summary: 'Referenced'),
+            ],
+            responses: [new OA\Response(response: 200, description: 'OK', links: [new OA\Link(link: 'l', operationId: 'a', summary: 'Inline')], summary: 'Inline')],
+        );
+        $spec->requestBodies[] = new OA\RequestBody(component: 'Body', summary: 'Inline');
+
+        $messages = array_column(array_filter($compiler->validate($spec), fn (array $entry): bool => $entry['level'] === 'error'), 'message');
+        $document = $compiler->compile($spec);
+
+        $this->assertSame([
+            'Request body "Body" summary is written only beside $ref, omitted in unknown',
+            'Parameter "q" summary is written only beside $ref, omitted in unknown',
+            'Response "200" summary is written only beside $ref, omitted in unknown',
+            'Link "l" summary is written only beside $ref, omitted in unknown',
+        ], array_values(array_filter($messages, fn (string $message): bool => str_contains($message, 'summary'))));
+        $this->assertArrayNotHasKey('summary', $document['paths']['/a']['get']['parameters'][0]);
+        $this->assertArrayNotHasKey('summary', $document['paths']['/a']['get']['responses'][200]);
+    }
+
+    public function testReportsSummaryWithoutRefOncePerDeclaration(): void
+    {
+        $logger = new CollectingLogger();
+
+        (new Builder(logger: $logger))
+            ->setMode(Mode::SPEC)
+            ->setVersion('3.1.0')
+            ->addSource(new \ReflectionClass(Fixtures\RefSummaries\OrderController::class))
+            ->withSpecification(fn (Specification $specification): Specification => $specification->add(new OA\Info(title: 'Summaries', version: '1.0.0')))
+            ->build();
+
+        $reported = array_values(array_filter(array_column($logger->entries(), 'message'), fn (string $message): bool => str_contains($message, 'summary is written only beside $ref')));
+        $controller = Fixtures\RefSummaries\OrderController::class;
+
+        $this->assertCount(4, $reported);
+        $this->assertStringStartsWith("Response \"default\" summary is written only beside \$ref, omitted in {$controller}::list() ", $reported[0]);
+        $this->assertStringStartsWith("Parameter \"id\" summary is written only beside \$ref, omitted in {$controller}::show() ", $reported[1]);
+        $this->assertStringStartsWith("Header \"X-Rate\" summary is written only beside \$ref, omitted in {$controller}::show() ", $reported[2]);
+        $this->assertStringStartsWith("Response \"default\" summary is written only beside \$ref, omitted in {$controller}::show() ", $reported[3]);
     }
 
     public function test31ReportsNoReferenceSiblings(): void
@@ -1385,21 +1434,21 @@ final class CompilerTest extends TestCase
         $spec->operations[] = new OA\Operation(
             path: '/a',
             method: 'post',
-            parameters: [new OA\Parameter(description: 'parameter', ref: '#/components/parameters/P')],
-            requestBody: new OA\RequestBody(description: 'request body', ref: '#/components/requestBodies/B'),
+            parameters: [new OA\Parameter(description: 'parameter', ref: '#/components/parameters/P', summary: 'summary')],
+            requestBody: new OA\RequestBody(description: 'request body', ref: '#/components/requestBodies/B', summary: 'summary'),
             responses: [
-                new OA\Response(response: 200, description: 'response', ref: '#/components/responses/R'),
+                new OA\Response(response: 200, description: 'response', ref: '#/components/responses/R', summary: 'summary'),
                 new OA\Response(
                     response: 201,
                     description: 'Created',
-                    headers: [new OA\Header(header: 'X-H', description: 'header', ref: '#/components/headers/H')],
+                    headers: [new OA\Header(header: 'X-H', description: 'header', ref: '#/components/headers/H', summary: 'summary')],
                     content: [new OA\MediaType\Json(examples: [new OA\Example(example: 'e', summary: 'summary', description: 'example', ref: '#/components/examples/E')])],
-                    links: [new OA\Link(link: 'l', description: 'link', ref: '#/components/links/L')],
+                    links: [new OA\Link(link: 'l', description: 'link', ref: '#/components/links/L', summary: 'summary')],
                 ),
             ],
         );
 
-        $spec->securitySchemes[] = new OA\Security\Scheme(description: 'security scheme', ref: 'https://example.com/schemes.yaml#/components/securitySchemes/api', component: 'shared');
+        $spec->securitySchemes[] = new OA\Security\Scheme(description: 'security scheme', ref: 'https://example.com/schemes.yaml#/components/securitySchemes/api', component: 'shared', summary: 'summary');
 
         return $spec;
     }

@@ -172,6 +172,8 @@ class OpenApi31Compiler implements CompilerInterface
         $this->validateNestedNames($specification);
 
         $this->validateSchemaExamples($specification);
+
+        $this->validateReferenceSummaries($specification);
     }
 
     /**
@@ -576,7 +578,7 @@ class OpenApi31Compiler implements CompilerInterface
         // no attribute, so no extensions: a Reference Object takes none
         return $this->filter([
             '$ref' => $attribute->ref,
-            'summary' => $attribute instanceof OA\Example ? $attribute->summary : null,
+            'summary' => $attribute->summary,
             'description' => $attribute->description,
         ]);
     }
@@ -989,6 +991,86 @@ class OpenApi31Compiler implements CompilerInterface
                 }
             }
         });
+    }
+
+    /**
+     * `summary` belongs to the Reference Object, so these attributes write it only beside a
+     * `$ref`. A nested attribute has no source location of its own, so the operation, path
+     * item or component holding it is reported, and the key names the attribute. Copies of
+     * one declaration produce the same message, which is logged once.
+     */
+    protected function validateReferenceSummaries(Specification $specification): void
+    {
+        $reported = [];
+        $report = function (OA\AbstractAttribute $holder, array $attributes) use (&$reported): void {
+            foreach ($this->summariesWithoutRef($attributes) as $subject) {
+                $message = "{$subject} summary is written only beside \$ref, omitted in " . $holder->getSourceLocation();
+                if (!isset($reported[$message])) {
+                    $reported[$message] = true;
+                    $this->logger->error($message);
+                }
+            }
+        };
+
+        $this->visit($specification, OA\Operation::class, function (OA\Operation $operation) use ($report): void {
+            $report($operation, [...$operation->parameters ?? [], $operation->requestBody, ...$operation->responses ?? []]);
+        });
+        // a path item's responses are copied into its operations, which report them
+        $this->visit($specification, OA\PathItem::class, function (OA\PathItem $pathItem) use ($report): void {
+            $report($pathItem, $pathItem->parameters ?? []);
+        });
+
+        $components = [
+            ...$specification->parameters,
+            ...$specification->requestBodies,
+            ...$specification->responses,
+            ...$specification->headers,
+            ...$specification->links,
+            ...$specification->securitySchemes,
+        ];
+        foreach ($components as $component) {
+            $report($component, [$component]);
+        }
+    }
+
+    /**
+     * The attributes, and the headers and links of an inline response, that set `summary`
+     * without `$ref`, named by their key.
+     *
+     * @param  array<mixed> $attributes
+     * @return list<string>
+     */
+    protected function summariesWithoutRef(array $attributes): array
+    {
+        $subjects = [];
+        foreach ($attributes as $attribute) {
+            if (!$attribute instanceof OA\Parameter && !$attribute instanceof OA\RequestBody && !$attribute instanceof OA\Response
+                && !$attribute instanceof OA\Header && !$attribute instanceof OA\Link && !$attribute instanceof OA\Security\Scheme) {
+                continue;
+            }
+
+            if ($attribute->getRefValue() !== null) {
+                continue;
+            }
+
+            if ($attribute->summary !== null) {
+                [$kind, $key] = match (true) {
+                    $attribute instanceof OA\Parameter => ['Parameter', $attribute->name ?? $attribute->component],
+                    $attribute instanceof OA\RequestBody => ['Request body', $attribute->component],
+                    $attribute instanceof OA\Response => ['Response', $attribute->response ?? $attribute->component],
+                    $attribute instanceof OA\Header => ['Header', $attribute->header ?? $attribute->component],
+                    $attribute instanceof OA\Link => ['Link', $attribute->link ?? $attribute->component],
+                    default => ['Security scheme', $attribute->component],
+                };
+                $subjects[] = $key === null ? $kind : "{$kind} \"{$key}\"";
+            }
+
+            if ($attribute instanceof OA\Response) {
+                $subjects = [...$subjects, ...$this->summariesWithoutRef([...$attribute->headers ?? [], ...$attribute->links ?? []])];
+            }
+        }
+
+        return $subjects;
     }
 
     /**

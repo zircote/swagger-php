@@ -36,6 +36,7 @@ class Link extends AbstractAttribute implements RefInterface
      * @param array<string,mixed>|null $x            Vendor extensions (x-* properties)
      * @param list<Attachable>|null    $attachables  Reusable custom attachable attributes
      * @param Fan|null                 $fan          Where this attribute goes when more than one attribute could hold it
+     * @param string|null              $summary      A short summary of what `ref` points to, written only beside `ref` and from OpenAPI 3.1 on
      */
     public function __construct(
         public ?string $link = null,
@@ -50,6 +51,7 @@ class Link extends AbstractAttribute implements RefInterface
         ?array $x = null,
         ?array $attachables = null,
         ?Fan $fan = null,
+        public ?string $summary = null,
     ) {
         $this->component = $component;
 

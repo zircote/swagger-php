@@ -505,6 +505,8 @@ Describes a single HTTP header.
   <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A short summary of what `ref` points to, written only beside `ref` and from OpenAPI 3.1 on</p></dd>
 </dl>
 
 #### Reference
@@ -600,6 +602,8 @@ Describes a possible design-time link for a response.
   <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A short summary of what `ref` points to, written only beside `ref` and from OpenAPI 3.1 on</p></dd>
 </dl>
 
 #### Reference
@@ -1369,6 +1373,8 @@ Produces:
   <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A short summary of what `ref` points to, written only beside `ref` and from OpenAPI 3.1 on</p></dd>
 </dl>
 
 #### Reference
@@ -1424,6 +1430,8 @@ to this:
   <dd><p>No details available.</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
 </dl>
 
 #### Reference
@@ -1478,6 +1486,8 @@ to this:
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -1535,6 +1545,8 @@ to this:
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -1596,6 +1608,8 @@ to this:
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -1796,6 +1810,8 @@ Describes a single request body.
   <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A short summary of what `ref` points to, written only beside `ref` and from OpenAPI 3.1 on</p></dd>
 </dl>
 
 #### Reference
@@ -1833,6 +1849,8 @@ Describes a single response from an API operation.
   <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A short summary of what `ref` points to, written only beside `ref` and from OpenAPI 3.1 on</p></dd>
 </dl>
 
 #### Reference
@@ -2431,6 +2449,8 @@ Example:
   <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">OA\Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A short summary of what `ref` points to, written only beside `ref` and from OpenAPI 3.1 on</p></dd>
 </dl>
 
 #### Reference

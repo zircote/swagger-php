@@ -105,7 +105,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
             }
 
             $siblings = array_keys($this->filter([
-                'summary' => $attribute instanceof OA\Example ? $attribute->summary : null,
+                'summary' => $attribute->summary,
                 'description' => $attribute->description,
             ]));
 
