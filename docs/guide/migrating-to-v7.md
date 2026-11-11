@@ -87,6 +87,7 @@ Everything below still works in v7 and is removed in 8.0.
 | `ResolverInterface`, reported at runtime for each resolver implementing it alone | `KeyResolverInterface`. `KeyResolverTrait` supplies `resolve()`, so only `resolveKey()` needs writing. |
 | `Builder::setLogger()` | The `Builder` constructor, `new Builder($logger)` |
 | `AttributeFactory::getTokenScanner()` | `AttributeFactory::getSourceInspector()` |
+| `TokenScanner` | `SourceInspector`, the `AttributeFactory` default |
 
 The [Classic Attribute](/reference/attributes), [Docblock Annotation](/reference/annotations) and
 [Processor](/reference/processors) references mark each deprecated class.
@@ -198,8 +199,8 @@ and the rules the levels follow.
 `AttributeFactory` takes any `SourceInspectorInterface` where it took a `TokenScanner`, and asks it
 which members and traits are a class's own. The default is `SourceInspector`, which answers from
 reflection and finds a file's classes from its tokens, so a spec build parses no PHP. `TokenScanner`
-implements the interface too, and classic analysis keeps using it. Pass `new TokenScanner()` to the
-`AttributeFactory` to get the parser back.
+implements the interface too, and classic analysis keeps using it. Passing `new TokenScanner()` to
+the `AttributeFactory` gets the parser back until 8.0, though `TokenScanner` itself is deprecated.
 
 A subclass reading `$tokenScanner` gets the interface: it calls `declares()`, `directTraits()` and
 `classesIn()` rather than `detailsFor()` and `scanFile()`. With the default `SourceInspector`, a call
@@ -232,6 +233,9 @@ has the details.
 
 `AttributeInterface` gains `isAuthored()`, which `AbstractAttribute` has since 7.4. A class
 implementing the interface without extending `AbstractAttribute` adds it.
+
+`TokenScanner` goes with classic, and so does the `nikic/php-parser` dependency, since nothing else
+in swagger-php parses PHP. A project using php-parser directly requires it itself.
 
 ## Removed deprecated elements
 

@@ -28,6 +28,8 @@ use PhpParser\ParserFactory;
  * without a readable file, internal or from `eval()`, owns every member declared on it, and uses
  * no trait as far as the scanner can tell.
  *
+ * @deprecated since 7.6, removed in 8.0 - use `SourceInspector`
+ *
  * @phpstan-type ScannerDetails array{
  *     uses: array<string, class-string>,
  *     interfaces: list<class-string>,
