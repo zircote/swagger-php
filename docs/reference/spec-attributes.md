@@ -134,6 +134,8 @@ can be one of several schemas (used with oneOf, anyOf, allOf).
   <dd><p>Maps payload values to schema names or references</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+  <dt><strong>defaultMapping</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The schema name or reference to use when the payload value has no mapping, from OpenAPI 3.2 on</p></dd>
 </dl>
 
 #### Reference
@@ -198,6 +200,10 @@ Describes an example value for a parameter, media type, or schema.
   <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+  <dt><strong>dataValue</strong> : <span style="font-family: monospace;">mixed</span></dt>
+  <dd><p>The example value before serialization, from OpenAPI 3.2 on; mutually exclusive with `value`</p></dd>
+  <dt><strong>serializedValue</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The example value after serialization, from OpenAPI 3.2 on; mutually exclusive with `value` and `externalValue`</p></dd>
 </dl>
 
 #### Reference
@@ -782,6 +788,8 @@ The root element of an OpenAPI definition.
   <dd><p>Default security requirements for the API</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+  <dt><strong>self</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A URI identifying this document, and the base URI for relative references, from OpenAPI 3.2 on</p></dd>
 </dl>
 
 #### Reference
@@ -1850,7 +1858,7 @@ Describes a single response from an API operation.
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
-  <dd><p>A short summary of what `ref` points to, written only beside `ref` and from OpenAPI 3.1 on</p></dd>
+  <dd><p>A short summary of the response from OpenAPI 3.2 on; before that, of what `ref` points to, written only beside `ref` and from OpenAPI 3.1 on</p></dd>
 </dl>
 
 #### Reference
@@ -2451,6 +2459,10 @@ Example:
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A short summary of what `ref` points to, written only beside `ref` and from OpenAPI 3.1 on</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the security scheme is deprecated, from OpenAPI 3.2 on</p></dd>
+  <dt><strong>oauth2MetadataUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The RFC 8414 authorization server metadata URL (oauth2), from OpenAPI 3.2 on</p></dd>
 </dl>
 
 #### Reference
@@ -2500,6 +2512,8 @@ to this:
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -2551,6 +2565,8 @@ to this:
   <dd><p>No details available.</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
 </dl>
 
 #### Reference
@@ -2592,6 +2608,8 @@ to this:
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>No details available.</p></dd>
 </dl>
 
@@ -2639,6 +2657,10 @@ to this:
   <dd><p>No details available.</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>oauth2MetadataUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
 </dl>
 
 #### Reference
@@ -2685,6 +2707,8 @@ to this:
   <dd><p>No details available.</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
 </dl>
 
 #### Reference
@@ -2714,6 +2738,8 @@ A host the API is available on, optionally templated with `ServerVariable` subst
   <dd><p>Variables for server URL template substitution</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+  <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A unique name for the server, for use in tooling, from OpenAPI 3.2 on</p></dd>
 </dl>
 
 #### Reference

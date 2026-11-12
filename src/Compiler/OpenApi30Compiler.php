@@ -43,6 +43,8 @@ class OpenApi30Compiler extends OpenApi31Compiler
 
     protected const UNSUPPORTED_PROPERTIES = [
         Specification::class => ['mediaTypes'],
+        OA\OpenApi::class => ['self'],
+        OA\Server::class => ['name'],
         OA\Info::class => ['summary'],
         OA\License::class => ['identifier' => 'use url instead'],
         OA\Tag::class => ['summary', 'parent', 'kind'],
@@ -56,6 +58,9 @@ class OpenApi30Compiler extends OpenApi31Compiler
             'dependentSchemas',
             'contentSchema',
         ],
+        OA\Discriminator::class => ['defaultMapping'],
+        OA\Security\Scheme::class => ['deprecated', 'oauth2MetadataUrl'],
+        OA\Example::class => ['serializedValue'],
     ];
 
     #[\Override]
