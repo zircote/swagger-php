@@ -77,4 +77,14 @@ class Hooks
 
         return $this;
     }
+
+    /**
+     * @param string|array<string, mixed> $document
+     */
+    public function withDocument(string|array $document): static
+    {
+        $this->builder->withDocument($document);
+
+        return $this;
+    }
 }

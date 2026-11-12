@@ -91,6 +91,36 @@ $result = (new Builder())
 Reflector sources are not supported in classic mode — they require the spec or hybrid pipeline.
 :::
 
+### Documents (spec/hybrid mode) {#documents}
+
+```php
+// A JSON or YAML file
+$builder->withDocument('openapi/webhooks.yaml');
+
+// Or a document already decoded into an array
+$builder->withDocument(['openapi' => '3.1.0', 'webhooks' => [/* ... */]]);
+```
+
+`withDocument()` adds a hand-written OpenAPI document to what the sources describe. A file is
+read as JSON when its name ends in `.json`, and as YAML otherwise. Documents are read during the
+build and added before references are resolved, so a `$ref` in a document can point at a
+component built from a class, and the other way round. Each call adds one more document.
+
+Where the attributes and a document describe the same thing, the attributes win:
+
+* `info`, `servers`, `security` and `externalDocs` are taken from a document only where the
+  attributes have none.
+* A path, operation, component or tag in both goes to the [mergers](#mergers) with the
+  attribute as the later of the two, so the default mergers keep the attribute's.
+
+Anything the spec attributes cannot hold, such as `jsonSchemaDialect` or a schema's `$defs`, is
+left out with a warning.
+
+::: warning
+Only OpenAPI 3.1 documents are supported. A document of another version is read as 3.1, with a
+warning. Classic mode does not read documents.
+:::
+
 ### Version
 
 ```php

@@ -88,6 +88,9 @@ class Builder
     /** Whether a plugin configured the builder; classic mode does not use what plugins add. */
     protected bool $hasPlugins = false;
 
+    /** Whether a document was given; classic mode does not read documents. */
+    protected bool $hasDocuments = false;
+
     /**
      * The class of each plugin that configured the builder, as `PluginDiscovery::classKey()` gives
      * it, and whether discovery added it.
@@ -320,6 +323,34 @@ class Builder
     }
 
     /**
+     * Add a hand-written OpenAPI 3.1 document to what the sources describe.
+     *
+     * Takes a JSON or YAML file, by its extension, or a document already decoded into an array.
+     * The `Parser` reads it during the build, and what it holds is added after assembly, where
+     * `withSpecification()` adds attributes: a `$ref` in either one resolves against the other.
+     *
+     * Where the attributes and the document describe the same thing, the attributes win. The
+     * document's `info`, `servers`, `security` and `externalDocs` are used only where the
+     * attributes have none. A path, operation, component or tag in both goes to the mergers with
+     * the attribute last, so the default mergers keep the attribute's, with a warning.
+     *
+     * Only OpenAPI 3.1 documents are read. One of another version is read as 3.1, with a warning.
+     * Documents accumulate: each one is added, in registration order. Classic mode assembles no
+     * `Specification`, so documents are not read there, with a warning.
+     *
+     * @param string|array<string, mixed> $document
+     */
+    public function withDocument(string|array $document): static
+    {
+        $this->hasDocuments = true;
+
+        return $this->withSpecification(function (Specification $specification) use ($document): void {
+            $parser = new Parser($this->getLogger());
+            $this->addDocument($specification, is_string($document) ? $parser->parseFile($document) : $parser->parse($document));
+        });
+    }
+
+    /**
      * Let plugins configure the builder, in the order given.
      *
      * Each entry is a plugin class, a plugin class mapped to its settings, or a plugin instance.
@@ -549,6 +580,10 @@ class Builder
             $this->getLogger()->warning('Plugins configure the spec pipeline and are not used in classic mode, ignored');
         }
 
+        if ($this->hasDocuments) {
+            $this->getLogger()->warning('Documents are added to the spec pipeline and are not read in classic mode, ignored');
+        }
+
         $generator = new Generator($this->getLogger());
 
         if ($this->version !== null) {
@@ -658,6 +693,25 @@ class Builder
             $output,
             [...$this->getLogger()->drain(), ...$diagnostics],
         );
+    }
+
+    /**
+     * Add a parsed document to the assembled specification, the attributes winning.
+     *
+     * The document's root fields fill only what the attributes left unset. Its lists go first,
+     * so a merger that keeps the later of two entries keeps the attribute's.
+     */
+    protected function addDocument(Specification $specification, Specification $document): void
+    {
+        $specification->openapi->security ??= $document->openapi->security;
+        $specification->openapi->x = [...$document->openapi->x ?? [], ...$specification->openapi->x ?? []] ?: null;
+        $specification->info ??= $document->info;
+        $specification->servers = $specification->servers ?: $document->servers;
+        $specification->externalDocs = $specification->externalDocs ?: $document->externalDocs;
+
+        foreach (['tags', 'pathItems', 'operations', 'schemas', 'responses', 'parameters', 'requestBodies', 'headers', 'securitySchemes', 'links', 'examples', 'mediaTypes', 'attachables'] as $list) {
+            $specification->{$list} = [...$document->{$list}, ...$specification->{$list}];
+        }
     }
 
     /**

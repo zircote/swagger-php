@@ -987,6 +987,25 @@ components:
               - Airport
 ```
 
+## Add a hand-written document
+
+Some parts of an API have no PHP code to put attributes on, webhooks for example. Write them as
+an OpenAPI 3.1 document and pass it to the `Builder` with `withDocument()`. A `$ref` in it can
+point at a schema built from a class:
+
+<<< @/snippets/guide/cookbook/documents/webhooks.yaml
+
+<<< @/snippets/guide/cookbook/documents/models.php
+
+<<< @/snippets/guide/cookbook/documents/documents.php
+
+gives:
+
+<<< @/snippets/guide/cookbook/documents/documents-3.1.0.yaml
+
+Where a document and the attributes describe the same thing, the attributes win. The details,
+and what a document cannot hold, are in [Documents](/reference/builder#documents).
+
 ## Build parts of a document for another one
 
 An integration that keeps a document of its own can still take parts of it from spec attributes:
