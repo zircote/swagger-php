@@ -1,0 +1,110 @@
+openapi: 3.2.0
+$self: 'https://spec.acme.dev/pets/openapi.yaml'
+info:
+  title: Spec32
+  version: '1.0'
+servers:
+  -
+    url: 'https://api.acme.dev'
+    description: Production
+    name: production
+paths:
+  /pets:
+    get:
+      operationId: listPets
+      responses:
+        '200':
+          summary: 'All good'
+          description: 'A list of pets'
+          content:
+            application/json:
+              schema:
+                type:
+                  - array
+                  - 'null'
+                items:
+                  type: string
+              examples:
+                serialized:
+                  summary: 'Both halves of the 3.2 example pair'
+                  serializedValue: '["Milo","Otis"]'
+                  dataValue: [Milo, Otis]
+                nullData:
+                  summary: 'An explicit null is a value, not an omission'
+                  dataValue: null
+                nullValue:
+                  summary: 'The same, for the pre-3.2 value field'
+                  value: null
+                noValue:
+                  summary: 'Nothing set, so nothing emitted'
+          links:
+            firstPet:
+              operationId: getPet
+              description: 'An explicit null request body'
+              requestBody: null
+        '404':
+          $ref: '#/components/responses/NotFound'
+          summary: 'Kept beside the $ref from 3.1 on'
+      security:
+        -
+          bearerAuth: []
+        -
+          oauth2:
+            - 'read:pets'
+  '/pets/{id}':
+    get:
+      operationId: getPet
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'One pet'
+components:
+  schemas:
+    Pet:
+      oneOf:
+        -
+          $ref: '#/components/schemas/Cat'
+        -
+          $ref: '#/components/schemas/Dog'
+      discriminator:
+        propertyName: kind
+        mapping:
+          cat: '#/components/schemas/Cat'
+        defaultMapping: '#/components/schemas/Dog'
+    Cat:
+      type: object
+      properties:
+        kind:
+          type: string
+    Dog:
+      type: object
+      properties:
+        kind:
+          type: string
+  responses:
+    NotFound:
+      summary: 'Nothing there'
+      description: 'The pet does not exist'
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: 'Deprecated, and advertises its authorization server metadata.'
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://auth.acme.dev/oauth/token'
+          scopes:
+            'read:pets': 'Read pets'
+      deprecated: true
+      oauth2MetadataUrl: 'https://auth.acme.dev/.well-known/oauth-authorization-server'
+    bearerAuth:
+      type: http
+      description: 'oauth2MetadataUrl is set but applies to oauth2 only, so it is dropped.'
+      scheme: bearer
+      bearerFormat: JWT
+      deprecated: true

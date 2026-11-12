@@ -1419,6 +1419,40 @@ final class CompilerTest extends TestCase
         $this->assertArrayNotHasKey('example', (array) $result);
     }
 
+    // --- 3.2 fields the Spec32 fixture cannot assert ---
+
+    /**
+     * `assertSpecEquals` compares maps order-independently, so the fixture cannot show that
+     * `$self` sits directly below `openapi` the way the spec lists it.
+     */
+    public function test32SelfFollowsOpenapi(): void
+    {
+        $spec = $this->createSpecification('3.2.0');
+        $spec->openapi->self = 'https://example.com/openapi.yaml';
+
+        $output = (new OpenApi32Compiler())->compile($spec);
+
+        $this->assertSame(['openapi', '$self'], array_slice(array_keys($output), 0, 2));
+    }
+
+    /**
+     * Provoking these needs a document the 3.2 schema rejects, and `composer redocly` lints
+     * every scratch fixture, so this one cannot become fixture material.
+     */
+    public function test32RejectsMutuallyExclusiveExampleValues(): void
+    {
+        $spec = $this->createSpecification('3.2.0');
+        $spec->examples[] = new OA\Example(example: 'pet', value: 'Milo', dataValue: ['name' => 'Milo']);
+        $spec->examples[] = new OA\Example(example: 'other', externalValue: 'https://example.com/milo.json', serializedValue: 'Milo');
+
+        $entries = (new OpenApi32Compiler())->validate($spec);
+        $messages = array_column($entries, 'message');
+
+        $this->assertCount(2, $messages);
+        $this->assertStringContainsString('value is mutually exclusive with dataValue and serializedValue', $messages[0]);
+        $this->assertStringContainsString('serializedValue and externalValue are mutually exclusive', $messages[1]);
+    }
+
     protected function createSpecification(string $version = '3.1.0'): Specification
     {
         $spec = new Specification();
