@@ -431,14 +431,17 @@ final class CompilerTest extends TestCase
         $messages = array_column(array_filter($compiler->validate($spec), fn (array $entry): bool => $entry['level'] === 'error'), 'message');
         $document = $compiler->compile($spec);
 
+        // a response has a summary of its own from 3.2 on; its links still do not
+        $hasResponseSummary = $version === '3.2.0';
+
         $this->assertSame([
             'Request body "Body" summary is written only beside $ref, omitted in unknown',
             'Parameter "q" summary is written only beside $ref, omitted in unknown',
-            'Response "200" summary is written only beside $ref, omitted in unknown',
+            ...$hasResponseSummary ? [] : ['Response "200" summary is written only beside $ref, omitted in unknown'],
             'Link "l" summary is written only beside $ref, omitted in unknown',
         ], array_values(array_filter($messages, fn (string $message): bool => str_contains($message, 'summary'))));
         $this->assertArrayNotHasKey('summary', $document['paths']['/a']['get']['parameters'][0]);
-        $this->assertArrayNotHasKey('summary', $document['paths']['/a']['get']['responses'][200]);
+        $this->assertSame($hasResponseSummary, isset($document['paths']['/a']['get']['responses'][200]['summary']));
     }
 
     public function testReportsSummaryWithoutRefOncePerDeclaration(): void

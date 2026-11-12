@@ -21,6 +21,7 @@ class Server extends AbstractAttribute
      * @param array<string,mixed>|null  $x           Vendor extensions (x-* properties)
      * @param list<Attachable>|null     $attachables Reusable custom attachable attributes
      * @param Fan|null                  $fan         Where this attribute goes when more than one attribute could hold it
+     * @param string|null               $name        A unique name for the server, for use in tooling, from OpenAPI 3.2 on
      */
     public function __construct(
         public ?string $url = null,
@@ -29,6 +30,7 @@ class Server extends AbstractAttribute
         ?array $x = null,
         ?array $attachables = null,
         ?Fan $fan = null,
+        public ?string $name = null,
     ) {
         parent::__construct(x: $x, attachables: $attachables, fan: $fan);
     }

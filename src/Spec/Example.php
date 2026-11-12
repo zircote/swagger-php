@@ -24,16 +24,18 @@ class Example extends AbstractAttribute implements RefInterface
     public ?string $component = null;
 
     /**
-     * @param string|null              $example       The example name — the key the example nests under in a media type, parameter or header
-     * @param string|null              $summary       Short description of the example
-     * @param string|null              $description   Long description of the example (CommonMark syntax)
-     * @param mixed                    $value         Embedded literal example value
-     * @param string|null              $externalValue A URI pointing to the literal example
-     * @param string|null              $ref           A JSON Reference to a reusable example
-     * @param string|null              $component     The name this is filed under in `components`, which makes it a reusable component
-     * @param array<string,mixed>|null $x             Vendor extensions (x-* properties)
-     * @param list<Attachable>|null    $attachables   Reusable custom attachable attributes
-     * @param Fan|null                 $fan           Where this attribute goes when more than one attribute could hold it
+     * @param string|null              $example         The example name — the key the example nests under in a media type, parameter or header
+     * @param string|null              $summary         Short description of the example
+     * @param string|null              $description     Long description of the example (CommonMark syntax)
+     * @param mixed                    $value           Embedded literal example value
+     * @param string|null              $externalValue   A URI pointing to the literal example
+     * @param string|null              $ref             A JSON Reference to a reusable example
+     * @param string|null              $component       The name this is filed under in `components`, which makes it a reusable component
+     * @param array<string,mixed>|null $x               Vendor extensions (x-* properties)
+     * @param list<Attachable>|null    $attachables     Reusable custom attachable attributes
+     * @param Fan|null                 $fan             Where this attribute goes when more than one attribute could hold it
+     * @param mixed                    $dataValue       The example value before serialization, from OpenAPI 3.2 on; mutually exclusive with `value`
+     * @param string|null              $serializedValue The example value after serialization, from OpenAPI 3.2 on; mutually exclusive with `value` and `externalValue`
      */
     public function __construct(
         public ?string $example = null,
@@ -46,6 +48,8 @@ class Example extends AbstractAttribute implements RefInterface
         ?array $x = null,
         ?array $attachables = null,
         ?Fan $fan = null,
+        public mixed $dataValue = Undefined::UNDEFINED,
+        public ?string $serializedValue = null,
     ) {
         $this->component = $component;
 

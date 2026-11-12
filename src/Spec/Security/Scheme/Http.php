@@ -50,6 +50,7 @@ class Http extends OA\Security\Scheme
         ?array $x = null,
         ?array $attachables = null,
         ?OA\Fan $fan = null,
+        ?bool $deprecated = null,
     ) {
         parent::__construct(
             securityScheme: $securityScheme,
@@ -61,6 +62,7 @@ class Http extends OA\Security\Scheme
             x: $x,
             attachables: $attachables,
             fan: $fan,
+            deprecated: $deprecated,
         );
     }
 }
