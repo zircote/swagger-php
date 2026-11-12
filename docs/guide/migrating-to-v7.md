@@ -194,6 +194,16 @@ component` now reads `Reference "#/components/schemas/Pet" points to no componen
 needs updating. Classic's messages are unchanged. [Writing messages](/dev/messages) has the form
 and the rules the levels follow.
 
+## Changed output in 7.6
+
+In classic and hybrid mode, a trait imported through a grouped `use`, such as
+`use App\Model\{HasTimestamps, SoftDeletes};`, is resolved. A class using such a trait now gets
+the trait's properties. Before, they were missing, with an `Unexpected @OA\Property()` warning.
+
+Spec and hybrid run the validation checks in one pass over the document, so messages from
+different checks come out mixed, rather than one check after the other. Each check's own messages
+keep their order. A test matching the full list of messages in order needs updating.
+
 ## Changed in 7.6
 
 `AttributeFactory` takes any `SourceInspectorInterface` where it took a `TokenScanner`, and asks it
