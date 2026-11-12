@@ -413,6 +413,35 @@ final class CompilerTest extends TestCase
         $this->assertSame([], array_values(array_filter($messages, fn (string $message): bool => str_contains($message, 'beside $ref'))));
     }
 
+    /**
+     * Each version reports what its compile methods leave out, and 3.2 leaves none of these out.
+     */
+    #[DataProvider('compilerProvider')]
+    public function testReportsUnsupportedProperties(CompilerInterface $compiler, string $version): void
+    {
+        $spec = $this->createSpecification($version);
+        $spec->tags[] = new OA\Tag(name: 'pets', summary: 'All about pets');
+        $spec->schemas[] = new OA\Schema(
+            type: 'object',
+            patternProperties: ['^x-' => new OA\Schema(type: 'string')],
+            propertyNames: new OA\Schema(pattern: '^[a-z-]+$'),
+            component: 'Pet',
+        );
+
+        $messages = array_column($compiler->validate($spec), 'message');
+
+        $expected = match ($version) {
+            '3.0.0' => [
+                'Tag "pets" uses summary, not supported in OpenAPI 3.0, omitted',
+                'Schema "Pet" uses patternProperties, not supported in OpenAPI 3.0, omitted',
+                'Schema "Pet" uses propertyNames, not supported in OpenAPI 3.0, omitted',
+            ],
+            '3.1.0' => ['Tag "pets" uses summary, not supported in OpenAPI 3.1, omitted'],
+            default => [],
+        };
+        $this->assertEqualsCanonicalizing($expected, array_values(array_filter($messages, fn (string $message): bool => str_contains($message, 'not supported in OpenAPI'))));
+    }
+
     #[DataProvider('compilerProvider')]
     public function testReportsSummaryWithoutRef(CompilerInterface $compiler, string $version): void
     {
@@ -758,7 +787,7 @@ final class CompilerTest extends TestCase
         yield '3.0 license identifier' => [
             new OpenApi30Compiler(),
             $specWithIdentifier,
-            'License identifier is not supported in OpenAPI 3.0, omitted; use url instead',
+            'License uses identifier, not supported in OpenAPI 3.0, omitted; use url instead',
         ];
 
         $specNoInfo = new Specification();

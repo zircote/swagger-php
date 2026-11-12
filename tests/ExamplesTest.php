@@ -88,7 +88,7 @@ final class ExamplesTest extends OpenApiTestCase
 
         $this->allowLogEntry(
             'Schema uses const, not supported in OpenAPI 3.0, using enum fallback',
-            'License identifier is not supported in OpenAPI 3.0, omitted; use url instead',
+            'License uses identifier, not supported in OpenAPI 3.0, omitted; use url instead',
             // a 3.0 `$ref` drops what is beside it
             'Schema sets description beside $ref "#/components/schemas/Colour", omitted',
             'Schema sets title beside $ref "#/components/schemas/Category", omitted',

@@ -59,6 +59,17 @@ class OpenApi31Compiler implements CompilerInterface
         OA\Header::class => ['examples' => 'example'],
     ];
 
+    /**
+     * The properties this version cannot carry, which the compile methods leave out, as class
+     * => property names. A name may key a hint for the message instead. Each compiler lists
+     * all of its own, and a property that is translated or has a check of its own is not listed.
+     *
+     * @var array<class-string<OA\AbstractAttribute>, array<int|string, string>>
+     */
+    protected const UNSUPPORTED_PROPERTIES = [
+        OA\Tag::class => ['summary', 'parent', 'kind'],
+    ];
+
     protected CollectingLogger $logger;
 
     /**
@@ -168,6 +179,8 @@ class OpenApi31Compiler implements CompilerInterface
         $this->validateNames($specification);
 
         $this->validateVersionedComponents($specification);
+
+        $this->validateUnsupportedProperties($specification, static::UNSUPPORTED_PROPERTIES);
 
         $this->validateNestedNames($specification);
 
@@ -816,6 +829,60 @@ class OpenApi31Compiler implements CompilerInterface
         if ($specification->mediaTypes !== []) {
             $this->logger->warning('Media type components are not supported before OpenAPI 3.2, omitted');
         }
+    }
+
+    /**
+     * Warns about each set property in `$unsupported`, which the compile methods leave out.
+     * Copies of one declaration produce the same message, which is logged once.
+     *
+     * @param array<class-string<OA\AbstractAttribute>, array<int|string, string>> $unsupported class => property names, or property name => hint
+     */
+    protected function validateUnsupportedProperties(Specification $specification, array $unsupported): void
+    {
+        if ($unsupported === []) {
+            return;
+        }
+
+        $version = implode('.', array_slice(explode('.', $this->getVersion()), 0, 2));
+        $reported = [];
+
+        $this->visit($specification, array_keys($unsupported), function (OA\AbstractAttribute $attribute) use ($unsupported, $version, &$reported): void {
+            foreach ($unsupported as $class => $properties) {
+                if (!$attribute instanceof $class) {
+                    continue;
+                }
+
+                foreach ($properties as $property => $hint) {
+                    if (is_int($property)) {
+                        [$property, $hint] = [$hint, null];
+                    }
+
+                    if (in_array($attribute->{$property}, [null, Undefined::UNDEFINED, []], true)) {
+                        continue;
+                    }
+
+                    $message = "{$this->subject($attribute)} uses {$property}, not supported in OpenAPI {$version}, omitted"
+                        . ($hint !== null ? "; {$hint}" : '')
+                        . ($attribute->getReflector() instanceof \Reflector ? ' in ' . $attribute->getSourceLocation() : '');
+                    if (!isset($reported[$message])) {
+                        $reported[$message] = true;
+                        $this->logger->warning($message);
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * An attribute named the way a message starts: its kind, and its name where it has one.
+     */
+    protected function subject(OA\AbstractAttribute $attribute): string
+    {
+        return match (true) {
+            $attribute instanceof OA\Schema => 'Schema' . $this->schemaLabel($attribute),
+            $attribute instanceof OA\Tag && $attribute->name !== null => 'Tag "' . $attribute->name . '"',
+            default => (new \ReflectionClass($attribute))->getShortName(),
+        };
     }
 
     /**
