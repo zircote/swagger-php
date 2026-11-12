@@ -147,6 +147,47 @@ final class OpenApi31ParserTest extends TestCase
         $this->assertSame(['type' => 'string'], $compiled['components']['schemas']['A']);
     }
 
+    public function testASummaryBesideARefIsKept(): void
+    {
+        $logger = new CollectingLogger();
+        $reference = static fn (string $ref): array => ['$ref' => $ref, 'summary' => 's', 'description' => 'd'];
+        $document = [
+            'openapi' => '3.1.0',
+            'paths' => ['/a' => ['post' => [
+                'parameters' => [$reference('#/components/parameters/P')],
+                'requestBody' => $reference('#/components/requestBodies/B'),
+                'responses' => [
+                    '200' => $reference('#/components/responses/R'),
+                    '201' => [
+                        'description' => 'Created',
+                        'headers' => ['X-H' => $reference('#/components/headers/H')],
+                        'content' => ['application/json' => ['examples' => ['e' => $reference('#/components/examples/E')]]],
+                        'links' => ['l' => $reference('#/components/links/L')],
+                    ],
+                ],
+            ]]],
+            'components' => ['securitySchemes' => ['shared' => $reference('https://example.com/schemes.yaml#/components/securitySchemes/api')]],
+        ];
+
+        $compiled = $this->roundTrip($document, $logger);
+
+        $this->assertSame([], array_column($logger->entries(), 'message'));
+        $this->assertEquals($this->normalised($document), $this->normalised($compiled));
+    }
+
+    public function testASummaryOnAnInlineObjectIsLeftOut(): void
+    {
+        $logger = new CollectingLogger();
+
+        $compiled = $this->roundTrip([
+            'openapi' => '3.1.0',
+            'paths' => ['/a' => ['get' => ['responses' => ['200' => ['description' => 'ok', 'summary' => 's']]]]],
+        ], $logger);
+
+        $this->assertSame(['"summary" is not supported, left out at #/paths/~1a/get/responses/200'], array_column($logger->entries(), 'message'));
+        $this->assertSame(['description' => 'ok'], $compiled['paths']['/a']['get']['responses'][200]);
+    }
+
     public function testAnEmptyPathIsKept(): void
     {
         $logger = new CollectingLogger();

@@ -22,9 +22,8 @@ use Psr\Log\NullLogger;
  * name becomes a list keyed by the member field the compiler reads it from. `$ref` stays a
  * string. `x-` keys go to `x`. A keyword the model has nowhere to put is left out, with a
  * warning naming where it was: among them `jsonSchemaDialect`, a schema's `$id`, `$comment` and
- * `$defs`, the schema `false` where the model takes only a `Schema`, and `summary` beside a
- * `$ref` other than an example's. So is a value of the wrong type, except a number where a
- * string belongs, which is read as that string.
+ * `$defs`, and the schema `false` where the model takes only a `Schema`. So is a value of the
+ * wrong type, except a number where a string belongs, which is read as that string.
  */
 class OpenApi31Parser implements ParserInterface
 {
@@ -272,7 +271,7 @@ class OpenApi31Parser implements ParserInterface
     protected function parseParameter(array $parameter, string $pointer, array $identity = []): OA\Parameter
     {
         if (isset($parameter['$ref'])) {
-            return $this->build(OA\Parameter::class, $parameter, $pointer, ['$ref' => 'ref', 'description' => 'description'], $identity);
+            return $this->build(OA\Parameter::class, $parameter, $pointer, ['$ref' => 'ref', 'summary' => 'summary', 'description' => 'description'], $identity);
         }
 
         return $this->build(OA\Parameter::class, $parameter, $pointer, [
@@ -299,7 +298,7 @@ class OpenApi31Parser implements ParserInterface
     protected function parseRequestBody(array $body, string $pointer, array $identity = []): OA\RequestBody
     {
         if (isset($body['$ref'])) {
-            return $this->build(OA\RequestBody::class, $body, $pointer, ['$ref' => 'ref', 'description' => 'description'], $identity);
+            return $this->build(OA\RequestBody::class, $body, $pointer, ['$ref' => 'ref', 'summary' => 'summary', 'description' => 'description'], $identity);
         }
 
         return $this->build(OA\RequestBody::class, $body, $pointer, [
@@ -317,7 +316,7 @@ class OpenApi31Parser implements ParserInterface
         $identity = array_filter(['response' => $code, 'component' => $component], static fn (mixed $value): bool => $value !== null);
 
         if (isset($response['$ref'])) {
-            return $this->build(OA\Response::class, $response, $pointer, ['$ref' => 'ref', 'description' => 'description'], $identity);
+            return $this->build(OA\Response::class, $response, $pointer, ['$ref' => 'ref', 'summary' => 'summary', 'description' => 'description'], $identity);
         }
 
         return $this->build(OA\Response::class, $response, $pointer, [
@@ -336,7 +335,7 @@ class OpenApi31Parser implements ParserInterface
         $identity = array_filter(['header' => $name, 'component' => $component], static fn (mixed $value): bool => $value !== null);
 
         if (isset($header['$ref'])) {
-            return $this->build(OA\Header::class, $header, $pointer, ['$ref' => 'ref', 'description' => 'description'], $identity);
+            return $this->build(OA\Header::class, $header, $pointer, ['$ref' => 'ref', 'summary' => 'summary', 'description' => 'description'], $identity);
         }
 
         return $this->build(OA\Header::class, $header, $pointer, [
@@ -387,7 +386,7 @@ class OpenApi31Parser implements ParserInterface
         $identity = array_filter(['link' => $name, 'component' => $component], static fn (mixed $value): bool => $value !== null);
 
         if (isset($link['$ref'])) {
-            return $this->build(OA\Link::class, $link, $pointer, ['$ref' => 'ref', 'description' => 'description'], $identity);
+            return $this->build(OA\Link::class, $link, $pointer, ['$ref' => 'ref', 'summary' => 'summary', 'description' => 'description'], $identity);
         }
 
         return $this->build(OA\Link::class, $link, $pointer, [
@@ -578,7 +577,7 @@ class OpenApi31Parser implements ParserInterface
     protected function parseSecurityScheme(array $scheme, string $pointer, string $name): OA\Security\Scheme
     {
         if (isset($scheme['$ref'])) {
-            return $this->build(OA\Security\Scheme::class, $scheme, $pointer, ['$ref' => 'ref', 'description' => 'description'], ['component' => $name]);
+            return $this->build(OA\Security\Scheme::class, $scheme, $pointer, ['$ref' => 'ref', 'summary' => 'summary', 'description' => 'description'], ['component' => $name]);
         }
 
         return $this->build(OA\Security\Scheme::class, $scheme, $pointer, [
