@@ -41,6 +41,22 @@ class OpenApi30Compiler extends OpenApi31Compiler
     /** `examples` has a 3.0 warning of its own, beside a `$ref` or not */
     protected const NOT_REF_KEYWORDS = [...parent::NOT_REF_KEYWORDS, 'examples'];
 
+    protected const UNSUPPORTED_PROPERTIES = [
+        OA\Info::class => ['summary'],
+        OA\License::class => ['identifier' => 'use url instead'],
+        OA\Tag::class => ['summary', 'parent', 'kind'],
+        OA\Schema::class => [
+            'contains',
+            'minContains',
+            'maxContains',
+            'patternProperties',
+            'propertyNames',
+            'dependentRequired',
+            'dependentSchemas',
+            'contentSchema',
+        ],
+    ];
+
     #[\Override]
     public function getVersion(): string
     {
@@ -73,13 +89,6 @@ class OpenApi30Compiler extends OpenApi31Compiler
         $hasPathItemComponents = (bool) array_filter($specification->pathItems, fn (OA\PathItem $pathItem): bool => $pathItem->component !== null);
         if ($hasPathItemComponents) {
             $this->logger->warning('Path item components are not supported in OpenAPI 3.0, omitted');
-        }
-
-        if ($specification->info?->license instanceof OA\License) {
-            $license = $specification->info->license;
-            if ($license->identifier !== null) {
-                $this->logger->warning('License identifier is not supported in OpenAPI 3.0, omitted; use url instead');
-            }
         }
 
         $this->validateReferenceSiblings($specification);

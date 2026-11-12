@@ -37,6 +37,19 @@ final class ScratchTest extends OpenApiTestCase
             ['plain', 'nullablePlain', 'plainList', 'plainMap', 'plainShape', 'plainUnion'],
         );
 
+        // the 2020-12 keywords 3.0 has no place for
+        $schemaKeywords30 = array_map(
+            static fn (string $keyword): string => "uses {$keyword}, not supported in OpenAPI 3.0, omitted",
+            ['contains', 'minContains', 'maxContains', 'dependentRequired', 'dependentSchemas', 'contentSchema', 'contentSchema'],
+        );
+
+        // the 3.2 tag fields, left out before 3.2
+        $tags = static fn (string $version): array => [
+            "Tag \"nested\" uses summary, not supported in OpenAPI {$version}, omitted",
+            "Tag \"nested\" uses parent, not supported in OpenAPI {$version}, omitted",
+            "Tag \"invalidparent\" uses parent, not supported in OpenAPI {$version}, omitted",
+        ];
+
         // Keyed `{fixture}-{version}`, applying to every mode, or `{fixture}-{version}-{mode}`
         // for a diagnostic only one mode raises. Both keys contribute when both are present.
         $expectedLogs = [
@@ -57,6 +70,7 @@ final class ScratchTest extends OpenApiTestCase
                 'uses if/then/else, not supported in OpenAPI 3.0',
                 'has type "array" but no items',
                 'Schema "envelope" uses contentEncoding/contentMediaType, not supported in OpenAPI 3.0, omitted',
+                ...$schemaKeywords30,
             ],
             'SchemaKeywords-3.0.0-hybrid' => [
                 'uses prefixItems, not supported in OpenAPI 3.0',
@@ -65,7 +79,14 @@ final class ScratchTest extends OpenApiTestCase
                 'uses if/then/else, not supported in OpenAPI 3.0',
                 'has type "array" but no items',
                 'Schema "envelope" uses contentEncoding/contentMediaType, not supported in OpenAPI 3.0, omitted',
+                ...$schemaKeywords30,
             ],
+            'InfoObject-3.0.0-spec' => ['Info uses summary, not supported in OpenAPI 3.0, omitted'],
+            'InfoObject-3.0.0-hybrid' => ['Info uses summary, not supported in OpenAPI 3.0, omitted'],
+            'Tags-3.0.0-spec' => $tags('3.0'),
+            'Tags-3.0.0-hybrid' => $tags('3.0'),
+            'Tags-3.1.0-spec' => $tags('3.1'),
+            'Tags-3.1.0-hybrid' => $tags('3.1'),
             'Examples-3.0.0-classic' => ['@OA\Schema::examples is only allowed as of 3.1.0'],
             'Examples-3.0.0-spec' => ['uses an examples array, not supported in OpenAPI 3.0'],
             'Examples-3.0.0-hybrid' => ['uses an examples array, not supported in OpenAPI 3.0'],
