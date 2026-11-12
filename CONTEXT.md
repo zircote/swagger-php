@@ -95,6 +95,10 @@ _Avoid_: Processor (reserved for the classic pipeline), middleware, handler
 Transforms a Specification into a versioned OpenAPI document array. One per supported OpenAPI version.
 _Avoid_: Serializer (classic output step), renderer
 
+**Parser**:
+Reads a versioned OpenAPI document into a Specification, the inverse of a Compiler. One per supported OpenAPI version, beside the compilers; `OpenApi\Parser` picks the one for a document's `openapi` version.
+_Avoid_: deserializer (classic `Serializer::deserialize()`), loader
+
 **Slot map**:
 The `merge()` / `contained()` declarations by which an attribute names where it can nest. The slot names a property on the **target**, not on the declaring attribute.
 _Avoid_: nesting map (that is the classic `$_nested`)
@@ -133,6 +137,7 @@ In the spec pipeline:
 - The **Assembler** resolves **slot maps** to decide what nests where; what survives are **root attributes**
 - **Augmenters** run over the **Specification** in phases (resolve → reduce → augment)
 - A **Compiler** turns the finished **Specification** into the output document
+- A **Parser** turns an existing document back into a **Specification**
 - A **Plugin** configures a **Builder** through its **Hooks**, in the order the plugins are listed
 
 ## Example dialogue

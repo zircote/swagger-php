@@ -16,7 +16,7 @@ use OpenApi\Specification;
  */
 class OpenApi32Compiler extends OpenApi31Compiler
 {
-    protected const VERSIONS = ['3.2.0'];
+    protected const VERSION_PREFIX = '3.2.';
 
     protected const OPERATION_METHODS = [...parent::OPERATION_METHODS, 'query'];
 

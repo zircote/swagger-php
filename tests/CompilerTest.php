@@ -38,6 +38,8 @@ final class CompilerTest extends TestCase
 
         $this->assertTrue($c31->supports('3.1.0'));
         $this->assertTrue($c31->supports('3.1.1'));
+        $this->assertTrue($c31->supports('3.1.9'));
+        $this->assertFalse($c31->supports('3.10.0'));
         $this->assertFalse($c31->supports('3.0.0'));
         $this->assertFalse($c31->supports('3.2.0'));
 

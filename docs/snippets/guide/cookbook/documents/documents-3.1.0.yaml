@@ -1,0 +1,40 @@
+openapi: 3.1.0
+info:
+  title: Shop
+  version: 1.0.0
+paths:
+  /orders/latest:
+    get:
+      operationId: latestOrder
+      responses:
+        '200':
+          description: 'The latest order'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+components:
+  schemas:
+    Order:
+      type: object
+      description: 'An order'
+      properties:
+        id:
+          type: integer
+        status:
+          type: string
+      required:
+        - id
+        - status
+webhooks:
+  orderPlaced:
+    post:
+      summary: 'An order was placed'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '200':
+          description: Received

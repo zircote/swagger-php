@@ -385,8 +385,8 @@ A plugin that throws from `configure()` stops `withPlugins()`. What it added bef
 stays in the builder, which is then not fit to build.
 
 The hooks are `withResolver()`, `withAugmenters()`, `withMergers()`,
-`withAttributeFactory()` and `withSpecification()`. Each one configures what the builder
-holds. A plugin could also remove or replace what is there, for example drop `Cleanup`, but
+`withAttributeFactory()`, `withSpecification()` and `withDocument()`. Each one configures what
+the builder holds. A plugin could also remove or replace what is there, for example drop `Cleanup`, but
 plugins build on one another when each adds its own. A plugin cannot set the component namer,
 the type resolver, the compiler or the version: those are for whoever runs the build to
 choose. A library that ships a component namer

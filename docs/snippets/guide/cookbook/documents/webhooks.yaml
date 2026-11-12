@@ -1,0 +1,16 @@
+openapi: 3.1.0
+info:
+  title: Shop
+  version: 1.0.0
+webhooks:
+  orderPlaced:
+    post:
+      summary: An order was placed
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '200':
+          description: Received
