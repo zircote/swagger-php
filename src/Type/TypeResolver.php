@@ -7,6 +7,7 @@
 namespace OpenApi\Type;
 
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 use PHPStan\PhpDocParser\Lexer\Lexer;
@@ -116,17 +117,7 @@ class TypeResolver implements LoggerAwareInterface
             return null;
         }
 
-        $lexer = new Lexer(new ParserConfig([]));
-        $config = new ParserConfig([]);
-        $constExprParser = new ConstExprParser($config);
-        $phpDocParser = new PhpDocParser(
-            $config,
-            new TypeParser($config, $constExprParser),
-            $constExprParser,
-        );
-
-        $tokens = new TokenIterator($lexer->tokenize($docComment));
-        $docNode = $phpDocParser->parse($tokens);
+        $docNode = $this->parseDocComment($docComment);
 
         foreach ($docNode->getTagsByName($tagName) as $tag) {
             $tagValue = $tag->value;
@@ -162,14 +153,33 @@ class TypeResolver implements LoggerAwareInterface
         };
     }
 
+    protected function parseDocComment(string $docComment): PhpDocNode
+    {
+        $config = new ParserConfig([]);
+        $constExprParser = new ConstExprParser($config);
+        $phpDocParser = new PhpDocParser(
+            $config,
+            new TypeParser($config, $constExprParser),
+            $constExprParser,
+        );
+
+        return $phpDocParser->parse(new TokenIterator((new Lexer($config))->tokenize($docComment)));
+    }
+
     /**
      * @param \ReflectionProperty|\ReflectionParameter|\ReflectionMethod|\ReflectionClassConstant $reflector
      */
     protected function doResolve(\Reflector $reflector): ?SchemaType
     {
-        $docblockType = $this->getDocblockType($reflector);
-        $reflectionType = $this->getReflectionType($reflector);
+        return $this->toSchemaType($this->getDocblockType($reflector), $this->getReflectionType($reflector));
+    }
 
+    /**
+     * The schema type for a member's docblock type and its declared type. The docblock type is
+     * the one mapped where there is one, and the member is nullable where either type is.
+     */
+    protected function toSchemaType(?Type $docblockType, ?Type $reflectionType): ?SchemaType
+    {
         if (!$docblockType && !$reflectionType) {
             return null;
         }
