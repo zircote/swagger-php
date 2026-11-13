@@ -255,10 +255,15 @@ class TypeResolver implements LoggerAwareInterface
         }
 
         // `Foo<T>` on a class. OpenAPI can express nothing about the parameters, so the
-        // type being parameterised is what is left. Last, so `array<...>` and `int<...>`
-        // reach the arms above.
+        // type being parameterised is what is left, with the arguments kept beside it for a
+        // class that is referenced. Last, so `array<...>` and `int<...>` reach the arms above.
         if ($type instanceof GenericType) {
-            return $this->mapType($type->getWrappedType());
+            $result = $this->mapType($type->getWrappedType());
+            if ($result->isRef()) {
+                $result->typeArguments = new TypeArguments(...$type->getVariableTypes());
+            }
+
+            return $result;
         }
 
         return new SchemaType();

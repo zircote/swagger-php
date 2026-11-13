@@ -10,8 +10,10 @@ use OpenApi\OpenApiException;
 use OpenApi\Spec as OA;
 use OpenApi\Specification\ComponentKey;
 use OpenApi\Tests\Fixtures\ClassDescriptions\Article;
+use OpenApi\Type\TypeArguments;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\TypeInfo\Type;
 
 final class ComponentKeyTest extends TestCase
 {
@@ -38,6 +40,32 @@ final class ComponentKeyTest extends TestCase
         $this->assertTrue($key->isPlain());
         $this->assertSame('App\Author', (string) $key);
         $this->assertFalse($key->equals(new ComponentKey('App\Author', ['groups' => ['light']])));
+    }
+
+    public function testTypeArgumentsArePartOfTheKey(): void
+    {
+        $key = new ComponentKey('App\Envelope', typeArguments: new TypeArguments(Type::object('App\Customer')));
+
+        $this->assertFalse($key->isPlain());
+        $this->assertSame('App\Envelope<App\Customer>', (string) $key);
+        $this->assertTrue($key->equals(new ComponentKey('App\Envelope', typeArguments: new TypeArguments(Type::object('\App\Customer')))));
+        $this->assertFalse($key->equals(new ComponentKey('App\Envelope')));
+        $this->assertFalse($key->equals(new ComponentKey('App\Envelope', typeArguments: new TypeArguments(Type::object('App\Order')))));
+    }
+
+    public function testTypeArgumentsKeepTheirOrder(): void
+    {
+        $key = new ComponentKey('App\Pair', typeArguments: new TypeArguments(Type::string(), Type::int()));
+
+        $this->assertSame('App\Pair<string, int>', (string) $key);
+        $this->assertFalse($key->equals(new ComponentKey('App\Pair', typeArguments: new TypeArguments(Type::int(), Type::string()))));
+    }
+
+    public function testTypeArgumentsComeBeforeTheQualifiers(): void
+    {
+        $key = new ComponentKey('App\Envelope', ['groups' => ['light']], new TypeArguments(Type::object('App\Customer')));
+
+        $this->assertSame('App\Envelope<App\Customer>{"groups":["light"]}', (string) $key);
     }
 
     /**
