@@ -20,6 +20,7 @@ class OpenApi extends AbstractAttribute
      * @param array<string,mixed>|null        $x           Vendor extensions (x-* properties)
      * @param list<Attachable>|null           $attachables Reusable custom attachable attributes
      * @param Fan|null                        $fan         Where this attribute goes when more than one attribute could hold it
+     * @param string|null                     $self        A URI identifying this document, and the base URI for relative references, from OpenAPI 3.2 on
      */
     public function __construct(
         public ?string $version = null,
@@ -27,6 +28,7 @@ class OpenApi extends AbstractAttribute
         ?array $x = null,
         ?array $attachables = null,
         ?Fan $fan = null,
+        public ?string $self = null,
     ) {
         parent::__construct(x: $x, attachables: $attachables, fan: $fan);
     }

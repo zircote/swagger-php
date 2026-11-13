@@ -43,7 +43,7 @@ class Response extends AbstractAttribute implements RefInterface
      * @param array<string,mixed>|null              $x           Vendor extensions (x-* properties)
      * @param list<Attachable>|null                 $attachables Reusable custom attachable attributes
      * @param Fan|null                              $fan         Where this attribute goes when more than one attribute could hold it
-     * @param string|null                           $summary     A short summary of what `ref` points to, written only beside `ref` and from OpenAPI 3.1 on
+     * @param string|null                           $summary     A short summary of the response from OpenAPI 3.2 on; before that, of what `ref` points to, written only beside `ref` and from OpenAPI 3.1 on
      */
     public function __construct(
         public string|int|null $response = null,

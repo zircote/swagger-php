@@ -107,6 +107,15 @@ final class ScratchTest extends OpenApiTestCase
             'SecurityShapes-3.2.0-hybrid' => ['Security requirement "bearer" is a bare scheme name'],
             'ServerVariableEnumClassString-3.1.0' => ['ServerVariable(secure): enum values must be strings, dropping true', 'ServerVariable(secure): enum values must be strings, dropping false'],
             'ServerVariableEnumClassString-3.2.0' => ['ServerVariable(secure): enum values must be strings, dropping true', 'ServerVariable(secure): enum values must be strings, dropping false'],
+            'Spec32-3.0.0-spec' => [
+                'Response "NotFound" summary is written only beside $ref',
+                'Response "200" summary is written only beside $ref',
+                'Response summary beside $ref "#/components/responses/NotFound" is not supported in OpenAPI 3.0, omitted',
+            ],
+            'Spec32-3.1.0-spec' => [
+                'Response "NotFound" summary is written only beside $ref',
+                'Response "200" summary is written only beside $ref',
+            ],
             'Tags-3.2.0-spec' => ['which does not exist'],
             'TypeAliases-3.0.0-spec' => $typeAliases,
             'TypeAliases-3.0.0-hybrid' => $typeAliases,
@@ -159,6 +168,17 @@ final class ScratchTest extends OpenApiTestCase
                 ]);
 
                 if ($spec === null) {
+                    continue;
+                }
+
+                // a fixture with neither a classic nor a hybrid document is spec-only, and has
+                // no classic annotations for hybrid to bridge
+                if ($combo['mode'] === Builder\Mode::HYBRID && self::mostSpecific([
+                    "{$basePath}/{$scratchName}{$combo['version']}-{$phpVersion}-hybrid.yaml",
+                    "{$basePath}/{$scratchName}{$combo['version']}-hybrid.yaml",
+                    "{$basePath}/{$scratchName}{$combo['version']}-{$phpVersion}.yaml",
+                    "{$basePath}/{$scratchName}{$combo['version']}.yaml",
+                ]) === null) {
                     continue;
                 }
 
