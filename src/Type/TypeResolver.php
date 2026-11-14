@@ -70,8 +70,8 @@ class TypeResolver implements LoggerAwareInterface
     /** @var \WeakMap<\Reflector, array{?Type}> each reflector's docblock type, so a docblock is parsed and reported once however many components read it */
     protected \WeakMap $docblockTypes;
 
-    /** @var array<string, true> the members already reported with templates left unbound, by member and component */
-    protected array $unbound = [];
+    /** @var array<string, true> what was reported already about a component with type arguments, by what it is about */
+    protected array $reported = [];
 
     protected TemplateReader $templateReader;
 
@@ -137,6 +137,9 @@ class TypeResolver implements LoggerAwareInterface
         $context = $component->class . '<' . $component->typeArguments . '>';
         $resolved = $this->resolvedIn[$reflector] ?? [];
         if (!array_key_exists($context, $resolved)) {
+            if (!$this->templateReader->accepts($component->class, $component->typeArguments)) {
+                $this->reportOnce('accepts ' . $context, sprintf('Type arguments of "%s" do not match the templates of the class, ignored', $context));
+            }
             $bindings = $this->templateReader->bindings($reflector, $component->class, $component->typeArguments);
             if ($bindings === null) {
                 $this->reportUnbound($reflector, $component->class, $component->typeArguments);
@@ -253,10 +256,22 @@ class TypeResolver implements LoggerAwareInterface
     protected function reportUnbound(\Reflector $reflector, string $class, TypeArguments $typeArguments): void
     {
         $docblockType = $this->getDocblockType($reflector);
-        $id = $this->describe($reflector) . ' ' . $class . '<' . $typeArguments . '>';
-        if ($docblockType instanceof Type && $this->templateBinder->hasTemplate($docblockType) && !isset($this->unbound[$id])) {
-            $this->unbound[$id] = true;
-            $this->logger?->warning(sprintf('Type arguments of "%s<%s>" do not reach an inherited or trait member, ignored in %s', $class, $typeArguments, SourceLocation::fromReflector($reflector)));
+        if ($docblockType instanceof Type && $this->templateBinder->hasTemplate($docblockType)) {
+            $this->reportOnce(
+                $this->describe($reflector) . ' ' . $class . '<' . $typeArguments . '>',
+                sprintf('Type arguments of "%s<%s>" do not reach an inherited or trait member, ignored in %s', $class, $typeArguments, SourceLocation::fromReflector($reflector)),
+            );
+        }
+    }
+
+    /**
+     * Log a warning the first time it is reported for the given id.
+     */
+    protected function reportOnce(string $id, string $message): void
+    {
+        if (!isset($this->reported[$id])) {
+            $this->reported[$id] = true;
+            $this->logger?->warning($message);
         }
     }
 

@@ -165,11 +165,26 @@ final class DocblockTemplateTest extends TestCase
         $this->assertNull($type?->type);
     }
 
-    public function testOneArgumentForEachTemplateOrNoneIsBound(): void
+    public function testTypeArgumentsTheClassDoesNotTakeAreReportedOnce(): void
     {
-        $type = (new TypeResolver())->resolveIn(new \ReflectionProperty(Template::class, 'results'), $this->key(Template::class, Type::int()));
+        $this->expectLogEntry('Type arguments of "' . Template::class . '<int>" do not match the templates of the class, ignored', 'warning');
 
-        $this->assertNull($type?->items?->type);
+        $resolver = new TypeResolver();
+        $resolver->setLogger($this->trackingLogger());
+        $key = $this->key(Template::class, Type::int());
+
+        $this->assertNull($resolver->resolveIn(new \ReflectionProperty(Template::class, 'results'), $key)?->items?->type);
+        $this->assertNull($resolver->resolveIn(new \ReflectionProperty(Template::class, 'bounded'), $key)?->items?->type);
+    }
+
+    public function testAParameterOfAFunctionIsReadAsIs(): void
+    {
+        $resolver = new TypeResolver();
+        $resolver->setLogger($this->trackingLogger());
+
+        $type = $resolver->resolveIn(new \ReflectionParameter('strlen', 'string'), $this->key(StampedBox::class, Type::int()));
+
+        $this->assertSame('string', $type?->type);
     }
 
     public function testOnlyAClassesOwnMembersBindItsTemplates(): void

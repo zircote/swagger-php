@@ -61,24 +61,42 @@ class TemplateReader
     }
 
     /**
+     * Whether the class takes the type arguments: it declares templates, and there is one
+     * argument for each.
+     */
+    public function accepts(string $class, TypeArguments $typeArguments): bool
+    {
+        $names = $this->templateNames($class);
+
+        return $names !== [] && count($names) === count($typeArguments->types);
+    }
+
+    /**
      * The type each template stands for in a member of the class used with the type arguments,
      * by template name.
      *
-     * None where there is not one argument for each template. Null where the member is not the
-     * class's own, but inherited or taken from a trait.
+     * None where the class does not take the arguments, see `accepts()`, or where the reflector
+     * is no member of a class, such as a parameter of a function. Null where the member is not
+     * the class's own, but inherited or taken from a trait.
      *
      * @return array<string, Type>|null
      */
     public function bindings(\Reflector $member, string $class, TypeArguments $typeArguments): ?array
     {
-        $names = $this->templateNames($class);
-        if ($names === [] || count($names) !== count($typeArguments->types)) {
+        $classMember = $member instanceof \ReflectionParameter ? $member->getDeclaringFunction() : $member;
+        if (!$classMember instanceof \ReflectionMethod && !$classMember instanceof \ReflectionProperty && !$classMember instanceof \ReflectionClassConstant) {
             return [];
         }
 
-        if (!$this->declares($class, $member)) {
+        if (!$this->accepts($class, $typeArguments)) {
+            return [];
+        }
+
+        if (!$this->declares($class, $classMember)) {
             return null;
         }
+
+        $names = $this->templateNames($class);
 
         // a method's own templates hide the class's of the same name
         return array_diff_key(array_combine($names, $typeArguments->types), array_flip($this->ownTemplateNames($member)));
@@ -121,13 +139,8 @@ class TemplateReader
     /**
      * Whether the member is written in the class's own body, not inherited or taken from a trait.
      */
-    protected function declares(string $class, \Reflector $member): bool
+    protected function declares(string $class, \ReflectionMethod|\ReflectionProperty|\ReflectionClassConstant $member): bool
     {
-        $member = $member instanceof \ReflectionParameter ? $member->getDeclaringFunction() : $member;
-        if (!$member instanceof \ReflectionMethod && !$member instanceof \ReflectionProperty && !$member instanceof \ReflectionClassConstant) {
-            return false;
-        }
-
         $declaringClass = $member->getDeclaringClass();
 
         return $declaringClass->getName() === $class && $this->sourceInspector->declares($declaringClass, $member);

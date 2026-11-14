@@ -47,8 +47,9 @@ class ImpliedSchemas implements PipeInterface, LoggerAwareInterface, TypeResolve
     {
         $this->enums = [];
 
-        $payload->getWalker()->eachTypedAttribute(function (OA\Property|OA\Parameter|OA\RequestBody $attribute): void {
-            $this->collect($attribute->getReflector(), $attribute instanceof OA\RequestBody ? null : $attribute->schema);
+        $payload->getWalker()->eachTypedAttribute(function (OA\Property|OA\Parameter|OA\RequestBody $attribute, ?OA\Schema $schema): void {
+            // a property is read in the component it belongs to, as `Types` reads it
+            $this->collect($attribute->getReflector(), $attribute instanceof OA\RequestBody ? null : $attribute->schema, $schema?->getComponentKey());
         });
 
         $index = $payload->buildComponentIndex();
@@ -96,14 +97,14 @@ class ImpliedSchemas implements PipeInterface, LoggerAwareInterface, TypeResolve
      * The enums in a member's type, unless its schema references something or lists its own
      * `enum`, which `Types` keeps in place of a reference.
      */
-    protected function collect(?\Reflector $reflector, ?OA\Schema $schema = null): void
+    protected function collect(?\Reflector $reflector, ?OA\Schema $schema = null, ?ComponentKey $component = null): void
     {
         if ($schema instanceof OA\Schema && ($schema->ref !== null || $schema->enum !== null)) {
             return;
         }
 
         if ($reflector instanceof \ReflectionProperty || $reflector instanceof \ReflectionParameter || $reflector instanceof \ReflectionMethod) {
-            $this->collectFromType($this->typeResolver->resolve($reflector));
+            $this->collectFromType($this->typeResolver->resolveIn($reflector, $component));
         }
     }
 

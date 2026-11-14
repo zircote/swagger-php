@@ -26,6 +26,15 @@ final class TemplateReaderTest extends TestCase
         $this->assertSame([], $reader->templateNames('App\Missing'));
     }
 
+    public function testAClassTakesOneArgumentForEachTemplate(): void
+    {
+        $reader = new TemplateReader();
+
+        $this->assertTrue($reader->accepts(Template::class, new TypeArguments(Type::int(), Type::string())));
+        $this->assertFalse($reader->accepts(Template::class, new TypeArguments(Type::int())));
+        $this->assertFalse($reader->accepts(Number::class, new TypeArguments(Type::int())));
+    }
+
     public function testATemplateStandsForTheArgumentAtItsPosition(): void
     {
         $bindings = (new TemplateReader())->bindings(
@@ -45,6 +54,7 @@ final class TemplateReaderTest extends TestCase
         yield 'fewer arguments than templates' => [new \ReflectionProperty(Template::class, 'results'), Template::class, new TypeArguments(Type::int())];
         yield 'more arguments than templates' => [new \ReflectionProperty(StampedBox::class, 'own'), StampedBox::class, new TypeArguments(Type::int(), Type::int())];
         yield 'a class without templates' => [new \ReflectionClass(Number::class), Number::class, new TypeArguments(Type::int())];
+        yield 'a parameter of a function' => [new \ReflectionParameter('strlen', 'string'), StampedBox::class, new TypeArguments(Type::int())];
     }
 
     /**
