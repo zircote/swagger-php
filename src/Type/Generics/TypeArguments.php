@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Type;
+namespace OpenApi\Type\Generics;
 
 use Symfony\Component\TypeInfo\Type;
 
@@ -14,7 +14,7 @@ use Symfony\Component\TypeInfo\Type;
  * They are kept as types. As a string each type is written as type-info writes it, every class
  * name without a leading `\`, and `, ` between them, so one set of arguments has one spelling.
  */
-final readonly class TypeArguments implements \Stringable
+readonly class TypeArguments implements \Stringable
 {
     /** @var non-empty-list<Type> */
     public array $types;

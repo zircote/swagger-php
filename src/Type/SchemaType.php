@@ -6,6 +6,8 @@
 
 namespace OpenApi\Type;
 
+use OpenApi\Type\Generics\TypeArguments;
+
 /**
  * Value object describing the resolved OpenAPI schema type for a PHP reflector.
  *

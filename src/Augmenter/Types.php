@@ -53,9 +53,10 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
 
         $walker = $payload->getWalker();
         $walker->eachSchema($this->inferSchemaType(...));
-        $walker->eachTypedAttribute(function (OA\Property|OA\Parameter|OA\RequestBody $attribute): void {
+        $walker->eachTypedAttribute(function (OA\Property|OA\Parameter|OA\RequestBody $attribute, ?OA\Schema $schema): void {
             match (true) {
-                $attribute instanceof OA\Property => $this->augmentProperty($attribute),
+                // a property is read in the component it belongs to
+                $attribute instanceof OA\Property => $this->augmentProperty($attribute, $schema?->getComponentKey()),
                 $attribute instanceof OA\Parameter => $this->augmentParameter($attribute),
                 $attribute instanceof OA\RequestBody => $this->augmentRequestBody($attribute),
             };
@@ -118,11 +119,11 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
         }
     }
 
-    protected function augmentProperty(OA\Property $property): void
+    protected function augmentProperty(OA\Property $property, ?ComponentKey $component = null): void
     {
         $reflector = $property->getReflector();
         if ($reflector instanceof \ReflectionMethod) {
-            $this->augmentMethodProperty($property, $reflector);
+            $this->augmentMethodProperty($property, $reflector, $component);
 
             return;
         }
@@ -146,7 +147,7 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
             return;
         }
 
-        $resolved = $this->typeResolver->resolve($reflector);
+        $resolved = $this->typeResolver->resolveIn($reflector, $component);
         if (!$resolved instanceof SchemaType) {
             return;
         }
@@ -174,13 +175,13 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
         $property->schema = $schema;
     }
 
-    protected function augmentMethodProperty(OA\Property $property, \ReflectionMethod $method): void
+    protected function augmentMethodProperty(OA\Property $property, \ReflectionMethod $method, ?ComponentKey $component = null): void
     {
         if ($property->schema instanceof OA\Schema && $property->schema->ref !== null) {
             return;
         }
 
-        $resolved = $this->typeResolver->resolve($method);
+        $resolved = $this->typeResolver->resolveIn($method, $component);
         if (!$resolved instanceof SchemaType) {
             return;
         }

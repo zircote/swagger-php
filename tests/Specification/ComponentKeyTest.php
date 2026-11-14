@@ -10,7 +10,7 @@ use OpenApi\OpenApiException;
 use OpenApi\Spec as OA;
 use OpenApi\Specification\ComponentKey;
 use OpenApi\Tests\Fixtures\ClassDescriptions\Article;
-use OpenApi\Type\TypeArguments;
+use OpenApi\Type\Generics\TypeArguments;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\TypeInfo\Type;

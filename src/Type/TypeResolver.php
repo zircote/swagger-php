@@ -6,6 +6,11 @@
 
 namespace OpenApi\Type;
 
+use OpenApi\Specification\ComponentKey;
+use OpenApi\Type\Generics\TemplateBinder;
+use OpenApi\Type\Generics\TemplateReader;
+use OpenApi\Type\Generics\TypeArguments;
+use OpenApi\Utils\SourceLocation;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
@@ -21,6 +26,7 @@ use Psr\Log\LoggerAwareTrait;
 use Radebatz\TypeInfoExtras\Type\ExplicitType;
 use Radebatz\TypeInfoExtras\Type\IntRangeType;
 use Radebatz\TypeInfoExtras\TypeResolver\StringTypeResolver;
+use Symfony\Component\TypeInfo\Exception\InvalidArgumentException;
 use Symfony\Component\TypeInfo\Exception\UnsupportedException;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\ArrayShapeType;
@@ -43,6 +49,11 @@ use Symfony\Component\TypeInfo\TypeResolver\TypeResolverInterface;
  *
  * Shared core between the spec-attributes augmenter and the classic annotation resolver.
  * Uses Symfony TypeInfo + phpstan/phpdoc-parser for reflective type resolution.
+ *
+ * A member can be read as seen from a component. In a component with type arguments, such as
+ * `Envelope<Customer>`, a member reads each template as what `TemplateReader` says it stands for:
+ * `T` is `Customer`. A member the class inherits or takes from a trait keeps its templates
+ * unbound, with a warning.
  */
 class TypeResolver implements LoggerAwareInterface
 {
@@ -53,6 +64,19 @@ class TypeResolver implements LoggerAwareInterface
     /** @var \WeakMap<\Reflector, array{?SchemaType}> what each reflector resolved to, so a docblock is read and reported once */
     protected \WeakMap $resolved;
 
+    /** @var \WeakMap<\Reflector, array<string, array{?SchemaType}|null>> what each reflector resolved to in a component with type arguments, by its class and arguments, null where the component binds nothing in it */
+    protected \WeakMap $resolvedIn;
+
+    /** @var \WeakMap<\Reflector, array{?Type}> each reflector's docblock type, so a docblock is parsed and reported once however many components read it */
+    protected \WeakMap $docblockTypes;
+
+    /** @var array<string, true> what was reported already about a component with type arguments, by what it is about */
+    protected array $reported = [];
+
+    protected TemplateReader $templateReader;
+
+    protected TemplateBinder $templateBinder;
+
     /** Reuses parsed use statements when supported by symfony/type-info. */
     protected TypeContextFactory $docblockContexts;
 
@@ -60,8 +84,15 @@ class TypeResolver implements LoggerAwareInterface
 
     protected TypeResolverInterface $docblockResolver;
 
-    public function __construct()
+    /**
+     * @param TemplateReader|null $templateReader Tells what each template of a member stands for in a component with type arguments
+     */
+    public function __construct(?TemplateReader $templateReader = null)
     {
+        $this->templateReader = $templateReader ?? new TemplateReader();
+        $this->templateBinder = new TemplateBinder();
+        $this->resolvedIn = new \WeakMap();
+        $this->docblockTypes = new \WeakMap();
         $this->typeMapper = new TypeMapper();
         $this->docblockResolver = new StringTypeResolver();
         $this->resolved = new \WeakMap();
@@ -86,7 +117,74 @@ class TypeResolver implements LoggerAwareInterface
         return $resolved instanceof SchemaType ? clone $resolved : null;
     }
 
+    /**
+     * Resolve the PHP type of a reflector as read in the component with the given key.
+     *
+     * In a component with type arguments, the member's templates read as the arguments. A member
+     * the arguments do not reach, and any member read without type arguments, is resolved as
+     * `resolve()` resolves it. Each reflector is resolved once for each component.
+     *
+     * @param \ReflectionProperty|\ReflectionParameter|\ReflectionMethod|\ReflectionClassConstant $reflector
+     * @param ComponentKey|null                                                                   $component the key of the component the member is read in
+     */
+    public function resolveIn(\Reflector $reflector, ?ComponentKey $component): ?SchemaType
+    {
+        if (!$component?->typeArguments instanceof TypeArguments) {
+            return $this->resolve($reflector);
+        }
+
+        // the qualifiers do not change what a template stands for
+        $context = $component->class . '<' . $component->typeArguments . '>';
+        $resolved = $this->resolvedIn[$reflector] ?? [];
+        if (!array_key_exists($context, $resolved)) {
+            if (!$this->templateReader->accepts($component->class, $component->typeArguments)) {
+                $this->reportOnce('accepts ' . $context, sprintf('Type arguments of "%s" do not match the templates of the class, ignored', $context));
+            }
+            $bindings = $this->templateReader->bindings($reflector, $component->class, $component->typeArguments);
+            if ($bindings === null) {
+                $this->reportUnbound($reflector, $component->class, $component->typeArguments);
+            }
+            // null: the arguments do not reach the member
+            $resolved[$context] = $bindings === null || $bindings === [] ? null : [$this->resolveBound($reflector, $bindings)];
+            $this->resolvedIn[$reflector] = $resolved;
+        }
+
+        if ($resolved[$context] === null) {
+            return $this->resolve($reflector);
+        }
+        [$type] = $resolved[$context];
+
+        return $type instanceof SchemaType ? clone $type : null;
+    }
+
+    /**
+     * The type a member's docblock gives it, or null where it gives none or one that cannot be read.
+     *
+     * The docblock is parsed and reported once for each reflector.
+     */
     public function getDocblockType(\Reflector $reflector): ?Type
+    {
+        // wrapped, as the map reads a null value as missing
+        $this->docblockTypes[$reflector] ??= [$this->readDocblockType($reflector)];
+
+        return $this->docblockTypes[$reflector][0];
+    }
+
+    /**
+     * Name a member for a log message: `Pet::$name`, `Pet::name()`, `$id of Pet::get()`.
+     */
+    public function describe(\Reflector $reflector): string
+    {
+        return match (true) {
+            $reflector instanceof \ReflectionProperty => $reflector->class . '::$' . $reflector->name,
+            $reflector instanceof \ReflectionParameter => '$' . $reflector->name . ' of ' . $this->describe($reflector->getDeclaringFunction()),
+            $reflector instanceof \ReflectionMethod => $reflector->class . '::' . $reflector->name . '()',
+            $reflector instanceof \ReflectionFunctionAbstract => $reflector->name . '()',
+            default => $reflector::class,
+        };
+    }
+
+    protected function readDocblockType(\Reflector $reflector): ?Type
     {
         $docComment = match (true) {
             $reflector instanceof \ReflectionProperty => $reflector->isPromoted()
@@ -139,20 +237,6 @@ class TypeResolver implements LoggerAwareInterface
         return null;
     }
 
-    /**
-     * Name a member for a log message: `Pet::$name`, `Pet::name()`, `$id of Pet::get()`.
-     */
-    public function describe(\Reflector $reflector): string
-    {
-        return match (true) {
-            $reflector instanceof \ReflectionProperty => $reflector->class . '::$' . $reflector->name,
-            $reflector instanceof \ReflectionParameter => '$' . $reflector->name . ' of ' . $this->describe($reflector->getDeclaringFunction()),
-            $reflector instanceof \ReflectionMethod => $reflector->class . '::' . $reflector->name . '()',
-            $reflector instanceof \ReflectionFunctionAbstract => $reflector->name . '()',
-            default => $reflector::class,
-        };
-    }
-
     protected function parseDocComment(string $docComment): PhpDocNode
     {
         $config = new ParserConfig([]);
@@ -164,6 +248,62 @@ class TypeResolver implements LoggerAwareInterface
         );
 
         return $phpDocParser->parse(new TokenIterator((new Lexer($config))->tokenize($docComment)));
+    }
+
+    /**
+     * Report a member whose templates the type arguments do not reach, once for each component.
+     */
+    protected function reportUnbound(\Reflector $reflector, string $class, TypeArguments $typeArguments): void
+    {
+        $docblockType = $this->getDocblockType($reflector);
+        if ($docblockType instanceof Type && $this->templateBinder->hasTemplate($docblockType)) {
+            $this->reportOnce(
+                $this->describe($reflector) . ' ' . $class . '<' . $typeArguments . '>',
+                sprintf('Type arguments of "%s<%s>" do not reach an inherited or trait member, ignored in %s', $class, $typeArguments, SourceLocation::fromReflector($reflector)),
+            );
+        }
+    }
+
+    /**
+     * Log a warning the first time it is reported for the given id.
+     */
+    protected function reportOnce(string $id, string $message): void
+    {
+        if (!isset($this->reported[$id])) {
+            $this->reported[$id] = true;
+            $this->logger?->warning($message);
+        }
+    }
+
+    /**
+     * Resolve with each template in the docblock type replaced by the type it is bound to.
+     *
+     * @param \ReflectionProperty|\ReflectionParameter|\ReflectionMethod|\ReflectionClassConstant $reflector
+     * @param array<string, Type>                                                                 $bindings  by template name
+     */
+    protected function resolveBound(\Reflector $reflector, array $bindings): ?SchemaType
+    {
+        $docblockType = $this->getDocblockType($reflector);
+        $reflectionType = $this->getReflectionType($reflector);
+
+        if ($docblockType instanceof Type) {
+            try {
+                $bound = $this->templateBinder->bind($docblockType, $bindings);
+            } catch (InvalidArgumentException $exception) {
+                // an argument the type cannot take, such as `int` in `T&\Countable`
+                $this->logger?->warning(sprintf('Type "%s" cannot take the type arguments, omitted in %s: %s', $docblockType, SourceLocation::fromReflector($reflector), $exception->getMessage()));
+                $bound = Type::mixed();
+            }
+
+            // `mixed` is all PHP can declare for a template, and its `null` is not the argument's
+            if ((string) $bound !== (string) $docblockType && (string) $reflectionType === 'mixed') {
+                $reflectionType = null;
+            }
+
+            $docblockType = $bound;
+        }
+
+        return $this->toSchemaType($docblockType, $reflectionType);
     }
 
     /**

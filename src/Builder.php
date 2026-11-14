@@ -560,7 +560,8 @@ class Builder
      */
     protected function getTypeResolver(): Type\TypeResolver
     {
-        $this->typeResolver ??= new Type\TypeResolver();
+        // the attribute factory's inspector has read the sources already
+        $this->typeResolver ??= new Type\TypeResolver(new Type\Generics\TemplateReader($this->getAttributeFactory()->getSourceInspector()));
 
         return $this->typeResolver;
     }

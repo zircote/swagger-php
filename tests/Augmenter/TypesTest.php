@@ -11,11 +11,14 @@ use OpenApi\Builder;
 use OpenApi\HybridBridge;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Specification\ComponentKey;
 use OpenApi\Tests\Concerns\AssemblesSpecification;
 use OpenApi\Tests\Concerns\ExpectsLogEntries;
 use OpenApi\Tests\Fixtures;
+use OpenApi\Type\Generics\TypeArguments;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\TypeInfo\Type;
 
 final class TypesTest extends TestCase
 {
@@ -44,6 +47,20 @@ final class TypesTest extends TestCase
         $this->assertSame('array', $props['tags']->type);
         $this->assertInstanceOf(OA\Schema::class, $props['tags']->items);
         $this->assertSame('string', $props['tags']->items->type);
+    }
+
+    public function testAPropertyIsTypedAsReadInItsComponent(): void
+    {
+        $own = (new OA\Property(property: 'own'))->setReflector(new \ReflectionProperty(Fixtures\Type\StampedBox::class, 'own'));
+        $schema = (new OA\Schema(properties: [$own]))
+            ->setReflector(new \ReflectionClass(Fixtures\Type\StampedBox::class))
+            ->setComponentKey(new ComponentKey(Fixtures\Type\StampedBox::class, typeArguments: new TypeArguments(Type::int())));
+        $specification = new Specification();
+        $specification->schemas[] = $schema;
+
+        (new Augmenter\Types())($specification);
+
+        $this->assertSame('integer', $own->schema?->type);
     }
 
     public function testInfersDateTimeForASubclass(): void

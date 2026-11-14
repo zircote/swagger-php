@@ -7,7 +7,7 @@
 namespace OpenApi\Specification;
 
 use OpenApi\OpenApiException;
-use OpenApi\Type\TypeArguments;
+use OpenApi\Type\Generics\TypeArguments;
 
 /**
  * Which component a use means: a class, plus the qualifiers that tell its descriptions apart.
