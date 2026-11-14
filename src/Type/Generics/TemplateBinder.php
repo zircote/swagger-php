@@ -4,7 +4,7 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Type;
+namespace OpenApi\Type\Generics;
 
 use Symfony\Component\TypeInfo\Exception\InvalidArgumentException;
 use Symfony\Component\TypeInfo\Type;
@@ -26,7 +26,7 @@ use Symfony\Component\TypeInfo\TypeIdentifier;
  *
  * Type-info has no helper for this, so the type is rebuilt wherever a template can occur in it.
  */
-final class TemplateBinder
+class TemplateBinder
 {
     /**
      * The type with each template replaced by the type it is bound to. A template without a
@@ -77,7 +77,7 @@ final class TemplateBinder
     /**
      * @param array<Type> $types
      */
-    private function anyHasTemplate(array $types): bool
+    protected function anyHasTemplate(array $types): bool
     {
         foreach ($types as $type) {
             if ($this->hasTemplate($type)) {
@@ -91,7 +91,7 @@ final class TemplateBinder
     /**
      * @param array<string, Type> $bindings
      */
-    private function bindArrayShape(ArrayShapeType $type, array $bindings): ArrayShapeType
+    protected function bindArrayShape(ArrayShapeType $type, array $bindings): ArrayShapeType
     {
         $shape = array_map(
             fn (array $member): array => ['type' => $this->bind($member['type'], $bindings), 'optional' => $member['optional']],
@@ -113,7 +113,7 @@ final class TemplateBinder
      * @param UnionType<Type>     $type
      * @param array<string, Type> $bindings
      */
-    private function bindUnion(UnionType $type, array $bindings): Type
+    protected function bindUnion(UnionType $type, array $bindings): Type
     {
         $members = array_map(fn (Type $member): Type => $this->bind($member, $bindings), $type->getTypes());
         foreach ($members as $member) {
@@ -135,7 +135,7 @@ final class TemplateBinder
      *
      * @return GenericType<T>
      */
-    private function bindGeneric(GenericType $type, array $bindings): GenericType
+    protected function bindGeneric(GenericType $type, array $bindings): GenericType
     {
         return new GenericType($type->getWrappedType(), ...array_map(fn (Type $variable): Type => $this->bind($variable, $bindings), $type->getVariableTypes()));
     }

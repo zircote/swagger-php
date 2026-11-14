@@ -4,13 +4,13 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests\Type;
+namespace OpenApi\Tests\Type\Generics;
 
 use OpenApi\Tests\Fixtures\Type\Number;
 use OpenApi\Tests\Fixtures\Type\Template;
 use OpenApi\Tests\Fixtures\Type\TypeArgumentUse;
+use OpenApi\Type\Generics\TypeArguments;
 use OpenApi\Type\SchemaType;
-use OpenApi\Type\TypeArguments;
 use OpenApi\Type\TypeResolver;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

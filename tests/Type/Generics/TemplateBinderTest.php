@@ -4,10 +4,10 @@
  * @license Apache 2.0
  */
 
-namespace OpenApi\Tests\Type;
+namespace OpenApi\Tests\Type\Generics;
 
 use OpenApi\Tests\Fixtures\Type\Template;
-use OpenApi\Type\TemplateBinder;
+use OpenApi\Type\Generics\TemplateBinder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Radebatz\TypeInfoExtras\TypeResolver\StringTypeResolver;
