@@ -22,6 +22,8 @@ class OpenApi32Compiler extends OpenApi31Compiler
 
     protected const OPERATION_REQUEST_BODY_METHODS = [...parent::OPERATION_REQUEST_BODY_METHODS, 'query'];
 
+    protected const UNSUPPORTED_PROPERTIES = [];
+
     public function getVersion(): string
     {
         return '3.2.0';
