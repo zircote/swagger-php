@@ -60,20 +60,4 @@ class OpenApi32Compiler extends OpenApi31Compiler
             'mediaTypes' => $this->compileComponentMap($specification->mediaTypes, $this->compileMediaType(...)),
         ];
     }
-
-    /**
-     * @return array<string,mixed>
-     */
-    #[\Override]
-    protected function compileTag(OA\Tag $tag): array
-    {
-        return $this->filter([
-            'name' => $tag->name,
-            'summary' => $tag->summary,
-            'description' => $tag->description,
-            'externalDocs' => $tag->externalDocs instanceof OA\ExternalDocumentation ? $this->compileExternalDocs($tag->externalDocs) : null,
-            'parent' => $tag->parent,
-            'kind' => $tag->kind,
-        ], $tag);
-    }
 }

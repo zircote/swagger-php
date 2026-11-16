@@ -63,9 +63,10 @@ class OpenApi31Compiler implements CompilerInterface
     ];
 
     /**
-     * The properties this version cannot carry, which the compile methods leave out, as class
-     * => property names. A name may key a hint for the message instead. Each compiler lists
-     * all of its own, and a property that is translated or has a check of its own is not listed.
+     * The properties this version cannot carry, as class => property names. A name may key a hint
+     * for the message instead. `filter()` leaves each out of the output, where it is written under
+     * its own name, and `validateUnsupportedProperties()` warns about it. Each compiler lists all
+     * of its own, and a property that is translated or has a check of its own is not listed.
      *
      * @var array<class-string<OA\AbstractAttribute>, array<int|string, string>>
      */
@@ -274,8 +275,11 @@ class OpenApi31Compiler implements CompilerInterface
     {
         return $this->filter([
             'name' => $tag->name,
+            'summary' => $tag->summary,
             'description' => $tag->description,
             'externalDocs' => $tag->externalDocs instanceof OA\ExternalDocumentation ? $this->compileExternalDocs($tag->externalDocs) : null,
+            'parent' => $tag->parent,
+            'kind' => $tag->kind,
         ], $tag);
     }
 
@@ -1569,13 +1573,22 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * Remove null entries and apply x- extensions.
+     * Remove null entries and the properties this version cannot carry, and apply x- extensions.
      *
      * @param  array<string,mixed> $result
      * @return array<string,mixed>
      */
     protected function filter(array $result, OA\AbstractAttribute|null $attribute = null): array
     {
+        // `validateUnsupportedProperties()` warns about each
+        foreach (static::UNSUPPORTED_PROPERTIES as $class => $properties) {
+            if ($attribute instanceof $class) {
+                foreach ($properties as $property => $hint) {
+                    unset($result[is_int($property) ? $hint : $property]);
+                }
+            }
+        }
+
         $result = array_filter($result, fn ($value): bool => !in_array($value, [null, Undefined::UNDEFINED, []], true));
 
         if ($attribute?->x !== null) {

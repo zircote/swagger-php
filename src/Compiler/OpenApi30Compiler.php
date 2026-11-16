@@ -158,34 +158,6 @@ class OpenApi30Compiler extends OpenApi31Compiler
     }
 
     /**
-     * @return array<string,mixed>
-     */
-    #[\Override]
-    protected function compileInfo(OA\Info $info): array
-    {
-        return $this->filter([
-            'title' => $info->title,
-            'description' => $info->description,
-            'termsOfService' => $info->termsOfService,
-            'contact' => $info->contact instanceof OA\Contact ? $this->compileContact($info->contact) : null,
-            'license' => $info->license instanceof OA\License ? $this->compileLicense($info->license) : null,
-            'version' => $info->version,
-        ], $info);
-    }
-
-    /**
-     * @return array<string,mixed>
-     */
-    #[\Override]
-    protected function compileLicense(OA\License $license): array
-    {
-        return $this->filter([
-            'name' => $license->name,
-            'url' => $license->url,
-        ], $license);
-    }
-
-    /**
      * Compile schema using OAS 3.0 / JSON Schema draft-04 semantics.
      *
      * @return array<string,mixed>|\stdClass
