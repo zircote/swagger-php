@@ -185,6 +185,8 @@ class OpenApi31Compiler implements CompilerInterface
 
         $this->validateUnsupportedProperties($specification, static::UNSUPPORTED_PROPERTIES);
 
+        $this->validateRequirementExtensions($specification);
+
         $this->validateNestedNames($specification);
 
         $this->validateSchemaExamples($specification);
@@ -768,9 +770,15 @@ class OpenApi31Compiler implements CompilerInterface
                 continue;
             }
 
-            $result[$property->property] = $property->schema instanceof OA\Schema
-                ? $this->compileSchema($property->schema)
-                : new \stdClass();
+            $schema = $property->schema instanceof OA\Schema ? $this->compileSchema($property->schema) : [];
+
+            // a property has no object of its own in the document, so its extensions go on its schema
+            foreach ($property->x ?? [] as $key => $value) {
+                $schema = (array) $schema;
+                $schema['x-' . $key] = $value;
+            }
+
+            $result[$property->property] = $schema ?: new \stdClass();
         }
 
         return $result;
@@ -817,6 +825,7 @@ class OpenApi31Compiler implements CompilerInterface
             'examples' => $this->compileComponentMap($specification->examples, $this->compileExample(...)),
             'pathItems' => $this->compileComponentMap($specification->pathItems, $this->compilePathItem(...)),
             'mediaTypes' => $this->compileComponentMap($specification->mediaTypes, $this->compileMediaType(...)),
+            ...array_combine(array_map(fn (string $key): string => 'x-' . $key, array_keys($specification->componentsX)), $specification->componentsX),
         ], $specification));
     }
 
@@ -874,6 +883,20 @@ class OpenApi31Compiler implements CompilerInterface
         if ($classes !== []) {
             $this->visit($specification, $classes, $check);
         }
+    }
+
+    /**
+     * A Security Requirement Object has no extensions in any version, so `x` on a requirement is
+     * never written.
+     */
+    protected function validateRequirementExtensions(Specification $specification): void
+    {
+        $this->visit($specification, OA\Security\Requirement::class, function (OA\Security\Requirement $requirement): void {
+            if ($requirement->x !== null) {
+                $this->logger->warning('Security requirement uses x, not supported in OpenAPI, omitted; the argument is removed in 8.0'
+                    . ($requirement->getReflector() instanceof \Reflector ? ' in ' . $requirement->getSourceLocation() : ''));
+            }
+        });
     }
 
     /**

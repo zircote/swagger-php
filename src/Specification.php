@@ -66,6 +66,9 @@ class Specification
     /** @var list<OA\Attachable> */
     public array $attachables = [];
 
+    /** @var array<string,mixed> vendor extensions of `components`, from the `x` of each `#[OA\Components]` */
+    public array $componentsX = [];
+
     public function __construct()
     {
         $this->openapi = new OA\OpenApi();
@@ -126,5 +129,7 @@ class Specification
                 array_push($this->{$property}, ...$components->{$property});
             }
         }
+
+        $this->componentsX = [...$this->componentsX, ...$components->x ?? []];
     }
 }
