@@ -444,6 +444,47 @@ final class CompilerTest extends TestCase
         $this->assertEqualsCanonicalizing($expected, array_values(array_filter($messages, fn (string $message): bool => str_contains($message, 'not supported in OpenAPI'))));
     }
 
+    /**
+     * `components` takes the extensions of a `Components` holder, and a property's go on its schema.
+     */
+    #[DataProvider('compilerProvider')]
+    public function testWritesComponentsAndPropertyExtensions(CompilerInterface $compiler, string $version): void
+    {
+        $spec = $this->createSpecification($version);
+        $spec->add(new OA\Components(
+            schemas: [new OA\Schema(
+                type: 'object',
+                properties: [
+                    new OA\Property(property: 'name', schema: new OA\Schema(type: 'string'), x: ['label' => 'Name']),
+                    new OA\Property(property: 'any', x: ['label' => 'Any']),
+                ],
+                component: 'Pet',
+            )],
+            x: ['owner' => 'pets'],
+        ));
+
+        $components = $compiler->compile($spec)['components'];
+
+        $this->assertSame('pets', $components['x-owner']);
+        $this->assertSame(['type' => 'string', 'x-label' => 'Name'], $components['schemas']['Pet']['properties']['name']);
+        $this->assertSame(['x-label' => 'Any'], $components['schemas']['Pet']['properties']['any']);
+    }
+
+    /**
+     * A Security Requirement Object has no extensions, so `x` on a requirement is reported, not written.
+     */
+    #[DataProvider('compilerProvider')]
+    public function testReportsRequirementExtensions(CompilerInterface $compiler, string $version): void
+    {
+        $spec = $this->createSpecification($version);
+        $spec->openapi = new OA\OpenApi(version: $version, security: [new OA\Security\Requirement(scheme: 'apiKey', x: ['note' => 'n'])]);
+
+        $messages = array_column($compiler->validate($spec), 'message');
+
+        $this->assertContains('Security requirement uses x, not supported in OpenAPI, omitted; the argument is removed in 8.0', $messages);
+        $this->assertSame([['apiKey' => []]], $compiler->compile($spec)['security']);
+    }
+
     #[DataProvider('compilerProvider')]
     public function testReportsSummaryWithoutRef(CompilerInterface $compiler, string $version): void
     {

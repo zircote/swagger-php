@@ -38,3 +38,8 @@ info:
       - version: "2.1"
         level: fullapi
 ```
+
+Two attributes differ. A property has no object of its own in the document, so the `x` of a
+`Property` goes on the property's schema. A Security Requirement Object cannot carry extensions,
+so the `x` of a `Security\Requirement` is not written. It is reported with a warning, and the
+parameter is removed in 8.0.
