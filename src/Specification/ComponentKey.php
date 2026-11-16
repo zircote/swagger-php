@@ -7,7 +7,6 @@
 namespace OpenApi\Specification;
 
 use OpenApi\OpenApiException;
-use OpenApi\Type\TypeArguments;
 
 /**
  * Which component a use means: a class, plus the qualifiers that tell its descriptions apart.
@@ -20,9 +19,6 @@ use OpenApi\Type\TypeArguments;
  * Qualifiers are one level deep, a name mapped to a scalar or a list of scalars. Names are sorted,
  * and so is each list, so two keys built in a different order are the same key and a list acts as
  * a set. A value whose order matters goes in as one string.
- *
- * A generic class used with type arguments, such as `Envelope<Customer>`, has them beside the
- * qualifiers. They are kept as types, and their order matters.
  */
 final readonly class ComponentKey implements \Stringable
 {
@@ -37,7 +33,6 @@ final readonly class ComponentKey implements \Stringable
     public function __construct(
         public string $class,
         array $qualifiers = [],
-        public ?TypeArguments $typeArguments = null,
     ) {
         foreach ($qualifiers as $name => $value) {
             if (is_array($value)) {
@@ -57,18 +52,13 @@ final readonly class ComponentKey implements \Stringable
     }
 
     /**
-     * The class, followed by the type arguments in `<>` and the qualifiers as JSON when there are
-     * any. Equal keys give equal strings.
+     * The class, followed by the qualifiers as JSON when there are any. Equal keys give equal strings.
      */
     public function __toString(): string
     {
-        $key = $this->typeArguments instanceof TypeArguments
-            ? $this->class . '<' . $this->typeArguments . '>'
-            : $this->class;
-
         return $this->qualifiers === []
-            ? $key
-            : $key . json_encode($this->qualifiers, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
+            ? $this->class
+            : $this->class . json_encode($this->qualifiers, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -76,7 +66,7 @@ final readonly class ComponentKey implements \Stringable
      */
     public function isPlain(): bool
     {
-        return $this->qualifiers === [] && !$this->typeArguments instanceof TypeArguments;
+        return $this->qualifiers === [];
     }
 
     public function equals(self $other): bool
