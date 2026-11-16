@@ -68,9 +68,10 @@ class OpenApi31Compiler implements CompilerInterface
      * its own name, and `validateUnsupportedProperties()` warns about it. Each compiler lists all
      * of its own, and a property that is translated or has a check of its own is not listed.
      *
-     * @var array<class-string<OA\AbstractAttribute>, array<int|string, string>>
+     * @var array<class-string<OA\AbstractAttribute|Specification>, array<int|string, string>>
      */
     protected const UNSUPPORTED_PROPERTIES = [
+        Specification::class => ['mediaTypes'],
         OA\Tag::class => ['summary', 'parent', 'kind'],
     ];
 
@@ -181,8 +182,6 @@ class OpenApi31Compiler implements CompilerInterface
         $this->validateMediaTypes($specification);
 
         $this->validateNames($specification);
-
-        $this->validateVersionedComponents($specification);
 
         $this->validateUnsupportedProperties($specification, static::UNSUPPORTED_PROPERTIES);
 
@@ -807,7 +806,7 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function compileComponents(Specification $specification): array
     {
-        return array_filter([
+        return array_filter($this->omitUnsupported([
             'schemas' => $this->compileComponentMap($specification->schemas, $this->compileSchema(...)),
             'responses' => $this->compileComponentMap($specification->responses, $this->compileResponse(...)),
             'parameters' => $this->compileComponentMap($specification->parameters, $this->compileParameter(...)),
@@ -817,33 +816,15 @@ class OpenApi31Compiler implements CompilerInterface
             'links' => $this->compileComponentMap($specification->links, $this->compileLink(...)),
             'examples' => $this->compileComponentMap($specification->examples, $this->compileExample(...)),
             'pathItems' => $this->compileComponentMap($specification->pathItems, $this->compilePathItem(...)),
-            ...$this->compileVersionedComponents($specification),
-        ]);
-    }
-
-    /**
-     * The component buckets a later version adds. 3.1 has none past `pathItems`; 3.2 adds
-     * `mediaTypes`. Reported, not silently dropped, by `validateVersionedComponents()`.
-     *
-     * @return array<string,mixed>
-     */
-    protected function compileVersionedComponents(Specification $specification): array
-    {
-        return [];
-    }
-
-    protected function validateVersionedComponents(Specification $specification): void
-    {
-        if ($specification->mediaTypes !== []) {
-            $this->logger->warning('Media type components are not supported before OpenAPI 3.2, omitted');
-        }
+            'mediaTypes' => $this->compileComponentMap($specification->mediaTypes, $this->compileMediaType(...)),
+        ], $specification));
     }
 
     /**
      * Warns about each set property in `$unsupported`, which the compile methods leave out.
      * Copies of one declaration produce the same message, which is logged once.
      *
-     * @param array<class-string<OA\AbstractAttribute>, array<int|string, string>> $unsupported class => property names, or property name => hint
+     * @param array<class-string<OA\AbstractAttribute|Specification>, array<int|string, string>> $unsupported class => property names, or property name => hint
      */
     protected function validateUnsupportedProperties(Specification $specification, array $unsupported): void
     {
@@ -854,7 +835,7 @@ class OpenApi31Compiler implements CompilerInterface
         $version = implode('.', array_slice(explode('.', $this->getVersion()), 0, 2));
         $reported = [];
 
-        $this->visit($specification, array_keys($unsupported), function (OA\AbstractAttribute $attribute) use ($unsupported, $version, &$reported): void {
+        $check = function (OA\AbstractAttribute|Specification $attribute) use ($unsupported, $version, &$reported): void {
             foreach ($unsupported as $class => $properties) {
                 if (!$attribute instanceof $class) {
                     continue;
@@ -871,22 +852,37 @@ class OpenApi31Compiler implements CompilerInterface
 
                     $message = "{$this->subject($attribute)} uses {$property}, not supported in OpenAPI {$version}, omitted"
                         . ($hint !== null ? "; {$hint}" : '')
-                        . ($attribute->getReflector() instanceof \Reflector ? ' in ' . $attribute->getSourceLocation() : '');
+                        . ($attribute instanceof OA\AbstractAttribute && $attribute->getReflector() instanceof \Reflector ? ' in ' . $attribute->getSourceLocation() : '');
                     if (!isset($reported[$message])) {
                         $reported[$message] = true;
                         $this->logger->warning($message);
                     }
                 }
             }
-        });
+        };
+
+        // the walk visits attributes only, so the specification itself is checked here
+        $check($specification);
+
+        $classes = [];
+        foreach (array_keys($unsupported) as $class) {
+            if (is_a($class, OA\AbstractAttribute::class, true)) {
+                $classes[] = $class;
+            }
+        }
+
+        if ($classes !== []) {
+            $this->visit($specification, $classes, $check);
+        }
     }
 
     /**
      * An attribute named the way a message starts: its kind, and its name where it has one.
      */
-    protected function subject(OA\AbstractAttribute $attribute): string
+    protected function subject(OA\AbstractAttribute|Specification $attribute): string
     {
         return match (true) {
+            $attribute instanceof Specification => 'Components',
             $attribute instanceof OA\Schema => 'Schema' . $this->schemaLabel($attribute),
             $attribute instanceof OA\Tag && $attribute->name !== null => 'Tag "' . $attribute->name . '"',
             default => (new \ReflectionClass($attribute))->getShortName(),
@@ -1573,14 +1569,14 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * Remove null entries and the properties this version cannot carry, and apply x- extensions.
+     * Leaves out the properties this version cannot carry, which `validateUnsupportedProperties()`
+     * warns about.
      *
      * @param  array<string,mixed> $result
      * @return array<string,mixed>
      */
-    protected function filter(array $result, OA\AbstractAttribute|null $attribute = null): array
+    protected function omitUnsupported(array $result, OA\AbstractAttribute|Specification|null $attribute): array
     {
-        // `validateUnsupportedProperties()` warns about each
         foreach (static::UNSUPPORTED_PROPERTIES as $class => $properties) {
             if ($attribute instanceof $class) {
                 foreach ($properties as $property => $hint) {
@@ -1589,7 +1585,18 @@ class OpenApi31Compiler implements CompilerInterface
             }
         }
 
-        $result = array_filter($result, fn ($value): bool => !in_array($value, [null, Undefined::UNDEFINED, []], true));
+        return $result;
+    }
+
+    /**
+     * Remove null entries and the properties this version cannot carry, and apply x- extensions.
+     *
+     * @param  array<string,mixed> $result
+     * @return array<string,mixed>
+     */
+    protected function filter(array $result, OA\AbstractAttribute|null $attribute = null): array
+    {
+        $result = array_filter($this->omitUnsupported($result, $attribute), fn ($value): bool => !in_array($value, [null, Undefined::UNDEFINED, []], true));
 
         if ($attribute?->x !== null) {
             foreach ($attribute->x as $key => $value) {

@@ -42,6 +42,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
     protected const NOT_REF_KEYWORDS = [...parent::NOT_REF_KEYWORDS, 'examples'];
 
     protected const UNSUPPORTED_PROPERTIES = [
+        Specification::class => ['mediaTypes'],
         OA\Info::class => ['summary'],
         OA\License::class => ['identifier' => 'use url instead'],
         OA\Tag::class => ['summary', 'parent', 'kind'],

@@ -163,7 +163,7 @@ final class ReusableComponentsTest extends TestCase
             $this->assertSame('array', $document['components']['mediaTypes']['Patch']['schema']['type']);
         } else {
             $this->assertArrayNotHasKey('components', $document);
-            $this->expectLogEntry('Media type components are not supported before OpenAPI 3.2, omitted', 'warning');
+            $this->expectLogEntry('Components uses mediaTypes, not supported in OpenAPI ' . substr($version, 0, 3) . ', omitted', 'warning');
         }
     }
 
