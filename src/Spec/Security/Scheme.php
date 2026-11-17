@@ -44,21 +44,23 @@ class Scheme extends OA\AbstractAttribute implements RefInterface
     public ?string $in = null;
 
     /**
-     * @param string|null               $securityScheme   Deprecated since 6.12, removed in 8.0 - use `component` instead
-     * @param string|OA\SchemeType|null $type             The type of the security scheme (apiKey, http, mutualTLS, oauth2, openIdConnect)
-     * @param string|null               $description      A description of the security scheme (CommonMark syntax)
-     * @param string|null               $name             The name of the header, query, or cookie parameter (apiKey)
-     * @param string|OA\SchemeIn|null   $in               The location of the API key (query, header, cookie)
-     * @param string|null               $scheme           The HTTP authorization scheme (http)
-     * @param string|null               $bearerFormat     A hint about the format of the bearer token (http/bearer)
-     * @param string|null               $openIdConnectUrl The OpenID Connect URL to discover configuration (openIdConnect)
-     * @param list<OA\Flow>|null        $flows            The available OAuth2 flows (oauth2)
-     * @param string|null               $ref              A JSON Reference to a reusable security scheme
-     * @param string|null               $component        The name this is filed under in `components`, which makes it a reusable component
-     * @param array<string,mixed>|null  $x                Vendor extensions (x-* properties)
-     * @param list<OA\Attachable>|null  $attachables      Reusable custom attachable attributes
-     * @param OA\Fan|null               $fan              Where this attribute goes when more than one attribute could hold it
-     * @param string|null               $summary          A short summary of what `ref` points to, written only beside `ref` and from OpenAPI 3.1 on
+     * @param string|null               $securityScheme    Deprecated since 6.12, removed in 8.0 - use `component` instead
+     * @param string|OA\SchemeType|null $type              The type of the security scheme (apiKey, http, mutualTLS, oauth2, openIdConnect)
+     * @param string|null               $description       A description of the security scheme (CommonMark syntax)
+     * @param string|null               $name              The name of the header, query, or cookie parameter (apiKey)
+     * @param string|OA\SchemeIn|null   $in                The location of the API key (query, header, cookie)
+     * @param string|null               $scheme            The HTTP authorization scheme (http)
+     * @param string|null               $bearerFormat      A hint about the format of the bearer token (http/bearer)
+     * @param string|null               $openIdConnectUrl  The OpenID Connect URL to discover configuration (openIdConnect)
+     * @param list<OA\Flow>|null        $flows             The available OAuth2 flows (oauth2)
+     * @param string|null               $ref               A JSON Reference to a reusable security scheme
+     * @param string|null               $component         The name this is filed under in `components`, which makes it a reusable component
+     * @param array<string,mixed>|null  $x                 Vendor extensions (x-* properties)
+     * @param list<OA\Attachable>|null  $attachables       Reusable custom attachable attributes
+     * @param OA\Fan|null               $fan               Where this attribute goes when more than one attribute could hold it
+     * @param string|null               $summary           A short summary of what `ref` points to, written only beside `ref` and from OpenAPI 3.1 on
+     * @param bool|null                 $deprecated        Whether the security scheme is deprecated, from OpenAPI 3.2 on
+     * @param string|null               $oauth2MetadataUrl The RFC 8414 authorization server metadata URL (oauth2), from OpenAPI 3.2 on
      */
     public function __construct(
         public ?string $securityScheme = null,
@@ -76,6 +78,8 @@ class Scheme extends OA\AbstractAttribute implements RefInterface
         ?array $attachables = null,
         ?OA\Fan $fan = null,
         public ?string $summary = null,
+        public ?bool $deprecated = null,
+        public ?string $oauth2MetadataUrl = null,
     ) {
         $this->component = $component;
         if ($component === null && $this->securityScheme !== null) {

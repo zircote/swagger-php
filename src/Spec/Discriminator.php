@@ -16,11 +16,12 @@ namespace OpenApi\Spec;
 class Discriminator extends AbstractAttribute
 {
     /**
-     * @param string|null               $propertyName The name of the property in the payload that distinguishes types
-     * @param array<string,string>|null $mapping      Maps payload values to schema names or references
-     * @param array<string,mixed>|null  $x            Vendor extensions (x-* properties)
-     * @param list<Attachable>|null     $attachables  Reusable custom attachable attributes
-     * @param Fan|null                  $fan          Where this attribute goes when more than one attribute could hold it
+     * @param string|null               $propertyName   The name of the property in the payload that distinguishes types
+     * @param array<string,string>|null $mapping        Maps payload values to schema names or references
+     * @param array<string,mixed>|null  $x              Vendor extensions (x-* properties)
+     * @param list<Attachable>|null     $attachables    Reusable custom attachable attributes
+     * @param Fan|null                  $fan            Where this attribute goes when more than one attribute could hold it
+     * @param string|null               $defaultMapping The schema name or reference to use when the payload value has no mapping, from OpenAPI 3.2 on
      */
     public function __construct(
         public ?string $propertyName = null,
@@ -28,6 +29,7 @@ class Discriminator extends AbstractAttribute
         ?array $x = null,
         ?array $attachables = null,
         ?Fan $fan = null,
+        public ?string $defaultMapping = null,
     ) {
         parent::__construct(x: $x, attachables: $attachables, fan: $fan);
     }

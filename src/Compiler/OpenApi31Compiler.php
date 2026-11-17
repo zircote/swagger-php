@@ -72,7 +72,12 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected const UNSUPPORTED_PROPERTIES = [
         Specification::class => ['mediaTypes'],
+        OA\OpenApi::class => ['self'],
+        OA\Server::class => ['name'],
         OA\Tag::class => ['summary', 'parent', 'kind'],
+        OA\Discriminator::class => ['defaultMapping'],
+        OA\Security\Scheme::class => ['deprecated', 'oauth2MetadataUrl'],
+        OA\Example::class => ['serializedValue'],
     ];
 
     protected CollectingLogger $logger;
@@ -129,6 +134,8 @@ class OpenApi31Compiler implements CompilerInterface
 
         return $this->filter([
             'openapi' => $version,
+            // the list names the property, `self`, not the key
+            '$self' => $this->omitUnsupported(['self' => $specification->openapi->self], $specification->openapi)['self'] ?? null,
             'info' => $specification->info instanceof OA\Info ? $this->compileInfo($specification->info) : null,
             'servers' => array_map($this->compileServer(...), $specification->servers),
             'paths' => $this->compilePaths($specification->operations, $specification->pathItems),
@@ -192,6 +199,26 @@ class OpenApi31Compiler implements CompilerInterface
         $this->validateSchemaExamples($specification);
 
         $this->validateReferenceSummaries($specification);
+
+        $this->validateExamples($specification);
+    }
+
+    /**
+     * `dataValue` is new in 3.2, and before it is written as `value` where the example has
+     * neither `value` nor `externalValue`, which would conflict with it.
+     */
+    protected function validateExamples(Specification $specification): void
+    {
+        $this->visit($specification, OA\Example::class, function (OA\Example $example): void {
+            if ($example->dataValue === Undefined::UNDEFINED) {
+                return;
+            }
+
+            $subject = $example->example === null ? 'Example' : 'Example "' . $example->example . '"';
+            $action = $example->value === Undefined::UNDEFINED && $example->externalValue === null ? 'written as value' : 'omitted';
+            $this->logger->warning("{$subject} uses dataValue, not supported in OpenAPI " . substr($this->getVersion(), 0, 3) . ", {$action}"
+                . ($example->getReflector() instanceof \Reflector ? ' in ' . $example->getSourceLocation() : ''));
+        });
     }
 
     /**
@@ -254,6 +281,7 @@ class OpenApi31Compiler implements CompilerInterface
             'url' => $server->url,
             'description' => $server->description,
             'variables' => $variables,
+            'name' => $server->name,
         ], $server);
     }
 
@@ -792,6 +820,7 @@ class OpenApi31Compiler implements CompilerInterface
         return $this->filter([
             'propertyName' => $discriminator->propertyName,
             'mapping' => $discriminator->mapping,
+            'defaultMapping' => $discriminator->defaultMapping,
         ], $discriminator);
     }
 
@@ -958,6 +987,8 @@ class OpenApi31Compiler implements CompilerInterface
             'bearerFormat' => $scheme->bearerFormat,
             'openIdConnectUrl' => $scheme->openIdConnectUrl,
             'flows' => $this->compileFlows($scheme->flows ?? []),
+            'oauth2MetadataUrl' => $scheme->type === OA\SchemeType::OAuth2->value ? $scheme->oauth2MetadataUrl : null,
+            'deprecated' => $scheme->deprecated,
         ], $scheme);
     }
 
@@ -1004,9 +1035,13 @@ class OpenApi31Compiler implements CompilerInterface
             'summary' => $example->summary,
             'description' => $example->description,
             'externalValue' => $example->externalValue,
+            'serializedValue' => $example->serializedValue,
         ], $example);
 
-        return $this->withDefined($result, ['value' => $example->value]);
+        // `dataValue` stands in for `value`, unless `value` or `externalValue` is set
+        $value = $example->value === Undefined::UNDEFINED && $example->externalValue === null ? $example->dataValue : $example->value;
+
+        return $this->withDefined($result, ['value' => $value]);
     }
 
     /**
