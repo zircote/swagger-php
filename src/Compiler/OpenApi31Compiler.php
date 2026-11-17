@@ -57,7 +57,7 @@ class OpenApi31Compiler implements CompilerInterface
     protected const NESTED_MAPS = [
         OA\Response::class => ['headers' => 'header', 'links' => 'link'],
         OA\MediaType::class => ['examples' => 'example', 'encoding' => 'encoding'],
-        OA\Encoding::class => ['headers' => 'header'],
+        OA\Encoding::class => ['headers' => 'header', 'encodings' => 'encoding'],
         OA\Parameter::class => ['examples' => 'example'],
         OA\Header::class => ['examples' => 'example'],
     ];
@@ -76,6 +76,8 @@ class OpenApi31Compiler implements CompilerInterface
         OA\Server::class => ['name'],
         OA\Tag::class => ['summary', 'parent', 'kind'],
         OA\Flow::class => ['deviceAuthorizationUrl'],
+        OA\MediaType::class => ['itemSchema', 'prefixEncoding', 'itemEncoding'],
+        OA\Encoding::class => ['encodings', 'prefixEncoding', 'itemEncoding'],
         OA\Discriminator::class => ['defaultMapping'],
         OA\Security\Scheme::class => ['deprecated', 'oauth2MetadataUrl'],
         OA\Example::class => ['serializedValue'],
@@ -594,6 +596,9 @@ class OpenApi31Compiler implements CompilerInterface
             'schema' => $mediaType->schema instanceof OA\Schema ? $this->compileSchema($mediaType->schema) : null,
             'examples' => $this->compileKeyedMap($mediaType->examples ?? [], 'example', $this->compileExample(...)),
             'encoding' => $this->compileKeyedMap($mediaType->encoding ?? [], 'encoding', $this->compileEncoding(...)),
+            'itemSchema' => $mediaType->itemSchema instanceof OA\Schema ? $this->compileSchema($mediaType->itemSchema) : null,
+            'prefixEncoding' => $this->compilePositionalEncodings($mediaType->prefixEncoding ?? []),
+            'itemEncoding' => $mediaType->itemEncoding instanceof OA\Encoding ? $this->compilePositionalEncoding($mediaType->itemEncoding) : null,
         ], $mediaType);
 
         return $this->withDefined($result, ['example' => $mediaType->example]) ?: new \stdClass();
@@ -610,7 +615,31 @@ class OpenApi31Compiler implements CompilerInterface
             'style' => $encoding->style,
             'explode' => $encoding->explode,
             'allowReserved' => $encoding->allowReserved,
+            // the list names the property, `encodings`, not the key
+            'encoding' => $this->omitUnsupported(['encodings' => $this->compileKeyedMap($encoding->encodings ?? [], 'encoding', $this->compileEncoding(...))], $encoding)['encodings'] ?? null,
+            'prefixEncoding' => $this->compilePositionalEncodings($encoding->prefixEncoding ?? []),
+            'itemEncoding' => $encoding->itemEncoding instanceof OA\Encoding ? $this->compilePositionalEncoding($encoding->itemEncoding) : null,
         ], $encoding);
+    }
+
+    /**
+     * @param  list<OA\Encoding>                   $encodings
+     * @return list<array<string,mixed>|\stdClass>
+     */
+    protected function compilePositionalEncodings(array $encodings): array
+    {
+        return array_values(array_map($this->compilePositionalEncoding(...), $encodings));
+    }
+
+    /**
+     * An encoding addressed by position has no name to key it, so one with nothing set is still
+     * an object: `itemEncoding: {}`.
+     *
+     * @return array<string,mixed>|\stdClass
+     */
+    protected function compilePositionalEncoding(OA\Encoding $encoding): array|\stdClass
+    {
+        return $this->compileEncoding($encoding) ?: new \stdClass();
     }
 
     /**
@@ -981,6 +1010,8 @@ class OpenApi31Compiler implements CompilerInterface
             $attribute instanceof Specification => 'Components',
             $attribute instanceof OA\Schema => 'Schema' . $this->schemaLabel($attribute),
             $attribute instanceof OA\Tag && $attribute->name !== null => 'Tag "' . $attribute->name . '"',
+            $attribute instanceof OA\MediaType && $attribute->mediaType !== null => 'Media type "' . $attribute->mediaType . '"',
+            $attribute instanceof OA\Encoding && $attribute->encoding !== null => 'Encoding "' . $attribute->encoding . '"',
             default => (new \ReflectionClass($attribute))->getShortName(),
         };
     }
@@ -1272,13 +1303,21 @@ class OpenApi31Compiler implements CompilerInterface
         });
     }
 
+    /**
+     * Whether the schema's type is `array`, alone or among others.
+     */
+    protected function isArrayType(OA\Schema $schema): bool
+    {
+        return in_array('array', (array) $schema->type, true);
+    }
+
     protected function validateSchemas(Specification $specification): void
     {
         $allSchemas = $this->collectSchemas($specification);
         $owners = $this->collectSchemaOwners($specification);
 
         foreach ($allSchemas as $schema) {
-            if ($schema->type !== null && (is_array($schema->type) ? in_array('array', $schema->type, true) : $schema->type === 'array')) {
+            if ($this->isArrayType($schema)) {
                 if ($schema->items === null && $schema->prefixItems === null && $schema->contains === null) {
                     $this->logger->warning('Schema' . $this->schemaLabel($schema) . ' has type "array" but no items in ' . $schema->getSourceLocation());
                 }

@@ -334,6 +334,8 @@ final class PropertyCoverageTest extends TestCase
             'links' => [new OA\Link(link: 'next', operationId: 'getNext')],
             'examples' => [new OA\Example(example: 'dog', value: 'Rex')],
             'encoding' => [new OA\Encoding(encoding: 'file', contentType: 'text/plain')],
+            'encodings' => [new OA\Encoding(encoding: 'part', contentType: 'text/plain')],
+            'prefixEncoding' => [new OA\Encoding(contentType: 'image/png')],
             'content' => [new OA\MediaType(mediaType: 'text/plain', schema: new OA\Schema(type: 'string'))],
             'flows' => [new OA\Flow(flow: 'implicit', authorizationUrl: 'https://example.com/auth', scopes: [])],
             'properties' => [new OA\Property(property: 'age', schema: new OA\Schema(type: 'integer'))],

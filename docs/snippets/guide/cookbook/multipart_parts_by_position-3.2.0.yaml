@@ -1,0 +1,48 @@
+openapi: 3.2.0
+paths:
+  /v1/photos:
+    post:
+      summary: 'A JSON manifest, then the photos'
+      requestBody:
+        content:
+          multipart/mixed:
+            schema:
+              type: array
+              items:
+                contentMediaType: image/jpeg
+              prefixItems:
+                -
+                  type: object
+            prefixEncoding:
+              -
+                contentType: application/json
+            itemEncoding:
+              contentType: image/jpeg
+      responses:
+        '200':
+          description: Success
+  /v1/albums:
+    post:
+      summary: 'Form post with the same parts in one field'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                photos:
+                  type: array
+                  items: { contentMediaType: image/jpeg }
+                  prefixItems: [{ type: object }]
+            encoding:
+              photos:
+                contentType: multipart/mixed
+                prefixEncoding:
+                  - { contentType: application/json }
+                itemEncoding:
+                  contentType: image/jpeg
+      responses:
+        '200':
+          description: Success

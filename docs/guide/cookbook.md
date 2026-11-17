@@ -470,6 +470,27 @@ Form posts are POST operations with a `multipart/form-data` request body. The re
   </template>
 </codeblock>
 
+## Multipart parts by position
+Parts of `multipart/mixed` (also `multipart/related` and `multipart/byteranges`) have no names, so
+`encoding` cannot address them. From OpenAPI 3.2 on, `prefixEncoding` lists the encodings of the
+leading parts in order, and `itemEncoding` is the encoding of every part after them. They pair with
+`prefixItems` and `items` of an array schema, and `OA\Schema\Items` writes both.
+
+The same three fields exist on `OA\Encoding`, for a form field that is itself multipart. A part
+that is `multipart/form-data` names its own parts with `encodings`.
+
+<codeblock id="multipart-parts-by-position">
+  <template v-slot:spec>
+
+<<< @/snippets/guide/cookbook/multipart_parts_by_position_spec.php
+
+  </template>
+</codeblock>
+
+`prefixEncoding` and `itemEncoding` cannot be combined with `encoding`, and need `itemSchema` or
+an array `schema` to give the parts their positions. A 3.0 or 3.1 document leaves all of them out,
+with a warning each.
+
 ## Default security scheme for all endpoints
 Unless specified, each endpoint needs to declare what security schemes it supports. However, there is a way
 to also configure security schemes globally for the whole API.

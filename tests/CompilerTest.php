@@ -1120,6 +1120,92 @@ final class CompilerTest extends TestCase
         $this->assertSame([], array_filter($messages, fn (string $m): bool => str_starts_with($m, 'Request body not supported')));
     }
 
+    /**
+     * 3.2 writes the media type's items and the encodings by position, nested ones included;
+     * earlier versions leave them out with a warning each.
+     */
+    #[DataProvider('compilerProvider')]
+    public function testWritesMediaTypesByItem(CompilerInterface $compiler, string $version): void
+    {
+        $spec = $this->createSpecification($version);
+        $spec->operations[] = new OA\Operation(
+            path: '/batch',
+            method: 'post',
+            requestBody: new OA\RequestBody(content: [
+                new OA\MediaType(
+                    mediaType: 'multipart/mixed',
+                    schema: new OA\Schema(type: 'array', items: new OA\Schema(type: 'string', format: 'binary'), prefixItems: [new OA\Schema(type: 'object')]),
+                    prefixEncoding: [new OA\Encoding(contentType: 'application/json')],
+                    itemEncoding: new OA\Encoding(),
+                ),
+                new OA\MediaType(
+                    mediaType: 'multipart/form-data',
+                    encoding: [new OA\Encoding(encoding: 'album', contentType: 'multipart/mixed', encodings: [new OA\Encoding(encoding: 'cover', contentType: 'image/png')])],
+                ),
+                new OA\MediaType(mediaType: 'application/jsonl', itemSchema: new OA\Schema(type: 'object')),
+            ]),
+            responses: [new OA\Response(response: 200, description: 'ok')],
+        );
+
+        $messages = array_column($compiler->validate($spec), 'message');
+        $content = $compiler->compile($spec)['paths']['/batch']['post']['requestBody']['content'];
+
+        if ($version === '3.2.0') {
+            $this->assertEquals([['contentType' => 'application/json']], $content['multipart/mixed']['prefixEncoding']);
+            $this->assertEquals(new \stdClass(), $content['multipart/mixed']['itemEncoding']);
+            $this->assertSame(['cover' => ['contentType' => 'image/png']], $content['multipart/form-data']['encoding']['album']['encoding']);
+            $this->assertSame(['type' => 'object'], $content['application/jsonl']['itemSchema']);
+            $this->assertSame([], array_values(array_filter($messages, fn (string $message): bool => str_contains($message, 'not supported in OpenAPI'))));
+
+            return;
+        }
+
+        $short = substr($version, 0, 3);
+        $this->assertSame(['schema'], array_keys($content['multipart/mixed']));
+        $this->assertSame(['contentType' => 'multipart/mixed'], $content['multipart/form-data']['encoding']['album']);
+        $this->assertEquals(new \stdClass(), $content['application/jsonl']);
+        $this->assertEqualsCanonicalizing([
+            "Media type \"multipart/mixed\" uses prefixEncoding, not supported in OpenAPI {$short}, omitted",
+            "Media type \"multipart/mixed\" uses itemEncoding, not supported in OpenAPI {$short}, omitted",
+            "Encoding \"album\" uses encodings, not supported in OpenAPI {$short}, omitted",
+            "Media type \"application/jsonl\" uses itemSchema, not supported in OpenAPI {$short}, omitted",
+        ], array_values(array_filter($messages, fn (string $message): bool => str_starts_with($message, 'Media type') || str_starts_with($message, 'Encoding'))));
+    }
+
+    /**
+     * Encodings by position exclude `encoding` by name and need items to address; a name on one is
+     * not written.
+     */
+    public function test32ChecksEncodingsByPosition(): void
+    {
+        $spec = $this->createSpecification('3.2.0');
+        $spec->operations[] = new OA\Operation(
+            path: '/upload',
+            method: 'post',
+            requestBody: new OA\RequestBody(content: [
+                new OA\MediaType(
+                    mediaType: 'multipart/related',
+                    schema: new OA\Schema(type: 'object'),
+                    encoding: [new OA\Encoding(encoding: 'meta', contentType: 'application/json')],
+                    itemEncoding: new OA\Encoding(encoding: 'part', contentType: 'image/png'),
+                ),
+                new OA\MediaType(mediaType: 'multipart/mixed', schema: new OA\Schema(ref: '#/components/schemas/Parts'), prefixEncoding: [new OA\Encoding()]),
+                new OA\MediaType(mediaType: 'multipart/byteranges', itemSchema: new OA\Schema(type: 'string'), itemEncoding: new OA\Encoding()),
+            ]),
+            responses: [new OA\Response(response: 200, description: 'ok')],
+        );
+
+        $compiler = new OpenApi32Compiler();
+        $diagnostics = $compiler->validate($spec);
+
+        $this->assertSame([
+            ['level' => 'error', 'message' => 'Media type "multipart/related" uses encoding beside prefixEncoding or itemEncoding, which exclude each other'],
+            ['level' => 'error', 'message' => 'Media type "multipart/related" uses prefixEncoding or itemEncoding without itemSchema or an array schema'],
+            ['level' => 'warning', 'message' => 'Encoding "part" is addressed by position in Media type "multipart/related", its name ignored'],
+        ], array_values(array_filter($diagnostics, fn (array $entry): bool => str_contains($entry['message'], 'Media type "multipart/') || str_contains($entry['message'], 'Encoding "'))));
+        $this->assertSame(['contentType' => 'image/png'], $compiler->compile($spec)['paths']['/upload']['post']['requestBody']['content']['multipart/related']['itemEncoding']);
+    }
+
     #[DataProvider('validationProvider')]
     public function testValidation(CompilerInterface $compiler, Specification $specification, string $expectedMessage): void
     {
