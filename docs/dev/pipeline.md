@@ -195,6 +195,14 @@ list containing `null` becomes `nullable: true`, and `contentEncoding: base64` b
 `Format` follows the same rule. It has no `Byte` or `Binary` case, because 3.1 writes those as
 `contentEncoding` and `contentMediaType`.
 
+A field a version cannot carry at all is left out rather than translated. The shared compile
+methods write every field, and each compiler lists what its version lacks in
+`UNSUPPORTED_PROPERTIES`: `filter()` leaves those out, and a warning names each one.
+`PropertyCoverageTest` sets every constructor argument of every attribute and fails, at every
+version, on one that changes neither the document nor the log. A new field is written in the
+compile method and listed for the versions without it. A field the pipeline consumes before
+compiling goes on the test's own list instead.
+
 ## `null` means unset, except where `null` is a value
 
 A nullable property defaults to `null`, and `filter()` in the compilers drops it. That
