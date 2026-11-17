@@ -1,0 +1,82 @@
+<?php declare(strict_types=1);
+
+/**
+ * @license Apache 2.0
+ */
+
+namespace OpenApi\Spec\Operation;
+
+use OpenApi\Spec as OA;
+use OpenApi\Undefined;
+
+/**
+ * Shorthand for an HTTP QUERY operation, from OpenAPI 3.2 on.
+ *
+ * Allows to shorten this:
+ *
+ * ```php
+ * #[OA\Operation(method: 'query', path: '/pets/search')]
+ * ```
+ *
+ * to this:
+ *
+ * ```php
+ * #[OA\Operation\Query(path: '/pets/search')]
+ * ```
+ *
+ * @see [Operation Object](https://spec.openapis.org/oas/v3.2.0.html#operation-object)
+ */
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+class Query extends OA\Operation
+{
+    /**
+     * @param list<string>|null                  $tags
+     * @param list<OA\Parameter>|null            $parameters
+     * @param list<OA\Response>|null             $responses
+     * @param array<string,mixed>|null           $callbacks
+     * @param list<OA\Security\Requirement>|null $security
+     * @param list<OA\Server>|null               $servers
+     * @param array<string,mixed>|null           $x
+     * @param list<OA\Attachable>|null           $attachables
+     */
+    public function __construct(
+        ?string $path = null,
+        ?string $webhook = null,
+        ?string $operationId = null,
+        ?string $summary = Undefined::UNDEFINED,
+        ?string $description = Undefined::UNDEFINED,
+        ?array $tags = null,
+        ?array $parameters = null,
+        ?OA\RequestBody $requestBody = null,
+        ?array $responses = null,
+        ?array $callbacks = null,
+        ?bool $deprecated = null,
+        ?array $security = null,
+        ?array $servers = null,
+        ?OA\ExternalDocumentation $externalDocs = null,
+        ?array $x = null,
+        ?array $attachables = null,
+        ?OA\Fan $fan = null,
+    ) {
+        parent::__construct(
+            path: $path,
+            webhook: $webhook,
+            method: OA\HttpMethod::Query,
+            operationId: $operationId,
+            summary: $summary,
+            description: $description,
+            tags: $tags,
+            parameters: $parameters,
+            requestBody: $requestBody,
+            responses: $responses,
+            callbacks: $callbacks,
+            deprecated: $deprecated,
+            security: $security,
+            servers: $servers,
+            externalDocs: $externalDocs,
+            x: $x,
+            attachables: $attachables,
+            fan: $fan,
+        );
+    }
+}

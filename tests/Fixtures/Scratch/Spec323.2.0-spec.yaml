@@ -64,6 +64,17 @@ paths:
       responses:
         '200':
           description: 'One pet'
+  /pets/search:
+    query:
+      operationId: searchPets
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: 'The matching pets'
 components:
   schemas:
     Pet:

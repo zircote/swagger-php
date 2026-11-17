@@ -143,7 +143,8 @@ format that is not a case can still be passed as a string.
 
 ## `OA\Operation\*` {#oa-operation}
 
-`OA\Operation\Get`, `Post`, `Put`, `Patch`, `Delete`, `Head`, `Options` and `Trace` set `method`.
+`OA\Operation\Get`, `Post`, `Put`, `Patch`, `Delete`, `Head`, `Options`, `Trace` and `Query` set `method`.
+`Query` is new in OpenAPI 3.2, and a 3.0 or 3.1 document leaves it out with a warning.
 
 ```php
 // instead of
