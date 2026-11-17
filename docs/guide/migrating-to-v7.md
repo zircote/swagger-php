@@ -88,6 +88,7 @@ Everything below still works in v7 and is removed in 8.0.
 | `Builder::setLogger()` | The `Builder` constructor, `new Builder($logger)` |
 | `AttributeFactory::getTokenScanner()` | `AttributeFactory::getSourceInspector()` |
 | `TokenScanner` | `SourceInspector`, the `AttributeFactory` default |
+| `x` on `Security\Requirement` | Nothing. A Security Requirement Object cannot carry extensions, so it is left out with a warning. |
 
 The [Classic Attribute](/reference/attributes), [Docblock Annotation](/reference/annotations) and
 [Processor](/reference/processors) references mark each deprecated class.
@@ -230,6 +231,33 @@ to `detailsFor()` or `scanFile()` there fails with an undefined method error.
 `Parameter`, `RequestBody`, `Response`, `Header`, `Link` and `Security\Scheme` take a `summary`,
 written beside a `$ref` from OpenAPI 3.1 on. A subclass declaring its own `$summary` property needs
 it as `public ?string $summary`. Any other type or visibility is a fatal error.
+
+## Changed output in 7.7
+
+Spec and hybrid report every property the target OpenAPI version leaves out. Before, most were left
+out without a message:
+
+* 3.0 and 3.1 warn about a tag's `summary`, `parent` and `kind`, for example
+  `Tag "pets" uses summary, not supported in OpenAPI 3.1, omitted`.
+* 3.0 also warns about an info `summary`, and about the schema keywords it has no place for:
+  `contains`, `minContains`, `maxContains`, `patternProperties`, `propertyNames`,
+  `dependentRequired`, `dependentSchemas` and `contentSchema`.
+
+Two existing warnings read like the others now. A license `identifier` at 3.0 gives
+`License uses identifier, not supported in OpenAPI 3.0, omitted; use url instead`, and media type
+components at 3.0 or 3.1 give `Components uses mediaTypes, not supported in OpenAPI 3.1, omitted`.
+A test matching either message needs updating.
+
+Extensions set with `x` on `#[OA\Components]` are written on the document's `components`, and those
+on a property on that property's schema. Before, both were left out without a warning. `x` on a
+`Security\Requirement` is still left out, now with a warning.
+
+## Changed in 7.7
+
+A compiler subclass leaves a property out by listing it in `UNSUPPORTED_PROPERTIES`. `filter()` then
+drops it, and the compiler warns about it. The 3.0 compiler's own `compileInfo()` and
+`compileLicense()`, and the 3.2 compiler's own `compileTag()`, are gone, since the lists do what they
+did. A subclass calling one of them through `parent::` gets the same result as before.
 
 ## Preparing for 8.0
 
