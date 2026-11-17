@@ -12,4 +12,5 @@ enum FlowType: string
     case Password = 'password';
     case ClientCredentials = 'clientCredentials';
     case AuthorizationCode = 'authorizationCode';
+    case DeviceAuthorization = 'deviceAuthorization';
 }

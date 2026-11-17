@@ -172,7 +172,8 @@ new OA\Security\Requirement(schemes: ['apiKey' => [], 'oauth' => ['read:pets']])
 ## `OA\Security\Scheme\*` and `OA\Flow\*` {#oa-security-scheme-and-oa-flow}
 
 `OA\Security\Scheme\ApiKey`, `Http`, `OAuth2`, `OpenIdConnect` and `MutualTls` set `type`.
-`OA\Flow\AuthorizationCode`, `ClientCredentials`, `Implicit` and `Password` set `flow`.
+`OA\Flow\AuthorizationCode`, `ClientCredentials`, `Implicit`, `Password` and `DeviceAuthorization` set `flow`.
+`DeviceAuthorization` is new in OpenAPI 3.2, and a 3.0 or 3.1 document leaves it out with a warning.
 
 ```php
 // instead of

@@ -75,9 +75,22 @@ class OpenApi31Compiler implements CompilerInterface
         OA\OpenApi::class => ['self'],
         OA\Server::class => ['name'],
         OA\Tag::class => ['summary', 'parent', 'kind'],
+        OA\Flow::class => ['deviceAuthorizationUrl'],
         OA\Discriminator::class => ['defaultMapping'],
         OA\Security\Scheme::class => ['deprecated', 'oauth2MetadataUrl'],
         OA\Example::class => ['serializedValue'],
+    ];
+
+    /**
+     * The values this version cannot carry, as class => property => values. `filter()` leaves a
+     * listed value out, as it does a listed property, and `validateUnsupportedValues()` warns
+     * about it.
+     *
+     * @var array<class-string<OA\AbstractAttribute>, array<string, list<string>>>
+     */
+    protected const UNSUPPORTED_VALUES = [
+        OA\Flow::class => ['flow' => ['deviceAuthorization']],
+        OA\Parameter::class => ['style' => ['cookie']],
     ];
 
     protected CollectingLogger $logger;
@@ -191,6 +204,8 @@ class OpenApi31Compiler implements CompilerInterface
         $this->validateNames($specification);
 
         $this->validateUnsupportedProperties($specification, static::UNSUPPORTED_PROPERTIES);
+
+        $this->validateUnsupportedValues($specification, static::UNSUPPORTED_VALUES);
 
         $this->validateRequirementExtensions($specification);
 
@@ -915,6 +930,35 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
+     * Warns about each set value in `$unsupported`, which the compile methods leave out.
+     *
+     * @param array<class-string<OA\AbstractAttribute>, array<string, list<string>>> $unsupported class => property => values
+     */
+    protected function validateUnsupportedValues(Specification $specification, array $unsupported): void
+    {
+        if ($unsupported === []) {
+            return;
+        }
+
+        $version = implode('.', array_slice(explode('.', $this->getVersion()), 0, 2));
+
+        $this->visit($specification, array_keys($unsupported), function (OA\AbstractAttribute $attribute) use ($unsupported, $version): void {
+            foreach ($unsupported as $class => $properties) {
+                if (!$attribute instanceof $class) {
+                    continue;
+                }
+
+                foreach ($properties as $property => $values) {
+                    if (in_array($attribute->{$property}, $values, true)) {
+                        $this->logger->warning("{$this->subject($attribute)} uses {$property} \"{$attribute->{$property}}\", not supported in OpenAPI {$version}, omitted"
+                            . ($attribute->getReflector() instanceof \Reflector ? ' in ' . $attribute->getSourceLocation() : ''));
+                    }
+                }
+            }
+        });
+    }
+
+    /**
      * A Security Requirement Object has no extensions in any version, so `x` on a requirement is
      * never written.
      */
@@ -1001,8 +1045,10 @@ class OpenApi31Compiler implements CompilerInterface
         $result = [];
 
         foreach ($flows as $flow) {
-            if ($flow->flow !== null) {
-                $result[$flow->flow] = $this->compileFlow($flow);
+            // the type is the flow's key, so a type the version cannot carry leaves out the flow
+            $type = $this->omitUnsupported(['flow' => $flow->flow], $flow)['flow'] ?? null;
+            if ($type !== null) {
+                $result[$type] = $this->compileFlow($flow);
             }
         }
 
@@ -1018,6 +1064,7 @@ class OpenApi31Compiler implements CompilerInterface
             'authorizationUrl' => $flow->authorizationUrl,
             'tokenUrl' => $flow->tokenUrl,
             'refreshUrl' => $flow->refreshUrl,
+            'deviceAuthorizationUrl' => $flow->deviceAuthorizationUrl,
             'scopes' => $flow->scopes ?: new \stdClass(),
         ], $flow);
     }
@@ -1639,6 +1686,16 @@ class OpenApi31Compiler implements CompilerInterface
             if ($attribute instanceof $class) {
                 foreach ($properties as $property => $hint) {
                     unset($result[is_int($property) ? $hint : $property]);
+                }
+            }
+        }
+
+        foreach (static::UNSUPPORTED_VALUES as $class => $properties) {
+            if ($attribute instanceof $class) {
+                foreach ($properties as $property => $values) {
+                    if (in_array($result[$property] ?? null, $values, true)) {
+                        unset($result[$property]);
+                    }
                 }
             }
         }

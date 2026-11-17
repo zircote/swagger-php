@@ -445,6 +445,42 @@ final class CompilerTest extends TestCase
     }
 
     /**
+     * A device authorization flow and the cookie style are new in 3.2. Before, the flow is left
+     * out whole and the style falls back to the default, each with a warning.
+     */
+    #[DataProvider('compilerProvider')]
+    public function testLeavesOutValuesNewIn32(CompilerInterface $compiler, string $version): void
+    {
+        $spec = $this->createSpecification($version);
+        $spec->securitySchemes[] = new OA\Security\Scheme\OAuth2(component: 'oauth', flows: [
+            new OA\Flow\ClientCredentials(tokenUrl: 'https://example.com/token', scopes: []),
+            new OA\Flow\DeviceAuthorization(deviceAuthorizationUrl: 'https://example.com/device', tokenUrl: 'https://example.com/token', scopes: []),
+        ]);
+        $spec->parameters[] = new OA\Parameter\Cookie(name: 'session', schema: new OA\Schema(type: 'string'), component: 'Session', style: OA\ParameterStyle::Cookie);
+
+        $messages = array_column($compiler->validate($spec), 'message');
+        $output = $compiler->compile($spec);
+        $flows = $output['components']['securitySchemes']['oauth']['flows'];
+        $parameter = $output['components']['parameters']['Session'];
+
+        if ($version === '3.2.0') {
+            $this->assertSame(['clientCredentials', 'deviceAuthorization'], array_keys($flows));
+            $this->assertSame('https://example.com/device', $flows['deviceAuthorization']['deviceAuthorizationUrl']);
+            $this->assertSame('cookie', $parameter['style']);
+            $this->assertSame([], array_values(array_filter($messages, fn (string $message): bool => str_contains($message, 'not supported in OpenAPI'))));
+        } else {
+            $short = substr($version, 0, 3);
+            $this->assertSame(['clientCredentials'], array_keys($flows));
+            $this->assertArrayNotHasKey('style', $parameter);
+            $this->assertEqualsCanonicalizing([
+                "DeviceAuthorization uses flow \"deviceAuthorization\", not supported in OpenAPI {$short}, omitted",
+                "DeviceAuthorization uses deviceAuthorizationUrl, not supported in OpenAPI {$short}, omitted",
+                "Cookie uses style \"cookie\", not supported in OpenAPI {$short}, omitted",
+            ], array_values(array_filter($messages, fn (string $message): bool => str_contains($message, 'not supported in OpenAPI'))));
+        }
+    }
+
+    /**
      * `components` takes the extensions of a `Components` holder, and a property's go on its schema.
      */
     #[DataProvider('compilerProvider')]

@@ -48,6 +48,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
         OA\Info::class => ['summary'],
         OA\License::class => ['identifier' => 'use url instead'],
         OA\Tag::class => ['summary', 'parent', 'kind'],
+        OA\Flow::class => ['deviceAuthorizationUrl'],
         OA\Schema::class => [
             'contains',
             'minContains',

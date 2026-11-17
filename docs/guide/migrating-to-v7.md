@@ -275,6 +275,12 @@ implementing the interface without extending `AbstractAttribute` adds it.
 `TokenScanner` goes with classic, and so does the `nikic/php-parser` dependency, since nothing else
 in swagger-php parses PHP. A project using php-parser directly requires it itself.
 
+A spec attribute's constructor ends with `x`, `attachables` and `fan`. A parameter added in a 7.x
+minor goes after them, so that arguments passed by position keep working, `summary` on
+`Parameter` since 7.6 for example. In 8.0 these parameters move to their place before `x`, and
+`x`, `attachables` and `fan` are the last three again. Code that passes them by name is not
+affected. Code that passes anything from `x` on by position breaks.
+
 ## Removed deprecated elements
 
 ### `LegacyTypeResolver`
