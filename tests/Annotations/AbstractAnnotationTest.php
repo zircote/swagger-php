@@ -110,10 +110,9 @@ END;
 
     /**
      * @param class-string<OA\AbstractAnnotation> $class
-     * @param mixed                               $expected
      */
     #[DataProvider('nestedMatches')]
-    public function testMatchNested(string $class, $expected): void
+    public function testMatchNested(string $class, ?\stdClass $expected): void
     {
         $this->assertEquals($expected, (new OA\Get([]))->matchNested(new $class([])));
     }
