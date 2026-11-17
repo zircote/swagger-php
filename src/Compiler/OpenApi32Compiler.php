@@ -54,6 +54,7 @@ class OpenApi32Compiler extends OpenApi31Compiler
         parent::validateSpecification($specification);
 
         $this->validateMetadataUrls($specification);
+        $this->validatePositionalEncodings($specification);
     }
 
     /**
@@ -142,5 +143,49 @@ class OpenApi32Compiler extends OpenApi31Compiler
         }
 
         return $this->filter(['summary' => $response->summary]) + $result;
+    }
+
+    /**
+     * Encodings addressed by position, `prefixEncoding` and `itemEncoding`, are the alternative to
+     * `encoding` by name, and need a schema with items for their positions: `itemSchema` or an
+     * array `schema`. A name on one of them has no effect.
+     */
+    protected function validatePositionalEncodings(Specification $specification): void
+    {
+        $check = function (OA\MediaType|OA\Encoding $holder): void {
+            $positional = array_filter([...$holder->prefixEncoding ?? [], $holder->itemEncoding], static fn (mixed $encoding): bool => $encoding instanceof OA\Encoding);
+            if ($positional === []) {
+                return;
+            }
+
+            $subject = $this->subject($holder);
+            $location = $holder->getReflector() instanceof \Reflector ? ' in ' . $holder->getSourceLocation() : '';
+            $named = $holder instanceof OA\MediaType ? $holder->encoding : $holder->encodings;
+            if ($named) {
+                $this->logger->error("{$subject} uses encoding beside prefixEncoding or itemEncoding, which exclude each other{$location}");
+            }
+
+            if ($holder instanceof OA\MediaType && !$holder->itemSchema instanceof OA\Schema && !$this->hasItems($holder->schema)) {
+                $this->logger->error("{$subject} uses prefixEncoding or itemEncoding without itemSchema or an array schema{$location}");
+            }
+
+            foreach ($positional as $encoding) {
+                if ($encoding->encoding !== null) {
+                    $this->logger->warning("Encoding \"{$encoding->encoding}\" is addressed by position in {$subject}, its name ignored{$location}");
+                }
+            }
+        };
+
+        $this->visit($specification, [OA\MediaType::class, OA\Encoding::class], $check);
+    }
+
+    /**
+     * Whether a schema can describe items by position. A reference is taken on trust: what it
+     * points to is checked where it is declared.
+     */
+    protected function hasItems(?OA\Schema $schema): bool
+    {
+        return $schema instanceof OA\Schema
+            && ($schema->getRefValue() !== null || $this->isArrayType($schema));
     }
 }

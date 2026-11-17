@@ -17,15 +17,18 @@ class Encoding extends AbstractAttribute
     public ?string $style = null;
 
     /**
-     * @param string|null                $encoding      The property name this encoding applies to
-     * @param string|null                $contentType   The Content-Type for encoding a specific property
-     * @param list<Header>|null          $headers       Additional headers for multipart media types
-     * @param string|ParameterStyle|null $style         How the property value is serialized
-     * @param bool|null                  $explode       Whether arrays/objects generate separate parameters
-     * @param bool|null                  $allowReserved Whether reserved characters are allowed without encoding
-     * @param array<string,mixed>|null   $x             Vendor extensions (x-* properties)
-     * @param list<Attachable>|null      $attachables   Reusable custom attachable attributes
-     * @param Fan|null                   $fan           Where this attribute goes when more than one attribute could hold it
+     * @param string|null                                $encoding       The property name this encoding applies to
+     * @param string|null                                $contentType    The Content-Type for encoding a specific property
+     * @param list<Header>|null                          $headers        Additional headers for multipart media types
+     * @param string|ParameterStyle|null                 $style          How the property value is serialized
+     * @param bool|null                                  $explode        Whether arrays/objects generate separate parameters
+     * @param bool|null                                  $allowReserved  Whether reserved characters are allowed without encoding
+     * @param array<string,mixed>|null                   $x              Vendor extensions (x-* properties)
+     * @param list<Attachable>|null                      $attachables    Reusable custom attachable attributes
+     * @param Fan|null                                   $fan            Where this attribute goes when more than one attribute could hold it
+     * @param list<Encoding>|array<string,Encoding>|null $encodings      The encodings of a nested multipart part, by name, from OpenAPI 3.2 on
+     * @param list<Encoding>|null                        $prefixEncoding The encodings of the leading parts of a nested unnamed multipart, by position, from OpenAPI 3.2 on
+     * @param Encoding|null                              $itemEncoding   The encoding of each nested part after them, from OpenAPI 3.2 on
      */
     public function __construct(
         public ?string $encoding = null,
@@ -37,6 +40,9 @@ class Encoding extends AbstractAttribute
         ?array $x = null,
         ?array $attachables = null,
         ?Fan $fan = null,
+        public ?array $encodings = null,
+        public ?array $prefixEncoding = null,
+        public ?Encoding $itemEncoding = null,
     ) {
         $this->style = $style instanceof \BackedEnum ? $style->value : $style;
 

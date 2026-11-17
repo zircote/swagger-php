@@ -167,6 +167,12 @@ Describes the encoding for a single property in a media type.
   <dd><p>Whether reserved characters are allowed without encoding</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+  <dt><strong>encodings</strong> : <span style="font-family: monospace;">list&lt;Encoding&gt;|array&lt;string,Encoding&gt;|null</span></dt>
+  <dd><p>The encodings of a nested multipart part, by name, from OpenAPI 3.2 on</p></dd>
+  <dt><strong>prefixEncoding</strong> : <span style="font-family: monospace;">list&lt;Encoding&gt;|null</span></dt>
+  <dd><p>The encodings of the leading parts of a nested unnamed multipart, by position, from OpenAPI 3.2 on</p></dd>
+  <dt><strong>itemEncoding</strong> : <span style="font-family: monospace;">Encoding|null</span></dt>
+  <dd><p>The encoding of each nested part after them, from OpenAPI 3.2 on</p></dd>
 </dl>
 
 #### Reference
@@ -695,6 +701,12 @@ Describes the content payload for a specific media type.
   <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+  <dt><strong>itemSchema</strong> : <span style="font-family: monospace;">Schema|null</span></dt>
+  <dd><p>The schema of each item of a sequential media type, from OpenAPI 3.2 on</p></dd>
+  <dt><strong>prefixEncoding</strong> : <span style="font-family: monospace;">list&lt;Encoding&gt;|null</span></dt>
+  <dd><p>The encodings of the leading parts of an unnamed multipart, by position, from OpenAPI 3.2 on</p></dd>
+  <dt><strong>itemEncoding</strong> : <span style="font-family: monospace;">Encoding|null</span></dt>
+  <dd><p>The encoding of each part after them, from OpenAPI 3.2 on</p></dd>
 </dl>
 
 #### Reference

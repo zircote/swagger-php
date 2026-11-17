@@ -49,33 +49,37 @@ final class DocSnippetsTest extends OpenApiTestCase
                         continue;
                     }
 
-                    $candidates = [
-                        "{$basePath}/{$key}_{$implementation}-3.1.0.yaml",
-                        "{$basePath}/{$key}-{$mode->value}-3.1.0.yaml",
-                    ];
-                    if ($mode === Mode::HYBRID) {
-                        $candidates[] = "{$basePath}/{$key}-spec-3.1.0.yaml";
-                    }
-                    $candidates[] = "{$basePath}/{$key}-3.1.0.yaml";
-
-                    $snippet_spec = null;
-                    foreach ($candidates as $candidate) {
-                        if (file_exists($candidate)) {
-                            $snippet_spec = $candidate;
-                            break;
+                    // a snippet using what only a later version has is checked against that version
+                    foreach (['3.1.0', '3.2.0'] as $version) {
+                        $candidates = [
+                            "{$basePath}/{$key}_{$implementation}-{$version}.yaml",
+                            "{$basePath}/{$key}-{$mode->value}-{$version}.yaml",
+                        ];
+                        if ($mode === Mode::HYBRID) {
+                            $candidates[] = "{$basePath}/{$key}-spec-{$version}.yaml";
                         }
-                    }
+                        $candidates[] = "{$basePath}/{$key}-{$version}.yaml";
 
-                    if ($snippet_spec === null) {
-                        continue;
-                    }
+                        $snippet_spec = null;
+                        foreach ($candidates as $candidate) {
+                            if (file_exists($candidate)) {
+                                $snippet_spec = $candidate;
+                                break;
+                            }
+                        }
 
-                    yield "{$key}-{$implementation}-$mode->value" => [
-                        $snippet,
-                        $implementation,
-                        $mode,
-                        $snippet_spec,
-                    ];
+                        if ($snippet_spec === null) {
+                            continue;
+                        }
+
+                        yield "{$key}-{$implementation}-$mode->value" . ($version !== '3.1.0' ? "-{$version}" : '') => [
+                            $snippet,
+                            $implementation,
+                            $mode,
+                            $snippet_spec,
+                            $version,
+                        ];
+                    }
                 }
             }
         }
@@ -85,7 +89,7 @@ final class DocSnippetsTest extends OpenApiTestCase
      * Compare snippets and ensure they result in the same spec fragment.
      */
     #[DataProvider('snippetSets')]
-    public function testSnippets(string $snippet, string $implementation, Mode $mode, string $spec): void
+    public function testSnippets(string $snippet, string $implementation, Mode $mode, string $spec, string $version): void
     {
         // normalize and make namespace unique
         $source = file_get_contents($snippet);
@@ -100,7 +104,7 @@ final class DocSnippetsTest extends OpenApiTestCase
 
         $result = (new Builder())
             ->setMode($mode)
-            ->setVersion('3.1.0')
+            ->setVersion($version)
             ->setSources([$tmp])
             ->withGenerator(function (Generator $generator): void {
                 $generator
