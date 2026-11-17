@@ -78,7 +78,7 @@
         "phpbench/phpbench": "^1.7",
         "phpstan/phpstan": "2.3.5",
         "phpunit/phpunit": "^11.5 || >=12.5.22",
-        "rector/rector": "2.8.3"
+        "rector/rector": "2.8.4"
     },
     "conflict": {
         "symfony/console": "<5.4.35",
