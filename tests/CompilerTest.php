@@ -452,10 +452,13 @@ final class CompilerTest extends TestCase
     public function testLeavesOutValuesNewIn32(CompilerInterface $compiler, string $version): void
     {
         $spec = $this->createSpecification($version);
-        $spec->securitySchemes[] = new OA\Security\Scheme\OAuth2(component: 'oauth', flows: [
-            new OA\Flow\ClientCredentials(tokenUrl: 'https://example.com/token', scopes: []),
-            new OA\Flow\DeviceAuthorization(deviceAuthorizationUrl: 'https://example.com/device', tokenUrl: 'https://example.com/token', scopes: []),
-        ]);
+        $spec->securitySchemes[] = new OA\Security\Scheme\OAuth2(
+            flows: [
+                new OA\Flow\ClientCredentials(tokenUrl: 'https://example.com/token', scopes: []),
+                new OA\Flow\DeviceAuthorization(deviceAuthorizationUrl: 'https://example.com/device', tokenUrl: 'https://example.com/token', scopes: []),
+            ],
+            component: 'oauth',
+        );
         $spec->parameters[] = new OA\Parameter\Cookie(name: 'session', schema: new OA\Schema(type: 'string'), component: 'Session', style: OA\ParameterStyle::Cookie);
 
         $messages = array_column($compiler->validate($spec), 'message');

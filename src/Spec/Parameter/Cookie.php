@@ -62,6 +62,7 @@ class Cookie extends OA\Parameter
             required: $required,
             deprecated: $deprecated,
             ref: $ref,
+            style: $style,
             explode: $explode,
             schema: $schema,
             example: $example,
@@ -72,7 +73,6 @@ class Cookie extends OA\Parameter
             attachables: $attachables,
             fan: $fan,
             summary: $summary,
-            style: $style,
         );
     }
 }

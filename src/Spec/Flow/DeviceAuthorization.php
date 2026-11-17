@@ -53,13 +53,13 @@ class DeviceAuthorization extends OA\Flow
     ) {
         parent::__construct(
             flow: OA\FlowType::DeviceAuthorization,
-            deviceAuthorizationUrl: $deviceAuthorizationUrl,
             tokenUrl: $tokenUrl,
             refreshUrl: $refreshUrl,
             scopes: $scopes,
             x: $x,
             attachables: $attachables,
             fan: $fan,
+            deviceAuthorizationUrl: $deviceAuthorizationUrl,
         );
     }
 }
