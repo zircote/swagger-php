@@ -15,4 +15,5 @@ enum ParameterStyle: string
     case SpaceDelimited = 'spaceDelimited';
     case PipeDelimited = 'pipeDelimited';
     case DeepObject = 'deepObject';
+    case Cookie = 'cookie';
 }

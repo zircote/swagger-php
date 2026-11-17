@@ -21,9 +21,10 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  *
  * Two kinds. `in:` on a parameter subclass repeats what the class already says, and is dropped
  * only where its value matches. The rest are keys OpenAPI does not define in that place:
- * `allowEmptyValue` and `allowReserved` outside query parameters, and any style on a header or
- * cookie parameter, which allows one each. Classic writes them into the document as given; the
- * migrated document leaves them out.
+ * `allowEmptyValue` and `allowReserved` outside query parameters, and any style on a header
+ * parameter, which allows one. A cookie parameter takes `cookie` from OpenAPI 3.2 on, so only
+ * `style: 'form'`, its default, is dropped there. Classic writes them into the document as given;
+ * the migrated document leaves them out.
  *
  * Both names are matched: on the pass that renames the class this rule may see either.
  */
@@ -39,7 +40,7 @@ final class DropParameterArgumentsRector extends AbstractRector
         'OpenApi\Attributes\QueryParameter' => ['in' => 'query'],
         'OpenApi\Attributes\PathParameter' => ['in' => 'path', 'allowEmptyValue' => null, 'allowReserved' => null],
         'OpenApi\Attributes\HeaderParameter' => ['in' => 'header', 'allowEmptyValue' => null, 'allowReserved' => null, 'style' => null, 'spaceDelimited' => null, 'pipeDelimited' => null, 'deepObject' => null],
-        'OpenApi\Attributes\CookieParameter' => ['in' => 'cookie', 'allowEmptyValue' => null, 'allowReserved' => null, 'style' => null, 'spaceDelimited' => null, 'pipeDelimited' => null, 'deepObject' => null],
+        'OpenApi\Attributes\CookieParameter' => ['in' => 'cookie', 'allowEmptyValue' => null, 'allowReserved' => null, 'style' => 'form', 'spaceDelimited' => null, 'pipeDelimited' => null, 'deepObject' => null],
         'OpenApi\Attributes\Header' => ['allowEmptyValue' => null],
     ];
 

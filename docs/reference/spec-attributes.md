@@ -272,7 +272,7 @@ Produces:
 ---
 <dl>
   <dt><strong>flow</strong> : <span style="font-family: monospace;">string|FlowType|null</span></dt>
-  <dd><p>The OAuth2 flow type (implicit, password, clientCredentials, authorizationCode)</p></dd>
+  <dd><p>The OAuth2 flow type (implicit, password, clientCredentials, authorizationCode, or deviceAuthorization from OpenAPI 3.2 on)</p></dd>
   <dt><strong>authorizationUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The authorization URL for this flow</p></dd>
   <dt><strong>tokenUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
@@ -283,6 +283,8 @@ Produces:
   <dd><p>The available scopes for the OAuth2 security scheme</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+  <dt><strong>deviceAuthorizationUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The device authorization URL for this flow, from OpenAPI 3.2 on</p></dd>
 </dl>
 
 #### Reference
@@ -381,6 +383,54 @@ new OA\Flow\ClientCredentials(
 #### Reference
 ---
 - [OAuth Flow Object](https://spec.openapis.org/oas/v3.1.1.html#oauth-flow-object) ↗
+
+### [Flow\DeviceAuthorization](https://github.com/zircote/swagger-php/tree/master/src/Spec/Flow/DeviceAuthorization.php)
+
+Configuration for the OAuth2 Device Authorization flow, from OpenAPI 3.2 on.
+
+Allows to shorten this:
+
+```php
+new OA\Flow(
+    flow: 'deviceAuthorization',
+    deviceAuthorizationUrl: 'https://example.com/oauth/device',
+    tokenUrl: 'https://example.com/oauth/token',
+    scopes: ['read:pets' => 'Read your pets'],
+)
+```
+
+to this:
+
+```php
+new OA\Flow\DeviceAuthorization(
+    deviceAuthorizationUrl: 'https://example.com/oauth/device',
+    tokenUrl: 'https://example.com/oauth/token',
+    scopes: ['read:pets' => 'Read your pets'],
+)
+```
+
+#### Allowed in
+---
+<a href="#security-scheme">Security\Scheme</a>
+
+#### Parameters
+---
+<dl>
+  <dt><strong>deviceAuthorizationUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>tokenUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>refreshUrl</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>scopes</strong> : <span style="font-family: monospace;">array&lt;string,string&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
+
+#### Reference
+---
+- [OAuth Flow Object](https://spec.openapis.org/oas/v3.2.0.html#oauth-flow-object) ↗
 
 ### [Flow\Implicit](https://github.com/zircote/swagger-php/tree/master/src/Spec/Flow/Implicit.php)
 
@@ -1440,6 +1490,8 @@ to this:
   <dd><p>No details available.</p></dd>
   <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>No details available.</p></dd>
+  <dt><strong>style</strong> : <span style="font-family: monospace;">OpenApi\Spec\ParameterStyle|string|null</span></dt>
+  <dd><p>No details available.</p></dd>
 </dl>
 
 #### Reference
@@ -2428,7 +2480,7 @@ Example:
 
 #### Nested elements
 ---
-<a href="#flow">Flow</a>, <a href="#flow-authorizationcode">Flow\AuthorizationCode</a>, <a href="#flow-clientcredentials">Flow\ClientCredentials</a>, <a href="#flow-implicit">Flow\Implicit</a>, <a href="#flow-password">Flow\Password</a>
+<a href="#flow">Flow</a>, <a href="#flow-authorizationcode">Flow\AuthorizationCode</a>, <a href="#flow-clientcredentials">Flow\ClientCredentials</a>, <a href="#flow-deviceauthorization">Flow\DeviceAuthorization</a>, <a href="#flow-implicit">Flow\Implicit</a>, <a href="#flow-password">Flow\Password</a>
 
 #### Parameters
 ---

@@ -48,10 +48,10 @@ The set:
   the `style` and loses the stray key
 - drops parameter arguments spec does not take where nothing is lost: an `in:` that repeats
   what `QueryParameter`, `PathParameter`, `HeaderParameter` or `CookieParameter` already says,
-  `allowEmptyValue:` and `allowReserved:` outside query parameters and on `Header`, and any style
-  on a header or cookie parameter. OpenAPI defines the first two for query parameters only, and
-  allows one style each for headers and cookies. Classic writes them into the document as given;
-  the migrated document leaves them out
+  `allowEmptyValue:` and `allowReserved:` outside query parameters and on `Header`, any style on
+  a header parameter, and `style: 'form'` on a cookie parameter. OpenAPI defines the first two for
+  query parameters only, allows one style for headers, and makes `form` the cookie default.
+  Classic writes them into the document as given; the migrated document leaves them out
 - wraps a bare `enum: Suit::class` into `enum: [Suit::class]`
 - turns a class-string `type: Pet::class` into `ref: Pet::class`
 - rewrites the type names classic maps, such as `type: 'long'`, to the OpenAPI type and format

@@ -23,7 +23,9 @@ use PHPUnit\Framework\TestCase;
  * without it. A property that changes neither the output nor the log is dropped silently. The
  * fix is to write it in the compile method, or to list it in the compiler's
  * `UNSUPPORTED_PROPERTIES`, which leaves it out with a warning. A property the pipeline consumes
- * before compiling goes in `PIPELINE_PROPERTIES` instead.
+ * before compiling goes in `PIPELINE_PROPERTIES` instead. An attribute whose type fixes a value the
+ * compiler lists in `UNSUPPORTED_VALUES`, such as a device authorization flow before 3.2, is
+ * left out whole, and only needs a message.
  */
 final class PropertyCoverageTest extends TestCase
 {
@@ -86,6 +88,13 @@ final class PropertyCoverageTest extends TestCase
         $parameters = (new \ReflectionClass($class))->getConstructor()?->getParameters() ?? [];
         $base = array_intersect_key($base, array_flip(array_map(fn (\ReflectionParameter $parameter): string => $parameter->getName(), $parameters)));
         $empty = $this->compile($compiler, null);
+
+        if ($this->carriesUnsupportedValue($compiler, new $class(...$base))) {
+            // the version leaves out the whole attribute, for a value its type fixes
+            $this->assertNotSame([], array_diff($this->compile($compiler, $wrap(new $class(...$base)))['log'], $empty['log']), "{$class} is left out without a message");
+
+            return;
+        }
 
         $silent = [];
         foreach ($parameters as $parameter) {
@@ -151,6 +160,28 @@ final class PropertyCoverageTest extends TestCase
         for ($current = $class; $current !== false; $current = get_parent_class($current)) {
             if (isset(self::PIPELINE_PROPERTIES[$current . '::' . $property])) {
                 return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Whether the attribute has a value the compiler lists in `UNSUPPORTED_VALUES`.
+     *
+     * @param class-string<OpenApi31Compiler> $compiler
+     */
+    protected function carriesUnsupportedValue(string $compiler, AttributeInterface $attribute): bool
+    {
+        /** @var array<class-string, array<string, list<string>>> $unsupported */
+        $unsupported = (new \ReflectionClassConstant($compiler, 'UNSUPPORTED_VALUES'))->getValue();
+        foreach ($unsupported as $listed => $properties) {
+            if ($attribute instanceof $listed) {
+                foreach ($properties as $property => $values) {
+                    if (in_array($attribute->{$property}, $values, true)) {
+                        return true;
+                    }
+                }
             }
         }
 

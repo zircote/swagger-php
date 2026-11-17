@@ -25,6 +25,8 @@ class OpenApi32Compiler extends OpenApi31Compiler
 
     protected const UNSUPPORTED_PROPERTIES = [];
 
+    protected const UNSUPPORTED_VALUES = [];
+
     public function getVersion(): string
     {
         return '3.2.0';

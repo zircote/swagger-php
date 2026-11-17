@@ -32,7 +32,7 @@ final class ClassicToSpecArgumentsTest extends TestCase
      * @var array<string, list<string>>
      */
     private const REWRITTEN = [
-        'CookieParameter' => ['in', 'allowEmptyValue', 'style', 'allowReserved', ...self::STYLES],
+        'CookieParameter' => ['in', 'allowEmptyValue', 'allowReserved', ...self::STYLES],
         'Encoding' => ['property'],
         'Header' => ['allowEmptyValue'],
         'HeaderParameter' => ['in', 'allowEmptyValue', 'style', 'allowReserved', ...self::STYLES],

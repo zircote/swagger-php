@@ -45,14 +45,15 @@ class Flow extends AbstractAttribute
     public ?string $flow = null;
 
     /**
-     * @param string|FlowType|null      $flow             The OAuth2 flow type (implicit, password, clientCredentials, authorizationCode)
-     * @param string|null               $authorizationUrl The authorization URL for this flow
-     * @param string|null               $tokenUrl         The token URL for this flow
-     * @param string|null               $refreshUrl       The URL for obtaining refresh tokens
-     * @param array<string,string>|null $scopes           The available scopes for the OAuth2 security scheme
-     * @param array<string,mixed>|null  $x                Vendor extensions (x-* properties)
-     * @param list<Attachable>|null     $attachables      Reusable custom attachable attributes
-     * @param Fan|null                  $fan              Where this attribute goes when more than one attribute could hold it
+     * @param string|FlowType|null      $flow                   The OAuth2 flow type (implicit, password, clientCredentials, authorizationCode, or deviceAuthorization from OpenAPI 3.2 on)
+     * @param string|null               $authorizationUrl       The authorization URL for this flow
+     * @param string|null               $tokenUrl               The token URL for this flow
+     * @param string|null               $refreshUrl             The URL for obtaining refresh tokens
+     * @param array<string,string>|null $scopes                 The available scopes for the OAuth2 security scheme
+     * @param array<string,mixed>|null  $x                      Vendor extensions (x-* properties)
+     * @param list<Attachable>|null     $attachables            Reusable custom attachable attributes
+     * @param Fan|null                  $fan                    Where this attribute goes when more than one attribute could hold it
+     * @param string|null               $deviceAuthorizationUrl The device authorization URL for this flow, from OpenAPI 3.2 on
      */
     public function __construct(
         string|FlowType|null $flow = null,
@@ -63,6 +64,7 @@ class Flow extends AbstractAttribute
         ?array $x = null,
         ?array $attachables = null,
         ?Fan $fan = null,
+        public ?string $deviceAuthorizationUrl = null,
     ) {
         $this->flow = $flow instanceof \BackedEnum ? $flow->value : $flow;
 
