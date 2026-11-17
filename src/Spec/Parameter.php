@@ -59,7 +59,7 @@ class Parameter extends AbstractAttribute implements RefInterface
     /**
      * @param string|null                    $parameter       Deprecated since 6.12, removed in 8.0 - use `component` instead
      * @param string|null                    $name            The name of the parameter
-     * @param string|ParameterIn|null        $in              The location of the parameter (query, header, path, cookie)
+     * @param string|ParameterIn|null        $in              The location of the parameter (query, header, path, cookie, or querystring from OpenAPI 3.2 on)
      * @param string|null                    $description     A brief description of the parameter (CommonMark syntax)
      * @param bool|null                      $required        Whether the parameter is mandatory
      * @param bool|null                      $deprecated      Whether the parameter is deprecated

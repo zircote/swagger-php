@@ -484,6 +484,75 @@ final class CompilerTest extends TestCase
     }
 
     /**
+     * A querystring parameter is new in 3.2. Before, it is left out whole, inline, by reference
+     * and in `components`, each with a warning.
+     */
+    #[DataProvider('compilerProvider')]
+    public function testLeavesOutQuerystringParametersBefore32(CompilerInterface $compiler, string $version): void
+    {
+        $content = fn (): OA\MediaType => new OA\MediaType(mediaType: 'application/x-www-form-urlencoded', schema: new OA\Schema(type: 'object'));
+        $spec = $this->createSpecification($version);
+        $spec->parameters[] = new OA\Parameter\Querystring(name: 'filter', content: $content(), component: 'Filter');
+        $spec->operations[] = new OA\Operation\Get(path: '/pets', parameters: [
+            new OA\Parameter\Querystring(name: 'search', content: $content()),
+            new OA\Parameter\Header(name: 'X-Trace', schema: new OA\Schema(type: 'string')),
+        ], responses: [new OA\Response(response: 200, description: 'ok')]);
+        // a reference has its component's location, from Augmenter\Parameters
+        $spec->operations[] = new OA\Operation\Get(path: '/owners', parameters: [
+            new OA\Parameter(name: 'filter', in: 'querystring', ref: '#/components/parameters/Filter'),
+        ], responses: [new OA\Response(response: 200, description: 'ok')]);
+
+        $messages = array_values(array_filter(array_column($compiler->validate($spec), 'message'), fn (string $message): bool => str_contains($message, 'not supported in OpenAPI')));
+        $output = $compiler->compile($spec);
+
+        if ($version === '3.2.0') {
+            $this->assertSame(['Filter'], array_keys($output['components']['parameters']));
+            $this->assertSame(['search', 'X-Trace'], array_column($output['paths']['/pets']['get']['parameters'], 'name'));
+            $this->assertSame([['$ref' => '#/components/parameters/Filter']], $output['paths']['/owners']['get']['parameters']);
+            $this->assertSame([], $messages);
+        } else {
+            $short = substr($version, 0, 3);
+            $this->assertArrayNotHasKey('parameters', $output['components'] ?? []);
+            $this->assertSame(['X-Trace'], array_column($output['paths']['/pets']['get']['parameters'], 'name'));
+            $this->assertArrayNotHasKey('parameters', $output['paths']['/owners']['get']);
+            $this->assertEqualsCanonicalizing([
+                "Querystring uses in \"querystring\", not supported in OpenAPI {$short}, omitted",
+                "Querystring uses in \"querystring\", not supported in OpenAPI {$short}, omitted",
+                "Parameter uses in \"querystring\", not supported in OpenAPI {$short}, omitted",
+            ], $messages);
+        }
+    }
+
+    /**
+     * A querystring parameter takes `content` and no `schema`, and an operation has at most one,
+     * and none beside a query parameter, its path item's included.
+     */
+    public function testReportsInvalidQuerystringParameters(): void
+    {
+        $content = fn (): OA\MediaType => new OA\MediaType(mediaType: 'application/x-www-form-urlencoded', schema: new OA\Schema(type: 'object'));
+        $spec = $this->createSpecification('3.2.0');
+        $pathItem = new OA\PathItem(parameters: [new OA\Parameter\Query(name: 'page', schema: new OA\Schema(type: 'integer'))]);
+        $pathItem->path = '/pets';
+        $spec->pathItems[] = $pathItem;
+        $spec->operations[] = new OA\Operation\Get(path: '/pets', operationId: 'listPets', parameters: [
+            new OA\Parameter\Querystring(name: 'search', content: $content()),
+        ], responses: [new OA\Response(response: 200, description: 'ok')]);
+        $spec->operations[] = new OA\Operation\Get(path: '/owners', operationId: 'findOwners', parameters: [
+            new OA\Parameter\Querystring(name: 'search', content: $content()),
+            new OA\Parameter(name: 'filter', in: 'querystring', style: 'form', schema: new OA\Schema(type: 'string')),
+        ], responses: [new OA\Response(response: 200, description: 'ok')]);
+
+        $errors = array_filter((new OpenApi32Compiler())->validate($spec), fn (array $entry): bool => $entry['level'] === 'error');
+
+        $this->assertEqualsCanonicalizing([
+            'Querystring parameter "filter" must have content',
+            'Querystring parameter "filter" must not use schema, style',
+            'Operation "findOwners" has more than one querystring parameter',
+            'Operation "listPets" has a querystring parameter beside query parameters',
+        ], array_map(fn (array $entry): string => (string) preg_replace('/ in .*$/', '', $entry['message']), array_values($errors)));
+    }
+
+    /**
      * `components` takes the extensions of a `Components` holder, and a property's go on its schema.
      */
     #[DataProvider('compilerProvider')]

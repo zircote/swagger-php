@@ -92,7 +92,7 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected const UNSUPPORTED_VALUES = [
         OA\Flow::class => ['flow' => ['deviceAuthorization']],
-        OA\Parameter::class => ['style' => ['cookie']],
+        OA\Parameter::class => ['in' => ['querystring'], 'style' => ['cookie']],
     ];
 
     protected CollectingLogger $logger;
@@ -385,7 +385,7 @@ class OpenApi31Compiler implements CompilerInterface
             '$ref' => $pathItem->ref,
             'summary' => $pathItem->summary,
             'description' => $pathItem->description,
-            'parameters' => array_map($this->compileParameter(...), $pathItem->parameters ?? []),
+            'parameters' => $this->compileParameters($pathItem->parameters ?? []),
             'servers' => array_map($this->compileServer(...), $pathItem->servers ?? []),
         ], $pathItem);
     }
@@ -423,7 +423,7 @@ class OpenApi31Compiler implements CompilerInterface
                 ? $this->compileExternalDocs($operation->externalDocs)
                 : null,
             'operationId' => $operation->operationId,
-            'parameters' => array_map($this->compileParameter(...), $operation->parameters ?? []),
+            'parameters' => $this->compileParameters($operation->parameters ?? []),
             'requestBody' => $operation->requestBody instanceof OA\RequestBody
                 ? $this->compileRequestBody($operation->requestBody, $operation->method)
                 : null,
@@ -473,6 +473,24 @@ class OpenApi31Compiler implements CompilerInterface
         }
 
         return $value;
+    }
+
+    /**
+     * @param  list<OA\Parameter>        $parameters
+     * @return list<array<string,mixed>>
+     */
+    protected function compileParameters(array $parameters): array
+    {
+        return array_values(array_map($this->compileParameter(...), array_filter($parameters, $this->carriesLocation(...))));
+    }
+
+    /**
+     * `in` is required, so a parameter in a location the version cannot carry is left out whole. A
+     * reference has the location of the component it points to, from `Augmenter\Parameters`.
+     */
+    protected function carriesLocation(OA\Parameter $parameter): bool
+    {
+        return $parameter->in === null || $this->omitUnsupported(['in' => $parameter->in], $parameter) !== [];
     }
 
     /**
@@ -890,7 +908,7 @@ class OpenApi31Compiler implements CompilerInterface
         return array_filter($this->omitUnsupported([
             'schemas' => $this->compileComponentMap($specification->schemas, $this->compileSchema(...)),
             'responses' => $this->compileComponentMap($specification->responses, $this->compileResponse(...)),
-            'parameters' => $this->compileComponentMap($specification->parameters, $this->compileParameter(...)),
+            'parameters' => $this->compileComponentMap(array_values(array_filter($specification->parameters, $this->carriesLocation(...))), $this->compileParameter(...)),
             'requestBodies' => $this->compileComponentMap($specification->requestBodies, $this->compileRequestBody(...)),
             'headers' => $this->compileComponentMap($specification->headers, $this->compileHeader(...)),
             'securitySchemes' => $this->compileSecuritySchemes($specification->securitySchemes),

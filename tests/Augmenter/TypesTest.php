@@ -154,6 +154,18 @@ final class TypesTest extends TestCase
         $this->assertTrue($spec->operations[0]->parameters[2]->required);
     }
 
+    public function testAQuerystringParameterGetsNoSchema(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\QuerystringParameter::class);
+
+        (new Augmenter\Types())($spec);
+
+        $parameter = $spec->operations[0]->parameters[0];
+        $this->assertSame('search', $parameter->name);
+        $this->assertNull($parameter->schema);
+        $this->assertTrue($parameter->required);
+    }
+
     public function testInfersParameterName(): void
     {
         $spec = $this->assemble(Fixtures\Augmenter\TypeController::class);

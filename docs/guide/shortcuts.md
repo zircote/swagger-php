@@ -131,7 +131,8 @@ format that is not a case can still be passed as a string.
 
 ## `OA\Parameter\*` {#oa-parameter}
 
-`OA\Parameter\Path`, `Query`, `Header` and `Cookie` set `in`. A path parameter is always required.
+`OA\Parameter\Path`, `Query`, `Header`, `Cookie` and `Querystring` set `in`. A path parameter is always required.
+`Querystring` is new in OpenAPI 3.2, takes `content` rather than `schema`, and a 3.0 or 3.1 document leaves it out with a warning.
 
 ```php
 // instead of
