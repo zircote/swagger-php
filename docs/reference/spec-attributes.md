@@ -1315,6 +1315,61 @@ to this:
 ---
 - [Operation Object](https://spec.openapis.org/oas/v3.1.1.html#operation-object) ↗
 
+### [Operation\Query](https://github.com/zircote/swagger-php/tree/master/src/Spec/Operation/Query.php)
+
+Shorthand for an HTTP QUERY operation, from OpenAPI 3.2 on.
+
+Allows to shorten this:
+
+```php
+#[OA\Operation(method: 'query', path: '/pets/search')]
+```
+
+to this:
+
+```php
+#[OA\Operation\Query(path: '/pets/search')]
+```
+
+#### Parameters
+---
+<dl>
+  <dt><strong>path</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>webhook</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>operationId</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>tags</strong> : <span style="font-family: monospace;">list&lt;string&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>parameters</strong> : <span style="font-family: monospace;">list&lt;OA\Parameter&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>requestBody</strong> : <span style="font-family: monospace;">OpenApi\Spec\RequestBody|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;OA\Response&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>security</strong> : <span style="font-family: monospace;">list&lt;OA\Security\Requirement&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>servers</strong> : <span style="font-family: monospace;">list&lt;OA\Server&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">OpenApi\Spec\ExternalDocumentation|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
+
+#### Reference
+---
+- [Operation Object](https://spec.openapis.org/oas/v3.2.0.html#operation-object) ↗
+
 ### [Operation\Trace](https://github.com/zircote/swagger-php/tree/master/src/Spec/Operation/Trace.php)
 
 Shorthand for an HTTP TRACE operation.

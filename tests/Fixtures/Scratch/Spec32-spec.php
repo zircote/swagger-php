@@ -140,6 +140,16 @@ class Spec32DocumentSpec
         new OA\Response(response: 200, description: 'One pet'),
     ],
 )]
+#[OA\Operation\Query(
+    path: '/pets/search',
+    operationId: 'searchPets',
+    requestBody: new OA\RequestBody(
+        content: new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(type: 'object')),
+    ),
+    responses: [
+        new OA\Response(response: 200, description: 'The matching pets'),
+    ],
+)]
 class Spec32EndpointSpec
 {
 }

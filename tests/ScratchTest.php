@@ -132,6 +132,7 @@ final class ScratchTest extends OpenApiTestCase
                 'Response "NotFound" summary is written only beside $ref',
                 'Response "200" summary is written only beside $ref',
                 'Response summary beside $ref "#/components/responses/NotFound" is not supported in OpenAPI 3.0, omitted',
+                'Method "query" is not supported in OpenAPI 3.0, omitted',
                 'OpenApi uses self, not supported in OpenAPI 3.0, omitted',
                 'Server uses name, not supported in OpenAPI 3.0, omitted',
                 'Example "serialized" uses dataValue, not supported in OpenAPI 3.0, written as value',
@@ -146,6 +147,7 @@ final class ScratchTest extends OpenApiTestCase
             'Spec32-3.1.0-spec' => [
                 'Response "NotFound" summary is written only beside $ref',
                 'Response "200" summary is written only beside $ref',
+                'Method "query" is not supported in OpenAPI 3.1, omitted',
                 'OpenApi uses self, not supported in OpenAPI 3.1, omitted',
                 'Server uses name, not supported in OpenAPI 3.1, omitted',
                 'Example "serialized" uses dataValue, not supported in OpenAPI 3.1, written as value',

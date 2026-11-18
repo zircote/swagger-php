@@ -137,6 +137,7 @@ Operations map to HTTP methods on API endpoints. Spec mode provides typed subcla
 #[OA\Operation\Head(path: '/pets')]
 #[OA\Operation\Options(path: '/pets')]
 #[OA\Operation\Trace(path: '/pets')]
+#[OA\Operation\Query(path: '/pets/search')] // OpenAPI 3.2
 ```
 
 You can also use the base class with an explicit method:
