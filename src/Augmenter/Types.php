@@ -222,10 +222,13 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
 
         $this->subject = $reflector;
 
-        if (!$parameter->schema instanceof OA\Schema) {
-            $parameter->schema = $this->schemaTypeToSchema($resolved);
-        } else {
-            $this->mergeIntoSchema($parameter->schema, $resolved);
+        // a querystring parameter is described by its content, so it takes no schema
+        if ($parameter->in !== OA\ParameterIn::Querystring->value) {
+            if (!$parameter->schema instanceof OA\Schema) {
+                $parameter->schema = $this->schemaTypeToSchema($resolved);
+            } else {
+                $this->mergeIntoSchema($parameter->schema, $resolved);
+            }
         }
 
         // a default means a value exists when the parameter is left out, and one converted from classic

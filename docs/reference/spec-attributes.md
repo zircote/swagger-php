@@ -62,7 +62,7 @@ on a member needs the holder; without it, a named one is left out with an error.
 
 #### Nested elements
 ---
-<a href="#example">Example</a>, <a href="#header">Header</a>, <a href="#link">Link</a>, <a href="#parameter">Parameter</a>, <a href="#parameter-cookie">Parameter\Cookie</a>, <a href="#parameter-header">Parameter\Header</a>, <a href="#parameter-path">Parameter\Path</a>, <a href="#parameter-query">Parameter\Query</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>, <a href="#schema">Schema</a>, <a href="#schema-additionalproperties">Schema\AdditionalProperties</a>, <a href="#schema-items">Schema\Items</a>, <a href="#schema-ref">Schema\Ref</a>, <a href="#security-scheme">Security\Scheme</a>, <a href="#security-scheme-apikey">Security\Scheme\ApiKey</a>, <a href="#security-scheme-http">Security\Scheme\Http</a>, <a href="#security-scheme-mutualtls">Security\Scheme\MutualTls</a>, <a href="#security-scheme-oauth2">Security\Scheme\OAuth2</a>, <a href="#security-scheme-openidconnect">Security\Scheme\OpenIdConnect</a>
+<a href="#example">Example</a>, <a href="#header">Header</a>, <a href="#link">Link</a>, <a href="#parameter">Parameter</a>, <a href="#parameter-cookie">Parameter\Cookie</a>, <a href="#parameter-header">Parameter\Header</a>, <a href="#parameter-path">Parameter\Path</a>, <a href="#parameter-query">Parameter\Query</a>, <a href="#parameter-querystring">Parameter\Querystring</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>, <a href="#schema">Schema</a>, <a href="#schema-additionalproperties">Schema\AdditionalProperties</a>, <a href="#schema-items">Schema\Items</a>, <a href="#schema-ref">Schema\Ref</a>, <a href="#security-scheme">Security\Scheme</a>, <a href="#security-scheme-apikey">Security\Scheme\ApiKey</a>, <a href="#security-scheme-http">Security\Scheme\Http</a>, <a href="#security-scheme-mutualtls">Security\Scheme\MutualTls</a>, <a href="#security-scheme-oauth2">Security\Scheme\OAuth2</a>, <a href="#security-scheme-openidconnect">Security\Scheme\OpenIdConnect</a>
 
 #### Parameters
 ---
@@ -890,7 +890,7 @@ For webhooks, use `webhook` instead of `path`:
 
 #### Nested elements
 ---
-<a href="#parameter">Parameter</a>, <a href="#parameter-cookie">Parameter\Cookie</a>, <a href="#parameter-header">Parameter\Header</a>, <a href="#parameter-path">Parameter\Path</a>, <a href="#parameter-query">Parameter\Query</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>, <a href="#security-requirement">Security\Requirement</a>, <a href="#server">Server</a>
+<a href="#parameter">Parameter</a>, <a href="#parameter-cookie">Parameter\Cookie</a>, <a href="#parameter-header">Parameter\Header</a>, <a href="#parameter-path">Parameter\Path</a>, <a href="#parameter-query">Parameter\Query</a>, <a href="#parameter-querystring">Parameter\Querystring</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>, <a href="#security-requirement">Security\Requirement</a>, <a href="#server">Server</a>
 
 #### Parameters
 ---
@@ -1414,7 +1414,7 @@ Produces:
   <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The name of the parameter</p></dd>
   <dt><strong>in</strong> : <span style="font-family: monospace;">string|ParameterIn|null</span></dt>
-  <dd><p>The location of the parameter (query, header, path, cookie)</p></dd>
+  <dd><p>The location of the parameter (query, header, path, cookie, or querystring from OpenAPI 3.2 on)</p></dd>
   <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>A brief description of the parameter (CommonMark syntax)</p></dd>
   <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
@@ -1689,6 +1689,67 @@ to this:
 ---
 - [Parameter Object](https://spec.openapis.org/oas/v3.1.1.html#parameter-object) ↗
 
+### [Parameter\Querystring](https://github.com/zircote/swagger-php/tree/master/src/Spec/Parameter/Querystring.php)
+
+The whole query string as one parameter, from OpenAPI 3.2 on.
+
+Its media type says how the query string is serialized, so it takes `content` and no `schema`,
+`style` or `explode`. An operation has at most one, and none beside a query parameter.
+
+Allows to shorten this:
+
+```php
+#[OA\Parameter(
+    name: 'filter',
+    in: 'querystring',
+    content: new OA\MediaType(mediaType: 'application/x-www-form-urlencoded', schema: new OA\Schema(ref: Filter::class)),
+)]
+```
+
+to this:
+
+```php
+#[OA\Parameter\Querystring(
+    name: 'filter',
+    content: new OA\MediaType(mediaType: 'application/x-www-form-urlencoded', schema: new OA\Schema(ref: Filter::class)),
+)]
+```
+
+#### Allowed in
+---
+<a href="#components">Components</a>, <a href="#operation">Operation</a>, <a href="#pathitem">PathItem</a>
+
+#### Parameters
+---
+<dl>
+  <dt><strong>name</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>content</strong> : <span style="font-family: monospace;">OA\MediaType|list&lt;OA\MediaType&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>description</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">OpenApi\Spec\Schema\Ref|string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>example</strong> : <span style="font-family: monospace;">mixed|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>examples</strong> : <span style="font-family: monospace;">list&lt;OA\Example&gt;|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">OpenApi\Spec\Fan|null</span></dt>
+  <dd><p>No details available.</p></dd>
+  <dt><strong>summary</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>No details available.</p></dd>
+</dl>
+
+#### Reference
+---
+- [Parameter Object](https://spec.openapis.org/oas/v3.2.0.html#parameter-object) ↗
+
 ### [PathItem](https://github.com/zircote/swagger-php/tree/master/src/Spec/PathItem.php)
 
 Describes shared metadata for all operations under a path.
@@ -1737,7 +1798,7 @@ name+in (parameters).
 
 #### Nested elements
 ---
-<a href="#parameter">Parameter</a>, <a href="#parameter-cookie">Parameter\Cookie</a>, <a href="#parameter-header">Parameter\Header</a>, <a href="#parameter-path">Parameter\Path</a>, <a href="#parameter-query">Parameter\Query</a>, <a href="#response">Response</a>, <a href="#security-requirement">Security\Requirement</a>, <a href="#server">Server</a>
+<a href="#parameter">Parameter</a>, <a href="#parameter-cookie">Parameter\Cookie</a>, <a href="#parameter-header">Parameter\Header</a>, <a href="#parameter-path">Parameter\Path</a>, <a href="#parameter-query">Parameter\Query</a>, <a href="#parameter-querystring">Parameter\Querystring</a>, <a href="#response">Response</a>, <a href="#security-requirement">Security\Requirement</a>, <a href="#server">Server</a>
 
 #### Parameters
 ---

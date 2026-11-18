@@ -55,6 +55,8 @@ class OpenApi32Compiler extends OpenApi31Compiler
 
         $this->validateMetadataUrls($specification);
         $this->validatePositionalEncodings($specification);
+        $this->validateQuerystringParameters($specification);
+        $this->validateQuerystringOperations($specification);
     }
 
     /**
@@ -187,5 +189,72 @@ class OpenApi32Compiler extends OpenApi31Compiler
     {
         return $schema instanceof OA\Schema
             && ($schema->getRefValue() !== null || $this->isArrayType($schema));
+    }
+
+    /**
+     * A querystring parameter is serialized by its media type, so it takes `content` and none of
+     * the fields that serialize a `schema`.
+     */
+    protected function validateQuerystringParameters(Specification $specification): void
+    {
+        $this->visit($specification, OA\Parameter::class, function (OA\Parameter $parameter): void {
+            if ($parameter->in !== OA\ParameterIn::Querystring->value || $parameter->ref !== null) {
+                return;
+            }
+
+            $subject = 'Querystring parameter "' . ($parameter->name ?? $parameter->component) . '"';
+            $location = $parameter->getReflector() instanceof \Reflector ? ' in ' . $parameter->getSourceLocation() : '';
+            if (!$parameter->content) {
+                $this->logger->error("{$subject} must have content{$location}");
+            }
+
+            $serializing = array_keys(array_filter([
+                'schema' => $parameter->schema,
+                'style' => $parameter->style,
+                'explode' => $parameter->explode,
+                'allowReserved' => $parameter->allowReserved,
+            ], static fn (mixed $value): bool => $value !== null));
+            if ($serializing !== []) {
+                $this->logger->error("{$subject} must not use " . implode(', ', $serializing) . $location);
+            }
+        });
+    }
+
+    /**
+     * An operation has at most one querystring parameter, and none beside a query parameter. The
+     * parameters of its path item count, and an operation's own replaces one with the same name
+     * and location.
+     */
+    protected function validateQuerystringOperations(Specification $specification): void
+    {
+        $shared = [];
+        foreach ($specification->pathItems as $pathItem) {
+            if ($pathItem->path !== null && $pathItem->component === null) {
+                $shared[$pathItem->path] = [...$shared[$pathItem->path] ?? [], ...$pathItem->parameters ?? []];
+            }
+        }
+
+        $this->visit($specification, OA\Operation::class, function (OA\Operation $operation) use ($shared): void {
+            $locations = [];
+            $pathParameters = $operation->path !== null ? $shared[$operation->path] ?? [] : [];
+            foreach ([...$pathParameters, ...$operation->parameters ?? []] as $parameter) {
+                $locations[$parameter->name . '|' . $parameter->in] = $parameter->in;
+            }
+
+            $counts = array_count_values(array_filter($locations, is_string(...)));
+            $querystrings = $counts[OA\ParameterIn::Querystring->value] ?? 0;
+            if ($querystrings === 0) {
+                return;
+            }
+
+            $subject = 'Operation "' . ($operation->operationId ?? strtoupper((string) $operation->method) . ' ' . $operation->path) . '"';
+            if ($querystrings > 1) {
+                $this->logger->error("{$subject} has more than one querystring parameter in " . $operation->getSourceLocation());
+            }
+
+            if (isset($counts[OA\ParameterIn::Query->value])) {
+                $this->logger->error("{$subject} has a querystring parameter beside query parameters in " . $operation->getSourceLocation());
+            }
+        });
     }
 }
