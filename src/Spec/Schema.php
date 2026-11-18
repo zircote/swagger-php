@@ -76,6 +76,8 @@ class Schema extends AbstractAttribute implements RefInterface
     /** @var list<Property>|null */
     public ?array $properties = null;
 
+    public ?Xml $xml = null;
+
     /**
      * @param string|null                                       $schema                Deprecated since 6.12, removed in 8.0 - use `component` instead
      * @param string|null                                       $title                 A title for the schema
@@ -131,7 +133,7 @@ class Schema extends AbstractAttribute implements RefInterface
      * @param mixed                                             $default               The default value
      * @param Discriminator|null                                $discriminator         Discriminator for polymorphism
      * @param ExternalDocumentation|null                        $externalDocs          Additional external documentation
-     * @param Xml|null                                          $xml                   XML representation metadata
+     * @param Xml|XmlNodeType|null                              $xml                   XML representation metadata; a node type alone stands for an `Xml` with only that `nodeType`
      * @param string|null                                       $component             The name this is filed under in `components`, which makes it a reusable component
      * @param array<string,mixed>|null                          $x                     Vendor extensions (x-* properties)
      * @param list<Attachable>|null                             $attachables           Reusable custom attachable attributes
@@ -217,7 +219,7 @@ class Schema extends AbstractAttribute implements RefInterface
         // OpenAPI extensions on Schema
         public ?Discriminator $discriminator = null,
         public ?ExternalDocumentation $externalDocs = null,
-        public ?Xml $xml = null,
+        Xml|XmlNodeType|null $xml = null,
         ?string $component = null,
         ?array $x = null,
         ?array $attachables = null,
@@ -226,6 +228,7 @@ class Schema extends AbstractAttribute implements RefInterface
         $this->type = self::typeValue($type);
         $this->format = $format instanceof Format ? $format->value : $format;
         $this->properties = self::propertyList($properties);
+        $this->xml = $xml instanceof XmlNodeType ? new Xml(nodeType: $xml) : $xml;
         $this->component = $component;
         if ($component === null && $this->schema !== null) {
             trigger_deprecation('zircote/swagger-php', '6.12', '`schema` is deprecated as the component name of %s and will be removed in 8.0; use `component`', static::class);

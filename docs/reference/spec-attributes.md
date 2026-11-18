@@ -2194,8 +2194,8 @@ without it the schema has no component name and is reported as missing one.
   <dd><p>Discriminator for polymorphism</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">ExternalDocumentation|null</span></dt>
   <dd><p>Additional external documentation</p></dd>
-  <dt><strong>xml</strong> : <span style="font-family: monospace;">Xml|null</span></dt>
-  <dd><p>XML representation metadata</p></dd>
+  <dt><strong>xml</strong> : <span style="font-family: monospace;">Xml|XmlNodeType|null</span></dt>
+  <dd><p>XML representation metadata; a node type alone stands for an `Xml` with only that `nodeType`</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
@@ -2336,8 +2336,8 @@ new OA\Schema(
   <dd><p>Discriminator for polymorphism</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">ExternalDocumentation|null</span></dt>
   <dd><p>Additional external documentation</p></dd>
-  <dt><strong>xml</strong> : <span style="font-family: monospace;">Xml|null</span></dt>
-  <dd><p>XML representation metadata</p></dd>
+  <dt><strong>xml</strong> : <span style="font-family: monospace;">Xml|XmlNodeType|null</span></dt>
+  <dd><p>XML representation metadata; a node type alone stands for an `Xml` with only that `nodeType`</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
@@ -2488,8 +2488,8 @@ Since Items extends Schema, the implicit `OA\Property` shortcut applies — no e
   <dd><p>Discriminator for polymorphism</p></dd>
   <dt><strong>externalDocs</strong> : <span style="font-family: monospace;">ExternalDocumentation|null</span></dt>
   <dd><p>Additional external documentation</p></dd>
-  <dt><strong>xml</strong> : <span style="font-family: monospace;">Xml|null</span></dt>
-  <dd><p>XML representation metadata</p></dd>
+  <dt><strong>xml</strong> : <span style="font-family: monospace;">Xml|XmlNodeType|null</span></dt>
+  <dd><p>XML representation metadata; a node type alone stands for an `Xml` with only that `nodeType`</p></dd>
   <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
@@ -3010,6 +3010,9 @@ describes something like this:
 ```xml
 <Price currency="EUR">12.50</Price>
 ```
+
+Where the node type is the only XML detail, a schema takes it directly:
+`xml: OA\XmlNodeType::Text` stands for `xml: new OA\Xml(nodeType: OA\XmlNodeType::Text)`.
 
 #### Allowed in
 ---
