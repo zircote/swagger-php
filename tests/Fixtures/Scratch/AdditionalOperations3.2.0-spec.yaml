@@ -1,0 +1,54 @@
+openapi: 3.2.0
+info:
+  title: 'Additional operations'
+  version: '1.0'
+paths:
+  '/files/{name}':
+    get:
+      operationId: getFile
+      parameters:
+        -
+          name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'The file'
+    additionalOperations:
+      COPY:
+        operationId: copyFile
+        parameters:
+          -
+            name: name
+            in: path
+            required: true
+            schema:
+              type: string
+          -
+            name: Destination
+            in: header
+            required: true
+            schema:
+              type: string
+        responses:
+          '201':
+            description: Copied
+      LOCK:
+        operationId: lockFile
+        parameters:
+          -
+            name: name
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          content:
+            application/xml:
+              schema:
+                type: string
+        responses:
+          '200':
+            description: Locked

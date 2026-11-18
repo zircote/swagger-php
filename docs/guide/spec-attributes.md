@@ -146,6 +146,12 @@ You can also use the base class with an explicit method:
 #[OA\Operation(path: '/pets', method: 'get')]
 ```
 
+From OpenAPI 3.2 on, the base class takes any HTTP method. One without a field of its own in the path item is written to `additionalOperations`, under the method in uppercase. A 3.0 or 3.1 document leaves it out with a warning.
+
+```php
+#[OA\Operation(path: '/files/{name}', method: 'COPY')]
+```
+
 ### Responses and parameters
 
 Responses and parameters can be nested inside the operation or placed as separate attributes on the same method:

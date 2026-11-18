@@ -257,4 +257,41 @@ class OpenApi32Compiler extends OpenApi31Compiler
             }
         });
     }
+
+    /**
+     * A method without a field of its own goes into `additionalOperations`, keyed by the method as
+     * it is sent. Methods are kept lowercase, so the key is the uppercase form, such as `COPY`.
+     *
+     * @param  array<string,mixed> $item
+     * @return array<string,mixed>
+     */
+    #[\Override]
+    protected function addOperation(array $item, OA\Operation $operation): array
+    {
+        if ($operation->method === null || in_array($operation->method, static::OPERATION_METHODS, true) || !$this->supportsMethod($operation->method)) {
+            return parent::addOperation($item, $operation);
+        }
+
+        $item['additionalOperations'][strtoupper($operation->method)] = $this->compileOperation($operation);
+
+        return $item;
+    }
+
+    /**
+     * Any HTTP method, as a token per RFC 9110.
+     */
+    #[\Override]
+    protected function supportsMethod(string $method): bool
+    {
+        return preg_match('/^[!#$%&\'*+.^_`|~0-9a-z-]+$/', $method) === 1;
+    }
+
+    /**
+     * HTTP leaves the body of a method without a field of its own to the method, so it is kept.
+     */
+    #[\Override]
+    protected function acceptsRequestBody(string $method): bool
+    {
+        return parent::acceptsRequestBody($method) || !in_array($method, static::OPERATION_METHODS, true);
+    }
 }
