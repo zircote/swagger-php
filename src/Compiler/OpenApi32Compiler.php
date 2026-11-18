@@ -294,4 +294,43 @@ class OpenApi32Compiler extends OpenApi31Compiler
     {
         return parent::acceptsRequestBody($method) || !in_array($method, static::OPERATION_METHODS, true);
     }
+
+    /**
+     * @return array<string,mixed>
+     */
+    #[\Override]
+    protected function compileXml(OA\Xml $xml, ?OA\Schema $schema = null): array
+    {
+        return ($xml->nodeType !== null ? ['nodeType' => $xml->nodeType] : []) + parent::compileXml($xml, $schema);
+    }
+
+    /**
+     * 3.2 writes `nodeType` itself, so nothing is translated.
+     *
+     * @return array<string,bool>
+     */
+    #[\Override]
+    protected function nodeTypeFields(OA\Xml $xml, ?OA\Schema $schema): array
+    {
+        return [];
+    }
+
+    /**
+     * `nodeType` replaces `attribute` and `wrapped`, which must not appear beside it.
+     */
+    #[\Override]
+    protected function validateXmlNodeTypes(Specification $specification): void
+    {
+        $this->visit($specification, OA\Xml::class, function (OA\Xml $xml): void {
+            if ($xml->nodeType === null) {
+                return;
+            }
+
+            $replaced = array_keys(array_filter(['attribute' => $xml->attribute, 'wrapped' => $xml->wrapped], static fn (?bool $value): bool => $value !== null));
+            if ($replaced !== []) {
+                $this->logger->error('Xml uses nodeType beside ' . implode(' and ', $replaced) . ', which it replaces'
+                    . ($xml->getReflector() instanceof \Reflector ? ' in ' . $xml->getSourceLocation() : ''));
+            }
+        });
+    }
 }

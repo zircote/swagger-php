@@ -2991,6 +2991,26 @@ own, or every operation of the class. On a class with no operations it only decl
 
 Metadata for XML representation of a schema property.
 
+From OpenAPI 3.2 on, `nodeType` says which kind of XML node a schema becomes. For example, a
+price with its currency as an attribute and its amount as the element's text:
+
+```php
+#[OA\Schema(
+    component: 'Price',
+    type: 'object',
+    properties: [
+        'currency' => new OA\Schema(type: 'string', xml: new OA\Xml(nodeType: OA\XmlNodeType::Attribute)),
+        'amount' => new OA\Schema(type: 'number', xml: new OA\Xml(nodeType: OA\XmlNodeType::Text)),
+    ],
+)]
+```
+
+describes something like this:
+
+```xml
+<Price currency="EUR">12.50</Price>
+```
+
 #### Allowed in
 ---
 <a href="#schema">Schema</a>
@@ -3005,13 +3025,15 @@ Metadata for XML representation of a schema property.
   <dt><strong>prefix</strong> : <span style="font-family: monospace;">string|null</span></dt>
   <dd><p>The namespace prefix to use</p></dd>
   <dt><strong>attribute</strong> : <span style="font-family: monospace;">bool|null</span></dt>
-  <dd><p>Whether the property translates to an XML attribute</p></dd>
+  <dd><p>Whether the property translates to an XML attribute; from OpenAPI 3.2 on, use `nodeType` instead</p></dd>
   <dt><strong>wrapped</strong> : <span style="font-family: monospace;">bool|null</span></dt>
-  <dd><p>Whether array items are wrapped in an additional element</p></dd>
+  <dd><p>Whether array items are wrapped in an additional element; from OpenAPI 3.2 on, use `nodeType` instead</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+  <dt><strong>nodeType</strong> : <span style="font-family: monospace;">string|XmlNodeType|null</span></dt>
+  <dd><p>The kind of XML node (element, attribute, text, cdata or none), from OpenAPI 3.2 on. Earlier versions write it as `attribute` or `wrapped` where they can</p></dd>
 </dl>
 
 #### Reference
 ---
-- [XML Object](https://spec.openapis.org/oas/v3.1.1.html#xml-object) ↗
+- [XML Object](https://spec.openapis.org/oas/v3.2.0.html#xml-object) ↗
