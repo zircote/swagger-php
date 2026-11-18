@@ -160,6 +160,14 @@ final class ScratchTest extends OpenApiTestCase
                 'Scheme uses oauth2MetadataUrl, not supported in OpenAPI 3.1, omitted',
             ],
             'Spec32-3.2.0-spec' => ['Scheme uses oauth2MetadataUrl, which only an oauth2 scheme takes, omitted'],
+            'AdditionalOperations-3.0.0-spec' => [
+                'Method "copy" is not supported in OpenAPI 3.0, omitted',
+                'Method "lock" is not supported in OpenAPI 3.0, omitted',
+            ],
+            'AdditionalOperations-3.1.0-spec' => [
+                'Method "copy" is not supported in OpenAPI 3.1, omitted',
+                'Method "lock" is not supported in OpenAPI 3.1, omitted',
+            ],
             'Tags-3.2.0-spec' => ['which does not exist'],
             'TypeAliases-3.0.0-spec' => $typeAliases,
             'TypeAliases-3.0.0-hybrid' => $typeAliases,

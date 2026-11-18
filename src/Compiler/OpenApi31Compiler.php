@@ -356,12 +356,9 @@ class OpenApi31Compiler implements CompilerInterface
         $paths = [];
 
         foreach ($operations as $operation) {
-            if ($operation->path === null || !in_array($operation->method, static::OPERATION_METHODS, true)) {
-                continue;
+            if ($operation->path !== null && ($item = $this->addOperation($paths[$operation->path] ?? [], $operation)) !== []) {
+                $paths[$operation->path] = $item;
             }
-
-            $paths[$operation->path] ??= [];
-            $paths[$operation->path][$operation->method] = $this->compileOperation($operation);
         }
 
         foreach ($pathItems as $pathItem) {
@@ -399,15 +396,38 @@ class OpenApi31Compiler implements CompilerInterface
         $webhooks = [];
 
         foreach ($operations as $operation) {
-            if ($operation->webhook === null || !in_array($operation->method, static::OPERATION_METHODS, true)) {
-                continue;
+            if ($operation->webhook !== null && ($item = $this->addOperation($webhooks[$operation->webhook] ?? [], $operation)) !== []) {
+                $webhooks[$operation->webhook] = $item;
             }
-
-            $webhooks[$operation->webhook] ??= [];
-            $webhooks[$operation->webhook][$operation->method] = $this->compileOperation($operation);
         }
 
         return $webhooks;
+    }
+
+    /**
+     * Writes an operation into a path item, under its method. One with a method the version does
+     * not support is left out, which `validateOperations()` reports.
+     *
+     * @param  array<string,mixed> $item
+     * @return array<string,mixed>
+     */
+    protected function addOperation(array $item, OA\Operation $operation): array
+    {
+        if ($operation->method !== null && $this->supportsMethod($operation->method)) {
+            $item[$operation->method] = $this->compileOperation($operation);
+        }
+
+        return $item;
+    }
+
+    protected function supportsMethod(string $method): bool
+    {
+        return in_array($method, static::OPERATION_METHODS, true);
+    }
+
+    protected function acceptsRequestBody(string $method): bool
+    {
+        return in_array($method, static::OPERATION_REQUEST_BODY_METHODS, true);
     }
 
     /**
@@ -525,7 +545,7 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function compileRequestBody(OA\RequestBody $body, ?string $method = null): array|\stdClass|null
     {
-        if ($method && !in_array($method, static::OPERATION_REQUEST_BODY_METHODS)) {
+        if ($method && !$this->acceptsRequestBody($method)) {
             return null;
         }
 
@@ -1437,13 +1457,13 @@ class OpenApi31Compiler implements CompilerInterface
                 return;
             }
 
-            if (!in_array($operation->method, static::OPERATION_METHODS, true)) {
+            if (!$this->supportsMethod($operation->method)) {
                 $this->logger->warning("Method \"{$operation->method}\" is not supported in OpenAPI " . substr($this->getVersion(), 0, 3) . ', omitted in ' . $operation->getSourceLocation());
 
                 return;
             }
 
-            if ($operation->requestBody instanceof OA\RequestBody && !in_array($operation->method, static::OPERATION_REQUEST_BODY_METHODS)) {
+            if ($operation->requestBody instanceof OA\RequestBody && !$this->acceptsRequestBody($operation->method)) {
                 $this->logger->warning("Request body is not supported for method \"{$operation->method}\" in " . $operation->getSourceLocation());
             }
         });

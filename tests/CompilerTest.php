@@ -1143,19 +1143,25 @@ final class CompilerTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{CompilerInterface, string, bool}>
+     * The keys an operation is written under in its path item, or null where it is left out.
+     *
+     * @return iterable<string, array{CompilerInterface, string, list<string>|null}>
      */
     public static function operationMethodProvider(): iterable
     {
         foreach (['3.0' => new OpenApi30Compiler(), '3.1' => new OpenApi31Compiler(), '3.2' => new OpenApi32Compiler()] as $version => $compiler) {
-            yield "{$version} trace" => [$compiler, 'trace', true];
-            yield "{$version} query" => [$compiler, 'query', $version === '3.2'];
-            yield "{$version} unknown" => [$compiler, 'frobnicate', false];
+            yield "{$version} trace" => [$compiler, 'trace', ['trace']];
+            yield "{$version} query" => [$compiler, 'query', $version === '3.2' ? ['query'] : null];
+            yield "{$version} unknown" => [$compiler, 'frobnicate', $version === '3.2' ? ['additionalOperations', 'FROBNICATE'] : null];
+            yield "{$version} not a token" => [$compiler, 'not a method', null];
         }
     }
 
+    /**
+     * @param list<string>|null $keys
+     */
     #[DataProvider('operationMethodProvider')]
-    public function testOperationMethodsPerVersion(CompilerInterface $compiler, string $method, bool $supported): void
+    public function testOperationMethodsPerVersion(CompilerInterface $compiler, string $method, ?array $keys): void
     {
         $spec = $this->createSpecification($compiler->getVersion());
         $spec->operations[] = new OA\Operation(path: '/p', method: $method, responses: [new OA\Response(response: 200, description: 'ok')]);
@@ -1164,12 +1170,41 @@ final class CompilerTest extends TestCase
         $messages = array_column($compiler->validate($spec), 'message');
         $document = $compiler->compile($spec);
         $warning = "Method \"{$method}\" is not supported in OpenAPI " . substr($compiler->getVersion(), 0, 3) . ', omitted';
+        $at = fn (array $item): mixed => array_reduce($keys ?? [], fn (mixed $carry, string $key): mixed => is_array($carry) ? $carry[$key] ?? null : null, $item);
 
-        $this->assertSame($supported, isset($document['paths']['/p'][$method]));
-        if (!$compiler instanceof OpenApi30Compiler) {
-            $this->assertSame($supported, isset($document['webhooks']['hook'][$method]));
+        if ($keys === null) {
+            $this->assertArrayNotHasKey('/p', (array) ($document['paths'] ?? []));
+            $this->assertArrayNotHasKey('hook', (array) ($document['webhooks'] ?? []));
+        } else {
+            $this->assertIsArray($at($document['paths']['/p']));
+            if (!$compiler instanceof OpenApi30Compiler) {
+                $this->assertIsArray($at($document['webhooks']['hook']));
+            }
         }
-        $this->assertCount($supported ? 0 : 2, array_filter($messages, fn (string $m): bool => str_starts_with($m, $warning)));
+        $this->assertCount($keys === null ? 2 : 0, array_filter($messages, fn (string $m): bool => str_starts_with($m, $warning)));
+    }
+
+    /**
+     * 3.2 keeps the request body of a method without a field of its own, since HTTP leaves it to the
+     * method. Earlier versions leave out the whole operation.
+     */
+    public function test32KeepsTheRequestBodyOfAnAdditionalOperation(): void
+    {
+        $spec = $this->createSpecification('3.2.0');
+        $spec->operations[] = new OA\Operation(
+            path: '/files/{name}',
+            method: 'COPY',
+            requestBody: new OA\RequestBody(content: [new OA\MediaType\Json(schema: new OA\Schema(type: 'object'))]),
+            responses: [new OA\Response(response: 201, description: 'copied')],
+        );
+
+        $compiler = new OpenApi32Compiler();
+        $messages = array_column($compiler->validate($spec), 'message');
+        $item = $compiler->compile($spec)['paths']['/files/{name}'];
+
+        $this->assertSame(['additionalOperations'], array_keys($item));
+        $this->assertArrayHasKey('requestBody', $item['additionalOperations']['COPY']);
+        $this->assertSame([], array_filter($messages, fn (string $message): bool => str_contains($message, 'COPY') || str_contains($message, 'copy')));
     }
 
     public function test32KeepsTheRequestBodyOfAQueryOperation(): void

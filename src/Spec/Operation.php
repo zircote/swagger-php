@@ -53,7 +53,7 @@ class Operation extends AbstractAttribute
     /**
      * @param string|null                     $path         The URL path for the operation
      * @param string|null                     $webhook      The webhook name (mutually exclusive with path)
-     * @param string|HttpMethod|null          $method       The HTTP method (get, post, put, delete, etc.). An operation still without one at compile time is left out, with a warning
+     * @param string|HttpMethod|null          $method       The HTTP method (get, post, put, delete, etc.). From OpenAPI 3.2 on any method can be used, and one without a field of its own, such as `COPY`, is written to `additionalOperations`. An operation still without one at compile time is left out, with a warning
      * @param string|null                     $operationId  Unique identifier for the operation
      * @param string|null                     $summary      A short summary of what the operation does
      * @param string|null                     $description  A verbose explanation of the operation (CommonMark syntax)
