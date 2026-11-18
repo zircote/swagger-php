@@ -29,6 +29,9 @@ namespace OpenApi\Spec;
  * <Price currency="EUR">12.50</Price>
  * ```
  *
+ * Where the node type is the only XML detail, a schema takes it directly:
+ * `xml: OA\XmlNodeType::Text` stands for `xml: new OA\Xml(nodeType: OA\XmlNodeType::Text)`.
+ *
  * @see [XML Object](https://spec.openapis.org/oas/v3.2.0.html#xml-object)
  */
 #[\Attribute]

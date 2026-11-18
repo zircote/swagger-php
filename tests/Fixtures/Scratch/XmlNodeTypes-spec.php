@@ -40,9 +40,9 @@ class XmlNodeTypesControllerSpec
         'tags' => new OA\Schema(
             type: 'array',
             items: new OA\Schema(type: 'string', xml: new OA\Xml(name: 'tag')),
-            xml: new OA\Xml(nodeType: OA\XmlNodeType::Element),
+            xml: OA\XmlNodeType::Element,
         ),
-        'bio' => new OA\Schema(type: 'string', xml: new OA\Xml(nodeType: OA\XmlNodeType::Cdata)),
+        'bio' => new OA\Schema(type: 'string', xml: OA\XmlNodeType::Cdata),
         'salary' => new OA\Schema(ref: '#/components/schemas/Price'),
     ],
 )]
@@ -55,7 +55,7 @@ class XmlNodeTypesPersonSpec
     type: 'object',
     properties: [
         'currency' => new OA\Schema(type: 'string', xml: new OA\Xml(nodeType: OA\XmlNodeType::Attribute)),
-        'amount' => new OA\Schema(type: 'number', xml: new OA\Xml(nodeType: OA\XmlNodeType::Text)),
+        'amount' => new OA\Schema(type: 'number', xml: OA\XmlNodeType::Text),
     ],
 )]
 class XmlNodeTypesPriceSpec
