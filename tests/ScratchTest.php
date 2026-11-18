@@ -50,6 +50,15 @@ final class ScratchTest extends OpenApiTestCase
             "Tag \"invalidparent\" uses parent, not supported in OpenAPI {$version}, omitted",
         ];
 
+        // the 3.2 XML node types, written in the older fields where they can be, left out otherwise
+        $xmlNodeTypes = static fn (string $version): array => [
+            "Xml uses nodeType \"attribute\", not supported in OpenAPI {$version}, written as attribute",
+            "Xml uses nodeType \"attribute\", not supported in OpenAPI {$version}, written as attribute",
+            "Xml uses nodeType \"element\", not supported in OpenAPI {$version}, written as wrapped",
+            "Xml uses nodeType \"cdata\", not supported in OpenAPI {$version}, omitted",
+            "Xml uses nodeType \"text\", not supported in OpenAPI {$version}, omitted",
+        ];
+
         // Keyed `{fixture}-{version}`, applying to every mode, or `{fixture}-{version}-{mode}`
         // for a diagnostic only one mode raises. Both keys contribute when both are present.
         $expectedLogs = [
@@ -168,6 +177,8 @@ final class ScratchTest extends OpenApiTestCase
                 'Method "copy" is not supported in OpenAPI 3.1, omitted',
                 'Method "lock" is not supported in OpenAPI 3.1, omitted',
             ],
+            'XmlNodeTypes-3.0.0-spec' => $xmlNodeTypes('3.0'),
+            'XmlNodeTypes-3.1.0-spec' => $xmlNodeTypes('3.1'),
             'Tags-3.2.0-spec' => ['which does not exist'],
             'TypeAliases-3.0.0-spec' => $typeAliases,
             'TypeAliases-3.0.0-hybrid' => $typeAliases,

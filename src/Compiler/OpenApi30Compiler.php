@@ -277,7 +277,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
             // OpenAPI extensions on schema
             'discriminator' => $schema->discriminator instanceof OA\Discriminator ? $this->compileDiscriminator($schema->discriminator) : null,
             'externalDocs' => $schema->externalDocs instanceof OA\ExternalDocumentation ? $this->compileExternalDocs($schema->externalDocs) : null,
-            'xml' => $schema->xml instanceof OA\Xml ? $this->compileXml($schema->xml) : null,
+            'xml' => $schema->xml instanceof OA\Xml ? $this->compileXml($schema->xml, $schema) : null,
         ], $schema);
 
         // without a type beside it, nullable has no effect; null gets a branch of its own where there is a choice

@@ -524,6 +524,48 @@ final class CompilerTest extends TestCase
     }
 
     /**
+     * What a schema with an XML node type gives before 3.2: its xml fields, and how it is reported.
+     *
+     * @return iterable<string, array{OA\Schema, array<string,bool>, string|null}>
+     */
+    public static function xmlNodeTypeProvider(): iterable
+    {
+        $string = fn (string $nodeType): OA\Schema => new OA\Schema(schema: 'Node', type: 'string', xml: new OA\Xml(nodeType: $nodeType));
+        $array = fn (string $nodeType): OA\Schema => new OA\Schema(schema: 'Node', type: 'array', items: new OA\Schema(type: 'string'), xml: new OA\Xml(nodeType: $nodeType));
+
+        yield 'attribute' => [$string('attribute'), ['attribute' => true], 'written as attribute'];
+        yield 'element on an array' => [$array('element'), ['wrapped' => true], 'written as wrapped'];
+        yield 'element by default' => [$string('element'), [], null];
+        yield 'none on an array by default' => [$array('none'), [], null];
+        yield 'none on a string' => [$string('none'), [], 'omitted'];
+        yield 'text' => [$string('text'), [], 'omitted'];
+        yield 'cdata' => [$string('cdata'), [], 'omitted'];
+        yield 'element on a reference' => [new OA\Schema(schema: 'Node', ref: '#/components/schemas/Other', xml: new OA\Xml(nodeType: 'element')), [], 'omitted'];
+        yield 'beside attribute set by hand' => [new OA\Schema(schema: 'Node', type: 'string', xml: new OA\Xml(attribute: false, nodeType: 'attribute')), ['attribute' => false], 'omitted'];
+    }
+
+    /**
+     * `nodeType` is new in 3.2. Before, `attribute` and `wrapped` say what it says where they can.
+     *
+     * @param array<string,bool> $xml
+     */
+    #[DataProvider('xmlNodeTypeProvider')]
+    public function testWritesXmlNodeTypesBefore32(OA\Schema $schema, array $xml, ?string $action): void
+    {
+        foreach ([new OpenApi30Compiler(), new OpenApi31Compiler()] as $compiler) {
+            $spec = $this->createSpecification($compiler->getVersion());
+            $spec->schemas[] = $schema;
+
+            $messages = array_values(array_filter(array_column($compiler->validate($spec), 'message'), fn (string $message): bool => str_contains($message, 'nodeType')));
+            $output = $compiler->compile($spec)['components']['schemas']['Node'];
+
+            $this->assertSame($xml, $output['xml'] ?? [], $compiler->getVersion());
+            $expected = $action === null ? [] : ["Xml uses nodeType \"{$schema->xml?->nodeType}\", not supported in OpenAPI " . substr($compiler->getVersion(), 0, 3) . ", {$action}"];
+            $this->assertSame($expected, $messages, $compiler->getVersion());
+        }
+    }
+
+    /**
      * A querystring parameter takes `content` and no `schema`, and an operation has at most one,
      * and none beside a query parameter, its path item's included.
      */
@@ -550,6 +592,24 @@ final class CompilerTest extends TestCase
             'Operation "findOwners" has more than one querystring parameter',
             'Operation "listPets" has a querystring parameter beside query parameters',
         ], array_map(fn (array $entry): string => (string) preg_replace('/ in .*$/', '', $entry['message']), array_values($errors)));
+    }
+
+    /**
+     * 3.2 writes `nodeType` as declared, and reports `attribute` or `wrapped` beside it.
+     */
+    public function test32WritesXmlNodeTypes(): void
+    {
+        $spec = $this->createSpecification('3.2.0');
+        $spec->schemas[] = new OA\Schema(schema: 'Id', type: 'string', xml: new OA\Xml(name: 'id', nodeType: OA\XmlNodeType::Attribute));
+        $spec->schemas[] = new OA\Schema(schema: 'Tags', type: 'array', items: new OA\Schema(type: 'string'), xml: new OA\Xml(wrapped: true, nodeType: 'element'));
+
+        $compiler = new OpenApi32Compiler();
+        $diagnostics = array_values(array_filter($compiler->validate($spec), fn (array $entry): bool => str_contains($entry['message'], 'nodeType')));
+        $schemas = $compiler->compile($spec)['components']['schemas'];
+
+        $this->assertSame(['nodeType' => 'attribute', 'name' => 'id'], $schemas['Id']['xml']);
+        $this->assertSame(['nodeType' => 'element', 'wrapped' => true], $schemas['Tags']['xml']);
+        $this->assertSame([['level' => 'error', 'message' => 'Xml uses nodeType beside wrapped, which it replaces']], $diagnostics);
     }
 
     /**

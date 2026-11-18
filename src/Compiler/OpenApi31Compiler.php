@@ -218,6 +218,8 @@ class OpenApi31Compiler implements CompilerInterface
         $this->validateReferenceSummaries($specification);
 
         $this->validateExamples($specification);
+
+        $this->validateXmlNodeTypes($specification);
     }
 
     /**
@@ -235,6 +237,30 @@ class OpenApi31Compiler implements CompilerInterface
             $action = $example->value === Undefined::UNDEFINED && $example->externalValue === null ? 'written as value' : 'omitted';
             $this->logger->warning("{$subject} uses dataValue, not supported in OpenAPI " . substr($this->getVersion(), 0, 3) . ", {$action}"
                 . ($example->getReflector() instanceof \Reflector ? ' in ' . $example->getSourceLocation() : ''));
+        });
+    }
+
+    /**
+     * `nodeType` is new in 3.2, and before it is written as `attribute` or `wrapped` where they say
+     * the same. See `nodeTypeFields()`.
+     */
+    protected function validateXmlNodeTypes(Specification $specification): void
+    {
+        $this->visit($specification, OA\Schema::class, function (OA\Schema $schema): void {
+            if (!$schema->xml instanceof OA\Xml || $schema->xml->nodeType === null) {
+                return;
+            }
+
+            $fields = $this->nodeTypeFields($schema->xml, $schema);
+            if ($fields === []) {
+                return;
+            }
+
+            // a field set by hand wins, so the node type is then left out
+            $field = $fields === null ? null : array_key_first($fields);
+            $action = $field !== null && $schema->xml->{$field} === null ? "written as {$field}" : 'omitted';
+            $this->logger->warning("Xml uses nodeType \"{$schema->xml->nodeType}\", not supported in OpenAPI " . substr($this->getVersion(), 0, 3) . ", {$action}"
+                . ($schema->getReflector() instanceof \Reflector ? ' in ' . $schema->getSourceLocation() : ''));
         });
     }
 
@@ -818,7 +844,7 @@ class OpenApi31Compiler implements CompilerInterface
             // OpenAPI extensions on schema
             'discriminator' => $schema->discriminator instanceof OA\Discriminator ? $this->compileDiscriminator($schema->discriminator) : null,
             'externalDocs' => $schema->externalDocs instanceof OA\ExternalDocumentation ? $this->compileExternalDocs($schema->externalDocs) : null,
-            'xml' => $schema->xml instanceof OA\Xml ? $this->compileXml($schema->xml) : null,
+            'xml' => $schema->xml instanceof OA\Xml ? $this->compileXml($schema->xml, $schema) : null,
         ], $schema);
 
         // without a type to add `null` to, null gets a branch of its own where there is a choice
@@ -909,15 +935,37 @@ class OpenApi31Compiler implements CompilerInterface
     /**
      * @return array<string,mixed>
      */
-    protected function compileXml(OA\Xml $xml): array
+    protected function compileXml(OA\Xml $xml, ?OA\Schema $schema = null): array
     {
+        $fields = $this->nodeTypeFields($xml, $schema) ?? [];
+
         return $this->filter([
             'name' => $xml->name,
             'namespace' => $xml->namespace,
             'prefix' => $xml->prefix,
-            'attribute' => $xml->attribute,
-            'wrapped' => $xml->wrapped,
+            'attribute' => $xml->attribute ?? $fields['attribute'] ?? null,
+            'wrapped' => $xml->wrapped ?? $fields['wrapped'] ?? null,
         ], $xml);
+    }
+
+    /**
+     * `nodeType` is new in 3.2. Before, `attribute` and `wrapped` say what it says where they can:
+     * an attribute, or an array wrapped in an element. The node type a schema has by default needs
+     * no field, and a text, CDATA or absent node has no older form. A field set by hand is kept.
+     *
+     * @return array<string,bool>|null the fields to write, or null where the node type cannot be written
+     */
+    protected function nodeTypeFields(OA\Xml $xml, ?OA\Schema $schema): ?array
+    {
+        $isArray = $schema instanceof OA\Schema && $this->isArrayType($schema);
+        $default = $isArray || $schema?->getRefValue() !== null ? OA\XmlNodeType::None->value : OA\XmlNodeType::Element->value;
+
+        return match ($xml->nodeType) {
+            null, $default => [],
+            OA\XmlNodeType::Attribute->value => ['attribute' => true],
+            OA\XmlNodeType::Element->value => $isArray ? ['wrapped' => true] : null,
+            default => null,
+        };
     }
 
     /**

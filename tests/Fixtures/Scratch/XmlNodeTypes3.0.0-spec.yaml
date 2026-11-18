@@ -1,0 +1,58 @@
+openapi: 3.0.0
+info:
+  title: 'Xml node types'
+  version: '1.0'
+paths:
+  '/people/{id}':
+    get:
+      summary: 'XML node types, new in OpenAPI 3.2, rendering for example something like:'
+      description: "<person id=\"42\">\n    <name>Jane</name>\n    <tags><tag>admin</tag></tags>\n    <bio><![CDATA[Likes <b>bold</b> text]]></bio>\n    <salary currency=\"EUR\">1200.5</salary>\n  </person>\n\nThe 3.0 and 3.1 documents are the assertion that matters as much as the 3.2 one: an attribute\nand a wrapped list are written with `attribute` and `wrapped`, and the CDATA and text nodes,\nwhich have no older form, are left out with a warning each."
+      operationId: getPerson
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'The person'
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Person'
+components:
+  schemas:
+    Person:
+      type: object
+      properties:
+        id:
+          type: string
+          xml:
+            attribute: true
+        name:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+            xml:
+              name: tag
+          xml:
+            wrapped: true
+        bio:
+          type: string
+        salary:
+          $ref: '#/components/schemas/Price'
+      xml:
+        name: person
+    Price:
+      type: object
+      properties:
+        currency:
+          type: string
+          xml:
+            attribute: true
+        amount:
+          type: number
