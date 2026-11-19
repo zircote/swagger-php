@@ -68,6 +68,17 @@ components:
           type: integer
           not:
             const: 0
+        intRangeUnion:
+          description: 'The integer in one of two ranges'
+          anyOf:
+            -
+              type: integer
+              maximum: 5
+              minimum: 1
+            -
+              type: integer
+              maximum: 20
+              minimum: 10
       type: object
     DocblockSchemaChild:
       type: object

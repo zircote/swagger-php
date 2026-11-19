@@ -372,6 +372,10 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
             $schema->allOf = array_map($this->schemaTypeToSchema(...), $schemaType->allOf);
         }
 
+        if ($schemaType->anyOf !== null) {
+            $schema->anyOf = array_map($this->schemaTypeToSchema(...), $schemaType->anyOf);
+        }
+
         if ($schemaType->properties !== null) {
             $schema->type = 'object';
             $schema->properties = [];

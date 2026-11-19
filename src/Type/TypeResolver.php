@@ -271,8 +271,7 @@ class TypeResolver implements LoggerAwareInterface
     {
         $types = $type->getTypes();
 
-        $isNonZeroInt = 2 === count($types) && $types[0] instanceof IntRangeType && $types[1] instanceof IntRangeType;
-        if ($isNonZeroInt) {
+        if ($this->isNonZeroInt($types)) {
             return new SchemaType(type: 'int', not: ['const' => 0]);
         }
 
@@ -291,20 +290,28 @@ class TypeResolver implements LoggerAwareInterface
             $builtinTypes = array_filter($types, static fn (Type $t): bool => $t instanceof BuiltinType);
             $otherTypes = array_filter($types, static fn (Type $t): bool => !$t instanceof BuiltinType);
 
-            $oneOf = [];
+            $members = [];
             if ($builtinTypes !== []) {
                 $builtinSchema = new SchemaType(
                     type: array_values(array_map(static fn (Type $t): string => (string) $t, $builtinTypes)),
                 );
                 $this->applyNativeTypeMapping($builtinSchema);
-                $oneOf[] = $builtinSchema;
+                $members[] = $builtinSchema;
             }
 
             foreach ($otherTypes as $otherType) {
-                $oneOf[] = $this->mapType($otherType);
+                $members[] = $this->mapType($otherType);
             }
 
-            return new SchemaType(oneOf: $oneOf);
+            // integer ranges may overlap or touch, and a value in two of them would fail `oneOf`
+            $intRanges = array_filter($otherTypes, static fn (Type $part): bool => $part instanceof IntRangeType);
+            if (count($intRanges) > 1) {
+                array_walk($members, $this->applyNativeTypeMapping(...));
+
+                return new SchemaType(anyOf: $members);
+            }
+
+            return new SchemaType(oneOf: $members);
         }
 
         if ($type instanceof IntersectionType) {
@@ -317,6 +324,23 @@ class TypeResolver implements LoggerAwareInterface
         }
 
         return new SchemaType();
+    }
+
+    /**
+     * Whether a union's parts are exactly `int<min, -1>` and `int<1, max>`, in either order.
+     *
+     * @param list<Type> $types
+     */
+    protected function isNonZeroInt(array $types): bool
+    {
+        if (2 !== count($types) || !$types[0] instanceof IntRangeType || !$types[1] instanceof IntRangeType) {
+            return false;
+        }
+
+        $bounds = array_map(static fn (IntRangeType $range): array => [$range->getFrom(), $range->getTo()], $types);
+        sort($bounds);
+
+        return [[\PHP_INT_MIN, -1], [1, \PHP_INT_MAX]] === $bounds;
     }
 
     /**
