@@ -73,6 +73,12 @@ class DocblocksSchemaSpec
      */
     #[OA\Property]
     public $nonZeroInt;
+
+    /**
+     * @var int<1, 5>|int<10, 20> The integer in one of two ranges
+     */
+    #[OA\Property]
+    public $intRangeUnion;
 }
 
 #[OA\Schema(component: 'DocblockSchemaChild')]

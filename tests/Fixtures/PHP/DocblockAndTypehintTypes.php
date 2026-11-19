@@ -126,6 +126,24 @@ class DocblockAndTypehintTypes
     public int $nonZeroInt;
 
     /**
+     * @var negative-int|positive-int
+     */
+    #[OAT\Property]
+    public int $negativeOrPositiveInt;
+
+    /**
+     * @var int<1, 5>|int<10, 20>
+     */
+    #[OAT\Property]
+    public int $intRangeUnion;
+
+    /**
+     * @var int<1, 5>|null
+     */
+    #[OAT\Property]
+    public ?int $nullableIntRange;
+
+    /**
      * @var array{foo:bool}
      */
     #[OAT\Property]

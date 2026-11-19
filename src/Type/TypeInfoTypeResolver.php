@@ -175,6 +175,19 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
             }
         }
 
+        if ($schemaType->anyOf !== null) {
+            $schema->type = Undefined::UNDEFINED;
+            $schema->anyOf = [];
+            foreach ($schemaType->anyOf as $childType) {
+                $childSchema = new OA\Schema(['_context' => new Context(['generated' => true], $schema->_context)]);
+                $this->applyToAnnotation($childSchema, $childType, $analysis, $sourceClass);
+                $this->type2ref($childSchema, $analysis, $sourceClass);
+                $this->handlePostAugment($childSchema);
+                $analysis->addAnnotation($childSchema, $childSchema->_context);
+                $schema->anyOf[] = $childSchema;
+            }
+        }
+
         if ($schemaType->properties !== null) {
             $schema->type = 'object';
             $properties = [];
