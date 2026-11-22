@@ -32,7 +32,7 @@ abstract class AbstractTypeResolver implements TypeResolverInterface
         if (is_array($type)) {
             /** @var non-empty-array<string> $mapped neither array_map() nor toSpecTypes() drop elements */
             $mapped = $this->typeMapper->toSpecTypes(
-                array_map(static fn ($t): string => strtolower((string) $t), $type)
+                array_map(static fn ($part): string => strtolower((string) $part), $type)
             );
             $schema->type = $mapped;
 

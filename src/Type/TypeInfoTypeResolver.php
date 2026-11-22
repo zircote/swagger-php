@@ -155,41 +155,17 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
                     return;
                 }
             }
-            $schema->oneOf = [];
-            foreach ($schemaType->oneOf as $childType) {
-                $childSchema = new OA\Schema(['_context' => new Context(['generated' => true], $schema->_context)]);
-                $this->applyToAnnotation($childSchema, $childType, $analysis, $sourceClass);
-                $this->type2ref($childSchema, $analysis, $sourceClass);
-                $this->handlePostAugment($childSchema);
-                $analysis->addAnnotation($childSchema, $childSchema->_context);
-                $schema->oneOf[] = $childSchema;
-            }
+            $schema->oneOf = $this->compositionSchemas($schema, $schemaType->oneOf, $analysis, $sourceClass);
         }
 
         if ($schemaType->allOf !== null) {
             $schema->type = Undefined::UNDEFINED;
-            $schema->allOf = [];
-            foreach ($schemaType->allOf as $childType) {
-                $childSchema = new OA\Schema(['_context' => new Context(['generated' => true], $schema->_context)]);
-                $this->applyToAnnotation($childSchema, $childType, $analysis, $sourceClass);
-                $this->type2ref($childSchema, $analysis, $sourceClass);
-                $this->handlePostAugment($childSchema);
-                $analysis->addAnnotation($childSchema, $childSchema->_context);
-                $schema->allOf[] = $childSchema;
-            }
+            $schema->allOf = $this->compositionSchemas($schema, $schemaType->allOf, $analysis, $sourceClass);
         }
 
         if ($schemaType->anyOf !== null) {
             $schema->type = Undefined::UNDEFINED;
-            $schema->anyOf = [];
-            foreach ($schemaType->anyOf as $childType) {
-                $childSchema = new OA\Schema(['_context' => new Context(['generated' => true], $schema->_context)]);
-                $this->applyToAnnotation($childSchema, $childType, $analysis, $sourceClass);
-                $this->type2ref($childSchema, $analysis, $sourceClass);
-                $this->handlePostAugment($childSchema);
-                $analysis->addAnnotation($childSchema, $childSchema->_context);
-                $schema->anyOf[] = $childSchema;
-            }
+            $schema->anyOf = $this->compositionSchemas($schema, $schemaType->anyOf, $analysis, $sourceClass);
         }
 
         if ($schemaType->properties !== null) {
@@ -212,5 +188,28 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
                 $schema->required = $schemaType->required;
             }
         }
+    }
+
+    /**
+     * A generated schema for each member of a composition, nested in `$schema`.
+     *
+     * @param list<SchemaType>                    $types
+     * @param class-string<OA\AbstractAnnotation> $sourceClass
+     *
+     * @return list<OA\Schema>
+     */
+    protected function compositionSchemas(OA\Schema $schema, array $types, Analysis $analysis, string $sourceClass): array
+    {
+        $schemas = [];
+        foreach ($types as $childType) {
+            $childSchema = new OA\Schema(['_context' => new Context(['generated' => true], $schema->_context)]);
+            $this->applyToAnnotation($childSchema, $childType, $analysis, $sourceClass);
+            $this->type2ref($childSchema, $analysis, $sourceClass);
+            $this->handlePostAugment($childSchema);
+            $analysis->addAnnotation($childSchema, $childSchema->_context);
+            $schemas[] = $childSchema;
+        }
+
+        return $schemas;
     }
 }
