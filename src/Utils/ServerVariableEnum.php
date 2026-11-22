@@ -17,7 +17,7 @@ use Psr\Log\LoggerInterface;
  * than in one pipeline: classic resolves enums in a processor, hybrid and spec in an augmenter,
  * and the bridge has to hand the spec model a `list<string>` before either runs.
  */
-final class ServerVariableEnum
+class ServerVariableEnum
 {
     /**
      * @param iterable<mixed> $enum

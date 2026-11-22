@@ -6,7 +6,7 @@
 
 namespace OpenApi;
 
-final class Undefined
+class Undefined
 {
     public const UNDEFINED = '@OA\\UNDEFINED🙈';
 

@@ -39,7 +39,7 @@ class AttributeFactory implements LoggerAwareInterface
     /**
      * Kept so each deprecated `getTokenScanner()` call shares one parse cache.
      */
-    private ?TokenScanner $fallbackScanner = null;
+    protected ?TokenScanner $fallbackScanner = null;
 
     /**
      * @param SourceInspectorInterface $tokenScanner tells a class's own members and traits from inherited ones

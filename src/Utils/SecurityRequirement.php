@@ -13,7 +13,7 @@ namespace OpenApi\Utils;
  * schemes with no scopes. Classic serialises its annotations, while hybrid and spec compile
  * `Security\Requirement`, so this lives here for all three to share.
  */
-final class SecurityRequirement
+class SecurityRequirement
 {
     /**
      * @param array<mixed> $requirement

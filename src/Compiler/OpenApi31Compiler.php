@@ -100,7 +100,7 @@ class OpenApi31Compiler implements CompilerInterface
     /**
      * The walker `validate()` shares between the checks, or null outside it.
      */
-    private ?Walker $walker = null;
+    protected ?Walker $walker = null;
 
     public function __construct(?LoggerInterface $logger = null)
     {

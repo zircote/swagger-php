@@ -107,7 +107,7 @@ class AugmentTags
      * @param array<string> $usedTagNames
      * @param array<OA\Tag> $declaredTags
      */
-    private function removeUnusedTags(array $usedTagNames, array $declaredTags, Analysis $analysis): void
+    protected function removeUnusedTags(array $usedTagNames, array $declaredTags, Analysis $analysis): void
     {
         if (in_array('*', $this->whitelist)) {
             return;

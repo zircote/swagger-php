@@ -57,7 +57,7 @@ class SourceFinder extends Finder
     /**
      * @param list<string> $directories
      */
-    private function getRelativePath(string $fullPath, array $directories): string
+    protected function getRelativePath(string $fullPath, array $directories): string
     {
         foreach ($directories as $directory) {
             if (str_starts_with($fullPath, (string) $directory)) {

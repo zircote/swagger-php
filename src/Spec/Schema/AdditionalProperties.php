@@ -21,6 +21,6 @@ use OpenApi\Spec as OA;
  * )
  * ```
  */
-final class AdditionalProperties extends OA\Schema
+class AdditionalProperties extends OA\Schema
 {
 }
