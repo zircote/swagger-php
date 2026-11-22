@@ -78,6 +78,7 @@ In particular, the following schema elements may be augmented:
 * `type`
 * `format`
 * `minimum` / `maximum`
+* `minLength`
 * `const`
 * `enum`
 * `required`
@@ -88,6 +89,10 @@ Data types that are not recognized and cannot be resolved to a class-like name (
 A class implementing `DateTimeInterface`, such as `DateTimeImmutable` or a subclass of it, is a
 `string` with format `date-time`.
 
+A docblock integer range such as `int<1, 10>` or `positive-int` sets `minimum`, `maximum` or both.
+A string pseudo-type that rules out the empty string, such as `non-empty-string` or
+`non-falsy-string`, sets `minLength: 1`. Others, such as `numeric-string`, are a plain `string`.
+
 Most of these schema elements will be resolved in isolation. For example, `nullable` may be enforced by the attribute or annotation
 while the actual data type may be resolved from the docblock (or type-hint).
 
@@ -95,12 +100,12 @@ while the actual data type may be resolved from the docblock (or type-hint).
 
 For each element, the first source that sets it wins:
 
-| Element                                   | Sources, in order                                                                                |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `type`                                    | the attribute (`type`, `oneOf`, `allOf` or `anyOf`), the docblock, the type-hint                 |
-| `format`, `minimum`, `maximum`, `items`   | the attribute, then the type the docblock or type-hint gives, unless the attribute sets `type`   |
-| `nullable`                                | the attribute, then `true` if either the docblock or the type-hint is nullable, unless the attribute sets `type` |
-| `ref`                                     | the attribute, then a class type, if that class is a schema component                           |
+| Element                                              | Sources, in order                                                                                                |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `type`                                               | the attribute (`type`, `oneOf`, `allOf` or `anyOf`), the docblock, the type-hint                                 |
+| `format`, `minimum`, `maximum`, `minLength`, `items` | the attribute, then the type the docblock or type-hint gives, unless the attribute sets `type`                   |
+| `nullable`                                           | the attribute, then `true` if either the docblock or the type-hint is nullable, unless the attribute sets `type` |
+| `ref`                                                | the attribute, then a class type, if that class is a schema component                                            |
 
 The docblock replaces the type-hint. It does not refine it: `@var string` on `public int $id` documents a `string`.
 A docblock type that cannot be parsed is ignored, and the type-hint is used.

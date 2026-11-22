@@ -341,6 +341,8 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
 
         $schema->maximum ??= $schemaType->maximum;
 
+        $schema->minLength ??= $schemaType->minLength;
+
         if ($schemaType->not !== null && !$schema->not instanceof OA\Schema) {
             $schema->not = new OA\Schema(const: $schemaType->not['const']);
         }

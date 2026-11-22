@@ -243,7 +243,7 @@ class TypeResolver implements LoggerAwareInterface
         }
 
         if ($type instanceof ExplicitType) {
-            return new SchemaType(type: $type->getTypeIdentifier()->value);
+            return $this->mapExplicitType($type);
         }
 
         if ($type instanceof ArrayShapeType && [] !== $type->getShape()) {
@@ -262,6 +262,24 @@ class TypeResolver implements LoggerAwareInterface
         }
 
         return new SchemaType();
+    }
+
+    /**
+     * A string pseudo-type that rules out the empty string gets `minLength: 1`. The others, such
+     * as `numeric-string` or `lowercase-string`, map to their builtin type.
+     *
+     * @param ExplicitType<TypeIdentifier> $type
+     */
+    protected function mapExplicitType(ExplicitType $type): SchemaType
+    {
+        $schemaType = new SchemaType(type: $type->getTypeIdentifier()->value);
+
+        $name = $type->getExplicitType();
+        if ($type->isIdentifiedBy(TypeIdentifier::STRING) && (str_starts_with($name, 'non-empty-') || in_array($name, ['non-falsy-string', 'truthy-string'], true))) {
+            $schemaType->minLength = 1;
+        }
+
+        return $schemaType;
     }
 
     /**

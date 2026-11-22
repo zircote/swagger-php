@@ -28,6 +28,7 @@ class SchemaType
      * @param int|float|null           $maximum              Numeric maximum
      * @param array<string, self>|null $properties           Named properties (from array shapes)
      * @param list<string>|null        $required             Required property names (from array shapes)
+     * @param int|null                 $minLength            String minimum length
      */
     public function __construct(
         public string|array|null $type = null,
@@ -43,6 +44,7 @@ class SchemaType
         public int|float|null $maximum = null,
         public ?array $properties = null,
         public ?array $required = null,
+        public ?int $minLength = null,
     ) {
     }
 

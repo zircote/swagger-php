@@ -69,6 +69,27 @@ final class TypesTest extends TestCase
         $this->assertSame('date-time', $items->format);
     }
 
+    public function testAStringThatRulesOutEmptyGetsAMinimumLength(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\StringPseudoTypes::class);
+
+        (new Augmenter\Types())($spec);
+
+        $props = [];
+        foreach ($spec->schemas[0]->properties as $property) {
+            $props[$property->property] = $property->schema;
+        }
+
+        $this->assertSame(1, $props['name']->minLength);
+        $this->assertSame(1, $props['code']->minLength);
+        $this->assertTrue($props['code']->nullable);
+        $this->assertNull($props['amount']->minLength);
+        $this->assertInstanceOf(OA\Schema::class, $props['tags']->items);
+        $this->assertSame(1, $props['tags']->items->minLength);
+        $this->assertSame([null, 1], array_map(static fn (OA\Schema $member): ?int => $member->minLength, $props['key']->oneOf ?? []));
+        $this->assertSame(0, $props['note']->minLength);
+    }
+
     public function testWarnsForAClassWithNoSchema(): void
     {
         $holder = Fixtures\Augmenter\UndescribedClasses::class;
