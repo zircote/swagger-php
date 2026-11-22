@@ -285,12 +285,43 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
     {
         if ($schema->type === null && $schema->oneOf === null && $schema->allOf === null && $schema->anyOf === null) {
             $this->applySchemaType($schema, $schemaType);
+        } elseif (!$this->hasExplicitType($schema) && $schema->items instanceof OA\Schema && $schemaType->items instanceof SchemaType) {
+            // an array by its `items` or by shortcut, so the items are what is left to fill
+            $this->mergeIntoNested($schema->items, $schemaType->items);
         }
 
         // a type the author wrote out is the whole type, so the PHP type's `null` is not added to it
         if (!$this->hasExplicitType($schema)) {
             $schema->nullable ??= $schemaType->nullable;
         }
+    }
+
+    /**
+     * Fills an `items` or `additionalProperties` schema that has no type of its own from the PHP
+     * type, keeping what the author wrote. One with a `ref` stays as written.
+     */
+    protected function mergeIntoNested(OA\Schema $schema, SchemaType $schemaType): void
+    {
+        if ($schema->ref === null) {
+            $this->mergeIntoSchema($schema, $schemaType);
+        }
+    }
+
+    /**
+     * The type without `null`, for a schema whose author set `nullable: false`.
+     *
+     * @param  string|list<string> $type
+     * @return string|list<string>
+     */
+    protected function withoutNull(string|array $type): string|array
+    {
+        $types = array_values(array_diff((array) $type, ['null']));
+
+        return match (count($types)) {
+            0 => $type,
+            1 => $types[0],
+            default => $types,
+        };
     }
 
     /**
@@ -331,7 +362,7 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
                     }
                 }
             } else {
-                $schema->type = $schemaType->type;
+                $schema->type = $schema->nullable === false ? $this->withoutNull($schemaType->type) : $schemaType->type;
             }
         }
 
@@ -353,7 +384,11 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
         }
 
         if ($schemaType->additionalProperties instanceof SchemaType) {
-            $schema->additionalProperties ??= $this->schemaTypeToSchema($schemaType->additionalProperties);
+            if ($schema->additionalProperties instanceof OA\Schema) {
+                $this->mergeIntoNested($schema->additionalProperties, $schemaType->additionalProperties);
+            } else {
+                $schema->additionalProperties ??= $this->schemaTypeToSchema($schemaType->additionalProperties);
+            }
         } elseif ($schemaType->additionalProperties === true) {
             $schema->additionalProperties ??= true;
         }
