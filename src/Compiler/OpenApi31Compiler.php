@@ -1417,6 +1417,9 @@ class OpenApi31Compiler implements CompilerInterface
     /**
      * The property or parameter that holds each schema, for a schema without a location of its own.
      *
+     * A schema nested in the one a member holds, such as its `items` or a `oneOf` member, belongs
+     * to that member too. A nested property is a member of its own.
+     *
      * @return \SplObjectStorage<OA\Schema, OA\Property|OA\Parameter>
      */
     protected function collectSchemaOwners(Specification $specification): \SplObjectStorage
@@ -1425,11 +1428,31 @@ class OpenApi31Compiler implements CompilerInterface
         $owners = new \SplObjectStorage();
         $specification->getWalker()->visit([OA\Property::class, OA\Parameter::class], function (OA\Property|OA\Parameter $owner) use ($owners): void {
             if ($owner->schema instanceof OA\Schema) {
-                $owners->offsetSet($owner->schema, $owner);
+                $this->addSchemaOwner($owners, $owner->schema, $owner);
             }
         });
 
         return $owners;
+    }
+
+    /**
+     * @param \SplObjectStorage<OA\Schema, OA\Property|OA\Parameter> $owners
+     */
+    protected function addSchemaOwner(\SplObjectStorage $owners, OA\Schema $schema, OA\Property|OA\Parameter $owner): void
+    {
+        if ($owners->offsetExists($schema)) {
+            return;
+        }
+
+        $owners->offsetSet($schema, $owner);
+
+        foreach (get_object_vars($schema) as $value) {
+            foreach (is_array($value) ? $value : [$value] as $nested) {
+                if ($nested instanceof OA\Schema) {
+                    $this->addSchemaOwner($owners, $nested, $owner);
+                }
+            }
+        }
     }
 
     /**
@@ -1465,16 +1488,12 @@ class OpenApi31Compiler implements CompilerInterface
         }
 
         if ($dropped !== []) {
-            $located = $schema->getReflector() instanceof \Reflector || !$owners->offsetExists($schema)
-                ? $schema
-                : $owners->offsetGet($schema);
-
             $this->logger->warning(sprintf(
                 'Schema%s sets %s beside $ref "%s", omitted%s',
                 $this->schemaLabel($schema),
                 implode(', ', $dropped),
                 $schema->getRefValue(),
-                $located->getReflector() instanceof \Reflector ? ' in ' . $located->getSourceLocation() : '',
+                $this->schemaLocation($schema, $owners),
             ));
         }
     }
@@ -1721,10 +1740,17 @@ class OpenApi31Compiler implements CompilerInterface
      * Where the schema was declared, as a diagnostic's ending — or nothing, for one built in code.
      *
      * An inline schema has no name, so this is what tells the warnings of two such schemas apart.
+     * A schema without a location of its own takes its owner's, where `$owners` names one.
+     *
+     * @param \SplObjectStorage<OA\Schema, OA\Property|OA\Parameter>|null $owners
      */
-    protected function schemaLocation(OA\Schema $schema): string
+    protected function schemaLocation(OA\Schema $schema, ?\SplObjectStorage $owners = null): string
     {
-        return $schema->getReflector() instanceof \Reflector ? ' in ' . $schema->getSourceLocation() : '';
+        $located = $schema->getReflector() instanceof \Reflector || !$owners instanceof \SplObjectStorage || !$owners->offsetExists($schema)
+            ? $schema
+            : $owners->offsetGet($schema);
+
+        return $located->getReflector() instanceof \Reflector ? ' in ' . $located->getSourceLocation() : '';
     }
 
     /**
