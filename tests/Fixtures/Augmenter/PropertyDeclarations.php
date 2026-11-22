@@ -97,3 +97,81 @@ class ExplicitRequired
     #[OA\Property]
     public ?string $name;
 }
+
+#[OA\Schema(component: 'DeclaredRequired')]
+class DeclaredRequired
+{
+    #[OA\Property]
+    public int $id;
+
+    #[OA\Property(required: true)]
+    public ?string $nickname;
+
+    #[OA\Property(required: true)]
+    public string $status = 'new';
+
+    #[OA\Property(required: false)]
+    public int $legacyId;
+
+    #[OA\Property(property: 'age', required: true)]
+    public function getAge(): int
+    {
+        return 0;
+    }
+
+    #[OA\Property(property: 'label')]
+    public function getLabel(): string
+    {
+        return '';
+    }
+}
+
+#[OA\Schema(component: 'DeclaredAgainstList', required: ['id', 'name'])]
+class DeclaredAgainstList
+{
+    #[OA\Property(required: true)]
+    public int $id;
+
+    #[OA\Property(required: false)]
+    public ?string $name;
+
+    #[OA\Property(required: true)]
+    public ?string $nickname;
+}
+
+#[OA\Schema(component: 'SharedNames')]
+class SharedNames
+{
+    #[OA\Property]
+    public int $id;
+
+    #[OA\Property(property: 'id', required: false)]
+    public function getId(): int
+    {
+        return 0;
+    }
+
+    #[OA\Property(property: 'name', required: true)]
+    public function getName(): string
+    {
+        return '';
+    }
+
+    #[OA\Property(property: 'name', required: true)]
+    public function getDisplayName(): string
+    {
+        return '';
+    }
+
+    #[OA\Property(property: 'code', required: true)]
+    public function getCode(): string
+    {
+        return '';
+    }
+
+    #[OA\Property(property: 'code', required: false)]
+    public function getLegacyCode(): string
+    {
+        return '';
+    }
+}

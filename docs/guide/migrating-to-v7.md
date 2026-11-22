@@ -232,6 +232,9 @@ to `detailsFor()` or `scanFile()` there fails with an undefined method error.
 written beside a `$ref` from OpenAPI 3.1 on. A subclass declaring its own `$summary` property needs
 it as `public ?string $summary`. Any other type or visibility is a fatal error.
 
+`Property` takes a `required` flag. A subclass declaring its own `$required` property needs it as
+`public ?bool $required`. Any other type or visibility is a fatal error.
+
 ## Changed output in 7.7
 
 Spec and hybrid report every property the target OpenAPI version leaves out. Before, most were left

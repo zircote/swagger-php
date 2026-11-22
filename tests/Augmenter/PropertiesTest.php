@@ -10,6 +10,7 @@ use OpenApi\Augmenter;
 use OpenApi\HybridBridge;
 use OpenApi\Spec as OA;
 use OpenApi\Tests\Concerns\AssemblesSpecification;
+use OpenApi\Tests\Concerns\ExpectsLogEntries;
 use OpenApi\Tests\Fixtures;
 use OpenApi\Undefined;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -18,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 final class PropertiesTest extends TestCase
 {
     use AssemblesSpecification;
+    use ExpectsLogEntries;
 
     public function testInfersRequiredFromTypeAndDefault(): void
     {
@@ -104,6 +106,26 @@ final class PropertiesTest extends TestCase
         $this->assertSame(['name'], $this->augment(Fixtures\Augmenter\ExplicitRequired::class)->required);
     }
 
+    public function testAPropertysOwnRequiredReplacesTheRule(): void
+    {
+        $this->assertSame(['id', 'nickname', 'status', 'age'], $this->augment(Fixtures\Augmenter\DeclaredRequired::class)->required);
+    }
+
+    public function testPropertiesSharingANameGetOneAnswer(): void
+    {
+        $this->expectLogEntry('Property "code" has both required: true and required: false', 'warning');
+
+        $this->assertSame(['name'], $this->augment(Fixtures\Augmenter\SharedNames::class)->required);
+    }
+
+    public function testAPropertysOwnRequiredThatContradictsAnExplicitListIsReported(): void
+    {
+        $this->expectLogEntry('Property "name" has required: false', 'warning');
+        $this->expectLogEntry('Property "nickname" has required: true', 'warning');
+
+        $this->assertSame(['id', 'name'], $this->augment(Fixtures\Augmenter\DeclaredAgainstList::class)->required);
+    }
+
     public function testLeavesBridgedSchemasAlone(): void
     {
         $spec = $this->assemble(Fixtures\Augmenter\ExplicitRequired::class);
@@ -125,7 +147,9 @@ final class PropertiesTest extends TestCase
         $spec = $this->assemble($class);
 
         (new Augmenter\Types())($spec);
-        (new Augmenter\Properties())($spec);
+        $properties = new Augmenter\Properties();
+        $properties->setLogger($this->trackingLogger());
+        $properties($spec);
 
         return $spec->schemas[0];
     }

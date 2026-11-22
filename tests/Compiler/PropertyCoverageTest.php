@@ -57,6 +57,7 @@ final class PropertyCoverageTest extends TestCase
         OA\MediaType\Xml::class . '::items' => 'turned into the schema by the Shortcuts augmenter',
         OA\MediaType\Xml::class . '::properties' => 'turned into the schema by the Shortcuts augmenter',
         OA\MediaType\Xml::class . '::required' => 'turned into the schema by the Shortcuts augmenter',
+        OA\Property::class . '::required' => "added to the parent schema's required list by the Properties augmenter",
         OA\Property\Encoded::class . '::encoding' => "moved to the media type's encoding by the MediaTypes augmenter",
         OA\Attachable::class . '::x' => 'a custom attribute, written by the code that defines it',
     ];

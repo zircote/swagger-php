@@ -55,6 +55,7 @@ class Encoded extends OA\Property
      * @param array<string,mixed>|null $x           Vendor extensions (x-* properties)
      * @param list<OA\Attachable>|null $attachables Reusable custom attachable attributes
      * @param OA\Fan|null              $fan         Where this attribute goes when more than one attribute could hold it
+     * @param bool|null                $required    Whether the parent schema lists this property as required; left out, the PHP declaration decides, and without one it is not
      */
     public function __construct(
         ?string $property = null,
@@ -63,10 +64,11 @@ class Encoded extends OA\Property
         ?array $x = null,
         ?array $attachables = null,
         ?OA\Fan $fan = null,
+        ?bool $required = null,
     ) {
         $this->encoding = $encoding;
 
-        parent::__construct(property: $property, schema: $schema, x: $x, attachables: $attachables, fan: $fan);
+        parent::__construct(property: $property, schema: $schema, x: $x, attachables: $attachables, fan: $fan, required: $required);
     }
 
     public function merge(): array
