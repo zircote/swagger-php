@@ -59,7 +59,7 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
 
         $this->removed = [];
 
-        for ($i = 0; $i < self::MAX_ITERATIONS; ++$i) {
+        for ($pass = 0; $pass < self::MAX_ITERATIONS; ++$pass) {
             if (!$this->cleanup($payload)) {
                 $this->reportRemoved();
 
@@ -173,11 +173,7 @@ class Cleanup implements PipeInterface, LoggerAwareInterface
      */
     protected function reportStatusCodeKey(AttributeInterface $item, string $name): void
     {
-        if (!$item instanceof OA\Response) {
-            return;
-        }
-
-        if (preg_match(OA\Response::STATUS_CODE_PATTERN, $name) !== 1) {
+        if (!$item instanceof OA\Response || preg_match(OA\Response::STATUS_CODE_PATTERN, $name) !== 1) {
             return;
         }
 

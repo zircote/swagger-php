@@ -71,13 +71,13 @@ class PathItems implements PipeInterface
 
         if ($merged['security'] !== null) {
             $existingSchemes = [];
-            foreach ($operation->security ?? [] as $req) {
-                $existingSchemes[$req->scheme] = true;
+            foreach ($operation->security ?? [] as $requirement) {
+                $existingSchemes[$requirement->scheme] = true;
             }
-            foreach ($merged['security'] as $req) {
-                if (!isset($existingSchemes[$req->scheme])) {
+            foreach ($merged['security'] as $requirement) {
+                if (!isset($existingSchemes[$requirement->scheme])) {
                     $operation->security ??= [];
-                    $operation->security[] = $req->copy();
+                    $operation->security[] = $requirement->copy();
                 }
             }
         }
@@ -101,7 +101,8 @@ class PathItems implements PipeInterface
 
     /**
      * Collect merged metadata across a chain.
-     * All collections merge additively — tags, security, and responses accumulate from all ancestors.
+     *
+     * All collections merge additively: tags, security and responses accumulate from all ancestors.
      *
      * @param  list<OA\PathItem>                                                                                               $chain
      * @return array{tags: list<string>|null, security: list<OA\Security\Requirement>|null, responses: list<OA\Response>|null}
@@ -146,13 +147,7 @@ class PathItems implements PipeInterface
                 continue;
             }
 
-            $paths = $pathsByPathItem[spl_object_id($pathItem)] ?? [];
-
-            if ($paths === []) {
-                continue;
-            }
-
-            foreach ($paths as $path) {
+            foreach ($pathsByPathItem[spl_object_id($pathItem)] ?? [] as $path) {
                 if ($pathItem->path === null) {
                     $pathItem->path = $path;
                 } elseif ($pathItem->path !== $path) {
@@ -208,17 +203,25 @@ class PathItems implements PipeInterface
             }
 
             $existingKeys = [];
-            foreach ($pathItem->parameters ?? [] as $param) {
-                $existingKeys[$param->name . ':' . ($param->in ?? '')] = true;
+            foreach ($pathItem->parameters ?? [] as $parameter) {
+                $existingKeys[$this->parameterKey($parameter)] = true;
             }
 
-            foreach ($ancestorPathItem->parameters as $param) {
-                if (!isset($existingKeys[$param->name . ':' . ($param->in ?? '')])) {
+            foreach ($ancestorPathItem->parameters as $parameter) {
+                if (!isset($existingKeys[$this->parameterKey($parameter)])) {
                     $pathItem->parameters ??= [];
-                    $pathItem->parameters[] = $param;
+                    $pathItem->parameters[] = $parameter;
                 }
             }
         }
+    }
+
+    /**
+     * What tells two parameters apart: their name and location.
+     */
+    protected function parameterKey(OA\Parameter $parameter): string
+    {
+        return $parameter->name . ':' . ($parameter->in ?? '');
     }
 
     protected function hasSpecProperties(OA\PathItem $pathItem): bool

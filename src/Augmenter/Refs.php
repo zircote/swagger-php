@@ -34,10 +34,8 @@ class Refs implements PipeInterface, LoggerAwareInterface
 
     public function __invoke(mixed $payload): mixed
     {
-        foreach ($payload->schemas as $schema) {
-            if ($schema->getClassReflector() === null) {
-                continue;
-            }
+        $classSchemas = array_filter($payload->schemas, static fn (OA\Schema $schema): bool => $schema->getClassReflector() instanceof \ReflectionClass);
+        foreach ($classSchemas as $schema) {
             $this->mergeAllOf($schema);
         }
 
@@ -49,10 +47,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
 
         // deduplicate once every ref carries its final value: a FQCN and the component
         // pointer added by Augmenter\Inheritance name the same schema but differ as strings
-        foreach ($payload->schemas as $schema) {
-            if ($schema->getClassReflector() === null) {
-                continue;
-            }
+        foreach ($classSchemas as $schema) {
             $this->dedupAllOfRefs($schema);
         }
 
@@ -109,7 +104,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
 
         foreach ($ambiguous as [$key, $bucket]) {
             $names = array_map(
-                fn (AttributeInterface $component): string => ComponentName::of($component) ?? '(unnamed)',
+                static fn (AttributeInterface $component): string => ComponentName::of($component) ?? '(unnamed)',
                 $index->findAllByKey($key, $bucket),
             );
             $this->logger?->error("Reference \"{$key}\" is ambiguous, it names several {$bucket} (" . implode(', ', $names) . '); reference one by name');
@@ -128,8 +123,10 @@ class Refs implements PipeInterface, LoggerAwareInterface
     }
 
     /**
-     * A pointer into a component bucket whose component does not exist. Pointers anywhere else are not checked,
-     * and neither are security schemes: the walker makes a pointer for each scheme a requirement names.
+     * A pointer into a component bucket whose component does not exist.
+     *
+     * Pointers anywhere else are not checked, and neither are security schemes: the walker makes a
+     * pointer for each scheme a requirement names.
      */
     protected function isDangling(string $ref, ComponentIndex $index): bool
     {
@@ -143,7 +140,9 @@ class Refs implements PipeInterface, LoggerAwareInterface
     }
 
     /**
-     * The bucket a ref on this attribute points into. A media type shortcut's ref is its schema's.
+     * The bucket a ref on this attribute points into.
+     *
+     * A media type shortcut's ref is its schema's.
      */
     protected function bucketFor(AttributeInterface $attribute): string
     {
@@ -225,7 +224,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
             }
         });
 
-        $specification->getWalker()->eachRef(function (RefInterface $attribute) use (&$candidates): void {
+        $specification->getWalker()->eachRef(static function (RefInterface $attribute) use ($candidates): void {
             preg_match('/#\/components\/schemas\/([^\/]+)\/(properties\/.+)/', (string) $attribute->getRefValue(), $matches);
 
             if (count($matches) !== 3) {
@@ -244,12 +243,13 @@ class Refs implements PipeInterface, LoggerAwareInterface
     }
 
     /**
-     * When allOf refs were added but the schema also has own properties, wrap them
-     * in a dedicated allOf entry so the final output is a pure allOf composition.
+     * Wraps a schema's own properties in an `allOf` entry of their own, where it has `allOf` refs.
+     *
+     * The output is then a pure `allOf` composition.
      */
     protected function mergeAllOf(OA\Schema $schema): void
     {
-        if ($schema->allOf === null || $schema->properties === null || $schema->properties === []) {
+        if ($schema->allOf === null || !$schema->properties) {
             return;
         }
 
@@ -259,7 +259,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
 
     protected function dedupAllOfRefs(OA\Schema $schema): void
     {
-        if ($schema->allOf === null || $schema->allOf === []) {
+        if (!$schema->allOf) {
             return;
         }
 

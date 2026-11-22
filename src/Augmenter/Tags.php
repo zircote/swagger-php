@@ -54,7 +54,7 @@ class Tags implements PipeInterface
             }
         }
 
-        $this->removeUnusedTags($usedTagNames, $declaredTags, $payload);
+        $this->removeUnusedTags($usedTagNames, $payload);
 
         return null;
     }
@@ -84,7 +84,7 @@ class Tags implements PipeInterface
     /**
      * @return list<string>
      */
-    protected function collectUsedTags(mixed $payload): array
+    protected function collectUsedTags(Specification $payload): array
     {
         $names = [];
         foreach ($payload->operations as $operation) {
@@ -97,10 +97,9 @@ class Tags implements PipeInterface
     }
 
     /**
-     * @param list<string>         $usedTagNames
-     * @param array<string,OA\Tag> $declaredTags
+     * @param list<string> $usedTagNames
      */
-    protected function removeUnusedTags(array $usedTagNames, array $declaredTags, mixed $payload): void
+    protected function removeUnusedTags(array $usedTagNames, Specification $payload): void
     {
         if (in_array('*', $this->whitelist, true)) {
             return;
@@ -110,7 +109,7 @@ class Tags implements PipeInterface
 
         $payload->tags = array_values(array_filter(
             $payload->tags,
-            fn (OA\Tag $tag): bool => $tag->name === null || in_array($tag->name, $tagsToKeep, true),
+            static fn (OA\Tag $tag): bool => $tag->name === null || in_array($tag->name, $tagsToKeep, true),
         ));
     }
 }
