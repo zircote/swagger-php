@@ -20,7 +20,7 @@ use OpenApi\OpenApiException;
  * and so is each list, so two keys built in a different order are the same key and a list acts as
  * a set. A value whose order matters goes in as one string.
  */
-final readonly class ComponentKey implements \Stringable
+readonly class ComponentKey implements \Stringable
 {
     /**
      * @var array<string, scalar|list<scalar>>

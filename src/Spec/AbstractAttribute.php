@@ -34,7 +34,7 @@ abstract class AbstractAttribute implements AttributeInterface
     protected array $authored = [];
 
     /** @var (\Closure(object): array<string, mixed>)|null */
-    private static ?\Closure $publicFields = null;
+    protected static ?\Closure $publicFields = null;
 
     /**
      * @param array<string,mixed>|null $x
@@ -248,7 +248,7 @@ abstract class AbstractAttribute implements AttributeInterface
         return $content instanceof Schema ? [new MediaType(schema: $content)] : self::wrapList($content);
     }
 
-    private static function copyValue(mixed $value): mixed
+    protected static function copyValue(mixed $value): mixed
     {
         if ($value instanceof AttributeInterface) {
             return $value->copy();

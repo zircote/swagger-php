@@ -19,7 +19,7 @@ class Serializer
     /**
      * @var list<class-string<OA\AbstractAnnotation>>
      */
-    private static array $VALID_ANNOTATIONS = [
+    protected static array $VALID_ANNOTATIONS = [
         OA\AdditionalProperties::class,
         OA\Attachable::class,
         OA\Components::class,

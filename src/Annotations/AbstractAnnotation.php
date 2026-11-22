@@ -697,7 +697,7 @@ abstract class AbstractAnnotation implements \JsonSerializable
     /**
      * Validate a given value against a `_$type` definition.
      */
-    private function validateValueType(string $type, mixed $value): bool
+    protected function validateValueType(string $type, mixed $value): bool
     {
         if (str_starts_with($type, '[') && str_ends_with($type, ']')) {
             // $value must be an array

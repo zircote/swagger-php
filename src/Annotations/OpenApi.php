@@ -266,7 +266,7 @@ class OpenApi extends AbstractAnnotation
      * @param array|AbstractAnnotation                                     $container
      * @param array<class-string<AbstractAnnotation>,string|array<string>> $mapping
      */
-    private static function resolveRef(string $ref, string $resolved, $container, array $mapping)
+    protected static function resolveRef(string $ref, string $resolved, $container, array $mapping)
     {
         if ($ref === $resolved) {
             return $container;

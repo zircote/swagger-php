@@ -30,7 +30,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class GenerateCommand extends Command
 {
     public function __construct(
-        private ConsoleLogger $logger,
+        protected ConsoleLogger $logger,
     ) {
         parent::__construct();
     }

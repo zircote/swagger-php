@@ -33,7 +33,13 @@ Read the relevant page before working in that part of the tree:
 
 ## Conventions
 
-- `protected` over `private` for methods and properties, so downstream can subclass
+- No `final` on classes or methods, value objects included, and `protected` over `private` for
+  methods and properties, so downstream can subclass
+- Protected members are not a frozen API: a protected method can change its signature without a
+  deprecation. What stays stable is the user-facing side: attributes, public methods, the
+  contracts users implement and the extension points the docs describe
+- Docblocks open with a one-sentence summary and an empty line, see
+  [docs/dev/writing-docs.md](docs/dev/writing-docs.md#docblocks)
 - British spelling in `src/`, US in `docs/` — follow whichever is local to the file
 - New pipeline work goes in `src/Spec/`, `src/Augmenter/`, `src/Compiler/`;
   `src/Annotations/` and `src/Attributes/` are classic and closed to new capabilities,

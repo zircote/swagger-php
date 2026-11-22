@@ -289,7 +289,7 @@ class Context implements \Stringable
      *
      * @return class-string
      */
-    private function asClassString(string $name): string
+    protected function asClassString(string $name): string
     {
         /** @var class-string $className */
         $className = $name;

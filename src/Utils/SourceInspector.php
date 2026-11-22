@@ -23,21 +23,21 @@ use OpenApi\Contracts\SourceInspectorInterface;
  */
 class SourceInspector implements SourceInspectorInterface
 {
-    private const DECLARATIONS = [T_CLASS, T_INTERFACE, T_TRAIT, T_ENUM];
+    protected const DECLARATIONS = [T_CLASS, T_INTERFACE, T_TRAIT, T_ENUM];
 
     /**
      * The members each class's body declares, by class name, for the cases reflection cannot settle.
      *
      * @var array<string, array{methods: list<string>, properties: list<string>, consts: list<string>}>
      */
-    private array $written = [];
+    protected array $written = [];
 
     /**
      * The last file read for its class bodies, and its tokens.
      *
      * @var array{string, list<\PhpToken>}|null
      */
-    private ?array $lastRead = null;
+    protected ?array $lastRead = null;
 
     public function classesIn(string $filename): array
     {
@@ -148,7 +148,7 @@ class SourceInspector implements SourceInspectorInterface
     /**
      * @param \ReflectionClass<object> $class
      */
-    private function withinLines(\ReflectionMethod $method, \ReflectionClass $class): bool
+    protected function withinLines(\ReflectionMethod $method, \ReflectionClass $class): bool
     {
         return $method->getFileName() === $class->getFileName()
             && $method->getStartLine() >= $class->getStartLine()
@@ -162,7 +162,7 @@ class SourceInspector implements SourceInspectorInterface
      *
      * @return list<\ReflectionClass<object>>
      */
-    private function allTraits(\ReflectionClass $class): array
+    protected function allTraits(\ReflectionClass $class): array
     {
         $traits = [];
         foreach ($class->getTraits() as $trait) {
@@ -179,7 +179,7 @@ class SourceInspector implements SourceInspectorInterface
      *
      * @return array{methods: list<string>, properties: list<string>, consts: list<string>}
      */
-    private function written(\ReflectionClass $class): array
+    protected function written(\ReflectionClass $class): array
     {
         $name = $class->getName();
         if (isset($this->written[$name])) {
@@ -241,7 +241,7 @@ class SourceInspector implements SourceInspectorInterface
      * @param list<\PhpToken>          $tokens
      * @param \ReflectionClass<object> $class
      */
-    private function bodyStart(array $tokens, \ReflectionClass $class): ?int
+    protected function bodyStart(array $tokens, \ReflectionClass $class): ?int
     {
         foreach ($tokens as $index => $token) {
             if ($token->is(self::DECLARATIONS)
@@ -263,7 +263,7 @@ class SourceInspector implements SourceInspectorInterface
      *
      * @param list<\PhpToken> $tokens
      */
-    private function opensBlock(array $tokens, int $index): bool
+    protected function opensBlock(array $tokens, int $index): bool
     {
         for ($next = $index + 1; isset($tokens[$next]); ++$next) {
             if ($tokens[$next]->text === '{') {
@@ -283,7 +283,7 @@ class SourceInspector implements SourceInspectorInterface
      *
      * Arguments are left unread: reading them evaluates them, and a class they name may not exist.
      */
-    private function sameDeclaration(
+    protected function sameDeclaration(
         \ReflectionProperty|\ReflectionClassConstant $member,
         \ReflectionProperty|\ReflectionClassConstant $declared,
     ): bool {

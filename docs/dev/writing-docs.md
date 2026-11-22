@@ -207,6 +207,28 @@ there "annotation" covers both classic kinds.
 Names from other projects, such as framework route annotations, stay as those projects use
 them.
 
+## Docblocks
+
+A docblock opens with a summary: one sentence, ending in a full stop. The description, where
+there is one, follows after an empty line, and the tags come last.
+
+```php
+/**
+ * The OpenAPI type of a backed enum's values, or `null` for a unit enum.
+ *
+ * A unit enum's schema lists the case names instead.
+ *
+ * @param \ReflectionEnum<\UnitEnum> $enum
+ */
+```
+
+The summary is what an IDE shows on its own, so it has to stand alone. Without the empty line,
+summary and description run together as one paragraph.
+
+Class and method docblocks always take the multi-line form, even when they hold only tags. The
+single-line form, `/** @var list<string> */`, is for a property or an inline annotation with one
+tag.
+
 ## Structure
 
 - Code snippets under `docs/snippets/` are executed by the test suite.

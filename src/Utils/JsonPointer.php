@@ -15,7 +15,7 @@ namespace OpenApi\Utils;
  *
  * @see [RFC 6901](https://datatracker.ietf.org/doc/html/rfc6901#section-3)
  */
-final class JsonPointer
+class JsonPointer
 {
     /**
      * `~` is escaped before `/`, so that the `~1` produced by a slash is not itself escaped.

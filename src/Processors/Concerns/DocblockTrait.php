@@ -15,7 +15,7 @@ use OpenApi\Utils\DocBlockParser;
  */
 trait DocblockTrait
 {
-    private ?DocBlockParser $docBlockParser = null;
+    protected ?DocBlockParser $docBlockParser = null;
 
     /**
      * An annotation is a docblock root if it is the top-level / outermost annotation in a PHP docblock.
@@ -100,7 +100,7 @@ trait DocblockTrait
         return $this->docBlockParser()->isDeprecated($docblock);
     }
 
-    private function docBlockParser(): DocBlockParser
+    protected function docBlockParser(): DocBlockParser
     {
         return $this->docBlockParser ??= new DocBlockParser();
     }
