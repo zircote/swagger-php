@@ -1,0 +1,62 @@
+openapi: 3.0.0
+info:
+  title: RequiredProperties
+  version: '1.0'
+paths:
+  '/pets/{id}':
+    get:
+      operationId: getPet
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'The pet, with its links'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pet: { $ref: '#/components/schemas/RequiredPropertiesDeclared' }
+                  links: { type: object }
+                required:
+                  - pet
+components:
+  schemas:
+    RequiredPropertiesInferred:
+      type: object
+      properties:
+        id:
+          type: integer
+        nickname:
+          type: string
+          nullable: true
+        status:
+          type: string
+          default: new
+      required:
+        - id
+    RequiredPropertiesDeclared:
+      type: object
+      properties:
+        id:
+          type: integer
+        nickname:
+          type: string
+          nullable: true
+        status:
+          type: string
+          default: new
+        legacyId:
+          type: integer
+        age:
+          type: integer
+      required:
+        - id
+        - nickname
+        - status
+        - age

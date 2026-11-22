@@ -24,6 +24,7 @@ class Property extends AbstractAttribute
      * @param array<string,mixed>|null $x           Vendor extensions (x-* properties)
      * @param list<Attachable>|null    $attachables Reusable custom attachable attributes
      * @param Fan|null                 $fan         Where this attribute goes when more than one attribute could hold it
+     * @param bool|null                $required    Whether the parent schema lists this property as required; left out, the PHP declaration decides, and without one it is not
      */
     public function __construct(
         public ?string $property = null,
@@ -31,6 +32,7 @@ class Property extends AbstractAttribute
         ?array $x = null,
         ?array $attachables = null,
         ?Fan $fan = null,
+        public ?bool $required = null,
     ) {
         parent::__construct(x: $x, attachables: $attachables, fan: $fan);
     }

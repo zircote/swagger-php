@@ -1907,6 +1907,8 @@ reported as missing one and omitted.
   <dd><p>The schema defining the property type and constraints</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the parent schema lists this property as required; left out, the PHP declaration decides, and without one it is not</p></dd>
 </dl>
 
 #### Reference
@@ -1963,6 +1965,8 @@ new OA\MediaType\Json(
   <dd><p>No details available.</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">OA\Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+  <dt><strong>required</strong> : <span style="font-family: monospace;">bool|null</span></dt>
+  <dd><p>Whether the parent schema lists this property as required; left out, the PHP declaration decides, and without one it is not</p></dd>
 </dl>
 
 #### Reference

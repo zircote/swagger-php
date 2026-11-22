@@ -55,6 +55,18 @@ final class MoveSchemaKeywordsRector extends AbstractRector
 
     private const SCHEMA = 'OpenApi\Spec\Schema';
 
+    /**
+     * Arguments a spec class takes under the name of a schema keyword, with another meaning.
+     *
+     * Classic `required` on a property is the required list of the object it describes, and moves
+     * with the other keywords. The spec property's `required` is a flag about the property itself,
+     * so an array is a classic list and anything else is the flag, which stays.
+     */
+    private const LISTS = [
+        'OpenApi\Spec\Property' => ['required'],
+        'OpenApi\Spec\Property\Encoded' => ['required'],
+    ];
+
     /** @var array<string, list<string>> */
     private array $accepts = [];
 
@@ -100,6 +112,8 @@ CODE_SAMPLE
             return null;
         }
 
+        $lists = self::LISTS[self::TARGETS[$name]] ?? [];
+
         $keep = [];
         $move = [];
         $ref = null;
@@ -126,7 +140,7 @@ CODE_SAMPLE
                 return null;
             }
 
-            if (in_array($name, $accepted, true)) {
+            if (in_array($name, $accepted, true) && !($arg->value instanceof Node\Expr\Array_ && in_array($name, $lists, true))) {
                 $keep[] = $arg;
             } else {
                 $move[] = $arg;

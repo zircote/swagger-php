@@ -12,6 +12,8 @@ use OpenApi\Specification;
 use OpenApi\Type\TypeMapper;
 use OpenApi\Undefined;
 use OpenApi\Utils\PipeInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
 /**
  * Infers an object schema's `required` list and its properties' `default` from the PHP declarations.
@@ -19,7 +21,9 @@ use OpenApi\Utils\PipeInterface;
  * A property is required when its PHP type is not nullable and it has no default, the rule a
  * parameter follows, with the default counted too: a value exists when the field is left out. A
  * promoted constructor property counts by its parameter's default. A property with no PHP type
- * adds nothing to `required`.
+ * adds nothing to `required`. A property's own `required` replaces the rule for that property,
+ * with or without a PHP member behind it. Where several properties share a name, a flag on any of
+ * them replaces the rule, and flags that disagree leave the name out with a warning.
  *
  * A default is taken where it is a value the document can hold: a scalar, an enum case or an array
  * of them. An enum case gives the value its schema lists: a backed case's value, a unit case's
@@ -28,16 +32,19 @@ use OpenApi\Utils\PipeInterface;
  * objects but not arrays.
  *
  * What the attribute sets wins: an explicit `required` list is kept as written, and so is an
- * explicit `default`, `null` included. Schemas converted from classic attributes and docblock
- * annotations are left alone.
+ * explicit `default`, `null` included. A property whose `required` contradicts an explicit list
+ * gets a warning. Schemas converted from classic attributes and docblock annotations are left
+ * alone.
  *
  * Runs after `Augmenter\Types`, which names each property and gives it the type its default is
  * checked against.
  *
  * @implements PipeInterface<Specification>
  */
-class Properties implements PipeInterface
+class Properties implements PipeInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public function __invoke(mixed $payload): mixed
     {
         $payload->getWalker()->eachSchema(function (OA\Schema $schema): void {
@@ -45,27 +52,38 @@ class Properties implements PipeInterface
                 return;
             }
 
-            $required = [];
+            $explicit = $schema->required;
+            $inferred = [];
+            $flagged = [];
             foreach ($schema->properties as $property) {
-                $reflector = $property->getReflector();
-                if (!$property instanceof OA\Property
-                    || $property->property === null
-                    || (!$reflector instanceof \ReflectionProperty && !$reflector instanceof \ReflectionParameter)
-                ) {
+                if (!$property instanceof OA\Property || $property->property === null) {
                     continue;
                 }
 
-                $default = $this->defaultOf($reflector);
+                $reflector = $property->getReflector();
+                $member = $reflector instanceof \ReflectionProperty || $reflector instanceof \ReflectionParameter;
+                $default = $member ? $this->defaultOf($reflector) : Undefined::UNDEFINED;
 
-                if ($default === Undefined::UNDEFINED && $reflector->getType() instanceof \ReflectionType && !$reflector->getType()->allowsNull()) {
-                    $required[] = $property->property;
+                if ($explicit !== null) {
+                    $this->reportDisagreement($property, $explicit);
+                } elseif ($property->required !== null) {
+                    $inferred[$property->property] ??= false;
+                    $flagged[$property->property][] = $property;
+                } else {
+                    $inferred[$property->property] = ($inferred[$property->property] ?? false)
+                        || ($member && $default === Undefined::UNDEFINED && $reflector->getType() instanceof \ReflectionType && !$reflector->getType()->allowsNull());
                 }
 
-                $this->applyDefault($property, $default);
+                if ($member) {
+                    $this->applyDefault($property, $default);
+                }
             }
 
-            if ($schema->required === null && $required !== []) {
-                $schema->required = $required;
+            if ($explicit === null) {
+                $required = $this->requiredNames($inferred, $flagged);
+                if ($required !== []) {
+                    $schema->required = $required;
+                }
             }
         });
 
@@ -75,6 +93,63 @@ class Properties implements PipeInterface
     public function group(): string|\BackedEnum
     {
         return Group::Resolve;
+    }
+
+    /**
+     * The required names, in the order the properties first name them.
+     *
+     * A name's flags replace its inferred answer, and flags that disagree leave it out.
+     *
+     * @param  array<string, bool>              $inferred
+     * @param  array<string, list<OA\Property>> $flagged
+     * @return list<string>
+     */
+    protected function requiredNames(array $inferred, array $flagged): array
+    {
+        $required = [];
+        foreach ($inferred as $name => $isInferred) {
+            $flags = [];
+            $last = null;
+            foreach ($flagged[$name] ?? [] as $property) {
+                $flags[(int) $property->required] = (bool) $property->required;
+                $last = $property;
+            }
+
+            if ($last instanceof OA\Property && count($flags) > 1) {
+                $this->logger?->warning(sprintf(
+                    'Property "%s" has both required: true and required: false, left out of the required list in %s',
+                    $name,
+                    $last->getSourceLocation(),
+                ));
+
+                continue;
+            }
+
+            if ($flags !== [] ? in_array(true, $flags, true) : $isInferred) {
+                $required[] = (string) $name;
+            }
+        }
+
+        return $required;
+    }
+
+    /**
+     * Warns where the property's own `required` contradicts the schema's explicit list.
+     *
+     * @param list<string> $list
+     */
+    protected function reportDisagreement(OA\Property $property, array $list): void
+    {
+        if ($property->required === null || in_array($property->property, $list, true) === $property->required) {
+            return;
+        }
+
+        $this->logger?->warning(sprintf(
+            'Property "%s" has required: %s, which the schema\'s required list contradicts; the list is kept in %s',
+            $property->property,
+            $property->required ? 'true' : 'false',
+            $property->getSourceLocation(),
+        ));
     }
 
     /**

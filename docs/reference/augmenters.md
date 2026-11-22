@@ -202,7 +202,9 @@ Infers an object schema's `required` list and its properties' `default` from the
 A property is required when its PHP type is not nullable and it has no default, the rule a
 parameter follows, with the default counted too: a value exists when the field is left out. A
 promoted constructor property counts by its parameter's default. A property with no PHP type
-adds nothing to `required`.
+adds nothing to `required`. A property's own `required` replaces the rule for that property,
+with or without a PHP member behind it. Where several properties share a name, a flag on any of
+them replaces the rule, and flags that disagree leave the name out with a warning.
 
 A default is taken where it is a value the document can hold: a scalar, an enum case or an array
 of them. An enum case gives the value its schema lists: a backed case's value, a unit case's
@@ -211,8 +213,9 @@ schema's type does not admit. An empty array becomes an empty object where the s
 objects but not arrays.
 
 What the attribute sets wins: an explicit `required` list is kept as written, and so is an
-explicit `default`, `null` included. Schemas converted from classic attributes and docblock
-annotations are left alone.
+explicit `default`, `null` included. A property whose `required` contradicts an explicit list
+gets a warning. Schemas converted from classic attributes and docblock annotations are left
+alone.
 
 Runs after `Augmenter\Types`, which names each property and gives it the type its default is
 checked against.

@@ -150,6 +150,24 @@ class Pet
 }
 ```
 
+A property's own `required` replaces the rule for that property. This suits a response whose
+serializer always sends every field, nullable or defaulted ones included:
+
+```php
+#[OA\Schema]
+class PetResponse
+{
+    #[OA\Property] public int $id;                                    // required
+    #[OA\Property(required: true)] public ?string $nickname;          // required: always sent, maybe null
+    #[OA\Property(required: true)] public string $status = 'new';     // required, default: new
+    #[OA\Property(required: false)] public int $legacyId;             // not required
+}
+```
+
+It also works on a property with no PHP member behind it, such as a getter, where nothing is
+inferred. With an explicit `required` list on the schema the list wins, and a property whose
+`required` contradicts it gets a warning.
+
 ::: info Mode difference
 Only spec attributes are read. Classic attributes and docblock annotations add neither, in `classic` or in
 `hybrid`, and a classic parameter stays required by its type alone, whatever its default. A path
