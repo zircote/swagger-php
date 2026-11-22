@@ -1,0 +1,55 @@
+openapi: 3.2.0
+info:
+  title: 'Attribute items'
+  version: '1.0'
+paths:
+  /api/endpoint:
+    get:
+      operationId: endpoint
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    AttributeItems:
+      type: object
+      properties:
+        empty:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+        described:
+          type: array
+          items:
+            type: integer
+            description: 'An id'
+            minimum: 1
+        typed:
+          type: array
+          items:
+            type: string
+        nested:
+          type: array
+          items:
+            type: array
+            items:
+              type: integer
+        map:
+          type: object
+          additionalProperties:
+            type: integer
+            minimum: 1
+        shortcut:
+          type: array
+          description: 'A count'
+          items:
+            type: integer
+            minimum: 1
+      required:
+        - empty
+        - described
+        - typed
+        - nested
+        - map
+        - shortcut

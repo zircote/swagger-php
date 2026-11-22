@@ -90,6 +90,45 @@ final class TypesTest extends TestCase
         $this->assertSame(0, $props['note']->minLength);
     }
 
+    public function testFillsTheItemsAnAttributeGivesWithoutAType(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\AttributeItems::class);
+
+        (new Augmenter\Types())($spec);
+
+        $props = [];
+        foreach ($spec->schemas[0]->properties as $property) {
+            $props[$property->property] = $property->schema;
+        }
+
+        $items = static fn (string $name): OA\Schema => $props[$name]->items instanceof OA\Schema ? $props[$name]->items : throw new \LogicException($name);
+
+        $this->assertSame(['integer', 1], [$items('empty')->type, $items('empty')->minimum]);
+        $this->assertSame(['integer', 'An id'], [$items('described')->type, $items('described')->description]);
+        $this->assertSame('string', $items('typed')->type);
+        $this->assertNull($items('referenced')->type);
+        $this->assertSame('array', $items('nested')->type);
+        $this->assertInstanceOf(OA\Schema::class, $items('nested')->items);
+        $this->assertSame('integer', $items('nested')->items->type);
+        $this->assertInstanceOf(OA\Schema::class, $props['map']->additionalProperties);
+        $this->assertSame(['integer', 1], [$props['map']->additionalProperties->type, $props['map']->additionalProperties->minimum]);
+        $this->assertFalse($props['closed']->additionalProperties);
+        $this->assertSame(['integer', 1], [$items('shortcut')->type, $items('shortcut')->minimum]);
+        $this->assertSame('A count', $props['shortcut']->description);
+        $this->assertSame(['integer', false], [$items('notNull')->type, $items('notNull')->nullable]);
+    }
+
+    public function testFillsTheItemsAParameterSchemaGivesWithoutAType(): void
+    {
+        $spec = $this->assemble(Fixtures\Augmenter\AttributeItemsController::class);
+
+        (new Augmenter\Types())($spec);
+
+        $schema = $spec->operations[0]->parameters[0]->schema;
+        $this->assertInstanceOf(OA\Schema::class, $schema?->items);
+        $this->assertSame(['integer', 1], [$schema->items->type, $schema->items->minimum]);
+    }
+
     public function testWarnsForAClassWithNoSchema(): void
     {
         $holder = Fixtures\Augmenter\UndescribedClasses::class;
