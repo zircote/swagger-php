@@ -31,7 +31,15 @@ class EnumDescriptions implements PipeInterface
             return null;
         }
 
-        $this->expandEnumDescriptions($payload);
+        $payload->getWalker()->eachSchema(function (OA\Schema $schema): void {
+            foreach ($schema->properties ?? [] as $property) {
+                $reflector = $property->getReflector();
+                $type = $reflector instanceof \ReflectionProperty ? $reflector->getType() : null;
+                if ($type instanceof \ReflectionNamedType && !$type->isBuiltin() && enum_exists($type->getName())) {
+                    $this->expandEnumDescriptionsForProperty($property, new \ReflectionEnum($type->getName()));
+                }
+            }
+        });
 
         return null;
     }
@@ -48,49 +56,17 @@ class EnumDescriptions implements PipeInterface
         return Group::Augment;
     }
 
-    protected function expandEnumDescriptions(Specification $specification): void
-    {
-        $specification->getWalker()->eachSchema(function (OA\Schema $schema): void {
-            if ($schema->properties === null) {
-                return;
-            }
-
-            foreach ($schema->properties as $property) {
-                $reflector = $property->getReflector();
-                if (!$reflector instanceof \ReflectionProperty) {
-                    continue;
-                }
-
-                $type = $reflector->getType();
-                if (!$type instanceof \ReflectionNamedType || $type->isBuiltin()) {
-                    continue;
-                }
-
-                $typeName = $type->getName();
-                if (!enum_exists($typeName)) {
-                    continue;
-                }
-
-                $this->expandEnumDescriptionsForProperty($property, new \ReflectionEnum($typeName));
-            }
-        });
-    }
-
     /**
      * @param \ReflectionEnum<\UnitEnum> $reflector
      */
     protected function expandEnumDescriptionsForProperty(OA\Property $property, \ReflectionEnum $reflector): void
     {
-        $values = [];
-        if ($reflector->isBacked()) {
-            foreach ($reflector->getCases() as $case) {
-                $values[] = $case->getBackingValue() . ':' . $case->getName();
-            }
-        } else {
-            foreach ($reflector->getCases() as $case) {
-                $values[] = $case->getName();
-            }
-        }
+        $values = array_map(
+            static fn (\ReflectionEnumUnitCase $case): string => $case instanceof \ReflectionEnumBackedCase
+                ? $case->getBackingValue() . ':' . $case->getName()
+                : $case->getName(),
+            $reflector->getCases(),
+        );
 
         $property->schema ??= new OA\Schema();
         if (Undefined::isDefault($property->schema->description)) {

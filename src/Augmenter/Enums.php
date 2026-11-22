@@ -94,12 +94,7 @@ class Enums implements PipeInterface, LoggerAwareInterface, ComponentNamerAwareI
                     : $case->getBackingValue(),
                 $reflector->getCases(),
             ));
-
-            if ($useName) {
-                $schema->type = 'string';
-            } else {
-                $schema->type = $reflector->getBackingType()->getName() === 'int' ? 'integer' : 'string';
-            }
+            $schema->type = $useName ? 'string' : TypeMapper::enumType($reflector);
 
             if ($this->enumNames !== null && !$useName && $reflector->isBacked()) {
                 $names = array_map(
@@ -116,17 +111,7 @@ class Enums implements PipeInterface, LoggerAwareInterface, ComponentNamerAwareI
      */
     protected function shouldUseName(OA\Schema $schema, \ReflectionEnum $reflector): bool
     {
-        if ($schema->type === null) {
-            return true;
-        }
-
-        if (!$reflector->isBacked()) {
-            return true;
-        }
-
-        $backingType = $reflector->getBackingType()->getName() === 'int' ? 'integer' : 'string';
-
-        return $schema->type !== $backingType;
+        return $schema->type === null || $schema->type !== TypeMapper::enumType($reflector);
     }
 
     protected function resolveEnumValues(Specification $specification): void
@@ -138,7 +123,7 @@ class Enums implements PipeInterface, LoggerAwareInterface, ComponentNamerAwareI
 
             if ($attribute instanceof OA\Schema) {
                 $attribute->enum = $this->resolveEnumArray($attribute->enum);
-            } elseif ($attribute instanceof OA\ServerVariable) {
+            } else {
                 // resolveEnumArray() is shared with Schema, whose enum may hold any JSON value.
                 // Only a server variable's is narrowed, and only after the cases are resolved.
                 $attribute->enum = ServerVariableEnum::asStrings(
@@ -161,7 +146,7 @@ class Enums implements PipeInterface, LoggerAwareInterface, ComponentNamerAwareI
         foreach ($enum as $value) {
             if ($value instanceof \UnitEnum) {
                 $resolved[] = TypeMapper::caseValue($value);
-            } elseif (is_string($value) && function_exists('enum_exists') && enum_exists($value)) {
+            } elseif (is_string($value) && enum_exists($value)) {
                 foreach ($value::cases() as $case) {
                     $resolved[] = TypeMapper::caseValue($case);
                 }

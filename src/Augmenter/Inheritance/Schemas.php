@@ -42,7 +42,7 @@ class Schemas
                 continue;
             }
 
-            $existingProperties = array_map(fn (OA\Property $property): ?string => $property->property, $schema->properties ?? []);
+            $existingProperties = array_map(static fn (OA\Property $property): ?string => $property->property, $schema->properties ?? []);
 
             // merged members accumulate in visit order and are prepended once; prepending per
             // source would emit each group of siblings - traits, most of all - in reverse
@@ -87,32 +87,14 @@ class Schemas
      */
     protected function expandTraits(OA\Schema $schema, \ReflectionClass $reflector, ComponentIndex $index, array &$existingProperties, array &$merged): void
     {
-        foreach ($this->attributeFactory->getDirectTraits($reflector) as $trait) {
-            $traitSchema = $index->findSchema($trait->getName());
-            if ($traitSchema instanceof OA\Schema) {
-                $this->addAllOfRef($schema, $traitSchema);
-            } else {
-                $this->mergeMembers($trait, $existingProperties, $merged);
+        // the class's own traits, then those of each parent up to the first with a schema
+        $class = $reflector;
+        do {
+            foreach ($this->attributeFactory->getDirectTraits($class) as $trait) {
+                $this->expandAncestor($schema, $trait, $index, $existingProperties, $merged);
             }
-        }
-
-        $parent = $reflector->getParentClass();
-        while ($parent !== false) {
-            if ($index->findSchema($parent->getName()) instanceof OA\Schema) {
-                break;
-            }
-
-            foreach ($this->attributeFactory->getDirectTraits($parent) as $trait) {
-                $traitSchema = $index->findSchema($trait->getName());
-                if ($traitSchema instanceof OA\Schema) {
-                    $this->addAllOfRef($schema, $traitSchema);
-                } else {
-                    $this->mergeMembers($trait, $existingProperties, $merged);
-                }
-            }
-
-            $parent = $parent->getParentClass();
-        }
+            $class = $class->getParentClass();
+        } while ($class !== false && !$index->findSchema($class->getName()) instanceof OA\Schema);
     }
 
     /**
@@ -122,15 +104,25 @@ class Schemas
      */
     protected function expandInterfaces(OA\Schema $schema, \ReflectionClass $reflector, ComponentIndex $index, array &$existingProperties, array &$merged): void
     {
-        $ownInterfaces = $this->attributeFactory->getDirectInterfaces($reflector);
+        foreach ($this->attributeFactory->getDirectInterfaces($reflector) as $interface) {
+            $this->expandAncestor($schema, $interface, $index, $existingProperties, $merged);
+        }
+    }
 
-        foreach ($ownInterfaces as $interface) {
-            $interfaceSchema = $index->findSchema($interface->getName());
-            if ($interfaceSchema instanceof OA\Schema) {
-                $this->addAllOfRef($schema, $interfaceSchema);
-            } else {
-                $this->mergeMembers($interface, $existingProperties, $merged);
-            }
+    /**
+     * References an ancestor that has a schema, and merges the members of one that has none.
+     *
+     * @param \ReflectionClass<object> $ancestor
+     * @param list<string|null>        $existingProperties
+     * @param list<OA\Property>        $merged
+     */
+    protected function expandAncestor(OA\Schema $schema, \ReflectionClass $ancestor, ComponentIndex $index, array &$existingProperties, array &$merged): void
+    {
+        $ancestorSchema = $index->findSchema($ancestor->getName());
+        if ($ancestorSchema instanceof OA\Schema) {
+            $this->addAllOfRef($schema, $ancestorSchema);
+        } else {
+            $this->mergeMembers($ancestor, $existingProperties, $merged);
         }
     }
 
@@ -152,8 +144,7 @@ class Schemas
      */
     protected function mergeMembers(\ReflectionClass $class, array &$existingProperties, array &$merged): void
     {
-        $members = $this->attributeFactory->membersOf($class);
-        foreach ($members as $member) {
+        foreach ($this->attributeFactory->membersOf($class) as $member) {
             if ($member instanceof OA\Property) {
                 // fallback to reflector if name not (yet) set
                 $propertyName = $member->property ?? ($member->getReflector() instanceof \ReflectionProperty ? $member->getReflector()->name : null);

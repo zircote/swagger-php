@@ -122,7 +122,7 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
     {
         $reflector = $property->getReflector();
         if ($reflector instanceof \ReflectionMethod) {
-            $this->augmentMethodProperty($property, $reflector);
+            $this->augmentTypedProperty($property, $reflector);
 
             return;
         }
@@ -142,22 +142,7 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
             return;
         }
 
-        if ($property->schema instanceof OA\Schema && $property->schema->ref !== null) {
-            return;
-        }
-
-        $resolved = $this->typeResolver->resolve($reflector);
-        if (!$resolved instanceof SchemaType) {
-            return;
-        }
-
-        $this->subject = $reflector;
-
-        if (!$property->schema instanceof OA\Schema) {
-            $property->schema = $this->schemaTypeToSchema($resolved);
-        } else {
-            $this->mergeIntoSchema($property->schema, $resolved);
-        }
+        $this->augmentTypedProperty($property, $reflector);
     }
 
     protected function augmentConstantProperty(OA\Property $property, \ReflectionClassConstant $reflector): void
@@ -174,24 +159,22 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
         $property->schema = $schema;
     }
 
-    protected function augmentMethodProperty(OA\Property $property, \ReflectionMethod $method): void
+    /**
+     * Types a property from the PHP type of the member behind it, unless its schema is a reference.
+     */
+    protected function augmentTypedProperty(OA\Property $property, \ReflectionProperty|\ReflectionParameter|\ReflectionMethod $reflector): void
     {
         if ($property->schema instanceof OA\Schema && $property->schema->ref !== null) {
             return;
         }
 
-        $resolved = $this->typeResolver->resolve($method);
+        $resolved = $this->typeResolver->resolve($reflector);
         if (!$resolved instanceof SchemaType) {
             return;
         }
 
-        $this->subject = $method;
-
-        if (!$property->schema instanceof OA\Schema) {
-            $property->schema = $this->schemaTypeToSchema($resolved);
-        } else {
-            $this->mergeIntoSchema($property->schema, $resolved);
-        }
+        $this->subject = $reflector;
+        $property->schema = $this->typedSchema($property->schema, $resolved);
     }
 
     protected function augmentParameter(OA\Parameter $parameter): void
@@ -224,11 +207,7 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
 
         // a querystring parameter is described by its content, so it takes no schema
         if ($parameter->in !== OA\ParameterIn::Querystring->value) {
-            if (!$parameter->schema instanceof OA\Schema) {
-                $parameter->schema = $this->schemaTypeToSchema($resolved);
-            } else {
-                $this->mergeIntoSchema($parameter->schema, $resolved);
-            }
+            $parameter->schema = $this->typedSchema($parameter->schema, $resolved);
         }
 
         // a default means a value exists when the parameter is left out, and one converted from classic
@@ -240,8 +219,9 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
     }
 
     /**
-     * Points a request body at the request body component its parameter's class names. One left
-     * with neither a ref nor content is reported, since it describes nothing.
+     * Points a request body at the request body component its parameter's class names.
+     *
+     * One left with neither a ref nor content is reported, since it describes nothing.
      */
     protected function refRequestBody(OA\RequestBody $requestBody, string $class, \ReflectionParameter $reflector): void
     {
@@ -265,12 +245,27 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
     }
 
     /**
-     * How many components a class names by its plain key in a bucket. The class references one only
-     * when it is the only one.
+     * How many components a class names by its plain key in a bucket.
+     *
+     * The class references one only when it is the only one.
      */
     protected function countComponents(string $class, string $bucket = 'schemas'): int
     {
         return count($this->index?->findAllByKey(new ComponentKey(ltrim($class, '\\')), $bucket) ?? []);
+    }
+
+    /**
+     * The schema typed with the resolved type: a new one where there is none, else the one given.
+     */
+    protected function typedSchema(?OA\Schema $schema, SchemaType $schemaType): OA\Schema
+    {
+        if (!$schema instanceof OA\Schema) {
+            return $this->schemaTypeToSchema($schemaType);
+        }
+
+        $this->mergeIntoSchema($schema, $schemaType);
+
+        return $schema;
     }
 
     protected function schemaTypeToSchema(SchemaType $schemaType): OA\Schema
@@ -367,11 +362,8 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
         }
 
         $schema->format ??= $schemaType->format;
-
         $schema->minimum ??= $schemaType->minimum;
-
         $schema->maximum ??= $schemaType->maximum;
-
         $schema->minLength ??= $schemaType->minLength;
 
         if ($schemaType->not !== null && !$schema->not instanceof OA\Schema) {
@@ -398,7 +390,7 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
             // a member typed with a class that is no component matches anything, and so does the union
             $unknown = array_filter(
                 $schemaType->oneOf,
-                fn (SchemaType $member): bool => $member->isRef() && is_string($member->type) && $this->countComponents($member->type) !== 1,
+                fn (SchemaType $member): bool => $member->isRef() && $this->countComponents($member->type) !== 1,
             );
             if ($unknown === []) {
                 $schema->oneOf = $members;
@@ -416,10 +408,8 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
         if ($schemaType->properties !== null) {
             $schema->type = 'object';
             $schema->properties = [];
-            foreach ($schemaType->properties as $name => $propType) {
-                $propSchema = $this->schemaTypeToSchema($propType);
-                $property = new OA\Property(property: $name, schema: $propSchema);
-                $schema->properties[] = $property;
+            foreach ($schemaType->properties as $name => $propertyType) {
+                $schema->properties[] = new OA\Property(property: $name, schema: $this->schemaTypeToSchema($propertyType));
             }
             if ($schemaType->required !== null) {
                 $schema->required = $schemaType->required;

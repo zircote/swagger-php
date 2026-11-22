@@ -61,8 +61,8 @@ class Properties implements PipeInterface, LoggerAwareInterface
                 }
 
                 $reflector = $property->getReflector();
-                $member = $reflector instanceof \ReflectionProperty || $reflector instanceof \ReflectionParameter;
-                $default = $member ? $this->defaultOf($reflector) : Undefined::UNDEFINED;
+                $hasMember = $reflector instanceof \ReflectionProperty || $reflector instanceof \ReflectionParameter;
+                $default = $hasMember ? $this->defaultOf($reflector) : Undefined::UNDEFINED;
 
                 if ($explicit !== null) {
                     $this->reportDisagreement($property, $explicit);
@@ -71,10 +71,10 @@ class Properties implements PipeInterface, LoggerAwareInterface
                     $flagged[$property->property][] = $property;
                 } else {
                     $inferred[$property->property] = ($inferred[$property->property] ?? false)
-                        || ($member && $default === Undefined::UNDEFINED && $reflector->getType() instanceof \ReflectionType && !$reflector->getType()->allowsNull());
+                        || ($hasMember && $default === Undefined::UNDEFINED && $reflector->getType() instanceof \ReflectionType && !$reflector->getType()->allowsNull());
                 }
 
-                if ($member) {
+                if ($hasMember) {
                     $this->applyDefault($property, $default);
                 }
             }
