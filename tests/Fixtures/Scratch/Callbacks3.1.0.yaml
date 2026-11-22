@@ -1,0 +1,63 @@
+openapi: 3.1.0
+info:
+  title: Callbacks
+  version: '1.0'
+paths:
+  /products/subscribe:
+    post:
+      operationId: subscribe
+      responses:
+        '201':
+          description: Subscribed
+      callbacks:
+        onChange:
+          $ref: '#/components/callbacks/productChanged'
+        onRefund:
+          $ref: '#/components/callbacks/productRefunded'
+        onDelete:
+          '{$request.body#/deleteUrl}':
+            delete:
+              operationId: productDeleted
+              responses:
+                '204':
+                  description: Deleted
+        onArchive:
+          '{$request.body#/archiveUrl}':
+            post:
+              operationId: productArchived
+              responses:
+                '200':
+                  description: Archived
+  /orders/subscribe:
+    post:
+      operationId: subscribeOrders
+      responses:
+        '201':
+          description: Subscribed
+      callbacks:
+        onChange:
+          $ref: '#/components/callbacks/productChanged'
+components:
+  schemas:
+    CallbackPayload:
+      type: object
+  callbacks:
+    productChanged:
+      '{$request.query.callbackUrl}':
+        post:
+          operationId: productChanged
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/CallbackPayload'
+          responses:
+            '200':
+              description: Received
+    productRefunded:
+      '{$request.body#/refundUrl}':
+        post:
+          operationId: productRefunded
+          responses:
+            '200':
+              description: Refunded

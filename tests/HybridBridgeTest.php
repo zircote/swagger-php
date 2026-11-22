@@ -121,6 +121,35 @@ final class HybridBridgeTest extends TestCase
         $this->assertArrayNotHasKey('description', $document['paths']['/nested-schemas']['get']['responses'][200]['content']['application/json']['schema']);
     }
 
+    /**
+     * `build()` turns `Cleanup` off, and `Cleanup` is what would drop the component, and the
+     * schema its request body refers to, if the bridge lost either reference.
+     */
+    public function testACallbackComponentReferencedFromAnOperationIsKept(): void
+    {
+        $document = (new Builder())
+            ->setMode(Mode::HYBRID)
+            ->setLogger(new NullLogger())
+            ->addSource(__DIR__ . '/Fixtures/Scratch/Callbacks.php')
+            ->setVersion('3.1.0')
+            ->build()
+            ->toArray();
+
+        $this->assertSame(['productChanged', 'productRefunded'], array_keys($document['components']['callbacks'] ?? []));
+        $this->assertSame(['CallbackPayload'], array_keys($document['components']['schemas'] ?? []));
+    }
+
+    public function testAFieldACallbackCannotHoldIsReportedAtTheAnnotation(): void
+    {
+        $logger = new CollectingLogger();
+        $this->build('CallbackPathItemFields', Mode::HYBRID, $logger);
+
+        $messages = array_filter(array_column($logger->entries(), 'message'), static fn (string $message): bool => str_starts_with($message, '"summary" is not supported'));
+
+        $this->assertCount(1, $messages);
+        $this->assertStringContainsString('CallbackPathItemFields.php', (string) reset($messages));
+    }
+
     protected function build(string $fixture, Mode $mode, ?LoggerInterface $logger = null): Builder\Result
     {
         // classic scans files, so hybrid does too — a reflector source yields nothing here

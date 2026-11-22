@@ -1052,6 +1052,38 @@ class HybridBridge
                 $spec->examples[] = $this->convertExample($example);
             }
         }
+
+        if (!Undefined::isDefault($components->callbacks)) {
+            array_push($spec->callbacks, ...$this->convertComponentCallbacks($components));
+        }
+    }
+
+    /**
+     * Classic callbacks are free-form, raw arrays with annotations among them. Converted, they are
+     * the same mix of arrays and spec attributes an operation's callbacks are, so they are written
+     * out as an operation's, then read back the way a document's components are, into `Callback`s.
+     * What the parser reports points into that written document, so the annotation's location is
+     * added to each message.
+     *
+     * @return list<Spec\Callback>
+     */
+    protected function convertComponentCallbacks(OA\Components $components): array
+    {
+        $carrier = new Specification();
+        $carrier->operations[] = new Spec\Operation(path: '/', method: 'post', callbacks: $this->convertCallbacks($components->callbacks));
+        $written = (new Compiler\OpenApi31Compiler())->compile($carrier)['paths']['/']['post']['callbacks'] ?? [];
+
+        $collected = new Loggers\CollectingLogger();
+        $callbacks = (new Compiler\OpenApi31Parser($collected))->parse([
+            'openapi' => '3.1.0',
+            'components' => ['callbacks' => json_decode((string) json_encode($written), true)],
+        ])->callbacks;
+
+        foreach ($collected->entries() as ['level' => $level, 'message' => $message]) {
+            $components->_context->logger?->log($level, $message . ' in ' . $components->_context);
+        }
+
+        return $callbacks;
     }
 
     /**
@@ -1071,6 +1103,9 @@ class HybridBridge
                         $result[$key][$path][$method] = $this->convertOperation($value->{$method}, $path, $method);
                     }
                 }
+            } elseif (is_array($value) && str_starts_with((string) ($value['$ref'] ?? ''), '#/')) {
+                // a reference the pipeline can see, so the component it names is not unreferenced
+                $result[$key] = new Spec\Callback(ref: $value['$ref']);
             } else {
                 $result[$key] = $this->convertCallbackValue($value);
             }

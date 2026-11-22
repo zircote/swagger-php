@@ -171,6 +171,9 @@ The set leaves these as they are:
   schema keywords is left whole, and fails at generation time with `Unknown named parameter`.
   Move the keywords into the nested schema by hand. The same holds for a `schema:` string that
   is neither a pointer nor a `::class`, and for one with a `ref:` beside it.
+- `callbacks:` on `Components` holds raw arrays keyed by name in classic, and `Callback`
+  attributes in spec. Rewrite each entry as a `Callback`, with its key as `component:`. A raw
+  array left in place fails at generation time.
 
 ### Arguments spec does not take
 
@@ -186,7 +189,6 @@ These classic arguments have no spec counterpart and are left in place. Each thr
 - `requestBody:` on `Get`, `Head`, `Options` and `Trace`. Spec defines no body for these
   methods, so remove it. See [No `requestBody` on `Get`, `Head`, `Options`,
   `Trace`](/guide/spec-attributes#no-requestbody-on-get-head-options-trace).
-- `callbacks:` on `Components`. Declare callbacks on the operation.
 - `variables:` on `ServerVariable` and `properties:` on `Attachable`, which spec has no use for.
 
 `PathItem`'s `path:` and operation arguments, and a root `OpenApi`'s `paths:`, `components:` and

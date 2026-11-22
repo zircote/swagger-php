@@ -50,6 +50,7 @@ class Components extends AbstractAttribute
      * @param array<string,mixed>|null $x               Vendor extensions (x-* properties)
      * @param list<Attachable>|null    $attachables     Reusable custom attachable attributes
      * @param Fan|null                 $fan             Where this attribute goes when more than one attribute could hold it
+     * @param list<Callback>           $callbacks       Reusable callbacks
      */
     public function __construct(
         public array $schemas = [],
@@ -65,6 +66,7 @@ class Components extends AbstractAttribute
         ?array $x = null,
         ?array $attachables = null,
         ?Fan $fan = null,
+        public array $callbacks = [],
     ) {
         parent::__construct(x: $x, attachables: $attachables, fan: $fan);
     }

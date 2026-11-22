@@ -63,6 +63,9 @@ class Specification
     /** @var list<OA\MediaType> reusable media types, OpenAPI 3.2 — only a keyed MediaType is root and lands here */
     public array $mediaTypes = [];
 
+    /** @var list<OA\Callback> reusable callbacks — only a named Callback is root and lands here */
+    public array $callbacks = [];
+
     /** @var list<OA\Attachable> */
     public array $attachables = [];
 
@@ -94,6 +97,7 @@ class Specification
                 $attribute instanceof OA\Link => $this->links[] = $attribute,
                 $attribute instanceof OA\Example => $this->examples[] = $attribute,
                 $attribute instanceof OA\MediaType => $this->mediaTypes[] = $attribute,
+                $attribute instanceof OA\Callback => $this->callbacks[] = $attribute,
                 $attribute instanceof OA\Attachable => $this->attachables[] = $attribute,
                 $attribute instanceof OA\Components => $this->addComponentsChildren($attribute),
                 default => throw OpenApiException::fromSource(
@@ -126,7 +130,13 @@ class Specification
         foreach ((new \ReflectionClass($components))->getProperties(\ReflectionProperty::IS_PUBLIC) as $reflectionProperty) {
             $property = $reflectionProperty->getName();
             if (property_exists($this, $property) && is_array($components->{$property})) {
-                array_push($this->{$property}, ...$components->{$property});
+                // a list of attributes, where a migrated classic `callbacks:` still holds raw arrays
+                foreach ($components->{$property} as $item) {
+                    if (!$item instanceof AttributeInterface) {
+                        throw OpenApiException::fromSource("Components {$property} takes spec attributes, not " . get_debug_type($item), $components->getSourceLocation());
+                    }
+                }
+                array_push($this->{$property}, ...array_values($components->{$property}));
             }
         }
 

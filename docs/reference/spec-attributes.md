@@ -32,6 +32,45 @@ By default not allowed to contain other attributes, but can be inline nested int
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
 </dl>
 
+### [Callback](https://github.com/zircote/swagger-php/tree/master/src/Spec/Callback.php)
+
+Describes the requests an API sends out of band, in response to one of its operations.
+
+Nest it in an operation's `callbacks`, keyed by the callback's name, or give it a `component:`
+name to declare it once and reference it from each operation that sends it:
+
+  #[Callback(component: 'productChanged', expression: '{$request.query.callbackUrl}', operations: [
+      new Operation\Post(requestBody: new RequestBody(...), responses: [new Response(response: 200, description: 'Received')]),
+  ])]
+  class ProductEvents {}
+
+  #[Operation\Post(path: '/products/subscribe', callbacks: ['onChange' => new Callback(ref: ProductEvents::class)])]
+
+A callback covers one expression. A raw array in `callbacks` still takes several.
+
+#### Allowed in
+---
+<a href="#components">Components</a>
+
+#### Parameters
+---
+<dl>
+  <dt><strong>expression</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The runtime expression for the URL the requests go to, such as `{$request.query.callbackUrl}`</p></dd>
+  <dt><strong>operations</strong> : <span style="font-family: monospace;">list&lt;Operation&gt;|null</span></dt>
+  <dd><p>The requests sent to that URL, one per method; each names its method, as `Operation\Post` does</p></dd>
+  <dt><strong>ref</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>A reference to a reusable callback</p></dd>
+  <dt><strong>component</strong> : <span style="font-family: monospace;">string|null</span></dt>
+  <dd><p>The name this is filed under in `components`, which makes it a reusable component</p></dd>
+  <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
+  <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+</dl>
+
+#### Reference
+---
+- [Callback Object](https://spec.openapis.org/oas/v3.1.1.html#callback-object) ↗
+
 ### [Components](https://github.com/zircote/swagger-php/tree/master/src/Spec/Components.php)
 
 Container for reusable component definitions.
@@ -62,7 +101,7 @@ on a member needs the holder; without it, a named one is left out with an error.
 
 #### Nested elements
 ---
-<a href="#example">Example</a>, <a href="#header">Header</a>, <a href="#link">Link</a>, <a href="#parameter">Parameter</a>, <a href="#parameter-cookie">Parameter\Cookie</a>, <a href="#parameter-header">Parameter\Header</a>, <a href="#parameter-path">Parameter\Path</a>, <a href="#parameter-query">Parameter\Query</a>, <a href="#parameter-querystring">Parameter\Querystring</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>, <a href="#schema">Schema</a>, <a href="#schema-additionalproperties">Schema\AdditionalProperties</a>, <a href="#schema-items">Schema\Items</a>, <a href="#schema-ref">Schema\Ref</a>, <a href="#security-scheme">Security\Scheme</a>, <a href="#security-scheme-apikey">Security\Scheme\ApiKey</a>, <a href="#security-scheme-http">Security\Scheme\Http</a>, <a href="#security-scheme-mutualtls">Security\Scheme\MutualTls</a>, <a href="#security-scheme-oauth2">Security\Scheme\OAuth2</a>, <a href="#security-scheme-openidconnect">Security\Scheme\OpenIdConnect</a>
+<a href="#callback">Callback</a>, <a href="#example">Example</a>, <a href="#header">Header</a>, <a href="#link">Link</a>, <a href="#parameter">Parameter</a>, <a href="#parameter-cookie">Parameter\Cookie</a>, <a href="#parameter-header">Parameter\Header</a>, <a href="#parameter-path">Parameter\Path</a>, <a href="#parameter-query">Parameter\Query</a>, <a href="#parameter-querystring">Parameter\Querystring</a>, <a href="#requestbody">RequestBody</a>, <a href="#response">Response</a>, <a href="#schema">Schema</a>, <a href="#schema-additionalproperties">Schema\AdditionalProperties</a>, <a href="#schema-items">Schema\Items</a>, <a href="#schema-ref">Schema\Ref</a>, <a href="#security-scheme">Security\Scheme</a>, <a href="#security-scheme-apikey">Security\Scheme\ApiKey</a>, <a href="#security-scheme-http">Security\Scheme\Http</a>, <a href="#security-scheme-mutualtls">Security\Scheme\MutualTls</a>, <a href="#security-scheme-oauth2">Security\Scheme\OAuth2</a>, <a href="#security-scheme-openidconnect">Security\Scheme\OpenIdConnect</a>
 
 #### Parameters
 ---
@@ -89,6 +128,8 @@ on a member needs the holder; without it, a named one is left out with an error.
   <dd><p>OpenAPI 3.2; earlier compilers omit them with a warning</p></dd>
   <dt><strong>fan</strong> : <span style="font-family: monospace;">Fan|null</span></dt>
   <dd><p>Where this attribute goes when more than one attribute could hold it</p></dd>
+  <dt><strong>callbacks</strong> : <span style="font-family: monospace;">list&lt;Callback&gt;</span></dt>
+  <dd><p>Reusable callbacks</p></dd>
 </dl>
 
 ### [Contact](https://github.com/zircote/swagger-php/tree/master/src/Spec/Contact.php)
@@ -916,7 +957,7 @@ For webhooks, use `webhook` instead of `path`:
   <dt><strong>responses</strong> : <span style="font-family: monospace;">list&lt;Response&gt;|null</span></dt>
   <dd><p>The list of possible responses</p></dd>
   <dt><strong>callbacks</strong> : <span style="font-family: monospace;">array&lt;string,mixed&gt;|null</span></dt>
-  <dd><p>Possible out-of-band callbacks related to the operation</p></dd>
+  <dd><p>Possible out-of-band callbacks related to the operation, keyed by name: a `Callback` each, or a raw array</p></dd>
   <dt><strong>deprecated</strong> : <span style="font-family: monospace;">bool|null</span></dt>
   <dd><p>Whether the operation is deprecated</p></dd>
   <dt><strong>security</strong> : <span style="font-family: monospace;">list&lt;Security\Requirement&gt;|null</span></dt>

@@ -154,6 +154,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
             $attribute instanceof OA\Link => 'links',
             $attribute instanceof OA\Example => 'examples',
             $attribute instanceof OA\PathItem => 'pathItems',
+            $attribute instanceof OA\Callback => 'callbacks',
             $attribute instanceof OA\Security\Scheme => 'securitySchemes',
             default => 'schemas',
         };

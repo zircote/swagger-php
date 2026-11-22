@@ -30,7 +30,7 @@ class ComponentName
      * `pathItems` doubles as the `paths` source: a `PathItem` without a name is path-bound and is
      * not a component.
      */
-    public const BUCKETS = ['schemas', 'responses', 'parameters', 'requestBodies', 'headers', 'securitySchemes', 'links', 'examples', 'pathItems', 'mediaTypes'];
+    public const BUCKETS = ['schemas', 'responses', 'parameters', 'requestBodies', 'headers', 'securitySchemes', 'links', 'examples', 'pathItems', 'mediaTypes', 'callbacks'];
 
     /**
      * The name, or null when the component has none and cannot be referenced.
@@ -75,7 +75,8 @@ class ComponentName
             || $item instanceof OA\Link
             || $item instanceof OA\Example
             || $item instanceof OA\PathItem
-            || $item instanceof OA\MediaType;
+            || $item instanceof OA\MediaType
+            || $item instanceof OA\Callback;
     }
 
     /**

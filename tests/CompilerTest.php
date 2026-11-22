@@ -1490,6 +1490,82 @@ final class CompilerTest extends TestCase
         $this->assertSame([], array_filter($messages, fn (string $m): bool => str_starts_with($m, 'Request body not supported')));
     }
 
+    public function testACallbackOperationWithoutAMethodIsReportedAndOmitted(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->operations[] = new OA\Operation\Post(path: '/p', responses: [new OA\Response(response: 200, description: 'ok')], callbacks: [
+            'onEvent' => new OA\Callback(expression: '{$request.body#/url}', operations: [
+                new OA\Operation(responses: [new OA\Response(response: 200, description: 'ok')]),
+                new OA\Operation\Post(responses: [new OA\Response(response: 200, description: 'received')]),
+            ]),
+        ]);
+
+        $compiler = new OpenApi31Compiler();
+        $messages = array_column($compiler->validate($spec), 'message');
+
+        $this->assertCount(1, array_filter($messages, static fn (string $message): bool => str_starts_with($message, 'Operation in a callback has no method, omitted in ')));
+        $this->assertSame(['post'], array_keys($compiler->compile($spec)['paths']['/p']['post']['callbacks']['onEvent']['{$request.body#/url}']));
+    }
+
+    public function testACallbackWithoutAnExpressionIsReportedAndOmitted(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->callbacks[] = new OA\Callback(component: 'onEvent');
+        $spec->operations[] = new OA\Operation\Post(path: '/p', responses: [new OA\Response(response: 200, description: 'ok')], callbacks: [
+            'onEvent' => new OA\Callback(operations: [new OA\Operation\Post()]),
+        ]);
+
+        $compiler = new OpenApi31Compiler();
+        $messages = array_column($compiler->validate($spec), 'message');
+        $document = $compiler->compile($spec);
+
+        $this->assertCount(2, array_filter($messages, static fn (string $message): bool => str_starts_with($message, 'Callback is missing the key field expression, omitted in ')));
+        $this->assertArrayNotHasKey('callbacks', $document['paths']['/p']['post']);
+        $this->assertArrayNotHasKey('callbacks', $document['components'] ?? []);
+    }
+
+    /**
+     * @return iterable<string, array{CompilerInterface, array<string, mixed>, int}>
+     */
+    public static function callbackMethods(): iterable
+    {
+        yield '3.1' => [new OpenApi31Compiler(), [], 1];
+        yield '3.2' => [new OpenApi32Compiler(), ['additionalOperations' => ['COPY' => ['responses' => ['200' => ['description' => 'copied']]]]], 0];
+    }
+
+    /**
+     * @param array<string, mixed> $expected
+     */
+    #[DataProvider('callbackMethods')]
+    public function testACallbackOperationIsWrittenAsAPathsIs(CompilerInterface $compiler, array $expected, int $warnings): void
+    {
+        $spec = $this->createSpecification($compiler->getVersion());
+        $spec->callbacks[] = new OA\Callback(expression: '{$request.body#/url}', operations: [
+            new OA\Operation(method: 'COPY', responses: [new OA\Response(response: 200, description: 'copied')]),
+        ], component: 'onCopy');
+
+        $messages = array_column($compiler->validate($spec), 'message');
+
+        // once, as a callback's: the operation has no path to be reported under
+        $this->assertCount($warnings, array_filter($messages, static fn (string $message): bool => str_starts_with($message, 'Method "copy" is not supported')));
+        $this->assertCount($warnings, array_filter($messages, static fn (string $message): bool => str_starts_with($message, 'Method "copy" is not supported in a callback')));
+        $this->assertEquals($expected ?: new \stdClass(), $compiler->compile($spec)['components']['callbacks']['onCopy']['{$request.body#/url}']);
+    }
+
+    public function testExtensionsBesideACallbackRefAreReportedAndOmitted(): void
+    {
+        $spec = $this->createSpecification('3.1.0');
+        $spec->operations[] = new OA\Operation\Post(path: '/p', responses: [new OA\Response(response: 200, description: 'ok')], callbacks: [
+            'onEvent' => new OA\Callback(ref: '#/components/callbacks/onEvent', x: ['internal' => true]),
+        ]);
+
+        $compiler = new OpenApi31Compiler();
+        $messages = array_column($compiler->validate($spec), 'message');
+
+        $this->assertCount(1, array_filter($messages, static fn (string $message): bool => str_starts_with($message, 'Callback extensions are not written beside $ref, omitted in ')));
+        $this->assertSame(['$ref' => '#/components/callbacks/onEvent'], $compiler->compile($spec)['paths']['/p']['post']['callbacks']['onEvent']);
+    }
+
     // --- x- extensions ---
 
     public function testExtensionsEmitted(): void

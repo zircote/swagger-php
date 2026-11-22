@@ -61,7 +61,7 @@ class Operation extends AbstractAttribute
      * @param list<Parameter>|null            $parameters   Parameters applicable to this operation
      * @param RequestBody|null                $requestBody  The request body applicable to this operation
      * @param list<Response>|null             $responses    The list of possible responses
-     * @param array<string,mixed>|null        $callbacks    Possible out-of-band callbacks related to the operation
+     * @param array<string,mixed>|null        $callbacks    Possible out-of-band callbacks related to the operation, keyed by name: a `Callback` each, or a raw array
      * @param bool|null                       $deprecated   Whether the operation is deprecated
      * @param list<Security\Requirement>|null $security     Security mechanisms that can be used for this operation
      * @param list<Server>|null               $servers      Alternative servers for this operation

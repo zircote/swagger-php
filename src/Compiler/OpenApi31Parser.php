@@ -262,8 +262,7 @@ class OpenApi31Parser implements ParserInterface
             'parameters' => ['parameters', fn (mixed $parameters, string $pointer): array => $this->list($parameters, $pointer, $this->parseParameter(...))],
             'requestBody' => ['requestBody', $this->one($this->parseRequestBody(...))],
             'responses' => ['responses', fn (mixed $responses, string $pointer): array => $this->keyedList($responses, $pointer, $this->parseResponse(...))],
-            // compiled as they are, objects or arrays
-            'callbacks' => 'callbacks',
+            'callbacks' => ['callbacks', $this->parseCallbacks(...)],
             'deprecated' => 'deprecated',
             'security' => ['security', $this->parseSecurity(...)],
             'servers' => ['servers', fn (mixed $servers, string $pointer): array => $this->list($servers, $pointer, $this->parseServer(...))],
@@ -549,6 +548,7 @@ class OpenApi31Parser implements ParserInterface
             'links' => fn (array $value, string $pointer, string $name): OA\Link => $this->parseLink($value, $pointer, component: $name),
             'examples' => fn (array $value, string $pointer, string $name): OA\Example => $this->parseExample($value, $pointer, component: $name),
             'pathItems' => $this->parseComponentPathItem(...),
+            'callbacks' => $this->parseComponentCallback(...),
         ];
 
         $unsupported = [];
@@ -575,6 +575,66 @@ class OpenApi31Parser implements ParserInterface
         $this->unsupported($pointer, $operations);
 
         return $this->parsePathItem(array_diff_key($pathItem, array_flip($operations)), $pointer, ['component' => $name]);
+    }
+
+    /**
+     * An operation's callbacks, compiled as they are, objects or arrays. A reference into
+     * `components` becomes a `Callback`, so the pipeline sees the component it names as referenced.
+     * One into another document stays as it is.
+     *
+     * @return array<string, mixed>
+     */
+    protected function parseCallbacks(mixed $callbacks, string $pointer): array
+    {
+        $result = [];
+        foreach ($this->object($callbacks, $pointer) ?? [] as $name => $callback) {
+            $result[$name] = is_array($callback) && str_starts_with((string) ($callback['$ref'] ?? ''), '#/') ? new OA\Callback(ref: $callback['$ref']) : $callback;
+        }
+
+        return $result;
+    }
+
+    /**
+     * A `Callback` models one expression and the operations under it, so a second expression and
+     * the path item's own fields are reported and left out.
+     *
+     * @param array<string, mixed> $callback
+     */
+    protected function parseComponentCallback(array $callback, string $pointer, string $name): OA\Callback
+    {
+        if (isset($callback['$ref'])) {
+            return $this->build(OA\Callback::class, $callback, $pointer, ['$ref' => 'ref'], ['component' => $name]);
+        }
+
+        $x = [];
+        $expressions = [];
+        foreach ($callback as $key => $value) {
+            if (str_starts_with((string) $key, 'x-')) {
+                $x[substr((string) $key, 2)] = $value;
+            } else {
+                $expressions[] = (string) $key;
+            }
+        }
+
+        $expression = array_shift($expressions);
+        $this->unsupported($pointer, $expressions);
+
+        $operations = [];
+        if ($expression !== null) {
+            $itemPointer = $this->pointer($pointer, $expression);
+            $fields = [];
+            foreach ($this->object($callback[$expression], $itemPointer) ?? [] as $key => $value) {
+                $operationPointer = $this->pointer($itemPointer, (string) $key);
+                if (!in_array($key, static::OPERATION_METHODS, true)) {
+                    $fields[] = (string) $key;
+                } elseif (($operation = $this->object($value, $operationPointer)) !== null) {
+                    $operations[] = $this->parseOperation($operation, $operationPointer, path: null, webhook: null, method: $key);
+                }
+            }
+            $this->unsupported($itemPointer, $fields);
+        }
+
+        return new OA\Callback(expression: $expression, operations: $operations ?: null, component: $name, x: $x ?: null);
     }
 
     /**

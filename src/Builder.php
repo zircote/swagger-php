@@ -729,7 +729,7 @@ class Builder
         $specification->servers = $specification->servers ?: $document->servers;
         $specification->externalDocs = $specification->externalDocs ?: $document->externalDocs;
 
-        foreach (['tags', 'pathItems', 'operations', 'schemas', 'responses', 'parameters', 'requestBodies', 'headers', 'securitySchemes', 'links', 'examples', 'mediaTypes', 'attachables'] as $list) {
+        foreach (['tags', 'pathItems', 'operations', 'schemas', 'responses', 'parameters', 'requestBodies', 'headers', 'securitySchemes', 'links', 'examples', 'mediaTypes', 'callbacks', 'attachables'] as $list) {
             $specification->{$list} = [...$document->{$list}, ...$specification->{$list}];
         }
     }
