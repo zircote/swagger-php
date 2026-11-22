@@ -78,8 +78,8 @@ class Docblocks implements PipeInterface
             return;
         }
 
-        $content = $this->parser->parseDocblock($docblock);
-        if ($content === '' || Undefined::isDefault($content)) {
+        $content = $this->docblockText($docblock);
+        if ($content === null) {
             return;
         }
 
@@ -104,12 +104,10 @@ class Docblocks implements PipeInterface
             return;
         }
 
-        $content = $this->parser->parseDocblock($docblock);
-        if ($content === '' || Undefined::isDefault($content)) {
-            return;
+        $content = $this->docblockText($docblock);
+        if ($content !== null) {
+            $schema->description = $content;
         }
-
-        $schema->description = $content;
     }
 
     protected function augmentDeprecated(OA\Operation|OA\Schema $attribute): void
@@ -134,20 +132,11 @@ class Docblocks implements PipeInterface
             return;
         }
 
-        $methodDoc = $this->getDocComment($operation);
-        $paramTags = [];
-        if ($methodDoc !== null) {
-            $this->parser->parseDocblock($methodDoc, $paramTags);
-        }
-        $paramDescriptions = $paramTags['param'] ?? [];
+        $paramDescriptions = $this->paramDescriptions($this->getDocComment($operation));
 
         foreach ($operation->parameters as $parameter) {
-            if (Undefined::isDefault($parameter->description)
-                && $parameter->name !== null
-                && isset($paramDescriptions[$parameter->name])
-                && $paramDescriptions[$parameter->name]['description'] !== null
-            ) {
-                $parameter->description = $paramDescriptions[$parameter->name]['description'];
+            if (Undefined::isDefault($parameter->description) && $parameter->name !== null && isset($paramDescriptions[$parameter->name])) {
+                $parameter->description = $paramDescriptions[$parameter->name];
             }
         }
     }
@@ -185,8 +174,8 @@ class Docblocks implements PipeInterface
     protected function augmentPropertyDocumentation(OA\Parameter|OA\Header|OA\Schema $attribute, string $docblock): void
     {
         if (Undefined::isDefault($attribute->description)) {
-            $content = $this->parser->parseDocblock($docblock);
-            if ($content !== '' && !Undefined::isDefault($content)) {
+            $content = $this->docblockText($docblock);
+            if ($content !== null) {
                 $attribute->description = $content;
             } else {
                 // Descriptions embedded in @var tags need parseVarLine();
@@ -219,33 +208,52 @@ class Docblocks implements PipeInterface
         }
 
         $reflector = $parameter->getReflector();
+        if (!$reflector instanceof \ReflectionParameter) {
+            return;
+        }
 
-        if ($reflector instanceof \ReflectionParameter) {
-            $name = $reflector->getName();
+        // PHP 8.6+ exposes docblocks on parameters directly
+        if (method_exists($reflector, 'getDocComment') && ($doc = $reflector->getDocComment()) !== false) {
+            $varLine = $this->parser->parseVarLine($doc);
+            if ($varLine['description'] !== null) {
+                $parameter->description = $varLine['description'];
 
-            // PHP 8.6+ exposes docblocks on parameters directly
-            if (method_exists($reflector, 'getDocComment') && ($doc = $reflector->getDocComment()) !== false) {
-                $varLine = $this->parser->parseVarLine($doc);
-                if ($varLine['description'] !== null) {
-                    $parameter->description = $varLine['description'];
-
-                    return;
-                }
-            }
-
-            $method = $reflector->getDeclaringFunction();
-            if ($method instanceof \ReflectionMethod || $method instanceof \ReflectionFunction) {
-                $tags = [];
-                $doc = $method->getDocComment();
-                if ($doc !== false) {
-                    $this->parser->parseDocblock($doc, $tags);
-                    $params = $tags['param'] ?? [];
-                    if (isset($params[$name]) && $params[$name]['description'] !== null) {
-                        $parameter->description = $params[$name]['description'];
-                    }
-                }
+                return;
             }
         }
+
+        $doc = $reflector->getDeclaringFunction()->getDocComment();
+        $description = $this->paramDescriptions($doc !== false ? $doc : null)[$reflector->getName()] ?? null;
+        if ($description !== null) {
+            $parameter->description = $description;
+        }
+    }
+
+    /**
+     * The text of a docblock before its tags, or `null` where it has none.
+     */
+    protected function docblockText(string $docblock): ?string
+    {
+        $content = $this->parser->parseDocblock($docblock);
+
+        return $content === '' || Undefined::isDefault($content) ? null : $content;
+    }
+
+    /**
+     * The descriptions a docblock's `@param` tags give, by parameter name.
+     *
+     * @return array<string, string>
+     */
+    protected function paramDescriptions(?string $docblock): array
+    {
+        if ($docblock === null) {
+            return [];
+        }
+
+        $tags = [];
+        $this->parser->parseDocblock($docblock, $tags);
+
+        return array_filter(array_map(static fn (array $param): ?string => $param['description'], $tags['param'] ?? []), static fn (?string $description): bool => $description !== null);
     }
 
     protected function getPropertyDocComment(AttributeInterface $attribute): ?string

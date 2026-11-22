@@ -57,6 +57,20 @@ class TypeMapper
     }
 
     /**
+     * The OpenAPI type of a backed enum's values, or `null` for a unit enum.
+     *
+     * @param \ReflectionEnum<\UnitEnum> $enum
+     */
+    public static function enumType(\ReflectionEnum $enum): ?string
+    {
+        return match ($enum->getBackingType()?->getName()) {
+            'int' => 'integer',
+            'string' => 'string',
+            default => null,
+        };
+    }
+
+    /**
      * Map a native PHP type to its OpenAPI type and optional format.
      *
      * @return array{type: string, format: string|null}|null null if the type has no OpenAPI representation

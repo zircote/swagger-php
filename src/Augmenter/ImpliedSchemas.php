@@ -11,6 +11,7 @@ use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Specification\ComponentKey;
 use OpenApi\Type\SchemaType;
+use OpenApi\Type\TypeMapper;
 use OpenApi\Type\TypeResolver;
 use OpenApi\Utils\PipeInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -58,12 +59,7 @@ class ImpliedSchemas implements PipeInterface, LoggerAwareInterface, TypeResolve
             }
 
             $reflector = new \ReflectionEnum($enum);
-            $type = match ($reflector->getBackingType()?->getName()) {
-                'int' => 'integer',
-                'string' => 'string',
-                default => null,
-            };
-            $schema = new OA\Schema(type: $type);
+            $schema = new OA\Schema(type: TypeMapper::enumType($reflector));
             $schema->setReflector($reflector);
             $payload->add($schema);
         }
@@ -113,7 +109,7 @@ class ImpliedSchemas implements PipeInterface, LoggerAwareInterface, TypeResolve
             return;
         }
 
-        $class = $type->isRef() && is_string($type->type) ? ltrim($type->type, '\\') : null;
+        $class = $type->isRef() ? ltrim($type->type, '\\') : null;
         if ($class !== null && is_a($class, \UnitEnum::class, true)) {
             $this->enums[$class] = true;
         }
