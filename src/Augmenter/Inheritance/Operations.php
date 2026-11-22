@@ -109,7 +109,7 @@ class Operations
         if ($toRemove !== []) {
             $specification->operations = array_values(array_filter(
                 $specification->operations,
-                static fn (OA\Operation $op): bool => !isset($toRemove[spl_object_id($op)]),
+                static fn (OA\Operation $operation): bool => !isset($toRemove[spl_object_id($operation)]),
             ));
         }
     }
@@ -117,9 +117,10 @@ class Operations
     /**
      * Scan an ancestor class for operations and associate them with the child reflector.
      *
+     * @param \ReflectionClass<object> $ancestor
+     * @param \ReflectionClass<object> $childReflector
+     *
      * @return list<OA\Operation>
-     * @param  \ReflectionClass<object> $ancestor
-     * @param  \ReflectionClass<object> $childReflector
      */
     protected function discoverOperations(\ReflectionClass $ancestor, \ReflectionClass $childReflector): array
     {

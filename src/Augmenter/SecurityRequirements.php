@@ -52,7 +52,7 @@ class SecurityRequirements implements PipeInterface, LoggerAwareInterface
 
     protected function checkHolder(OA\OpenApi|OA\PathItem|OA\Operation $holder): void
     {
-        if ($holder->security === null || $holder->security === []) {
+        if (!$holder->security) {
             return;
         }
 

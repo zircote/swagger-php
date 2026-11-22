@@ -24,8 +24,7 @@ class MediaTypes implements PipeInterface
 {
     public function __invoke(mixed $payload): mixed
     {
-        $index = $payload->buildComponentIndex();
-        $this->mergePropertyEncodings($payload, $index);
+        $this->mergePropertyEncodings($payload, $payload->buildComponentIndex());
         $this->rekeyMediaTypeEncodings($payload);
 
         return null;
@@ -77,16 +76,12 @@ class MediaTypes implements PipeInterface
                 $this->rekeyEncodings($operation->requestBody->content);
             }
 
-            if ($operation->responses) {
-                foreach ($operation->responses as $response) {
-                    $this->rekeyEncodings($response->content);
-                }
+            foreach ($operation->responses ?? [] as $response) {
+                $this->rekeyEncodings($response->content);
             }
 
-            if ($operation->parameters) {
-                foreach ($operation->parameters as $parameter) {
-                    $this->rekeyEncodings($parameter->content);
-                }
+            foreach ($operation->parameters ?? [] as $parameter) {
+                $this->rekeyEncodings($parameter->content);
             }
         }
 

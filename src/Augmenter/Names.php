@@ -22,8 +22,8 @@ use OpenApi\Utils\PipeInterface;
  * and a member of an `#[OA\Components]` holder after the member.
  *
  * A parameter is named differently: its `name` is its identity in OpenAPI, so a parameter
- * component is named after it wherever it was declared, holder or not, and falls back to the class name only
- * when it has no name either.
+ * component is named after it wherever it was declared, holder or not, and falls back to the
+ * class name only when it has no name either.
  *
  * @implements PipeInterface<Specification>
  */
