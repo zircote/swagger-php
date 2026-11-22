@@ -362,37 +362,37 @@ class OpenApi30Compiler extends OpenApi31Compiler
             }
 
             if ($type === 'array' && $schema->items === null) {
-                $this->logger->error('Schema' . $this->schemaLabel($schema) . ' has type "array" but no items' . $this->schemaLocation($schema));
+                $this->logger->error('Schema' . $this->schemaLabel($schema) . ' has type "array" but no items' . $this->schemaLocation($schema, $owners));
             }
 
             $this->validateSchemaType($schema);
             $this->validateRefSiblings($schema, $owners);
 
             if ($schema->prefixItems !== null) {
-                $this->logger->error('Schema' . $this->schemaLabel($schema) . ' uses prefixItems, not supported in OpenAPI 3.0' . $this->schemaLocation($schema));
+                $this->logger->error('Schema' . $this->schemaLabel($schema) . ' uses prefixItems, not supported in OpenAPI 3.0' . $this->schemaLocation($schema, $owners));
             }
 
             if ($schema->unevaluatedProperties !== null) {
-                $this->logger->error('Schema' . $this->schemaLabel($schema) . ' uses unevaluatedProperties, not supported in OpenAPI 3.0' . $this->schemaLocation($schema));
+                $this->logger->error('Schema' . $this->schemaLabel($schema) . ' uses unevaluatedProperties, not supported in OpenAPI 3.0' . $this->schemaLocation($schema, $owners));
             }
 
             if ($schema->unevaluatedItems !== null) {
-                $this->logger->error('Schema' . $this->schemaLabel($schema) . ' uses unevaluatedItems, not supported in OpenAPI 3.0' . $this->schemaLocation($schema));
+                $this->logger->error('Schema' . $this->schemaLabel($schema) . ' uses unevaluatedItems, not supported in OpenAPI 3.0' . $this->schemaLocation($schema, $owners));
             }
 
             if ($schema->if instanceof OA\Schema || $schema->then instanceof OA\Schema || $schema->else instanceof OA\Schema) {
-                $this->logger->error('Schema' . $this->schemaLabel($schema) . ' uses if/then/else, not supported in OpenAPI 3.0' . $this->schemaLocation($schema));
+                $this->logger->error('Schema' . $this->schemaLabel($schema) . ' uses if/then/else, not supported in OpenAPI 3.0' . $this->schemaLocation($schema, $owners));
             }
 
             if ($schema->contentEncoding !== null || $schema->contentMediaType !== null) {
                 $format = $this->contentFormat($schema);
                 if ($format === null || ($schema->format !== null && $schema->format !== $format)) {
-                    $this->logger->warning('Schema' . $this->schemaLabel($schema) . ' uses contentEncoding/contentMediaType, not supported in OpenAPI 3.0, omitted' . $this->schemaLocation($schema));
+                    $this->logger->warning('Schema' . $this->schemaLabel($schema) . ' uses contentEncoding/contentMediaType, not supported in OpenAPI 3.0, omitted' . $this->schemaLocation($schema, $owners));
                 }
             }
 
             if ($schema->const !== Undefined::UNDEFINED) {
-                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ' uses const, not supported in OpenAPI 3.0, using enum fallback' . $this->schemaLocation($schema));
+                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ' uses const, not supported in OpenAPI 3.0, using enum fallback' . $this->schemaLocation($schema, $owners));
             }
 
             if ($schema->examples !== null) {
@@ -400,7 +400,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
                 $this->logger->warning(($schema->ref !== null && $schema->nullable !== true
                     ? 'Schema' . $this->schemaLabel($schema) . ' sets examples beside $ref "' . $schema->getRefValue() . '", not supported in OpenAPI 3.0, omitted'
                     : 'Schema' . $this->schemaLabel($schema) . ' uses an examples array, not supported in OpenAPI 3.0, using the first value as example')
-                    . $this->schemaLocation($schema));
+                    . $this->schemaLocation($schema, $owners));
             }
         }
     }

@@ -334,6 +334,22 @@ final class CompilerTest extends TestCase
         $this->assertContains('Schema sets description beside $ref "#/components/schemas/Cat", omitted in ' . OA\Info::class . '::$title in ' . (new \ReflectionClass(OA\Info::class))->getFileName(), $messages);
     }
 
+    public function testADroppedSiblingInANestedSchemaIsReportedAtItsOwnersLocation(): void
+    {
+        $property = (new OA\Property(property: 'title', schema: new OA\Schema(
+            type: 'array',
+            items: new OA\Schema(description: 'A cat', ref: '#/components/schemas/Cat'),
+        )))->setReflector(new \ReflectionProperty(OA\Info::class, 'title'));
+        $specification = new Specification();
+        $specification->add(new OA\Info(title: 'Siblings', version: '1.0.0'));
+        $specification->add(new OA\Schema(type: 'object', component: 'Cat'));
+        $specification->add(new OA\Schema(properties: [$property], component: 'Owner'));
+
+        $messages = array_column((new OpenApi30Compiler())->validate($specification), 'message');
+
+        $this->assertContains('Schema sets description beside $ref "#/components/schemas/Cat", omitted in ' . OA\Info::class . '::$title in ' . (new \ReflectionClass(OA\Info::class))->getFileName(), $messages);
+    }
+
     public function testADroppedSiblingWithoutALocationIsReportedWithoutOne(): void
     {
         $specification = new Specification();
@@ -397,6 +413,30 @@ final class CompilerTest extends TestCase
 
         $this->assertCount(3, $reported);
         $this->assertContains('Schema uses const, not supported in OpenAPI 3.0, using enum fallback', $reported);
+        foreach (['pet', 'other'] as $property) {
+            $located = array_filter($reported, fn (string $message): bool => str_starts_with($message, 'Schema uses const, not supported in OpenAPI 3.0, using enum fallback in ' . Fixtures\RefSiblings\Owner::class . '::$' . $property . ' '));
+            $this->assertCount(1, $located, $property);
+        }
+    }
+
+    public function test30SchemaWarningsInANestedSchemaNameTheMemberThatHoldsIt(): void
+    {
+        $outer = (new OA\Property(property: 'pet', schema: new OA\Schema(
+            type: 'object',
+            properties: [
+                (new OA\Property(property: 'other', schema: new OA\Schema(oneOf: [new OA\Schema(const: 'b')])))
+                    ->setReflector(new \ReflectionProperty(Fixtures\RefSiblings\Owner::class, 'other')),
+            ],
+            not: new OA\Schema(const: 'a'),
+        )))->setReflector(new \ReflectionProperty(Fixtures\RefSiblings\Owner::class, 'pet'));
+        $specification = new Specification();
+        $specification->add(new OA\Info(title: 'Const', version: '1.0.0'));
+        $specification->add(new OA\Schema(properties: [$outer], component: 'Owner'));
+
+        $messages = array_column((new OpenApi30Compiler())->validate($specification), 'message');
+        $reported = array_values(array_filter($messages, fn (string $message): bool => str_contains($message, 'uses const, not supported')));
+
+        $this->assertCount(2, $reported);
         foreach (['pet', 'other'] as $property) {
             $located = array_filter($reported, fn (string $message): bool => str_starts_with($message, 'Schema uses const, not supported in OpenAPI 3.0, using enum fallback in ' . Fixtures\RefSiblings\Owner::class . '::$' . $property . ' '));
             $this->assertCount(1, $located, $property);
