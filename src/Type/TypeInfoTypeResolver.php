@@ -97,6 +97,10 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
             $schema->maximum = $schemaType->maximum;
         }
 
+        if ($schemaType->minLength !== null && Undefined::isDefault($schema->minLength)) {
+            $schema->minLength = $schemaType->minLength;
+        }
+
         if ($schemaType->not !== null && Undefined::isDefault($schema->not)) {
             $schema->not = $schemaType->not;
         }

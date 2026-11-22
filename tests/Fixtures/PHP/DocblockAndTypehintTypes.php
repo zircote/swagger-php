@@ -144,6 +144,36 @@ class DocblockAndTypehintTypes
     public ?int $nullableIntRange;
 
     /**
+     * @var non-falsy-string
+     */
+    #[OAT\Property]
+    public string $nonFalsyString;
+
+    /**
+     * @var non-empty-string|null
+     */
+    #[OAT\Property]
+    public ?string $nullableNonEmptyString;
+
+    /**
+     * @var list<non-empty-string>
+     */
+    #[OAT\Property]
+    public array $nonEmptyStringList;
+
+    /**
+     * @var non-empty-string|int
+     */
+    #[OAT\Property]
+    public string|int $nonEmptyStringOrInt;
+
+    /**
+     * @var non-empty-string
+     */
+    #[OAT\Property(minLength: 0)]
+    public string $explicitMinLength;
+
+    /**
      * @var array{foo:bool}
      */
     #[OAT\Property]

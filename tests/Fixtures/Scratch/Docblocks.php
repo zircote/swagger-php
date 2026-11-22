@@ -73,6 +73,24 @@ class DocblocksSchema
      */
     #[OAT\Property]
     public $nonZeroInt;
+
+    /**
+     * @var non-empty-string The non-empty string
+     */
+    #[OAT\Property]
+    public $nonEmptyString;
+
+    /**
+     * @var non-falsy-string The non-falsy string
+     */
+    #[OAT\Property]
+    public $nonFalsyString;
+
+    /**
+     * @var numeric-string The numeric string
+     */
+    #[OAT\Property]
+    public $numericString;
 }
 
 #[OAT\Schema]

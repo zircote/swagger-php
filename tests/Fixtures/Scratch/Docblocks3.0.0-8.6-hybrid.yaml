@@ -69,6 +69,17 @@ components:
           not:
             enum:
               - 0
+        nonEmptyString:
+          description: 'The non-empty string'
+          type: string
+          minLength: 1
+        nonFalsyString:
+          description: 'The non-falsy string'
+          type: string
+          minLength: 1
+        numericString:
+          description: 'The numeric string'
+          type: string
       type: object
     DocblockSchemaChild:
       type: object

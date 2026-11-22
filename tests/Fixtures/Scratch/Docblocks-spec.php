@@ -75,6 +75,24 @@ class DocblocksSchemaSpec
     public $nonZeroInt;
 
     /**
+     * @var non-empty-string The non-empty string
+     */
+    #[OA\Property]
+    public $nonEmptyString;
+
+    /**
+     * @var non-falsy-string The non-falsy string
+     */
+    #[OA\Property]
+    public $nonFalsyString;
+
+    /**
+     * @var numeric-string The numeric string
+     */
+    #[OA\Property]
+    public $numericString;
+
+    /**
      * @var int<1, 5>|int<10, 20> The integer in one of two ranges
      */
     #[OA\Property]
