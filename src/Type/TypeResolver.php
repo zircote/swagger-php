@@ -56,17 +56,30 @@ class TypeResolver implements LoggerAwareInterface
     /** Reuses parsed use statements when supported by symfony/type-info. */
     protected TypeContextFactory $docblockContexts;
 
-    protected TypeContextFactory $reflectionContexts;
+    /** The contexts of a member's declared PHP type. */
+    protected TypeContextFactory $declaredTypeContexts;
 
     protected TypeResolverInterface $docblockResolver;
 
+    protected TypeResolverInterface $declaredTypeResolver;
+
+    protected Lexer $docblockLexer;
+
+    protected PhpDocParser $docblockParser;
+
     public function __construct()
     {
+        $config = new ParserConfig([]);
+        $constExprParser = new ConstExprParser($config);
+        $this->docblockLexer = new Lexer($config);
+        $this->docblockParser = new PhpDocParser($config, new TypeParser($config, $constExprParser), $constExprParser);
+
         $this->typeMapper = new TypeMapper();
         $this->docblockResolver = new StringTypeResolver();
+        $this->declaredTypeResolver = new ReflectionTypeResolver();
         $this->resolved = new \WeakMap();
         $this->docblockContexts = new TypeContextFactory(new SymfonyStringTypeResolver());
-        $this->reflectionContexts = new TypeContextFactory();
+        $this->declaredTypeContexts = new TypeContextFactory();
     }
 
     /**
@@ -88,6 +101,19 @@ class TypeResolver implements LoggerAwareInterface
 
     public function getDocblockType(\Reflector $reflector): ?Type
     {
+        $tagName = match (true) {
+            $reflector instanceof \ReflectionProperty => $reflector->isPromoted()
+                ? '@param'
+                : '@var',
+            $reflector instanceof \ReflectionParameter => '@param',
+            $reflector instanceof \ReflectionFunctionAbstract => '@return',
+            default => null,
+        };
+
+        if ($tagName === null) {
+            return null;
+        }
+
         $docComment = match (true) {
             $reflector instanceof \ReflectionProperty => $reflector->isPromoted()
                 && $reflector->getDeclaringClass()->getConstructor() instanceof \ReflectionMethod
@@ -102,24 +128,8 @@ class TypeResolver implements LoggerAwareInterface
             return null;
         }
 
-        $typeContext = $this->docblockContexts->createFromReflection($reflector);
-
-        $tagName = match (true) {
-            $reflector instanceof \ReflectionProperty => $reflector->isPromoted()
-                ? '@param'
-                : '@var',
-            $reflector instanceof \ReflectionParameter => '@param',
-            $reflector instanceof \ReflectionFunctionAbstract => '@return',
-            default => null,
-        };
-
-        if ($tagName === null) {
-            return null;
-        }
-
-        $docNode = $this->parseDocComment($docComment);
-
-        foreach ($docNode->getTagsByName($tagName) as $tag) {
+        $typeContext = null;
+        foreach ($this->parseDocComment($docComment)->getTagsByName($tagName) as $tag) {
             $tagValue = $tag->value;
 
             if (
@@ -127,6 +137,8 @@ class TypeResolver implements LoggerAwareInterface
                 || ($tagValue instanceof ParamTagValueNode && '$' . $reflector->getName() === $tagValue->parameterName)
                 || $tagValue instanceof ReturnTagValueNode
             ) {
+                $typeContext ??= $this->docblockContexts->createFromReflection($reflector);
+
                 try {
                     return $this->docblockResolver->resolve((string) $tagValue, $typeContext);
                 } catch (\Throwable) {
@@ -155,15 +167,7 @@ class TypeResolver implements LoggerAwareInterface
 
     protected function parseDocComment(string $docComment): PhpDocNode
     {
-        $config = new ParserConfig([]);
-        $constExprParser = new ConstExprParser($config);
-        $phpDocParser = new PhpDocParser(
-            $config,
-            new TypeParser($config, $constExprParser),
-            $constExprParser,
-        );
-
-        return $phpDocParser->parse(new TokenIterator((new Lexer($config))->tokenize($docComment)));
+        return $this->docblockParser->parse(new TokenIterator($this->docblockLexer->tokenize($docComment)));
     }
 
     /**
@@ -175,24 +179,23 @@ class TypeResolver implements LoggerAwareInterface
     }
 
     /**
-     * The schema type for a member's docblock type and its declared type. The docblock type is
-     * the one mapped where there is one, and the member is nullable where either type is.
+     * The schema type for a member's docblock type and its declared type.
+     *
+     * The docblock type is the one mapped where there is one, and the member is nullable where
+     * either type is.
      */
-    protected function toSchemaType(?Type $docblockType, ?Type $reflectionType): ?SchemaType
+    protected function toSchemaType(?Type $docblockType, ?Type $declaredType): ?SchemaType
     {
-        if (!$docblockType && !$reflectionType) {
+        if (!$docblockType && !$declaredType) {
             return null;
         }
 
-        $nullable = null;
-        if (($docblockType instanceof Type && $docblockType->isNullable()) || ($reflectionType instanceof Type && $reflectionType->isNullable())) {
-            $nullable = true;
-        }
+        $nullable = ($docblockType?->isNullable() || $declaredType?->isNullable()) ? true : null;
 
         $docblockType = $docblockType instanceof NullableType ? $docblockType->getWrappedType() : $docblockType;
-        $reflectionType = $reflectionType instanceof NullableType ? $reflectionType->getWrappedType() : $reflectionType;
+        $declaredType = $declaredType instanceof NullableType ? $declaredType->getWrappedType() : $declaredType;
 
-        $effectiveType = $docblockType ?? $reflectionType;
+        $effectiveType = $docblockType ?? $declaredType;
         if (!$effectiveType instanceof Type) {
             return $nullable !== null ? new SchemaType(nullable: $nullable) : null;
         }
@@ -265,8 +268,9 @@ class TypeResolver implements LoggerAwareInterface
     }
 
     /**
-     * A string pseudo-type that rules out the empty string gets `minLength: 1`. The others, such
-     * as `numeric-string` or `lowercase-string`, map to their builtin type.
+     * A string pseudo-type that rules out the empty string gets `minLength: 1`.
+     *
+     * The others, such as `numeric-string` or `lowercase-string`, map to their builtin type.
      *
      * @param ExplicitType<TypeIdentifier> $type
      */
@@ -293,25 +297,23 @@ class TypeResolver implements LoggerAwareInterface
             return new SchemaType(type: 'int', not: ['const' => 0]);
         }
 
-        $allBuiltin = array_reduce($types, static fn ($carry, $t): bool => $carry && $t instanceof BuiltinType, true);
-
         if ($type instanceof UnionType) {
-            if ($allBuiltin) {
+            $builtinTypes = array_filter($types, static fn (Type $part): bool => $part instanceof BuiltinType);
+            $otherTypes = array_filter($types, static fn (Type $part): bool => !$part instanceof BuiltinType);
+
+            if ($otherTypes === []) {
                 $mappableTypes = array_values(array_filter(
-                    array_map(static fn (Type $t): string => (string) $t, $types),
+                    array_map(static fn (Type $part): string => (string) $part, $types),
                     $this->typeMapper->hasOpenApiType(...),
                 ));
 
                 return new SchemaType(type: [] === $mappableTypes ? null : $mappableTypes);
             }
 
-            $builtinTypes = array_filter($types, static fn (Type $t): bool => $t instanceof BuiltinType);
-            $otherTypes = array_filter($types, static fn (Type $t): bool => !$t instanceof BuiltinType);
-
             $members = [];
             if ($builtinTypes !== []) {
                 $builtinSchema = new SchemaType(
-                    type: array_values(array_map(static fn (Type $t): string => (string) $t, $builtinTypes)),
+                    type: array_values(array_map(static fn (Type $part): string => (string) $part, $builtinTypes)),
                 );
                 $this->applyNativeTypeMapping($builtinSchema);
                 $members[] = $builtinSchema;
@@ -380,16 +382,10 @@ class TypeResolver implements LoggerAwareInterface
     protected function mapCollectionType(CollectionType $type): SchemaType
     {
         if ($type->isList() || $type->getCollectionKeyType() instanceof UnionType) {
-            $itemType = $this->mapType($type->getCollectionValueType());
-            $this->applyNativeTypeMapping($itemType);
-
-            return new SchemaType(type: 'array', items: $itemType);
+            return new SchemaType(type: 'array', items: $this->mapNestedType($type->getCollectionValueType()));
         }
 
-        $valueSchema = $this->mapType($type->getCollectionValueType());
-        $this->applyNativeTypeMapping($valueSchema);
-
-        return new SchemaType(type: 'object', additionalProperties: $valueSchema);
+        return new SchemaType(type: 'object', additionalProperties: $this->mapNestedType($type->getCollectionValueType()));
     }
 
     protected function mapArrayShape(ArrayShapeType $type): SchemaType
@@ -397,19 +393,14 @@ class TypeResolver implements LoggerAwareInterface
         $shape = $type->getShape();
 
         if (array_is_list($shape)) {
-            $itemType = $this->mapType($type->getCollectionValueType());
-            $this->applyNativeTypeMapping($itemType);
-
-            return new SchemaType(type: 'array', items: $itemType);
+            return new SchemaType(type: 'array', items: $this->mapNestedType($type->getCollectionValueType()));
         }
 
         $properties = [];
         $required = [];
         foreach ($shape as $name => $member) {
             $propertyName = (string) $name;
-            $propertySchema = $this->mapType($member['type']);
-            $this->applyNativeTypeMapping($propertySchema);
-            $properties[$propertyName] = $propertySchema;
+            $properties[$propertyName] = $this->mapNestedType($member['type']);
 
             if (!($member['optional'] ?? false)) {
                 $required[] = $propertyName;
@@ -429,28 +420,46 @@ class TypeResolver implements LoggerAwareInterface
     }
 
     /**
+     * A type nested in another, an item, a map value or a shape's property, mapped to its OpenAPI type.
+     */
+    protected function mapNestedType(Type $type): SchemaType
+    {
+        $schemaType = $this->mapType($type);
+        $this->applyNativeTypeMapping($schemaType);
+
+        return $schemaType;
+    }
+
+    /**
      * Apply native PHP type to OpenAPI type/format mapping in-place.
      */
     protected function applyNativeTypeMapping(SchemaType $schema): void
     {
-        if (is_string($schema->type)) {
-            $mapped = $this->typeMapper->map($schema->type);
-            if ($mapped === null) {
-                // not a native type — leave as-is (likely a FQCN for ref resolution)
-            } elseif ('mixed' === $mapped['type']) {
-                $schema->type = null;
-            } else {
-                $schema->type = $mapped['type'];
-                if ($mapped['format'] !== null && $schema->format === null) {
-                    $schema->format = $mapped['format'];
-                }
-            }
-        } elseif (is_array($schema->type)) {
+        if (is_array($schema->type)) {
             /** @var list<string> $mapped neither array_map() nor toSpecTypes() change a list's shape */
             $mapped = $this->typeMapper->toSpecTypes(
-                array_map(static fn ($t): string => strtolower((string) $t), $schema->type),
+                array_map(static fn ($part): string => strtolower((string) $part), $schema->type),
             );
             $schema->type = $mapped;
+
+            return;
+        }
+
+        $mapped = is_string($schema->type) ? $this->typeMapper->map($schema->type) : null;
+        if ($mapped === null) {
+            // not a native type, and most likely a class name for the ref resolution
+            return;
+        }
+
+        if ('mixed' === $mapped['type']) {
+            $schema->type = null;
+
+            return;
+        }
+
+        $schema->type = $mapped['type'];
+        if ($mapped['format'] !== null && $schema->format === null) {
+            $schema->format = $mapped['format'];
         }
     }
 
@@ -459,18 +468,14 @@ class TypeResolver implements LoggerAwareInterface
      */
     protected function getReflectionType(\Reflector $reflector): ?Type
     {
-        $subject = $reflector instanceof \ReflectionClass
-            ? $reflector->getName()
-            : (
-                $reflector instanceof \ReflectionMethod
-                ? $reflector->getReturnType()
-                : (method_exists($reflector, 'getType') ? $reflector->getType() : null)
-            );
+        $subject = match (true) {
+            $reflector instanceof \ReflectionClass => $reflector->getName(),
+            $reflector instanceof \ReflectionMethod => $reflector->getReturnType(),
+            default => method_exists($reflector, 'getType') ? $reflector->getType() : null,
+        };
 
         try {
-            $typeContext = $this->reflectionContexts->createFromReflection($reflector);
-
-            return (new ReflectionTypeResolver())->resolve($subject, $typeContext);
+            return $this->declaredTypeResolver->resolve($subject, $this->declaredTypeContexts->createFromReflection($reflector));
         } catch (UnsupportedException) {
             return null;
         }

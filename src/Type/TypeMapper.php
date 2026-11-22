@@ -75,10 +75,6 @@ class TypeMapper
             return ['type' => $mapped[0], 'format' => $mapped[1]];
         }
 
-        if ('mixed' === $mapped) {
-            return ['type' => 'mixed', 'format' => null];
-        }
-
         return ['type' => $mapped, 'format' => null];
     }
 
@@ -87,9 +83,7 @@ class TypeMapper
      */
     public function toSpecType(string $type): string
     {
-        $mapped = array_key_exists(strtolower($type), self::NATIVE_TYPE_MAP)
-            ? self::NATIVE_TYPE_MAP[strtolower($type)]
-            : $type;
+        $mapped = self::NATIVE_TYPE_MAP[strtolower($type)] ?? $type;
 
         return is_array($mapped) ? $mapped[0] : $mapped;
     }
