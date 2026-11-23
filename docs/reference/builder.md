@@ -191,10 +191,12 @@ $builder->withAugmenters(function (\OpenApi\Utils\Pipeline $pipeline) {
     // Configure operationId generation
     $pipeline->get(Augmenter\OperationIds::class)?->setHash(true);
 
-    // Filter to specific paths/tags (regular expressions, with delimiters)
+    // Filter to specific paths/tags (regular expressions, with delimiters),
+    // then leave out what matches the exclude lists
     $pipeline->get(Augmenter\PathFilter::class)
         ?->setPaths(['/^\/api\/v2/'])
-        ->setTags(['/^(Users|Products)$/']);
+        ->setTags(['/^(Users|Products)$/'])
+        ->setExcludePaths(['/^\/api\/v2\/admin/']);
 
     // Insert a custom augmenter
     $pipeline->insert(new CustomAugmenter(), Augmenter\Inheritance::class);

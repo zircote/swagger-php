@@ -268,7 +268,8 @@ registered after it runs after it, and `insert()` is how to land ahead.
 
 Filters operations by tag and/or path patterns.
 
-If no tags or paths filters are set, no filtering is performed.
+With `tags` or `paths` set, only operations matching one of them are kept. Operations matching
+`excludeTags` or `excludePaths` are then removed. If no lists are set, no filtering is performed.
 All filter expressions must be valid regular expressions (with delimiters).
 
 #### Config settings
@@ -276,6 +277,10 @@ All filter expressions must be valid regular expressions (with delimiters).
   A list of regular expressions to match <code>tags</code> to include.
 - **pathFilter.paths** : `array` · default: `[]`  
   A list of regular expressions to match <code>paths</code> to include.
+- **pathFilter.excludeTags** : `array` · default: `[]`  
+  A list of regular expressions to match <code>tags</code> to exclude, applied after the include lists.
+- **pathFilter.excludePaths** : `array` · default: `[]`  
+  A list of regular expressions to match <code>paths</code> to exclude, applied after the include lists.
 
 ### [Cleanup](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Cleanup.php)
 
