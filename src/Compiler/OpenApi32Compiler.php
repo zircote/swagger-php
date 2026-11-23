@@ -32,22 +32,6 @@ class OpenApi32Compiler extends OpenApi31Compiler
         return '3.2.0';
     }
 
-    public function validate(Specification $specification): array
-    {
-        parent::validate($specification);
-
-        $tagNames = array_map(fn (OA\Tag $tag): ?string => $tag->name, $specification->tags);
-
-        foreach ($specification->tags as $tag) {
-            if ($tag->parent !== null && !in_array($tag->parent, $tagNames, true)) {
-                $this->logger->error('Tag "' . $tag->name . '" names parent "' . $tag->parent . '", which does not exist in ' . $tag->getSourceLocation());
-                $tag->parent = null;
-            }
-        }
-
-        return $this->logger->entries();
-    }
-
     #[\Override]
     protected function validateSpecification(Specification $specification): void
     {
@@ -57,6 +41,39 @@ class OpenApi32Compiler extends OpenApi31Compiler
         $this->validatePositionalEncodings($specification);
         $this->validateQuerystringParameters($specification);
         $this->validateQuerystringOperations($specification);
+        $this->validateTagParents($specification);
+    }
+
+    /**
+     * A tag's `parent` names another tag of the document.
+     */
+    protected function validateTagParents(Specification $specification): void
+    {
+        $tagNames = array_map(fn (OA\Tag $tag): ?string => $tag->name, $specification->tags);
+
+        foreach ($specification->tags as $tag) {
+            if ($tag->parent !== null && !in_array($tag->parent, $tagNames, true)) {
+                $this->logger->error('Tag "' . $tag->name . '" names parent "' . $tag->parent . '", which does not exist in ' . $tag->getSourceLocation());
+            }
+        }
+    }
+
+    /**
+     * A `parent` that names no tag of the document is left out.
+     */
+    #[\Override]
+    protected function compileTags(array $tags): array
+    {
+        $tagNames = array_map(fn (OA\Tag $tag): ?string => $tag->name, $tags);
+
+        return array_map(function (OA\Tag $tag) use ($tagNames): array {
+            $compiled = $this->compileTag($tag);
+            if (isset($compiled['parent']) && !in_array($compiled['parent'], $tagNames, true)) {
+                unset($compiled['parent']);
+            }
+
+            return $compiled;
+        }, $tags);
     }
 
     /**
