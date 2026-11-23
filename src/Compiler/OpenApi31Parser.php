@@ -11,6 +11,7 @@ use OpenApi\Contracts\ParserInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Undefined;
+use OpenApi\Utils\JsonPointer;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -36,6 +37,11 @@ class OpenApi31Parser implements ParserInterface
      * The methods a path item has an operation field for.
      */
     protected const OPERATION_METHODS = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
+
+    /**
+     * The fields of a Reference Object.
+     */
+    protected const REFERENCE_FIELDS = ['$ref' => 'ref', 'summary' => 'summary', 'description' => 'description'];
 
     protected LoggerInterface $logger;
 
@@ -271,7 +277,7 @@ class OpenApi31Parser implements ParserInterface
     protected function parseParameter(array $parameter, string $pointer, array $identity = []): OA\Parameter
     {
         if (isset($parameter['$ref'])) {
-            return $this->build(OA\Parameter::class, $parameter, $pointer, ['$ref' => 'ref', 'summary' => 'summary', 'description' => 'description'], $identity);
+            return $this->build(OA\Parameter::class, $parameter, $pointer, static::REFERENCE_FIELDS, $identity);
         }
 
         return $this->build(OA\Parameter::class, $parameter, $pointer, [
@@ -298,7 +304,7 @@ class OpenApi31Parser implements ParserInterface
     protected function parseRequestBody(array $body, string $pointer, array $identity = []): OA\RequestBody
     {
         if (isset($body['$ref'])) {
-            return $this->build(OA\RequestBody::class, $body, $pointer, ['$ref' => 'ref', 'summary' => 'summary', 'description' => 'description'], $identity);
+            return $this->build(OA\RequestBody::class, $body, $pointer, static::REFERENCE_FIELDS, $identity);
         }
 
         return $this->build(OA\RequestBody::class, $body, $pointer, [
@@ -313,10 +319,10 @@ class OpenApi31Parser implements ParserInterface
      */
     protected function parseResponse(array $response, string $pointer, string|int|null $code = null, ?string $component = null): OA\Response
     {
-        $identity = array_filter(['response' => $code, 'component' => $component], static fn (mixed $value): bool => $value !== null);
+        $identity = $this->identity(['response' => $code, 'component' => $component]);
 
         if (isset($response['$ref'])) {
-            return $this->build(OA\Response::class, $response, $pointer, ['$ref' => 'ref', 'summary' => 'summary', 'description' => 'description'], $identity);
+            return $this->build(OA\Response::class, $response, $pointer, static::REFERENCE_FIELDS, $identity);
         }
 
         return $this->build(OA\Response::class, $response, $pointer, [
@@ -332,10 +338,10 @@ class OpenApi31Parser implements ParserInterface
      */
     protected function parseHeader(array $header, string $pointer, ?string $name = null, ?string $component = null): OA\Header
     {
-        $identity = array_filter(['header' => $name, 'component' => $component], static fn (mixed $value): bool => $value !== null);
+        $identity = $this->identity(['header' => $name, 'component' => $component]);
 
         if (isset($header['$ref'])) {
-            return $this->build(OA\Header::class, $header, $pointer, ['$ref' => 'ref', 'summary' => 'summary', 'description' => 'description'], $identity);
+            return $this->build(OA\Header::class, $header, $pointer, static::REFERENCE_FIELDS, $identity);
         }
 
         return $this->build(OA\Header::class, $header, $pointer, [
@@ -383,10 +389,10 @@ class OpenApi31Parser implements ParserInterface
      */
     protected function parseLink(array $link, string $pointer, ?string $name = null, ?string $component = null): OA\Link
     {
-        $identity = array_filter(['link' => $name, 'component' => $component], static fn (mixed $value): bool => $value !== null);
+        $identity = $this->identity(['link' => $name, 'component' => $component]);
 
         if (isset($link['$ref'])) {
-            return $this->build(OA\Link::class, $link, $pointer, ['$ref' => 'ref', 'summary' => 'summary', 'description' => 'description'], $identity);
+            return $this->build(OA\Link::class, $link, $pointer, static::REFERENCE_FIELDS, $identity);
         }
 
         return $this->build(OA\Link::class, $link, $pointer, [
@@ -404,10 +410,10 @@ class OpenApi31Parser implements ParserInterface
      */
     protected function parseExample(array $example, string $pointer, ?string $name = null, ?string $component = null): OA\Example
     {
-        $identity = array_filter(['example' => $name, 'component' => $component], static fn (mixed $value): bool => $value !== null);
+        $identity = $this->identity(['example' => $name, 'component' => $component]);
 
         if (isset($example['$ref'])) {
-            return $this->build(OA\Example::class, $example, $pointer, ['$ref' => 'ref', 'summary' => 'summary', 'description' => 'description'], $identity);
+            return $this->build(OA\Example::class, $example, $pointer, static::REFERENCE_FIELDS, $identity);
         }
 
         return $this->build(OA\Example::class, $example, $pointer, [
@@ -577,7 +583,7 @@ class OpenApi31Parser implements ParserInterface
     protected function parseSecurityScheme(array $scheme, string $pointer, string $name): OA\Security\Scheme
     {
         if (isset($scheme['$ref'])) {
-            return $this->build(OA\Security\Scheme::class, $scheme, $pointer, ['$ref' => 'ref', 'summary' => 'summary', 'description' => 'description'], ['component' => $name]);
+            return $this->build(OA\Security\Scheme::class, $scheme, $pointer, static::REFERENCE_FIELDS, ['component' => $name]);
         }
 
         return $this->build(OA\Security\Scheme::class, $scheme, $pointer, [
@@ -647,14 +653,14 @@ class OpenApi31Parser implements ParserInterface
     {
         $types = $this->types($class);
         $arguments = $identity;
-        $x = [];
+        $extensions = [];
         $unsupported = [];
 
         foreach ($data as $key => $value) {
             $key = (string) $key;
 
             if (str_starts_with($key, 'x-')) {
-                $x[substr($key, 2)] = $value;
+                $extensions[substr($key, 2)] = $value;
             } elseif (!array_key_exists($key, $fields)) {
                 $unsupported[] = $key;
             } elseif ($fields[$key] !== null) {
@@ -671,8 +677,8 @@ class OpenApi31Parser implements ParserInterface
 
         $this->unsupported($pointer, $unsupported);
 
-        if ($x !== []) {
-            $arguments['x'] = $x;
+        if ($extensions !== []) {
+            $arguments['x'] = $extensions;
         }
 
         return new $class(...$arguments);
@@ -942,6 +948,18 @@ class OpenApi31Parser implements ParserInterface
     }
 
     /**
+     * What an object is filed under: the keys given a value.
+     *
+     * @param array<string, mixed> $keys
+     *
+     * @return array<string, mixed>
+     */
+    protected function identity(array $keys): array
+    {
+        return array_filter($keys, static fn (mixed $value): bool => $value !== null);
+    }
+
+    /**
      * @param list<string> $keys
      */
     protected function unsupported(string $pointer, array $keys): void
@@ -953,7 +971,7 @@ class OpenApi31Parser implements ParserInterface
 
     protected function pointer(string $pointer, string $key): string
     {
-        return $pointer . '/' . str_replace(['~', '/'], ['~0', '~1'], $key);
+        return $pointer . '/' . JsonPointer::encode($key);
     }
 
     protected function location(string $pointer): string

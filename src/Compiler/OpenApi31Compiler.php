@@ -35,8 +35,10 @@ class OpenApi31Compiler implements CompilerInterface
     protected const OPERATION_REQUEST_BODY_METHODS = ['put', 'post', 'delete', 'patch'];
 
     /**
-     * Every type the wire format accepts as input. `null` is included for 3.0 as well, where
-     * the compiler translates it to `nullable` rather than dropping it.
+     * Every type the wire format accepts as input.
+     *
+     * `null` is included for 3.0 as well, where the compiler translates it to `nullable` rather
+     * than dropping it.
      */
     protected const SCHEMA_TYPES = ['string', 'number', 'integer', 'boolean', 'array', 'object', 'null'];
 
@@ -50,6 +52,7 @@ class OpenApi31Compiler implements CompilerInterface
 
     /**
      * Maps nested in another object, as container => [property => the member field keying it].
+     *
      * `Schema::$examples` is absent: it is the JSON Schema keyword, which takes a list.
      *
      * @var array<class-string<AttributeInterface>, array<string, string>>
@@ -63,10 +66,12 @@ class OpenApi31Compiler implements CompilerInterface
     ];
 
     /**
-     * The properties this version cannot carry, as class => property names. A name may key a hint
-     * for the message instead. `filter()` leaves each out of the output, where it is written under
-     * its own name, and `validateUnsupportedProperties()` warns about it. Each compiler lists all
-     * of its own, and a property that is translated or has a check of its own is not listed.
+     * The properties this version cannot carry, as class => property names.
+     *
+     * A name may key a hint for the message instead. `filter()` leaves each out of the output,
+     * where it is written under its own name, and `validateUnsupportedProperties()` warns about
+     * it. Each compiler lists all of its own, and a property that is translated or has a check of
+     * its own is not listed.
      *
      * @var array<class-string<OA\AbstractAttribute|Specification>, array<int|string, string>>
      */
@@ -84,9 +89,10 @@ class OpenApi31Compiler implements CompilerInterface
     ];
 
     /**
-     * The values this version cannot carry, as class => property => values. `filter()` leaves a
-     * listed value out, as it does a listed property, and `validateUnsupportedValues()` warns
-     * about it.
+     * The values this version cannot carry, as class => property => values.
+     *
+     * `filter()` leaves a listed value out, as it does a listed property, and
+     * `validateUnsupportedValues()` warns about it.
      *
      * @var array<class-string<OA\AbstractAttribute>, array<string, list<string>>>
      */
@@ -163,7 +169,9 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * The checks `validate()` runs. An override calls its parent's and adds its own checks.
+     * The checks `validate()` runs.
+     *
+     * An override calls its parent's and adds its own checks.
      */
     protected function validateSpecification(Specification $specification): void
     {
@@ -173,8 +181,8 @@ class OpenApi31Compiler implements CompilerInterface
             $this->logger->error('Info is missing title in ' . $specification->info->getSourceLocation());
         }
 
-        $hasPaths = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->path !== null);
-        $hasWebhooks = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->webhook !== null);
+        $hasPaths = (bool) array_filter($specification->operations, static fn (OA\Operation $operation): bool => $operation->path !== null);
+        $hasWebhooks = (bool) array_filter($specification->operations, static fn (OA\Operation $operation): bool => $operation->webhook !== null);
         $hasComponents = $specification->schemas || $specification->responses
             || $specification->parameters || $specification->requestBodies
             || $specification->headers || $specification->securitySchemes
@@ -235,14 +243,16 @@ class OpenApi31Compiler implements CompilerInterface
 
             $subject = $example->example === null ? 'Example' : 'Example "' . $example->example . '"';
             $action = $example->value === Undefined::UNDEFINED && $example->externalValue === null ? 'written as value' : 'omitted';
-            $this->logger->warning("{$subject} uses dataValue, not supported in OpenAPI " . substr($this->getVersion(), 0, 3) . ", {$action}"
-                . ($example->getReflector() instanceof \Reflector ? ' in ' . $example->getSourceLocation() : ''));
+            $this->logger->warning("{$subject} uses dataValue, not supported in OpenAPI " . $this->minorVersion() . ", {$action}"
+                . $this->attributeLocation($example));
         });
     }
 
     /**
      * `nodeType` is new in 3.2, and before it is written as `attribute` or `wrapped` where they say
-     * the same. See `nodeTypeFields()`.
+     * the same.
+     *
+     * See `nodeTypeFields()`.
      */
     protected function validateXmlNodeTypes(Specification $specification): void
     {
@@ -259,8 +269,8 @@ class OpenApi31Compiler implements CompilerInterface
             // a field set by hand wins, so the node type is then left out
             $field = $fields === null ? null : array_key_first($fields);
             $action = $field !== null && $schema->xml->{$field} === null ? "written as {$field}" : 'omitted';
-            $this->logger->warning("Xml uses nodeType \"{$schema->xml->nodeType}\", not supported in OpenAPI " . substr($this->getVersion(), 0, 3) . ", {$action}"
-                . ($schema->getReflector() instanceof \Reflector ? ' in ' . $schema->getSourceLocation() : ''));
+            $this->logger->warning("Xml uses nodeType \"{$schema->xml->nodeType}\", not supported in OpenAPI " . $this->minorVersion() . ", {$action}"
+                . $this->attributeLocation($schema));
         });
     }
 
@@ -309,15 +319,11 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function compileServer(OA\Server $server): array
     {
-        $variables = null;
-        if ($server->variables) {
-            $variables = [];
-            foreach ($server->variables as $variable) {
-                if ($variable->serverVariable !== null) {
-                    $variables[$variable->serverVariable] = $this->compileServerVariable($variable);
-                }
+        $variables = [];
+        foreach ($server->variables ?? [] as $variable) {
+            if ($variable->serverVariable !== null) {
+                $variables[$variable->serverVariable] = $this->compileServerVariable($variable);
             }
-            $variables = $variables ?: null;
         }
 
         return $this->filter([
@@ -382,7 +388,12 @@ class OpenApi31Compiler implements CompilerInterface
         $paths = [];
 
         foreach ($operations as $operation) {
-            if ($operation->path !== null && ($item = $this->addOperation($paths[$operation->path] ?? [], $operation)) !== []) {
+            if ($operation->path === null) {
+                continue;
+            }
+
+            $item = $this->addOperation($paths[$operation->path] ?? [], $operation);
+            if ($item !== []) {
                 $paths[$operation->path] = $item;
             }
         }
@@ -422,7 +433,12 @@ class OpenApi31Compiler implements CompilerInterface
         $webhooks = [];
 
         foreach ($operations as $operation) {
-            if ($operation->webhook !== null && ($item = $this->addOperation($webhooks[$operation->webhook] ?? [], $operation)) !== []) {
+            if ($operation->webhook === null) {
+                continue;
+            }
+
+            $item = $this->addOperation($webhooks[$operation->webhook] ?? [], $operation);
+            if ($item !== []) {
                 $webhooks[$operation->webhook] = $item;
             }
         }
@@ -431,8 +447,10 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * Writes an operation into a path item, under its method. One with a method the version does
-     * not support is left out, which `validateOperations()` reports.
+     * Writes an operation into a path item, under its method.
+     *
+     * One with a method the version does not support is left out, which `validateOperations()`
+     * reports.
      *
      * @param  array<string,mixed> $item
      * @return array<string,mixed>
@@ -502,23 +520,14 @@ class OpenApi31Compiler implements CompilerInterface
 
     protected function compileCallbackValue(mixed $value): mixed
     {
-        if ($value instanceof OA\Operation) {
-            return $this->compileOperation($value);
-        }
-        if ($value instanceof OA\RequestBody) {
-            return $this->compileRequestBody($value);
-        }
-        if ($value instanceof OA\Response) {
-            return $this->compileResponse($value);
-        }
-        if ($value instanceof OA\Schema) {
-            return $this->compileSchema($value);
-        }
-        if (is_array($value)) {
-            return array_map($this->compileCallbackValue(...), $value);
-        }
-
-        return $value;
+        return match (true) {
+            $value instanceof OA\Operation => $this->compileOperation($value),
+            $value instanceof OA\RequestBody => $this->compileRequestBody($value),
+            $value instanceof OA\Response => $this->compileResponse($value),
+            $value instanceof OA\Schema => $this->compileSchema($value),
+            is_array($value) => array_map($this->compileCallbackValue(...), $value),
+            default => $value,
+        };
     }
 
     /**
@@ -531,8 +540,9 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * `in` is required, so a parameter in a location the version cannot carry is left out whole. A
-     * reference has the location of the component it points to, from `Augmenter\Parameters`.
+     * `in` is required, so a parameter in a location the version cannot carry is left out whole.
+     *
+     * A reference has the location of the component it points to, from `Augmenter\Parameters`.
      */
     protected function carriesLocation(OA\Parameter $parameter): bool
     {
@@ -949,9 +959,11 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * `nodeType` is new in 3.2. Before, `attribute` and `wrapped` say what it says where they can:
-     * an attribute, or an array wrapped in an element. The node type a schema has by default needs
-     * no field, and a text, CDATA or absent node has no older form. A field set by hand is kept.
+     * The fields that say what a node type says before 3.2, where `nodeType` is new.
+     *
+     * `attribute` and `wrapped` say it where they can: an attribute, or an array wrapped in an
+     * element. The node type a schema has by default needs no field, and a text, CDATA or absent
+     * node has no older form. A field set by hand is kept.
      *
      * @return array<string,bool>|null the fields to write, or null where the node type cannot be written
      */
@@ -990,6 +1002,7 @@ class OpenApi31Compiler implements CompilerInterface
 
     /**
      * Warns about each set property in `$unsupported`, which the compile methods leave out.
+     *
      * Copies of one declaration produce the same message, which is logged once.
      *
      * @param array<class-string<OA\AbstractAttribute|Specification>, array<int|string, string>> $unsupported class => property names, or property name => hint
@@ -1000,7 +1013,7 @@ class OpenApi31Compiler implements CompilerInterface
             return;
         }
 
-        $version = implode('.', array_slice(explode('.', $this->getVersion()), 0, 2));
+        $version = $this->minorVersion();
         $reported = [];
 
         $check = function (OA\AbstractAttribute|Specification $attribute) use ($unsupported, $version, &$reported): void {
@@ -1020,7 +1033,7 @@ class OpenApi31Compiler implements CompilerInterface
 
                     $message = "{$this->subject($attribute)} uses {$property}, not supported in OpenAPI {$version}, omitted"
                         . ($hint !== null ? "; {$hint}" : '')
-                        . ($attribute instanceof OA\AbstractAttribute && $attribute->getReflector() instanceof \Reflector ? ' in ' . $attribute->getSourceLocation() : '');
+                        . ($attribute instanceof OA\AbstractAttribute ? $this->attributeLocation($attribute) : '');
                     if (!isset($reported[$message])) {
                         $reported[$message] = true;
                         $this->logger->warning($message);
@@ -1032,12 +1045,7 @@ class OpenApi31Compiler implements CompilerInterface
         // the walk visits attributes only, so the specification itself is checked here
         $check($specification);
 
-        $classes = [];
-        foreach (array_keys($unsupported) as $class) {
-            if (is_a($class, OA\AbstractAttribute::class, true)) {
-                $classes[] = $class;
-            }
-        }
+        $classes = array_values(array_filter(array_keys($unsupported), static fn (string $class): bool => is_a($class, OA\AbstractAttribute::class, true)));
 
         if ($classes !== []) {
             $this->visit($specification, $classes, $check);
@@ -1055,7 +1063,7 @@ class OpenApi31Compiler implements CompilerInterface
             return;
         }
 
-        $version = implode('.', array_slice(explode('.', $this->getVersion()), 0, 2));
+        $version = $this->minorVersion();
 
         $this->visit($specification, array_keys($unsupported), function (OA\AbstractAttribute $attribute) use ($unsupported, $version): void {
             foreach ($unsupported as $class => $properties) {
@@ -1066,7 +1074,7 @@ class OpenApi31Compiler implements CompilerInterface
                 foreach ($properties as $property => $values) {
                     if (in_array($attribute->{$property}, $values, true)) {
                         $this->logger->warning("{$this->subject($attribute)} uses {$property} \"{$attribute->{$property}}\", not supported in OpenAPI {$version}, omitted"
-                            . ($attribute->getReflector() instanceof \Reflector ? ' in ' . $attribute->getSourceLocation() : ''));
+                            . $this->attributeLocation($attribute));
                     }
                 }
             }
@@ -1082,7 +1090,7 @@ class OpenApi31Compiler implements CompilerInterface
         $this->visit($specification, OA\Security\Requirement::class, function (OA\Security\Requirement $requirement): void {
             if ($requirement->x !== null) {
                 $this->logger->warning('Security requirement uses x, not supported in OpenAPI, omitted; the argument is removed in 8.0'
-                    . ($requirement->getReflector() instanceof \Reflector ? ' in ' . $requirement->getSourceLocation() : ''));
+                    . $this->attributeLocation($requirement));
             }
         });
     }
@@ -1209,6 +1217,8 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
+     * Reports components and properties without a name, and component names claimed twice.
+     *
      * Every component takes its name from one field, and a property from `property`. None can
      * be derived from a method or a non-constructor parameter, so an attribute declared there
      * has to carry its own name — the same requirement classic enforces. `Augmenter\Names`
@@ -1257,6 +1267,7 @@ class OpenApi31Compiler implements CompilerInterface
 
     /**
      * A member of one of these maps carries the key, so an entry without one cannot be placed.
+     *
      * The compiler drops it; without this it would go silently, and classic rejects the same
      * input outright.
      */
@@ -1288,7 +1299,9 @@ class OpenApi31Compiler implements CompilerInterface
 
     /**
      * `summary` belongs to the Reference Object, so these attributes write it only beside a
-     * `$ref`. A nested attribute has no source location of its own, so the operation, path
+     * `$ref`.
+     *
+     * A nested attribute has no source location of its own, so the operation, path
      * item or component holding it is reported, and the key names the attribute. Copies of
      * one declaration produce the same message, which is logged once.
      */
@@ -1368,7 +1381,9 @@ class OpenApi31Compiler implements CompilerInterface
 
     /**
      * `Schema::$examples` is the JSON Schema keyword: a list of values, as its own docblock
-     * says. An Example Object belongs to the `examples` a media type, parameter or header
+     * says.
+     *
+     * An Example Object belongs to the `examples` a media type, parameter or header
      * takes, which is a map. Nothing else catches the mix-up — the property is `?array`, so
      * `mixed` accepts an Example and the output merely looks odd.
      */
@@ -1399,14 +1414,11 @@ class OpenApi31Compiler implements CompilerInterface
 
     protected function validateSchemas(Specification $specification): void
     {
-        $allSchemas = $this->collectSchemas($specification);
         $owners = $this->collectSchemaOwners($specification);
 
-        foreach ($allSchemas as $schema) {
-            if ($this->isArrayType($schema)) {
-                if ($schema->items === null && $schema->prefixItems === null && $schema->contains === null) {
-                    $this->logger->warning('Schema' . $this->schemaLabel($schema) . ' has type "array" but no items in ' . $schema->getSourceLocation());
-                }
+        foreach ($this->collectSchemas($specification) as $schema) {
+            if ($this->isArrayType($schema) && $schema->items === null && $schema->prefixItems === null && $schema->contains === null) {
+                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ' has type "array" but no items in ' . $schema->getSourceLocation());
             }
 
             $this->validateSchemaType($schema);
@@ -1525,7 +1537,7 @@ class OpenApi31Compiler implements CompilerInterface
             }
 
             if (!$this->supportsMethod($operation->method)) {
-                $this->logger->warning("Method \"{$operation->method}\" is not supported in OpenAPI " . substr($this->getVersion(), 0, 3) . ', omitted in ' . $operation->getSourceLocation());
+                $this->logger->warning("Method \"{$operation->method}\" is not supported in OpenAPI " . $this->minorVersion() . ', omitted in ' . $operation->getSourceLocation());
 
                 return;
             }
@@ -1578,9 +1590,11 @@ class OpenApi31Compiler implements CompilerInterface
 
     /**
      * Only responses nested in an operation are checked, because position is what gives
-     * `Response::$response` its meaning: a status code there, and a component name in the
-     * `responses` bucket, where `components.responses.product` is a name. `isRoot()` cannot
-     * tell them apart — it is true whenever the field is set.
+     * `Response::$response` its meaning.
+     *
+     * It is a status code there, and a component name in the `responses` bucket, where
+     * `components.responses.product` is a name. `isRoot()` cannot tell them apart — it is true
+     * whenever the field is set.
      *
      * A nested response carries no reflector of its own, so the operation is reported
      * instead, which is where the reader has to go to fix it anyway.
@@ -1720,13 +1734,6 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * Compiles a map whose key is a *value* rather than a name — a status code, a media type.
-     * Those have a meaningful fallback; a missing name does not, so it goes to
-     * {@see compileKeyedMap()} instead.
-     *
-     * @return array<string,mixed>
-     */
-    /**
      * The schema's key, quoted, for a diagnostic — or nothing, for an inline one.
      */
     protected function schemaLabel(OA\Schema $schema): string
@@ -1750,7 +1757,23 @@ class OpenApi31Compiler implements CompilerInterface
             ? $schema
             : $owners->offsetGet($schema);
 
-        return $located->getReflector() instanceof \Reflector ? ' in ' . $located->getSourceLocation() : '';
+        return $this->attributeLocation($located);
+    }
+
+    /**
+     * Where the attribute was declared, as a diagnostic's ending, or nothing for one built in code.
+     */
+    protected function attributeLocation(AttributeInterface $attribute): string
+    {
+        return $attribute->getReflector() instanceof \Reflector ? ' in ' . $attribute->getSourceLocation() : '';
+    }
+
+    /**
+     * The major and minor version, such as `3.1`, as messages name it.
+     */
+    protected function minorVersion(): string
+    {
+        return implode('.', array_slice(explode('.', $this->getVersion()), 0, 2));
     }
 
     /**
@@ -1764,6 +1787,11 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
+     * Compiles a map whose key is a *value* rather than a name — a status code, a media type.
+     *
+     * Those have a meaningful fallback; a missing name does not, so it goes to
+     * {@see compileKeyedMap()} instead.
+     *
      * @param array<array-key, object> $items
      *
      * @return array<string, mixed>

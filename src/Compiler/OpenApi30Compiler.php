@@ -77,12 +77,12 @@ class OpenApi30Compiler extends OpenApi31Compiler
     {
         parent::validateSpecification($specification);
 
-        $hasPaths = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->path !== null);
+        $hasPaths = (bool) array_filter($specification->operations, static fn (OA\Operation $operation): bool => $operation->path !== null);
         if (!$hasPaths) {
             $this->logger->error('Document is missing paths, required in OpenAPI 3.0');
         }
 
-        $hasWebhooks = (bool) array_filter($specification->operations, fn (OA\Operation $op): bool => $op->webhook !== null);
+        $hasWebhooks = (bool) array_filter($specification->operations, static fn (OA\Operation $operation): bool => $operation->webhook !== null);
         if ($hasWebhooks) {
             $this->logger->warning('Webhooks are not supported in OpenAPI 3.0, omitted');
         }
@@ -190,7 +190,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
 
         $type = $schema->type;
         if (is_array($type)) {
-            $type = array_values(array_filter($type, fn (string $t): bool => $t !== 'null'));
+            $type = array_values(array_filter($type, static fn (string $member): bool => $member !== 'null'));
             $type = count($type) === 1 ? $type[0] : null;
         }
 
@@ -200,11 +200,8 @@ class OpenApi30Compiler extends OpenApi31Compiler
         }
 
         $nullable = $schema->nullable;
-        if ($nullable === null && $schema->type !== null) {
-            $typeArray = (array) $schema->type;
-            if (in_array('null', $typeArray, true)) {
-                $nullable = true;
-            }
+        if ($nullable === null && in_array('null', (array) $schema->type, true)) {
+            $nullable = true;
         }
 
         $exclusiveMinimum = null;
@@ -351,55 +348,55 @@ class OpenApi30Compiler extends OpenApi31Compiler
     #[\Override]
     protected function validateSchemas(Specification $specification): void
     {
-        $allSchemas = $this->collectSchemas($specification);
         $owners = $this->collectSchemaOwners($specification);
 
-        foreach ($allSchemas as $schema) {
+        foreach ($this->collectSchemas($specification) as $schema) {
             $type = $schema->type;
             if (is_array($type)) {
-                $type = array_filter($type, fn (string $t): bool => $t !== 'null');
+                $type = array_filter($type, static fn (string $member): bool => $member !== 'null');
                 $type = reset($type) ?: null;
             }
 
+            $subject = 'Schema' . $this->schemaLabel($schema);
             if ($type === 'array' && $schema->items === null) {
-                $this->logger->error('Schema' . $this->schemaLabel($schema) . ' has type "array" but no items' . $this->schemaLocation($schema, $owners));
+                $this->logger->error($subject . ' has type "array" but no items' . $this->schemaLocation($schema, $owners));
             }
 
             $this->validateSchemaType($schema);
             $this->validateRefSiblings($schema, $owners);
 
             if ($schema->prefixItems !== null) {
-                $this->logger->error('Schema' . $this->schemaLabel($schema) . ' uses prefixItems, not supported in OpenAPI 3.0' . $this->schemaLocation($schema, $owners));
+                $this->logger->error($subject . ' uses prefixItems, not supported in OpenAPI 3.0' . $this->schemaLocation($schema, $owners));
             }
 
             if ($schema->unevaluatedProperties !== null) {
-                $this->logger->error('Schema' . $this->schemaLabel($schema) . ' uses unevaluatedProperties, not supported in OpenAPI 3.0' . $this->schemaLocation($schema, $owners));
+                $this->logger->error($subject . ' uses unevaluatedProperties, not supported in OpenAPI 3.0' . $this->schemaLocation($schema, $owners));
             }
 
             if ($schema->unevaluatedItems !== null) {
-                $this->logger->error('Schema' . $this->schemaLabel($schema) . ' uses unevaluatedItems, not supported in OpenAPI 3.0' . $this->schemaLocation($schema, $owners));
+                $this->logger->error($subject . ' uses unevaluatedItems, not supported in OpenAPI 3.0' . $this->schemaLocation($schema, $owners));
             }
 
             if ($schema->if instanceof OA\Schema || $schema->then instanceof OA\Schema || $schema->else instanceof OA\Schema) {
-                $this->logger->error('Schema' . $this->schemaLabel($schema) . ' uses if/then/else, not supported in OpenAPI 3.0' . $this->schemaLocation($schema, $owners));
+                $this->logger->error($subject . ' uses if/then/else, not supported in OpenAPI 3.0' . $this->schemaLocation($schema, $owners));
             }
 
             if ($schema->contentEncoding !== null || $schema->contentMediaType !== null) {
                 $format = $this->contentFormat($schema);
                 if ($format === null || ($schema->format !== null && $schema->format !== $format)) {
-                    $this->logger->warning('Schema' . $this->schemaLabel($schema) . ' uses contentEncoding/contentMediaType, not supported in OpenAPI 3.0, omitted' . $this->schemaLocation($schema, $owners));
+                    $this->logger->warning($subject . ' uses contentEncoding/contentMediaType, not supported in OpenAPI 3.0, omitted' . $this->schemaLocation($schema, $owners));
                 }
             }
 
             if ($schema->const !== Undefined::UNDEFINED) {
-                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ' uses const, not supported in OpenAPI 3.0, using enum fallback' . $this->schemaLocation($schema, $owners));
+                $this->logger->warning($subject . ' uses const, not supported in OpenAPI 3.0, using enum fallback' . $this->schemaLocation($schema, $owners));
             }
 
             if ($schema->examples !== null) {
                 // a plain 3.0 `$ref` is a Reference Object, which drops everything beside it
                 $this->logger->warning(($schema->ref !== null && $schema->nullable !== true
-                    ? 'Schema' . $this->schemaLabel($schema) . ' sets examples beside $ref "' . $schema->getRefValue() . '", not supported in OpenAPI 3.0, omitted'
-                    : 'Schema' . $this->schemaLabel($schema) . ' uses an examples array, not supported in OpenAPI 3.0, using the first value as example')
+                    ? $subject . ' sets examples beside $ref "' . $schema->getRefValue() . '", not supported in OpenAPI 3.0, omitted'
+                    : $subject . ' uses an examples array, not supported in OpenAPI 3.0, using the first value as example')
                     . $this->schemaLocation($schema, $owners));
             }
         }
