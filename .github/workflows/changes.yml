@@ -1,0 +1,33 @@
+name: changes
+
+# Called by the test workflows to skip text-only changes. Which paths count is
+# in .github/path-filters.yml. Callers grant the permissions below on the job
+# that uses this workflow.
+
+on:
+  workflow_call:
+    outputs:
+      run:
+        description: "'true' unless the change is text only"
+        value: ${{ jobs.changes.outputs.run }}
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      # Scheduled and manual runs skip the filter, and always run.
+      run: ${{ steps.filter.outcome == 'skipped' || steps.filter.outputs.code == 'true' || steps.filter.outputs.checked == 'true' }}
+    steps:
+      - uses: actions/checkout@v7
+        name: Checkout repository
+
+      - uses: dorny/paths-filter@v4
+        name: Skip text-only changes
+        id: filter
+        if: github.event_name == 'push' || github.event_name == 'pull_request'
+        with:
+          filters: .github/path-filters.yml
+          predicate-quantifier: some-with-excludes

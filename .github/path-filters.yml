@@ -1,0 +1,24 @@
+# Which changes run the test workflows. A change that matches neither filter
+# is text only, and their jobs are skipped.
+#
+# Read by .github/workflows/changes.yml, through dorny/paths-filter with
+# `predicate-quantifier: some-with-excludes`. A negated pattern excludes for
+# good, so the docs that are checked get a filter of their own rather than
+# being let back in.
+
+# Everything except Markdown and the docs site.
+code:
+  - '**'
+  - '!**/*.md'
+  - '!docs/**'
+
+# Docs that tests and tools read. DocsAccuracyTest checks that every page it
+# reads is listed here.
+checked:
+  - 'docs/examples/**'
+  - 'docs/snippets/**'
+  - 'docs/dev/pipeline.md'
+  - 'docs/dev/testing.md'
+  - 'docs/guide/generating-openapi-documents.md'
+  - 'docs/reference/architecture.md'
+  - 'docs/reference/builder.md'
