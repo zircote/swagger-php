@@ -232,9 +232,6 @@ to `detailsFor()` or `scanFile()` there fails with an undefined method error.
 written beside a `$ref` from OpenAPI 3.1 on. A subclass declaring its own `$summary` property needs
 it as `public ?string $summary`. Any other type or visibility is a fatal error.
 
-`Property` takes a `required` flag. A subclass declaring its own `$required` property needs it as
-`public ?bool $required`. Any other type or visibility is a fatal error.
-
 ## Changed output in 7.7
 
 Spec and hybrid report every property the target OpenAPI version leaves out. Before, most were left
@@ -261,6 +258,43 @@ A compiler subclass leaves a property out by listing it in `UNSUPPORTED_PROPERTI
 drops it, and the compiler warns about it. The 3.0 compiler's own `compileInfo()` and
 `compileLicense()`, and the 3.2 compiler's own `compileTag()`, are gone, since the lists do what they
 did. A subclass calling one of them through `parent::` gets the same result as before.
+
+## Changed output in 7.8
+
+In spec, a 3.2 document writes an inline response's `summary`. Before, it was left out with a
+warning.
+
+In spec, a 3.2 document writes an operation with a method such as `COPY` to `additionalOperations`.
+Before, it was left out with a warning.
+
+In spec and hybrid, 3.0 and 3.1 leave out `style: cookie` with a warning. Before, it was written,
+and the document was invalid.
+
+## Changed output in 7.9
+
+A union of integer ranges, such as `int<1, 5>|int<10, 20>`, becomes an `anyOf` with one integer
+schema per range. Before, any union of two ranges was described as `non-zero-int`, which accepts
+every integer but 0. `negative-int|positive-int` is still `non-zero-int`.
+
+A docblock string pseudo-type that rules out the empty string, such as `non-empty-string` or
+`non-falsy-string`, sets `minLength: 1`. Before, it was a plain `string`.
+
+In spec and hybrid, `items` or `additionalProperties` given on an attribute without a type take the
+type from the docblock, as classic does. Before, `@var list<positive-int>` with
+`items: new OA\Schema()` came out as `items: {}`.
+
+In spec and hybrid, a 3.0 warning about a schema nested in a property's or parameter's schema, such
+as its `items`, ends with the location of that property or parameter. Before, it had no location.
+
+## Changed in 7.9
+
+`Property` takes a `required` flag. A subclass declaring its own `$required` property needs it as
+`public ?bool $required`. Any other type or visibility is a fatal error.
+
+`Undefined`, `ComponentKey`, `JsonPointer`, `SourceLocation`, `SecurityRequirement`,
+`ServerVariableEnum` and `Schema\AdditionalProperties` are no longer `final`, and the `private`
+members in `src` are `protected`. A protected method is not a fixed API: its signature can change
+without a deprecation.
 
 ## Preparing for 8.0
 
