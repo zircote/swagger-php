@@ -15,6 +15,7 @@ use OpenApi\Contracts\CompilerInterface;
 use OpenApi\Spec\AbstractAttribute;
 use OpenApi\Spec\Operation;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Yaml\Yaml;
 
 final class DocsAccuracyTest extends TestCase
 {
@@ -217,6 +218,25 @@ final class DocsAccuracyTest extends TestCase
                 $paramNames,
                 "{$short}::__construct() should not have \$requestBody (docs/guide/spec-attributes.md)"
             );
+        }
+    }
+
+    /**
+     * The workflows skip text-only changes, so a page this test reads has to be listed among
+     * the docs they still run for, or a change to it alone goes unchecked.
+     */
+    public function testPathFiltersListThePagesThisTestReads(): void
+    {
+        $filters = Yaml::parseFile(__DIR__ . '/../.github/path-filters.yml');
+        $this->assertIsArray($filters);
+        $this->assertIsArray($filters['checked'] ?? null, 'No "checked" filter in .github/path-filters.yml');
+
+        preg_match_all("/self::DOCS \\. '\\/([^']+\\.md)'/", $this->readFile(__FILE__), $m);
+        $pages = array_values(array_unique($m[1]));
+        $this->assertNotEmpty($pages);
+
+        foreach ($pages as $page) {
+            $this->assertContains("docs/{$page}", $filters['checked'], "docs/{$page} is read by this test but missing from the \"checked\" filter in .github/path-filters.yml");
         }
     }
 

@@ -11,7 +11,15 @@ on:
       - master
 
 jobs:
+  changes:
+    uses: ./.github/workflows/changes.yml
+    permissions:
+      contents: read
+      pull-requests: read
+
   test:
+    needs: changes
+    if: needs.changes.outputs.run == 'true'
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: true
@@ -42,6 +50,8 @@ jobs:
         run: composer test -- --configuration phpunit.xml.dist --coverage-text
 
   floor:
+    needs: changes
+    if: needs.changes.outputs.run == 'true'
     runs-on: ubuntu-latest
 
     # php-cs-fixer and phpbench raise symfony's floor; a consumer installs neither
