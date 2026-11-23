@@ -67,14 +67,16 @@ class OpenApi32Compiler extends OpenApi31Compiler
         $this->visit($specification, OA\Security\Scheme::class, function (OA\Security\Scheme $scheme): void {
             if ($scheme->oauth2MetadataUrl !== null && $scheme->type !== OA\SchemeType::OAuth2->value) {
                 $this->logger->warning("{$this->subject($scheme)} uses oauth2MetadataUrl, which only an oauth2 scheme takes, omitted"
-                    . ($scheme->getReflector() instanceof \Reflector ? ' in ' . $scheme->getSourceLocation() : ''));
+                    . $this->attributeLocation($scheme));
             }
         });
     }
 
     /**
      * `value` is the pre-3.2 way of embedding an example, and is mutually exclusive with both
-     * of the fields that replace it. `serializedValue` and `externalValue` overlap as well:
+     * of the fields that replace it.
+     *
+     * `serializedValue` and `externalValue` overlap as well:
      * both describe the example after serialization.
      */
     #[\Override]
@@ -94,7 +96,9 @@ class OpenApi32Compiler extends OpenApi31Compiler
     }
 
     /**
-     * A response has a summary of its own from 3.2 on. Its headers and links still do not.
+     * A response has a summary of its own from 3.2 on.
+     *
+     * Its headers and links still do not.
      */
     #[\Override]
     protected function summariesWithoutRef(array $attributes): array
@@ -149,8 +153,9 @@ class OpenApi32Compiler extends OpenApi31Compiler
 
     /**
      * Encodings addressed by position, `prefixEncoding` and `itemEncoding`, are the alternative to
-     * `encoding` by name, and need a schema with items for their positions: `itemSchema` or an
-     * array `schema`. A name on one of them has no effect.
+     * `encoding` by name, and need a schema with items for their positions.
+     *
+     * That schema is `itemSchema` or an array `schema`. A name on one of them has no effect.
      */
     protected function validatePositionalEncodings(Specification $specification): void
     {
@@ -161,7 +166,7 @@ class OpenApi32Compiler extends OpenApi31Compiler
             }
 
             $subject = $this->subject($holder);
-            $location = $holder->getReflector() instanceof \Reflector ? ' in ' . $holder->getSourceLocation() : '';
+            $location = $this->attributeLocation($holder);
             $named = $holder instanceof OA\MediaType ? $holder->encoding : $holder->encodings;
             if ($named) {
                 $this->logger->error("{$subject} uses encoding beside prefixEncoding or itemEncoding, which exclude each other{$location}");
@@ -182,8 +187,9 @@ class OpenApi32Compiler extends OpenApi31Compiler
     }
 
     /**
-     * Whether a schema can describe items by position. A reference is taken on trust: what it
-     * points to is checked where it is declared.
+     * Whether a schema can describe items by position.
+     *
+     * A reference is taken on trust: what it points to is checked where it is declared.
      */
     protected function hasItems(?OA\Schema $schema): bool
     {
@@ -203,7 +209,7 @@ class OpenApi32Compiler extends OpenApi31Compiler
             }
 
             $subject = 'Querystring parameter "' . ($parameter->name ?? $parameter->component) . '"';
-            $location = $parameter->getReflector() instanceof \Reflector ? ' in ' . $parameter->getSourceLocation() : '';
+            $location = $this->attributeLocation($parameter);
             if (!$parameter->content) {
                 $this->logger->error("{$subject} must have content{$location}");
             }
@@ -221,9 +227,10 @@ class OpenApi32Compiler extends OpenApi31Compiler
     }
 
     /**
-     * An operation has at most one querystring parameter, and none beside a query parameter. The
-     * parameters of its path item count, and an operation's own replaces one with the same name
-     * and location.
+     * An operation has at most one querystring parameter, and none beside a query parameter.
+     *
+     * The parameters of its path item count, and an operation's own replaces one with the same
+     * name and location.
      */
     protected function validateQuerystringOperations(Specification $specification): void
     {
@@ -260,7 +267,9 @@ class OpenApi32Compiler extends OpenApi31Compiler
 
     /**
      * A method without a field of its own goes into `additionalOperations`, keyed by the method as
-     * it is sent. Methods are kept lowercase, so the key is the uppercase form, such as `COPY`.
+     * it is sent.
+     *
+     * Methods are kept lowercase, so the key is the uppercase form, such as `COPY`.
      *
      * @param  array<string,mixed> $item
      * @return array<string,mixed>
@@ -329,7 +338,7 @@ class OpenApi32Compiler extends OpenApi31Compiler
             $replaced = array_keys(array_filter(['attribute' => $xml->attribute, 'wrapped' => $xml->wrapped], static fn (?bool $value): bool => $value !== null));
             if ($replaced !== []) {
                 $this->logger->error('Xml uses nodeType beside ' . implode(' and ', $replaced) . ', which it replaces'
-                    . ($xml->getReflector() instanceof \Reflector ? ' in ' . $xml->getSourceLocation() : ''));
+                    . $this->attributeLocation($xml));
             }
         });
     }
