@@ -178,8 +178,9 @@ class Resolver implements LoggerAwareInterface
     }
 
     /**
+     * The classes of the PHP types a ref will be inferred from, collected in advance.
+     *
      * The resolver runs before the augmenters, so a ref inferred from a PHP type does not exist yet.
-     * Its class is collected here in advance.
      *
      * @param array<string, ComponentKey> $unresolved
      */
@@ -236,7 +237,7 @@ class Resolver implements LoggerAwareInterface
             static fn (\ReflectionProperty $property): string => $property->getName(),
             $schema->getClassReflector()?->getProperties() ?? [],
         ));
-        usort($reflectors, static fn (\Reflector $a, \Reflector $b): int => ($declared[$a->getName()] ?? PHP_INT_MAX) <=> ($declared[$b->getName()] ?? PHP_INT_MAX));
+        usort($reflectors, static fn (\Reflector $left, \Reflector $right): int => ($declared[$left->getName()] ?? PHP_INT_MAX) <=> ($declared[$right->getName()] ?? PHP_INT_MAX));
 
         $types = [];
         foreach ($reflectors as $reflector) {

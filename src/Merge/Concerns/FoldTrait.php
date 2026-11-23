@@ -15,9 +15,10 @@ use OpenApi\Undefined;
 trait FoldTrait
 {
     /**
-     * Fill each named field of `$survivor` that is unset from `$later`. Where both are set and
-     * differ, the field is recorded as a conflict and takes `$later`'s value under `Mode::Last`;
-     * otherwise it keeps its own.
+     * Fill each named field of `$survivor` that is unset from `$later`.
+     *
+     * Where both are set and differ, the field is recorded as a conflict and takes `$later`'s
+     * value under `Mode::Last`; otherwise it keeps its own.
      *
      * @param list<string> $fields
      * @param list<string> $conflicts

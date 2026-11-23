@@ -104,8 +104,10 @@ class Operations implements MergerInterface, LoggerAwareInterface
     }
 
     /**
-     * One level deep: the public fields of two parameters or two responses, and of a
-     * parameter's schema, folded by the same rule. Deeper structure is taken whole.
+     * Two parameters or two responses folded one level deep, a parameter's schema included.
+     *
+     * Their public fields are folded by the same rule as the operation's. Deeper structure is
+     * taken whole.
      *
      * @param list<string> $conflicts
      */
@@ -152,10 +154,10 @@ class Operations implements MergerInterface, LoggerAwareInterface
      */
     protected function keyed(?array $earlier, ?array $later, callable $key, string $label, Mode $mode, array &$conflicts): ?array
     {
-        if ($later === null || $later === []) {
+        if (!$later) {
             return $earlier;
         }
-        if ($earlier === null || $earlier === []) {
+        if (!$earlier) {
             return $later;
         }
 

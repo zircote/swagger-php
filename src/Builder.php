@@ -528,9 +528,10 @@ class Builder
     }
 
     /**
-     * Hands the builder's services to each member of a list that implements the matching aware
-     * interface, built-in or added through `withAugmenters()`, `withResolver()` or
-     * `withMergers()`.
+     * Hands the builder's services to each member of a list that implements the matching aware interface.
+     *
+     * That covers the built-in members and those added through `withAugmenters()`,
+     * `withResolver()` or `withMergers()`.
      *
      * @template T
      *
@@ -555,8 +556,9 @@ class Builder
     }
 
     /**
-     * The type resolver handed to each augmenter, resolver and merger implementing
-     * `TypeResolverAwareInterface`: the one set with `setTypeResolver()`, or a default.
+     * The type resolver set with `setTypeResolver()`, or a default.
+     *
+     * It is handed to each augmenter, resolver and merger implementing `TypeResolverAwareInterface`.
      */
     protected function getTypeResolver(): Type\TypeResolver
     {
@@ -566,7 +568,9 @@ class Builder
     }
 
     /**
-     * The logger every part of a build reports to; each build's result takes what it collected since the last.
+     * The logger every part of a build reports to.
+     *
+     * Each build's result takes what it collected since the last.
      */
     protected function getLogger(): CollectingLogger
     {
@@ -584,15 +588,7 @@ class Builder
             $this->getLogger()->warning('Documents are added to the spec pipeline and are not read in classic mode, ignored');
         }
 
-        $generator = new Generator($this->getLogger());
-
-        if ($this->version !== null) {
-            $generator->setVersion($this->version);
-        }
-
-        if ($this->generatorHook !== null) {
-            $generator = ($this->generatorHook)($generator) ?? $generator;
-        }
+        $generator = $this->createGenerator(hybrid: false);
 
         $sourceScanner = new SourceScanner($this->getLogger());
         $files = $sourceScanner->scan($this->sources);
@@ -600,6 +596,30 @@ class Builder
         $openApi = $generator->generate($files);
 
         return Result::fromClassic($files, $openApi, $this->getLogger()->drain());
+    }
+
+    /**
+     * The generator a classic build runs, or the one a hybrid build reads classic annotations with.
+     *
+     * A hybrid build runs no processors: the augmenters do that work after the bridge.
+     */
+    protected function createGenerator(bool $hybrid): Generator
+    {
+        $generator = new Generator($this->getLogger());
+
+        if ($this->version !== null) {
+            $generator->setVersion($this->version);
+        }
+
+        if ($hybrid) {
+            $generator->setProcessorPipeline(new Utils\Pipeline([]));
+        }
+
+        if ($this->generatorHook !== null) {
+            $generator = ($this->generatorHook)($generator) ?? $generator;
+        }
+
+        return $generator;
     }
 
     /**
@@ -623,8 +643,8 @@ class Builder
 
         foreach ($sourceScanner->getFiles() as $file) {
             foreach ($sourceInspector->classesIn($file) as $class) {
-                [$rc, $reason] = ClassReflector::tryReflect($class);
-                if (!$rc instanceof \ReflectionClass) {
+                [$reflector, $reason] = ClassReflector::tryReflect($class);
+                if (!$reflector instanceof \ReflectionClass) {
                     $this->getLogger()->error($reason === null
                         ? "Class \"{$class}\" not found, skipped"
                         : "Class \"{$class}\" cannot be loaded, skipped: {$reason}");
@@ -632,7 +652,7 @@ class Builder
                     continue;
                 }
 
-                $this->collectSafely($assembler, $rc);
+                $this->collectSafely($assembler, $reflector);
             }
         }
 
@@ -728,17 +748,7 @@ class Builder
 
     protected function doHybridAssemble(Specification $specification): void
     {
-        $generator = new Generator($this->getLogger());
-
-        if ($this->version !== null) {
-            $generator->setVersion($this->version);
-        }
-
-        $generator->setProcessorPipeline(new Utils\Pipeline([]));
-
-        if ($this->generatorHook !== null) {
-            $generator = ($this->generatorHook)($generator) ?? $generator;
-        }
+        $generator = $this->createGenerator(hybrid: true);
 
         $analysis = new Analysis([], new Context([
             'version' => $generator->getVersion(),

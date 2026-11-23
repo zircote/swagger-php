@@ -40,9 +40,10 @@ class Walker
     }
 
     /**
-     * Walk every attribute whose schema can be inferred from its reflector's PHP type: each
-     * property in a schema's `properties`, with that schema, and each parameter and request body.
-     * These are the attributes `Augmenter\Types` types.
+     * Walk every attribute whose schema can be inferred from its reflector's PHP type.
+     *
+     * That is each property in a schema's `properties`, with that schema, and each parameter and
+     * request body: the attributes `Augmenter\Types` types.
      *
      * Whether the reflector carries a type, and whether the attribute's schema leaves room for
      * one, is the visitor's to decide.
@@ -76,11 +77,9 @@ class Walker
             }
 
             // special case
-            if ($attribute instanceof OA\Schema) {
-                if ($attribute->discriminator instanceof OA\Discriminator && $attribute->discriminator->mapping !== null) {
-                    foreach ($attribute->discriminator->mapping as $ref) {
-                        $visitor(new OA\Schema(ref: $ref));
-                    }
+            if ($attribute instanceof OA\Schema && $attribute->discriminator instanceof OA\Discriminator) {
+                foreach ($attribute->discriminator->mapping ?? [] as $ref) {
+                    $visitor(new OA\Schema(ref: $ref));
                 }
             }
 
@@ -144,18 +143,20 @@ class Walker
         $deferred = $this->deferred;
         $this->deferred = [];
 
-        if ($deferred !== []) {
-            $this->visit(AttributeInterface::class, static function (AttributeInterface $attribute) use ($deferred): void {
-                foreach ($deferred as [$visitee, $visitor]) {
-                    foreach ($visitee as $class) {
-                        if ($attribute instanceof $class) {
-                            $visitor($attribute);
-                            break;
-                        }
+        if ($deferred === []) {
+            return;
+        }
+
+        $this->visit(AttributeInterface::class, static function (AttributeInterface $attribute) use ($deferred): void {
+            foreach ($deferred as [$visitee, $visitor]) {
+                foreach ($visitee as $class) {
+                    if ($attribute instanceof $class) {
+                        $visitor($attribute);
+                        break;
                     }
                 }
-            });
-        }
+            }
+        });
     }
 
     /**

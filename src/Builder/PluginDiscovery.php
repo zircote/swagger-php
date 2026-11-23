@@ -45,8 +45,9 @@ class PluginDiscovery
         $seen = [];
         foreach ($this->ordered($packages) as $name) {
             foreach ($this->declared($packages[$name]) as $class) {
-                if (!isset($seen[self::classKey($class)])) {
-                    $seen[self::classKey($class)] = true;
+                $key = self::classKey($class);
+                if (!isset($seen[$key])) {
+                    $seen[$key] = true;
                     $plugins[ltrim($class, '\\')] = $name;
                 }
             }

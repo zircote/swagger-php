@@ -53,9 +53,10 @@ class ShortName implements ComponentNamerInterface
     }
 
     /**
-     * The qualifiers in the key's order, each with its name. The key sorts names and values as
-     * given, so the order does not change with how they were added, and a value named here can
-     * sort differently from the value itself.
+     * The qualifiers in the key's order, each with its name.
+     *
+     * The key sorts names and values as given, so the order does not change with how they were
+     * added, and a value named here can sort differently from the value itself.
      */
     protected function qualifiers(ComponentKey $key): string
     {
