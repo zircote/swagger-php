@@ -79,27 +79,18 @@ class TypedList implements \IteratorAggregate
         }
 
         if (is_string($item) && !$matcher) {
-            $itemClass = $item;
-            $matcher = (static fn ($item): bool => !$item instanceof $itemClass);
+            $matcher = static fn ($candidate): bool => !$candidate instanceof $item;
         }
 
         if ($matcher) {
-            $tmp = [];
-            foreach ($this->items as $item) {
-                if ($matcher($item)) {
-                    $tmp[] = $item;
-                }
-            }
+            $this->items = array_values(array_filter($this->items, $matcher));
 
-            $this->items = $tmp;
-        } else {
-            if (false === ($key = array_search($item, $this->items, true))) {
-                return $this;
-            }
+            return $this;
+        }
 
-            $items = $this->items;
-            unset($items[$key]);
-            $this->items = array_values($items);
+        $key = array_search($item, $this->items, true);
+        if ($key !== false) {
+            array_splice($this->items, $key, 1);
         }
 
         return $this;

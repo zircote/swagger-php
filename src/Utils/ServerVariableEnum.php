@@ -40,14 +40,8 @@ class ServerVariableEnum
                 continue;
             }
 
-            if (is_int($value) || is_float($value)) {
+            if (is_string($value) || is_int($value) || is_float($value)) {
                 $values[] = (string) $value;
-
-                continue;
-            }
-
-            if (is_string($value)) {
-                $values[] = $value;
 
                 continue;
             }

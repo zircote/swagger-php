@@ -8,6 +8,7 @@ namespace OpenApi\Utils;
 
 use OpenApi\Type\TypeMapper;
 use OpenApi\Undefined;
+use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
@@ -23,6 +24,10 @@ use PHPStan\PhpDocParser\ParserConfig;
 
 class DocBlockParser
 {
+    protected ?Lexer $lexer = null;
+
+    protected ?PhpDocParser $phpDocParser = null;
+
     public function parsePhpDoc(?string $docblock): ?PhpDocNode
     {
         if (!$docblock || Undefined::isDefault($docblock)) {
@@ -35,18 +40,17 @@ class DocBlockParser
             $normalized = rtrim((string) $normalized) . '/';
         }
 
-        $config = new ParserConfig([]);
-        $lexer = new Lexer($config);
-        $phpDocParser = new PhpDocParser(
-            $config,
-            new TypeParser($config, $constExprParser = new ConstExprParser($config)),
-            $constExprParser,
-        );
+        if (!$this->lexer instanceof Lexer || !$this->phpDocParser instanceof PhpDocParser) {
+            $config = new ParserConfig([]);
+            $constExprParser = new ConstExprParser($config);
+            $this->lexer = new Lexer($config);
+            $this->phpDocParser = new PhpDocParser($config, new TypeParser($config, $constExprParser), $constExprParser);
+        }
 
         try {
-            $tokens = new TokenIterator($lexer->tokenize($normalized));
+            $tokens = new TokenIterator($this->lexer->tokenize($normalized));
 
-            return $phpDocParser->parse($tokens);
+            return $this->phpDocParser->parse($tokens);
         } catch (\Throwable) {
             return null;
         }
@@ -77,20 +81,11 @@ class DocBlockParser
         }
 
         if (null !== $tags) {
-            if (!array_key_exists('param', $tags)) {
-                $tags['param'] = [];
-            }
-            foreach ($docNode->getParamTagValues() as $param) {
+            $tags['param'] ??= [];
+            foreach ([...$docNode->getParamTagValues(), ...$docNode->getTypelessParamTagValues()] as $param) {
                 $name = ltrim((string) $param->parameterName, '$');
                 $tags['param'][$name] = [
-                    'type' => (string) $param->type ?: null,
-                    'description' => $param->description !== '' ? $param->description : null,
-                ];
-            }
-            foreach ($docNode->getTypelessParamTagValues() as $param) {
-                $name = ltrim((string) $param->parameterName, '$');
-                $tags['param'][$name] = [
-                    'type' => null,
+                    'type' => $param instanceof ParamTagValueNode ? ((string) $param->type ?: null) : null,
                     'description' => $param->description !== '' ? $param->description : null,
                 ];
             }
@@ -129,11 +124,8 @@ class DocBlockParser
             }
         }
         $summary = trim($summary);
-        if ($summary === '') {
-            return Undefined::UNDEFINED;
-        }
 
-        return $summary;
+        return $summary !== '' ? $summary : Undefined::UNDEFINED;
     }
 
     public function extractCommentDescription(string $content): string
@@ -147,12 +139,7 @@ class DocBlockParser
             return Undefined::UNDEFINED;
         }
 
-        $description = '';
-        if (($substr = substr($content, strlen($summary))) !== '') {
-            $description = trim($substr);
-        }
-
-        return $description ?: Undefined::UNDEFINED;
+        return trim(substr($content, strlen($summary))) ?: Undefined::UNDEFINED;
     }
 
     /**
@@ -197,8 +184,10 @@ class DocBlockParser
 
     /**
      * `$example` decoded as JSON where the value is one of `$types`, or `null` where the schema
-     * is nullable. Anything else, and any example of a schema that has no type or allows a
-     * string, stays the string written.
+     * is nullable.
+     *
+     * Anything else, and any example of a schema that has no type or allows a string, stays the
+     * string written.
      *
      * @param array<string> $types
      */
@@ -212,9 +201,7 @@ class DocBlockParser
             $value = json_decode($example, flags: JSON_THROW_ON_ERROR | JSON_BIGINT_AS_STRING);
             $decoded = json_decode($example, flags: JSON_THROW_ON_ERROR);
 
-            /*
-             * Reject non-finite numbers and integers that would become strings, including nested values.
-             */
+            // reject non-finite numbers and integers that would become strings, including nested values
             if (json_encode($value, JSON_THROW_ON_ERROR) !== json_encode($decoded, JSON_THROW_ON_ERROR)) {
                 return $example;
             }
