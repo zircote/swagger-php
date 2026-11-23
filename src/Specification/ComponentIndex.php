@@ -24,9 +24,11 @@ class ComponentIndex
 {
     protected const COMPONENTS_PREFIX = '#/components/';
 
-    /** @var array<string, array<string, AttributeInterface>|null> */ protected array $indexes = [];
+    /** @var array<string, array<string, AttributeInterface>|null> */
+    protected array $indexes = [];
 
-    /** @var array<string, array<string, list<AttributeInterface>>> bucket → key → components */ protected array $keyed = [];
+    /** @var array<string, array<string, list<AttributeInterface>>> bucket → key → components */
+    protected array $keyed = [];
 
     public function __construct(
         protected Specification $specification,
@@ -60,45 +62,35 @@ class ComponentIndex
 
     public function findSchema(string $ref): ?OA\Schema
     {
-        $result = str_starts_with($ref, self::COMPONENTS_PREFIX)
-            ? $this->find($ref)
-            : ($this->getIndex('schemas')[$ref] ?? null);
+        $result = $this->findIn($ref, 'schemas');
 
         return $result instanceof OA\Schema ? $result : null;
     }
 
     public function findResponse(string $ref): ?OA\Response
     {
-        $result = str_starts_with($ref, self::COMPONENTS_PREFIX)
-            ? $this->find($ref)
-            : ($this->getIndex('responses')[$ref] ?? null);
+        $result = $this->findIn($ref, 'responses');
 
         return $result instanceof OA\Response ? $result : null;
     }
 
     public function findRequestBody(string $ref): ?OA\RequestBody
     {
-        $result = str_starts_with($ref, self::COMPONENTS_PREFIX)
-            ? $this->find($ref)
-            : ($this->getIndex('requestBodies')[$ref] ?? null);
+        $result = $this->findIn($ref, 'requestBodies');
 
         return $result instanceof OA\RequestBody ? $result : null;
     }
 
     public function findParameter(string $ref): ?OA\Parameter
     {
-        $result = str_starts_with($ref, self::COMPONENTS_PREFIX)
-            ? $this->find($ref)
-            : ($this->getIndex('parameters')[$ref] ?? null);
+        $result = $this->findIn($ref, 'parameters');
 
         return $result instanceof OA\Parameter ? $result : null;
     }
 
     public function findHeader(string $ref): ?OA\Header
     {
-        $result = str_starts_with($ref, self::COMPONENTS_PREFIX)
-            ? $this->find($ref)
-            : ($this->getIndex('headers')[$ref] ?? null);
+        $result = $this->findIn($ref, 'headers');
 
         return $result instanceof OA\Header ? $result : null;
     }
@@ -138,8 +130,9 @@ class ComponentIndex
     }
 
     /**
-     * A parameter's identity, `in:name`, which is how OpenAPI tells two parameters apart. Null
-     * when either half is unknown.
+     * A parameter's identity, `in:name`, or null when either half is unknown.
+     *
+     * The identity is how OpenAPI tells two parameters apart.
      *
      * A parameter that is only a `ref` takes both from the component it points to. One without
      * a `name` takes the name of the PHP parameter it was read from, the name
@@ -161,8 +154,9 @@ class ComponentIndex
     }
 
     /**
-     * A class whose plain key names exactly one named component in a bucket, mapped to it. Where a
-     * class has a component in more than one bucket, the last bucket wins.
+     * A class whose plain key names exactly one named component in a bucket, mapped to it.
+     *
+     * Where a class has a component in more than one bucket, the last bucket wins.
      *
      * @deprecated since 7.1, removed in 8.0; use `findByKey()`, which says which bucket a use means
      *
@@ -183,6 +177,16 @@ class ComponentIndex
         }
 
         return $map;
+    }
+
+    /**
+     * The component a pointer names, or one a name or class names in the bucket.
+     */
+    protected function findIn(string $ref, string $bucket): ?AttributeInterface
+    {
+        return str_starts_with($ref, self::COMPONENTS_PREFIX)
+            ? $this->find($ref)
+            : ($this->getIndex($bucket)[$ref] ?? null);
     }
 
     /**

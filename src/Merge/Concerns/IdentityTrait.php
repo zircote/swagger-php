@@ -65,6 +65,8 @@ trait IdentityTrait
     }
 
     /**
+     * The message reporting two attributes that claim one key.
+     *
      * Both are named, because either could be the one the author did not mean to write. Two
      * contributed attributes both report `unknown`, which is stated once.
      *
@@ -98,8 +100,9 @@ trait IdentityTrait
     }
 
     /**
-     * What the key reads as in a message. The identity string is a grouping key and carries a
-     * space prefix nobody needs to see.
+     * What the key reads as in a message.
+     *
+     * The identity string is a grouping key and carries a prefix nobody needs to see.
      */
     protected function label(AttributeInterface $attribute): string
     {

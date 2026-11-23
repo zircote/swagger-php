@@ -36,8 +36,9 @@ Split an `OA\Operation` declaring `methods:` into one operation per method.
 The first method keeps the declared operation, every other one gets a `copy()` of it. When
 the split operation is the only operation on its method, what would nest into it is set to
 `Fan::All` where it leaves `fan` unset: its siblings, and the attributes on the method's PHP
-parameters, or on `__invoke`'s for an operation declared on an invokable class. So each method gets the whole description. Next to other operations nothing is
-fanned, and an attribute that could go into more than one of them is the usual ambiguity.
+parameters, or on `__invoke`'s for an operation declared on an invokable class. So each
+method gets the whole description. Next to other operations nothing is fanned, and an
+attribute that could go into more than one of them is the usual ambiguity.
 
 An explicit `operationId` on several methods has to tell them apart with `{method}`, which
 `Augmenter\OperationIdTemplates` expands. Without it, it is dropped with an error and each

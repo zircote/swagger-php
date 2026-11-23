@@ -105,10 +105,7 @@ class Result
      */
     public function warnings(): array
     {
-        return array_column(
-            array_filter($this->log, fn (array $entry): bool => $entry['level'] === 'warning'),
-            'message'
-        );
+        return $this->messages('warning');
     }
 
     /**
@@ -118,10 +115,7 @@ class Result
      */
     public function errors(): array
     {
-        return array_column(
-            array_filter($this->log, fn (array $entry): bool => $entry['level'] === 'error'),
-            'message'
-        );
+        return $this->messages('error');
     }
 
     /**
@@ -178,5 +172,18 @@ class Result
         if (file_put_contents($filename, $content) === false) {
             throw new OpenApiException('Failed to save to "' . $filename . '"');
         }
+    }
+
+    /**
+     * The messages logged at one level.
+     *
+     * @return list<string>
+     */
+    protected function messages(string $level): array
+    {
+        return array_column(
+            array_filter($this->log, static fn (array $entry): bool => $entry['level'] === $level),
+            'message'
+        );
     }
 }

@@ -62,14 +62,13 @@ class Assembler
     {
         $this->attributeFactory->resetTranslators();
 
-        $resolved = $this->resolveReflector($reflector);
-
-        $this->specification->add(...$resolved);
+        $this->specification->add(...$this->resolveReflector($reflector));
     }
 
     /**
+     * @param AttributeReflector $reflector
+     *
      * @return list<AttributeInterface>
-     * @param  AttributeReflector       $reflector
      */
     protected function resolveReflector(\ReflectionClass|\ReflectionMethod|\ReflectionProperty|\ReflectionParameter|\ReflectionClassConstant $reflector): array
     {

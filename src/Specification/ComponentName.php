@@ -25,8 +25,10 @@ class ComponentName
 {
     /**
      * Every `components` bucket, named as both the `Specification` property holding it and the
-     * segment a `$ref` to it carries. `pathItems` doubles as the `paths` source: a `PathItem`
-     * without a name is path-bound and is not a component.
+     * segment a `$ref` to it carries.
+     *
+     * `pathItems` doubles as the `paths` source: a `PathItem` without a name is path-bound and is
+     * not a component.
      */
     public const BUCKETS = ['schemas', 'responses', 'parameters', 'requestBodies', 'headers', 'securitySchemes', 'links', 'examples', 'pathItems', 'mediaTypes'];
 
@@ -116,8 +118,9 @@ class ComponentName
     }
 
     /**
-     * What `component` falls back to: the historic spelling, and the one inference that reads a
-     * value field — a parameter without one is named by its `name`. The constructors alias the
+     * What `component` falls back to: the historic spelling, or a parameter's `name`.
+     *
+     * The parameter's `name` is the one inference that reads a value field. The constructors alias the
      * spellings that can only be the name, so those are only found here when assigned later. The
      * field name is reported when the spelling is deprecated, and is null for the inference,
      * which is not. A schema used to fall back to its title; nothing relied on it, and an
