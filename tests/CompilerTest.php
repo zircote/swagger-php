@@ -653,6 +653,27 @@ final class CompilerTest extends TestCase
     }
 
     /**
+     * 3.2 leaves out a tag `parent` that names no tag, whether or not `validate()` ran first,
+     * and `validate()` reports it without changing the tag.
+     */
+    public function test32LeavesOutAnUnknownTagParent(): void
+    {
+        $spec = $this->createSpecification('3.2.0');
+        $spec->tags[] = new OA\Tag(name: 'pets');
+        $spec->tags[] = new OA\Tag(name: 'cats', parent: 'pets');
+        $spec->tags[] = new OA\Tag(name: 'dogs', parent: 'animals');
+
+        $compiler = new OpenApi32Compiler();
+        $unvalidated = $compiler->compile($spec)['tags'];
+        $diagnostics = array_values(array_filter($compiler->validate($spec), fn (array $entry): bool => str_contains($entry['message'], 'parent')));
+
+        $this->assertSame([['name' => 'pets'], ['name' => 'cats', 'parent' => 'pets'], ['name' => 'dogs']], $unvalidated);
+        $this->assertSame($unvalidated, $compiler->compile($spec)['tags']);
+        $this->assertSame('animals', $spec->tags[2]->parent);
+        $this->assertSame(['Tag "dogs" names parent "animals", which does not exist'], array_map(fn (array $entry): string => (string) preg_replace('/ in .*$/', '', $entry['message']), $diagnostics));
+    }
+
+    /**
      * `components` takes the extensions of a `Components` holder, and a property's go on its schema.
      */
     #[DataProvider('compilerProvider')]

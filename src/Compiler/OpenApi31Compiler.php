@@ -162,7 +162,7 @@ class OpenApi31Compiler implements CompilerInterface
             'paths' => $this->compilePaths($specification->operations, $specification->pathItems),
             'components' => $this->compileComponents($specification),
             'security' => $this->compileSecurity($specification->openapi->security ?? []),
-            'tags' => array_map($this->compileTag(...), $specification->tags),
+            'tags' => $this->compileTags($specification->tags),
             'externalDocs' => $specification->externalDocs ? $this->compileExternalDocs($specification->externalDocs[0]) : null,
             'webhooks' => $this->compileWebhooks($specification->operations),
         ], $specification->openapi);
@@ -344,6 +344,16 @@ class OpenApi31Compiler implements CompilerInterface
             'enum' => $variable->enum,
             'description' => $variable->description,
         ], $variable);
+    }
+
+    /**
+     * @param list<OA\Tag> $tags
+     *
+     * @return list<array<string,mixed>>
+     */
+    protected function compileTags(array $tags): array
+    {
+        return array_map($this->compileTag(...), $tags);
     }
 
     /**
