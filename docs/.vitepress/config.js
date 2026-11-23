@@ -30,6 +30,7 @@ function getGuideSidebar() {
         { text: 'Using Spec Attributes', link: '/guide/spec-attributes' },
         { text: 'Migrating to Spec Attributes', link: '/guide/migrating-to-spec' },
         { text: 'Extension points', link: '/guide/extension-points' },
+        { text: 'Plugins', link: '/guide/plugins' },
         { text: 'Spec Attributes Reference', link: '/reference/spec-attributes' },
         { text: 'Augmenters Reference', link: '/reference/augmenters' },
         { text: 'Extension Points Reference', link: '/reference/extension-points' },

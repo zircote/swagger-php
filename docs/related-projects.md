@@ -26,6 +26,8 @@ sidebar: false
 
 Is a related project missing? Create a pull request!
 
+Projects that ship a swagger-php plugin are also listed under [Plugins](/guide/plugins).
+
 [1]: https://swagger.io/tools/swagger-ui/
 [2]: https://bfanger.nl/swagger-explained/
 [3]: https://github.com/DerManoMann/silex2swagger
