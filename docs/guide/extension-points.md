@@ -345,6 +345,8 @@ A library that ships translators, resolvers or augmenters can wire them into a b
 itself, with a plugin. A project or an integration then names the plugin, rather than
 repeating the wiring.
 
+[Plugins](/guide/plugins) lists the plugins other packages ship.
+
 A plugin implements `OpenApi\Contracts\PluginInterface`. Its `configure()` receives the
 builder's hooks and the plugin's settings:
 
