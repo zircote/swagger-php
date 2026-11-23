@@ -17,18 +17,20 @@ namespace OpenApi\Utils;
 class ClassReflector
 {
     /**
-     * $fqdn is deliberately plain `string`, not `class-string`: the whole point of this
+     * A reflector for the name, or the reason there is none.
+     *
+     * `$fqdn` is deliberately plain `string`, not `class-string`: the whole point of this
      * method is to accept a name a caller does not yet know resolves to anything.
      *
-     * @return array{0: \ReflectionClass<object>|null, 1: string|null} the reflector, or a
-     *                                                                 reason it could not be produced: `null` when nothing by that name exists, the
-     *                                                                 throwable's message when the name exists but would not load
+     * The reason is `null` when nothing by that name exists, and the throwable's message when the
+     * name exists but would not load.
+     *
+     * @return array{0: \ReflectionClass<object>|null, 1: string|null} the reflector, or the reason
      */
     public static function tryReflect(string $fqdn): array
     {
         try {
-            if (!class_exists($fqdn) && !interface_exists($fqdn) && !trait_exists($fqdn)
-                && (!function_exists('enum_exists') || !enum_exists($fqdn))) {
+            if (!class_exists($fqdn) && !interface_exists($fqdn) && !trait_exists($fqdn) && !enum_exists($fqdn)) {
                 return [null, null];
             }
 

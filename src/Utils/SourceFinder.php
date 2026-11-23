@@ -43,25 +43,18 @@ class SourceFinder extends Finder
     }
 
     /**
-     * Turns the given $fullPath into a relative path based on $basePaths, which can either
-     * be a single string path, or a list of possible paths. If a list is given, the first
-     * matching basePath in the list will be used to compute the relative path. If no
-     * relative path could be computed, the original string will be returned because there
-     * is always a chance it was a valid relative path to begin with.
+     * `$fullPath` relative to the first of `$directories` it lies in, without leading and trailing slashes.
      *
-     * It should be noted that these are "relative paths" primarily in Finder's sense of them,
-     * and conform specifically to what is expected by functions like <code>exclude()</code> and <code>notPath()</code>.
+     * The path is relative in Finder's sense, as `exclude()` and `notPath()` expect it. A path in
+     * none of the directories is returned as it is, since it may be a relative path already.
      *
-     * In particular, leading and trailing slashes are removed.
-     */
-    /**
      * @param list<string> $directories
      */
     protected function getRelativePath(string $fullPath, array $directories): string
     {
         foreach ($directories as $directory) {
-            if (str_starts_with($fullPath, (string) $directory)) {
-                $relativePath = substr($fullPath, strlen((string) $directory));
+            if (str_starts_with($fullPath, $directory)) {
+                $relativePath = substr($fullPath, strlen($directory));
 
                 if ($relativePath !== '' && $relativePath !== '0') {
                     return trim($relativePath, '/');

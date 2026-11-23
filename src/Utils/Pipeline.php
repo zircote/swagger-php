@@ -102,21 +102,21 @@ class Pipeline extends TypedList implements LoggerAwareInterface
         $config = [];
 
         $walker = function (object $pipe) use (&$config): void {
-            $rc = new \ReflectionClass($pipe);
+            $reflectionClass = new \ReflectionClass($pipe);
             $settings = [];
 
-            foreach (self::configurableParameters($rc) as $name) {
+            foreach (self::configurableParameters($reflectionClass) as $name) {
                 $setter = 'set' . ucfirst($name);
-                if (!$rc->hasMethod($setter) || !$rc->hasProperty($name)) {
+                if (!$reflectionClass->hasMethod($setter) || !$reflectionClass->hasProperty($name)) {
                     continue;
                 }
 
-                $property = $rc->getProperty($name);
+                $property = $reflectionClass->getProperty($name);
                 $settings[$name] = $property->isInitialized($pipe) ? $property->getValue($pipe) : null;
             }
 
             if ($settings !== []) {
-                $config[lcfirst($rc->getShortName())] = $settings;
+                $config[lcfirst($reflectionClass->getShortName())] = $settings;
             }
         };
 
@@ -140,10 +140,7 @@ class Pipeline extends TypedList implements LoggerAwareInterface
         $applied = [];
 
         $walker = function (object $pipe) use ($config, &$applied): void {
-            $rc = new \ReflectionClass($pipe);
-
-            // apply config
-            $pipeKey = lcfirst($rc->getShortName());
+            $pipeKey = lcfirst((new \ReflectionClass($pipe))->getShortName());
             if (!array_key_exists($pipeKey, $config) || !is_array($config[$pipeKey])) {
                 return;
             }
@@ -170,13 +167,13 @@ class Pipeline extends TypedList implements LoggerAwareInterface
     }
 
     /**
-     * @param \ReflectionClass<object> $rc
+     * @param \ReflectionClass<object> $reflectionClass
      *
      * @return list<string> constructor parameter names carrying a {@see Config} attribute
      */
-    protected static function configurableParameters(\ReflectionClass $rc): array
+    protected static function configurableParameters(\ReflectionClass $reflectionClass): array
     {
-        return array_keys(Config::forConstructor($rc));
+        return array_keys(Config::forConstructor($reflectionClass));
     }
 
     /**
@@ -224,10 +221,10 @@ class Pipeline extends TypedList implements LoggerAwareInterface
         $normalised = [];
         foreach ($config as $key => $value) {
             if (is_numeric($key)) {
-                $token = explode('=', (string) $value);
-                if (2 === count($token)) {
+                $assignment = explode('=', (string) $value);
+                if (2 === count($assignment)) {
                     // 'operationId.hash=false'
-                    [$key, $value] = $token;
+                    [$key, $value] = $assignment;
                 }
             }
 
@@ -235,24 +232,23 @@ class Pipeline extends TypedList implements LoggerAwareInterface
                 $value = 'true' == $value;
             }
 
-            if ($isList = (str_ends_with((string) $key, '[]'))) {
+            $isList = str_ends_with((string) $key, '[]');
+            if ($isList) {
                 $key = substr((string) $key, 0, -2);
             }
-            $token = explode('.', (string) $key);
-            if (2 === count($token)) {
-                // 'operationId.hash' => false
-                // namespaced / pipe
+
+            $path = explode('.', (string) $key);
+            if (2 === count($path)) {
+                // 'operationId.hash' => false: pipe and option
                 if ($isList) {
-                    $normalised[$token[0]][$token[1]][] = $value;
+                    $normalised[$path[0]][$path[1]][] = $value;
                 } else {
-                    $normalised[$token[0]][$token[1]] = $value;
+                    $normalised[$path[0]][$path[1]] = $value;
                 }
+            } elseif ($isList) {
+                $normalised[$key][] = $value;
             } else {
-                if ($isList) {
-                    $normalised[$key][] = $value;
-                } else {
-                    $normalised[$key] = $value;
-                }
+                $normalised[$key] = $value;
             }
         }
 

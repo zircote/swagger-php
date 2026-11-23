@@ -70,13 +70,10 @@ class TokenScanner implements SourceInspectorInterface
             throw new \RuntimeException($error->getMessage(), $error->getCode(), $error);
         }
 
-        $result = [];
-        $result += $this->collect_stmts($stmts, '');
+        $result = $this->collect_stmts($stmts, '');
         foreach ($stmts as $stmt) {
             if ($stmt instanceof Namespace_) {
-                $namespace = (string) $stmt->name;
-
-                $result += $this->collect_stmts($stmt->stmts, $namespace);
+                $result += $this->collect_stmts($stmt->stmts, (string) $stmt->name);
             }
         }
 
@@ -261,8 +258,8 @@ class TokenScanner implements SourceInspectorInterface
         }
 
         foreach ($stmt->getConstants() as $const) {
-            foreach ($const->consts as $c) {
-                $details['consts'][] = (string) $c->name;
+            foreach ($const->consts as $constant) {
+                $details['consts'][] = (string) $constant->name;
             }
         }
 
@@ -284,8 +281,9 @@ class TokenScanner implements SourceInspectorInterface
         }
 
         // promoted properties
-        if (($ctor = $stmt->getMethod('__construct')) instanceof ClassMethod) {
-            foreach ($ctor->getParams() as $param) {
+        $constructor = $stmt->getMethod('__construct');
+        if ($constructor instanceof ClassMethod) {
+            foreach ($constructor->getParams() as $param) {
                 if ($param->flags && $param->var instanceof Variable && is_string($param->var->name)) {
                     $details['properties'][] = $param->var->name;
                 }

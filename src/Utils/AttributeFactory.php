@@ -260,19 +260,11 @@ class AttributeFactory implements LoggerAwareInterface
      */
     public function getDirectInterfaces(\ReflectionClass $class): array
     {
-        $interfaces = $class->getInterfaces();
-
         $parent = $class->getParentClass();
-        if ($parent !== false) {
-            $parentInterfaceNames = array_map(
-                fn (\ReflectionClass $i): string => $i->getName(),
-                $parent->getInterfaces(),
-            );
-            $interfaces = array_filter(
-                $interfaces,
-                fn (\ReflectionClass $i): bool => !in_array($i->getName(), $parentInterfaceNames, true),
-            );
-        }
+        // both are keyed by interface name
+        $interfaces = $parent !== false
+            ? array_diff_key($class->getInterfaces(), $parent->getInterfaces())
+            : $class->getInterfaces();
 
         return array_values($interfaces);
     }
@@ -326,6 +318,9 @@ class AttributeFactory implements LoggerAwareInterface
     }
 
     /**
+     * The class's attributes without the named components its members declare, unless the class
+     * carries `OA\Components`.
+     *
      * A component declared on a member is one only in a class carrying `OA\Components`. Without
      * it, the name alone does not say which is meant: on a property the same schema is the
      * property's own, and on a method it would be a component. So a named component left over
@@ -383,6 +378,8 @@ class AttributeFactory implements LoggerAwareInterface
     }
 
     /**
+     * Report the attributes declared on a constructor, which are ignored.
+     *
      * The constructor is not a place to declare anything: only its parameters, as promoted
      * properties, are read. What sits on it is ignored, and said so; the class takes the same
      * attributes.
@@ -490,8 +487,9 @@ class AttributeFactory implements LoggerAwareInterface
     }
 
     /**
-     * Merge one attribute into its matching unmerged sibling. Matching more than one is an error,
-     * unless the attribute fans out to all of them.
+     * Merge one attribute into its matching unmerged sibling.
+     *
+     * Matching more than one is an error, unless the attribute fans out to all of them.
      *
      * @param list<AttributeInterface> $attributes
      * @param array<int,true>          $merged
@@ -520,9 +518,10 @@ class AttributeFactory implements LoggerAwareInterface
 
     /**
      * Nest a child into the one parent it matched, or with `Fan::All` into each of several that
-     * match by the same target type: the child itself into the first, a copy into every other.
-     * Several matches are an error otherwise, and so are matches of different target types,
-     * whatever the child's `fan`.
+     * match by the same target type.
+     *
+     * The child itself goes into the first, a copy into every other. Several matches are an error
+     * otherwise, and so are matches of different target types, whatever the child's `fan`.
      *
      * @param non-empty-list<array{AttributeInterface, string, list<class-string>}> $matches parent, slot and the target types it matched by
      */
@@ -555,9 +554,10 @@ class AttributeFactory implements LoggerAwareInterface
 
     /**
      * The slot a child takes in a candidate parent, with the target types of `$targets` the
-     * candidate is an instance of, or null when it is none of them. A candidate matching
-     * several target types that name different slots is an error: the slot would be decided by
-     * the order of `$targets`.
+     * candidate is an instance of, or null when it is none of them.
+     *
+     * A candidate matching several target types that name different slots is an error: the slot
+     * would be decided by the order of `$targets`.
      *
      * @param array<class-string, string> $targets target type and slot, from `merge()` or `contained()`
      *
@@ -599,35 +599,31 @@ class AttributeFactory implements LoggerAwareInterface
 
     protected function nestChild(AttributeInterface $parent, AttributeInterface $child, string $slot): void
     {
-        $validateSlot = function (AttributeInterface $parent, AttributeInterface $child, string $slot): void {
-            if (!property_exists($parent, $slot)) {
-                throw OpenApiException::fromSource(
-                    sprintf('Invalid slot: "%s" not found in %s for child %s', $slot, $parent::class, $child::class),
-                    $child->getSourceLocation(),
-                );
-            }
+        $isList = str_ends_with($slot, '[]');
+        $property = $isList ? substr($slot, 0, -2) : $slot;
 
-        };
+        if (!property_exists($parent, $property)) {
+            throw OpenApiException::fromSource(
+                sprintf('Invalid slot: "%s" not found in %s for child %s', $property, $parent::class, $child::class),
+                $child->getSourceLocation(),
+            );
+        }
 
-        if (str_ends_with($slot, '[]')) {
-            $property = substr($slot, 0, -2);
-
-            $validateSlot($parent, $child, $property);
-
+        if ($isList) {
             $current = $parent->{$property} ?? [];
             $current[] = $child;
             $parent->{$property} = $current;
-        } else {
-            $validateSlot($parent, $child, $slot);
 
-            if ($parent->{$slot} instanceof AttributeInterface) {
-                throw OpenApiException::fromSource(
-                    sprintf('Duplicate merge: %s already has a %s in slot "%s"', $parent::class, $parent->{$slot}::class, $slot),
-                    $child->getSourceLocation(),
-                );
-            }
-            $parent->{$slot} = $child;
+            return;
         }
+
+        if ($parent->{$property} instanceof AttributeInterface) {
+            throw OpenApiException::fromSource(
+                sprintf('Duplicate merge: %s already has a %s in slot "%s"', $parent::class, $parent->{$property}::class, $property),
+                $child->getSourceLocation(),
+            );
+        }
+        $parent->{$property} = $child;
     }
 
     /**
@@ -645,11 +641,11 @@ class AttributeFactory implements LoggerAwareInterface
             foreach ($translator->getAttributes($reflector) as $attribute) {
                 try {
                     $instance = $attribute->newInstance();
-                } catch (\Error $e) {
+                } catch (\Error $error) {
                     throw OpenApiException::fromSource(
-                        sprintf('Failed to instantiate attribute "%s": %s', $attribute->getName(), $e->getMessage()),
+                        sprintf('Failed to instantiate attribute "%s": %s', $attribute->getName(), $error->getMessage()),
                         SourceLocation::fromReflector($reflector),
-                        $e,
+                        $error,
                     );
                 }
 
