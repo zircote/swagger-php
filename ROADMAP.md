@@ -5,7 +5,7 @@ This is a high level roadmap for **v6**, **v7** and **v8** - what happens to the
 and the new _Spec_ attributes and processing pipeline, and when.
 
 The discussion and the tick list of what has shipped are in
-[#1953](https://github.com/zircote/swagger-php/issues/1953). This file is the plan; the issue
+[#2438](https://github.com/zircote/swagger-php/issues/2438). This file is the plan; the issue
 tracks it.
 
 ## Deprecation rule
