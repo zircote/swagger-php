@@ -296,6 +296,44 @@ as its `items`, ends with the location of that property or parameter. Before, it
 members in `src` are `protected`. A protected method is not a fixed API: its signature can change
 without a deprecation.
 
+## Changed output in 7.10
+
+In hybrid, `callbacks:` on a classic `Components` is written to `components.callbacks`. Before, it
+was left out without a message, and a `$ref` to one of its callbacks pointed at nothing.
+
+A document passed to `Builder::withDocument()` keeps its `components.callbacks`. Before, they were
+reported as unsupported and left out.
+
+In spec and hybrid, a 3.2 document leaves out a tag's `parent` that names no tag of the document
+whenever it is compiled. Before, it was left out only when `validate()` ran first.
+
+In spec and hybrid, an encoding without a name is an error,
+`Encoding is missing the key field encoding, omitted`, wherever its media type sits. Before, one in
+the content of an operation's request body, response or parameter, or of a request body, response
+or parameter component, was left out without a message. Errors make `Result::isValid()` return
+`false`, and the CLI exits with an error.
+
+In spec and hybrid, a 3.0 document reports `prefixItems`, `unevaluatedItems`,
+`unevaluatedProperties`, `if`, `then` and `else` as warnings, one per keyword:
+`uses prefixItems, not supported in OpenAPI 3.0, omitted`. Before, each was an error, and `if`,
+`then` and `else` were reported together. The document does not change, since none of them was
+written before either.
+
+In spec and hybrid, a message about a schema, encoding, header, link or example nested in another
+attribute ends with the location of the nearest attribute holding it. Before, it ended with
+`in unknown`.
+
+## Changed in 7.10
+
+A spec `Components` list holding anything other than spec attributes throws an `OpenApiException`
+naming the list. A classic `callbacks:` migrated as it is does this. See
+[What it leaves for you](/guide/migrating-to-spec#what-it-leaves-for-you).
+
+`OpenApi32Compiler::validate()` no longer sets a tag's unknown `parent` to `null`. The compiler
+leaves it out of the document instead, and the `Tag` keeps it.
+
+`Augmenter\MediaTypes` no longer keys a media type's `encoding` list by name. The compiler does.
+
 ## Preparing for 8.0
 
 In 8.0 classic is removed, and so is `setMode()`. Spec attributes move from `OpenApi\Spec` to
