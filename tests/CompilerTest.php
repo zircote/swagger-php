@@ -1128,7 +1128,7 @@ final class CompilerTest extends TestCase
         yield 'nested header without a name' => [
             new OpenApi31Compiler(),
             $specNestedUnnamed,
-            'Header is missing the key field header, omitted in unknown',
+            'Header is missing the key field header, omitted',
         ];
 
         $specDuplicateResponse = new Specification();
@@ -1438,6 +1438,69 @@ final class CompilerTest extends TestCase
         $messages = array_column($diagnostics, 'message');
 
         $this->assertContains($expectedMessage, $messages);
+    }
+
+    /**
+     * @return iterable<string, array{\Closure(): array{OA\AbstractAttribute, list<int|string>}}>
+     */
+    public static function unnamedEncodingProvider(): iterable
+    {
+        $content = static fn (): array => [new OA\MediaType(mediaType: 'multipart/form-data', encoding: [
+            new OA\Encoding(encoding: 'avatar', contentType: 'image/png'),
+            new OA\Encoding(contentType: 'text/plain'),
+        ])];
+        $operation = static fn (array $arguments): OA\Operation => (new OA\Operation(...['path' => '/upload', 'method' => 'post', 'operationId' => 'upload', ...$arguments]))
+            ->setReflector(new \ReflectionClass(OA\Info::class));
+        $ok = static fn (array $arguments = []): OA\Response => new OA\Response(...['response' => 200, 'description' => 'ok', ...$arguments]);
+
+        yield "an operation's request body" => [static function () use ($operation, $content, $ok): array {
+            $holder = $operation(['requestBody' => new OA\RequestBody(content: $content()), 'responses' => [$ok()]]);
+
+            return [
+                $holder,
+                ['paths', '/upload', 'post', 'requestBody', 'content', 'multipart/form-data'],
+            ];
+        }];
+        yield 'a request body component' => [static function () use ($content): array {
+            $holder = (new OA\RequestBody(content: $content(), component: 'Upload'))->setReflector(new \ReflectionClass(OA\Info::class));
+
+            return [
+                $holder,
+                ['components', 'requestBodies', 'Upload', 'content', 'multipart/form-data'],
+            ];
+        }];
+        yield "a header's content" => [static function () use ($operation, $content, $ok): array {
+            $holder = $operation(['responses' => [$ok(['headers' => [new OA\Header(header: 'X-Part', content: $content())]])]]);
+
+            return [
+                $holder,
+                ['paths', '/upload', 'post', 'responses', 200, 'headers', 'X-Part', 'content', 'multipart/form-data'],
+            ];
+        }];
+    }
+
+    /**
+     * An encoding without a name is reported at the declared attribute that holds it, wherever its
+     * media type sits, and left out beside the named ones.
+     *
+     * @param \Closure(): array{OA\AbstractAttribute, list<int|string>} $place the holder, and the path to the media type in the document
+     */
+    #[DataProvider('unnamedEncodingProvider')]
+    public function testAnUnnamedEncodingIsReportedAtItsHolder(\Closure $place): void
+    {
+        [$holder, $path] = $place();
+        $spec = $this->createSpecification('3.1.0');
+        $spec->add($holder);
+
+        $compiler = new OpenApi31Compiler();
+        $errors = array_values(array_filter($compiler->validate($spec), fn (array $entry): bool => str_contains($entry['message'], 'key field encoding')));
+        $mediaType = $compiler->compile($spec);
+        foreach ($path as $key) {
+            $mediaType = $mediaType[$key];
+        }
+
+        $this->assertSame([['level' => 'error', 'message' => 'Encoding is missing the key field encoding, omitted in ' . $holder->getSourceLocation()]], $errors);
+        $this->assertSame(['avatar' => ['contentType' => 'image/png']], $mediaType['encoding']);
     }
 
     /**

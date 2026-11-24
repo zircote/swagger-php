@@ -7,24 +7,29 @@
 namespace OpenApi\Tests\Augmenter;
 
 use OpenApi\Augmenter;
+use OpenApi\Builder;
+use OpenApi\Builder\Mode;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Tests\Concerns\ExpectsLogEntries;
 use PHPUnit\Framework\TestCase;
 
 final class MediaTypesTest extends TestCase
 {
-    public function testRekeysEncodingsByPropertyName(): void
+    use ExpectsLogEntries;
+
+    /**
+     * The compiler keys the encodings, and reports one without a name, so the list stays as written.
+     */
+    public function testLeavesAnEncodingListAsItIs(): void
     {
         $spec = new Specification();
 
-        $mediaType = new OA\MediaType(
-            mediaType: 'multipart/form-data',
-            schema: new OA\Schema(type: 'object'),
-            encoding: [
-                new OA\Encoding(encoding: 'metadata', contentType: 'application/xml'),
-                new OA\Encoding(encoding: 'avatar', contentType: 'image/png'),
-            ],
-        );
+        $encodings = [
+            new OA\Encoding(encoding: 'metadata', contentType: 'application/xml'),
+            new OA\Encoding(contentType: 'text/plain'),
+        ];
+        $mediaType = new OA\MediaType(mediaType: 'multipart/form-data', schema: new OA\Schema(type: 'object'), encoding: $encodings);
 
         $spec->operations[] = new OA\Operation(
             path: '/upload',
@@ -34,10 +39,7 @@ final class MediaTypesTest extends TestCase
 
         (new Augmenter\MediaTypes())($spec);
 
-        $this->assertArrayHasKey('metadata', $mediaType->encoding);
-        $this->assertArrayHasKey('avatar', $mediaType->encoding);
-        $this->assertSame('application/xml', $mediaType->encoding['metadata']->contentType);
-        $this->assertSame('image/png', $mediaType->encoding['avatar']->contentType);
+        $this->assertSame($encodings, $mediaType->encoding);
     }
 
     public function testNoEncodingLeftUntouched(): void
@@ -60,66 +62,26 @@ final class MediaTypesTest extends TestCase
         $this->assertNull($mediaType->encoding);
     }
 
-    public function testEncodingWithoutPropertyNameDiscarded(): void
+    /**
+     * Built through the whole pipeline, an encoding without a name is reported, not dropped silently.
+     */
+    public function testABuildReportsAnUnnamedEncoding(): void
     {
-        $spec = new Specification();
+        $result = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->setLogger($this->trackingLogger())
+            ->withSpecification(function (Specification $specification): void {
+                $specification->add(
+                    new OA\Info(title: 'T', version: '1.0'),
+                    new OA\Operation\Post(path: '/upload', requestBody: new OA\RequestBody(content: [new OA\MediaType(
+                        mediaType: 'multipart/form-data',
+                        encoding: [new OA\Encoding(encoding: 'avatar', contentType: 'image/png'), new OA\Encoding(contentType: 'text/plain')],
+                    )]), responses: [new OA\Response(response: 200, description: 'ok')]),
+                );
+            })
+            ->build();
 
-        $mediaType = new OA\MediaType(
-            mediaType: 'multipart/form-data',
-            schema: new OA\Schema(type: 'object'),
-            encoding: [
-                new OA\Encoding(contentType: 'text/plain'),
-            ],
-        );
-
-        $spec->operations[] = new OA\Operation(
-            path: '/upload',
-            method: 'post',
-            requestBody: new OA\RequestBody(content: [$mediaType]),
-        );
-
-        (new Augmenter\MediaTypes())($spec);
-
-        $this->assertNull($mediaType->encoding);
-    }
-
-    public function testRekeysEncodingOnResponses(): void
-    {
-        $spec = new Specification();
-
-        $mediaType = new OA\MediaType(
-            mediaType: 'multipart/form-data',
-            encoding: [
-                new OA\Encoding(encoding: 'file', contentType: 'application/octet-stream'),
-            ],
-        );
-
-        $spec->operations[] = new OA\Operation(
-            path: '/download',
-            method: 'get',
-            responses: [new OA\Response(response: '200', description: 'OK', content: [$mediaType])],
-        );
-
-        (new Augmenter\MediaTypes())($spec);
-
-        $this->assertArrayHasKey('file', $mediaType->encoding);
-    }
-
-    public function testRekeysEncodingOnReusableRequestBodies(): void
-    {
-        $spec = new Specification();
-
-        $mediaType = new OA\MediaType(
-            mediaType: 'multipart/form-data',
-            encoding: [
-                new OA\Encoding(encoding: 'doc', contentType: 'application/pdf'),
-            ],
-        );
-
-        $spec->requestBodies[] = new OA\RequestBody(content: [$mediaType]);
-
-        (new Augmenter\MediaTypes())($spec);
-
-        $this->assertArrayHasKey('doc', $mediaType->encoding);
+        $this->assertSame(['avatar' => ['contentType' => 'image/png']], $result->toArray()['paths']['/upload']['post']['requestBody']['content']['multipart/form-data']['encoding']);
+        $this->expectLogEntry('Encoding is missing the key field encoding, omitted', 'error');
     }
 }

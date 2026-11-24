@@ -306,11 +306,10 @@ meant to nest into an operation.
 
 ### [MediaTypes](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/MediaTypes.php)
 
-Promotes property encodings and re-keys MediaType encoding lists by property name.
+Promotes property encodings to their media type.
 
-Promotes `OA\Encoding` definitions from `OA\Property\Encoded` properties to their
-parent MediaType, then re-keys the encoding list as an associative array keyed by
-property name (the format the compiler expects).
+Adds the `OA\Encoding` of each `OA\Property\Encoded` property to the media type whose schema
+holds the property, named after the property where it names none itself.
 
 ### [Docblocks](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Docblocks.php)
 

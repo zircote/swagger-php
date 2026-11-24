@@ -1279,11 +1279,13 @@ class OpenApi31Compiler implements CompilerInterface
      * A member of one of these maps carries the key, so an entry without one cannot be placed.
      *
      * The compiler drops it; without this it would go silently, and classic rejects the same
-     * input outright.
+     * input outright. An entry without a location of its own is reported at its holder's.
      */
     protected function validateNestedNames(Specification $specification): void
     {
-        $this->visit($specification, array_keys(static::NESTED_MAPS), function (AttributeInterface $attribute): void {
+        $holders = null;
+
+        $this->visit($specification, array_keys(static::NESTED_MAPS), function (AttributeInterface $attribute) use ($specification, &$holders): void {
             foreach (static::NESTED_MAPS as $container => $maps) {
                 if (!$attribute instanceof $container) {
                     continue;
@@ -1295,11 +1297,12 @@ class OpenApi31Compiler implements CompilerInterface
                             continue;
                         }
 
+                        $holders ??= $this->collectLocatedHolders($specification);
                         $this->logger->error(sprintf(
-                            '%s is missing the key field %s, omitted in %s',
+                            '%s is missing the key field %s, omitted%s',
                             (new \ReflectionClass($item))->getShortName(),
                             $keyField,
-                            $item->getSourceLocation(),
+                            $this->attributeLocation($item->getReflector() instanceof \Reflector || !$holders->offsetExists($item) ? $item : $holders->offsetGet($item)),
                         ));
                     }
                 }
@@ -1768,6 +1771,50 @@ class OpenApi31Compiler implements CompilerInterface
             : $owners->offsetGet($schema);
 
         return $this->attributeLocation($located);
+    }
+
+    /**
+     * The nearest attribute with a location of its own that holds each attribute without one.
+     *
+     * A nested attribute is built inside another one's arguments and has no location of its own.
+     * An attribute reachable from two places takes the holder found first.
+     *
+     * @return \SplObjectStorage<AttributeInterface, AttributeInterface>
+     */
+    protected function collectLocatedHolders(Specification $specification): \SplObjectStorage
+    {
+        /** @var \SplObjectStorage<AttributeInterface, AttributeInterface> $holders */
+        $holders = new \SplObjectStorage();
+        $seen = new \SplObjectStorage();
+
+        $descend = function (mixed $value, ?AttributeInterface $holder) use (&$descend, $holders, $seen): void {
+            foreach (is_array($value) ? $value : [$value] as $item) {
+                if (is_array($item)) {
+                    $descend($item, $holder);
+                    continue;
+                }
+
+                if (!$item instanceof AttributeInterface || $seen->offsetExists($item)) {
+                    continue;
+                }
+                $seen->offsetSet($item);
+
+                $located = $item->getReflector() instanceof \Reflector;
+                if (!$located && $holder instanceof AttributeInterface) {
+                    $holders->offsetSet($item, $holder);
+                }
+
+                foreach (get_object_vars($item) as $nested) {
+                    $descend($nested, $located ? $item : $holder);
+                }
+            }
+        };
+
+        foreach (get_object_vars($specification) as $bucket) {
+            $descend($bucket, null);
+        }
+
+        return $holders;
     }
 
     /**
