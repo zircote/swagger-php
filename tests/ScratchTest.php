@@ -40,7 +40,7 @@ final class ScratchTest extends OpenApiTestCase
         // the 2020-12 keywords 3.0 has no place for
         $schemaKeywords30 = array_map(
             static fn (string $keyword): string => "uses {$keyword}, not supported in OpenAPI 3.0, omitted",
-            ['contains', 'minContains', 'maxContains', 'dependentRequired', 'dependentSchemas', 'contentSchema', 'contentSchema'],
+            ['if', 'then', 'else', 'contains', 'minContains', 'maxContains', 'prefixItems', 'unevaluatedItems', 'unevaluatedProperties', 'dependentRequired', 'dependentSchemas', 'contentSchema', 'contentSchema'],
         );
 
         // the 3.2 tag fields, left out before 3.2
@@ -73,19 +73,11 @@ final class ScratchTest extends OpenApiTestCase
                 '@OA\Items() is required when @OA\Schema() has type "array"',
             ],
             'SchemaKeywords-3.0.0-spec' => [
-                'uses prefixItems, not supported in OpenAPI 3.0',
-                'uses unevaluatedProperties, not supported in OpenAPI 3.0',
-                'uses unevaluatedItems, not supported in OpenAPI 3.0',
-                'uses if/then/else, not supported in OpenAPI 3.0',
                 'has type "array" but no items',
                 'Schema "envelope" uses contentEncoding/contentMediaType, not supported in OpenAPI 3.0, omitted',
                 ...$schemaKeywords30,
             ],
             'SchemaKeywords-3.0.0-hybrid' => [
-                'uses prefixItems, not supported in OpenAPI 3.0',
-                'uses unevaluatedProperties, not supported in OpenAPI 3.0',
-                'uses unevaluatedItems, not supported in OpenAPI 3.0',
-                'uses if/then/else, not supported in OpenAPI 3.0',
                 'has type "array" but no items',
                 'Schema "envelope" uses contentEncoding/contentMediaType, not supported in OpenAPI 3.0, omitted',
                 ...$schemaKeywords30,

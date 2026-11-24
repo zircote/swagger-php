@@ -1013,7 +1013,8 @@ class OpenApi31Compiler implements CompilerInterface
     /**
      * Warns about each set property in `$unsupported`, which the compile methods leave out.
      *
-     * Copies of one declaration produce the same message, which is logged once.
+     * Copies of one declaration produce the same message, which is logged once. A schema without a
+     * location of its own is reported at its owner's.
      *
      * @param array<class-string<OA\AbstractAttribute|Specification>, array<int|string, string>> $unsupported class => property names, or property name => hint
      */
@@ -1025,8 +1026,9 @@ class OpenApi31Compiler implements CompilerInterface
 
         $version = $this->minorVersion();
         $reported = [];
+        $owners = null;
 
-        $check = function (OA\AbstractAttribute|Specification $attribute) use ($unsupported, $version, &$reported): void {
+        $check = function (OA\AbstractAttribute|Specification $attribute) use ($specification, $unsupported, $version, &$reported, &$owners): void {
             foreach ($unsupported as $class => $properties) {
                 if (!$attribute instanceof $class) {
                     continue;
@@ -1041,9 +1043,14 @@ class OpenApi31Compiler implements CompilerInterface
                         continue;
                     }
 
+                    $location = match (true) {
+                        $attribute instanceof OA\Schema => $this->schemaLocation($attribute, $owners ??= $this->collectSchemaOwners($specification)),
+                        $attribute instanceof OA\AbstractAttribute => $this->attributeLocation($attribute),
+                        default => '',
+                    };
                     $message = "{$this->subject($attribute)} uses {$property}, not supported in OpenAPI {$version}, omitted"
                         . ($hint !== null ? "; {$hint}" : '')
-                        . ($attribute instanceof OA\AbstractAttribute ? $this->attributeLocation($attribute) : '');
+                        . $location;
                     if (!isset($reported[$message])) {
                         $reported[$message] = true;
                         $this->logger->warning($message);
@@ -1431,7 +1438,7 @@ class OpenApi31Compiler implements CompilerInterface
 
         foreach ($this->collectSchemas($specification) as $schema) {
             if ($this->isArrayType($schema) && $schema->items === null && $schema->prefixItems === null && $schema->contains === null) {
-                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ' has type "array" but no items in ' . $schema->getSourceLocation());
+                $this->logger->warning('Schema' . $this->schemaLabel($schema) . ' has type "array" but no items' . $this->schemaLocation($schema, $owners));
             }
 
             $this->validateSchemaType($schema);

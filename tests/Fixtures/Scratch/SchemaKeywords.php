@@ -9,8 +9,8 @@ namespace OpenApi\Tests\Fixtures\Scratch;
 use OpenApi\Attributes as OAT;
 
 // The JSON Schema keywords added in 3.1, one component schema per family.
-// A 3.0 document drops them all: if/then/else, prefixItems and the unevaluated
-// keywords with a warning, the rest silently — matching the spec compilers.
+// A 3.0 document drops them all. Classic warns about if/then/else, prefixItems and
+// the unevaluated keywords and drops the rest silently; hybrid warns about each.
 
 #[OAT\Schema(
     schema: 'conditional',

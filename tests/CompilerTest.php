@@ -350,6 +350,53 @@ final class CompilerTest extends TestCase
         $this->assertContains('Schema sets description beside $ref "#/components/schemas/Cat", omitted in ' . OA\Info::class . '::$title in ' . (new \ReflectionClass(OA\Info::class))->getFileName(), $messages);
     }
 
+    /**
+     * An array schema without `items` is reported at its owner's location in 3.1 as in 3.0.
+     */
+    #[DataProvider('compilerProvider')]
+    public function testAnArrayWithoutItemsIsReportedAtItsOwnersLocation(CompilerInterface $compiler, string $version): void
+    {
+        $property = (new OA\Property(property: 'title', schema: new OA\Schema(type: 'array')))
+            ->setReflector(new \ReflectionProperty(OA\Info::class, 'title'));
+        $specification = new Specification();
+        $specification->add(new OA\Info(title: 'Arrays', version: '1.0.0'));
+        $specification->add(new OA\Schema(properties: [$property], component: 'Owner'));
+
+        $messages = array_column($compiler->validate($specification), 'message');
+
+        $this->assertContains('Schema has type "array" but no items in ' . OA\Info::class . '::$title in ' . (new \ReflectionClass(OA\Info::class))->getFileName(), $messages);
+    }
+
+    /**
+     * 3.0 leaves out the 3.1 schema keywords with one warning each, at the owner's location for a
+     * schema without one of its own.
+     */
+    public function test30ReportsUnsupportedSchemaKeywordsAtTheOwnersLocation(): void
+    {
+        $property = (new OA\Property(property: 'title', schema: new OA\Schema(
+            type: 'array',
+            items: new OA\Schema(type: 'string'),
+            prefixItems: [new OA\Schema(type: 'string')],
+            unevaluatedItems: false,
+            if: new OA\Schema(minItems: 1),
+            then: new OA\Schema(maxItems: 2),
+        )))->setReflector(new \ReflectionProperty(OA\Info::class, 'title'));
+        $specification = new Specification();
+        $specification->add(new OA\Info(title: 'Keywords', version: '1.0.0'));
+        $specification->add(new OA\Schema(properties: [$property], component: 'Owner'));
+
+        $compiler = new OpenApi30Compiler();
+        $entries = array_values(array_filter($compiler->validate($specification), fn (array $entry): bool => str_contains($entry['message'], 'not supported')));
+        $compiled = $compiler->compile($specification)['components']['schemas']['Owner']['properties']['title'];
+
+        $location = ' in ' . OA\Info::class . '::$title in ' . (new \ReflectionClass(OA\Info::class))->getFileName();
+        $this->assertSame(array_map(fn (string $keyword): array => [
+            'level' => 'warning',
+            'message' => "Schema uses {$keyword}, not supported in OpenAPI 3.0, omitted{$location}",
+        ], ['prefixItems', 'unevaluatedItems', 'if', 'then']), $entries);
+        $this->assertSame(['type' => 'array', 'items' => ['type' => 'string']], $compiled);
+    }
+
     public function testADroppedSiblingWithoutALocationIsReportedWithoutOne(): void
     {
         $specification = new Specification();

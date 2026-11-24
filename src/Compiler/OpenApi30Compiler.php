@@ -60,6 +60,12 @@ class OpenApi30Compiler extends OpenApi31Compiler
             'dependentRequired',
             'dependentSchemas',
             'contentSchema',
+            'prefixItems',
+            'unevaluatedItems',
+            'unevaluatedProperties',
+            'if',
+            'then',
+            'else',
         ],
         OA\Discriminator::class => ['defaultMapping'],
         OA\Security\Scheme::class => ['deprecated', 'oauth2MetadataUrl'],
@@ -364,22 +370,6 @@ class OpenApi30Compiler extends OpenApi31Compiler
 
             $this->validateSchemaType($schema);
             $this->validateRefSiblings($schema, $owners);
-
-            if ($schema->prefixItems !== null) {
-                $this->logger->error($subject . ' uses prefixItems, not supported in OpenAPI 3.0' . $this->schemaLocation($schema, $owners));
-            }
-
-            if ($schema->unevaluatedProperties !== null) {
-                $this->logger->error($subject . ' uses unevaluatedProperties, not supported in OpenAPI 3.0' . $this->schemaLocation($schema, $owners));
-            }
-
-            if ($schema->unevaluatedItems !== null) {
-                $this->logger->error($subject . ' uses unevaluatedItems, not supported in OpenAPI 3.0' . $this->schemaLocation($schema, $owners));
-            }
-
-            if ($schema->if instanceof OA\Schema || $schema->then instanceof OA\Schema || $schema->else instanceof OA\Schema) {
-                $this->logger->error($subject . ' uses if/then/else, not supported in OpenAPI 3.0' . $this->schemaLocation($schema, $owners));
-            }
 
             if ($schema->contentEncoding !== null || $schema->contentMediaType !== null) {
                 $format = $this->contentFormat($schema);
