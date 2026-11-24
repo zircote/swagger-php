@@ -12,11 +12,10 @@ use OpenApi\Specification\ComponentIndex;
 use OpenApi\Utils\PipeInterface;
 
 /**
- * Promotes property encodings and re-keys MediaType encoding lists by property name.
+ * Promotes property encodings to their media type.
  *
- * Promotes `OA\Encoding` definitions from `OA\Property\Encoded` properties to their
- * parent MediaType, then re-keys the encoding list as an associative array keyed by
- * property name (the format the compiler expects).
+ * Adds the `OA\Encoding` of each `OA\Property\Encoded` property to the media type whose schema
+ * holds the property, named after the property where it names none itself.
  *
  * @implements PipeInterface<Specification>
  */
@@ -25,7 +24,6 @@ class MediaTypes implements PipeInterface
     public function __invoke(mixed $payload): mixed
     {
         $this->mergePropertyEncodings($payload, $payload->buildComponentIndex());
-        $this->rekeyMediaTypeEncodings($payload);
 
         return null;
     }
@@ -66,60 +64,6 @@ class MediaTypes implements PipeInterface
                 $mediaType->encoding ??= [];
                 $mediaType->encoding[$encoding->encoding] = $encoding;
             }
-        }
-    }
-
-    protected function rekeyMediaTypeEncodings(Specification $specification): void
-    {
-        foreach ($specification->operations as $operation) {
-            if ($operation->requestBody instanceof OA\RequestBody) {
-                $this->rekeyEncodings($operation->requestBody->content);
-            }
-
-            foreach ($operation->responses ?? [] as $response) {
-                $this->rekeyEncodings($response->content);
-            }
-
-            foreach ($operation->parameters ?? [] as $parameter) {
-                $this->rekeyEncodings($parameter->content);
-            }
-        }
-
-        foreach ($specification->requestBodies as $body) {
-            $this->rekeyEncodings($body->content);
-        }
-
-        foreach ($specification->responses as $response) {
-            $this->rekeyEncodings($response->content);
-        }
-
-        foreach ($specification->parameters as $parameter) {
-            $this->rekeyEncodings($parameter->content);
-        }
-    }
-
-    /**
-     * @param list<OA\MediaType>|null $mediaTypes
-     */
-    protected function rekeyEncodings(?array $mediaTypes): void
-    {
-        if (!$mediaTypes) {
-            return;
-        }
-
-        foreach ($mediaTypes as $mediaType) {
-            if (!$mediaType->encoding) {
-                continue;
-            }
-
-            $keyed = [];
-            foreach ($mediaType->encoding as $encoding) {
-                if ($encoding instanceof OA\Encoding && $encoding->encoding !== null) {
-                    $keyed[$encoding->encoding] = $encoding;
-                }
-            }
-
-            $mediaType->encoding = $keyed !== [] ? $keyed : null;
         }
     }
 }
