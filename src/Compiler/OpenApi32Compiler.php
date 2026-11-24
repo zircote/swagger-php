@@ -103,11 +103,11 @@ class OpenApi32Compiler extends OpenApi31Compiler
             $subject = $example->example === null ? 'Example' : 'Example "' . $example->example . '"';
 
             if ($example->value !== Undefined::UNDEFINED && ($example->dataValue !== Undefined::UNDEFINED || $example->serializedValue !== null)) {
-                $this->logger->error("{$subject} value is mutually exclusive with dataValue and serializedValue in " . $example->getSourceLocation());
+                $this->logger->error("{$subject} value is mutually exclusive with dataValue and serializedValue" . $this->nestedLocation($example));
             }
 
             if ($example->serializedValue !== null && $example->externalValue !== null) {
-                $this->logger->error("{$subject} serializedValue and externalValue are mutually exclusive in " . $example->getSourceLocation());
+                $this->logger->error("{$subject} serializedValue and externalValue are mutually exclusive" . $this->nestedLocation($example));
             }
         });
     }
