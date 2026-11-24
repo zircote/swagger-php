@@ -67,10 +67,10 @@ attribute is one that can stand alone. It owns a bucket and needs no parent.
   `ExternalDocumentation`, `Security\Scheme`, `Components`, `Attachable`
 - **Conditionally root**, when `component` is set (the name the attribute is filed under in
   `components`) and `ref` is not: `Response`, `Parameter`, `Link`, `RequestBody`, `Header`,
-  `Example`, `MediaType`. The request body has no `ref` check, since its name can never double
-  as a nesting key. Until 8.0 the historic spellings still count for the response and the link
-  (`response`, `link`). The other historic spellings alias onto `component` in the constructor
-  and need no clause
+  `Example`, `MediaType`, `Callback`. The request body has no `ref` check, since its name can
+  never double as a nesting key. Until 8.0 the historic spellings still count for the response
+  and the link (`response`, `link`). The other historic spellings alias onto `component` in the
+  constructor and need no clause
 - **Never root**: `Property`, which must nest inside a parent
 
 Each attribute decides for itself, in `isRoot()`. The one field behind the conditional rule,

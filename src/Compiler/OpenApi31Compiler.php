@@ -186,7 +186,8 @@ class OpenApi31Compiler implements CompilerInterface
         $hasComponents = $specification->schemas || $specification->responses
             || $specification->parameters || $specification->requestBodies
             || $specification->headers || $specification->securitySchemes
-            || $specification->links || $specification->examples;
+            || $specification->links || $specification->examples
+            || $specification->callbacks;
 
         if (!$hasPaths && !$hasWebhooks && !$hasComponents) {
             $this->logger->error('Document needs at least one of paths, webhooks or components');
@@ -202,6 +203,8 @@ class OpenApi31Compiler implements CompilerInterface
         $this->validateSchemas($specification);
 
         $this->validateOperations($specification);
+
+        $this->validateCallbacks($specification);
 
         $this->validateOperationIds($specification);
 
@@ -518,19 +521,48 @@ class OpenApi31Compiler implements CompilerInterface
     }
 
     /**
-     * Recursively compile callback structures, resolving any DTO objects found within.
+     * Compile an operation's callbacks: a `Callback` as one, a raw array recursively, resolving
+     * any DTO objects found within.
      *
      * @param  array<string,mixed> $callbacks
      * @return array<string,mixed>
      */
     protected function compileCallbacks(array $callbacks): array
     {
-        return array_map($this->compileCallbackValue(...), $callbacks);
+        // a callback left out compiles to nothing, and is dropped rather than written as an empty list
+        return array_filter(array_map($this->compileCallbackValue(...), $callbacks), static fn (mixed $value): bool => $value !== []);
+    }
+
+    /**
+     * A callback's one expression, with a path item holding its operations, each written the way
+     * a path's are. `validateCallbacks()` reports what `addOperation()` leaves out.
+     *
+     * @return array<string,mixed>
+     */
+    protected function compileCallback(OA\Callback $callback): array
+    {
+        if ($callback->ref !== null) {
+            // a Reference Object takes no extensions
+            return ['$ref' => $callback->ref];
+        }
+
+        if ($callback->expression === null) {
+            return [];
+        }
+
+        $item = [];
+        foreach ($callback->operations ?? [] as $operation) {
+            $item = $this->addOperation($item, $operation);
+        }
+
+        // an empty path item is still the expression
+        return $this->filter([$callback->expression => $item ?: new \stdClass()], $callback);
     }
 
     protected function compileCallbackValue(mixed $value): mixed
     {
         return match (true) {
+            $value instanceof OA\Callback => $this->compileCallback($value),
             $value instanceof OA\Operation => $this->compileOperation($value),
             $value instanceof OA\RequestBody => $this->compileRequestBody($value),
             $value instanceof OA\Response => $this->compileResponse($value),
@@ -1006,6 +1038,8 @@ class OpenApi31Compiler implements CompilerInterface
             'examples' => $this->compileComponentMap($specification->examples, $this->compileExample(...)),
             'pathItems' => $this->compileComponentMap($specification->pathItems, $this->compilePathItem(...)),
             'mediaTypes' => $this->compileComponentMap($specification->mediaTypes, $this->compileMediaType(...)),
+            // one without an expression compiles to nothing, and is reported
+            'callbacks' => array_filter($this->compileComponentMap($specification->callbacks, $this->compileCallback(...)), static fn (array $callback): bool => $callback !== []),
             ...array_combine(array_map(fn (string $key): string => 'x-' . $key, array_keys($specification->componentsX)), $specification->componentsX),
         ], $specification));
     }
@@ -1548,10 +1582,13 @@ class OpenApi31Compiler implements CompilerInterface
     protected function validateOperations(Specification $specification): void
     {
         $this->visit($specification, OA\Operation::class, function (OA\Operation $operation): void {
+            // one in a callback has neither, and is checked with its callback
+            if ($operation->path === null && $operation->webhook === null) {
+                return;
+            }
+
             if ($operation->method === null) {
-                if ($operation->path !== null || $operation->webhook !== null) {
-                    $this->logger->error('Operation has no method, omitted in ' . $operation->getSourceLocation());
-                }
+                $this->logger->error('Operation has no method, omitted in ' . $operation->getSourceLocation());
 
                 return;
             }
@@ -1564,6 +1601,54 @@ class OpenApi31Compiler implements CompilerInterface
 
             if ($operation->requestBody instanceof OA\RequestBody && !$this->acceptsRequestBody($operation->method)) {
                 $this->logger->warning("Request body is not supported for method \"{$operation->method}\" in " . $operation->getSourceLocation());
+            }
+        });
+    }
+
+    /**
+     * A callback is its expression and the operations sent to it, and each operation is keyed by
+     * its method. An operation in a callback has neither path nor webhook, so it is checked here.
+     *
+     * A callback nested in an operation carries no reflector of its own, so the operation is
+     * reported instead.
+     */
+    protected function validateCallbacks(Specification $specification): void
+    {
+        $check = function (OA\Callback $callback, OA\AbstractAttribute $holder): void {
+            if ($callback->ref !== null) {
+                if ($callback->x !== null) {
+                    $this->logger->warning('Callback extensions are not written beside $ref, omitted in ' . $holder->getSourceLocation());
+                }
+
+                return;
+            }
+
+            if ($callback->expression === null) {
+                $this->logger->error('Callback is missing the key field expression, omitted in ' . $holder->getSourceLocation());
+
+                return;
+            }
+
+            foreach ($callback->operations ?? [] as $operation) {
+                if ($operation->method === null) {
+                    $this->logger->error('Operation in a callback has no method, omitted in ' . $holder->getSourceLocation());
+                } elseif (!$this->supportsMethod($operation->method)) {
+                    $this->logger->warning("Method \"{$operation->method}\" is not supported in a callback in OpenAPI " . $this->minorVersion() . ', omitted in ' . $holder->getSourceLocation());
+                } elseif ($operation->requestBody instanceof OA\RequestBody && !$this->acceptsRequestBody($operation->method)) {
+                    $this->logger->warning("Request body is not supported for method \"{$operation->method}\" in a callback in " . $holder->getSourceLocation());
+                }
+            }
+        };
+
+        foreach ($specification->callbacks as $callback) {
+            $check($callback, $callback);
+        }
+
+        $this->visit($specification, OA\Operation::class, function (OA\Operation $operation) use ($check): void {
+            foreach ($operation->callbacks ?? [] as $callback) {
+                if ($callback instanceof OA\Callback) {
+                    $check($callback, $operation);
+                }
             }
         });
     }

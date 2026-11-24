@@ -251,6 +251,7 @@ final class PropertyCoverageTest extends TestCase
             OA\Security\Scheme::class => [['securityScheme' => 'basic', 'type' => 'http', 'scheme' => 'basic'], $itself],
             OA\Flow::class => [['flow' => 'implicit', 'authorizationUrl' => 'https://example.com/auth', 'scopes' => []], fn (OA\Flow $flow): OA\Security\Scheme => new OA\Security\Scheme\OAuth2(securityScheme: 'oauth', flows: [$flow])],
             OA\Security\Requirement::class => [['scheme' => 'basic'], fn (OA\Security\Requirement $requirement): OA\OpenApi => new OA\OpenApi(security: [$requirement])],
+            OA\Callback::class => [['component' => 'onEvent', 'expression' => '{$request.body#/url}'], $itself],
             OA\Components::class => [[], $itself],
             OA\Attachable::class => [[], $itself],
         ];
@@ -331,6 +332,8 @@ final class PropertyCoverageTest extends TestCase
             OA\Link::class . '::parameters' => ['id' => '$request.path.id'],
             'responses' => [new OA\Response(response: 201, description: 'Created')],
             'callbacks' => ['onEvent' => ['{$request.body#/url}' => ['post' => ['responses' => ['200' => ['description' => 'OK']]]]]],
+            OA\Components::class . '::callbacks' => [new OA\Callback(expression: '{$request.body#/url}', component: 'onEvent')],
+            OA\Callback::class . '::operations' => [new OA\Operation\Post(responses: [new OA\Response(response: 200, description: 'OK')])],
             'headers' => [new OA\Header(header: 'X-Trace', schema: new OA\Schema(type: 'string'))],
             'links' => [new OA\Link(link: 'next', operationId: 'getNext')],
             'examples' => [new OA\Example(example: 'dog', value: 'Rex')],

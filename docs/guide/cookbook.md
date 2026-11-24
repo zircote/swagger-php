@@ -581,7 +581,8 @@ The doctrine annotations library used for parsing annotations does not handle th
 Using just `*` or `application/octet-stream` might be usable workarounds.
 
 ## Callbacks
-The API does include basic support for callbacks. However, this needs to be set up mostly manually.
+Spec attributes describe a callback with `Callback`: the runtime expression for the URL, and the
+operations sent to it. Classic annotations and attributes take the callback as a raw array.
 
 **Example**
 
@@ -592,10 +593,11 @@ The API does include basic support for callbacks. However, this needs to be set 
 #[OA\Operation\Get(
     // ...
     callbacks: [
-        'onChange' => [
-            '{$request.query.callbackUrl}' => [
-                'post' => [
-                    'requestBody' => new OA\RequestBody(
+        'onChange' => new OA\Callback(
+            expression: '{$request.query.callbackUrl}',
+            operations: [
+                new OA\Operation\Post(
+                    requestBody: new OA\RequestBody(
                         description: 'subscription payload',
                         content: [
                             new OA\MediaType\Json(
@@ -614,9 +616,9 @@ The API does include basic support for callbacks. However, this needs to be set 
                             ),
                         ],
                     ),
-                ],
+                ),
             ],
-        ],
+        ),
     ],
     // ...
 )]
@@ -691,6 +693,24 @@ The API does include basic support for callbacks. However, this needs to be set 
 
   </template>
 </codeblock>
+
+A callback that several operations send can be declared once, with `component:`, and referenced
+from each of them. The callback goes into `components.callbacks`, and each operation gets a
+`$ref` to it:
+
+```php
+#[OA\Callback(component: 'productChanged', expression: '{$request.query.callbackUrl}', operations: [
+    new OA\Operation\Post(requestBody: new OA\RequestBody(description: 'subscription payload')),
+])]
+class ProductEvents {}
+
+#[OA\Operation\Post(path: '/products/subscribe', callbacks: [
+    'onChange' => new OA\Callback(ref: ProductEvents::class),
+])]
+```
+
+A `Callback` takes one expression. A callback with several still has to be written as a raw
+array.
 
 ## Using class name as a type instead of references
 Typically, when referencing schemas this is done using `$ref`'s

@@ -51,7 +51,6 @@ final class ClassicToSpecArgumentsTest extends TestCase
     private const LEFT = [
         'AdditionalProperties' => self::SCHEMA_ONLY_IN_CLASSIC,
         'Attachable' => ['properties'],
-        'Components' => ['callbacks'],
         'Get' => ['requestBody'],
         'Head' => ['requestBody'],
         'Items' => self::SCHEMA_ONLY_IN_CLASSIC,

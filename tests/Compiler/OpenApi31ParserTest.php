@@ -198,6 +198,33 @@ final class OpenApi31ParserTest extends TestCase
         $this->assertSame(['A webhook without operations is not supported, left out at #/webhooks/w'], array_column($logger->entries(), 'message'));
     }
 
+    public function testACallbackKeepsOneExpressionAndItsOperations(): void
+    {
+        $logger = new CollectingLogger();
+
+        $compiled = $this->roundTrip(['openapi' => '3.1.0', 'components' => ['callbacks' => ['onEvent' => [
+            '{$request.body#/url}' => ['summary' => 'Event', 'post' => ['responses' => ['200' => ['description' => 'ok']]]],
+            '{$request.body#/otherUrl}' => ['post' => ['responses' => ['200' => ['description' => 'ok']]]],
+        ]]]], $logger);
+
+        $this->assertSame([
+            '"{$request.body#/otherUrl}" is not supported, left out at #/components/callbacks/onEvent',
+            '"summary" is not supported, left out at #/components/callbacks/onEvent/{$request.body#~1url}',
+        ], array_column($logger->entries(), 'message'));
+        $this->assertSame(['{$request.body#/url}' => ['post' => ['responses' => ['200' => ['description' => 'ok']]]]], $this->normalised($compiled['components']['callbacks']['onEvent']));
+    }
+
+    public function testACallbackRefIntoAnotherDocumentIsKeptAsItIs(): void
+    {
+        $specification = (new OpenApi31Parser())->parse(['openapi' => '3.1.0', 'paths' => ['/a' => ['post' => [
+            'callbacks' => ['local' => ['$ref' => '#/components/callbacks/onEvent'], 'external' => ['$ref' => 'callbacks.yaml#/onEvent']],
+        ]]]]);
+
+        $callbacks = $specification->operations[0]->callbacks ?? [];
+        $this->assertInstanceOf(OA\Callback::class, $callbacks['local']);
+        $this->assertSame(['$ref' => 'callbacks.yaml#/onEvent'], $callbacks['external']);
+    }
+
     /**
      * @param array<string, mixed> $document
      *
