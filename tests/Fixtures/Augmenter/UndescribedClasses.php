@@ -30,6 +30,9 @@ class UndescribedClasses
     public array $history;
 
     #[OA\Property]
+    public int|Money $amount;
+
+    #[OA\Property]
     public BackedStringEnum $status;
 
     #[OA\Property]

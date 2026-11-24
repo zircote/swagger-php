@@ -336,6 +336,19 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
             && !$this->inferredTypes->offsetExists($schema);
     }
 
+    /**
+     * Reports a referenced class that matches no component, or several.
+     *
+     * @param string $omitted what is left out because of it
+     */
+    protected function logUnmatchedClass(string $class, int $count, string $omitted): void
+    {
+        $subject = $this->subject instanceof \Reflector ? $this->typeResolver->describe($this->subject) : 'a schema';
+        $this->logger?->error($count === 0
+            ? "Type \"{$class}\" in {$subject} matches no schema, {$omitted}"
+            : "Type \"{$class}\" in {$subject} matches several schemas, {$omitted}; reference one by name");
+    }
+
     protected function applySchemaType(OA\Schema $schema, SchemaType $schemaType): void
     {
         if ($schemaType->nullable !== null && $schema->nullable === null) {
@@ -350,10 +363,7 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
                     if ($count === 1) {
                         $schema->ref = $schemaType->type;
                     } else {
-                        $subject = $this->subject instanceof \Reflector ? $this->typeResolver->describe($this->subject) : 'a schema';
-                        $this->logger?->error($count === 0
-                            ? "Type \"{$schemaType->type}\" in {$subject} matches no schema, omitted"
-                            : "Type \"{$schemaType->type}\" in {$subject} matches several schemas, omitted; reference one by name");
+                        $this->logUnmatchedClass($schemaType->type, $count, 'omitted');
                     }
                 }
             } else {
@@ -386,14 +396,20 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
         }
 
         if ($schemaType->oneOf !== null) {
-            $members = array_map($this->schemaTypeToSchema(...), $schemaType->oneOf);
             // a member typed with a class that is no component matches anything, and so does the union
-            $unknown = array_filter(
-                $schemaType->oneOf,
-                fn (SchemaType $member): bool => $member->isRef() && $this->countComponents($member->type) !== 1,
-            );
-            if ($unknown === []) {
-                $schema->oneOf = $members;
+            $unmatched = [];
+            foreach ($schemaType->oneOf as $member) {
+                if ($member->isRef() && ($count = $this->countComponents($member->type)) !== 1) {
+                    $unmatched[$member->type] = $count;
+                }
+            }
+
+            if ($unmatched === []) {
+                $schema->oneOf = array_map($this->schemaTypeToSchema(...), $schemaType->oneOf);
+            } else {
+                foreach ($unmatched as $class => $count) {
+                    $this->logUnmatchedClass($class, $count, 'omitted with the rest of its union');
+                }
             }
         }
 

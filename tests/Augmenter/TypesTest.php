@@ -129,16 +129,28 @@ final class TypesTest extends TestCase
         $this->assertSame(['integer', 1], [$schema->items->type, $schema->items->minimum]);
     }
 
-    public function testWarnsForAClassWithNoSchema(): void
+    /**
+     * @return iterable<string, array{Builder\Mode}>
+     */
+    public static function modesProvider(): iterable
+    {
+        yield 'spec' => [Builder\Mode::SPEC];
+        yield 'hybrid' => [Builder\Mode::HYBRID];
+    }
+
+    #[DataProvider('modesProvider')]
+    public function testWarnsForAClassWithNoSchema(Builder\Mode $mode): void
     {
         $holder = Fixtures\Augmenter\UndescribedClasses::class;
-        $this->expectLogEntry('Type "' . Fixtures\Augmenter\Money::class . "\" in {$holder}::\$price matches no schema", 'error');
-        $this->expectLogEntry('Type "' . Fixtures\Augmenter\Labelled::class . "\" in {$holder}::\$label matches no schema", 'error');
-        $this->expectLogEntry('Type "' . Fixtures\Augmenter\Money::class . "\" in {$holder}::\$history matches no schema", 'error');
+        $money = Fixtures\Augmenter\Money::class;
+        $this->expectLogEntry("Type \"{$money}\" in {$holder}::\$price matches no schema, omitted", 'error');
+        $this->expectLogEntry('Type "' . Fixtures\Augmenter\Labelled::class . "\" in {$holder}::\$label matches no schema, omitted", 'error');
+        $this->expectLogEntry("Type \"{$money}\" in {$holder}::\$history matches no schema, omitted", 'error');
+        $this->expectLogEntry("Type \"{$money}\" in {$holder}::\$amount matches no schema, omitted with the rest of its union", 'error');
         $this->allowLogEntry('Document is missing info');
 
         $properties = (new Builder())
-            ->setMode(Builder\Mode::SPEC)
+            ->setMode($mode)
             ->setLogger($this->trackingLogger())
             ->withAugmenters(static fn ($augmenters) => $augmenters->configure(['cleanup.enabled=false']))
             ->addSource([new \ReflectionClass($holder), new \ReflectionClass(Fixtures\Augmenter\RefTarget::class)])
@@ -148,6 +160,8 @@ final class TypesTest extends TestCase
         // a component and an enum are referenced, and say nothing
         $this->assertSame('#/components/schemas/RefTarget', $properties['target']['$ref']);
         $this->assertSame('#/components/schemas/BackedStringEnum', $properties['status']['$ref']);
+        // a union with an unmatched member matches anything, so none of its members are kept
+        $this->assertEquals(new \stdClass(), $properties['amount']);
     }
 
     public function testAnExplicitTypeDropsThePhpTypesNull(): void
