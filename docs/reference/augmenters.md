@@ -95,6 +95,16 @@ its cases and `Types` references it. A backed enum's schema takes the backing ty
 the backing values, which is what a backed enum serialises to. A bare `#[OA\Schema]` on the enum
 lists the case names instead.
 
+### [ComponentKeys](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/ComponentKeys.php)
+
+Keys the named components beside a class's own, so the class name means its own one.
+
+A class declaring several components in one bucket, one without a name and the others named, is
+described once as itself and once per name. The one without a name keeps the class as its key,
+so a class-name `$ref` or a property typed with the class reaches it. Each named one is keyed by
+the class and its name, and is reached by name. Where none or several are without a name, the
+class still names several components.
+
 ### [Names](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Names.php)
 
 Infers component names from PHP reflectors when not explicitly set.

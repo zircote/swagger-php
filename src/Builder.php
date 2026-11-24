@@ -808,6 +808,7 @@ class Builder
             new Augmenter\Inheritance(),
             new Augmenter\OperationTags(),
             new Augmenter\ImpliedSchemas(),
+            new Augmenter\ComponentKeys(),
             new Augmenter\Names(),
             new Augmenter\Enums(),
             new Augmenter\Shortcuts(),

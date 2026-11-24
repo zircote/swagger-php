@@ -340,6 +340,10 @@ In spec and hybrid, the message for a union member typed with a class that match
 several, such as `Money` in `int|Money`, ends in `omitted with the rest of its union`. Before, it
 ended in `omitted`, though the whole union was left out, `int` with it.
 
+In spec and hybrid, a class declaring several schemas, exactly one of them without a name, is
+referenced as that one: a class-name `ref` and a property typed with the class point at it. Before,
+the reference was reported as ambiguous and pointed at nothing.
+
 ## Preparing for 8.0
 
 In 8.0 classic is removed, and so is `setMode()`. Spec attributes move from `OpenApi\Spec` to
