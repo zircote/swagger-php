@@ -17,8 +17,13 @@ use OpenApi\Tests\Fixtures\ClassDescriptions\Account;
 use OpenApi\Tests\Fixtures\ClassDescriptions\AccountController;
 use OpenApi\Tests\Fixtures\ClassDescriptions\Article;
 use OpenApi\Tests\Fixtures\ClassDescriptions\Author;
+use OpenApi\Tests\Fixtures\ClassDescriptions\ClassicPurchase;
+use OpenApi\Tests\Fixtures\ClassDescriptions\ClassicReceipt;
+use OpenApi\Tests\Fixtures\ClassDescriptions\Purchase;
+use OpenApi\Tests\Fixtures\ClassDescriptions\Receipt;
 use OpenApi\Tests\Fixtures\ClassDescriptions\Statement;
 use OpenApi\Utils\Pipeline;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -61,6 +66,42 @@ final class ClassDescriptionsTest extends TestCase
         );
 
         $this->assertSame(Author::class, $document['components']['schemas']['Article']['properties']['editor']['$ref']);
+    }
+
+    /**
+     * @return iterable<string, array{Mode, class-string, class-string, list<string>}>
+     */
+    public static function unnamedBesideNamedProvider(): iterable
+    {
+        yield 'spec' => [Mode::SPEC, Purchase::class, Receipt::class, ['receipt', 'copy']];
+        yield 'hybrid' => [Mode::HYBRID, ClassicPurchase::class, ClassicReceipt::class, ['receipt']];
+    }
+
+    /**
+     * @param class-string $holder
+     * @param class-string $described
+     * @param list<string> $properties
+     */
+    #[DataProvider('unnamedBesideNamedProvider')]
+    public function testTheClassMeansTheOneWithoutANameBesideNamedOnes(Mode $mode, string $holder, string $described, array $properties): void
+    {
+        $document = (new Builder())
+            ->setMode($mode)
+            ->setLogger($this->trackingLogger())
+            ->withAugmenters(fn (Pipeline $augmenters): Pipeline => $augmenters->remove(Augmenter\Cleanup::class))
+            ->addSource(new \ReflectionClass($described))
+            ->addSource(new \ReflectionClass($holder))
+            ->withSpecification(fn (Specification $specification): Specification => $specification->add(new OA\Info(title: 'Class descriptions', version: '1.0.0')))
+            ->build()
+            ->toArray();
+
+        $short = (new \ReflectionClass($described))->getShortName();
+        $holderSchema = $document['components']['schemas'][(new \ReflectionClass($holder))->getShortName()];
+        foreach ($properties as $property) {
+            $this->assertSame("#/components/schemas/{$short}", $holderSchema['properties'][$property]['$ref'], $property);
+        }
+        // the named ones stay components of their own
+        $this->assertSame(['integer', 'string'], [$document['components']['schemas']["{$short}Total"]['type'], $document['components']['schemas']["{$short}Line"]['type']]);
     }
 
     public function testASchemaPropertyIsTypedWithTheClassSchemaNotItsResponse(): void

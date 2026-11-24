@@ -445,6 +445,19 @@ HTTP header name, `component:` the reusable definition), a link and an example. 
 declared on a class needs no name at all. It is named after the class, by its short name unless a
 [component namer](/guide/extension-points#component-names) says otherwise.
 
+A class can declare more than one schema. Where exactly one of them has no name, the class means
+that one, and the others are reached by name:
+
+```php
+#[OA\Schema(component: 'ReceiptTotal', type: 'integer')]
+#[OA\Schema(type: 'object')]
+class Receipt {}
+```
+
+`ref: Receipt::class` and a property typed `Receipt` point at `#/components/schemas/Receipt`. With
+no schema or several without a name, the class names several schemas, and a reference to it is
+reported.
+
 `#[OA\Components]` remains as a class-level container for declaring several components on one
 class, and for the historic spellings below. On a class it also makes a holder. Each method or
 property declares a component of its own, and one without a name is named after the member, the
