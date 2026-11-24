@@ -368,6 +368,94 @@ final class CompilerTest extends TestCase
     }
 
     /**
+     * @return iterable<string, array{CompilerInterface, \Closure(OA\Schema, OA\Operation): void, string, bool}>
+     */
+    public static function nestedWithoutALocationProvider(): iterable
+    {
+        yield 'an unknown type on a property without a location' => [
+            new OpenApi31Compiler(),
+            static function (OA\Schema $holder): void {
+                $holder->properties = [new OA\Property(property: 'kind', schema: new OA\Schema(type: 'enum'))];
+            },
+            'Schema has unknown type "enum", expecting one of string, number, integer, boolean, array, object, null',
+            false,
+        ];
+        yield 'a property without a name' => [
+            new OpenApi31Compiler(),
+            static function (OA\Schema $holder): void {
+                $holder->properties = [new OA\Property(schema: new OA\Schema(type: 'string'))];
+            },
+            'Property is missing the key field property',
+            false,
+        ];
+        yield "an Example object in a schema's examples" => [
+            new OpenApi31Compiler(),
+            static function (OA\Schema $holder): void {
+                $holder->examples = [new OA\Example(value: 'x')];
+            },
+            'Schema "Owner" has Example objects in examples, which takes values',
+            false,
+        ];
+        yield 'a path parameter that is not required' => [
+            new OpenApi31Compiler(),
+            static function (OA\Schema $holder, OA\Operation $operation): void {
+                $operation->parameters = [new OA\Parameter(name: 'id', in: 'path', schema: new OA\Schema(type: 'string'))];
+            },
+            'Path parameter "id" must be required',
+            true,
+        ];
+        yield 'a 3.2 example with a value and a serialized value' => [
+            new OpenApi32Compiler(),
+            static function (OA\Schema $holder, OA\Operation $operation): void {
+                $operation->parameters = [new OA\Parameter(name: 'q', in: 'query', required: true, schema: new OA\Schema(type: 'string'), examples: [new OA\Example(example: 'both', value: 'a', serializedValue: 'a')])];
+            },
+            'Example "both" value is mutually exclusive with dataValue and serializedValue',
+            true,
+        ];
+    }
+
+    /**
+     * A nested attribute without a location of its own is reported at the nearest attribute holding it.
+     *
+     * @param \Closure(OA\Schema, OA\Operation): void $nest
+     * @param bool                                    $inOperation whether the operation holds it, rather than the schema
+     */
+    #[DataProvider('nestedWithoutALocationProvider')]
+    public function testANestedAttributeIsReportedAtItsHoldersLocation(CompilerInterface $compiler, \Closure $nest, string $message, bool $inOperation): void
+    {
+        $holder = (new OA\Schema(type: 'object', component: 'Owner'))->setReflector(new \ReflectionClass(OA\Info::class));
+        $operation = (new OA\Operation(path: '/items/{id}', method: 'get', operationId: 'getItem', responses: [new OA\Response(response: 200, description: 'ok')]))
+            ->setReflector(new \ReflectionMethod(OA\Info::class, '__construct'));
+        $nest($holder, $operation);
+        $specification = new Specification();
+        $specification->add(new OA\Info(title: 'Nested', version: '1.0.0'));
+        $specification->add($holder);
+        $specification->add($operation);
+
+        $messages = array_column($compiler->validate($specification), 'message');
+        $located = $inOperation ? $operation : $holder;
+
+        $this->assertContains($message . ' in ' . $located->getSourceLocation(), $messages);
+    }
+
+    /**
+     * An unknown schema type is reported at its owner's location for a schema without one of its own.
+     */
+    #[DataProvider('compilerProvider')]
+    public function testAnUnknownTypeIsReportedAtItsOwnersLocation(CompilerInterface $compiler, string $version): void
+    {
+        $property = (new OA\Property(property: 'title', schema: new OA\Schema(type: 'enum')))
+            ->setReflector(new \ReflectionProperty(OA\Info::class, 'title'));
+        $specification = new Specification();
+        $specification->add(new OA\Info(title: 'Types', version: '1.0.0'));
+        $specification->add(new OA\Schema(properties: [$property], component: 'Owner'));
+
+        $messages = array_column($compiler->validate($specification), 'message');
+
+        $this->assertContains('Schema has unknown type "enum", expecting one of string, number, integer, boolean, array, object, null in ' . OA\Info::class . '::$title in ' . (new \ReflectionClass(OA\Info::class))->getFileName(), $messages);
+    }
+
+    /**
      * 3.0 leaves out the 3.1 schema keywords with one warning each, at the owner's location for a
      * schema without one of its own.
      */
@@ -1151,7 +1239,7 @@ final class CompilerTest extends TestCase
         yield 'schema property without a name' => [
             new OpenApi31Compiler(),
             $specUnnamedProperty,
-            'Property is missing the key field property in unknown',
+            'Property is missing the key field property',
         ];
 
         $specUnnamedHeader = new Specification();
@@ -1192,7 +1280,7 @@ final class CompilerTest extends TestCase
         yield 'path parameter not required' => [
             new OpenApi31Compiler(),
             $specOptionalPath,
-            'Path parameter "id" must be required in unknown',
+            'Path parameter "id" must be required',
         ];
 
         yield 'component name claimed twice' => [
@@ -1234,7 +1322,7 @@ final class CompilerTest extends TestCase
         yield 'unknown schema type' => [
             new OpenApi31Compiler(),
             $specBadSchemaType,
-            'Schema "Typo" has unknown type "strig", expecting one of string, number, integer, boolean, array, object, null in unknown',
+            'Schema "Typo" has unknown type "strig", expecting one of string, number, integer, boolean, array, object, null',
         ];
     }
 

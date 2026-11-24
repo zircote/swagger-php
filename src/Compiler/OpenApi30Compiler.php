@@ -368,7 +368,7 @@ class OpenApi30Compiler extends OpenApi31Compiler
                 $this->logger->error($subject . ' has type "array" but no items' . $this->schemaLocation($schema, $owners));
             }
 
-            $this->validateSchemaType($schema);
+            $this->validateSchemaType($schema, $owners);
             $this->validateRefSiblings($schema, $owners);
 
             if ($schema->contentEncoding !== null || $schema->contentMediaType !== null) {

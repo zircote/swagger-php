@@ -344,6 +344,13 @@ In spec and hybrid, a class declaring several schemas, exactly one of them witho
 referenced as that one: a class-name `ref` and a property typed with the class point at it. Before,
 the reference was reported as ambiguous and pointed at nothing.
 
+In spec and hybrid, these messages end with the location of the nearest attribute holding a nested
+one, as the other nested messages do since 7.10: an unknown schema type, a property without a name,
+an `Example` object in a schema's `examples`, a path parameter that is not required, and in 3.2 an
+example with conflicting values. Before, they ended with `in unknown`. A schema message that names
+the property or parameter holding the schema, such as an array without `items`, also goes on to the
+nearest attribute with a location where that member has none.
+
 ## Preparing for 8.0
 
 In 8.0 classic is removed, and so is `setMode()`. Spec attributes move from `OpenApi\Spec` to

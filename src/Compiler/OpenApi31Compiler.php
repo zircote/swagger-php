@@ -108,6 +108,19 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected ?Walker $walker = null;
 
+    /**
+     * The specification `validate()` checks, or null outside it.
+     */
+    protected ?Specification $validating = null;
+
+    /**
+     * The nearest located holder of each attribute without a location, built for the first message
+     * that needs it during `validate()`.
+     *
+     * @var \SplObjectStorage<AttributeInterface, AttributeInterface>|null
+     */
+    protected ?\SplObjectStorage $locatedHolders = null;
+
     public function __construct(?LoggerInterface $logger = null)
     {
         $this->logger = new CollectingLogger($logger);
@@ -137,6 +150,7 @@ class OpenApi31Compiler implements CompilerInterface
     public function validate(Specification $specification): array
     {
         $this->walker = $specification->getWalker();
+        $this->validating = $specification;
 
         try {
             $this->validateSpecification($specification);
@@ -144,6 +158,8 @@ class OpenApi31Compiler implements CompilerInterface
             $this->walker->visitDeferred();
         } finally {
             $this->walker = null;
+            $this->validating = null;
+            $this->locatedHolders = null;
         }
 
         return $this->logger->entries();
@@ -1310,7 +1326,7 @@ class OpenApi31Compiler implements CompilerInterface
         $this->visit($specification, OA\Schema::class, function (OA\Schema $schema): void {
             foreach ($schema->properties ?? [] as $property) {
                 if ($property->property === null) {
-                    $this->logger->error('Property is missing the key field property in ' . $property->getSourceLocation());
+                    $this->logger->error('Property is missing the key field property' . $this->nestedLocation($property));
                 }
             }
         });
@@ -1324,9 +1340,8 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected function validateNestedNames(Specification $specification): void
     {
-        $holders = null;
 
-        $this->visit($specification, array_keys(static::NESTED_MAPS), function (AttributeInterface $attribute) use ($specification, &$holders): void {
+        $this->visit($specification, array_keys(static::NESTED_MAPS), function (AttributeInterface $attribute): void {
             foreach (static::NESTED_MAPS as $container => $maps) {
                 if (!$attribute instanceof $container) {
                     continue;
@@ -1337,13 +1352,11 @@ class OpenApi31Compiler implements CompilerInterface
                         if (($item->{$keyField} ?? null) !== null) {
                             continue;
                         }
-
-                        $holders ??= $this->collectLocatedHolders($specification);
                         $this->logger->error(sprintf(
                             '%s is missing the key field %s, omitted%s',
                             (new \ReflectionClass($item))->getShortName(),
                             $keyField,
-                            $this->attributeLocation($item->getReflector() instanceof \Reflector || !$holders->offsetExists($item) ? $item : $holders->offsetGet($item)),
+                            $this->nestedLocation($item),
                         ));
                     }
                 }
@@ -1448,11 +1461,10 @@ class OpenApi31Compiler implements CompilerInterface
                 if (!$example instanceof OA\Example) {
                     continue;
                 }
-
                 $this->logger->warning(sprintf(
-                    'Schema%s has Example objects in examples, which takes values, in %s',
+                    'Schema%s has Example objects in examples, which takes values%s',
                     $this->schemaLabel($schema),
-                    $example->getSourceLocation(),
+                    $this->nestedLocation($example),
                 ));
             }
         });
@@ -1475,7 +1487,7 @@ class OpenApi31Compiler implements CompilerInterface
                 $this->logger->warning('Schema' . $this->schemaLabel($schema) . ' has type "array" but no items' . $this->schemaLocation($schema, $owners));
             }
 
-            $this->validateSchemaType($schema);
+            $this->validateSchemaType($schema, $owners);
             $this->validateRefSiblings($schema, $owners);
         }
     }
@@ -1564,7 +1576,10 @@ class OpenApi31Compiler implements CompilerInterface
         }
     }
 
-    protected function validateSchemaType(OA\Schema $schema): void
+    /**
+     * @param \SplObjectStorage<OA\Schema, OA\Property|OA\Parameter> $owners
+     */
+    protected function validateSchemaType(OA\Schema $schema, \SplObjectStorage $owners): void
     {
         if ($schema->type === null) {
             return;
@@ -1575,7 +1590,7 @@ class OpenApi31Compiler implements CompilerInterface
                 continue;
             }
 
-            $this->logger->error('Schema' . $this->schemaLabel($schema) . " has unknown type \"$type\", expecting one of " . implode(', ', static::SCHEMA_TYPES) . ' in ' . $schema->getSourceLocation());
+            $this->logger->error('Schema' . $this->schemaLabel($schema) . " has unknown type \"$type\", expecting one of " . implode(', ', static::SCHEMA_TYPES) . $this->schemaLocation($schema, $owners));
         }
     }
 
@@ -1688,8 +1703,7 @@ class OpenApi31Compiler implements CompilerInterface
             if ($parameter->in !== OA\ParameterIn::Path->value || $parameter->ref !== null || $parameter->required === true) {
                 return;
             }
-
-            $this->logger->error("Path parameter \"{$parameter->name}\" must be required in " . $parameter->getSourceLocation());
+            $this->logger->error("Path parameter \"{$parameter->name}\" must be required" . $this->nestedLocation($parameter));
         });
     }
 
@@ -1862,7 +1876,24 @@ class OpenApi31Compiler implements CompilerInterface
             ? $schema
             : $owners->offsetGet($schema);
 
-        return $this->attributeLocation($located);
+        return $this->nestedLocation($located);
+    }
+
+    /**
+     * Where an attribute is reported: its own location, or that of the nearest attribute holding it.
+     *
+     * Outside `validate()` an attribute without a location is reported without one.
+     */
+    protected function nestedLocation(AttributeInterface $attribute): string
+    {
+        if (!$attribute->getReflector() instanceof \Reflector && $this->validating instanceof Specification) {
+            $this->locatedHolders ??= $this->collectLocatedHolders($this->validating);
+            if ($this->locatedHolders->offsetExists($attribute)) {
+                $attribute = $this->locatedHolders->offsetGet($attribute);
+            }
+        }
+
+        return $this->attributeLocation($attribute);
     }
 
     /**
