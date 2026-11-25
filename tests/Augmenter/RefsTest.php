@@ -7,11 +7,14 @@
 namespace OpenApi\Tests\Augmenter;
 
 use OpenApi\Augmenter;
+use OpenApi\Builder;
+use OpenApi\Builder\Mode;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Tests\Concerns\AssemblesSpecification;
 use OpenApi\Tests\Concerns\ExpectsLogEntries;
 use OpenApi\Tests\Fixtures;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class RefsTest extends TestCase
@@ -203,5 +206,110 @@ final class RefsTest extends TestCase
         $this->expectLogEntry('Reference "NoSuchPet" matches no component; a component of that name exists, use "#/components/responses/NoSuchPet"', 'error');
         $this->expectLogEntry('Reference "Unknown" matches no component', 'error');
         $this->expectLogEntry('Reference "#/components/schemas/Missing" points to no component', 'error');
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function externalRefProvider(): iterable
+    {
+        yield 'a URL' => ['https://example.com/schemas/pet.schema.json'];
+        yield 'a URL with a fragment' => ['https://example.com/openapi.yaml#/components/schemas/Pet'];
+        yield 'a relative file' => ['pet.yaml'];
+        yield 'a relative path' => ['../common/pet.json'];
+        yield 'a file with a fragment' => ['common.yaml#/components/schemas/Pet'];
+    }
+
+    /**
+     * A ref to another document is left as it is, without a message.
+     */
+    #[DataProvider('externalRefProvider')]
+    public function testLeavesAnExternalRefAlone(string $ref): void
+    {
+        $spec = new Specification();
+        $spec->schemas[] = new OA\Schema(properties: [new OA\Property(property: 'pet', schema: new OA\Schema(ref: $ref))], component: 'Owner');
+
+        $refs = new Augmenter\Refs();
+        $refs->setLogger($this->trackingLogger());
+        $refs($spec);
+
+        $this->assertSame($ref, $spec->schemas[0]->properties[0]->schema->ref);
+    }
+
+    /**
+     * @return iterable<string, array{Mode, string}>
+     */
+    public static function externalRefBuildProvider(): iterable
+    {
+        foreach ([Mode::SPEC, Mode::HYBRID] as $mode) {
+            foreach (self::externalRefProvider() as $name => [$ref]) {
+                yield "{$mode->value}: {$name}" => [$mode, $ref];
+            }
+        }
+    }
+
+    /**
+     * A build writes an external ref as given and logs nothing about it.
+     */
+    #[DataProvider('externalRefBuildProvider')]
+    public function testABuildKeepsAnExternalRef(Mode $mode, string $ref): void
+    {
+        $document = (new Builder())
+            ->setMode($mode)
+            ->setLogger($this->trackingLogger())
+            ->withSpecification(function (Specification $specification) use ($ref): void {
+                $specification->add(new OA\Info(title: 'External refs', version: '1.0.0'));
+                $specification->add(new OA\Operation(
+                    path: '/pets',
+                    method: 'get',
+                    operationId: 'listPets',
+                    responses: [new OA\Response(response: 200, description: 'ok', content: [new OA\MediaType(mediaType: 'application/json', schema: new OA\Schema(ref: $ref))])],
+                ));
+            })
+            ->build()
+            ->toArray();
+
+        $this->assertSame(['$ref' => $ref], $document['paths']['/pets']['get']['responses']['200']['content']['application/json']['schema']);
+    }
+
+    /**
+     * A bare name is still looked up as a class, and its hint still names the component.
+     */
+    public function testABareNameIsStillLookedUp(): void
+    {
+        $spec = new Specification();
+        $spec->responses[] = new OA\Response(response: 404, description: 'gone', component: 'Privacy Policy');
+        $spec->schemas[] = new OA\Schema(properties: [new OA\Property(property: 'policy', schema: new OA\Schema(ref: 'Privacy Policy'))], component: 'Owner');
+
+        $refs = new Augmenter\Refs();
+        $refs->setLogger($this->trackingLogger());
+        $refs($spec);
+
+        $this->expectLogEntry('Reference "Privacy Policy" matches no component; a component of that name exists, use "#/components/responses/Privacy Policy"', 'error');
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function fragmentRefProvider(): iterable
+    {
+        yield 'a name' => ['#Pet'];
+        yield 'the fragment alone' => ['#'];
+    }
+
+    /**
+     * A ref into this document that is not a pointer is still reported.
+     */
+    #[DataProvider('fragmentRefProvider')]
+    public function testReportsAFragmentThatIsNotAPointer(string $ref): void
+    {
+        $spec = new Specification();
+        $spec->schemas[] = new OA\Schema(properties: [new OA\Property(property: 'pet', schema: new OA\Schema(ref: $ref))], component: 'Owner');
+
+        $refs = new Augmenter\Refs();
+        $refs->setLogger($this->trackingLogger());
+        $refs($spec);
+
+        $this->expectLogEntry("Reference \"{$ref}\" matches no component", 'error');
     }
 }

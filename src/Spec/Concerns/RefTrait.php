@@ -25,7 +25,7 @@ trait RefTrait
             return $this->ref->getRefKey();
         }
 
-        return is_string($this->ref) && !str_starts_with($this->ref, '#/') ? new ComponentKey($this->ref) : null;
+        return is_string($this->ref) ? ComponentKey::fromRef($this->ref) : null;
     }
 
     public function setRef(string|Schema\Ref|null $ref): static

@@ -237,7 +237,8 @@ Resolves FQCN-based $ref values to JSON Reference paths.
 A $ref that looks like a FQCN is looked up by its `ComponentKey`, in the bucket the ref points
 into, and rewritten into the proper #/components/... path. A `Schema\Ref` adds its qualifiers
 to the key. A ref that is neither a known class nor a pointer to an existing component is
-reported, and so is one whose key names more than one component.
+reported, and so is one whose key names more than one component. A ref to another document, such
+as a URL or a file, is left as it is.
 
 ### [Parameters](https://github.com/zircote/swagger-php/tree/master/src/Augmenter/Parameters.php)
 

@@ -22,7 +22,8 @@ interface RefInterface extends AttributeInterface
     public function getRefValue(): ?string;
 
     /**
-     * The key the ref looks its component up by, or null when the ref is a JSON pointer or missing.
+     * The key the ref looks its component up by, or null when the ref is a JSON pointer, a ref to
+     * another document, such as a URL or a file, or missing.
      *
      * A class name is a plain key. A `Schema\Ref` adds its qualifiers.
      */
