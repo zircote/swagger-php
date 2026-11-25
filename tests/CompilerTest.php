@@ -334,6 +334,41 @@ final class CompilerTest extends TestCase
         $this->assertContains('Schema sets description beside $ref "#/components/schemas/Cat", omitted in ' . OA\Info::class . '::$title in ' . (new \ReflectionClass(OA\Info::class))->getFileName(), $messages);
     }
 
+    /**
+     * @return iterable<string, array{CompilerInterface, OA\Schema, OA\Schema, list<string>}>
+     */
+    public static function repeatedSiblingProvider(): iterable
+    {
+        foreach (self::compilerProvider() as $version => [$compiler]) {
+            // a compiler keeps what it logged, so each case gets its own
+            yield "{$version}: the same type" => [new ($compiler::class)(), new OA\Schema(type: 'object', component: 'Cat'), new OA\Schema(ref: '#/components/schemas/Cat', type: 'object'), []];
+            yield "{$version}: another type" => [new ($compiler::class)(), new OA\Schema(type: 'object', component: 'Cat'), new OA\Schema(ref: '#/components/schemas/Cat', type: 'array'), ['type']];
+            yield "{$version}: a component without a type" => [new ($compiler::class)(), new OA\Schema(properties: [new OA\Property(property: 'name', schema: new OA\Schema(type: 'string'))], component: 'Cat'), new OA\Schema(ref: '#/components/schemas/Cat', type: 'object'), ['type']];
+        }
+        yield '3.0: the same type beside another keyword' => [new OpenApi30Compiler(), new OA\Schema(type: 'string', component: 'Cat'), new OA\Schema(ref: '#/components/schemas/Cat', type: 'string', example: 'tom'), ['example']];
+    }
+
+    /**
+     * A keyword beside `$ref` that says what the referenced component says is dropped without a warning.
+     *
+     * @param list<string> $warned the keywords the warning names, none for no warning
+     */
+    #[DataProvider('repeatedSiblingProvider')]
+    public function testASiblingRepeatingTheReferencedSchemaIsNotWarnedAbout(CompilerInterface $compiler, OA\Schema $referenced, OA\Schema $referencing, array $warned): void
+    {
+        $specification = new Specification();
+        $specification->add(new OA\Info(title: 'Siblings', version: '1.0.0'));
+        $specification->add($referenced);
+        $specification->add(new OA\Schema(type: 'object', properties: [new OA\Property(property: 'cat', schema: $referencing)], component: 'Owner'));
+
+        $siblings = array_values(array_filter(
+            array_column($compiler->validate($specification), 'message'),
+            static fn (string $message): bool => str_contains($message, 'beside $ref'),
+        ));
+
+        $this->assertSame($warned === [] ? [] : ['Schema sets ' . implode(', ', $warned) . ' beside $ref "#/components/schemas/Cat", omitted'], $siblings);
+    }
+
     public function testADroppedSiblingInANestedSchemaIsReportedAtItsOwnersLocation(): void
     {
         $property = (new OA\Property(property: 'title', schema: new OA\Schema(

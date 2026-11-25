@@ -351,6 +351,10 @@ example with conflicting values. Before, they ended with `in unknown`. A schema 
 the property or parameter holding the schema, such as an array without `items`, also goes on to the
 nearest attribute with a location where that member has none.
 
+A keyword beside `$ref` that has the same value in the referenced component, such as `type:
+'object'` next to a reference to an object schema, is dropped without a warning, since nothing is
+lost. One that differs still warns.
+
 ## Preparing for 8.0
 
 In 8.0 classic is removed, and so is `setMode()`. Spec attributes move from `OpenApi\Spec` to
