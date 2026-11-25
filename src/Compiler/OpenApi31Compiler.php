@@ -1600,7 +1600,11 @@ class OpenApi31Compiler implements CompilerInterface
         $this->components ??= $this->validating->buildComponentIndex();
         $referenced = $this->components->findSchema($ref);
 
-        return $referenced instanceof OA\Schema && $referenced->ref === null && $referenced->{$keyword} === $value;
+        // a subclass of `Schema` may add fields the referenced component does not have
+        return $referenced instanceof OA\Schema
+            && $referenced->ref === null
+            && property_exists($referenced, $keyword)
+            && $referenced->{$keyword} === $value;
     }
 
     /**

@@ -345,24 +345,47 @@ final class CompilerTest extends TestCase
             yield "{$version}: another type" => [new ($compiler::class)(), new OA\Schema(type: 'object', component: 'Cat'), new OA\Schema(ref: '#/components/schemas/Cat', type: 'array'), ['type']];
             yield "{$version}: a component without a type" => [new ($compiler::class)(), new OA\Schema(properties: [new OA\Property(property: 'name', schema: new OA\Schema(type: 'string'))], component: 'Cat'), new OA\Schema(ref: '#/components/schemas/Cat', type: 'object'), ['type']];
         }
+        $flavoured = new class (flavour: 'sweet', ref: '#/components/schemas/Cat') extends OA\Schema {
+            public ?string $flavour = null;
+
+            public function __construct(?string $flavour = null, mixed ...$args)
+            {
+                // set before the parent constructor, which records the authored fields
+                $this->flavour = $flavour;
+                parent::__construct(...$args);
+            }
+        };
+        yield '3.1: a field of a subclass the component does not have' => [new OpenApi31Compiler(), new OA\Schema(type: 'object', component: 'Cat'), $flavoured, ['flavour']];
         yield '3.0: the same type beside another keyword' => [new OpenApi30Compiler(), new OA\Schema(type: 'string', component: 'Cat'), new OA\Schema(ref: '#/components/schemas/Cat', type: 'string', example: 'tom'), ['example']];
     }
 
     /**
-     * A keyword beside `$ref` that says what the referenced component says is dropped without a warning.
+     * A keyword beside `$ref` is warned about only where it differs from the referenced component.
+     *
+     * One that says what the component says is dropped without a warning.
      *
      * @param list<string> $warned the keywords the warning names, none for no warning
      */
     #[DataProvider('repeatedSiblingProvider')]
-    public function testASiblingRepeatingTheReferencedSchemaIsNotWarnedAbout(CompilerInterface $compiler, OA\Schema $referenced, OA\Schema $referencing, array $warned): void
+    public function testASiblingIsWarnedAboutOnlyWhereItDiffersFromTheReferencedSchema(CompilerInterface $compiler, OA\Schema $referenced, OA\Schema $referencing, array $warned): void
     {
         $specification = new Specification();
         $specification->add(new OA\Info(title: 'Siblings', version: '1.0.0'));
         $specification->add($referenced);
         $specification->add(new OA\Schema(type: 'object', properties: [new OA\Property(property: 'cat', schema: $referencing)], component: 'Owner'));
 
+        // a PHP warning, such as reading a field the component does not have, fails the test
+        set_error_handler(static function (int $severity, string $message, string $file, int $line): never {
+            throw new \ErrorException($message, 0, $severity, $file, $line);
+        });
+        try {
+            $entries = $compiler->validate($specification);
+        } finally {
+            restore_error_handler();
+        }
+
         $siblings = array_values(array_filter(
-            array_column($compiler->validate($specification), 'message'),
+            array_column($entries, 'message'),
             static fn (string $message): bool => str_contains($message, 'beside $ref'),
         ));
 
