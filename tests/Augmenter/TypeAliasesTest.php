@@ -13,7 +13,6 @@ use OpenApi\Specification;
 use OpenApi\Tests\Concerns\ExpectsLogEntries;
 use OpenApi\Tests\Fixtures;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\AbstractLogger;
 
 final class TypeAliasesTest extends TestCase
 {
@@ -50,19 +49,11 @@ final class TypeAliasesTest extends TestCase
             component: 'Built',
         ));
 
-        $logger = new class () extends AbstractLogger {
-            /** @var list<string> */
-            public array $messages = [];
-
-            public function log($level, \Stringable|string $message, array $context = []): void
-            {
-                $this->messages[] = (string) $message;
-            }
-        };
         $augmenter = new Augmenter\TypeAliases();
-        $augmenter->setLogger($logger);
+        $augmenter->setLogger($this->trackingLogger());
         $augmenter($specification);
 
-        $this->assertSame(['Schema type "float" is a classic alias, use "number" with format "float" (translation removed in 8.0; rector rule OpenApi\Rector\TypeAliasesRector rewrites it)'], $logger->messages);
+        $this->assertSame([['level' => 'notice', 'message' => 'Schema type "float" is a classic alias, use "number" with format "float" (translation removed in 8.0; rector rule OpenApi\\Rector\\TypeAliasesRector rewrites it)']], $this->recordedLogEntries());
+        $this->allowLogEntry('Schema type "float" is a classic alias');
     }
 }
