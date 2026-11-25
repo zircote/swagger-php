@@ -13,8 +13,12 @@ use OpenApi\Context;
 use OpenApi\Generator;
 use OpenApi\Processors\AugmentSchemas;
 use OpenApi\Processors\MergeIntoOpenApi;
+use OpenApi\Tests\Fixtures\Augmenter\CollectionClasses;
+use OpenApi\Tests\Fixtures\Augmenter\CollectionItem;
 use OpenApi\Tests\Fixtures\PHP\DocblockAndTypehintTypes;
 use OpenApi\Tests\OpenApiTestCase;
+use OpenApi\Type\SchemaType;
+use OpenApi\Type\TypeResolver;
 use OpenApi\Utils\Pipeline;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -233,5 +237,29 @@ final class TypeResolverTest extends OpenApiTestCase
                 $property,
             );
         }
+    }
+
+    /**
+     * A docblock type naming a class that is a collection, with no type parameters, is the class,
+     * with the collection to fall back to where the class is no component. One with type
+     * parameters is the collection.
+     */
+    public function testACollectionClassIsTheClassWithTheCollectionAsFallback(): void
+    {
+        require_once self::fixture('Augmenter/CollectionClasses.php');
+        $resolver = new TypeResolver();
+
+        $one = $resolver->resolve(new \ReflectionProperty(CollectionClasses::class, 'one'));
+        $this->assertSame(CollectionItem::class, $one?->type);
+        $this->assertSame('array', $one->unmatched?->type);
+
+        $items = $resolver->resolve(new \ReflectionProperty(CollectionClasses::class, 'list'))?->items;
+        $this->assertSame(CollectionItem::class, $items?->type);
+        $this->assertSame('array', $items->unmatched?->type);
+
+        $typed = $resolver->resolve(new \ReflectionProperty(CollectionClasses::class, 'typed'));
+        $this->assertSame('object', $typed?->type);
+        $this->assertNull($typed->unmatched);
+        $this->assertSame(CollectionItem::class, $typed->additionalProperties instanceof SchemaType ? $typed->additionalProperties->type : null);
     }
 }

@@ -254,6 +254,18 @@ class TypeResolver implements LoggerAwareInterface
         }
 
         if ($type instanceof CollectionType) {
+            // a class that is a collection, such as one implementing `ArrayAccess`, with no type
+            // parameters: the class where it is a component, a collection of anything otherwise
+            $wrapped = $type->getWrappedType();
+            if ($wrapped instanceof ObjectType) {
+                $schemaType = $this->mapType($wrapped);
+                if ($schemaType->isRef()) {
+                    $schemaType->unmatched = $this->mapCollectionType($type);
+
+                    return $schemaType;
+                }
+            }
+
             return $this->mapCollectionType($type);
         }
 

@@ -164,6 +164,75 @@ final class TypesTest extends TestCase
         $this->assertEquals(new \stdClass(), $properties['amount']);
     }
 
+    /**
+     * @return iterable<string, array{Builder\Mode, class-string, string}>
+     */
+    public static function collectionClassesProvider(): iterable
+    {
+        yield 'spec' => [Builder\Mode::SPEC, Fixtures\Augmenter\CollectionClasses::class, 'Collection'];
+        yield 'hybrid' => [Builder\Mode::HYBRID, Fixtures\Augmenter\CollectionClasses::class, 'Collection'];
+        yield 'classic' => [Builder\Mode::CLASSIC, Fixtures\Augmenter\ClassicCollectionClasses::class, 'ClassicCollection'];
+        yield 'hybrid, classic attributes' => [Builder\Mode::HYBRID, Fixtures\Augmenter\ClassicCollectionClasses::class, 'ClassicCollection'];
+    }
+
+    /**
+     * A class that is a collection, such as one implementing `ArrayAccess` as a Laravel resource does,
+     * is referenced where it is a component, and is a collection of anything otherwise.
+     *
+     * @param class-string $holder
+     */
+    #[DataProvider('collectionClassesProvider')]
+    public function testACollectionClassIsItsComponentWhereItHasOne(Builder\Mode $mode, string $holder, string $prefix): void
+    {
+        $this->allowLogEntry('Analysing source', 'Document is missing info', 'Required @OA\\Info() not found', 'Required @OA\\PathItem() not found');
+
+        $file = (string) (new \ReflectionClass($holder))->getFileName();
+        $document = (new Builder())
+            ->setMode($mode)
+            ->setLogger($this->trackingLogger())
+            ->withAugmenters(static fn ($augmenters) => $augmenters->configure(['cleanup.enabled=false']))
+            ->addSource($file)
+            ->build()
+            ->toArray();
+
+        $item = ['$ref' => "#/components/schemas/{$prefix}Item"];
+        $anything = $mode === Builder\Mode::CLASSIC ? [] : new \stdClass();
+        $null = $mode === Builder\Mode::CLASSIC ? ['type' => 'object', 'nullable' => true, 'enum' => [null]] : ['type' => 'null'];
+        $properties = $document['components']['schemas']["{$prefix}Classes"]['properties'];
+
+        $this->assertEquals(['type' => 'array', 'items' => $item], array_diff_key($properties['brackets'], ['default' => true]));
+        $this->assertEquals(['type' => 'array', 'items' => $item], array_diff_key($properties['list'], ['default' => true]));
+        $this->assertEquals($item, $properties['one']);
+        $this->assertEquals(['oneOf' => [$item, $null]], $properties['maybe']);
+        // nothing describes the bag, so it stays the collection it is, and nothing is said
+        $this->assertEquals(['type' => 'array', 'items' => $anything], $properties['bag']);
+        $this->assertEquals($mode === Builder\Mode::CLASSIC ? ['type' => 'array', 'items' => $anything, 'nullable' => true] : ['type' => ['array', 'null'], 'items' => $anything], $properties['maybeBag']);
+        $this->assertEquals(['type' => 'object', 'additionalProperties' => $item], $properties['typed']);
+        $this->assertEquals(['oneOf' => [['type' => 'integer'], ['type' => 'array', 'items' => $anything]]], $properties['either']);
+    }
+
+    /**
+     * A request body typed with a collection class in its docblock is that class, as one with the
+     * class as its native type is, and is reported where the class is no request body.
+     */
+    #[DataProvider('modesProvider')]
+    public function testARequestBodyTypedWithACollectionClassIsReported(Builder\Mode $mode): void
+    {
+        $controller = Fixtures\Augmenter\CollectionRequests::class;
+        $this->expectLogEntry('Request body "' . Fixtures\Augmenter\CollectionBag::class . "\" in \$request of {$controller}::store() matches no request body, left empty", 'error');
+        $this->allowLogEntry('Analysing source', 'Document is missing info', 'Required @OA\\Info() not found');
+
+        $document = (new Builder())
+            ->setMode($mode)
+            ->setLogger($this->trackingLogger())
+            ->withAugmenters(static fn ($augmenters) => $augmenters->configure(['cleanup.enabled=false']))
+            ->addSource((string) (new \ReflectionClass($controller))->getFileName())
+            ->build()
+            ->toArray();
+
+        $this->assertArrayNotHasKey('$ref', (array) $document['paths']['/collections']['post']['requestBody']);
+    }
+
     public function testAnExplicitTypeDropsThePhpTypesNull(): void
     {
         $spec = $this->assemble(Fixtures\Augmenter\ExplicitTypeNullability::class);

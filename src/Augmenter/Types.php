@@ -255,6 +255,15 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
     }
 
     /**
+     * Whether a class ref matching `$count` components falls back to its `unmatched` type: a
+     * collection class with no component is the collection it is.
+     */
+    protected function fallsBack(SchemaType $schemaType, int $count): bool
+    {
+        return $count === 0 && $schemaType->unmatched instanceof SchemaType;
+    }
+
+    /**
      * The schema typed with the resolved type: a new one where there is none, else the one given.
      */
     protected function typedSchema(?OA\Schema $schema, SchemaType $schemaType): OA\Schema
@@ -362,6 +371,8 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
                     $count = $this->countComponents($schemaType->type);
                     if ($count === 1) {
                         $schema->ref = $schemaType->type;
+                    } elseif ($this->fallsBack($schemaType, $count)) {
+                        $this->applySchemaType($schema, $schemaType->unmatched);
                     } else {
                         $this->logUnmatchedClass($schemaType->type, $count, 'omitted');
                     }
@@ -399,9 +410,16 @@ class Types implements PipeInterface, LoggerAwareInterface, TypeResolverAwareInt
             // a member typed with a class that is no component matches anything, and so does the union
             $unmatched = [];
             foreach ($schemaType->oneOf as $member) {
-                if ($member->isRef() && ($count = $this->countComponents($member->type)) !== 1) {
-                    $unmatched[$member->type] = $count;
+                if (!$member->isRef()) {
+                    continue;
                 }
+
+                $count = $this->countComponents($member->type);
+                if ($count === 1 || $this->fallsBack($member, $count)) {
+                    continue;
+                }
+
+                $unmatched[$member->type] = $count;
             }
 
             if ($unmatched === []) {
