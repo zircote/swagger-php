@@ -6,10 +6,10 @@
 
 namespace OpenApi\Augmenter;
 
-use OpenApi\Contracts\AttributeInterface;
 use OpenApi\Rector\TypeAliasesRector;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Specification\LocatedHolders;
 use OpenApi\Type\TypeMapper;
 use OpenApi\Utils\PipeInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -38,12 +38,10 @@ class TypeAliases implements PipeInterface, LoggerAwareInterface
     protected const UNMAPPED = ['mixed', 'byte'];
 
     /**
-     * A schema nested in a `schema:` argument has no reflector of its own, so a report about it
-     * names the attribute holding it.
-     *
-     * @var \SplObjectStorage<OA\Schema, AttributeInterface>
+     * A nested schema has no location of its own, so a report about it names the nearest
+     * attribute holding it that has one.
      */
-    protected \SplObjectStorage $holders;
+    protected ?LocatedHolders $holders = null;
 
     public function __construct(
         protected bool $enabled = true,
@@ -56,12 +54,7 @@ class TypeAliases implements PipeInterface, LoggerAwareInterface
             return null;
         }
 
-        $this->holders = new \SplObjectStorage();
-        $payload->getWalker()->visit(AttributeInterface::class, function (AttributeInterface $attribute): void {
-            if (property_exists($attribute, 'schema') && $attribute->schema instanceof OA\Schema) {
-                $this->holders[$attribute->schema] = $attribute;
-            }
-        });
+        $this->holders = new LocatedHolders($payload);
 
         $payload->getWalker()->eachSchema(function (OA\Schema $schema): void {
             if (is_string($schema->type)) {
@@ -147,14 +140,11 @@ class TypeAliases implements PipeInterface, LoggerAwareInterface
 
     protected function report(OA\Schema $schema, string $alias, string $replacement): void
     {
-        $located = !$schema->getReflector() instanceof \Reflector && isset($this->holders[$schema]) ? $this->holders[$schema] : $schema;
-
         $this->logger?->notice(sprintf(
-            'Schema type "%s" is a classic alias, use %s (translation removed in 8.0; rector rule %s rewrites it) in %s',
+            'Schema type "%s" is a classic alias, use %s (translation removed in 8.0; rector rule %s rewrites it)',
             $alias,
             $replacement,
             TypeAliasesRector::class,
-            $located->getSourceLocation(),
-        ));
+        ) . $this->holders?->location($schema));
     }
 }
