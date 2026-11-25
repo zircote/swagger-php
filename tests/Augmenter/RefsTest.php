@@ -349,6 +349,25 @@ final class RefsTest extends TestCase
     }
 
     /**
+     * A discriminator's mapping is reported at the schema holding the discriminator, or at the
+     * nearest located attribute holding that schema.
+     */
+    public function testADanglingDiscriminatorMappingIsReportedAtItsSchemasLocation(): void
+    {
+        $pet = new OA\Schema(type: 'object', discriminator: new OA\Discriminator(propertyName: 'kind', mapping: ['dog' => '#/components/schemas/Dog']));
+        $holder = (new OA\Schema(type: 'object', properties: [new OA\Property(property: 'pet', schema: $pet)], component: 'Owner'))
+            ->setReflector(new \ReflectionClass(Fixtures\UnresolvedRefs\Station::class));
+        $spec = new Specification();
+        $spec->schemas[] = $holder;
+
+        $refs = new Augmenter\Refs();
+        $refs->setLogger($this->trackingLogger());
+        $refs($spec);
+
+        $this->expectLogEntry('Reference "#/components/schemas/Dog" points to no component in ' . $holder->getSourceLocation(), 'error');
+    }
+
+    /**
      * Each place a reference is written gets a message of its own.
      */
     public function testAReferenceWrittenTwiceIsReportedAtEachLocation(): void

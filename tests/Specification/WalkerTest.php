@@ -7,6 +7,7 @@
 namespace OpenApi\Tests\Specification;
 
 use OpenApi\Contracts\AttributeInterface;
+use OpenApi\Contracts\RefInterface;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use PHPUnit\Framework\TestCase;
@@ -167,5 +168,29 @@ final class WalkerTest extends TestCase
         $walker->visitDeferred();
 
         $this->assertSame([1, 1], [$first, $second]);
+    }
+
+    /**
+     * A ref made from a discriminator's mapping or a security requirement is in no attribute of
+     * the specification, so the visitor gets the schema or the requirement it came from.
+     */
+    public function testEachRefPassesTheAttributeTheRefIsWrittenOn(): void
+    {
+        $item = new OA\Schema(ref: '#/components/schemas/Item');
+        $pet = new OA\Schema(schema: 'Pet', items: $item, discriminator: new OA\Discriminator(propertyName: 'kind', mapping: ['dog' => '#/components/schemas/Dog']));
+        $requirement = new OA\Security\Requirement('api_key');
+
+        $specification = new Specification();
+        $specification->schemas[] = $pet;
+        $specification->operations[] = new OA\Operation\Get(path: '/pets', security: [$requirement]);
+
+        $writtenOn = [];
+        $specification->getWalker()->eachRef(static function (RefInterface $ref, AttributeInterface $attribute) use (&$writtenOn): void {
+            $writtenOn[$ref->getRefValue()] = $attribute;
+        });
+
+        $this->assertSame($item, $writtenOn['#/components/schemas/Item']);
+        $this->assertSame($pet, $writtenOn['#/components/schemas/Dog']);
+        $this->assertSame($requirement, $writtenOn['#/components/securitySchemes/api_key']);
     }
 }

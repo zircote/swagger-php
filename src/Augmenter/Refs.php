@@ -73,10 +73,10 @@ class Refs implements PipeInterface, LoggerAwareInterface
 
     protected function resolveFQCNRefs(Specification $specification, ComponentIndex $index): void
     {
-        /** @var list<array{RefInterface, string, string}> $reports the attribute, and the message before and after its location */
+        /** @var list<array{AttributeInterface, string, string}> $reports the attribute the ref is written on, and the message before and after its location */
         $reports = [];
 
-        $specification->getWalker()->eachRef(function (RefInterface $attribute) use ($index, &$reports): void {
+        $specification->getWalker()->eachRef(function (RefInterface $attribute, AttributeInterface $writtenOn) use ($index, &$reports): void {
             $ref = $attribute->getRefValue();
             if (!is_string($ref)) {
                 return;
@@ -84,7 +84,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
 
             if (str_starts_with($ref, '#/')) {
                 if ($this->isDangling($ref, $index)) {
-                    $reports[] = [$attribute, "Reference \"{$ref}\" points to no component", ''];
+                    $reports[] = [$writtenOn, "Reference \"{$ref}\" points to no component", ''];
                 }
 
                 return;
@@ -107,13 +107,13 @@ class Refs implements PipeInterface, LoggerAwareInterface
             $matches = $index->findAllByKey($key, $bucket);
             if (count($matches) > 1) {
                 $names = array_map(static fn (AttributeInterface $component): string => ComponentName::of($component) ?? '(unnamed)', $matches);
-                $reports[] = [$attribute, "Reference \"{$key}\" is ambiguous, it names several {$bucket} (" . implode(', ', $names) . ')', '; reference one by name'];
+                $reports[] = [$writtenOn, "Reference \"{$key}\" is ambiguous, it names several {$bucket} (" . implode(', ', $names) . ')', '; reference one by name'];
 
                 return;
             }
 
             $named = $this->pointerFor((string) $key, $index);
-            $reports[] = [$attribute, "Reference \"{$key}\" matches no component", $named !== null ? "; a component of that name exists, use \"{$named}\"" : ''];
+            $reports[] = [$writtenOn, "Reference \"{$key}\" matches no component", $named !== null ? "; a component of that name exists, use \"{$named}\"" : ''];
         });
 
         if ($reports === []) {
@@ -122,8 +122,8 @@ class Refs implements PipeInterface, LoggerAwareInterface
 
         $holders = new LocatedHolders($specification);
         $messages = [];
-        foreach ($reports as [$attribute, $head, $tail]) {
-            $messages[$head . $holders->location($attribute) . $tail] = true;
+        foreach ($reports as [$writtenOn, $head, $tail]) {
+            $messages[$head . $holders->location($writtenOn) . $tail] = true;
         }
 
         foreach (array_keys($messages) as $message) {

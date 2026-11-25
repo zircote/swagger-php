@@ -67,26 +67,30 @@ class Walker
     /**
      * Walk every attribute in the specification that has a ref.
      *
-     * @param callable(RefInterface): void $visitor
+     * The visitor also gets the attribute the ref is written on. That is the ref itself, except for
+     * the refs made here from a discriminator's mapping or a security requirement, which belong to
+     * no attribute in the specification: for those it is the schema or the requirement.
+     *
+     * @param callable(RefInterface, AttributeInterface): void $visitor
      */
     public function eachRef(callable $visitor): void
     {
         $this->visit(AttributeInterface::class, function (AttributeInterface $attribute) use ($visitor): void {
             if ($attribute instanceof RefInterface && $attribute->getRefValue() !== null) {
-                $visitor($attribute);
+                $visitor($attribute, $attribute);
             }
 
             // special case
             if ($attribute instanceof OA\Schema && $attribute->discriminator instanceof OA\Discriminator) {
                 foreach ($attribute->discriminator->mapping ?? [] as $ref) {
-                    $visitor(new OA\Schema(ref: $ref));
+                    $visitor(new OA\Schema(ref: $ref), $attribute);
                 }
             }
 
             // special case
             if ($attribute instanceof OA\Security\Requirement) {
                 foreach (array_keys($attribute->toArray()) as $schemeName) {
-                    $visitor(new OA\Security\Scheme(ref: JsonPointer::ref('components', 'securitySchemes', $schemeName)));
+                    $visitor(new OA\Security\Scheme(ref: JsonPointer::ref('components', 'securitySchemes', $schemeName)), $attribute);
                 }
             }
         });
