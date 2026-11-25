@@ -351,6 +351,10 @@ example with conflicting values. Before, they ended with `in unknown`. A schema 
 the property or parameter holding the schema, such as an array without `items`, also goes on to the
 nearest attribute with a location where that member has none.
 
+In spec and hybrid, the notice for a classic type alias such as `type: 'float'` names the nearest
+attribute with a location when the schema is nested more than one level deep, or is held by an
+attribute without one. Before, it ended with `in unknown`.
+
 A keyword beside `$ref` that has the same value in the referenced component, such as `type:
 'object'` next to a reference to an object schema, is dropped without a warning, since nothing is
 lost. One that differs still warns.
@@ -371,6 +375,21 @@ too. A collection class without a schema stays an array of anything, and one wit
 such as `Collection<int, User>`, is mapped as before. A request body parameter typed with such a
 class in its docblock, a Laravel `FormRequest` among them, now names the class as one with the
 native type does, and is reported where the class is no request body.
+
+## Changed in 7.11
+
+`Augmenter\ComponentKeys` is a new default augmenter, between `ImpliedSchemas` and `Names`. A
+`Builder` subclass returning its own list from `getDefaultAugmenters()` adds it there. Without it,
+a class declaring several schemas is reported as ambiguous, as before.
+
+`RefInterface::getRefKey()` returns `null` for a ref to another document, such as a URL or a file,
+as it does for a JSON pointer. A class implementing the interface without `RefTrait` does the same,
+or its ref is looked up as a class name and reported as matching no component.
+
+`OpenApi31Compiler::validateSchemaType()` takes the schemas' owners as a second argument, and
+`collectLocatedHolders()` is replaced by `Specification\LocatedHolders`, which
+`Augmenter\TypeAliases::$holders` now holds too. A subclass overriding `validateSchemaType()`
+adds the argument.
 
 ## Preparing for 8.0
 
