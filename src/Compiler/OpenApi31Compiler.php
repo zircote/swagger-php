@@ -13,6 +13,7 @@ use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Specification\ComponentIndex;
 use OpenApi\Specification\ComponentName;
+use OpenApi\Specification\LocatedHolders;
 use OpenApi\Specification\Walker;
 use OpenApi\Undefined;
 use OpenApi\Utils\SecurityRequirement;
@@ -117,10 +118,8 @@ class OpenApi31Compiler implements CompilerInterface
     /**
      * The nearest located holder of each attribute without a location, built for the first message
      * that needs it during `validate()`.
-     *
-     * @var \SplObjectStorage<AttributeInterface, AttributeInterface>|null
      */
-    protected ?\SplObjectStorage $locatedHolders = null;
+    protected ?LocatedHolders $locatedHolders = null;
 
     /**
      * The components of the specification `validate()` checks, built for the first check that
@@ -1918,57 +1917,11 @@ class OpenApi31Compiler implements CompilerInterface
     protected function nestedLocation(AttributeInterface $attribute): string
     {
         if (!$attribute->getReflector() instanceof \Reflector && $this->validating instanceof Specification) {
-            $this->locatedHolders ??= $this->collectLocatedHolders($this->validating);
-            if ($this->locatedHolders->offsetExists($attribute)) {
-                $attribute = $this->locatedHolders->offsetGet($attribute);
-            }
+            $this->locatedHolders ??= new LocatedHolders($this->validating);
+            $attribute = $this->locatedHolders->locatedFor($attribute);
         }
 
         return $this->attributeLocation($attribute);
-    }
-
-    /**
-     * The nearest attribute with a location of its own that holds each attribute without one.
-     *
-     * A nested attribute is built inside another one's arguments and has no location of its own.
-     * An attribute reachable from two places takes the holder found first.
-     *
-     * @return \SplObjectStorage<AttributeInterface, AttributeInterface>
-     */
-    protected function collectLocatedHolders(Specification $specification): \SplObjectStorage
-    {
-        /** @var \SplObjectStorage<AttributeInterface, AttributeInterface> $holders */
-        $holders = new \SplObjectStorage();
-        $seen = new \SplObjectStorage();
-
-        $descend = function (mixed $value, ?AttributeInterface $holder) use (&$descend, $holders, $seen): void {
-            foreach (is_array($value) ? $value : [$value] as $item) {
-                if (is_array($item)) {
-                    $descend($item, $holder);
-                    continue;
-                }
-
-                if (!$item instanceof AttributeInterface || $seen->offsetExists($item)) {
-                    continue;
-                }
-                $seen->offsetSet($item);
-
-                $located = $item->getReflector() instanceof \Reflector;
-                if (!$located && $holder instanceof AttributeInterface) {
-                    $holders->offsetSet($item, $holder);
-                }
-
-                foreach (get_object_vars($item) as $nested) {
-                    $descend($nested, $located ? $item : $holder);
-                }
-            }
-        };
-
-        foreach (get_object_vars($specification) as $bucket) {
-            $descend($bucket, null);
-        }
-
-        return $holders;
     }
 
     /**
