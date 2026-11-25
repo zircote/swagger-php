@@ -64,12 +64,10 @@ class Ref extends OA\Schema
     }
 
     /**
-     * The key the ref looks its component up by, or null when the ref is a JSON pointer.
+     * The key the ref looks its component up by, or null when the ref is a JSON pointer or another document.
      */
     public function getRefKey(): ?ComponentKey
     {
-        return is_string($this->ref) && !str_starts_with($this->ref, '#/')
-            ? new ComponentKey($this->ref, $this->qualifiers)
-            : null;
+        return is_string($this->ref) ? ComponentKey::fromRef($this->ref, $this->qualifiers) : null;
     }
 }

@@ -24,7 +24,8 @@ use Psr\Log\LoggerAwareTrait;
  * A $ref that looks like a FQCN is looked up by its `ComponentKey`, in the bucket the ref points
  * into, and rewritten into the proper #/components/... path. A `Schema\Ref` adds its qualifiers
  * to the key. A ref that is neither a known class nor a pointer to an existing component is
- * reported, and so is one whose key names more than one component.
+ * reported, and so is one whose key names more than one component. A ref to another document, such
+ * as a URL or a file, is left as it is.
  *
  * @implements PipeInterface<Specification>
  */
@@ -89,7 +90,12 @@ class Refs implements PipeInterface, LoggerAwareInterface
                 return;
             }
 
-            $key = $attribute->getRefKey() ?? new ComponentKey($ref);
+            // a ref to another document names no component here
+            $key = $attribute->getRefKey();
+            if (!$key instanceof ComponentKey) {
+                return;
+            }
+
             $bucket = $this->bucketFor($attribute);
 
             $pointer = $this->pointerForKey($key, $bucket, $index);

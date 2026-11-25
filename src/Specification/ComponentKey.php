@@ -62,6 +62,23 @@ readonly class ComponentKey implements \Stringable
     }
 
     /**
+     * The key a `$ref` string looks its component up by.
+     *
+     * Null for a JSON pointer, and for a ref to another document, such as a URL or a file: a class
+     * name never has a `:`, `/` or `#`, and a document has its extension.
+     *
+     * @param array<string, mixed> $qualifiers
+     */
+    public static function fromRef(string $ref, array $qualifiers = []): ?self
+    {
+        if (str_starts_with($ref, '#/') || strpbrk($ref, ':/#') !== false || preg_match('/\.(json|ya?ml)$/i', $ref) === 1) {
+            return null;
+        }
+
+        return new self($ref, $qualifiers);
+    }
+
+    /**
      * Whether the key is the class alone.
      */
     public function isPlain(): bool

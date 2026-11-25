@@ -355,6 +355,10 @@ A keyword beside `$ref` that has the same value in the referenced component, suc
 'object'` next to a reference to an object schema, is dropped without a warning, since nothing is
 lost. One that differs still warns.
 
+A `$ref` to another document, such as a URL or a file (`common.yaml#/components/schemas/Pet`), is
+no longer looked up as a class name and reported as matching no component. It is written as given,
+as before.
+
 ## Preparing for 8.0
 
 In 8.0 classic is removed, and so is `setMode()`. Spec attributes move from `OpenApi\Spec` to
