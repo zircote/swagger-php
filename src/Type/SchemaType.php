@@ -29,6 +29,7 @@ class SchemaType
      * @param array<string, self>|null $properties           Named properties (from array shapes)
      * @param list<string>|null        $required             Required property names (from array shapes)
      * @param int|null                 $minLength            String minimum length
+     * @param self|null                $unmatched            For a class ref: the type to use where the class matches no component
      */
     public function __construct(
         public string|array|null $type = null,
@@ -45,6 +46,7 @@ class SchemaType
         public ?array $properties = null,
         public ?array $required = null,
         public ?int $minLength = null,
+        public ?self $unmatched = null,
     ) {
     }
 
@@ -61,6 +63,7 @@ class SchemaType
         $this->allOf = $this->allOf === null ? null : array_map($copy, $this->allOf);
         $this->anyOf = $this->anyOf === null ? null : array_map($copy, $this->anyOf);
         $this->properties = $this->properties === null ? null : array_map($copy, $this->properties);
+        $this->unmatched = $this->unmatched instanceof self ? clone $this->unmatched : null;
     }
 
     /**

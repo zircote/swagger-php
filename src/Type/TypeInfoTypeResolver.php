@@ -78,6 +78,11 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
      */
     protected function applyToAnnotation(OA\Schema $schema, SchemaType $schemaType, Analysis $analysis, string $sourceClass = OA\Schema::class): void
     {
+        // a collection class without an annotation is described as the collection it is
+        if ($schemaType->isRef() && $schemaType->unmatched instanceof SchemaType && !$analysis->getAnnotationForSource($schemaType->type, $sourceClass) instanceof OA\AbstractAnnotation) {
+            $schemaType = $schemaType->unmatched;
+        }
+
         // a class is referenced only when there is no explicit enum it would replace
         if ($schemaType->type !== null && (!$schemaType->isRef() || Undefined::isDefault($schema->enum))) {
             /** @var non-empty-array<string>|string $type every SchemaType array type is built non-empty */
@@ -151,7 +156,7 @@ class TypeInfoTypeResolver extends AbstractTypeResolver
             $schema->type = Undefined::UNDEFINED;
             // a member typed with a class that is no component matches anything, and so does the union
             foreach ($schemaType->oneOf as $childType) {
-                if ($childType->isRef() && is_string($childType->type) && !$analysis->getAnnotationForSource($childType->type, $sourceClass) instanceof OA\AbstractAnnotation) {
+                if ($childType->isRef() && !$childType->unmatched instanceof SchemaType && !$analysis->getAnnotationForSource($childType->type, $sourceClass) instanceof OA\AbstractAnnotation) {
                     return;
                 }
             }

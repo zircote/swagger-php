@@ -364,6 +364,14 @@ for each place it is written, with that place's location. The location goes befo
 `Reference "App\Models\Station" matches no component in App\Http\StationController::index() in …`.
 Before, each reference was reported once, without a location.
 
+A docblock type naming a class that is a collection, one implementing `ArrayAccess` or
+`Traversable` such as a Laravel resource, references the class's schema where it has one. Before, it
+was written as an array of anything, and a list of such a class as an array of arrays, in classic
+too. A collection class without a schema stays an array of anything, and one with type parameters,
+such as `Collection<int, User>`, is mapped as before. A request body parameter typed with such a
+class in its docblock, a Laravel `FormRequest` among them, now names the class as one with the
+native type does, and is reported where the class is no request body.
+
 ## Preparing for 8.0
 
 In 8.0 classic is removed, and so is `setMode()`. Spec attributes move from `OpenApi\Spec` to
