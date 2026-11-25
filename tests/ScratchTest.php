@@ -109,10 +109,6 @@ final class ScratchTest extends OpenApiTestCase
             ],
             'CustomAttributes-3.0.0-spec' => ['sets title beside $ref "#/components/schemas/CAItemModel", omitted'],
             'CustomAttributes-3.0.0-hybrid' => ['sets title beside $ref "#/components/schemas/CAItemModel", omitted'],
-            'ComplexCustomAttributes-3.0.0-hybrid' => [
-                'sets title beside $ref "#/components/schemas/TargetId", omitted',
-                'sets title beside $ref "#/components/schemas/TargetType", omitted',
-            ],
             'NestedSchema-3.0.0-spec' => [
                 'sets description beside $ref "#/components/schemas/NestedSchemaTwo", omitted',
                 'sets description beside $ref "#/components/schemas/MultipleOneOf", omitted',

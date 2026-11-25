@@ -11,6 +11,7 @@ use OpenApi\Contracts\CompilerInterface;
 use OpenApi\Loggers\CollectingLogger;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
+use OpenApi\Specification\ComponentIndex;
 use OpenApi\Specification\ComponentName;
 use OpenApi\Specification\Walker;
 use OpenApi\Undefined;
@@ -121,6 +122,12 @@ class OpenApi31Compiler implements CompilerInterface
      */
     protected ?\SplObjectStorage $locatedHolders = null;
 
+    /**
+     * The components of the specification `validate()` checks, built for the first check that
+     * follows a reference.
+     */
+    protected ?ComponentIndex $components = null;
+
     public function __construct(?LoggerInterface $logger = null)
     {
         $this->logger = new CollectingLogger($logger);
@@ -160,6 +167,7 @@ class OpenApi31Compiler implements CompilerInterface
             $this->walker = null;
             $this->validating = null;
             $this->locatedHolders = null;
+            $this->components = null;
         }
 
         return $this->logger->entries();
@@ -1558,6 +1566,7 @@ class OpenApi31Compiler implements CompilerInterface
                 || in_array($value, [null, Undefined::UNDEFINED, []], true)
                 || ($value === false && in_array($keyword, static::FALSE_BY_DEFAULT_KEYWORDS, true))
                 || (is_array($compiled) && array_key_exists($keyword, $compiled))
+                || $this->repeatsReferenced($schema, $keyword, $value)
             ) {
                 continue;
             }
@@ -1574,6 +1583,28 @@ class OpenApi31Compiler implements CompilerInterface
                 $this->schemaLocation($schema, $owners),
             ));
         }
+    }
+
+    /**
+     * Whether a keyword beside `$ref` says what the referenced schema says already.
+     *
+     * Dropping it loses nothing. Only a reference to a component in this specification is followed.
+     */
+    protected function repeatsReferenced(OA\Schema $schema, string $keyword, mixed $value): bool
+    {
+        $ref = $schema->getRefValue();
+        if (!is_string($ref) || !str_starts_with($ref, '#/components/schemas/') || !$this->validating instanceof Specification) {
+            return false;
+        }
+
+        $this->components ??= $this->validating->buildComponentIndex();
+        $referenced = $this->components->findSchema($ref);
+
+        // a subclass of `Schema` may add fields the referenced component does not have
+        return $referenced instanceof OA\Schema
+            && $referenced->ref === null
+            && property_exists($referenced, $keyword)
+            && $referenced->{$keyword} === $value;
     }
 
     /**
