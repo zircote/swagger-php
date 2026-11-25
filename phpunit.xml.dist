@@ -21,6 +21,6 @@
         </include>
     </source>
     <php>
-        <ini name="memory_limit" value="256M"/>
+        <ini name="memory_limit" value="512M"/>
     </php>
 </phpunit>
