@@ -359,6 +359,11 @@ A `$ref` to another document, such as a URL or a file (`common.yaml#/components/
 no longer looked up as a class name and reported as matching no component. It is written as given,
 as before.
 
+A reference that matches no component, names several, or points to no component is reported once
+for each place it is written, with that place's location. The location goes before any hint, as in
+`Reference "App\Models\Station" matches no component in App\Http\StationController::index() in …`.
+Before, each reference was reported once, without a location.
+
 ## Preparing for 8.0
 
 In 8.0 classic is removed, and so is `setMode()`. Spec attributes move from `OpenApi\Spec` to

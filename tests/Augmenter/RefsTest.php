@@ -13,6 +13,7 @@ use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Tests\Concerns\AssemblesSpecification;
 use OpenApi\Tests\Concerns\ExpectsLogEntries;
+use OpenApi\Tests\Concerns\UsesFixtures;
 use OpenApi\Tests\Fixtures;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -21,6 +22,7 @@ final class RefsTest extends TestCase
 {
     use AssemblesSpecification;
     use ExpectsLogEntries;
+    use UsesFixtures;
 
     public function testResolvesFqcnToComponentPath(): void
     {
@@ -311,5 +313,92 @@ final class RefsTest extends TestCase
         $refs($spec);
 
         $this->expectLogEntry("Reference \"{$ref}\" matches no component", 'error');
+    }
+
+    /**
+     * @return iterable<string, array{OA\Schema, string}>
+     */
+    public static function nestedRefProvider(): iterable
+    {
+        yield 'no component' => [new OA\Schema(ref: 'Unknown'), 'Reference "Unknown" matches no component in %s'];
+        yield 'a component of another kind' => [new OA\Schema(ref: 'Gone'), 'Reference "Gone" matches no component in %s; a component of that name exists, use "#/components/responses/Gone"'];
+        yield 'a dangling pointer' => [new OA\Schema(ref: '#/components/schemas/Missing'), 'Reference "#/components/schemas/Missing" points to no component in %s'];
+        yield 'several components' => [new OA\Schema(ref: 'Twice'), 'Reference "Twice" is ambiguous, it names several schemas (TwiceA, TwiceB) in %s; reference one by name'];
+    }
+
+    /**
+     * A reference without a location of its own is reported at the nearest attribute holding it.
+     */
+    #[DataProvider('nestedRefProvider')]
+    public function testANestedReferenceIsReportedAtItsHoldersLocation(OA\Schema $nested, string $message): void
+    {
+        $holder = (new OA\Schema(type: 'object', properties: [new OA\Property(property: 'nested', schema: new OA\Schema(type: 'array', items: $nested))], component: 'Holder'))
+            ->setReflector(new \ReflectionClass(Fixtures\UnresolvedRefs\Station::class));
+        $spec = new Specification();
+        $spec->schemas[] = $holder;
+        $spec->responses[] = new OA\Response(response: 404, description: 'gone', component: 'Gone');
+        foreach (['TwiceA', 'TwiceB'] as $name) {
+            $spec->schemas[] = (new OA\Schema(type: 'object', component: $name))->setComponentKey(new Specification\ComponentKey('Twice'));
+        }
+
+        $refs = new Augmenter\Refs();
+        $refs->setLogger($this->trackingLogger());
+        $refs($spec);
+
+        $this->expectLogEntry(sprintf($message, $holder->getSourceLocation()), 'error');
+    }
+
+    /**
+     * A discriminator's mapping is reported at the schema holding the discriminator, or at the
+     * nearest located attribute holding that schema.
+     */
+    public function testADanglingDiscriminatorMappingIsReportedAtItsSchemasLocation(): void
+    {
+        $pet = new OA\Schema(type: 'object', discriminator: new OA\Discriminator(propertyName: 'kind', mapping: ['dog' => '#/components/schemas/Dog']));
+        $holder = (new OA\Schema(type: 'object', properties: [new OA\Property(property: 'pet', schema: $pet)], component: 'Owner'))
+            ->setReflector(new \ReflectionClass(Fixtures\UnresolvedRefs\Station::class));
+        $spec = new Specification();
+        $spec->schemas[] = $holder;
+
+        $refs = new Augmenter\Refs();
+        $refs->setLogger($this->trackingLogger());
+        $refs($spec);
+
+        $this->expectLogEntry('Reference "#/components/schemas/Dog" points to no component in ' . $holder->getSourceLocation(), 'error');
+    }
+
+    /**
+     * Each place a reference is written gets a message of its own.
+     */
+    public function testAReferenceWrittenTwiceIsReportedAtEachLocation(): void
+    {
+        $spec = new Specification();
+        foreach ([Fixtures\UnresolvedRefs\Station::class, Fixtures\UnresolvedRefs\StationController::class] as $class) {
+            $spec->schemas[] = (new OA\Schema(type: 'object', properties: [new OA\Property(property: 'unknown', schema: new OA\Schema(ref: 'Unknown'))], component: (new \ReflectionClass($class))->getShortName()))
+                ->setReflector(new \ReflectionClass($class));
+        }
+
+        $refs = new Augmenter\Refs();
+        $refs->setLogger($this->trackingLogger());
+        $refs($spec);
+
+        foreach ($spec->schemas as $schema) {
+            $this->expectLogEntry('Reference "Unknown" matches no component in ' . $schema->getSourceLocation(), 'error');
+        }
+    }
+
+    /**
+     * A classic reference inside an operation's response names the operation in hybrid.
+     */
+    public function testAnUnresolvedClassicReferenceNamesItsOperation(): void
+    {
+        $this->expectLogEntry('Reference "' . Fixtures\UnresolvedRefs\Station::class . '" matches no component in ' . Fixtures\UnresolvedRefs\StationController::class . '::index() in ', 'error');
+        $this->allowLogEntry('Analysing source');
+
+        (new Builder())
+            ->setMode(Mode::HYBRID)
+            ->setLogger($this->trackingLogger())
+            ->addSource(self::fixture('UnresolvedRefs/StationController.php'))
+            ->build();
     }
 }

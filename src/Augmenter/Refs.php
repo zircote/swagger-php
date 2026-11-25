@@ -13,6 +13,7 @@ use OpenApi\Specification;
 use OpenApi\Specification\ComponentIndex;
 use OpenApi\Specification\ComponentKey;
 use OpenApi\Specification\ComponentName;
+use OpenApi\Specification\LocatedHolders;
 use OpenApi\Utils\JsonPointer;
 use OpenApi\Utils\PipeInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -24,8 +25,8 @@ use Psr\Log\LoggerAwareTrait;
  * A $ref that looks like a FQCN is looked up by its `ComponentKey`, in the bucket the ref points
  * into, and rewritten into the proper #/components/... path. A `Schema\Ref` adds its qualifiers
  * to the key. A ref that is neither a known class nor a pointer to an existing component is
- * reported, and so is one whose key names more than one component. A ref to another document, such
- * as a URL or a file, is left as it is.
+ * reported, and so is one whose key names more than one component, once per place it is written.
+ * A ref to another document, such as a URL or a file, is left as it is.
  *
  * @implements PipeInterface<Specification>
  */
@@ -72,11 +73,10 @@ class Refs implements PipeInterface, LoggerAwareInterface
 
     protected function resolveFQCNRefs(Specification $specification, ComponentIndex $index): void
     {
-        $unresolved = [];
-        $dangling = [];
-        $ambiguous = [];
+        /** @var list<array{AttributeInterface, string, string}> $reports the attribute the ref is written on, and the message before and after its location */
+        $reports = [];
 
-        $specification->getWalker()->eachRef(function (RefInterface $attribute) use ($index, &$unresolved, &$dangling, &$ambiguous): void {
+        $specification->getWalker()->eachRef(function (RefInterface $attribute, AttributeInterface $writtenOn) use ($index, &$reports): void {
             $ref = $attribute->getRefValue();
             if (!is_string($ref)) {
                 return;
@@ -84,7 +84,7 @@ class Refs implements PipeInterface, LoggerAwareInterface
 
             if (str_starts_with($ref, '#/')) {
                 if ($this->isDangling($ref, $index)) {
-                    $dangling[$ref] = true;
+                    $reports[] = [$writtenOn, "Reference \"{$ref}\" points to no component", ''];
                 }
 
                 return;
@@ -100,30 +100,34 @@ class Refs implements PipeInterface, LoggerAwareInterface
             $pointer = $this->pointerForKey($key, $bucket, $index);
             if ($pointer !== null) {
                 $attribute->setRef($pointer);
-            } elseif (count($index->findAllByKey($key, $bucket)) > 1) {
-                $ambiguous[(string) $key] = [$key, $bucket];
-            } else {
-                $unresolved[(string) $key] = true;
+
+                return;
             }
+
+            $matches = $index->findAllByKey($key, $bucket);
+            if (count($matches) > 1) {
+                $names = array_map(static fn (AttributeInterface $component): string => ComponentName::of($component) ?? '(unnamed)', $matches);
+                $reports[] = [$writtenOn, "Reference \"{$key}\" is ambiguous, it names several {$bucket} (" . implode(', ', $names) . ')', '; reference one by name'];
+
+                return;
+            }
+
+            $named = $this->pointerFor((string) $key, $index);
+            $reports[] = [$writtenOn, "Reference \"{$key}\" matches no component", $named !== null ? "; a component of that name exists, use \"{$named}\"" : ''];
         });
 
-        foreach ($ambiguous as [$key, $bucket]) {
-            $names = array_map(
-                static fn (AttributeInterface $component): string => ComponentName::of($component) ?? '(unnamed)',
-                $index->findAllByKey($key, $bucket),
-            );
-            $this->logger?->error("Reference \"{$key}\" is ambiguous, it names several {$bucket} (" . implode(', ', $names) . '); reference one by name');
+        if ($reports === []) {
+            return;
         }
 
-        foreach (array_keys($unresolved) as $ref) {
-            $pointer = $this->pointerFor((string) $ref, $index);
-            $this->logger?->error($pointer !== null
-                ? "Reference \"{$ref}\" matches no component; a component of that name exists, use \"{$pointer}\""
-                : "Reference \"{$ref}\" matches no component");
+        $holders = new LocatedHolders($specification);
+        $messages = [];
+        foreach ($reports as [$writtenOn, $head, $tail]) {
+            $messages[$head . $holders->location($writtenOn) . $tail] = true;
         }
 
-        foreach (array_keys($dangling) as $ref) {
-            $this->logger?->error("Reference \"{$ref}\" points to no component");
+        foreach (array_keys($messages) as $message) {
+            $this->logger?->error($message);
         }
     }
 
