@@ -90,7 +90,6 @@ class Refs implements PipeInterface, LoggerAwareInterface
                 return;
             }
 
-            // a ref to another document names no component here
             $key = $attribute->getRefKey();
             if (!$key instanceof ComponentKey) {
                 return;

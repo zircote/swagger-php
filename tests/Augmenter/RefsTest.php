@@ -287,4 +287,29 @@ final class RefsTest extends TestCase
 
         $this->expectLogEntry('Reference "Privacy Policy" matches no component; a component of that name exists, use "#/components/responses/Privacy Policy"', 'error');
     }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function fragmentRefProvider(): iterable
+    {
+        yield 'a name' => ['#Pet'];
+        yield 'the fragment alone' => ['#'];
+    }
+
+    /**
+     * A ref into this document that is not a pointer is still reported.
+     */
+    #[DataProvider('fragmentRefProvider')]
+    public function testReportsAFragmentThatIsNotAPointer(string $ref): void
+    {
+        $spec = new Specification();
+        $spec->schemas[] = new OA\Schema(properties: [new OA\Property(property: 'pet', schema: new OA\Schema(ref: $ref))], component: 'Owner');
+
+        $refs = new Augmenter\Refs();
+        $refs->setLogger($this->trackingLogger());
+        $refs($spec);
+
+        $this->expectLogEntry("Reference \"{$ref}\" matches no component", 'error');
+    }
 }
