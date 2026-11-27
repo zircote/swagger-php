@@ -184,8 +184,9 @@ to operation paths, adds tags, security and responses to each operation, and mar
 PathItems that have spec-level output (parameters, summary, description, servers) with
 their resolved path. A PathItem governing several paths is written once per path.
 
-An operation keeps its own tags, security schemes and response codes, and gets the
-PathItems' others beside them. An operation with `security: []` gets no security.
+An operation keeps its own tags, security requirements and response codes, and gets the
+PathItems' others beside them. Two security requirements match when they name the same
+schemes. An operation with `security: []` gets no security.
 
 Security requirements, responses and the per-path PathItems are deep copies, so a change
 made through one operation or path stays there.

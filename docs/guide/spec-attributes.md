@@ -259,7 +259,7 @@ This produces paths `/api/v1/users/` and `/api/v1/users/{id}`, both tagged with 
 | ------------------------- | ------------------------------------------------------ |
 | `prefix`                  | Composable path prefix, inherited via class hierarchy  |
 | `tags`                    | Added to all operations, beside their own              |
-| `security`                | Added to all operations, beside their own schemes      |
+| `security`                | Added to all operations, beside their own              |
 | `responses`               | Cloned to all operations (e.g. shared error responses) |
 | `parameters`              | Emitted as path-level parameters in the output         |
 | `summary` / `description` | Emitted at path level                                  |
