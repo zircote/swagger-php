@@ -95,7 +95,7 @@ Reflector sources are not supported in classic mode — they require the spec or
 
 ```php
 // A JSON or YAML file
-$builder->withDocument('openapi/webhooks.yaml');
+$builder->withDocument('openapi-base.yaml');
 
 // Or a document already decoded into an array
 $builder->withDocument(['openapi' => '3.1.0', 'webhooks' => [/* ... */]]);
@@ -104,7 +104,8 @@ $builder->withDocument(['openapi' => '3.1.0', 'webhooks' => [/* ... */]]);
 `withDocument()` adds a hand-written OpenAPI document to what the sources describe. A file is
 read as JSON when its name ends in `.json`, and as YAML otherwise. Documents are read during the
 build and added before references are resolved, so a `$ref` in a document can point at a
-component built from a class, and the other way round. Each call adds one more document.
+component built from a class, and the other way round. Each call adds one more document. On
+the command line, `--document` does the same.
 
 Where the attributes and a document describe the same thing, the attributes win:
 

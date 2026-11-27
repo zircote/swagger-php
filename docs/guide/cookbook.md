@@ -1030,19 +1030,28 @@ components:
 
 ## Add a hand-written document
 
-Some parts of an API have no PHP code to put attributes on, webhooks for example. Write them as
-an OpenAPI 3.1 document and pass it to the `Builder` with `withDocument()`. A `$ref` in it can
-point at a schema built from a class:
+Some parts of an API are not about any PHP code: the title and version in `info`, the servers,
+the security schemes, webhooks. Write them as an OpenAPI 3.1 document, a base document, and add
+it to the build. A `$ref` in it can point at a schema built from a class:
 
-<<< @/snippets/guide/cookbook/documents/webhooks.yaml
+<<< @/snippets/guide/cookbook/documents/openapi-base.yaml
 
 <<< @/snippets/guide/cookbook/documents/models.php
 
 <<< @/snippets/guide/cookbook/documents/documents.php
 
-gives:
+On the command line, `--document` does the same, and can be repeated:
+
+```shell
+./vendor/bin/openapi --document openapi-base.yaml -o openapi.yaml src/
+```
+
+Both give:
 
 <<< @/snippets/guide/cookbook/documents/documents-3.1.0.yaml
+
+Give the base document a name of its own, such as `openapi-base.yaml`. The generated document is
+usually `openapi.yaml`, and two files of the same name are easily mixed up.
 
 Where a document and the attributes describe the same thing, the attributes win. The details,
 and what a document cannot hold, are in [Documents](/reference/builder#documents).

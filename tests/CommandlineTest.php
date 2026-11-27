@@ -265,6 +265,53 @@ final class CommandlineTest extends OpenApiTestCase
         $this->assertStringContainsString('The value "Bogus" is not valid for the "plugin" option.', (string) preg_replace('/\s+/', ' ', implode(' ', $output)));
     }
 
+    public function testDocuments(): void
+    {
+        $fixtures = __DIR__ . '/Fixtures/Console';
+        $cmd = __DIR__ . '/../bin/openapi --document ' . escapeshellarg($fixtures . '/openapi-base.yaml') . ' --document ' . escapeshellarg($fixtures . '/openapi-webhooks.yaml') . ' --format yaml ' . escapeshellarg($fixtures . '/NoInfo.php') . ' 2>&1';
+        exec($this->getCommandToExecute($cmd), $output, $retval);
+        $this->assertSame(0, $retval, $cmd . PHP_EOL . implode(PHP_EOL, $output));
+
+        $yaml = implode(PHP_EOL, $output);
+        $this->assertStringContainsString("title: 'From the base document'", $yaml);
+        $this->assertStringContainsString("url: 'https://api.example.com'", $yaml);
+        $this->assertStringContainsString('/items:', $yaml);
+        $this->assertStringContainsString('ping:', $yaml);
+        $this->assertDoesNotMatchRegularExpression('/^\[/m', $yaml, 'Nothing is logged');
+    }
+
+    public function testMissingDocument(): void
+    {
+        $fixture = __DIR__ . '/Fixtures/Console/NoInfo.php';
+        exec($this->getCommandToExecute(__DIR__ . '/../bin/openapi --document bogus.yaml ' . escapeshellarg($fixture) . ' 2>&1'), $output, $retval);
+
+        $this->assertSame(1, $retval);
+        $this->assertStringContainsString('The value "bogus.yaml" is not valid for the "document" option.', (string) preg_replace('/\s+/', ' ', implode(' ', $output)));
+    }
+
+    public function testDocumentIsNotTheOutput(): void
+    {
+        $directory = sys_get_temp_dir() . '/swagger-php-document-' . getmypid();
+        mkdir($directory);
+        $document = $directory . '/openapi.yaml';
+        $base = (string) file_get_contents(__DIR__ . '/Fixtures/Console/openapi-base.yaml');
+        file_put_contents($document, $base);
+
+        try {
+            $fixture = __DIR__ . '/Fixtures/Console/NoInfo.php';
+            // -o on a directory writes openapi.yaml in it
+            exec($this->getCommandToExecute(__DIR__ . '/../bin/openapi --document ' . escapeshellarg($document) . ' -o ' . escapeshellarg($directory) . ' ' . escapeshellarg($fixture) . ' 2>&1'), $output, $retval);
+            $unchanged = file_get_contents($document) === $base;
+        } finally {
+            unlink($document);
+            rmdir($directory);
+        }
+
+        $this->assertSame(1, $retval);
+        $this->assertTrue($unchanged);
+        $this->assertStringContainsString('It is also the output file.', (string) preg_replace('/\s+/', ' ', implode(' ', $output)));
+    }
+
     private function getCommandToExecute(string $cmd, ?string $devNullRedir = null): string
     {
         if (PHP_OS_FAMILY === 'Windows') {

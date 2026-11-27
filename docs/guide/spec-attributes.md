@@ -85,6 +85,9 @@ Or via CLI:
 ./vendor/bin/openapi src/
 ```
 
+`OpenApiSpec` exists only to carry `Info` and `Server`. Both can also go in a hand-written
+document, see [Add a hand-written document](/guide/cookbook#add-a-hand-written-document).
+
 ## Schemas
 
 Place `#[OA\Schema]` on a class to define a schema component. Properties are declared with `#[OA\Property]` on class properties.

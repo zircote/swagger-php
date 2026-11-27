@@ -49,6 +49,7 @@ class GenerateCommand extends Command
             ->addOption('add-processor', 'a', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Register an additional processor (deprecated, removed in 8.0)')
             ->addOption('remove-processor', 'r', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Remove an existing processor (deprecated, removed in 8.0)')
             ->addOption('version', null, InputOption::VALUE_REQUIRED, 'The OpenAPI version')
+            ->addOption('document', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Add a hand-written OpenAPI 3.1 document, JSON or YAML (e.g. --document openapi-base.yaml)')
             ->addOption('plugin', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Add this plugin class, built without settings (e.g. --plugin "Vendor\\Package\\Plugin")')
             ->addOption('discover-plugins', null, InputOption::VALUE_NONE, 'Add the plugins declared in composer.json by the packages of the installation openapi runs from, after the --plugin ones')
             ->addOption('component-namer', null, InputOption::VALUE_REQUIRED, "Name components with this class, a built-in namer's class name or a FQCN (e.g. --component-namer QualifiedName)")
@@ -88,11 +89,7 @@ class GenerateCommand extends Command
             }
             echo "\n";
         } else {
-            $outputPath = $generateInput->output;
-            if (is_dir($outputPath)) {
-                $outputPath .= '/openapi.yaml';
-            }
-            $result->saveAs($outputPath, $generateInput->format->value);
+            $result->saveAs((string) $this->outputPath($generateInput), $generateInput->format->value);
         }
 
         return $this->logger->hasErrored() ? 1 : 0;
@@ -149,8 +146,14 @@ class GenerateCommand extends Command
     {
         $builder = (new Builder($this->logger))
             ->addSource(new SourceFinder($input->paths, $input->exclude, $input->pattern))
-            ->setMode($input->mode)
-            ->withPlugins(array_map($this->checkPlugin(...), $input->plugins));
+            ->setMode($input->mode);
+
+        // documents first, so every plugin's specification hook sees them
+        foreach ($input->documents as $document) {
+            $builder->withDocument($this->checkDocument($document, $this->outputPath($input)));
+        }
+
+        $builder->withPlugins(array_map($this->checkPlugin(...), $input->plugins));
 
         if ($input->discoverPlugins) {
             $this->checkDiscoveryInstallation();
@@ -237,6 +240,42 @@ class GenerateCommand extends Command
         }
 
         return $class;
+    }
+
+    /**
+     * The file `-o` writes to, or null for stdout.
+     */
+    protected function outputPath(GenerateInput $input): ?string
+    {
+        if (!$input->output) {
+            return null;
+        }
+
+        return is_dir($input->output) ? $input->output . '/openapi.yaml' : $input->output;
+    }
+
+    /**
+     * Refuses a missing `--document` up front; the builder would only find out halfway through the build.
+     *
+     * Also refuses the file the output goes to, which the build would overwrite.
+     */
+    protected function checkDocument(string $filename, ?string $output): string
+    {
+        if (!is_file($filename) || !is_readable($filename)) {
+            throw new InvalidOptionException(sprintf(
+                'The value "%s" is not valid for the "document" option. Expected a readable JSON or YAML file.',
+                $filename,
+            ));
+        }
+
+        if ($output !== null && realpath($filename) === realpath($output)) {
+            throw new InvalidOptionException(sprintf(
+                'The value "%s" is not valid for the "document" option. It is also the output file.',
+                $filename,
+            ));
+        }
+
+        return $filename;
     }
 
     /**

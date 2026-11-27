@@ -1,0 +1,7 @@
+openapi: 3.1.0
+webhooks:
+  ping:
+    post:
+      responses:
+        '200':
+          description: OK
