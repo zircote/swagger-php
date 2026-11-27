@@ -87,6 +87,34 @@ final class PathItemsTest extends TestCase
         }
     }
 
+    public function testExplicitSecurityMergedByScheme(): void
+    {
+        $spec = $this->assemble(
+            Fixtures\Augmenter\PathItemBaseController::class,
+            Fixtures\Augmenter\PathItemUserController::class,
+        );
+        $spec->operations[0]->security = [new OA\Security\Requirement(scheme: 'apiKey')];
+
+        $this->resolve($spec);
+
+        $schemes = array_map(fn (OA\Security\Requirement $requirement): ?string => $requirement->scheme, $spec->operations[0]->security ?? []);
+        $this->assertSame(['apiKey', 'bearerAuth'], $schemes);
+    }
+
+    public function testEmptySecurityGetsNone(): void
+    {
+        $spec = $this->assemble(
+            Fixtures\Augmenter\PathItemBaseController::class,
+            Fixtures\Augmenter\PathItemUserController::class,
+        );
+        $spec->operations[0]->security = [];
+
+        $this->resolve($spec);
+
+        $this->assertSame([], $spec->operations[0]->security);
+        $this->assertSame('bearerAuth', $spec->operations[1]->security[0]->scheme ?? null);
+    }
+
     public function testExplicitTagsMergedAdditively(): void
     {
         $spec = $this->assemble(
