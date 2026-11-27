@@ -258,8 +258,8 @@ This produces paths `/api/v1/users/` and `/api/v1/users/{id}`, both tagged with 
 | Feature                   | Description                                            |
 | ------------------------- | ------------------------------------------------------ |
 | `prefix`                  | Composable path prefix, inherited via class hierarchy  |
-| `tags`                    | Cloned to all operations that don't declare their own  |
-| `security`                | Cloned to all operations that don't declare their own  |
+| `tags`                    | Added to all operations, beside their own              |
+| `security`                | Added to all operations, beside their own schemes      |
 | `responses`               | Cloned to all operations (e.g. shared error responses) |
 | `parameters`              | Emitted as path-level parameters in the output         |
 | `summary` / `description` | Emitted at path level                                  |
@@ -612,7 +612,8 @@ Apply security to operations:
 public function list() {}
 ```
 
-Or apply globally via the OpenApi attribute or via PathItem (cloned to all operations).
+Or apply globally via the OpenApi attribute or via PathItem (added to all operations).
+`security: []` on an operation leaves it without any.
 
 Each entry is a `Security\Requirement`. Classic also reads a bare scheme name,
 `security: ['bearerAuth']`, as that scheme with no scopes. Spec drops it with a warning, and the

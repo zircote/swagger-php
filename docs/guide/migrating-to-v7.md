@@ -396,6 +396,9 @@ adds the argument.
 In spec and hybrid, spec attributes on a protected or private method are read, as on a public one
 and as classic reads them. Before, they were left out without a message.
 
+In spec and hybrid, an operation with `security: []` below a `PathItem` with `security` has no
+security. Before, it got the `PathItem`'s requirements, as an operation without `security` does.
+
 ## Preparing for 8.0
 
 In 8.0 classic is removed, and so is `setMode()`. Spec attributes move from `OpenApi\Spec` to
