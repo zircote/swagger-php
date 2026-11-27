@@ -52,6 +52,9 @@ class GenerateInput
     public ?string $componentNamer = null;
 
     /** @var list<string> */
+    public array $documents = [];
+
+    /** @var list<string> */
     public array $plugins = [];
 
     public bool $discoverPlugins = false;
@@ -85,6 +88,7 @@ class GenerateInput
         $generateInput->removeProcessor = $input->getOption('remove-processor');
         $generateInput->version = $input->getOption('version');
         $generateInput->componentNamer = $input->getOption('component-namer');
+        $generateInput->documents = $input->getOption('document');
         $generateInput->plugins = $input->getOption('plugin');
         $generateInput->discoverPlugins = (bool) $input->getOption('discover-plugins');
         $generateInput->mode = self::enum(Mode::class, 'mode', $input->getOption('mode'));

@@ -28,6 +28,11 @@ PHP's `reflection` code will be able to inspect your code.
 :::
 
 
+::: tip Base document
+Project-level settings, such as `info` and the servers, can go in a hand-written document added
+with `--document`. See [Add a hand-written document](/guide/cookbook#add-a-hand-written-document).
+:::
+
 For a list of all available options use the `-h` option:
 
 ```shell
@@ -53,6 +58,7 @@ Options:
   -a, --add-processor=ADD-PROCESSOR        Register an additional processor (deprecated, removed in 8.0) (multiple values allowed)
   -r, --remove-processor=REMOVE-PROCESSOR  Remove an existing processor (deprecated, removed in 8.0) (multiple values allowed)
       --version=VERSION                    The OpenAPI version
+      --document=DOCUMENT                  Add a hand-written OpenAPI 3.1 document, JSON or YAML (e.g. --document openapi-base.yaml) (multiple values allowed)
       --plugin=PLUGIN                      Add this plugin class, built without settings (e.g. --plugin "Vendor\Package\Plugin") (multiple values allowed)
       --discover-plugins                   Add the plugins declared in composer.json by the packages of the installation openapi runs from, after the --plugin ones
       --component-namer=COMPONENT-NAMER    Name components with this class, a built-in namer's class name or a FQCN (e.g. --component-namer QualifiedName)

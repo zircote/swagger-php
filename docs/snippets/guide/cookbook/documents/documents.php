@@ -8,5 +8,5 @@ function build(): Builder
 {
     return (new Builder())
         ->addSource(__DIR__ . '/models.php')
-        ->withDocument(__DIR__ . '/webhooks.yaml');
+        ->withDocument(__DIR__ . '/openapi-base.yaml');
 }

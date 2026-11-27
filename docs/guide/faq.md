@@ -18,8 +18,13 @@ Supported locations:
 Most attributes and annotations belong to a specific piece of code. `OA\Info` (and a few more) is global, so there is no obvious place for
 it, and it ends up nowhere.
 
-The simplest solution is a 'dummy' class that holds all global attributes (e.g. `OA\Info`, `OA\Tag`, `OA\Server`).
-With docblock annotations they go **in a single docblock** on that class.
+The simplest solution is a base document: a hand-written OpenAPI document that holds `info` and the other
+project-level settings, added to the build with `--document` or `withDocument()`.
+[Add a hand-written document](/guide/cookbook#add-a-hand-written-document) has an example.
+
+Classic mode does not read documents. There, or to keep everything in PHP, a 'dummy' class holds all global
+attributes (e.g. `OA\Info`, `OA\Tag`, `OA\Server`). With docblock annotations they go **in a single docblock**
+on that class.
 
 <codeblock id="dummy-class">
   <template v-slot:at>
