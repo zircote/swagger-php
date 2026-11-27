@@ -313,6 +313,22 @@ final class BuilderTest extends OpenApiTestCase
     }
 
     /**
+     * Attributes are read on methods of any visibility.
+     */
+    public function testBuildReadsNonPublicMethodAttributes(): void
+    {
+        require_once self::fixture('PHP/NonPublicMethodAttributes.php');
+
+        $result = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->addSource(self::fixture('PHP/NonPublicMethodAttributes.php'))
+            ->setLogger($this->trackingLogger())
+            ->build();
+
+        $this->assertSame(['/public', '/protected', '/private'], array_keys($result->toArray()['paths']));
+    }
+
+    /**
      * A component declared on a member is one only in a class carrying `#[OA\Components]`.
      * Without it, a keyed one is left out of the document, with a warning naming the member.
      */

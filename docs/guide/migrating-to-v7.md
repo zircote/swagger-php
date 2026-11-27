@@ -391,6 +391,11 @@ or its ref is looked up as a class name and reported as matching no component.
 `Augmenter\TypeAliases::$holders` now holds too. A subclass overriding `validateSchemaType()`
 adds the argument.
 
+## Changed output in 7.12
+
+In spec and hybrid, spec attributes on a protected or private method are read, as on a public one
+and as classic reads them. Before, they were left out without a message.
+
 ## Preparing for 8.0
 
 In 8.0 classic is removed, and so is `setMode()`. Spec attributes move from `OpenApi\Spec` to

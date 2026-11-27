@@ -233,6 +233,8 @@ class AttributeFactory implements LoggerAwareInterface
     /**
      * Get methods directly implemented by a class (not inherited from parents).
      *
+     * Methods of any visibility. The constructor is left out: only its parameters are read.
+     *
      * @param \ReflectionClass<object> $class
      *
      * @return list<\ReflectionMethod>
@@ -240,7 +242,7 @@ class AttributeFactory implements LoggerAwareInterface
     public function getDirectMethods(\ReflectionClass $class): array
     {
         $methods = [];
-        foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+        foreach ($class->getMethods() as $method) {
             if ($method->isConstructor() || !$this->tokenScanner->declares($class, $method)) {
                 continue;
             }
