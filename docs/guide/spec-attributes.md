@@ -695,11 +695,11 @@ Pet:
 
 Spec mode reads a constructor's parameters, as promoted properties, and nothing else on it.
 Classic reads attributes on the constructor as on any other method. Spec leaves them out of the
-document and logs a warning naming them. Declare them on the class, which takes any number of
+document and logs an error naming them. Declare them on the class, which takes any number of
 operations:
 
 ```php
-// classic reads this; spec ignores it, with a warning
+// classic reads this; spec ignores it, with an error
 #[OA\Post(path: '/organizations', operationId: 'createOrganization')]
 public function __construct(OrganizationService $service)
 
