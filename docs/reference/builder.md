@@ -110,7 +110,8 @@ the command line, `--document` does the same.
 Where the attributes and a document describe the same thing, the attributes win:
 
 * `info`, `servers`, `security` and `externalDocs` are taken from a document only where the
-  attributes have none.
+  attributes have none. They are added after every `withSpecification()` hook, so a hook does not
+  see them.
 * A path, operation, component or tag in both goes to the [mergers](#mergers) with the
   attribute as the later of the two, so the default mergers keep the attribute's.
 

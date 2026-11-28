@@ -83,6 +83,26 @@ final class DocumentTest extends TestCase
         $this->assertSame([['url' => 'https://api.example.com']], $result->toArray()['servers']);
     }
 
+    public function testAHookDoesNotSeeTheDocumentsRootFields(): void
+    {
+        $seen = null;
+        $result = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->withDocument([
+                'openapi' => '3.1.0',
+                'info' => ['title' => 'Written', 'version' => '1.0.0'],
+                'servers' => [['url' => 'https://written.example.com']],
+            ])
+            ->withSpecification(function (Specification $specification) use (&$seen): void {
+                $seen = [$specification->info, $specification->servers];
+            })
+            ->build();
+
+        $this->assertSame([null, []], $seen);
+        $this->assertSame('Written', $result->toArray()['info']['title']);
+        $this->assertSame([['url' => 'https://written.example.com']], $result->toArray()['servers']);
+    }
+
     public function testClassicRootAttributesWinInHybrid(): void
     {
         $file = (string) (new \ReflectionClass(ClassicRoot::class))->getFileName();

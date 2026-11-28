@@ -329,12 +329,13 @@ class Builder
      * Add a hand-written OpenAPI 3.1 document to what the sources describe.
      *
      * Takes a JSON or YAML file, by its extension, or a document already decoded into an array.
-     * The `Parser` reads it during the build, and what it holds is added after assembly, where
-     * `withSpecification()` adds attributes: a `$ref` in either one resolves against the other.
+     * The `Parser` reads it during the build, and its paths, components and tags are added after
+     * assembly, where `withSpecification()` adds attributes: a `$ref` in either one resolves
+     * against the other.
      *
      * Where the attributes and the document describe the same thing, the attributes win. The
-     * document's `info`, `servers`, `security` and `externalDocs` are used only where the
-     * attributes have none. A path, operation, component or tag in both goes to the mergers with
+     * document's `info`, `servers`, `security`, `externalDocs` and extensions are used only where
+     * the attributes have none, and are added after every hook, so a hook does not see them. A path, operation, component or tag in both goes to the mergers with
      * the attribute last, so the default mergers keep the attribute's, with a warning.
      *
      * Only OpenAPI 3.1 documents are read. One of another version is read as 3.1, with a warning.
