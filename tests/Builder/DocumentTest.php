@@ -11,6 +11,7 @@ use OpenApi\Builder\Mode;
 use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Tests\Fixtures\Augmenter\RefTarget;
+use OpenApi\Tests\Fixtures\Builder\ClassicRoot;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -63,6 +64,51 @@ final class DocumentTest extends TestCase
         $this->assertSame(['title' => 'From attributes', 'version' => '2.0.0'], $document['info']);
         $this->assertSame([['url' => 'https://api.example.com']], $document['servers']);
         $this->assertSame(['url' => 'https://docs.example.com'], $document['externalDocs'], 'the attributes have none, so the document fills it');
+    }
+
+    public function testAHookAfterTheDocumentStillWins(): void
+    {
+        $result = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->withDocument([
+                'openapi' => '3.1.0',
+                'info' => ['title' => 'Written', 'version' => '1.0.0'],
+                'servers' => [['url' => 'https://written.example.com']],
+            ])
+            ->withSpecification(fn (Specification $specification): Specification => $specification->add(
+                new OA\Server(url: 'https://api.example.com'),
+            ))
+            ->build();
+
+        $this->assertSame([['url' => 'https://api.example.com']], $result->toArray()['servers']);
+    }
+
+    public function testClassicRootAttributesWinInHybrid(): void
+    {
+        $file = (string) (new \ReflectionClass(ClassicRoot::class))->getFileName();
+
+        $result = (new Builder())
+            ->setMode(Mode::HYBRID)
+            ->addSource($file)
+            ->withDocument([
+                'openapi' => '3.1.0',
+                'info' => ['title' => 'Written', 'version' => '1.0.0'],
+                'servers' => [['url' => 'https://written.example.com']],
+                'externalDocs' => ['url' => 'https://docs.example.com'],
+                'security' => [['bearer' => []]],
+                'x-written' => true,
+                'components' => ['securitySchemes' => ['bearer' => ['type' => 'http', 'scheme' => 'bearer']]],
+            ])
+            ->build();
+
+        $document = $result->toArray();
+
+        $this->assertSame(['title' => 'From attributes', 'version' => '2.0.0'], $document['info']);
+        $this->assertSame([['url' => 'https://api.example.com']], $document['servers']);
+        $this->assertSame(['url' => 'https://api.example.com/docs'], $document['externalDocs']);
+        $this->assertSame([['bearer' => []]], $document['security'], 'the attributes have none, so the document fills it');
+        $this->assertTrue($document['x-written']);
+        $this->assertArrayHasKey('bearer', $document['components']['securitySchemes']);
     }
 
     public function testAComponentInBothKeepsTheAttributes(): void
