@@ -101,6 +101,66 @@ final class PathItemsTest extends TestCase
         $this->assertSame(['apiKey', 'bearerAuth'], $schemes);
     }
 
+    /**
+     * @param list<OA\Security\Requirement|array<mixed>> $operation
+     * @param list<OA\Security\Requirement|array<mixed>> $pathItem
+     * @param list<array<mixed>>                         $expected
+     */
+    #[DataProvider('securityRequirementsProvider')]
+    public function testSecurityMergedByRequirement(array $operation, array $pathItem, array $expected): void
+    {
+        $spec = $this->assemble(
+            Fixtures\Augmenter\PathItemBaseController::class,
+            Fixtures\Augmenter\PathItemUserController::class,
+        );
+        $userPathItem = $this->findPathItemByClass($spec, Fixtures\Augmenter\PathItemUserController::class);
+        $this->assertInstanceOf(OA\PathItem::class, $userPathItem);
+        /* @phpstan-ignore assign.propertyType (intentionally includes raw arrays) */
+        $userPathItem->security = $pathItem;
+        /* @phpstan-ignore assign.propertyType (intentionally includes raw arrays) */
+        $spec->operations[0]->security = $operation;
+
+        $this->resolve($spec);
+
+        $this->assertSame($expected, array_map(
+            fn (OA\Security\Requirement|array $requirement): array => is_array($requirement) ? $requirement : $requirement->toArray(),
+            $spec->operations[0]->security ?? [],
+        ));
+    }
+
+    public static function securityRequirementsProvider(): \Generator
+    {
+        yield 'schemes, different' => [
+            [new OA\Security\Requirement(schemes: ['other' => []])],
+            [new OA\Security\Requirement(schemes: ['bearer' => []])],
+            [['other' => []], ['bearer' => []]],
+        ];
+
+        yield 'schemes, same scheme' => [
+            [new OA\Security\Requirement(schemes: ['oauth' => ['read']])],
+            [new OA\Security\Requirement(scheme: 'oauth', scopes: ['write'])],
+            [['oauth' => ['read']]],
+        ];
+
+        yield 'both schemes against one' => [
+            [new OA\Security\Requirement(schemes: ['bearer' => [], 'other' => []])],
+            [new OA\Security\Requirement(scheme: 'bearer')],
+            [['bearer' => [], 'other' => []], ['bearer' => []]],
+        ];
+
+        yield 'raw array on the operation' => [
+            [['bearer' => []]],
+            [new OA\Security\Requirement(scheme: 'bearer'), new OA\Security\Requirement(scheme: 'other')],
+            [['bearer' => []], ['other' => []]],
+        ];
+
+        yield 'raw array on the path item' => [
+            [new OA\Security\Requirement(scheme: 'other')],
+            [['bearer' => []]],
+            [['other' => []], ['bearer' => []]],
+        ];
+    }
+
     public function testEmptySecurityGetsNone(): void
     {
         $spec = $this->assemble(

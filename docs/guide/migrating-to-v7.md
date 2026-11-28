@@ -399,6 +399,12 @@ and as classic reads them. Before, they were left out without a message.
 In spec and hybrid, an operation with `security: []` below a `PathItem` with `security` has no
 security. Before, it got the `PathItem`'s requirements, as an operation without `security` does.
 
+In spec and hybrid, an operation below a `PathItem` with `security` gets each of the `PathItem`'s
+requirements unless it has one naming the same schemes. Before, a `PathItem` requirement was dropped
+without a message where both used `schemes:`, one for the same scheme was added beside the
+operation's where only one of them did, an array on the operation raised a PHP warning, and an array
+on the `PathItem` stopped the build with an error.
+
 ## Preparing for 8.0
 
 In 8.0 classic is removed, and so is `setMode()`. Spec attributes move from `OpenApi\Spec` to

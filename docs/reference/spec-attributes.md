@@ -1885,7 +1885,7 @@ Prefix composition with inherited metadata:
 Prefixes compose by walking the class hierarchy — each ancestor PathItem contributes
 its prefix segment. All collection properties merge additively: tags, security,
 responses, and parameters accumulate from the full ancestor chain. Deduplication
-is by value (tags), by scheme (security), by status code (responses), and by
+is by value (tags), by the schemes named (security), by status code (responses), and by
 name+in (parameters).
 
 #### Allowed in
