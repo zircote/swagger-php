@@ -409,6 +409,16 @@ In spec and hybrid, a security scheme named only by a requirement written as an 
 Before, cleanup removed it as unreferenced, and the requirement named a scheme the document did not
 define.
 
+In hybrid, the root fields of a document passed to `Builder::withDocument()` are used only where
+the classic attributes have none, as with spec attributes. Before, a classic `Server` was written
+beside the document's servers. With a classic `OpenApi`, the document's `externalDocs` was used
+instead of the attribute's, and its `security` and extensions were lost.
+
+A document's `info`, `servers`, `security`, `externalDocs` and extensions are now added after every
+`withSpecification()` hook, so a hook does not see them. `Builder::addDocument()` adds a document's
+paths, components and tags only, and the new `addDocumentRoot()` its root fields. A subclass that
+calls `addDocument()` itself needs to call `addDocumentRoot()` as well.
+
 ## Preparing for 8.0
 
 In 8.0 classic is removed, and so is `setMode()`. Spec attributes move from `OpenApi\Spec` to

@@ -91,6 +91,9 @@ class Builder
     /** Whether a document was given; classic mode does not read documents. */
     protected bool $hasDocuments = false;
 
+    /** @var list<Specification> The documents read in the current build, whose root fields are added once every attribute is in. */
+    protected array $documents = [];
+
     /**
      * The class of each plugin that configured the builder, as `PluginDiscovery::classKey()` gives
      * it, and whether discovery added it.
@@ -326,12 +329,13 @@ class Builder
      * Add a hand-written OpenAPI 3.1 document to what the sources describe.
      *
      * Takes a JSON or YAML file, by its extension, or a document already decoded into an array.
-     * The `Parser` reads it during the build, and what it holds is added after assembly, where
-     * `withSpecification()` adds attributes: a `$ref` in either one resolves against the other.
+     * The `Parser` reads it during the build, and its paths, components and tags are added after
+     * assembly, where `withSpecification()` adds attributes: a `$ref` in either one resolves
+     * against the other.
      *
      * Where the attributes and the document describe the same thing, the attributes win. The
-     * document's `info`, `servers`, `security` and `externalDocs` are used only where the
-     * attributes have none. A path, operation, component or tag in both goes to the mergers with
+     * document's `info`, `servers`, `security`, `externalDocs` and extensions are used only where
+     * the attributes have none, and are added after every hook, so a hook does not see them. A path, operation, component or tag in both goes to the mergers with
      * the attribute last, so the default mergers keep the attribute's, with a warning.
      *
      * Only OpenAPI 3.1 documents are read. One of another version is read as 3.1, with a warning.
@@ -346,7 +350,9 @@ class Builder
 
         return $this->withSpecification(function (Specification $specification) use ($document): void {
             $parser = new Parser($this->getLogger());
-            $this->addDocument($specification, is_string($document) ? $parser->parseFile($document) : $parser->parse($document));
+            $parsed = is_string($document) ? $parser->parseFile($document) : $parser->parse($document);
+            $this->addDocument($specification, $parsed);
+            $this->documents[] = $parsed;
         });
     }
 
@@ -674,6 +680,7 @@ class Builder
 
         $specification = $assembler->getSpecification();
 
+        $this->documents = [];
         foreach ($this->specificationHooks as $hook) {
             $hook($specification);
         }
@@ -697,6 +704,10 @@ class Builder
             Specification\ComponentName::normalise($specification, deprecate: false);
         }
 
+        foreach ($this->documents as $document) {
+            $this->addDocumentRoot($specification, $document);
+        }
+
         $this->getAugmenters()->setLogger($this->getLogger());
         $this->getAugmenters()->process($specification);
 
@@ -716,22 +727,30 @@ class Builder
     }
 
     /**
-     * Add a parsed document to the assembled specification, the attributes winning.
+     * Add a parsed document's lists to the assembled specification, the attributes winning.
      *
-     * The document's root fields fill only what the attributes left unset. Its lists go first,
-     * so a merger that keeps the later of two entries keeps the attribute's.
+     * The document's lists go first, so a merger that keeps the later of two entries keeps the
+     * attribute's.
      */
     protected function addDocument(Specification $specification, Specification $document): void
+    {
+        foreach (['tags', 'pathItems', 'operations', 'schemas', 'responses', 'parameters', 'requestBodies', 'headers', 'securitySchemes', 'links', 'examples', 'mediaTypes', 'callbacks', 'attachables'] as $list) {
+            $specification->{$list} = [...$document->{$list}, ...$specification->{$list}];
+        }
+    }
+
+    /**
+     * Add a parsed document's root fields to the specification, where the attributes left them unset.
+     *
+     * The extensions are merged, the attributes' winning on a name in both.
+     */
+    protected function addDocumentRoot(Specification $specification, Specification $document): void
     {
         $specification->openapi->security ??= $document->openapi->security;
         $specification->openapi->x = [...$document->openapi->x ?? [], ...$specification->openapi->x ?? []] ?: null;
         $specification->info ??= $document->info;
         $specification->servers = $specification->servers ?: $document->servers;
         $specification->externalDocs = $specification->externalDocs ?: $document->externalDocs;
-
-        foreach (['tags', 'pathItems', 'operations', 'schemas', 'responses', 'parameters', 'requestBodies', 'headers', 'securitySchemes', 'links', 'examples', 'mediaTypes', 'callbacks', 'attachables'] as $list) {
-            $specification->{$list} = [...$document->{$list}, ...$specification->{$list}];
-        }
     }
 
     /**
