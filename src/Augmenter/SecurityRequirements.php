@@ -14,15 +14,16 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
 /**
- * Drops security requirements written as a bare scheme name, and reports raw arrays.
+ * Drops security requirements written as a bare scheme name, and converts raw arrays.
  *
  * Classic reads `security: ['bearerAuth']` as `bearerAuth` with no scopes. Spec takes a
  * `Security\Requirement` per entry, so a string is reported and dropped. An operation left with
  * no requirements falls back to the ones above it, rather than declaring itself public with an
  * empty list.
  *
- * A raw array, `['bearerAuth' => []]` or `['bearerAuth']`, still compiles and is kept, but is
- * reported: the array form is removed in 8.0, and {@see SecurityToRequirementRector} rewrites it.
+ * A raw array, `['bearerAuth' => []]` or `['bearerAuth']`, is reported and replaced by a
+ * `Security\Requirement` naming the same schemes, so that later augmenters see one form only. The
+ * array form is removed in 8.0, and {@see SecurityToRequirementRector} rewrites it.
  *
  * Runs before `PathItems`, which clones path item requirements onto their operations.
  *
@@ -75,6 +76,7 @@ class SecurityRequirements implements PipeInterface, LoggerAwareInterface
                     SecurityToRequirementRector::class,
                     $holder->getSourceLocation(),
                 ));
+                $item = new OA\Security\Requirement(schemes: $item);
             }
 
             $security[] = $item;

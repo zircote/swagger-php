@@ -405,6 +405,10 @@ without a message where both used `schemes:`, one for the same scheme was added 
 operation's where only one of them did, an array on the operation raised a PHP warning, and an array
 on the `PathItem` stopped the build with an error.
 
+In spec and hybrid, a security scheme named only by a requirement written as an array is kept.
+Before, cleanup removed it as unreferenced, and the requirement named a scheme the document did not
+define.
+
 ## Preparing for 8.0
 
 In 8.0 classic is removed, and so is `setMode()`. Spec attributes move from `OpenApi\Spec` to

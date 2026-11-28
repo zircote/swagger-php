@@ -329,6 +329,29 @@ final class BuilderTest extends OpenApiTestCase
     }
 
     /**
+     * A raw array requirement names its schemes as a `Security\Requirement` does, so cleanup keeps them.
+     */
+    public function testBuildKeepsSchemesNamedByRawArrays(): void
+    {
+        require_once self::fixture('PHP/RawArraySecurity.php');
+
+        $result = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->addSource(self::fixture('PHP/RawArraySecurity.php'))
+            ->setLogger($this->trackingLogger())
+            ->build();
+
+        $document = $result->toArray();
+        $this->assertSame(['bearer', 'api_key', 'other'], array_keys($document['components']['securitySchemes']));
+        $this->assertSame([['bearer' => []], ['other' => []]], $document['paths']['/admin/map']['get']['security']);
+        $this->assertSame([['bearer' => [], 'api_key' => []], ['other' => []]], $document['paths']['/admin/list']['get']['security']);
+
+        $this->expectLogEntry('Security requirement ["other"] is a raw array', 'notice');
+        $this->expectLogEntry('Security requirement {"bearer":[]} is a raw array', 'notice');
+        $this->expectLogEntry('Security requirement ["bearer","api_key"] is a raw array', 'notice');
+    }
+
+    /**
      * A component declared on a member is one only in a class carrying `#[OA\Components]`.
      * Without it, a keyed one is left out of the document, with a warning naming the member.
      */
