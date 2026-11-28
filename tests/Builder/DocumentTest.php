@@ -131,6 +131,91 @@ final class DocumentTest extends TestCase
         $this->assertArrayHasKey('bearer', $document['components']['securitySchemes']);
     }
 
+    public function testALaterDocumentWinsOverAnEarlierOne(): void
+    {
+        $document = fn (string $name): array => [
+            'openapi' => '3.1.0',
+            'info' => ['title' => $name, 'version' => '1.0.0'],
+            'servers' => [['url' => "https://{$name}.example.com"]],
+            'x-written' => $name,
+            'paths' => ['/things' => ['get' => ['operationId' => $name, 'responses' => ['200' => [
+                'description' => $name,
+                'content' => ['application/json' => ['schema' => ['$ref' => '#/components/schemas/Thing']]],
+            ]]]]],
+            'components' => ['schemas' => ['Thing' => ['type' => 'string', 'description' => $name]]],
+        ];
+
+        $result = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->withDocument($document('first'))
+            ->withDocument($document('second'))
+            ->build()
+            ->toArray();
+
+        $this->assertSame('second', $result['info']['title']);
+        $this->assertSame([['url' => 'https://second.example.com']], $result['servers']);
+        $this->assertSame('second', $result['x-written']);
+        $this->assertSame('second', $result['paths']['/things']['get']['operationId']);
+        $this->assertSame('second', $result['components']['schemas']['Thing']['description']);
+    }
+
+    public function testTheAttributesWinOverEveryDocument(): void
+    {
+        $document = fn (string $name): array => [
+            'openapi' => '3.1.0',
+            'info' => ['title' => $name, 'version' => '1.0.0'],
+            'paths' => ['/targets' => ['get' => ['responses' => ['200' => [
+                'description' => 'A target',
+                'content' => ['application/json' => ['schema' => ['$ref' => '#/components/schemas/RefTarget']]],
+            ]]]]],
+            'components' => ['schemas' => ['RefTarget' => ['type' => 'string', 'description' => $name]]],
+        ];
+
+        $result = (new Builder())
+            ->setMode(Mode::SPEC)
+            ->addSource(new \ReflectionClass(RefTarget::class))
+            ->withDocument($document('first'))
+            ->withSpecification(fn (Specification $specification): Specification => $specification->add(
+                new OA\Info(title: 'From attributes', version: '2.0.0'),
+            ))
+            ->withDocument($document('second'))
+            ->build()
+            ->toArray();
+
+        $this->assertSame('From attributes', $result['info']['title']);
+        $this->assertSame('A target for refs.', $result['components']['schemas']['RefTarget']['description']);
+    }
+
+    public function testHooksBetweenDocumentsDoNotChangeWhichWins(): void
+    {
+        $document = fn (string $name): array => [
+            'openapi' => '3.1.0',
+            'info' => ['title' => $name, 'version' => '1.0.0'],
+            'paths' => ['/things' => ['get' => ['responses' => ['200' => [
+                'description' => 'A thing',
+                'content' => ['application/json' => ['schema' => ['$ref' => '#/components/schemas/Thing']]],
+            ]]]]],
+            'components' => ['schemas' => ['Thing' => ['type' => 'string', 'description' => $name]]],
+        ];
+        $build = fn (callable $between): string => (new Builder())
+            ->setMode(Mode::SPEC)
+            ->withDocument($document('first'))
+            ->withSpecification($between)
+            ->withDocument($document('second'))
+            ->build()
+            ->toArray()['components']['schemas']['Thing']['description'];
+
+        $this->assertSame('second', $build(function (Specification $specification): void {
+            array_unshift($specification->schemas, new OA\Schema(type: 'string', component: 'Other'));
+        }));
+        $this->assertSame('second', $build(function (Specification $specification): void {
+            $specification->schemas = array_reverse($specification->schemas);
+        }));
+        $this->assertSame('From attributes', $build(function (Specification $specification): void {
+            $specification->add(new OA\Schema(description: 'From attributes', type: 'string', component: 'Thing'));
+        }));
+    }
+
     public function testAComponentInBothKeepsTheAttributes(): void
     {
         $result = (new Builder())

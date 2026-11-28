@@ -1053,8 +1053,9 @@ Both give:
 Give the base document a name of its own, such as `openapi-base.yaml`. The generated document is
 usually `openapi.yaml`, and two files of the same name are easily mixed up.
 
-Where a document and the attributes describe the same thing, the attributes win. The details,
-and what a document cannot hold, are in [Documents](/reference/builder#documents).
+Where a document and the attributes describe the same thing, the attributes win, and between two
+documents the later one wins. The details, and what a document cannot hold, are in
+[Documents](/reference/builder#documents).
 
 ## Build parts of a document for another one
 

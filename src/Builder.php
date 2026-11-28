@@ -45,6 +45,9 @@ use Psr\Log\NullLogger;
  */
 class Builder
 {
+    /** The lists of a `Specification` that a document adds to. */
+    protected const DOCUMENT_LISTS = ['tags', 'pathItems', 'operations', 'schemas', 'responses', 'parameters', 'requestBodies', 'headers', 'securitySchemes', 'links', 'examples', 'mediaTypes', 'callbacks', 'attachables'];
+
     /**
      * @var list<BuilderSource|iterable<BuilderSource>>
      */
@@ -339,7 +342,8 @@ class Builder
      * the attribute last, so the default mergers keep the attribute's, with a warning.
      *
      * Only OpenAPI 3.1 documents are read. One of another version is read as 3.1, with a warning.
-     * Documents accumulate: each one is added, in registration order. Classic mode assembles no
+     * Documents accumulate: each one is added, in registration order, and a later document wins
+     * over an earlier one where both describe the same thing. Classic mode assembles no
      * `Specification`, so documents are not read there, with a warning.
      *
      * @param string|array<string, mixed> $document
@@ -684,6 +688,7 @@ class Builder
         foreach ($this->specificationHooks as $hook) {
             $hook($specification);
         }
+        $this->orderDocumentEntries($specification);
 
         // every producer has run and nothing has read a component name yet; the resolver's
         // index is the first reader
@@ -704,7 +709,8 @@ class Builder
             Specification\ComponentName::normalise($specification, deprecate: false);
         }
 
-        foreach ($this->documents as $document) {
+        // the later document first, so that it fills what an earlier one would
+        foreach (array_reverse($this->documents) as $document) {
             $this->addDocumentRoot($specification, $document);
         }
 
@@ -727,22 +733,43 @@ class Builder
     }
 
     /**
-     * Add a parsed document's lists to the assembled specification, the attributes winning.
+     * Add a parsed document's lists to the assembled specification.
      *
-     * The document's lists go first, so a merger that keeps the later of two entries keeps the
-     * attribute's.
+     * Where each one goes is settled once every hook has run, by `orderDocumentEntries()`.
      */
     protected function addDocument(Specification $specification, Specification $document): void
     {
-        foreach (['tags', 'pathItems', 'operations', 'schemas', 'responses', 'parameters', 'requestBodies', 'headers', 'securitySchemes', 'links', 'examples', 'mediaTypes', 'callbacks', 'attachables'] as $list) {
+        foreach (self::DOCUMENT_LISTS as $list) {
             $specification->{$list} = [...$document->{$list}, ...$specification->{$list}];
         }
     }
 
     /**
-     * Add a parsed document's root fields to the specification, where the attributes left them unset.
+     * Put the entries of the documents read in this build before everything else, in document order.
      *
-     * The extensions are merged, the attributes' winning on a name in both.
+     * A merger that keeps the later of two entries then keeps an attribute's over any document's,
+     * and a later document's over an earlier one's, whatever order the hooks left the lists in.
+     */
+    protected function orderDocumentEntries(Specification $specification): void
+    {
+        $owner = [];
+        foreach ($this->documents as $index => $document) {
+            foreach (self::DOCUMENT_LISTS as $list) {
+                foreach ($document->{$list} as $entry) {
+                    $owner[spl_object_id($entry)] = $index;
+                }
+            }
+        }
+
+        foreach (self::DOCUMENT_LISTS as $list) {
+            $specification->{$list} = $this->documentEntriesFirst($specification->{$list}, $owner);
+        }
+    }
+
+    /**
+     * Add a parsed document's root fields to the specification, where nothing has set them yet.
+     *
+     * The extensions are merged, those already set winning on a name in both.
      */
     protected function addDocumentRoot(Specification $specification, Specification $document): void
     {
@@ -863,5 +890,21 @@ class Builder
             new Merge\Tags(),
             new Merge\LastWins(),
         ];
+    }
+
+    /**
+     * @template T of object
+     *
+     * @param list<T>         $entries
+     * @param array<int, int> $owner   the index of the document holding an entry, by object id
+     *
+     * @return list<T>
+     */
+    private function documentEntriesFirst(array $entries, array $owner): array
+    {
+        $fromDocuments = array_values(array_filter($entries, static fn (object $entry): bool => isset($owner[spl_object_id($entry)])));
+        usort($fromDocuments, static fn (object $a, object $b): int => $owner[spl_object_id($a)] <=> $owner[spl_object_id($b)]);
+
+        return [...$fromDocuments, ...array_values(array_filter($entries, static fn (object $entry): bool => !isset($owner[spl_object_id($entry)])))];
     }
 }
