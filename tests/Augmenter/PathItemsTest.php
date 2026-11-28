@@ -102,9 +102,9 @@ final class PathItemsTest extends TestCase
     }
 
     /**
-     * @param list<OA\Security\Requirement|array<mixed>> $operation
-     * @param list<OA\Security\Requirement|array<mixed>> $pathItem
-     * @param list<array<mixed>>                         $expected
+     * @param list<OA\Security\Requirement> $operation
+     * @param list<OA\Security\Requirement> $pathItem
+     * @param list<array<mixed>>            $expected
      */
     #[DataProvider('securityRequirementsProvider')]
     public function testSecurityMergedByRequirement(array $operation, array $pathItem, array $expected): void
@@ -115,15 +115,13 @@ final class PathItemsTest extends TestCase
         );
         $userPathItem = $this->findPathItemByClass($spec, Fixtures\Augmenter\PathItemUserController::class);
         $this->assertInstanceOf(OA\PathItem::class, $userPathItem);
-        /* @phpstan-ignore assign.propertyType (intentionally includes raw arrays) */
         $userPathItem->security = $pathItem;
-        /* @phpstan-ignore assign.propertyType (intentionally includes raw arrays) */
         $spec->operations[0]->security = $operation;
 
         $this->resolve($spec);
 
         $this->assertSame($expected, array_map(
-            fn (OA\Security\Requirement|array $requirement): array => is_array($requirement) ? $requirement : $requirement->toArray(),
+            fn (OA\Security\Requirement $requirement): array => $requirement->toArray(),
             $spec->operations[0]->security ?? [],
         ));
     }
@@ -148,17 +146,6 @@ final class PathItemsTest extends TestCase
             [['bearer' => [], 'other' => []], ['bearer' => []]],
         ];
 
-        yield 'raw array on the operation' => [
-            [['bearer' => []]],
-            [new OA\Security\Requirement(scheme: 'bearer'), new OA\Security\Requirement(scheme: 'other')],
-            [['bearer' => []], ['other' => []]],
-        ];
-
-        yield 'raw array on the path item' => [
-            [new OA\Security\Requirement(scheme: 'other')],
-            [['bearer' => []]],
-            [['other' => []], ['bearer' => []]],
-        ];
     }
 
     public function testEmptySecurityGetsNone(): void

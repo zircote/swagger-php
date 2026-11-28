@@ -45,7 +45,7 @@ final class SecurityRequirementsTest extends TestCase
         );
     }
 
-    public function testKeepsAndReportsRawArrays(): void
+    public function testReportsAndConvertsRawArrays(): void
     {
         $spec = new Specification();
         /* @phpstan-ignore argument.type (intentionally a raw array) */
@@ -60,9 +60,9 @@ final class SecurityRequirementsTest extends TestCase
         $augmenter->setLogger($logger);
         $augmenter($spec);
 
-        $this->assertSame([['bearer' => []]], $spec->openapi->security);
-        $this->assertSame([['api_key']], $spec->pathItems[0]->security);
-        $this->assertSame([[]], $operation->security);
+        $this->assertSame([['bearer' => []]], $this->toArrays($spec->openapi->security));
+        $this->assertSame([['api_key' => []]], $this->toArrays($spec->pathItems[0]->security));
+        $this->assertSame([[]], $this->toArrays($operation->security));
 
         $messages = array_column($logger->entries(), 'message');
         $this->assertCount(3, $messages);
@@ -82,5 +82,15 @@ final class SecurityRequirementsTest extends TestCase
         (new Augmenter\SecurityRequirements())($spec);
 
         $this->assertSame([], $public->security);
+    }
+
+    /**
+     * @param list<OA\Security\Requirement>|null $security
+     *
+     * @return list<array<string, list<string>>>
+     */
+    private function toArrays(?array $security): array
+    {
+        return array_map(static fn (OA\Security\Requirement $requirement): array => $requirement->toArray(), $security ?? []);
     }
 }

@@ -10,7 +10,6 @@ use OpenApi\Spec as OA;
 use OpenApi\Specification;
 use OpenApi\Specification\PathItemHierarchy;
 use OpenApi\Utils\PipeInterface;
-use OpenApi\Utils\SecurityRequirement;
 
 /**
  * Resolves PathItem prefixes, copies metadata to operations, and sets path-level output.
@@ -83,7 +82,7 @@ class PathItems implements PipeInterface
                 if (!isset($existing[$key])) {
                     $existing[$key] = true;
                     $operation->security ??= [];
-                    $operation->security[] = is_array($requirement) ? $requirement : $requirement->copy();
+                    $operation->security[] = $requirement->copy();
                 }
             }
         }
@@ -107,13 +106,11 @@ class PathItems implements PipeInterface
 
     /**
      * The scheme names a requirement asks for, sorted, so that two requirements naming the same
-     * schemes match whatever their scopes. A raw array is still accepted until 8.0.
-     *
-     * @param OA\Security\Requirement|array<mixed> $requirement
+     * schemes match whatever their scopes.
      */
-    protected function requirementKey(OA\Security\Requirement|array $requirement): string
+    protected function requirementKey(OA\Security\Requirement $requirement): string
     {
-        $schemes = array_map(strval(...), array_keys(is_array($requirement) ? SecurityRequirement::normalise($requirement) : $requirement->toArray()));
+        $schemes = array_map(strval(...), array_keys($requirement->toArray()));
         sort($schemes);
 
         return implode("\n", $schemes);
