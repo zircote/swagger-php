@@ -115,6 +115,8 @@ Where the attributes and a document describe the same thing, the attributes win:
 * A path, operation, component or tag in both goes to the [mergers](#mergers) with the
   attribute as the later of the two, so the default mergers keep the attribute's.
 
+Between two documents, the later one wins in the same way.
+
 Anything the spec attributes cannot hold, such as `jsonSchemaDialect` or a schema's `$defs`, is
 left out with a warning.
 

@@ -417,7 +417,10 @@ instead of the attribute's, and its `security` and extensions were lost.
 A document's `info`, `servers`, `security`, `externalDocs` and extensions are now added after every
 `withSpecification()` hook, so a hook does not see them. `Builder::addDocument()` adds a document's
 paths, components and tags only, and the new `addDocumentRoot()` its root fields. A subclass that
-calls `addDocument()` itself needs to call `addDocumentRoot()` as well.
+calls `addDocument()` itself needs to call `addDocumentRoot()` as well, and to add the document to
+`$documents`, which places its entries among those of the other documents.
+
+Where two documents describe the same thing, the later one wins. Before, the first one did.
 
 ## Preparing for 8.0
 
